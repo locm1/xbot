@@ -6,7 +6,7 @@
 
         <title>Laravel Vite Vue.js 3</title>
         @viteReactRefresh
-        @vite(['resources/css/app.css', 'resources/js/index.jsx'])
+        @vite(['resources/scss/volt.scss', 'resources/js/src/index.jsx'])
     </head>
     <body>
         <div id="app"></div>

@@ -6,8 +6,15 @@ export default defineConfig({
     plugins: [
         react(),
         laravel({
-            input: ['resources/css/app.css', 'resources/js/index.jsx'],
+            input: ['resources/scss/volt.scss', 'resources/js/src/index.jsx'],
             refresh: true,
         }),
     ],
+    resolve: {
+        alias: {
+            '@': 'resources/js/src',
+            '@img': 'resources/assets',
+            '@scss': 'resources/scss',
+        },
+    },
 });

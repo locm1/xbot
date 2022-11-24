@@ -13,23 +13,23 @@
 
 // * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. Please contact us to request a removal.
 import "./bootstrap";
+
+// packages
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from "react-router-dom";
+
+// Components
+import Routing from "@/routing";
 
 // core styles
-// import "./../scss/volt.scss";
+import "@scss/volt.scss";
 
-// vendor styles
-//import "leaflet/dist/leaflet.css";
-//import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-// import "react-datetime/css/react-datetime.css";
+//vendor styles
+import "leaflet/dist/leaflet.css";
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import "react-datetime/css/react-datetime.css";
 
 // import HomePage from "./pages/HomePage";
 // import ScrollToTop from "./components/ScrollToTop";
 
-function App() {
-  return <h1>Hello World</h1>;
-}
-
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(<Routing />, document.getElementById("app"));

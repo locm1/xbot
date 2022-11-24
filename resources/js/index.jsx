@@ -12,7 +12,7 @@
 // =========================================================
 
 // * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. Please contact us to request a removal.
-
+import "./bootstrap";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from "react-router-dom";
@@ -32,5 +32,4 @@ function App() {
   return <h1>Hello World</h1>;
 }
 
-const root = ReactDOM.createRoot(document.getElementById("app"));
-root.render(<App />);
+ReactDOM.render(<App />, document.getElementById("app"));

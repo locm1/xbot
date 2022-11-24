@@ -5,11 +5,6 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.6.0",
-        "lodash": "^4.17.19",
-        "postcss": "^8.1.14",
-        "vite": "^3.0.0",
         "@fullcalendar/bootstrap": "^5.10.0",
         "@fullcalendar/daygrid": "^5.10.0",
         "@fullcalendar/interaction": "^5.10.0",
@@ -20,11 +15,16 @@
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^11.2.7",
         "@testing-library/user-event": "^12.8.3",
+        "@vitejs/plugin-react": "^2.2.0",
         "apexcharts": "^3.29.0",
+        "axios": "^1.1.2",
         "bootstrap": "^5.1.3",
+        "laravel-vite-plugin": "^0.6.0",
         "leaflet": "^1.7.1",
+        "lodash": "^4.17.19",
         "moment-timezone": "^0.5.33",
         "nouislider-react": "^3.4.1",
+        "postcss": "^8.1.14",
         "react": "^17.0.2",
         "react-apexcharts": "^1.3.9",
         "react-beautiful-dnd": "^13.1.0",
@@ -50,6 +50,7 @@
         "simplebar-react": "^2.3.6",
         "sweetalert2": "^11.1.9",
         "sweetalert2-react-content": "^4.2.0",
-        "uuid": "^8.3.2"
+        "uuid": "^8.3.2",
+        "vite": "^3.0.0"
     }
 }

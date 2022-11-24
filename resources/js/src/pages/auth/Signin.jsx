@@ -72,9 +72,9 @@ export default () => {
                 <div className="d-flex justify-content-center align-items-center mt-4">
                   <span className="fw-normal">
                     Not registered?
-                    <Card.Link to={Paths.Signup.path} className="fw-bold">
+                    {/* <Card.Link to={Paths.Signup.path} className="fw-bold">
                       {` Create account `}
-                    </Card.Link>
+                    </Card.Link> */}
                   </span>
                 </div>
               </div>

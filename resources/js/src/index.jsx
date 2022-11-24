@@ -21,15 +21,17 @@ import ReactDOM from 'react-dom';
 // Components
 import Routing from "@/routing";
 
-// core styles
-import "@scss/volt.scss";
-
 //vendor styles
 import "leaflet/dist/leaflet.css";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import "react-datetime/css/react-datetime.css";
 
+// core styles
+import "../../scss/volt.scss";
+
 // import HomePage from "./pages/HomePage";
 // import ScrollToTop from "./components/ScrollToTop";
+
+
 
 ReactDOM.render(<Routing />, document.getElementById("app"));

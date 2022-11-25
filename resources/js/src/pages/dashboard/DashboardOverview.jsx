@@ -37,61 +37,61 @@ export default () => {
         </Dropdown>
       </div>
 
-      <Row className="justify-content-lg-center">
+      {/* <Row className="justify-content-lg-center">
         <Col xs={12} className="mb-4">
-          {/* <SalesValueWidget
+          <SalesValueWidget
             title="Sales Value"
             value="10,567"
             percentage={10.57}
-          /> */}
+          />
         </Col>
-      </Row>
+      </Row> */}
 
-      <Row>
+      {/* <Row>
         <Col xs={12} sm={6} xl={4} className="mb-4">
-          {/* <CustomersWidget
+          <CustomersWidget
             category="Customers"
             title="345k"
             period="May 1 - June 1"
             percentage={18.2}
-          /> */}
+          />
         </Col>
 
         <Col xs={12} sm={6} xl={4} className="mb-4">
-          {/* <RevenueWidget
+          <RevenueWidget
             category="Revenue"
             title="$43,594"
             period="May 1 - June 1"
             percentage={-5.4}
-          /> */}
+          />
         </Col>
 
         <Col xs={12} sm={12} xl={4} className="mb-4">
-          {/* <UsersWidget
+          <UsersWidget
             category="Users"
             title="15.3k"
             period="May 1 - June 1"
             percentage={20}
-          /> */}
+          />
         </Col>
       </Row>
 
       <Row>
         <Col xs={12} xxl={4} className="mb-4">
-          {/* <WeeklyReportWidget
+          <WeeklyReportWidget
             headerTitle="Weekly Sales"
             headerSubtitle="28 Daily Avg."
             reportTitle="$456,678"
             reportSubtitle="Total Themesberg Sales"
-          /> */}
+          />
         </Col>
 
         <Col xs={12} md={6} xxl={4} className="mb-4">
-          {/* <TopAuthorsWidget title="Top Author Earnings" /> */}
+          <TopAuthorsWidget title="Top Author Earnings" />
         </Col>
 
         <Col xs={12} md={6} xxl={4} className="mb-4">
-          {/* <TimelineWidget title="Notifications" /> */}
+          <TimelineWidget title="Notifications" />
         </Col>
       </Row>
 
@@ -99,37 +99,37 @@ export default () => {
         <Col xs={12} xl={7} xxl={8} className="mb-4">
           <Row>
             <Col xs={12} className="mb-4">
-              {/* <PageVisitsTable /> */}
+              <PageVisitsTable />
             </Col>
 
             <Col xs={12} xxl={6} className="mb-4">
-              {/* <TeamMembersWidget /> */}
+              <TeamMembersWidget />
             </Col>
 
             <Col xs={12} xxl={6} className="mb-4">
-              {/* <ProgressTrackWidget /> */}
+              <ProgressTrackWidget />
             </Col>
 
             <Col xs={12}>
-              {/* <EventsWidget /> */}
+              <EventsWidget />
             </Col>
           </Row>
         </Col>
 
         <Col xs={12} xl={5} xxl={4} className="mb-4">
           <Col xs={12} className="px-0 mb-4">
-            {/* <RankingWidget /> */}
+            <RankingWidget />
           </Col>
 
           <Col xs={12} className="px-0 mb-4">
-            {/* <AcquisitionWidget /> */}
+            <AcquisitionWidget />
           </Col>
 
           <Col xs={12} className="px-0">
-            {/* <VisitsMapWidget /> */}
+            <VisitsMapWidget />
           </Col>
         </Col>
-      </Row>
+      </Row> */}
     </>
   );
 };

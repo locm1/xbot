@@ -4,7 +4,7 @@ import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { CSSTransition } from 'react-transition-group';
-import { ArchiveIcon, CalendarIcon, ChartBarIcon, ChartPieIcon, ChevronRightIcon, ClipboardListIcon, CogIcon, CreditCardIcon, InboxIcon, InformationCircleIcon, LocationMarkerIcon, NewspaperIcon, TableIcon, TemplateIcon, UsersIcon, ViewGridIcon, XIcon } from "@heroicons/react/solid";
+import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, ChartBarIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon } from "@heroicons/react/solid";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { Nav, Badge, Image, Button, Dropdown, Navbar, Collapse, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -15,6 +15,7 @@ import ReactHero from "@img/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "@img/img/team/profile-picture-3.jpg";
 
 import GroupTitle from "@/components/GroupTitle";
+import { StoreIcon, GiftIcon } from "@/components/icons/Icons";
 
 export default (props = {}) => {
   const location = useLocation();
@@ -139,83 +140,46 @@ export default (props = {}) => {
             <Nav className="flex-column pt-3 pt-md-0">
               <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
 
-              {/* <GroupTitle name="User Management" /> */}
+              <GroupTitle name="User Management" />
+              <NavItem title="ユーザー管理" link={Paths.Presentation.path} icon={UserIcon} />
+              <CollapsableNavItem eventKey="dashboard1/" title="セグメント管理" icon={UserGroupIcon}>
+                <NavItem title="セグメント配信" link={Paths.DashboardOverview.path} />
+                <NavItem title="メッセージリスト" link={Paths.DashboardTraffic.path} />
+                <NavItem title="配信管理" link={Paths.DashboardProductAnalysis.path} />
+              </CollapsableNavItem>
+              <NavItem title="来店履歴" icon={StoreIcon} link={Paths.Kanban.path} />
+              <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.Messages.path} />
 
-              <CollapsableNavItem eventKey="dashboard/" title="Dashboard" icon={ChartBarIcon}>
-                <NavItem title="Overview" link={Paths.DashboardOverview.path} />
-                <NavItem title="All Traffic" link={Paths.DashboardTraffic.path} />
-                <NavItem title="Product Analysis" link={Paths.DashboardProductAnalysis.path} />
+              <GroupTitle name="Electroic Commerce" />
+              <CollapsableNavItem eventKey="dashboard2/" title="商品管理" icon={ShoppingBagIcon}>
+                <NavItem title="商品リスト" link={Paths.DashboardOverview.path} />
+                <NavItem title="商品追加" link={Paths.DashboardTraffic.path} />
+              </CollapsableNavItem>
+              <CollapsableNavItem eventKey="dashboard3/" title="クーポン管理" icon={CurrencyYenIcon}>
+                <NavItem title="クーポンリスト" link={Paths.DashboardOverview.path} />
+                <NavItem title="クーポン追加" link={Paths.DashboardTraffic.path} />
+              </CollapsableNavItem>
+              <NavItem title="注文リスト" icon={ShoppingCartIcon} link={Paths.Transactions.path} />
+              <CollapsableNavItem eventKey="dashboard4/" title="イベント管理" icon={CalendarIcon}>
+                <NavItem title="イベント作成" link={Paths.DashboardOverview.path} />
+                <NavItem title="イベント案内リスト" link={Paths.DashboardTraffic.path} />
+              </CollapsableNavItem>
+              <CollapsableNavItem eventKey="dashboard5/" title="日程調整管理" icon={CalendarIcon}>
+                <NavItem title="日程調整作成" link={Paths.DashboardOverview.path} />
+                <NavItem title="日程調整リスト" link={Paths.DashboardTraffic.path} />
               </CollapsableNavItem>
 
-              <NavItem title="Kanban" icon={ViewGridIcon} link={Paths.Kanban.path} />
-              <NavItem title="Messages" icon={InboxIcon} badgeText="4" badgeBg="danger" link={Paths.Messages.path} />
-              <NavItem title="Users List" icon={UsersIcon} link={Paths.Users.path} />
-              <NavItem title="Transactions" icon={CreditCardIcon} link={Paths.Transactions.path} />
-              <NavItem title="Task List" icon={ClipboardListIcon} link={Paths.Tasks.path} />
-              <NavItem title="Settings" icon={CogIcon} link={Paths.Settings.path} />
-              <NavItem title="Calendar" icon={CalendarIcon} link={Paths.Calendar.path} />
-              <NavItem title="Map" icon={LocationMarkerIcon} link={Paths.Map.path} />
-              <NavItem title="Widgets" icon={TemplateIcon} link={Paths.Widgets.path} />
+              <GroupTitle name="Invitation" />
+              <NavItem title="招待リスト" link={Paths.DashboardOverview.path} icon={UserAddIcon} />
 
-              <CollapsableNavItem eventKey="tables/" title="Tables" icon={TableIcon}>
-                <NavItem title="DataTables" link={Paths.Datatables.path} />
-                <NavItem title="Bootstrap Tables" link={Paths.BootstrapTables.path} />
+              <GroupTitle name="Configure" />
+              <CollapsableNavItem eventKey="dashboard6/" title="サイト設定" icon={CogIcon}>
+                <NavItem title="プライバシーポリシー" link={Paths.DashboardOverview.path} />
+                <NavItem title="利用規約" link={Paths.DashboardTraffic.path} />
+                <NavItem title="特定商取引法に基づく表記" link={Paths.DashboardTraffic.path} />
               </CollapsableNavItem>
-
-              <CollapsableNavItem eventKey="examples/" title="Page Examples" icon={NewspaperIcon}>
-                <NavItem title="Pricing" link={Paths.Pricing.path} />
-                <NavItem title="Billing" link={Paths.Billing.path} />
-                <NavItem title="Invoice" link={Paths.Invoice.path} />
-                <NavItem title="Sign In" link={Paths.Signin.path} />
-                <NavItem title="Sign Up" link={Paths.Signup.path} />
-                <NavItem title="Forgot password" link={Paths.ForgotPassword.path} />
-                <NavItem title="Reset password" link={Paths.ResetPassword.path} />
-                <NavItem title="Lock" link={Paths.Lock.path} />
-                <NavItem title="404 Not Found" link={Paths.NotFound.path} />
-                <NavItem title="500 Server Error" link={Paths.ServerError.path} />
-              </CollapsableNavItem>
-
-              <Dropdown.Divider className="my-3 border-indigo" />
-
-              <CollapsableNavItem eventKey="documentation/" title="Getting Started" icon={InformationCircleIcon}>
-                <NavItem title="Overview" link={Paths.DocsOverview.path} />
-                <NavItem title="Download" link={Paths.DocsDownload.path} />
-                <NavItem title="Quick Start" link={Paths.DocsQuickStart.path} />
-                <NavItem title="License" link={Paths.DocsLicense.path} />
-                <NavItem title="Folder Structure" link={Paths.DocsFolderStructure.path} />
-                <NavItem title="Build Tools" link={Paths.DocsBuild.path} />
-                <NavItem title="Changelog" link={Paths.DocsChangelog.path} />
-              </CollapsableNavItem>
-
-              <CollapsableNavItem eventKey="components/" title="Components" icon={ArchiveIcon}>
-                <NavItem title="Accordion" link={Paths.Accordions.path} />
-                <NavItem title="Alerts" link={Paths.Alerts.path} />
-                <NavItem title="Badges" link={Paths.Badges.path} />
-                <NavItem title="Breadcrumbs" link={Paths.Breadcrumbs.path} />
-                <NavItem title="Buttons" link={Paths.Buttons.path} />
-                <NavItem title="Forms" link={Paths.Forms.path} />
-                <NavItem title="Modals" link={Paths.Modals.path} />
-                <NavItem title="Navbars" link={Paths.Navbars.path} />
-                <NavItem title="Navs" link={Paths.Navs.path} />
-                <NavItem title="Pagination" link={Paths.Pagination.path} />
-                <NavItem title="Popovers" link={Paths.Popovers.path} />
-                <NavItem title="Progress" link={Paths.Progress.path} />
-                <NavItem title="Tables" link={Paths.Tables.path} />
-                <NavItem title="Tabs" link={Paths.Tabs.path} />
-                <NavItem title="Toasts" link={Paths.Toasts.path} />
-                <NavItem title="Tooltips" link={Paths.Tooltips.path} />
-                <NavItem title="Widgets" link={Paths.WidgetsComponent.path} />
-              </CollapsableNavItem>
-
-              <CollapsableNavItem eventKey="plugins/" title="Plugins" icon={ChartPieIcon}>
-                <NavItem title="Charts" link={Paths.PluginCharts.path} />
-                <NavItem title="Calendar" link={Paths.PluginCalendar.path} />
-                <NavItem title="DataTable" link={Paths.PluginDatatable.path} />
-                <NavItem title="Map" link={Paths.PluginMap.path} />
-                <NavItem title="DropZone" link={Paths.PluginDropzone.path} />
-                <NavItem title="SweetAlert" link={Paths.PluginSweetAlert.path} />
-              </CollapsableNavItem>
-
+              <NavItem title="タグ管理" icon={CogIcon} link={Paths.Settings.path} />
+              <NavItem title="お友達追加用QR" icon={QrcodeIcon} link={Paths.Calendar.path} />
             </Nav>
           </div>
         </SimpleBar>

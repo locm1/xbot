@@ -10,8 +10,11 @@ import { Nav, Badge, Image, Button, Dropdown, Navbar, Collapse, Col } from 'reac
 import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
+import Logo from "@img/img/logo_admin.png";
 import ReactHero from "@img/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "@img/img/team/profile-picture-3.jpg";
+
+import GroupTitle from "@/components/GroupTitle";
 
 export default (props = {}) => {
   const location = useLocation();
@@ -116,7 +119,7 @@ export default (props = {}) => {
       </Navbar>
       <CSSTransition timeout={300} in={show} classNames="sidebar-transition">
         <SimpleBar {...events} className={`${contracted} ${showClass} sidebar d-lg-block bg-gray-800 text-white collapse`}>
-          <div className="sidebar-inner px-4 pt-3">
+          <div className="sidebar-inner px-4 ptVolt Pro React-3">
             <div className="user-card d-flex d-md-none justify-content-between justify-content-md-center pb-4">
               <div className="d-flex align-items-center">
                 <div className="avatar-lg me-4">
@@ -134,7 +137,9 @@ export default (props = {}) => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem title="Volt Pro React" link={Paths.Presentation.path} image={ReactHero} />
+              <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
+
+              {/* <GroupTitle name="User Management" /> */}
 
               <CollapsableNavItem eventKey="dashboard/" title="Dashboard" icon={ChartBarIcon}>
                 <NavItem title="Overview" link={Paths.DashboardOverview.path} />

@@ -3,7 +3,7 @@
 export const Paths = {
     // pages
     Presentation: { path: "/" },
-    DashboardOverview: { path: "/dashboard/overview" },
+    DashboardOverview: { path: "/dashboard" },
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },
     DashboardProductAnalysis: { path: "/dashboard/product-analysis" },
     Kanban: { path: "/kanban" },

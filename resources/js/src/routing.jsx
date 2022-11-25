@@ -78,12 +78,10 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 
 const Routing = () => {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path={Paths.Signin.path} component={SignIn} />
-        <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route exact path={Paths.Signin.path} component={SignIn} />
+      <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />
+    </Switch>
   );
 };
 

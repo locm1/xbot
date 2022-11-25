@@ -17,9 +17,11 @@ import "./bootstrap";
 // packages
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from "react-router-dom";
 
 // Components
 import Routing from "@/routing";
+import ScrollToTop from "@/components/ScrollToTop";
 
 // core styles
 import "../../scss/volt.scss";
@@ -30,4 +32,13 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import "react-datetime/css/react-datetime.css";
 
 
-ReactDOM.render(<Routing />, document.getElementById("app"));
+function App() {
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <Routing />
+    </BrowserRouter>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("app"));

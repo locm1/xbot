@@ -1,12 +1,12 @@
 
 import React from "react";
-import { ArrowNarrowLeftIcon, LockClosedIcon, MailIcon } from "@heroicons/react/solid";
-import { Col, Row, Form, Card, Button, FormCheck, Container, InputGroup } from 'react-bootstrap';
+import { LockClosedIcon, MailIcon } from "@heroicons/react/solid";
+import { Col, Row, Form, Card, Button, FormCheck, Container, InputGroup, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import BgImage from "@img/img/illustrations/signin.svg";
-import { FacebookIcon, GithubIcon, TwitterIcon } from "@/components/BrandIcons";
+import Logo from "@img/img/logo_login.png";
 
 
 export default () => {
@@ -14,25 +14,25 @@ export default () => {
     <main>
       <section className="d-flex align-items-center vh-lg-100 mt-5 mt-lg-0 bg-soft">
         <Container>
-          <Row className="justify-content-center form-bg-image" style={{ backgroundImage: `url(${BgImage})` }}>
+          <Row className="justify-content-center form-bg-image">
             <Col xs={12} className="d-flex align-items-center justify-content-center">
               <div className="bg-white shadow border-0 rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                 <div className="text-center text-md-center mb-4 mt-md-0">
-                  <h3 className="mb-0">Sign in to our platform</h3>
+                  <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
                 </div>
                 <Form className="mt-4">
-                  <Form.Group id="email" className="mb-4">
-                    <Form.Label>Your Email</Form.Label>
+                  <Form.Group id="id" className="mb-4">
+                    <Form.Label>ID</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
                         <MailIcon className="icon icon-xs text-gray-600" />
                       </InputGroup.Text>
-                      <Form.Control autoFocus required type="email" placeholder="example@company.com" />
+                      <Form.Control autoFocus required type="text" />
                     </InputGroup>
                   </Form.Group>
                   <Form.Group>
                     <Form.Group id="password" className="mb-4">
-                      <Form.Label>Your Password</Form.Label>
+                      <Form.Label>Password</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
                           <LockClosedIcon className="icon icon-xs text-gray-600" />
@@ -45,38 +45,13 @@ export default () => {
                         <FormCheck.Input id="defaultCheck5" className="me-2" />
                         <FormCheck.Label htmlFor="defaultCheck5" className="mb-0">Remember me</FormCheck.Label>
                       </Form.Check>
-                      <Card.Link className="small text-end">Lost password?</Card.Link>
+                      <Card.Link className="small text-end">パスワードを忘れた場合</Card.Link>
                     </div>
                   </Form.Group>
                   <div className="d-grid">
-                    <Button variant="gray-800" type="submit">
-                      Sign in
-                    </Button>
+                    <Button variant="gray-800" type="submit">ログイン</Button>
                   </div>
                 </Form>
-
-                <div className="mt-3 mb-4 text-center">
-                  <span className="fw-normal">or login with</span>
-                </div>
-                <div className="d-flex justify-content-center my-4">
-                  <Button variant="outline-gray-500" className="btn-icon-only btn-pill me-2">
-                    <FacebookIcon size="xs" color="currentColor" />
-                  </Button>
-                  <Button variant="outline-gray-500" className="btn-icon-only btn-pill me-2">
-                    <TwitterIcon size="xs" color="currentColor" />
-                  </Button>
-                  <Button variant="outline-gray-500" className="btn-icon-only btn-pill">
-                    <GithubIcon size="xs" color="currentColor" />
-                  </Button>
-                </div>
-                <div className="d-flex justify-content-center align-items-center mt-4">
-                  <span className="fw-normal">
-                    Not registered?
-                    {/* <Card.Link to={Paths.Signup.path} className="fw-bold">
-                      {` Create account `}
-                    </Card.Link> */}
-                  </span>
-                </div>
               </div>
             </Col>
           </Row>

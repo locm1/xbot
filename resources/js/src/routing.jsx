@@ -6,8 +6,10 @@ import { Paths } from "@/paths";
 // pages
 import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
-// import DashboardProductAnalysis from "@/pages/dashboard/DashboardProductAnalysis"
-// import DashboardTraffic from "@/pages/dashboard/DashboardTraffic"
+import Users from '@/pages/Users';
+import Messages from '@/pages/TemplateMessages';
+import SendHistories from '@/pages/SendHistories';
+import NotFound from '@/pages/error/NotFound';
 
 
 // components
@@ -81,6 +83,10 @@ const Routing = () => {
     <Switch>
       <Route exact path={Paths.Signin.path} component={SignIn} />
       <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />
+      <RouteWithSidebar exact path={Paths.Users.path} component={Users} />
+      <RouteWithSidebar exact path={Paths.TemplateMessages.path} component={Messages} />
+      <RouteWithSidebar exact path={Paths.SendHistories.path} component={SendHistories} />
+      <Route component={NotFound} />
     </Switch>
   );
 };

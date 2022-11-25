@@ -2,14 +2,19 @@
 
 export const Paths = {
     // pages
-    Presentation: { path: "/" },
+    Signin: { path: "/login" },
     DashboardOverview: { path: "/dashboard" },
+    Users: { path: "/user/list" },
+    SendSegments: { path: "/message/send/segment" },
+    TemplateMessages: { path: "/message/template/list" },
+    SendHistories: { path: "/message/send/list" },
+
+
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },
     DashboardProductAnalysis: { path: "/dashboard/product-analysis" },
     Kanban: { path: "/kanban" },
     Messages: { path: "/messages" },
     SingleMessage: { path: "/message" },
-    Users: { path: "/users" },
     Transactions: { path: "/transactions" },
     Tasks: { path: "/tasks" },
     Settings: { path: "/settings" },
@@ -20,7 +25,6 @@ export const Paths = {
     Pricing: { path: "/examples/pricing" },
     Billing: { path: "/examples/billing" },
     Invoice: { path: "/examples/invoice" },
-    Signin: { path: "/login" },
     Signup: { path: "/examples/sign-up" },
     ForgotPassword: { path: "/examples/forgot-password" },
     ResetPassword: { path: "/examples/reset-password" },

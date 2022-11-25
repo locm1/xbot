@@ -138,17 +138,18 @@ export default (props = {}) => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
-              <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
-
+              <Link to={Paths.DashboardOverview.path}>
+                <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
+              </Link>
               <GroupTitle name="User Management" />
-              <NavItem title="ユーザー管理" link={Paths.Presentation.path} icon={UserIcon} />
-              <CollapsableNavItem eventKey="dashboard1/" title="セグメント管理" icon={UserGroupIcon}>
-                <NavItem title="セグメント配信" link={Paths.DashboardOverview.path} />
-                <NavItem title="メッセージリスト" link={Paths.DashboardTraffic.path} />
-                <NavItem title="配信管理" link={Paths.DashboardProductAnalysis.path} />
+              <NavItem title="ユーザー管理" link={Paths.Users.path} icon={UserIcon} />
+              <CollapsableNavItem eventKey="dashboard1/" title="メッセージ管理" icon={UserGroupIcon}>
+                <NavItem title="セグメント配信" link={Paths.SendSegments.path} />
+                <NavItem title="テンプレートリスト" link={Paths.TemplateMessages.path} />
+                <NavItem title="配信管理" link={Paths.SendHistories.path} />
               </CollapsableNavItem>
-              <NavItem title="来店履歴" icon={StoreIcon} link={Paths.Kanban.path} />
-              <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.Messages.path} />
+              <NavItem title="来店履歴" icon={StoreIcon} link={Paths.DashboardOverview.path} />
+              <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.DashboardOverview.path} />
 
               <GroupTitle name="Electroic Commerce" />
               <CollapsableNavItem eventKey="dashboard2/" title="商品管理" icon={ShoppingBagIcon}>

@@ -1,0 +1,33 @@
+$base_color: #707070;
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: $base_color;
+}
+
+.list-head__items {
+  display: flex;
+  color: $base_color;
+}
+
+.list-head__title {
+  margin-right: 1.5rem;
+  color: $base_color;
+}
+
+.list-head__item {
+  margin-right: 1rem;
+}
+
+.u-men {
+  color: #2361ce;
+}
+
+.u-women {
+  color: #E11D48;
+}
+
+.list-wrap {
+  padding-bottom: 0 !important;
+}

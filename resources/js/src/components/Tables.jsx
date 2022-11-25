@@ -342,10 +342,11 @@ export const UsersTable = (props) => {
                   <FormCheck.Label htmlFor="userCheckAll" />
                 </FormCheck>
               </th>
-              <th className="border-bottom">Name</th>
-              <th className="border-bottom">Date Created</th>
-              <th className="border-bottom">Verified</th>
-              <th className="border-bottom">Status</th>
+              <th className="border-bottom">氏名</th>
+              <th className="border-bottom">電話番号</th>
+              <th className="border-bottom">性別</th>
+              <th className="border-bottom">生年月日</th>
+              <th className="border-bottom">お住まいエリア</th>
               <th className="border-bottom">Action</th>
             </tr>
           </thead>
@@ -377,6 +378,183 @@ export const UsersTable = (props) => {
     </Card>
   );
 };
+
+
+export const TemplateMessageTable = (props) => {
+  const { messages } = props;
+  const totalMessages = messages.length;
+
+  const TableRow = (props) => {
+    const { title, addDate } = props;
+
+    return (
+      <tr className="border-bottom">
+        <td>
+          <span className="fw-normal">
+            {title}
+          </span>
+        </td>
+        <td>
+          <span className="fw-normal">
+            {addDate}
+          </span>
+        </td>
+        <td className="text-center">
+          <Dropdown as={ButtonGroup}>
+            <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
+              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="py-0">
+              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
+                <EyeIcon className="icon icon-xs me-2" /> View Details
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
+                <PencilAltIcon className="icon icon-xs me-2" /> Edit
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <TrashIcon className="icon icon-xs text-danger me-2" /> Remove
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </td>
+      </tr>
+    );
+  };
+
+  return (
+    <Card border="0" className="table-wrapper table-responsive shadow">
+      <Card.Body>
+        <Table hover>
+          <thead>
+            <tr>
+              <th className="border-gray-200">タイトル</th>
+              <th className="border-gray-200">追加日時</th>
+              <th className="border-gray-200">Action</th>
+            </tr>
+          </thead>
+          <tbody className="border-0">
+            {messages.map(t => <TableRow key={`message-${t.id}`} {...t} />)}
+          </tbody>
+        </Table>
+        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+          <Nav>
+            <Pagination className="mb-0">
+              <Pagination.Prev>
+                Previous
+              </Pagination.Prev>
+              <Pagination.Item active>1</Pagination.Item>
+              <Pagination.Item>2</Pagination.Item>
+              <Pagination.Item>3</Pagination.Item>
+              <Pagination.Item>4</Pagination.Item>
+              <Pagination.Item>5</Pagination.Item>
+              <Pagination.Next>
+                Next
+              </Pagination.Next>
+            </Pagination>
+          </Nav>
+          <small className="fw-normal mt-4 mt-lg-0">
+            Showing <b>{totalMessages}</b> out of <b>25</b> entries
+          </small>
+        </Card.Footer>
+      </Card.Body>
+    </Card>
+  );
+};
+
+
+export const SendHistoriesTable = (props) => {
+  const { sendHistories } = props;
+  const totalSendHistories = sendHistories.length;
+
+  const TableRow = (props) => {
+    const { status, sendDate, targetCount, sendCount } = props;
+
+    return (
+      <tr className="border-bottom">
+        <td>
+          <span className="fw-normal">
+            {status}
+          </span>
+        </td>
+        <td>
+          <span className="fw-normal">
+            {sendDate}
+          </span>
+        </td>
+        <td>
+          <span className="fw-normal">
+            {targetCount}
+          </span>
+        </td>
+        <td>
+          <span className="fw-normal">
+            {sendCount}
+          </span>
+        </td>
+        <td className="text-center">
+          <Dropdown as={ButtonGroup}>
+            <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
+              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="py-0">
+              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
+                <EyeIcon className="icon icon-xs me-2" /> View Details
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
+                <PencilAltIcon className="icon icon-xs me-2" /> Edit
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <TrashIcon className="icon icon-xs text-danger me-2" /> Remove
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </td>
+      </tr>
+    );
+  };
+
+  return (
+    <Card border="0" className="table-wrapper table-responsive shadow">
+      <Card.Body>
+        <Table hover>
+          <thead>
+            <tr>
+              <th className="border-gray-200">ステータス</th>
+              <th className="border-gray-200">配信日時</th>
+              <th className="border-gray-200">該当人数</th>
+              <th className="border-gray-200">配信数</th>
+              <th className="border-gray-200">Action</th>
+            </tr>
+          </thead>
+          <tbody className="border-0">
+            {sendHistories.map(t => <TableRow key={`sendHistories-${t.id}`} {...t} />)}
+          </tbody>
+        </Table>
+        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+          <Nav>
+            <Pagination className="mb-0">
+              <Pagination.Prev>
+                Previous
+              </Pagination.Prev>
+              <Pagination.Item active>1</Pagination.Item>
+              <Pagination.Item>2</Pagination.Item>
+              <Pagination.Item>3</Pagination.Item>
+              <Pagination.Item>4</Pagination.Item>
+              <Pagination.Item>5</Pagination.Item>
+              <Pagination.Next>
+                Next
+              </Pagination.Next>
+            </Pagination>
+          </Nav>
+          <small className="fw-normal mt-4 mt-lg-0">
+            Showing <b>{totalSendHistories}</b> out of <b>25</b> entries
+          </small>
+        </Card.Footer>
+      </Card.Body>
+    </Card>
+  );
+};
+
 
 export const TransactionsTable = (props) => {
   const { transactions } = props;

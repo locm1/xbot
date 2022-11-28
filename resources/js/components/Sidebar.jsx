@@ -39,12 +39,12 @@ export default (props = {}) => {
 
   const CollapsableNavItem = (props) => {
     const { eventKey, title, icon: NavItemIcon, children = null } = props;
-    const isOpened = collapsedItems.some(item => item.includes(eventKey));
+    const [isOpened, setOpen] = useState(collapsedItems.some(item => item.includes(eventKey)));
 
     return (
       <Nav.Item>
         <Nav.Link
-          onClick={() => onNavItemCollapse(eventKey)}
+          onClick={() => setOpen(!isOpened)}
           aria-expanded={isOpened}
           aria-controls={eventKey}
           className="d-flex justify-content-between align-items-center"

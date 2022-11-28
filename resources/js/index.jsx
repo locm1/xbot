@@ -24,7 +24,7 @@ import Routing from "@/routing";
 import ScrollToTop from "@/components/ScrollToTop";
 
 // core styles
-import "../../scss/volt.scss";
+import "./../scss/volt.scss";
 
 //vendor styles
 import "leaflet/dist/leaflet.css";

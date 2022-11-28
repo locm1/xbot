@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Paths } from "@/paths";
 
 // pages
 import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
-import Users from '@/pages/Users';
-import Messages from '@/pages/TemplateMessages';
-import SendHistories from '@/pages/SendHistories';
+import Users from '@/pages/user/Users';
+import Messages from '@/pages/message/TemplateMessages';
+import SendHistories from '@/pages/message/SendHistories';
+import VisirotHistories from '@/pages/visitor/VisirotHistories';
+import Products from '@/pages/product/Products';
+import EventCalendar from '@/pages/event/EventCalendar';
+import ScheduleCalendar from '@/pages/schedule/ScheduleCalendar';
 import NotFound from '@/pages/error/NotFound';
 
 
@@ -86,6 +89,10 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.Users.path} component={Users} />
       <RouteWithSidebar exact path={Paths.TemplateMessages.path} component={Messages} />
       <RouteWithSidebar exact path={Paths.SendHistories.path} component={SendHistories} />
+      <RouteWithSidebar exact path={Paths.VisitorHistories.path} component={VisirotHistories} />
+      <RouteWithSidebar exact path={Paths.Products.path} component={Products} />
+      <RouteWithSidebar exact path={Paths.EventCalendar.path} component={EventCalendar} />
+      <RouteWithSidebar exact path={Paths.ScheduleCalendar.path} component={ScheduleCalendar} />
       <Route component={NotFound} />
     </Switch>
   );

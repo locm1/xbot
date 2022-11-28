@@ -4,7 +4,7 @@ import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { CSSTransition } from 'react-transition-group';
-import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, ChartBarIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon } from "@heroicons/react/solid";
+import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, InboxIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon } from "@heroicons/react/solid";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { Nav, Badge, Image, Button, Dropdown, Navbar, Collapse, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -148,39 +148,40 @@ export default (props = {}) => {
                 <NavItem title="テンプレートリスト" link={Paths.TemplateMessages.path} />
                 <NavItem title="配信管理" link={Paths.SendHistories.path} />
               </CollapsableNavItem>
-              <NavItem title="来店履歴" icon={StoreIcon} link={Paths.DashboardOverview.path} />
-              <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.DashboardOverview.path} />
+              <NavItem title="来店履歴" icon={StoreIcon} link={Paths.VisitorHistories.path} />
+              <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.Privileges.path} />
 
               <GroupTitle name="Electroic Commerce" />
               <CollapsableNavItem eventKey="dashboard2/" title="商品管理" icon={ShoppingBagIcon}>
-                <NavItem title="商品リスト" link={Paths.DashboardOverview.path} />
-                <NavItem title="商品追加" link={Paths.DashboardTraffic.path} />
+                <NavItem title="商品リスト" link={Paths.Products.path} />
+                <NavItem title="商品追加" link={Paths.CreateProduct.path} />
               </CollapsableNavItem>
               <CollapsableNavItem eventKey="dashboard3/" title="クーポン管理" icon={CurrencyYenIcon}>
-                <NavItem title="クーポンリスト" link={Paths.DashboardOverview.path} />
-                <NavItem title="クーポン追加" link={Paths.DashboardTraffic.path} />
+                <NavItem title="クーポンリスト" link={Paths.Coupons.path} />
+                <NavItem title="クーポン追加" link={Paths.CreateCoupon.path} />
               </CollapsableNavItem>
-              <NavItem title="注文リスト" icon={ShoppingCartIcon} link={Paths.Transactions.path} />
+              <NavItem title="注文リスト" icon={ShoppingCartIcon} link={Paths.Orders.path} />
+              <NavItem title="取置リスト" icon={InboxIcon} link={Paths.Reserves.path} />
               <CollapsableNavItem eventKey="dashboard4/" title="イベント管理" icon={CalendarIcon}>
-                <NavItem title="イベント作成" link={Paths.DashboardOverview.path} />
-                <NavItem title="イベント案内リスト" link={Paths.DashboardTraffic.path} />
+                <NavItem title="イベントカレンダー" link={Paths.EventCalendar.path} />
+                <NavItem title="イベント案内リスト" link={Paths.Events.path} />
               </CollapsableNavItem>
               <CollapsableNavItem eventKey="dashboard5/" title="日程調整管理" icon={CalendarIcon}>
-                <NavItem title="日程調整作成" link={Paths.DashboardOverview.path} />
-                <NavItem title="日程調整リスト" link={Paths.DashboardTraffic.path} />
+                <NavItem title="日程調整作成" link={Paths.ScheduleCalendar.path} />
+                <NavItem title="日程調整リスト" link={Paths.Schedules.path} />
               </CollapsableNavItem>
 
               <GroupTitle name="Invitation" />
-              <NavItem title="招待リスト" link={Paths.DashboardOverview.path} icon={UserAddIcon} />
+              <NavItem title="招待リスト" link={Paths.Invitations.path} icon={UserAddIcon} />
 
               <GroupTitle name="Configure" />
               <CollapsableNavItem eventKey="dashboard6/" title="サイト設定" icon={CogIcon}>
-                <NavItem title="プライバシーポリシー" link={Paths.DashboardOverview.path} />
-                <NavItem title="利用規約" link={Paths.DashboardTraffic.path} />
-                <NavItem title="特定商取引法に基づく表記" link={Paths.DashboardTraffic.path} />
+                <NavItem title="プライバシーポリシー" link={Paths.PrivacyPolicy.path} />
+                <NavItem title="利用規約" link={Paths.TermsOfService.path} />
+                <NavItem title="特定商取引法に基づく表記" link={Paths.SpecificTrades.path} />
               </CollapsableNavItem>
-              <NavItem title="タグ管理" icon={CogIcon} link={Paths.Settings.path} />
-              <NavItem title="お友達追加用QR" icon={QrcodeIcon} link={Paths.Calendar.path} />
+              <NavItem title="タグ管理" icon={CogIcon} link={Paths.Tags.path} />
+              <NavItem title="お友達追加用QR" icon={QrcodeIcon} link={Paths.QrCode.path} />
             </Nav>
           </div>
         </SimpleBar>

@@ -6,13 +6,13 @@ export default defineConfig({
     plugins: [
         react(),
         laravel({
-            input: ['resources/js/src/index.jsx'],
+            input: ['resources/js/index.jsx'],
             refresh: true,
         }),
     ],
     resolve: {
         alias: {
-            '@': 'resources/js/src',
+            '@': 'resources/js',
             '@img': 'resources/assets',
             '@scss': 'resources/scss',
         },

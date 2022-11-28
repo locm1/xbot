@@ -4,7 +4,7 @@ import Datetime from "react-datetime";
 import { CalendarIcon, CreditCardIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
-import { VisitorHistoriesTable } from "@/components/Tables";
+import { VisitorHistoriesTable } from "@/pages/visitor/VisitorHistoriesTable";
 import visitorHistories from "@/data/visitorHistories";
 
 export default () => {

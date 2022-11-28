@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
+import moment from "moment-timezone";
+import Datetime from "react-datetime";
+import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
-import { SendHistoriesTable } from "@/pages/message/SendHistoriesTable";
-import sendHistories from "@/data/sendHistories";
+import { InvitationsTable } from "@/pages/invitation/InvitationsTable";
+import invitations from "@/data/invitations";
 
 export default () => {
-  const [transactions, setTransactions] = useState(sendHistories.map(t => ({ ...t, show: true })));
+  const [transactions, setTransactions] = useState(invitations.map(t => ({ ...t, show: true })));
   const [searchValue, setSearchValue] = useState("");
+  const [birthday, setBirthday] = useState("");
   const [statusValue, setStatusValue] = useState("all");
 
   const changeSearchValue = (e) => {
@@ -40,15 +43,9 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item>メッセージ管理</Breadcrumb.Item>
-            <Breadcrumb.Item active>配信管理</Breadcrumb.Item>
+            <Breadcrumb.Item active>招待リスト</Breadcrumb.Item>
           </Breadcrumb>
-          <h1 className="page-title">配信管理</h1>
-        </div>
-        <div className="btn-toolbar mb-2 mb-md-0">
-          <Button variant="gray-800" size="sm" className="d-inline-flex align-items-center">
-            <PlusIcon className="icon icon-xs me-2" /> 新規作成
-          </Button>
+          <h1 className="page-title">招待リスト</h1>
         </div>
       </div>
 
@@ -92,8 +89,8 @@ export default () => {
         </Row>
       </div>
 
-      <SendHistoriesTable
-        sendHistories={transactions.filter(t => t.show)}
+      <InvitationsTable
+        invitations={transactions.filter(t => t.show)}
       />
     </>
   );

@@ -5,7 +5,7 @@ import withReactContent from 'sweetalert2-react-content';
 import { AdjustmentsIcon, CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
-import { UsersTable } from "@/components/Tables";
+import { UsersTable } from "@/pages/user/UsersTable";
 import USERS_DATA from "@/data/users";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
@@ -94,15 +94,6 @@ export default () => {
               <div class="list-head__item"> <span> その他 </span>：1名 </div>
             </div>
           </div>
-        </div>
-        <div className="btn-toolbar mb-2 mb-md-0">
-          <Button variant="gray-800" size="sm" className="d-inline-flex align-items-center">
-            <PlusIcon className="icon icon-xs me-2" /> New User
-          </Button>
-          <ButtonGroup className="ms-2 ms-lg-3">
-            <Button variant="outline-gray-600" size="sm">Share</Button>
-            <Button variant="outline-gray-600" size="sm">Export</Button>
-          </ButtonGroup>
         </div>
       </div>
 

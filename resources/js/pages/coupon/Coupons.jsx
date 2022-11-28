@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
+import moment from "moment-timezone";
+import Datetime from "react-datetime";
+import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
-import { SendHistoriesTable } from "@/pages/message/SendHistoriesTable";
-import sendHistories from "@/data/sendHistories";
+import { CouponsTable } from "@/pages/coupon/CouponsTable";
+import coupons from "@/data/coupons";
 
 export default () => {
-  const [transactions, setTransactions] = useState(sendHistories.map(t => ({ ...t, show: true })));
+  const [transactions, setTransactions] = useState(coupons.map(t => ({ ...t, show: true })));
   const [searchValue, setSearchValue] = useState("");
+  const [birthday, setBirthday] = useState("");
   const [statusValue, setStatusValue] = useState("all");
 
   const changeSearchValue = (e) => {
@@ -40,15 +43,13 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item>メッセージ管理</Breadcrumb.Item>
-            <Breadcrumb.Item active>配信管理</Breadcrumb.Item>
+            <Breadcrumb.Item>クーポン管理</Breadcrumb.Item>
+            <Breadcrumb.Item active>クーポンリスト</Breadcrumb.Item>
           </Breadcrumb>
-          <h1 className="page-title">配信管理</h1>
-        </div>
-        <div className="btn-toolbar mb-2 mb-md-0">
-          <Button variant="gray-800" size="sm" className="d-inline-flex align-items-center">
-            <PlusIcon className="icon icon-xs me-2" /> 新規作成
-          </Button>
+          <h1 className="page-title">クーポンリスト</h1>
+          <div className="list-head d-flex flex-wrap mb-4 align-items-center">
+            <h2 className="list-head__title h4 mr-5 font-weight-bold">クーポン総数：4</h2>
+          </div>
         </div>
       </div>
 
@@ -92,8 +93,8 @@ export default () => {
         </Row>
       </div>
 
-      <SendHistoriesTable
-        sendHistories={transactions.filter(t => t.show)}
+      <CouponsTable
+        coupons={transactions.filter(t => t.show)}
       />
     </>
   );

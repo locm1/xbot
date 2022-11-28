@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
-import { TemplateMessageTable } from "@/components/Tables";
+import { TemplateMessageTable } from "@/pages/message/TemplateMessageTable";
 import messages from "@/data/templateMessages";
 
 export default () => {

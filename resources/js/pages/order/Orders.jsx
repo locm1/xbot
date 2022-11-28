@@ -4,11 +4,11 @@ import Datetime from "react-datetime";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
-import { ProductsTable } from "@/pages/product/ProductsTable";
-import products from "@/data/products";
+import { OrdersTable } from "@/pages/order/OrdersTable";
+import orders from "@/data/orders";
 
 export default () => {
-  const [transactions, setTransactions] = useState(products.map(t => ({ ...t, show: true })));
+  const [transactions, setTransactions] = useState(orders.map(t => ({ ...t, show: true })));
   const [searchValue, setSearchValue] = useState("");
   const [birthday, setBirthday] = useState("");
   const [statusValue, setStatusValue] = useState("all");
@@ -43,58 +43,74 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item>商品管理</Breadcrumb.Item>
-            <Breadcrumb.Item active>商品リスト</Breadcrumb.Item>
+            <Breadcrumb.Item>注文リスト</Breadcrumb.Item>
           </Breadcrumb>
-          <h1 className="page-title">商品リスト</h1>
+          <h1 className="page-title">注文リスト</h1>
           <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <h2 className="list-head__title h4 mr-5 font-weight-bold">来店総数：3</h2>
+            <h2 className="list-head__title h4 mr-5 font-weight-bold">注文総数：21</h2>
           </div>
         </div>
       </div>
 
       <div className="table-settings mb-4">
         <Row className="d-flex justify-content-between align-items-center">
-          <Col xs={9} lg={8} className="d-md-flex">
+          <Col xs={3} lg={3} className="d-md-flex">
             <InputGroup className="me-2 me-lg-3 fmxw-400">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                placeholder="Search orders"
+                placeholder="氏名"
                 value={searchValue}
                 onChange={changeSearchValue}
               />
             </InputGroup>
-            <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue}>
-              <option value="all">All</option>
-              <option value="paid">Paid</option>
-              <option value="due">Due</option>
-              <option value="cancelled">Cancelled</option>
-            </Form.Select>
           </Col>
-          <Col xs={3} lg={4} className="d-flex justify-content-end">
-            <Dropdown as={ButtonGroup}>
-              <Dropdown.Toggle split as={Button} variant="link" className="text-dark m-0 p-1">
-                <CogIcon className="icon icon-sm" />
-                <span className="visually-hidden">Toggle Dropdown</span>
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-end pb-0">
-                <small className="ps-3 fw-bold text-dark">Show</small>
-                <Dropdown.Item className="d-flex align-items-center fw-bold">
-                  10 <CheckIcon className="icon icon-xxs ms-auto" />
-                </Dropdown.Item>
-                <Dropdown.Item className="fw-bold">20</Dropdown.Item>
-                <Dropdown.Item className="fw-bold rounded-bottom">30</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+          <Col xs={3} lg={3} className="d-md-flex">
+            <InputGroup className="me-2 me-lg-3 fmxw-400">
+              <InputGroup.Text>
+                <SearchIcon className="icon icon-xs" />
+              </InputGroup.Text>
+              <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue} placeholder="ステータスを選択">
+                <option value="all">All</option>
+                <option value="paid">Paid</option>
+                <option value="due">Due</option>
+                <option value="cancelled">Cancelled</option>
+              </Form.Select>
+            </InputGroup>
+          </Col>
+          <Col xs={3} lg={3} className="d-md-flex">
+            <InputGroup className="me-2 me-lg-3 fmxw-400">
+              <InputGroup.Text>
+                <SearchIcon className="icon icon-xs" />
+              </InputGroup.Text>
+              <Form.Control
+                type="text"
+                placeholder="注文番号"
+                value={searchValue}
+                onChange={changeSearchValue}
+              />
+            </InputGroup>
+          </Col>
+          <Col xs={3} lg={3} className="d-md-flex">
+            <InputGroup className="me-2 me-lg-3 fmxw-400">
+              <InputGroup.Text>
+                <SearchIcon className="icon icon-xs" />
+              </InputGroup.Text>
+              <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue} placeholder="都道府県を選択">
+                <option value="all">All</option>
+                <option value="paid">Paid</option>
+                <option value="due">Due</option>
+                <option value="cancelled">Cancelled</option>
+              </Form.Select>
+            </InputGroup>
           </Col>
         </Row>
       </div>
 
-      <ProductsTable
-        products={transactions.filter(t => t.show)}
+      <OrdersTable
+        orders={transactions.filter(t => t.show)}
       />
     </>
   );

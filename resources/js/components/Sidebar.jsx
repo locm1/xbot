@@ -142,7 +142,7 @@ export default (props = {}) => {
                 <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
               </Link>
               <GroupTitle name="User Management" />
-              <NavItem title="ユーザー管理" link={Paths.Users.path} icon={UserIcon} />
+              <NavItem title="ユーザーリスト" link={Paths.Users.path} icon={UserIcon} />
               <CollapsableNavItem eventKey="dashboard1/" title="メッセージ管理" icon={UserGroupIcon}>
                 <NavItem title="セグメント配信" link={Paths.SendSegments.path} />
                 <NavItem title="テンプレートリスト" link={Paths.TemplateMessages.path} />

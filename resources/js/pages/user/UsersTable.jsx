@@ -4,12 +4,6 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar,
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
-
-
-const capitalizeFirstLetter = (string) => (
-  string[0].toUpperCase() + string.slice(1)
-);
 
 const getFirstLetterOfEachWord = (text) => (
   text.match(/\b\w/g).join('')
@@ -43,12 +37,9 @@ export const UsersTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, verified, status, image, name, email, dateCreated, isSelected } = props;
-    const VerifiedIcon = verified ? CheckCircleIcon : InformationCircleIcon;
-    const statusVariant = status === "active" ? "success"
-      : status === "inactive" ? "warning"
-        : status === "pending" ? "purple"
-          : status === "suspended" ? "danger" : "primary";
+    const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
+    const { id, image, name, tel, sex, birthDate, area, isSelected } = props;
+    const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "success";
 
     return (
       <tr className="border-bottom">
@@ -59,7 +50,7 @@ export const UsersTable = (props) => {
           </FormCheck>
         </td>
         <td>
-          <Card.Link className="d-flex align-items-center">
+          <Card.Link className="d-flex align-items-center" as={Link} to={`/user/edit/${id}`}>
             {image
               ? (
                 <Image
@@ -73,48 +64,38 @@ export const UsersTable = (props) => {
               )}
             <div className="d-block">
               <span className="fw-bold">{name}</span>
-              <div className="small text-gray">{email}</div>
+              {/* <div className="small text-gray">{email}</div> */}
             </div>
           </Card.Link>
         </td>
-        <td><span className="fw-normal">{dateCreated}</span></td>
+        <td><span className="fw-normal">{tel}</span></td>
         <td>
-          <span className="fw-normal d-flex align-items-center">
-            <VerifiedIcon className={`icon icon-xxs text-${statusVariant} me-1`} />
-            Email
+          <span className={`fw-normal text-${sexVariant}`}>
+            {sex_array[sex]}
           </span>
         </td>
-        <td>
-          <span className={`fw-normal text-${statusVariant}`}>
-            {capitalizeFirstLetter(status)}
-          </span>
-        </td>
+        <td><span className="fw-normal">{birthDate}</span></td>
+        <td><span className="fw-normal">{area}</span></td>
         <td>
           <Dropdown as={ButtonGroup}>
             <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
-              <DotsHorizontalIcon className="icon icon-xs" />
+              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
             </Dropdown.Toggle>
-            <Dropdown.Menu className="dashboard-dropdown dropdown-menu-start mt-2 py-1">
-              <Dropdown.Item className="d-flex align-items-center">
-                <ShieldExclamationIcon className="dropdown-icon text-gray-400 me-2" />
-                Reset Pass
+            <Dropdown.Menu className="py-0">
+              <Dropdown.Item as={Link} to={`/user/edit/${id}`}>
+                <PencilAltIcon className="icon icon-xs me-2" /> 編集
               </Dropdown.Item>
-              <Dropdown.Item className="d-flex align-items-center">
-                <EyeIcon className="dropdown-icon text-gray-400 me-2" />
-                View Details
-              </Dropdown.Item>
-              <Dropdown.Item className="d-flex align-items-center">
-                <UserRemoveIcon className="dropdown-icon text-danger me-2" />
-                Suspend
+              <Dropdown.Item>
+                <TrashIcon className="icon icon-xs text-danger me-2" /> 削除
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
 
-          <OverlayTrigger placement="top" overlay={<Tooltip className="m-0">Delete</Tooltip>}>
+          {/* <OverlayTrigger placement="top" overlay={<Tooltip className="m-0">Delete</Tooltip>}>
             <Card.Link className="ms-2" onClick={() => deleteUsers([id])}>
               <XCircleIcon className="icon icon-xs text-danger" />
             </Card.Link>
-          </OverlayTrigger>
+          </OverlayTrigger> */}
         </td>
       </tr>
     );
@@ -159,7 +140,7 @@ export const UsersTable = (props) => {
           <Nav>
             <Pagination className="mb-0">
               <Pagination.Prev>
-                Previous
+                前
               </Pagination.Prev>
               <Pagination.Item active>1</Pagination.Item>
               <Pagination.Item>2</Pagination.Item>
@@ -167,7 +148,7 @@ export const UsersTable = (props) => {
               <Pagination.Item>4</Pagination.Item>
               <Pagination.Item>5</Pagination.Item>
               <Pagination.Next>
-                Next
+                次
               </Pagination.Next>
             </Pagination>
           </Nav>

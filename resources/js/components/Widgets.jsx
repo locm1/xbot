@@ -62,16 +62,9 @@ export const CardWidget = (props) => {
         <h2 className="fs-5 fw-normal">
           {title}
         </h2>
-        <h3 className="fs-1 fw-extrabold mb-1">
+        <h3 className="fs-5 fw-extrabold mb-1">
           {value}
         </h3>
-        <div className="d-flex align-items-center">
-          <span className="me-3">
-            {period}
-          </span>
-          <GlobeIcon className="icon icon-xxs text-gray-500 me-1" />
-          <span>{country}</span>
-        </div>
       </Card.Body>
     </Card>
   );

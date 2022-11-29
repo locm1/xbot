@@ -6,6 +6,7 @@ import { Paths } from "@/paths";
 import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
 import Users from '@/pages/user/Users';
+import EditUser from '@/pages/user/EditUser';
 import SendSegments from '@/pages/message/sendSegments';
 import Messages from '@/pages/message/TemplateMessages';
 import SendHistories from '@/pages/message/SendHistories';
@@ -100,6 +101,7 @@ const Routing = () => {
       <Route exact path={Paths.Signin.path} component={SignIn} />
       <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />
       <RouteWithSidebar exact path={Paths.Users.path} component={Users} />
+      <RouteWithSidebar exact path={Paths.EditUser.path} component={EditUser} />
       <RouteWithSidebar exact path={Paths.SendSegments.path} component={SendSegments} />
       <RouteWithSidebar exact path={Paths.TemplateMessages.path} component={Messages} />
       <RouteWithSidebar exact path={Paths.SendHistories.path} component={SendHistories} />

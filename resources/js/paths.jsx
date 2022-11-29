@@ -5,6 +5,7 @@ export const Paths = {
     Signin: { path: "/login" },
     DashboardOverview: { path: "/dashboard" },
     Users: { path: "/user/list" },
+    EditUser: { path: "/user/edit/:id" },
     SendSegments: { path: "/message/send/segment" },
     TemplateMessages: { path: "/message/template/list" },
     SendHistories: { path: "/message/send/list" },

@@ -55,25 +55,23 @@ export default () => {
   const deleteUsers = async (ids) => {
     const usersToBeDeleted = ids ? ids : selectedUsersIds;
     const usersNr = usersToBeDeleted.length;
-    const textMessage = usersNr === 1
-      ? "Are you sure do you want to delete this user?"
-      : `Are you sure do you want to delete these ${usersNr} users?`;
+    const textMessage = "本当にこのユーザーを削除しますか？";
 
     const result = await SwalWithBootstrapButtons.fire({
       icon: "error",
-      title: "Confirm deletion",
+      title: "削除確認",
       text: textMessage,
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Cancel"
+      confirmButtonText: "削除",
+      cancelButtonText: "キャンセル"
     });
 
     if (result.isConfirmed) {
       const newUsers = users.filter(f => !usersToBeDeleted.includes(f.id));
-      const confirmMessage = usersNr === 1 ? "The user has been deleted." : "The users have been deleted.";
+      const confirmMessage = "選択したユーザーは削除されました。";
 
       setUsers(newUsers);
-      await SwalWithBootstrapButtons.fire('Deleted', confirmMessage, 'success');
+      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
     }
   };
 

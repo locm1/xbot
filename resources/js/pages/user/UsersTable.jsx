@@ -39,7 +39,7 @@ export const UsersTable = (props) => {
   const TableRow = (props) => {
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
     const { id, image, name, tel, sex, birthDate, area, isSelected } = props;
-    const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "success";
+    const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "primary";
 
     return (
       <tr className="border-bottom">
@@ -77,25 +77,11 @@ export const UsersTable = (props) => {
         <td><span className="fw-normal">{birthDate}</span></td>
         <td><span className="fw-normal">{area}</span></td>
         <td>
-          <Dropdown as={ButtonGroup}>
-            <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
-              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="py-0">
-              <Dropdown.Item as={Link} to={`/user/edit/${id}`}>
-                <PencilAltIcon className="icon icon-xs me-2" /> 編集
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <TrashIcon className="icon icon-xs text-danger me-2" /> 削除
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          {/* <OverlayTrigger placement="top" overlay={<Tooltip className="m-0">Delete</Tooltip>}>
+          <OverlayTrigger placement="top" overlay={<Tooltip className="m-0">削除</Tooltip>}>
             <Card.Link className="ms-2" onClick={() => deleteUsers([id])}>
               <XCircleIcon className="icon icon-xs text-danger" />
             </Card.Link>
-          </OverlayTrigger> */}
+          </OverlayTrigger>
         </td>
       </tr>
     );
@@ -105,14 +91,14 @@ export const UsersTable = (props) => {
     <Card border="0" className="table-wrapper table-responsive shadow">
       <Card.Body>
         <div className="d-flex mb-3">
-          <Form.Select className="fmxw-200" disabled={disabledBulkMenu} value={bulkOption} onChange={bulkActionChange}>
-            <option value="bulk_action">Bulk Action</option>
-            <option value="send_email">Send Email</option>
-            <option value="change_group">Change Group</option>
-            <option value="delete_user">Delete User</option>
+          <Form.Select className="fmxw-200" value={bulkOption} onChange={bulkActionChange}>
+            <option>一括操作</option>
+            <option value="send_email">メッセージ送信</option>
+            <option value="tag">タグ付与</option>
+            <option value="delete_user">削除</option>
           </Form.Select>
           <Button variant="secondary" size="sm" className="ms-3" disabled={disabledBulkMenu} onClick={applyBulkAction}>
-            Apply
+            実行
           </Button>
         </div>
         <Table hover className="user-table align-items-center">
@@ -129,7 +115,7 @@ export const UsersTable = (props) => {
               <th className="border-bottom">性別</th>
               <th className="border-bottom">生年月日</th>
               <th className="border-bottom">お住まいエリア</th>
-              <th className="border-bottom">Action</th>
+              <th className="border-bottom">削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

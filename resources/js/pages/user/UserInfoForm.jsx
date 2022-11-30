@@ -45,7 +45,7 @@ export const DropFilesForm = () => {
 };
 
 
-export const UserInfoForm = () => {
+export const UserInfoForm = (props) => {
   const [birthday, setBirthday] = useState("");
   const areas = [
     '中央区', '北区', '東区', '白石区', '厚別区', '豊平区', 
@@ -61,14 +61,26 @@ export const UserInfoForm = () => {
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>氏名</Form.Label>
-                <Form.Control required type="text" placeholder="" />
+                <Form.Label>氏名（姓）</Form.Label>
+                <Form.Control required type="text" name="last_name" value={props.formValue.lastName} onChange={(e) => props.handleChange(e, 'lastName')} placeholder="" />
+              </Form.Group>
+            </Col>
+            <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label>氏名（名）</Form.Label>
+                <Form.Control required type="text" name="first_name" value={props.formValue.firstName} onChange={(e) => props.handleChange(e, 'firstName')} placeholder="" />
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>ふりがな</Form.Label>
-                <Form.Control required type="text" placeholder="" />
+                <Form.Label>ふりがな（姓）</Form.Label>
+                <Form.Control required type="text" name="last_name_kana" value={props.formValue.lastNameKana} onChange={(e) => props.handleChange(e, 'lastNameKana')} placeholder="" />
+              </Form.Group>
+            </Col>
+            <Col md={6} className="mb-3">
+              <Form.Group id="lastName">
+                <Form.Label>ふりがな（名）</Form.Label>
+                <Form.Control required type="text" name="first_name_kana" value={props.formValue.firstNameKana} onChange={(e) => props.handleChange(e, 'firstNameKana')} placeholder="" />
               </Form.Group>
             </Col>
           </Row>
@@ -120,13 +132,13 @@ export const UserInfoForm = () => {
             <Col md={4} className="mb-3">
               <Form.Group id="phone">
                 <Form.Label>電話番号</Form.Label>
-                <Form.Control required type="tel" placeholder="" />
+                <Form.Control required type="tel" name="tel" value={props.formValue.tel} onChange={(e) => props.handleChange(e, 'tel')} placeholder="" />
               </Form.Group>
             </Col>
             <Col md={4} className="mb-3">
               <Form.Group id="phone">
                 <Form.Label>ご職業</Form.Label>
-                <Form.Select defaultValue="0" className="mb-0">
+                <Form.Select defaultValue="0" className="mb-0" name="occupation" onChange={(e) => props.handleChange(e, 'occupation')}>
                   {
                     occupations.map((occupation, index) => <option value={index + 1}>{occupation}</option>)
                   }
@@ -134,11 +146,6 @@ export const UserInfoForm = () => {
               </Form.Group>
             </Col>
           </Row>
-          {/* <div className="mt-3">
-            <Button variant="gray-800" type="submit" className="mt-2 animate-up-2">
-              Save All
-            </Button>
-          </div> */}
         </Form>
       </Card.Body>
     </Card>

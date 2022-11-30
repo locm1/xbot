@@ -58,10 +58,10 @@ export const QuestionnaireForm = () => {
               <Form.Group id="firstName">
                 <Form.Label>選択回答式でのアンケート</Form.Label>
                 <Row>
-                  <Col md={3}>
+                  <Col md={3} xs={6}>
                     <Form.Check type="radio" name="radio" label="項目1" id="radio1" htmlFor="radio1" />
                   </Col>
-                  <Col md={3}>
+                  <Col md={3} xs={6}>
                     <Form.Check type="radio" name="radio" label="項目2" id="radio2" htmlFor="radio2" />
                   </Col>
                 </Row>
@@ -95,11 +95,6 @@ export const QuestionnaireForm = () => {
               </Form.Group>
             </Col>
           </Row>
-          {/* <div className="mt-3">
-            <Button variant="gray-800" type="submit" className="mt-2 animate-up-2">
-              Save All
-            </Button>
-          </div> */}
         </Form>
       </Card.Body>
     </Card>

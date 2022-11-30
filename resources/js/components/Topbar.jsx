@@ -65,14 +65,6 @@ export default (props) => {
             >
               <MenuAlt1Icon className="toggle-icon" />
             </Button>
-            <Form className="navbar-search form-inline">
-              <Form.Group id="topbarSearch">
-                <InputGroup className="input-group-merge search-bar">
-                  <InputGroup.Text><SearchIcon className="icon icon-xs" /></InputGroup.Text>
-                  <Form.Control type="text" placeholder="Search" />
-                </InputGroup>
-              </Form.Group>
-            </Form>
           </div>
           <Nav className="align-items-center">
             <Dropdown as={Nav.Item} onToggle={markNotificationsAsRead} >

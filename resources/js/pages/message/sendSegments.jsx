@@ -5,8 +5,8 @@ import withReactContent from "sweetalert2-react-content";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Col, Row, Button, Container, Breadcrumb } from "react-bootstrap";
 
-import { KanbanCreateModal, KanbanEditModal, KanbanCopyModal, KanbanMoveModal, KanbanEditMembersModal, KanbanEditLabelsModal } from "@/components/Modals";
-import KANBAN_LISTS, { createCard, createList } from "@/data/kanban";
+import { KanbanCreateModal } from "@/components/Modals";
+import KANBAN_LISTS from "@/data/kanban";
 import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
 
 import { Paths } from "@/paths";
@@ -14,6 +14,7 @@ import segments from "@/data/segments";
 import SegmentList from "@/pages/message/segment/Segments";
 import SegmentCard from "@/pages/message/segment/SegmentCard";
 import MessageDetail from "@/pages/message/MessageDetail";
+import { SegmentCardCreateModal } from "@/pages/message/segment/SegmentCardCreateModal";
 
 const ArchiveIconHtml = ReactDOMServer.renderToString(
   <ArchiveIcon className="h-50 w-auto" />
@@ -32,19 +33,8 @@ export default () => {
   const [kanbanLists, setKanbanLists] = useState(KANBAN_LISTS);
   const createCardDefaultProps = { listId: kanbanLists[0].id, cardIndex: 0 };
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
-  const [showCreateListModal, setShowCreateListModal] = useState(false);
   const [createCardProps, setCreateCardProps] = useState(createCardDefaultProps);
-  const [cardToEdit, setCardToEdit] = useState(null);
-  const [cardToCopy, setCardToCopy] = useState(null);
   const [cardToMove, setCardToMove] = useState(null);
-  const [cardToChangeMembers, setCardToChangeMembers] = useState(null);
-  const [cardToChangeLabels, setCardToChangeLabels] = useState(null);
-  const [listToCopy, setListToCopy] = useState(null);
-  const [listToMoveIndex, setListToMoveIndex] = useState(null);
-
-  const toggleCreateListModal = () => {
-    setShowCreateListModal(!showCreateListModal);
-  };
 
   const toggleCreateCardModal = (props = {}) => {
     setCreateCardProps({ ...createCardDefaultProps, ...props });
@@ -64,37 +54,35 @@ export default () => {
     };
   };
 
+  const createCard = (props = {}) => ({
+    "id": 111,
+    "title": props.title,
+    "type": props.type,
+    "name": props.name,
+    "titles": [props.titles],
+    ...props
+  });
+
+  const createCardInListAtIndex = (props) => {
+    const { listId, cardIndex, ...otherProps } = props;
+
+    const listsUpdated = segmentLists.map(l => {
+      if (listId !== l.id) return l;
+
+      const newCard = createCard(otherProps);
+      l.cards.splice(cardIndex, 0, newCard);
+
+      return l;
+    });
+
+    return listsUpdated;
+  };
+
   const handleCreateCard = (props = {}) => {
     const listsUpdated = createCardInListAtIndex({ ...createCardProps, ...props });
 
     toggleCreateCardModal();
-    setKanbanLists(listsUpdated);
-  };
-
-  const handleCopyCard = (card = {}) => {
-    const { listId, title, description, } = card;
-    const listsUpdated = createCardInListAtIndex({ listId, title, description });
-
-    setCardToCopy(null);
-    setKanbanLists(listsUpdated);
-  };
-
-  const handleMoveList = ({ source, destination }) => {
-    const lists = [...segmentLists];
-    const [listRemoved] = lists.splice(source.index, 1);
-    lists.splice(destination.index, 0, listRemoved);
-
-    setSegments(lists);
-    setListToMoveIndex(null);
-  };
-
-  const handleCreateList = (props) => {
-    const newList = createList(props);
-    const listsUpdated = [...kanbanLists, newList];
-
-    setShowCreateListModal(false);
-    setKanbanLists(listsUpdated);
-    setListToCopy(null);
+    setSegments(listsUpdated);
   };
 
   const reorderCards = (cards = [], startIndex, endIndex) => {
@@ -149,6 +137,11 @@ export default () => {
     }
   };
 
+  const handleCardsDelete = async (cards = []) => {
+    const listsUpdated = removeCardsFromList(cards);
+    setSegments(listsUpdated);
+  };
+
   const removeCardsFromList = (cards) => {
     const cardsGroupedByListId = cards.reduce((acc, card) => {
       const { listId, cardId } = card;
@@ -159,7 +152,7 @@ export default () => {
       return acc
     }, {});
 
-    const listsUpdated = kanbanLists.map(l => {
+    const listsUpdated = segmentLists.map(l => {
       const cardsToDelete = cardsGroupedByListId[l.id];
       if (!cardsToDelete) return l;
 
@@ -170,202 +163,14 @@ export default () => {
     return listsUpdated;
   };
 
-  const handleListDelete = async (listId) => {
-    const result = await SwalWithBootstrapButtons.fire({
-      icon: "error",
-      title: "Confirm deletion",
-      text: "Are you sure do you want to delete this list?",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Cancel"
-    });
-
-    if (result.isConfirmed) {
-      const listsUpdated = kanbanLists.filter(l => l.id !== listId);
-      setKanbanLists(listsUpdated);
-
-      await SwalWithBootstrapButtons.fire("Deleted", "The list has been deleted.", "success");
-    }
-  };
-
-  const handleCardsDelete = async (cards = []) => {
-    const cardsNr = cards.length;
-    const textMessage = cardsNr === 1
-      ? "Are you sure do you want to delete this card?"
-      : `Are you sure do you want to delete these ${cardsNr} cards?`;
-
-    const result = await SwalWithBootstrapButtons.fire({
-      icon: "error",
-      title: "Confirm deletion",
-      text: textMessage,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Cancel"
-    });
-
-    if (result.isConfirmed) {
-      const listsUpdated = removeCardsFromList(cards);
-      setKanbanLists(listsUpdated);
-
-      const confirmMessage = cardsNr === 1 ? "The card has been deleted." : "The cards have been deleted.";
-      await SwalWithBootstrapButtons.fire("Deleted", confirmMessage, "success");
-    }
-  };
-
-  const handleArchiveCards = async (cards = []) => {
-    const cardsNr = cards.length;
-    const textMessage = cardsNr === 1
-      ? "Are you sure do you want to archive this card?"
-      : `Are you sure do you want to archive these ${cardsNr} cards?`;
-
-    const result = await SwalWithBootstrapButtons.fire({
-      icon: "question",
-      iconHtml: ArchiveIconHtml,
-      title: "Confirm archivation",
-      text: textMessage,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Cancel"
-    });
-
-    if (result.isConfirmed) {
-      setCardToEdit(null);
-      const listsUpdated = removeCardsFromList(cards);
-      setKanbanLists(listsUpdated);
-
-      const confirmMessage = cardsNr === 1 ? "The card has been archived." : "The cards have been archived.";
-      await SwalWithBootstrapButtons.fire('Archived', confirmMessage, 'success');
-    }
-  };
-
-  const handleListTitleChange = ({ id, title }) => {
-    const listsUpdated = kanbanLists.map(l => l.id === id ? ({ ...l, title }) : l);
-    setKanbanLists(listsUpdated);
-  };
-
-  const handleCardChange = (props) => {
-    const { listId, cardId, ...otherProps } = props;
-
-    const listsUpdated = kanbanLists.map(l => {
-      if (l.id !== listId) return l;
-
-      const cards = l.cards.map(c => c.id === cardId ? ({ ...c, ...otherProps }) : c);
-      return { ...l, cards };
-    });
-
-    if (cardToEdit) {
-      setCardToEdit({ ...cardToEdit, ...otherProps });
-    }
-
-    setKanbanLists(listsUpdated);
-    setCardToChangeMembers(null);
-  };
-
-  const createCardInListAtIndex = (props) => {
-    const { listId, cardIndex, ...otherProps } = props;
-
-    const listsUpdated = kanbanLists.map(l => {
-      if (listId !== l.id) return l;
-
-      const newCard = createCard(otherProps);
-      l.cards.splice(cardIndex, 0, newCard);
-
-      return l;
-    });
-
-    return listsUpdated;
-  };
-
   return (
     <>
 
-{showCreateCardModal && (
-        <KanbanCreateModal
+      {showCreateCardModal && (
+        <SegmentCardCreateModal
           show={showCreateCardModal}
           onHide={toggleCreateCardModal}
           onSubmit={handleCreateCard}
-        />
-      )}
-
-      {cardToEdit && (
-        <KanbanEditModal
-          show={true}
-          {...cardToEdit}
-          onHide={() => setCardToEdit(null)}
-          onArchive={(card) => handleArchiveCards([card])}
-          onMove={(card) => setCardToMove(card)}
-          onEditMembers={(card) => setCardToChangeMembers(card)}
-          onEditLabels={(card) => setCardToChangeLabels(card)}
-          onChange={handleCardChange}
-        />
-      )}
-
-      {cardToChangeMembers && (
-        <KanbanEditMembersModal
-          show={true}
-          {...cardToChangeMembers}
-          onHide={() => setCardToChangeMembers(null)}
-          onSubmit={handleCardChange}
-        />
-      )}
-
-      {cardToChangeLabels && (
-        <KanbanEditLabelsModal
-          show={true}
-          {...cardToChangeLabels}
-          onHide={() => setCardToChangeLabels(null)}
-          onSubmit={handleCardChange}
-        />
-      )}
-
-      {cardToCopy && (
-        <KanbanCopyModal
-          show={true}
-          {...cardToCopy}
-          lists={kanbanLists}
-          onHide={() => setCardToCopy(null)}
-          onSubmit={handleCopyCard}
-        />
-      )}
-
-      {cardToMove && (
-        <KanbanMoveModal
-          show={true}
-          {...cardToMove}
-          lists={kanbanLists}
-          onHide={() => setCardToMove(null)}
-          onSubmit={handleDragEnd}
-        />
-      )}
-
-      {showCreateListModal && (
-        <KanbanCreateModal
-          type="list"
-          modalTitle="Add a new list"
-          show={showCreateListModal}
-          onHide={toggleCreateListModal}
-          onSubmit={handleCreateList}
-        />
-      )}
-
-      {listToCopy && (
-        <KanbanCopyModal
-          show={true}
-          type="list"
-          {...listToCopy}
-          onHide={() => setListToCopy(null)}
-          onSubmit={handleCreateList}
-        />
-      )}
-
-      {listToMoveIndex !== null && (
-        <KanbanMoveModal
-          show={true}
-          type="list"
-          lists={kanbanLists}
-          listIndex={listToMoveIndex}
-          onHide={() => setListToMoveIndex(null)}
-          onSubmit={handleMoveList}
         />
       )}
 
@@ -423,12 +228,6 @@ export default () => {
                                     style={getCardStyle(draggableProps.style, snapshot)}
                                     extraProps={{ ...draggableProps, ...dragHandleProps }}
                                     onDelete={() => handleCardsDelete([{ listId, cardId }])}
-                                    onClick={() => setCardToEdit({ listId, index, ...card })}
-                                    onEdit={() => setCardToEdit({ listId, index, ...card })}
-                                    onCopy={() => setCardToCopy({ listId, ...card })}
-                                    onMove={() => setCardToMove({ listId, index })}
-                                    onChangeMembers={() => setCardToChangeMembers({ listId, ...card })}
-                                    onChangeLabels={() => setCardToChangeLabels({ listId, ...card })}
                                   />
                                 );
                               }}

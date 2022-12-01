@@ -11,38 +11,8 @@ import CheckboxButton from "@/components/CheckboxButton";
 export default (props) => {
   const { cardRef, title, style = {}, extraProps = {}, card } = props;
 
-  const onEdit = () => {
-    props.onEdit && props.onEdit();
-  };
-
-  const onCopy = () => {
-    props.onCopy && props.onCopy();
-  };
-
-  const onMove = () => {
-    props.onMove && props.onMove();
-  };
-
-  const onChangeLabels = () => {
-    props.onChangeLabels && props.onChangeLabels();
-  };
-
-  const onChangeMembers = () => {
-    props.onChangeMembers && props.onChangeMembers();
-  };
-
   const onDelete = () => {
     props.onDelete && props.onDelete();
-  };
-
-  const onCardClick = (e) => {
-    if (e.defaultPrevented) return;
-
-    props.onClick && props.onClick();
-  };
-
-  const onDropdownClick = (e) => {
-    e.preventDefault();
   };
 
 
@@ -63,7 +33,7 @@ export default (props) => {
         return <p>a</p>
       case 4:
         return (
-          items.map((item, index) => <CheckboxButton name={card.name} id={item.id} title={item.title} value={index + 1} />)
+          items.map((item, index) => <CheckboxButton key={index} name={card.name} id={item.id} title={item.title} value={index + 1} />)
         );
       case 5:
         return (

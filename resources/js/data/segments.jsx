@@ -27,6 +27,7 @@ export default [
               "id": 2,
               "title": "年齢",
               "type": 1,
+              'name': "age",
               "titles": [
                 {
                   "id": 1,
@@ -42,6 +43,7 @@ export default [
               "id": 3,
               "title": "誕生日月",
               "type": 5,
+              'name': "birthday_month",
               "titles": [
                 {
                   "id": 1,
@@ -96,6 +98,7 @@ export default [
             {
               "id": 4,
               "title": "来店回数",
+              'name': "visitor_count",
               "type": 1,
               "titles": [
                 {
@@ -241,6 +244,7 @@ export default [
             "id": 8,
             "title": "最終来店日",
             "type": 1,
+            'name': "last_visitor_date",
             "titles": [
               {
                 "id": 1,

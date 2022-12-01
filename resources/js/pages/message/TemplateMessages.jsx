@@ -44,9 +44,6 @@ export default () => {
             <Breadcrumb.Item active>テンプレートリスト</Breadcrumb.Item>
           </Breadcrumb>
           <h1 className="page-title">テンプレートリスト</h1>
-          <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <h2 className="list-head__title h4 mr-5 font-weight-bold">メッセージ総数：3</h2>
-          </div>
         </div>
         <div className="btn-toolbar mb-2 mb-md-0">
           <Button variant="gray-800" size="sm" className="d-inline-flex align-items-center">

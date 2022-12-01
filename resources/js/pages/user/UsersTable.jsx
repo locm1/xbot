@@ -3,8 +3,6 @@ import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIco
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
-import { Paths } from "@/paths";
-
 const getFirstLetterOfEachWord = (text) => (
   text.match(/\b\w/g).join('')
 );

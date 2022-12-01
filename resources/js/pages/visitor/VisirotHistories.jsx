@@ -46,9 +46,6 @@ export default () => {
             <Breadcrumb.Item active>来店履歴</Breadcrumb.Item>
           </Breadcrumb>
           <h1 className="page-title">来店履歴</h1>
-          <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <h2 className="list-head__title h4 mr-5 font-weight-bold">来店総数：3</h2>
-          </div>
         </div>
       </div>
 

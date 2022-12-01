@@ -7,7 +7,7 @@ import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
 import Users from '@/pages/user/Users';
 import EditUser from '@/pages/user/EditUser';
-import SendSegments from '@/pages/message/sendSegments';
+import SendSegments from '@/pages/message/SendSegments';
 import Messages from '@/pages/message/TemplateMessages';
 import SendHistories from '@/pages/message/SendHistories';
 import VisirotHistories from '@/pages/visitor/VisirotHistories';

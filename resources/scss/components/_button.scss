@@ -1,0 +1,10 @@
+.checkbox-btn {
+  margin: {
+    left: 5px;
+    right: 5px;
+  }
+  &:hover {
+    background-color: #1B998B !important;
+    color: white !important;
+  }
+}

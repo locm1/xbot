@@ -85,7 +85,6 @@ export default () => {
           </Breadcrumb>
           <h1 className="page-title">ユーザーリスト</h1>
           <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <h2 className="list-head__title h4 mr-5 font-weight-bold">お友だち総数：47</h2>
             <div className="list-head__items">
               <div className="list-head__item"> <span className="u-men"> 男性 </span>：19名 </div>
               <div className="list-head__item"> <span className="u-women "> 女性 </span>：8名 </div>

@@ -47,9 +47,6 @@ export default () => {
             <Breadcrumb.Item active>クーポンリスト</Breadcrumb.Item>
           </Breadcrumb>
           <h1 className="page-title">クーポンリスト</h1>
-          <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <h2 className="list-head__title h4 mr-5 font-weight-bold">クーポン総数：4</h2>
-          </div>
         </div>
       </div>
 

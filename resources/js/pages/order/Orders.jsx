@@ -46,9 +46,6 @@ export default () => {
             <Breadcrumb.Item>注文リスト</Breadcrumb.Item>
           </Breadcrumb>
           <h1 className="page-title">注文リスト</h1>
-          <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <h2 className="list-head__title h4 mr-5 font-weight-bold">注文総数：21</h2>
-          </div>
         </div>
       </div>
 

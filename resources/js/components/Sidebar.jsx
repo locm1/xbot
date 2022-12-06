@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { CSSTransition } from 'react-transition-group';
-import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, InboxIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon } from "@heroicons/react/solid";
+import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, InboxIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon } from "@heroicons/react/solid";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { Nav, Badge, Image, Button, Dropdown, Navbar, Collapse, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -143,6 +142,10 @@ export default (props = {}) => {
               </Link>
               <GroupTitle name="User Management" />
               <NavItem title="ユーザーリスト" link={Paths.Users.path} icon={UserIcon} />
+              <CollapsableNavItem eventKey="dashboard1/" title="アンケート管理" icon={PencilAltIcon}>
+                <NavItem title="アンケート作成" link={Paths.CreateQuestionnaire.path} />
+                <NavItem title="アンケートリスト" link={Paths.Questionnaires.path} />
+              </CollapsableNavItem>
               <CollapsableNavItem eventKey="dashboard1/" title="メッセージ管理" icon={UserGroupIcon}>
                 <NavItem title="セグメント配信" link={Paths.SendSegments.path} />
                 <NavItem title="テンプレートリスト" link={Paths.TemplateMessages.path} />

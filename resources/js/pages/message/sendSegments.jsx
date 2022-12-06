@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOMServer from "react-dom/server";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -29,12 +29,14 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
+  const [cards, setCards] = useState(segments);
   const [segmentLists, setSegments] = useState(segments);
   const [kanbanLists, setKanbanLists] = useState(KANBAN_LISTS);
   const createCardDefaultProps = { listId: kanbanLists[0].id, cardIndex: 0 };
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [createCardProps, setCreateCardProps] = useState(createCardDefaultProps);
   const [cardToMove, setCardToMove] = useState(null);
+  const [fieldList, setFieldList] = useState();
 
   const toggleCreateCardModal = (props = {}) => {
     setCreateCardProps({ ...createCardDefaultProps, ...props });
@@ -163,6 +165,24 @@ export default () => {
     return listsUpdated;
   };
 
+  // 現状のセグメント情報のリストを取得
+  const segmentCardCountDecision = (cards) => {
+    const cardLists = cards.map((segment) => segment.cards);
+    const resultCards = cardLists.reduce((card, element) => {
+      return card.concat(element);
+    });
+    return resultCards;
+  }
+
+  useEffect(() => {
+    const resultCards = segmentCardCountDecision(segmentLists);
+    const allCards = segmentCardCountDecision(cards);
+
+    // 現在のセグメントとの比較
+    const diffResultCards = allCards.filter((card) => resultCards.indexOf(card) == -1);
+    setFieldList(diffResultCards);
+  }, [segmentLists]);
+
   return (
     <>
 
@@ -171,6 +191,7 @@ export default () => {
           show={showCreateCardModal}
           onHide={toggleCreateCardModal}
           onSubmit={handleCreateCard}
+          fieldList={fieldList}
         />
       )}
 
@@ -195,7 +216,7 @@ export default () => {
         </Col>
       </Row>
 
-      <Container fluid className=" py-4 px-0">
+      <Container fluid className="cotainer py-4 px-0">
         <Row className="d-flex flex-nowrap">
           <DragDropContext onDragEnd={handleDragEnd}>
             {segmentLists.map((list, ind) => {
@@ -235,7 +256,7 @@ export default () => {
                           )
                         })}
 
-                        {placeholder}
+                        {placeholder}                
                         <Button
                           variant="outline-gray-500"
                           onClick={() => toggleCreateCardModal({ listId, cardIndex: cards.length })}

@@ -52,46 +52,6 @@ export default () => {
         </div>
       </div>
 
-      <div className="table-settings mb-4">
-        <Row className="d-flex justify-content-between align-items-center">
-          <Col xs={9} lg={8} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-400">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="Search orders"
-                value={searchValue}
-                onChange={changeSearchValue}
-              />
-            </InputGroup>
-            <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue}>
-              <option value="all">All</option>
-              <option value="paid">Paid</option>
-              <option value="due">Due</option>
-              <option value="cancelled">Cancelled</option>
-            </Form.Select>
-          </Col>
-          <Col xs={3} lg={4} className="d-flex justify-content-end">
-            <Dropdown as={ButtonGroup}>
-              <Dropdown.Toggle split as={Button} variant="link" className="text-dark m-0 p-1">
-                <CogIcon className="icon icon-sm" />
-                <span className="visually-hidden">Toggle Dropdown</span>
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-end pb-0">
-                <small className="ps-3 fw-bold text-dark">Show</small>
-                <Dropdown.Item className="d-flex align-items-center fw-bold">
-                  10 <CheckIcon className="icon icon-xxs ms-auto" />
-                </Dropdown.Item>
-                <Dropdown.Item className="fw-bold">20</Dropdown.Item>
-                <Dropdown.Item className="fw-bold rounded-bottom">30</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Col>
-        </Row>
-      </div>
-
       <SendHistoriesTable
         sendHistories={transactions.filter(t => t.show)}
       />

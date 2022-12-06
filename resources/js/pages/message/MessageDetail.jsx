@@ -8,6 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import messages from "@/data/templateMessages";
+import LinePreview from "@/components/line/LinePreview";
 
 export default () => {
   const history = useHistory();
@@ -18,24 +19,7 @@ export default () => {
   return (
     <>
       <Modal as={Modal.Dialog} centered show={messageDetailModal} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title className="h5">メッセージ確認</Modal.Title>
-          <Button variant="close" aria-label="Close" onClick={handleClose} />
-        </Modal.Header>
-        <Modal.Body>
-          <Row className="mb-4 mb-lg-0">
-            <Col xs={12} className="mb-4">
-              <div className="bg-gray-50 border border-gray-100 rounded p-3">
-                <p className="text-dark mb-1">
-                  テキストが入ります。テキストが入ります。テキストが入ります。
-                </p>
-              </div>
-            </Col>
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="link" className="text-gray ms-auto" onClick={handleClose}>閉じる</Button>
-        </Modal.Footer>
+        <LinePreview />
       </Modal>
       <Card border="0" className="shadow message-detail-wrap">
         <Card.Header className="border-bottom d-flex align-items-center justify-content-between">

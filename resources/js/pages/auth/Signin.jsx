@@ -5,7 +5,6 @@ import { Col, Row, Form, Card, Button, FormCheck, Container, InputGroup, Image }
 import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import BgImage from "@img/img/illustrations/signin.svg";
 import Logo from "@img/img/logo_login.png";
 
 
@@ -49,7 +48,7 @@ export default () => {
                     </div>
                   </Form.Group>
                   <div className="d-grid">
-                    <Button variant="gray-800" type="submit">ログイン</Button>
+                    <Button as={Link} to={Paths.DashboardOverview.path} variant="gray-800" type="submit">ログイン</Button>
                   </div>
                 </Form>
               </div>

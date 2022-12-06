@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
+import { Paths } from "@/paths";
 import { TemplateMessageTable } from "@/pages/message/TemplateMessageTable";
 import messages from "@/data/templateMessages";
 
@@ -46,7 +48,7 @@ export default () => {
           <h1 className="page-title">テンプレートリスト</h1>
         </div>
         <div className="btn-toolbar mb-2 mb-md-0">
-          <Button variant="gray-800" size="sm" className="d-inline-flex align-items-center">
+          <Button as={Link} to={Paths.CreateMessage.path} variant="gray-800" size="sm" className="d-inline-flex align-items-center">
             <PlusIcon className="icon icon-xs me-2" /> 新規作成
           </Button>
         </div>
@@ -55,23 +57,6 @@ export default () => {
       <div className="table-settings mb-4">
         <Row className="d-flex justify-content-between align-items-center">
           <Col xs={9} lg={8} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-400">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="Search orders"
-                value={searchValue}
-                onChange={changeSearchValue}
-              />
-            </InputGroup>
-            <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue}>
-              <option value="all">All</option>
-              <option value="paid">Paid</option>
-              <option value="due">Due</option>
-              <option value="cancelled">Cancelled</option>
-            </Form.Select>
           </Col>
           <Col xs={3} lg={4} className="d-flex justify-content-end">
             <Dropdown as={ButtonGroup}>

@@ -12,7 +12,7 @@ import LineHeader from "@/components/line/LineHeader";
 import LineMainContents from "@/components/line/LineMainContents";
 import LineFooter from "@/components/line/LineFooter";
 
-export default () => {
+export default (props) => {
   const history = useHistory();
   const [birthday, setBirthday] = useState("");
   const [messageDetailModal, setMessageDetailModal] = useState(false);
@@ -22,7 +22,7 @@ export default () => {
     <>
     <div className="line-preview">
       <LineHeader />
-      <LineMainContents />
+      <LineMainContents formValue={props.formValue} files={props.files} formId={props.formId} previews={props.previews} />
       <LineFooter />
     </div>
     </>

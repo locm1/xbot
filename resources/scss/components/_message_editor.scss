@@ -24,4 +24,8 @@
     right: 10px;
     top: 8px;
   }
+  cursor: pointer;
+  &:hover {
+    background-color: #e2e6ea;
+  }
 }

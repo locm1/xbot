@@ -1,12 +1,28 @@
 import React, { useState } from "react";
-import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger, Form, Button, Image } from 'react-bootstrap';
 import { ChatIcon, XIcon, ChevronDownIcon, ChevronUpIcon, PhotographIcon, TicketIcon } from "@heroicons/react/outline";
 
 import { SmileIcon } from "@/components/icons/Icons";
-import TextForm from "@/pages/message/form/TextForm";
-import FileUploadForm from "@/pages/message/form/FileUploadForm";
 
-export default () => {
+export default (props) => {
+  const lists = ['テスト', 'テスト', 'テスト', 'テスト'];
+  const { setFiles, files, getRootProps, getInputProps, setFormId, handlePreviewChange, index, previews, handleDelete } = props;
+
+  const DropzoneFile = (props) => {
+    const { preview } = props;
+
+    return (
+      <Col xs={6} className="dropzone-preview line-preview-image-wrap">
+        <div className="line-preview-image d-flex">
+          <Image src={preview} className="dropzone-image" />
+          <Button variant="gray-800" className="line-preview-image-button" onClick={() => setFiles([])}>
+            <XIcon className="icon icon-sm line-preview-image-icon" />
+          </Button>  
+        </div>
+      </Col>
+    );
+  };
+
   return (
     <>
     <div className="message-editor-wrap">
@@ -74,26 +90,52 @@ export default () => {
               <div className="message-editor-header-item-right">
                 <ChevronDownIcon className="icon icon-sm" />
               </div>
-              <div className="message-editor-header-item-right">
+              <div className="message-editor-header-item-right" onClick={() => handleDelete(index)}>
                 <XIcon className="icon icon-sm" />
               </div>
             </Col>
             <Col lg={12}>
               <Tab.Content>
                 <Tab.Pane eventKey="text" className="py-4">
-                  <TextForm />
+                  <Form.Group className="mb-3">
+                    <Form.Control as="textarea" rows="5" placeholder="テキストを入力" id="preview-text" value={previews[index].content} onChange={(e) => handlePreviewChange(e, 'content', index)} />
+                  </Form.Group>
                 </Tab.Pane>
                 <Tab.Pane eventKey="stamp" className="py-4">
-                  <FileUploadForm />
+                  <Form.Select defaultValue="1" className="mb-0" id="preview-stamp">
+                    {
+                      lists.map((item, index) => <option key={index} value={index + 1}>{item}</option>)
+                    }
+                  </Form.Select>
                 </Tab.Pane>
                 <Tab.Pane eventKey="picture" className="py-4">
-                  <FileUploadForm />
+                  {files.length == 0 ? (
+                    <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })} onChange={(e) => setFormId(e.target.id)}>
+                      <Form.Control {...getInputProps()} id="preview-picture" />
+                        <div className="dz-default dz-message text-center">
+                          <p className="dz-button mb-0">画像をアップロード</p>
+                        </div>
+                    </Form>
+                  ) : (
+                    ''
+                  )} 
+                  <Row className="dropzone-files">
+                    {files.map(file => <DropzoneFile key={file.path} {...file} />)}
+                  </Row>
                 </Tab.Pane>
                 <Tab.Pane eventKey="coupon" className="py-4">
-                <p>aaa</p>
+                  <Form.Select defaultValue="1" className="mb-0" id="preview-coupon">
+                    {
+                      lists.map((item, index) => <option key={index} value={index + 1}>{item}</option>)
+                    }
+                  </Form.Select>
                 </Tab.Pane>
                 <Tab.Pane eventKey="message" className="py-4">
-                <p>aaa</p>
+                  <Form.Select defaultValue="1" className="mb-0" id="preview-message">
+                    {
+                      lists.map((item, index) => <option key={index} value={index + 1}>{item}</option>)
+                    }
+                  </Form.Select>
                 </Tab.Pane>
               </Tab.Content>
             </Col>

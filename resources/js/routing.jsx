@@ -10,6 +10,7 @@ import EditUser from '@/pages/user/EditUser';
 import SendSegments from '@/pages/message/SendSegments';
 import Messages from '@/pages/message/TemplateMessages';
 import CreateMessage from '@/pages/message/CreateTemplateMessage';
+import SendHistoryDetail from '@/pages/message/SendHistoryDetail';
 import SendHistories from '@/pages/message/SendHistories';
 import VisirotHistories from '@/pages/visitor/VisirotHistories';
 import Privileges from '@/pages/privilege/Privileges';
@@ -106,7 +107,9 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.SendSegments.path} component={SendSegments} />
       <RouteWithSidebar exact path={Paths.TemplateMessages.path} component={Messages} />
       <RouteWithSidebar exact path={Paths.CreateMessage.path} component={CreateMessage} />
+      <RouteWithSidebar exact path={Paths.EditMessage.path} component={CreateMessage} />
       <RouteWithSidebar exact path={Paths.SendHistories.path} component={SendHistories} />
+      <RouteWithSidebar exact path={Paths.SendHistoryDetail.path} component={SendHistoryDetail} />
       <RouteWithSidebar exact path={Paths.VisitorHistories.path} component={VisirotHistories} />
       <RouteWithSidebar exact path={Paths.Privileges.path} component={Privileges} />
       <RouteWithSidebar exact path={Paths.Products.path} component={Products} />

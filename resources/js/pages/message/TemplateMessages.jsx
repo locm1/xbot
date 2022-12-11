@@ -1,14 +1,26 @@
 import React, { useState } from "react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { TemplateMessageTable } from "@/pages/message/TemplateMessageTable";
-import messages from "@/data/templateMessages";
+import MESSAGES from "@/data/templateMessages";
+
+const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-primary me-3',
+    cancelButton: 'btn btn-gray'
+  },
+  buttonsStyling: false
+}));
+
 
 export default () => {
-  const [transactions, setTransactions] = useState(messages.map(t => ({ ...t, show: true })));
+  const [messages, setMessages] = useState(MESSAGES.map(t => ({ ...t, show: true })));
+  const selectedMessagesIds = messages.filter(u => u.isSelected).map(u => u.id);
   const [searchValue, setSearchValue] = useState("");
   const [statusValue, setStatusValue] = useState("all");
 
@@ -36,6 +48,29 @@ export default () => {
     setTransactions(newTransactions);
   };
 
+  const deleteTemplateMessages = async (ids) => {
+    const messagesToBeDeleted = ids ? ids : selectedMessagesIds;
+    const messagesNr = messagesToBeDeleted.length;
+    const textMessage = "本当にこのテンプレートを削除しますか？";
+
+    const result = await SwalWithBootstrapButtons.fire({
+      icon: "error",
+      title: "削除確認",
+      text: textMessage,
+      showCancelButton: true,
+      confirmButtonText: "削除",
+      cancelButtonText: "キャンセル"
+    });
+
+    if (result.isConfirmed) {
+      const newMessages = messages.filter(f => !messagesToBeDeleted.includes(f.id));
+      const confirmMessage = "選択したテンプレートは削除されました。";
+
+      setMessages(newMessages);
+      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    }
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -57,6 +92,28 @@ export default () => {
       <div className="table-settings mb-4">
         <Row className="d-flex justify-content-between align-items-center">
           <Col xs={9} lg={8} className="d-md-flex">
+          <InputGroup className="me-2 me-lg-3 fmxw-300">
+              <InputGroup.Text>
+                <SearchIcon className="icon icon-xs" />
+              </InputGroup.Text>
+              <Form.Control
+                type="text"
+                placeholder="氏名"
+                value={searchValue}
+                onChange={changeSearchValue}
+              />
+            </InputGroup>
+            <InputGroup className="me-2 me-lg-3 fmxw-300">
+              <InputGroup.Text>
+                <SearchIcon className="icon icon-xs" />
+              </InputGroup.Text>
+              <Form.Control
+                type="text"
+                placeholder="電話番号"
+                value={searchValue}
+                onChange={changeSearchValue}
+              />
+            </InputGroup>
           </Col>
           <Col xs={3} lg={4} className="d-flex justify-content-end">
             <Dropdown as={ButtonGroup}>
@@ -78,7 +135,8 @@ export default () => {
       </div>
 
       <TemplateMessageTable
-        messages={transactions.filter(t => t.show)}
+        messages={messages.filter(t => t.show)}
+        deleteTemplateMessages={deleteTemplateMessages}
       />
     </>
   );

@@ -6,7 +6,7 @@ import { SendHistoriesTable } from "@/pages/message/SendHistoriesTable";
 import sendHistories from "@/data/sendHistories";
 
 export default () => {
-  const [transactions, setTransactions] = useState(sendHistories.map(t => ({ ...t, show: true })));
+  const [histories, setHistories] = useState(sendHistories.map(t => ({ ...t, show: true })));
   const [searchValue, setSearchValue] = useState("");
   const [statusValue, setStatusValue] = useState("all");
 
@@ -45,15 +45,10 @@ export default () => {
           </Breadcrumb>
           <h1 className="page-title">配信管理</h1>
         </div>
-        <div className="btn-toolbar mb-2 mb-md-0">
-          <Button variant="gray-800" size="sm" className="d-inline-flex align-items-center">
-            <PlusIcon className="icon icon-xs me-2" /> 新規作成
-          </Button>
-        </div>
       </div>
 
       <SendHistoriesTable
-        sendHistories={transactions.filter(t => t.show)}
+        sendHistories={histories.filter(t => t.show)}
       />
     </>
   );

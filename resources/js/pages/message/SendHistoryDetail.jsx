@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { Col, Row, Modal, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
+import { CustomersWidget, RevenueWidget, UsersWidget, WeeklyReportWidget, TopAuthorsWidget, TeamMembersWidget, ProgressTrackWidget, EventsWidget, RankingWidget, VisitsMapWidget, SalesValueWidget, AcquisitionWidget, TimelineWidget } from "@/components/Widgets";
 import { useDropzone } from "react-dropzone";
 
 // forms
 import TemplateMessageForm from "@/pages/message/form/TemplateMessageForm";
 import MessageEditor from "@/pages/message/MessageEditor";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import LinePreview from "@/components/line/LinePreview";
-import AccordionComponent from "@/components/AccordionComponent";
+import { TargetUsersWidget } from "@/pages/message/detail/TargetUsersWidget";
+import { SendHistoryInfoWidget } from "@/pages/message/detail/SendHistoryInfoWidget";
 
 import { Paths } from "@/paths";
 
-export default () => {
+export default (props) => {
   const [files, setFiles] = useState([]);
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
-    onDrop: files => setFiles(files.map(file => ({
-      ...file,
-      preview: URL.createObjectURL(file)
-    })))
-  });
-
   const [formValue, setFormValue] = useState(
     {title: ''}
   );
@@ -60,52 +54,26 @@ export default () => {
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
             <Breadcrumb.Item active>メッセージ管理</Breadcrumb.Item>
-            <Breadcrumb.Item active>メッセージ作成</Breadcrumb.Item>
+            <Breadcrumb.Item active>配信管理</Breadcrumb.Item>
+            <Breadcrumb.Item active>配信情報詳細</Breadcrumb.Item>
           </Breadcrumb>
-          <h1 className="page-title">メッセージ作成</h1>
+          <h1 className="page-title">配信情報詳細</h1>
         </div>
         <div className="d-flex">
-          <Button as={Link} to={Paths.Calendar.path} variant="gray-800" className="me-2">
-            保存する
+          <Button as={Link} href={Paths.SendHistories.path} variant="gray-800" className="me-2">
+            配信管理に戻る
           </Button>
         </div>
       </div>
 
       <Row>
-        <Col xs={12} xl={12}>
-          <TemplateMessageForm handleChange={handleChange} formValue={formValue} />
+        <Col xs={12} md={6} xxl={6} className="mb-4">
+          <SendHistoryInfoWidget title="配信情報" />
+        </Col>
+        <Col xs={12} md={6} xxl={6} className="mb-4">
+          <TargetUsersWidget title="対象ユーザー" />
         </Col>
       </Row>
-        {
-          previews.map((preview, index) => 
-            <div key={preview.id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-              <MessageEditor
-                index={index}
-                formValue={formValue}
-                files={files}
-                previews={previews}
-                setPreviews={setPreviews}
-                setFiles={setFiles} 
-                getRootProps={getRootProps}
-                getInputProps={getInputProps}
-                handleChange={handleChange}
-                handlePreviewChange={handlePreviewChange}
-                setFormId={setFormId}
-                handleDelete={handleDelete}
-              />
-            </div>
-          )
-        }
-      <div className="d-flex justify-content-flex-end flex-wrap flex-md-nowrap align-items-center">
-        <Button onClick={() => setPreviews([...previews, {id: previews.length + 1, key: '', content: '', files: ''}])} variant="gray-800" className="mt-2 animate-up-2">
-          <PlusIcon className="icon icon-xs me-2" /> 追加
-        </Button>
-      </div>
-      <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.TemplateMessages.path} variant="gray-800" className="mt-2 animate-up-2">
-          テンプレートリストに戻る
-        </Button>
-      </div>
       <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >
         <div className='mt-2 line-preview-button' onClick={() => setMessageDetailModal(!messageDetailModal)}>
           {

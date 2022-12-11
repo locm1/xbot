@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, Badge, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
@@ -11,48 +11,31 @@ export const SendHistoriesTable = (props) => {
   const { sendHistories } = props;
   const totalSendHistories = sendHistories.length;
 
+  const getStatus = (status) => {
+    if (status == 1) {
+      return <Badge bg="success" className="me-1 is-delivered">配信済</Badge>;
+    }
+  }
+
   const TableRow = (props) => {
-    const { status, sendDate, targetCount, sendCount } = props;
+    const { status, sendDate, targetCount, sendCount, id } = props;
+    const history = useHistory();
+
+    const handleRowClick = (id) => {
+      history.push(`/message/send/detail/${id}`);
+    }
 
     return (
-      <tr className="border-bottom">
+      <tr className="border-bottom table-body-tr" onClick={() => handleRowClick(id)}>
+        <td>{getStatus(status)}</td>
         <td>
-          <span className="fw-normal">
-            {status}
-          </span>
+          <span className="fw-normal">{sendDate}</span>
         </td>
         <td>
-          <span className="fw-normal">
-            {sendDate}
-          </span>
+          <span className="fw-normal">{targetCount}</span>
         </td>
         <td>
-          <span className="fw-normal">
-            {targetCount}
-          </span>
-        </td>
-        <td>
-          <span className="fw-normal">
-            {sendCount}
-          </span>
-        </td>
-        <td className="text-center">
-          <Dropdown as={ButtonGroup}>
-            <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
-              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="py-0">
-              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
-                <EyeIcon className="icon icon-xs me-2" /> View Details
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
-                <PencilAltIcon className="icon icon-xs me-2" /> Edit
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <TrashIcon className="icon icon-xs text-danger me-2" /> Remove
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <span className="fw-normal">{sendCount}</span>
         </td>
       </tr>
     );
@@ -68,7 +51,6 @@ export const SendHistoriesTable = (props) => {
               <th className="border-gray-200">配信日時</th>
               <th className="border-gray-200">該当人数</th>
               <th className="border-gray-200">配信数</th>
-              <th className="border-gray-200">Action</th>
             </tr>
           </thead>
           <tbody className="border-0">

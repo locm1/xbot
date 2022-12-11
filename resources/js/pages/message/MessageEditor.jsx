@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger, Form, Button, Image } from 'react-bootstrap';
 import { ChatIcon, XIcon, ChevronDownIcon, ChevronUpIcon, PhotographIcon, TicketIcon } from "@heroicons/react/outline";
 
@@ -6,7 +6,7 @@ import { SmileIcon } from "@/components/icons/Icons";
 
 export default (props) => {
   const lists = ['テスト', 'テスト', 'テスト', 'テスト'];
-  const { setFiles, files, getRootProps, getInputProps, setFormId, handlePreviewChange, index, previews, handleDelete } = props;
+  const { setFiles, files, getRootProps, getInputProps, setPreviews, handlePreviewChange, index, previews, handleDelete } = props;
 
   const DropzoneFile = (props) => {
     const { preview } = props;
@@ -22,6 +22,12 @@ export default (props) => {
       </Col>
     );
   };
+
+  useEffect(() => {
+    setPreviews(
+      previews.map((preview, previewIndex) => (previewIndex == index ? { ...preview, files: files } : preview))
+    )
+  }, [files]);
 
   return (
     <>
@@ -98,7 +104,7 @@ export default (props) => {
               <Tab.Content>
                 <Tab.Pane eventKey="text" className="py-4">
                   <Form.Group className="mb-3">
-                    <Form.Control as="textarea" rows="5" placeholder="テキストを入力" id="preview-text" value={previews[index].content} onChange={(e) => handlePreviewChange(e, 'content', index)} />
+                    <Form.Control as="textarea" rows="5" placeholder="テキストを入力" id="preview-text" value={previews[index].content} onChange={(e) => handlePreviewChange(e, 'content', index, files)} />
                   </Form.Group>
                 </Tab.Pane>
                 <Tab.Pane eventKey="stamp" className="py-4">
@@ -110,7 +116,7 @@ export default (props) => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="picture" className="py-4">
                   {files.length == 0 ? (
-                    <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })} onChange={(e) => setFormId(e.target.id)}>
+                    <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
                       <Form.Control {...getInputProps()} id="preview-picture" />
                         <div className="dz-default dz-message text-center">
                           <p className="dz-button mb-0">画像をアップロード</p>

@@ -51,14 +51,14 @@ export default (props) => {
     } 
 
   const ShowPicture = (props) => {
-    if (files.length > 0) {
+    if (props.preview.files.length > 0) {
       return (
         <>
         <Col xs={12} md={2} xl={2} className="mb-4 mb-md-0">
           <LineIcon />
         </Col>
         <Col xs={12} md={10} xl={10} className="text-center text-lg-start">
-          {files.map(file => <DropzoneFile key={file.path} {...file} />)}
+          {props.preview.files.map(file => <DropzoneFile key={file.path} {...file} />)}
         </Col>
         </>
       );

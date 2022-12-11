@@ -20,8 +20,12 @@ export const TemplateMessageTable = (props) => {
   const { messages } = props;
   const totalMessages = messages.length;
 
+  const deleteTemplateMessages = (ids) => {
+    props.deleteTemplateMessages && props.deleteTemplateMessages(ids)
+  }
+
   const TableRow = (props) => {
-    const { title, addDate } = props;
+    const { title, addDate, id } = props;
 
     return (
       <tr className="border-bottom">
@@ -41,14 +45,11 @@ export const TemplateMessageTable = (props) => {
               <DotsHorizontalIcon className="icon icon-xs icon-dark" />
             </Dropdown.Toggle>
             <Dropdown.Menu className="py-0">
-              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
-                <EyeIcon className="icon icon-xs me-2" /> View Details
+              <Dropdown.Item as={Link} to={`/message/template/edit/${id}`}>
+                <PencilAltIcon className="icon icon-xs me-2" /> 編集
               </Dropdown.Item>
-              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
-                <PencilAltIcon className="icon icon-xs me-2" /> Edit
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <TrashIcon className="icon icon-xs text-danger me-2" /> Remove
+              <Dropdown.Item onClick={() => deleteTemplateMessages([id])}>
+                <TrashIcon className="icon icon-xs text-danger me-2" /> 削除
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

@@ -15,6 +15,7 @@ import ProfilePicture from "@img/img/team/profile-picture-3.jpg";
 
 import GroupTitle from "@/components/GroupTitle";
 import { StoreIcon, GiftIcon } from "@/components/icons/Icons";
+import { stringify } from "postcss";
 
 export default (props = {}) => {
   const location = useLocation();
@@ -38,8 +39,8 @@ export default (props = {}) => {
 
   const CollapsableNavItem = (props) => {
     const { eventKey, title, icon: NavItemIcon, children = null } = props;
-    const [isOpened, setOpen] = useState(collapsedItems.some(item => item.includes(eventKey)));
-
+    const [isOpened, setOpen] = useState(Boolean(~pathname.indexOf(eventKey)));
+    console.log(eventKey);
     return (
       <Nav.Item>
         <Nav.Link
@@ -142,11 +143,11 @@ export default (props = {}) => {
               </Link>
               <GroupTitle name="User Management" />
               <NavItem title="ユーザーリスト" link={Paths.Users.path} icon={UserIcon} />
-              <CollapsableNavItem eventKey="dashboard1/" title="アンケート管理" icon={PencilAltIcon}>
+              <CollapsableNavItem eventKey="questionnaire/" title="アンケート管理" icon={PencilAltIcon}>
                 <NavItem title="アンケート作成" link={Paths.CreateQuestionnaire.path} />
                 <NavItem title="アンケートリスト" link={Paths.Questionnaires.path} />
               </CollapsableNavItem>
-              <CollapsableNavItem eventKey="dashboard1/" title="メッセージ管理" icon={UserGroupIcon}>
+              <CollapsableNavItem eventKey="message/" title="メッセージ管理" icon={UserGroupIcon}>
                 <NavItem title="セグメント配信" link={Paths.SendSegments.path} />
                 <NavItem title="テンプレートリスト" link={Paths.TemplateMessages.path} />
                 <NavItem title="配信管理" link={Paths.SendHistories.path} />
@@ -155,21 +156,21 @@ export default (props = {}) => {
               <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.Privileges.path} />
 
               <GroupTitle name="Electroic Commerce" />
-              <CollapsableNavItem eventKey="dashboard2/" title="商品管理" icon={ShoppingBagIcon}>
+              <CollapsableNavItem eventKey="product/" title="商品管理" icon={ShoppingBagIcon}>
                 <NavItem title="商品リスト" link={Paths.Products.path} />
                 <NavItem title="商品追加" link={Paths.CreateProduct.path} />
               </CollapsableNavItem>
-              <CollapsableNavItem eventKey="dashboard3/" title="クーポン管理" icon={CurrencyYenIcon}>
+              <CollapsableNavItem eventKey="coupon/" title="クーポン管理" icon={CurrencyYenIcon}>
                 <NavItem title="クーポンリスト" link={Paths.Coupons.path} />
                 <NavItem title="クーポン追加" link={Paths.CreateCoupon.path} />
               </CollapsableNavItem>
               <NavItem title="注文リスト" icon={ShoppingCartIcon} link={Paths.Orders.path} />
               <NavItem title="取置リスト" icon={InboxIcon} link={Paths.Reserves.path} />
-              <CollapsableNavItem eventKey="dashboard4/" title="イベント管理" icon={CalendarIcon}>
+              <CollapsableNavItem eventKey="event/" title="イベント管理" icon={CalendarIcon}>
                 <NavItem title="イベントカレンダー" link={Paths.EventCalendar.path} />
                 <NavItem title="イベント案内リスト" link={Paths.Events.path} />
               </CollapsableNavItem>
-              <CollapsableNavItem eventKey="dashboard5/" title="日程調整管理" icon={CalendarIcon}>
+              <CollapsableNavItem eventKey="schedule/" title="日程調整管理" icon={CalendarIcon}>
                 <NavItem title="日程調整作成" link={Paths.ScheduleCalendar.path} />
                 <NavItem title="日程調整リスト" link={Paths.Schedules.path} />
               </CollapsableNavItem>
@@ -178,7 +179,7 @@ export default (props = {}) => {
               <NavItem title="招待リスト" link={Paths.Invitations.path} icon={UserAddIcon} />
 
               <GroupTitle name="Configure" />
-              <CollapsableNavItem eventKey="dashboard6/" title="サイト設定" icon={CogIcon}>
+              <CollapsableNavItem eventKey="setting/" title="サイト設定" icon={CogIcon}>
                 <NavItem title="プライバシーポリシー" link={Paths.PrivacyPolicy.path} />
                 <NavItem title="利用規約" link={Paths.TermsOfService.path} />
                 <NavItem title="特定商取引法に基づく表記" link={Paths.SpecificTrades.path} />

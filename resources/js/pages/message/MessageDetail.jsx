@@ -11,7 +11,6 @@ import messages from "@/data/templateMessages";
 import LinePreview from "@/components/line/LinePreview";
 
 export default () => {
-  const history = useHistory();
   const [birthday, setBirthday] = useState("");
   const [messageDetailModal, setMessageDetailModal] = useState(false);
   const handleClose = () => setMessageDetailModal(false);

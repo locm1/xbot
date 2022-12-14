@@ -33,7 +33,7 @@ export default (props) => {
   };
 
   return (
-    <Col xs={12} lg={6} xl={4} xxl={6} ref={listRef} {...extraProps}>
+    <Col xs={12} lg={6} xl={6} xxl={6} ref={listRef} {...extraProps}>
       <ListGroup className="kanban-list">
         {props.children}
       </ListGroup>

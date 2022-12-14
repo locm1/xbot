@@ -60,7 +60,7 @@ export default (props) => {
           <h1 className="page-title">配信情報詳細</h1>
         </div>
         <div className="d-flex">
-          <Button as={Link} href={Paths.SendHistories.path} variant="gray-800" className="me-2">
+          <Button as={Link} to={Paths.SendHistories.path} variant="gray-800" className="me-2">
             配信管理に戻る
           </Button>
         </div>

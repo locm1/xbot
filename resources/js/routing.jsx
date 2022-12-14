@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { Paths } from "@/paths";
 
 // pages
@@ -97,10 +97,17 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   );
 };
 
+const RedirectDashboard = () => {
+  
+}
+
 const Routing = () => {
   return (
     <Switch>
       <Route exact path={Paths.Signin.path} component={SignIn} />
+      <Route exact path={Paths.Route.path}>
+        {<Redirect to="/dashboard" />}
+      </Route>
       <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />
       <RouteWithSidebar exact path={Paths.Users.path} component={Users} />
       <RouteWithSidebar exact path={Paths.EditUser.path} component={EditUser} />

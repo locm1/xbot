@@ -1,6 +1,8 @@
 
 
 export const Paths = {
+    Route: { path: "/" },
+
     // pages
     Signin: { path: "/login" },
     DashboardOverview: { path: "/dashboard" },

@@ -8,7 +8,6 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import messages from "@/data/templateMessages";
-import IphoneImage from "@img/img/iphone14pro.svg";
 
 export default () => {
   const history = useHistory();

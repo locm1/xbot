@@ -124,7 +124,7 @@ export const UserInfoForm = (props) => {
                 <Form.Label>お住まいエリア</Form.Label>
                 <Form.Select defaultValue="0" className="mb-0">
                   {
-                    areas.map((area, index) => <option value={index + 1}>{area}</option>)
+                    areas.map((area, index) => <option key={index} value={index + 1}>{area}</option>)
                   }
                 </Form.Select>
               </Form.Group>
@@ -140,7 +140,7 @@ export const UserInfoForm = (props) => {
                 <Form.Label>ご職業</Form.Label>
                 <Form.Select defaultValue="0" className="mb-0" name="occupation" onChange={(e) => props.handleChange(e, 'occupation')}>
                   {
-                    occupations.map((occupation, index) => <option value={index + 1}>{occupation}</option>)
+                    occupations.map((occupation, index) => <option key={index} value={index + 1}>{occupation}</option>)
                   }
                 </Form.Select>
               </Form.Group>

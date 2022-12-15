@@ -40,7 +40,6 @@ export default (props = {}) => {
   const CollapsableNavItem = (props) => {
     const { eventKey, title, icon: NavItemIcon, children = null } = props;
     const [isOpened, setOpen] = useState(Boolean(~pathname.indexOf(eventKey)));
-    console.log(eventKey);
     return (
       <Nav.Item>
         <Nav.Link

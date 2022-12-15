@@ -14,7 +14,7 @@ export const HistoryTable = (props) => {
           <thead className="thead-light">
             <tr>
               {headers.map((header, index) => (
-                <th className={`border-0 ${(index === 0) ? "rounded-start" : ''}${(headers.length - 1 === index) ? "rounded-end" : ''}`}>
+                <th key={index} className={`border-0 ${(index === 0) ? "rounded-start" : ''}${(headers.length - 1 === index) ? "rounded-end" : ''}`}>
                   {header}
                 </th>
               ))}

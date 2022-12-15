@@ -32,7 +32,7 @@ export default () => {
                 <Form.Label>メッセージを選択</Form.Label>
                 <Form.Select defaultValue="0" className="mb-0">
                   {
-                    messages.map((message) => <option value={message.id}>{message.title}</option>)
+                    messages.map((message, index) => <option key={index} value={message.id}>{message.title}</option>)
                   }
                 </Form.Select>
               </Form.Group>

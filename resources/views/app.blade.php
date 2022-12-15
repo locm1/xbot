@@ -5,8 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="favicon.ico">
         <title>Xbot</title>
-        @viteReactRefresh
-        @vite(['resources/js/index.jsx'])
+        <script src="{{ mix('js/index.js') }}" defer></script>
     </head>
     <body>
         <div id="app"></div>

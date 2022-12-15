@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import moment from 'moment-timezone';
-import CountUp from "react-countup";
 import Datetime from "react-datetime";
 import { ArrowDownIcon, ArrowNarrowRightIcon, CalendarIcon, ClipboardListIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, InputGroup, Image, Button, Modal, ProgressBar, Tooltip, Dropdown, OverlayTrigger, ButtonGroup } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import messages from "@/data/templateMessages";
@@ -58,7 +55,7 @@ export default () => {
                         <Form.Control
                           required
                           type="text"
-                          value={birthday ? moment(birthday).format("DD/MM/YYYY") : ""}
+                          value=""
                           placeholder="dd/mm/yyyy"
                           onFocus={openCalendar}
                           onChange={() => { }} />

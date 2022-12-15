@@ -5,7 +5,6 @@ import withReactContent from "sweetalert2-react-content";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Col, Row, Button, Container, Breadcrumb } from "react-bootstrap";
 
-import { KanbanCreateModal } from "@/components/Modals";
 import KANBAN_LISTS from "@/data/kanban";
 import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
 

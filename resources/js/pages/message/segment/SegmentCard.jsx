@@ -1,8 +1,5 @@
 import React from "react";
-import { ClipboardCopyIcon, CreditCardIcon, PencilAltIcon, SelectorIcon, TagIcon, TrashIcon, UserIcon } from "@heroicons/react/solid";
 import { Card, Button, Image, Dropdown, Col, Row, Form, InputGroup } from "react-bootstrap";
-
-import KanbanAvatar from "@/components/KanbanAvatar";
 
 //forms
 import CheckboxButton from "@/components/CheckboxButton";

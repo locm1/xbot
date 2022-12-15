@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { ArchiveIcon, CalendarIcon, ChatIcon, ChevronDownIcon, ClipboardListIcon, CloudUploadIcon, DocumentTextIcon, FireIcon, PlusIcon, PresentationChartBarIcon, ShoppingBagIcon, UsersIcon, HomeIcon } from "@heroicons/react/solid";
+import { HomeIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, Image, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
-import { ChoosePhotoWidget, ProfileCardWidget, NotificationsWidget } from "@/components/Widgets";
+import { ProfileCardWidget } from "@/components/Widgets";
 
 // forms
 import { HistoryTable } from "@/pages/user/HistoryTable";
@@ -14,8 +13,6 @@ import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import Profile1 from "@img/img/team/profile-picture-1.jpg";
-import Profile3 from "@img/img/team/profile-picture-3.jpg";
-import ProfileCover from "@img/img/profile-cover.jpg";
 
 
 export default () => {

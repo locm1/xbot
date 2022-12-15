@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ClipboardCopyIcon, DotsHorizontalIcon, EyeIcon, SelectorIcon, TrashIcon, ViewGridAddIcon } from "@heroicons/react/solid";
 import { Col, Form, Button, Dropdown, ListGroup } from "react-bootstrap";
 
 export default (props) => {

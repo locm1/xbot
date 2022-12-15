@@ -1,4 +1,3 @@
-import '@fullcalendar/react/dist/vdom';
 import moment from "moment-timezone";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";

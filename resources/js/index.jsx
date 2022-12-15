@@ -16,7 +16,7 @@ import "./bootstrap";
 
 // packages
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from "react-router-dom";
 
 // Components
@@ -28,8 +28,9 @@ import "./../scss/volt.scss";
 
 //vendor styles
 import "leaflet/dist/leaflet.css";
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+//import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import "react-datetime/css/react-datetime.css";
+import { create } from "lodash";
 
 
 function App() {
@@ -41,4 +42,6 @@ function App() {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById("app"));
+const container = document.getElementById("app");
+const root = createRoot(container);
+root.render(<App />);

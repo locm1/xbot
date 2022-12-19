@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Paths } from "@/paths";
 
-// pages
+// page
 import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
 import Users from '@/pages/user/Users';

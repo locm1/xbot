@@ -15,15 +15,15 @@ jobs:
           node-version: '16'
       - run: npm install
       - run: npm run prod
-      - run: git config --local user.email "githubaction@action.action"
-      - run: git config --local user.name "githubaction"
-      - run: git add .
-      - run: git commit -m 'from github actions'
-      - run: git push origin develop
-      - run: git fetch
-      - run: git checkout main
-      - run: git merge origin develop
-      - run: git push origin main
+      # - run: git config --local user.email "githubaction@action.action"
+      # - run: git config --local user.name "githubaction"
+      # - run: git add .
+      # - run: git commit -m 'from github actions'
+      # - run: git push origin develop
+      # - run: git fetch
+      # - run: git checkout main
+      # - run: git merge origin develop
+      # - run: git push origin main
   git-push:
     needs: npm-build
     runs-on: ubuntu-latest

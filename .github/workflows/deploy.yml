@@ -21,6 +21,7 @@ jobs:
           git config --local user.name "githubaction"
           git add .
           git commit -m 'from github actions'
+          git merge origin/main
           git push origin develop:main
   git-push:
     needs: npm-build

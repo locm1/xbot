@@ -38,7 +38,6 @@ jobs:
           user: ${{ secrets.SERVER_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY}}
-          pass: ${{ secrets.SSH_PASSPHRASE }}
 
 
       # - uses: appleboy/ssh-action@v0.1.6

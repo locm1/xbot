@@ -31,14 +31,14 @@ jobs:
       - name: Remote SSH Commands
         uses: fifsky/ssh-action@v0.0.6
         with:
-          command: |
-            cd /tmp
-            ls -a
           host: ${{ secrets.SERVER_HOST }}
           user: ${{ secrets.SERVER_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           pass: ${{ secrets.SSH_PASSPHRASE }}
+          command: |
+            cd /tmp
+            ls -a
 
 
       # - uses: appleboy/ssh-action@v0.1.6

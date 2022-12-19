@@ -36,4 +36,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            ssh -vT git@github.com
+            ssh -o StrictHostKeyChecking=no -vT git@github.com

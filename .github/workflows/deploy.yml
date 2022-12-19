@@ -36,5 +36,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd ${{ secrets.SERVER_DEPLOY_DIR }}
-            git pull origin main
+            ssh -T git@github.com

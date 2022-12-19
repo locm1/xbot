@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: appleboy/ssh-action@master
         with:
-          host: sv14392.xserver.jp
+          host: sv14392.xserver.j
           username: xs415772
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}

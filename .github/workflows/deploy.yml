@@ -22,7 +22,7 @@ jobs:
           git add .
           git commit -m 'from github actions'
           git push origin develop
-          git fetch origin
+          git fetch
           git checkout main
           git merge origin develop
           git push origin main

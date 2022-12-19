@@ -3,9 +3,11 @@ name: CI
 on: 
   push:
     branches:
-      - main
+      - develop
+
 jobs:
   npm-build:
+    name: npm-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,7 +16,12 @@ jobs:
           node-version: '16'
       - run: npm install
       - run: npm run prod
+      - uses: actions/checkout@v3
+        with:
+          repository: 'main'
+      - run: git merge develop
   git-push:
+    name: git-push
     needs: npm-build
     runs-on: ubuntu-latest
     steps:

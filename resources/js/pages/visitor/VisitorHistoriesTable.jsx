@@ -21,23 +21,39 @@ export const VisitorHistoriesTable = (props) => {
   const totalvisitorHistories = visitorHistories.length;
 
   const TableRow = (props) => {
-    const { visitorDate, name, sex, memo } = props;
+    const { visitorDate, name, sex, memo, id, image } = props;
+    const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
+    const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "primary";
 
     return (
       <tr className="border-bottom">
         <td>
+          <Card.Link className="d-flex align-items-center" as={Link} to={`/user/edit/${id}`}>
+            {image
+              ? (
+                <Image
+                  src={image}
+                  className="avatar rounded-circle me-3"
+                />
+              ) : (
+                <div className="avatar d-flex align-items-center justify-content-center fw-bold rounded bg-secondary me-3">
+                  <span>{getFirstLetterOfEachWord(name)}</span>
+                </div>
+              )}
+            <div className="d-block">
+              <span className="fw-bold">{name}</span>
+              {/* <div className="small text-gray">{email}</div> */}
+            </div>
+          </Card.Link>
+        </td>
+        <td>
+          <span className={`fw-normal text-${sexVariant}`}>
+            {sex_array[sex]}
+          </span>
+        </td>
+        <td>
           <span className="fw-normal">
             {visitorDate}
-          </span>
-        </td>
-        <td>
-          <span className="fw-normal">
-            {name}
-          </span>
-        </td>
-        <td>
-          <span className="fw-normal">
-            {sex}
           </span>
         </td>
         <td>
@@ -51,14 +67,11 @@ export const VisitorHistoriesTable = (props) => {
               <DotsHorizontalIcon className="icon icon-xs icon-dark" />
             </Dropdown.Toggle>
             <Dropdown.Menu className="py-0">
-              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
-                <EyeIcon className="icon icon-xs me-2" /> View Details
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
-                <PencilAltIcon className="icon icon-xs me-2" /> Edit
+              <Dropdown.Item as={Link} to={`/visitor/history/edit/${id}`}>
+                <PencilAltIcon className="icon icon-xs me-2" /> 編集
               </Dropdown.Item>
               <Dropdown.Item>
-                <TrashIcon className="icon icon-xs text-danger me-2" /> Remove
+                <TrashIcon className="icon icon-xs text-danger me-2" /> 削除
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
@@ -70,12 +83,12 @@ export const VisitorHistoriesTable = (props) => {
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
       <Card.Body>
-        <Table hover>
+        <Table hover className="user-table align-items-center">
           <thead>
             <tr>
-              <th className="border-gray-200">来店日時</th>
               <th className="border-gray-200">お名前</th>
               <th className="border-gray-200">性別</th>
+              <th className="border-gray-200">来店日時</th>
               <th className="border-gray-200">メモ</th>
               <th className="border-gray-200">Action</th>
             </tr>

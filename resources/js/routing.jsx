@@ -12,7 +12,8 @@ import Messages from '@/pages/message/TemplateMessages';
 import CreateMessage from '@/pages/message/CreateTemplateMessage';
 import SendHistoryDetail from '@/pages/message/SendHistoryDetail';
 import SendHistories from '@/pages/message/SendHistories';
-import VisirotHistories from '@/pages/visitor/VisirotHistories';
+import VisitorHistories from '@/pages/visitor/VisitorHistories';
+import EditVisitorHistory from '@/pages/visitor/EditVisitorHistory';
 import Privileges from '@/pages/privilege/Privileges';
 import Products from '@/pages/product/Products';
 import Coupons from '@/pages/coupon/Coupons';
@@ -117,7 +118,8 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.EditMessage.path} component={CreateMessage} />
       <RouteWithSidebar exact path={Paths.SendHistories.path} component={SendHistories} />
       <RouteWithSidebar exact path={Paths.SendHistoryDetail.path} component={SendHistoryDetail} />
-      <RouteWithSidebar exact path={Paths.VisitorHistories.path} component={VisirotHistories} />
+      <RouteWithSidebar exact path={Paths.VisitorHistories.path} component={VisitorHistories} />
+      <RouteWithSidebar exact path={Paths.EditVisitorHistory.path} component={EditVisitorHistory} />
       <RouteWithSidebar exact path={Paths.Privileges.path} component={Privileges} />
       <RouteWithSidebar exact path={Paths.Products.path} component={Products} />
       <RouteWithSidebar exact path={Paths.Coupons.path} component={Coupons} />

@@ -63,17 +63,6 @@ export default () => {
                 onChange={changeSearchValue}
               />
             </InputGroup>
-            <InputGroup className="me-2 me-lg-3 fmxw-400">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="電話番号"
-                value={searchValue}
-                onChange={changeSearchValue}
-              />
-            </InputGroup>
           </Col>
           <Col xs={6} lg={5} className="d-flex justify-content-end">
             <InputGroup className="me-3 me-lg-3 fmxw-500">

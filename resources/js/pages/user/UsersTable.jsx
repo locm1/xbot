@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
@@ -48,7 +48,7 @@ export const UsersTable = (props) => {
           </FormCheck>
         </td>
         <td>
-          <Card.Link className="d-flex align-items-center" as={Link} to={`/user/edit/${id}`}>
+          <div className="d-flex align-items-center">
             {image
               ? (
                 <Image
@@ -64,7 +64,7 @@ export const UsersTable = (props) => {
               <span className="fw-bold">{name}</span>
               {/* <div className="small text-gray">{email}</div> */}
             </div>
-          </Card.Link>
+          </div>
         </td>
         <td><span className="fw-normal">{tel}</span></td>
         <td>
@@ -74,12 +74,20 @@ export const UsersTable = (props) => {
         </td>
         <td><span className="fw-normal">{birthDate}</span></td>
         <td><span className="fw-normal">{area}</span></td>
-        <td>
-          <OverlayTrigger placement="top" overlay={<Tooltip className="m-0">削除</Tooltip>}>
-            <Card.Link className="ms-2" onClick={() => deleteUsers([id])}>
-              <XCircleIcon className="icon icon-xs text-danger" />
-            </Card.Link>
-          </OverlayTrigger>
+        <td className="text-center">
+          <Dropdown as={ButtonGroup}>
+            <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
+              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="py-0">
+              <Dropdown.Item as={Link} to={`/user/edit/${id}`}>
+                <PencilAltIcon className="icon icon-xs me-2" /> 編集
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => deleteUsers([id])}>
+                <TrashIcon className="icon icon-xs text-danger me-2" /> 削除
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </td>
       </tr>
     );
@@ -113,7 +121,7 @@ export const UsersTable = (props) => {
               <th className="border-bottom">性別</th>
               <th className="border-bottom">生年月日</th>
               <th className="border-bottom">お住まいエリア</th>
-              <th className="border-bottom">削除</th>
+              <th className="border-bottom">Action</th>
             </tr>
           </thead>
           <tbody className="border-0">

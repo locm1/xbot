@@ -18,6 +18,7 @@ export const Paths = {
     SendHistoryDetail: { path: "/message/send/detail/:id" },
     Privileges: { path: "/privilege" },
     VisitorHistories: { path: "/visitor/history" },
+    EditVisitorHistory: { path: "/visitor/history/edit/:id" },
     Products: { path: "/product/list" },
     CreateProduct: { path: "/product/create" },
     Coupons: { path: "/coupon/list" },

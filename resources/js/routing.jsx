@@ -12,7 +12,7 @@ import Messages from '@/pages/message/TemplateMessages';
 import CreateMessage from '@/pages/message/CreateTemplateMessage';
 import SendHistoryDetail from '@/pages/message/SendHistoryDetail';
 import SendHistories from '@/pages/message/SendHistories';
-import VisirotHistories from '@/pages/visitor/VisirotHistories';
+import VisirotHistories from '@/pages/visitor/VisitorHistories';
 import Privileges from '@/pages/privilege/Privileges';
 import Products from '@/pages/product/Products';
 import Coupons from '@/pages/coupon/Coupons';

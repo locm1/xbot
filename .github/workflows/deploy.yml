@@ -15,8 +15,8 @@ jobs:
           node-version: '16'
       - run: npm install
       - run: npm run prod
-      # - run: git config --local user.email "githubaction@action.action"
-      # - run: git config --local user.name "githubaction"
+      - run: git config --local user.email "githubaction@action.action"
+      - run: git config --local user.name "githubaction"
       - run: git add .
       - run: git commit -m 'from github actions'
       - run: git push origin develop

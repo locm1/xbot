@@ -155,7 +155,7 @@ export default (props = {}) => {
               <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.Privileges.path} />
 
               <GroupTitle name="Electroic Commerce" />
-              <CollapsableNavItem eventKey="product/" title="商品管理" icon={ShoppingBagIcon}>
+              <CollapsableNavItem eventKey="product/" title="商品" icon={ShoppingBagIcon}>
                 <NavItem title="商品リスト" link={Paths.Products.path} />
                 <NavItem title="商品追加" link={Paths.CreateProduct.path} />
               </CollapsableNavItem>

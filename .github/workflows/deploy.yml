@@ -23,7 +23,7 @@ jobs:
       - run: git add .
       - run: git commit -m 'from github actions'
       - run: git push -f origin develop:main
-  git-push:
+  git-pull:
     needs: npm-build
     runs-on: ubuntu-latest
     steps:

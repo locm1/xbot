@@ -43,7 +43,7 @@ export default () => {
 
   const handleChange = (e, input) => {
     return setFormValue({...formValue, [input]: e.target.value})
-};
+  };
 
   return (
     <>

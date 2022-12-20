@@ -98,18 +98,7 @@ export default () => {
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                placeholder="氏名"
-                value={searchValue}
-                onChange={changeSearchValue}
-              />
-            </InputGroup>
-            <InputGroup className="me-2 me-lg-3 fmxw-300">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="電話番号"
+                placeholder="タイトル"
                 value={searchValue}
                 onChange={changeSearchValue}
               />

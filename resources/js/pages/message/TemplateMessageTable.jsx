@@ -28,12 +28,8 @@ export const TemplateMessageTable = (props) => {
     const history = useHistory();
     const { title, addDate, id } = props;
 
-    const handleRowClick = (id) => {
-      history.push(`/message/template/edit/${id}`);
-    }
-
     return (
-      <tr className="border-bottom table-body-tr" onClick={() => handleRowClick(id)}>
+      <tr className="border-bottom">
         <td>
           <span className="fw-normal">
             {title}
@@ -44,12 +40,15 @@ export const TemplateMessageTable = (props) => {
             {addDate}
           </span>
         </td>
-        <td className="text-center">
+        <td>
           <Dropdown as={ButtonGroup}>
             <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
               <DotsHorizontalIcon className="icon icon-xs icon-dark" />
             </Dropdown.Toggle>
             <Dropdown.Menu className="py-0">
+              <Dropdown.Item as={Link} to={`/message/template/edit/${id}`}>
+                <PencilAltIcon className="icon icon-xs me-2" /> 編集
+              </Dropdown.Item>
               <Dropdown.Item onClick={() => deleteTemplateMessages([id])}>
                 <TrashIcon className="icon icon-xs text-danger me-2" /> 削除
               </Dropdown.Item>

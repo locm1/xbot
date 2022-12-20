@@ -11,14 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: 'main'
+          ref: 'develop'
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - run: git config --local user.email "githubaction@action.action"
       - run: git config --local user.name "githubaction"
       - run: git pull
-      - run: git merge --allow-unrelated-histories origin/develop
       - run: npm install
       - run: npm run prod
       - run: git add .
@@ -37,4 +36,5 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd ${{ secrets.SERVER_DEPLOY_DIR }}
+            git checkout main
             git pull origin main

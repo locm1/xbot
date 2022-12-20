@@ -15,12 +15,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - run: git config --local user.email "githubaction@action.action"
+      - run: git config --local user.name "githubaction"
       - run: git pull
       - run: git merge --allow-unrelated-histories origin/develop
       - run: npm install
       - run: npm run prod
-      - run: git config --local user.email "githubaction@action.action"
-      - run: git config --local user.name "githubaction"
       - run: git add .
       - run: git commit -m 'from github actions'
       - run: git push origin main

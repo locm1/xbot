@@ -36,5 +36,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd ${{ secrets.SERVER_DEPLOY_DIR }}
+            git config --local user.email "githubaction@action.action"
+            git config --local user.name "githubaction"
             git checkout main
             git pull origin main

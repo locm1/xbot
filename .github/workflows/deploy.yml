@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-      - run: git config --local user.email "githubaction@action.action"
-      - run: git config --local user.name "githubaction"
-      - run: git add .
-      - run: git commit -m 'from github actions'
-      - run: git push origin develop
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '16'
+      # - run: git config --local user.email "githubaction@action.action"
+      # - run: git config --local user.name "githubaction"
+      # - run: git add .
+      # - run: git commit -m 'from github actions'
+      # - run: git push origin develop
   git-push:
     needs: npm-build
     runs-on: ubuntu-latest

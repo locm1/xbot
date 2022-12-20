@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '16'
       - run: git pull
-      - run: git merge develop
+      - run: git merge origin/develop
       - run: npm install
       - run: npm run prod
       - run: git config --local user.email "githubaction@action.action"

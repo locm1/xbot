@@ -38,4 +38,5 @@ jobs:
             cd ${{ secrets.SERVER_DEPLOY_DIR }}
             git config --local user.email "githubaction@action.action"
             git config --local user.name "githubaction"
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main

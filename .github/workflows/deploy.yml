@@ -10,9 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: 'origin main'
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - run: git pull
+      - run: git merge origin develop
+      - run: npm install
+      - run: npm run prod
       - run: git config --local user.email "githubaction@action.action"
       - run: git config --local user.name "githubaction"
       - run: git add .
@@ -31,7 +37,6 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd ${{ secrets.SERVER_DEPLOY_DIR }}
-            git pull
-            git checkout main
+            git pull origin main
             npm install
             npm run prod

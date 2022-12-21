@@ -75,19 +75,10 @@ export const UsersTable = (props) => {
         <td><span className="fw-normal">{birthDate}</span></td>
         <td><span className="fw-normal">{area}</span></td>
         <td className="text-center">
-          <Dropdown as={ButtonGroup}>
-            <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
-              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="py-0">
-              <Dropdown.Item as={Link} to={`/user/edit/${id}`}>
-                <PencilAltIcon className="icon icon-xs me-2" /> 編集
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => deleteUsers([id])}>
-                <TrashIcon className="icon icon-xs text-danger me-2" /> 削除
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <Link to={`/user/edit/${id}`}>
+            <PencilAltIcon className="icon icon-xs me-2"/>
+          </Link>
+          <TrashIcon role="button" onClick={() => deleteUsers([id])} className="icon icon-xs text-danger me-2 " />
         </td>
       </tr>
     );
@@ -121,7 +112,7 @@ export const UsersTable = (props) => {
               <th className="border-bottom">性別</th>
               <th className="border-bottom">生年月日</th>
               <th className="border-bottom">お住まいエリア</th>
-              <th className="border-bottom">Action</th>
+              <th className="border-bottom text-center">編集・削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

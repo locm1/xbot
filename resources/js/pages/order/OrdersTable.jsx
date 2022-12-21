@@ -47,23 +47,11 @@ export const OrdersTable = (props) => {
             {status}
           </span>
         </td>
-        <td className="text-center">
-          <Dropdown as={ButtonGroup}>
-            <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
-              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="py-0">
-              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
-                <EyeIcon className="icon icon-xs me-2" /> View Details
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={Paths.Invoice.path}>
-                <PencilAltIcon className="icon icon-xs me-2" /> Edit
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <TrashIcon className="icon icon-xs text-danger me-2" /> Remove
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+        <td>
+          <Link to={`#`}>
+            <PencilAltIcon className="icon icon-xs me-2"/>
+          </Link>
+          <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
         </td>
       </tr>
     );
@@ -81,7 +69,7 @@ export const OrdersTable = (props) => {
               <th className="border-gray-200">都道府県</th>
               <th className="border-gray-200">商品名</th>
               <th className="border-gray-200">ステータス</th>
-              <th className="border-gray-200">Action</th>
+              <th className="border-gray-200">編集・削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

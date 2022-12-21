@@ -41,19 +41,10 @@ export const TemplateMessageTable = (props) => {
           </span>
         </td>
         <td>
-          <Dropdown as={ButtonGroup}>
-            <Dropdown.Toggle as={Button} split variant="link" className="text-dark m-0 p-0">
-              <DotsHorizontalIcon className="icon icon-xs icon-dark" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="py-0">
-              <Dropdown.Item as={Link} to={`/message/template/edit/${id}`}>
-                <PencilAltIcon className="icon icon-xs me-2" /> 編集
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => deleteTemplateMessages([id])}>
-                <TrashIcon className="icon icon-xs text-danger me-2" /> 削除
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <Link to={`/message/template/edit/${id}`}>
+            <PencilAltIcon className="icon icon-xs me-2"/>
+          </Link>
+          <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
         </td>
       </tr>
     );
@@ -67,7 +58,7 @@ export const TemplateMessageTable = (props) => {
             <tr>
               <th className="border-gray-200">タイトル</th>
               <th className="border-gray-200">追加日時</th>
-              <th className="border-gray-200">Action</th>
+              <th className="border-gray-200">編集・削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

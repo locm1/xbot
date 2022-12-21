@@ -13,17 +13,14 @@ export default [
       {
         "id": 1,
         "name": "トリートメント",
-        "image": JapanFlag
       },
       {
         "id": 2,
         "name": "ドレッシング",
-        "image": JapanFlag
       },
       {
         "id": 3,
         "name": "生搾りジュース",
-        "image": JapanFlag
       },
     ]
   },
@@ -34,17 +31,14 @@ export default [
       {
         "id": 1,
         "name": "トリートメント",
-        "image": JapanFlag
       },
       {
         "id": 2,
         "name": "ドレッシング",
-        "image": JapanFlag
       },
       {
         "id": 3,
         "name": "生搾りジュース",
-        "image": JapanFlag
       },
     ]
   },

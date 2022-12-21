@@ -57,3 +57,11 @@
 .privilege-edit-modal-button {
   cursor: pointer;
 }
+
+.privilege-delete-button {
+  position: absolute;
+  right: 40px;
+  &:hover {
+    cursor: pointer;
+  }
+}

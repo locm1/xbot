@@ -14,7 +14,6 @@ import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
 
 import PrivilegeCard from "@/pages/privilege/PrivilegeCard";
 import privileges from "@/data/privileges";
-import { PrivilegeEditModal } from "@/pages/privilege/PrivilegeEditModal";
 
 const ArchiveIconHtml = ReactDOMServer.renderToString(
   <ArchiveIcon className="h-50 w-auto" />
@@ -30,7 +29,6 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 export default () => {
   const [privilegeLists, setPrivilegeLists] = useState(privileges);
-  const [showEditCardModal, setShowEditCardModal] = useState(false);
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [showCreateListModal, setShowCreateListModal] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
@@ -41,33 +39,8 @@ export default () => {
   const [listToCopy, setListToCopy] = useState(null);
   const [listToMoveIndex, setListToMoveIndex] = useState(null);
 
-  const handleCardChange = (props) => {
-    const { listId, cardId, ...otherProps } = props;
-
-    const listsUpdated = privilegeLists.map(l => {
-      if (l.id !== listId) return l;
-
-      const cards = l.cards.map(c => c.id === cardId ? ({ ...c, ...otherProps }) : c);
-      return { ...l, cards };
-    });
-
-    if (cardToEdit) {
-      setCardToEdit({ ...cardToEdit, ...otherProps });
-    }
-
-    setPrivilegeLists(listsUpdated);
-    setCardToChangeMembers(null);
-  };
-
   return (
     <>
-    {showEditCardModal && (
-        <PrivilegeEditModal
-          show={true}
-          {...showEditCardModal}
-          onHide={() => setCardToEdit(null)}
-        />
-      )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
@@ -85,8 +58,7 @@ export default () => {
               <PrivilegeCard 
                 key={`privilege-${privilege.id}`}
                 {...privilege}
-                onClick={() => setShowEditCardModal(!showEditCardModal)}
-                showEditCardModal={showEditCardModal}
+                setCardToEdit={setCardToEdit}
               />
             )
           }

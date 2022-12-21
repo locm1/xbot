@@ -5,13 +5,17 @@ import { ArchiveIcon, CalendarIcon, CameraIcon, CheckIcon, ClipboardCheckIcon, C
 import { PrivilegeProductTable } from "@/pages/privilege/PrivilegeProductTable";
 
 export const PrivilegeEditModal = (props) => {
-  const { id: visitTimes, products = [], show = false } = props;
+  const { id, visitTimes, products = [], show = false } = props;
   const [time, setTime] = useState(visitTimes ?? "");
   const [comment, setComment] = useState("");
   const [isTitleEditable, setIsTitleEditable] = useState(false);
 
   const toggleIsTitleEditable = () => {
     setIsTitleEditable(!isTitleEditable);
+  };
+
+  const onHide = () => {
+    props.onHide && props.onHide();
   };
 
   const onChange = () => {
@@ -59,7 +63,7 @@ export const PrivilegeEditModal = (props) => {
               </div>
             </div> */}
           </div>
-          <Button variant="close" />
+          <Button variant="close" onClick={onHide} />
         </Modal.Header>
 
         <Modal.Body className="py-4">

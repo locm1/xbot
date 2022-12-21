@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { ClipboardCopyIcon, CreditCardIcon, PencilAltIcon, SelectorIcon, TagIcon, TrashIcon, UserIcon } from "@heroicons/react/solid";
 import { Card, Button, Image, Dropdown } from "react-bootstrap";
 
 import { PrivilegeProductTable } from "@/pages/privilege/PrivilegeProductTable";
+import { PrivilegeEditModal } from "@/pages/privilege/PrivilegeEditModal";
 
 export default (props) => {
-  const { visitTimes, image, products, showEditCardModal } = props; 
+  const [showEditCardModal, setShowEditCardModal] = useState(false);
+  const { visitTimes, image, products, setCardToEdit } = props; 
 
   const onEdit = () => {
     props.onEdit && props.onEdit();
@@ -31,10 +33,9 @@ export default (props) => {
     props.onDelete && props.onDelete();
   };
 
-  const onCardClick = (e) => {
-    if (e.defaultPrevented) return;
-
-    props.onClick && props.onClick();
+  const onCardClick = () => {
+    setCardToEdit({ ...props.privilege });
+    setShowEditCardModal(!showEditCardModal);
   };
 
   const onDropdownClick = (e) => {
@@ -42,7 +43,16 @@ export default (props) => {
   };
 
   return (
-    <Card border={1} className="p-4 privilege-card-item">
+    <>
+    {showEditCardModal && (
+        <PrivilegeEditModal
+          show={true}
+          {...showEditCardModal}
+          onHide={() => setCardToEdit(null)}
+          visitTimes={visitTimes}
+        />
+      )}
+      <Card border={1} className="p-4 privilege-card-item">
       <Card.Header className="d-flex align-items-center justify-content-between border-0 p-0 mb-3">
         <h5 className="mb-0">来店回数 {visitTimes} 回</h5>
         <div className="privilege-edit-modal-button" onClick={onCardClick}>
@@ -53,5 +63,6 @@ export default (props) => {
         <PrivilegeProductTable products={products} />
       </Card.Body>
     </Card>
+    </>
   );
 };

@@ -6,7 +6,6 @@ import { Col, Row, Button, Container, Breadcrumb } from "react-bootstrap";
 import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
 
 import PrivilegeCard from "@/pages/privilege/PrivilegeCard";
-import { PrivilegeCreateModal } from "@/pages/privilege/PrivilegeCreateModal";
 import privileges from "@/data/privileges";
 
 const ArchiveIconHtml = ReactDOMServer.renderToString(

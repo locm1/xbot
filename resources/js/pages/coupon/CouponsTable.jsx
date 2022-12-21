@@ -37,7 +37,7 @@ export const CouponsTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={Paths.Invoice.path}>
+          <Link to={Paths.CreateCoupon.path}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
           <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />

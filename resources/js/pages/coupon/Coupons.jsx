@@ -3,7 +3,9 @@ import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
+import { Paths } from "@/paths";
 import { CouponsTable } from "@/pages/coupon/CouponsTable";
 import coupons from "@/data/coupons";
 
@@ -47,6 +49,17 @@ export default () => {
             <Breadcrumb.Item active>クーポンリスト</Breadcrumb.Item>
           </Breadcrumb>
           <h1 className="page-title">クーポンリスト</h1>
+        </div>
+        <div className="btn-toolbar mb-2 mb-md-0">
+          <Link to={Paths.CreateCoupon.path}>
+            <Button variant="gray-800" size="sm" className="d-inline-flex align-items-center">
+              <PlusIcon className="icon icon-xs me-2" /> 新規作成
+            </Button>
+          </Link>
+          <ButtonGroup className="ms-2 ms-lg-3">
+            <Button variant="outline-gray-600" size="sm">CSVインポート</Button>
+            <Button variant="outline-gray-600" size="sm">CSVエクスポート</Button>
+          </ButtonGroup>
         </div>
       </div>
 

@@ -14,6 +14,7 @@ import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
 
 import PrivilegeCard from "@/pages/privilege/PrivilegeCard";
 import privileges from "@/data/privileges";
+import { PrivilegeEditModal } from "@/pages/privilege/PrivilegeEditModal";
 
 const ArchiveIconHtml = ReactDOMServer.renderToString(
   <ArchiveIcon className="h-50 w-auto" />
@@ -29,6 +30,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 export default () => {
   const [privilegeLists, setPrivilegeLists] = useState(privileges);
+  const [showEditCardModal, setShowEditCardModal] = useState(false);
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [showCreateListModal, setShowCreateListModal] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
@@ -59,16 +61,11 @@ export default () => {
 
   return (
     <>
-    {cardToEdit && (
-        <KanbanEditModal
+    {showEditCardModal && (
+        <PrivilegeEditModal
           show={true}
-          {...cardToEdit}
+          {...showEditCardModal}
           onHide={() => setCardToEdit(null)}
-          onArchive={(card) => handleArchiveCards([card])}
-          onMove={(card) => setCardToMove(card)}
-          onEditMembers={(card) => setCardToChangeMembers(card)}
-          onEditLabels={(card) => setCardToChangeLabels(card)}
-          onChange={handleCardChange}
         />
       )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -86,8 +83,10 @@ export default () => {
           {
             privilegeLists.map(privilege => 
               <PrivilegeCard 
-                key={`privilege-${privilege.id}`} {...privilege}
-                onClick={() => setCardToEdit(...privilege)}
+                key={`privilege-${privilege.id}`}
+                {...privilege}
+                onClick={() => setShowEditCardModal(!showEditCardModal)}
+                showEditCardModal={showEditCardModal}
               />
             )
           }

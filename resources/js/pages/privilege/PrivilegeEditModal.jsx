@@ -1,17 +1,17 @@
+import React, { useState } from "react";
+import { Col, Row, Form, Modal, Button, InputGroup, Image, Badge, FloatingLabel } from 'react-bootstrap';
+import { ArchiveIcon, CalendarIcon, CameraIcon, CheckIcon, ClipboardCheckIcon, ClockIcon, EyeIcon, PaperClipIcon, PlusIcon, SelectorIcon, ShareIcon, TagIcon, UserGroupIcon } from "@heroicons/react/solid";
+
 import { PrivilegeProductTable } from "@/pages/privilege/PrivilegeProductTable";
 
 export const PrivilegeEditModal = (props) => {
-  const { id: visitTimes, products = [] } = props;
-  const [title, setTitle] = useState(props.title ?? "");
+  const { id: visitTimes, products = [], show = false } = props;
+  const [time, setTime] = useState(visitTimes ?? "");
   const [comment, setComment] = useState("");
   const [isTitleEditable, setIsTitleEditable] = useState(false);
 
   const toggleIsTitleEditable = () => {
     setIsTitleEditable(!isTitleEditable);
-  };
-
-  const onHide = () => {
-    props.onHide && props.onHide();
   };
 
   const onChange = () => {
@@ -24,24 +24,8 @@ export const PrivilegeEditModal = (props) => {
     toggleIsTitleEditable();
   };
 
-  const onEditMembers = () => {
-    props.onEditMembers && props.onEditMembers(props);
-  };
-
-  const onEditLabels = () => {
-    props.onEditLabels && props.onEditLabels(props);
-  };
-
-  const onArchive = () => {
-    props.onArchive && props.onArchive({ cardId, listId });
-  };
-
-  const onMove = () => {
-    props.onMove && props.onMove({ listId, index });
-  };
-
   return (
-    <Modal as={Modal.Dialog} centered size="lg" show={show} onHide={onHide}>
+    <Modal as={Modal.Dialog} centered size="lg" show={show}>
       <Form className="modal-content p-lg-3">
         <Modal.Header className="align-items-start border-bottom">
           <div className="d-block">
@@ -52,11 +36,13 @@ export const PrivilegeEditModal = (props) => {
                   autoFocus
                   value={visitTimes}
                   className="text-gray-900 fs-5 fw-bold border-0 px-1 py-0 m-0"
+                  onChange={e => setTime(e.target.value)}
+                  onBlur={onChange}
                 />
               </Form.Group>
             ) : (
               <h5 className="text-gray-900 fs-5 fw-bold py-1 ps-1 mb-3" onClick={toggleIsTitleEditable}>
-                {title}
+                来店回数 {visitTimes} 回
               </h5>
             )}
 
@@ -73,17 +59,10 @@ export const PrivilegeEditModal = (props) => {
               </div>
             </div> */}
           </div>
-          <Button variant="close" onClick={onHide} />
+          <Button variant="close" />
         </Modal.Header>
 
         <Modal.Body className="py-4">
-          <Row>
-            <Col xs={12} lg={9}>
-              <Row className="mb-4 mb-lg-0">
-                <PrivilegeProductTable products={products} />
-              </Row>
-            </Col>
-          </Row>
         </Modal.Body>
 
         <Modal.Footer className="justify-content-start border-top">

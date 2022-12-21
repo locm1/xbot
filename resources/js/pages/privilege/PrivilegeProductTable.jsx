@@ -2,7 +2,7 @@ import { Card, Table, Image, Dropdown } from "react-bootstrap";
 
 export const PrivilegeProductTable = (props) => {
   const TableRow = (props) => {
-    const { name, stockQuantity, image } = props;
+    const { name, image } = props;
 
     return (
       <tr>
@@ -11,9 +11,6 @@ export const PrivilegeProductTable = (props) => {
             <Image src={image} className="image-small rounded-circle me-2" />
             <div><span className="h6">{name}</span></div>
           </Card.Link>
-        </td>
-        <td className="fw-bold border-0">
-          {stockQuantity}
         </td>
       </tr>
     );
@@ -25,8 +22,7 @@ export const PrivilegeProductTable = (props) => {
         <Table responsive className="table-centered table-nowrap rounded mb-0">
           <thead className="thead-light">
             <tr>
-              <th className="border-0 rounded-start">特典商品名</th>
-              <th className="border-0">在庫数</th>
+              <th className="border-0 rounded-start">特典</th>
             </tr>
           </thead>
           <tbody className="border-0">

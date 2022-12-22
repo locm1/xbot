@@ -4,9 +4,11 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Col, Row, Button, Container, Breadcrumb } from "react-bootstrap";
 import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
+import { Link, useHistory } from 'react-router-dom';
 
 import PrivilegeCard from "@/pages/privilege/PrivilegeCard";
 import privileges from "@/data/privileges";
+import { Paths } from "@/paths";
 
 const ArchiveIconHtml = ReactDOMServer.renderToString(
   <ArchiveIcon className="h-50 w-auto" />
@@ -53,6 +55,11 @@ export default () => {
             <Breadcrumb.Item active>特典設定</Breadcrumb.Item>
           </Breadcrumb>
           <h1 className="page-title">特典設定</h1>
+        </div>
+        <div className="d-flex">
+          <Button as={Link} variant="gray-800" className="me-2">
+            更新する
+          </Button>
         </div>
       </div>
 

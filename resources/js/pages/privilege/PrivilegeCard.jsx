@@ -41,6 +41,12 @@ export default (props) => {
       privileges.filter((privilege, index) => (privilege.id !== id))
     );
   };
+  
+  const deletePrivilegeCard = (id) => {
+    setPrivilegeLists(
+      privilegeLists.filter((privilege, index) => (privilege.id !== id))
+    );
+  };
 
   const visitTimesChange = (e, id) => {
     const newVisitTimes = {
@@ -60,6 +66,9 @@ export default (props) => {
         <h5 className="mb-0">来店回数</h5>
         <Form.Control required type="number" className="text-dark mb-1 visit-time-input" value={visitTimes} onChange={(e) => visitTimesChange(e, id)} />
         <h5 className="mb-0">回</h5>
+        <div className="privilege-delete-button">
+          <Button variant="close" onClick={() => deletePrivilegeCard(id)} />
+        </div>
       </Card.Header>
       <Card.Body className="p-0">
         <Row className="mb-4 mb-lg-0 mt-4">
@@ -79,12 +88,9 @@ export default (props) => {
             </Col>
           ))}
         </Row>
-        <Button
-          variant="outline-gray-500"
-          onClick={addPrivilege}
-          className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
-        >
-          <PlusIcon className="icon icon-xs me-2" /> 特典追加
+        <Button variant="gray-800" className="me-2 text-start" onClick={addPrivilege}>
+          <PlusIcon className="icon icon-xs me-2" />
+          特典追加
         </Button>
       </Card.Body>
     </Card>

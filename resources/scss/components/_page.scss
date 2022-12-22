@@ -97,3 +97,16 @@ $base_color: #707070;
     right: 10px;
   }
 }
+
+.product-table-tr {
+  line-height: 3;
+}
+
+.product-image {
+  line-height: 1;
+  overflow: hidden;
+  position: relative;
+  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+}

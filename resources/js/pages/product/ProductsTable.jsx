@@ -1,30 +1,68 @@
 import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Badge } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
 
 
 export const ProductsTable = (props) => {
   const { products } = props;
   const totalProducts = products.length;
 
+  const getCategoryClass = (category) => {
+    switch (category) {
+      case 1:
+        return {
+          class: 'secondary',
+          name: 'ヘアケア'
+        }
+      case 2:
+        return {
+          class: 'success',
+          name: 'テスト'
+        }
+      case 3:
+        return {
+          class: 'danger',
+          name: '野菜'
+        }
+      case 4:
+        return {
+          class: 'warning',
+          name: 'テスト'
+        }
+      case 5:
+        return {
+          class: 'info',
+          name: '食品'
+        }
+      default:
+        return {
+          class: 'primary',
+          name: 'テスト'
+        }
+    }
+  }
+
   const TableRow = (props) => {
-    const { category, name, price, stockQuantity } = props;
+    const { category, name, price, stockQuantity, img } = props;
+    const categoryVariant = category === 1 ? "Secondary" : category === 2 ? "Success" : "primary";
 
     return (
-      <tr className="border-bottom">
+      <tr className="border-bottom product-table-tr">
         <td>
-          <span className="fw-normal">
-            {category}
-          </span>
+          <div className="d-flex align-items-center">
+            <Image src={img} className="me-3 product-image"/>
+            <div className="d-block">
+              <span className="fw-bold">{name}</span>
+            </div>
+          </div>
         </td>
         <td>
-          <span className="fw-normal">
-            {name}
-          </span>
+          <Badge bg={getCategoryClass(category).class} className="me-1 product-category-badge fw-normal">
+            {getCategoryClass(category).name}
+          </Badge>
         </td>
         <td>
           <span className="fw-normal">
@@ -52,8 +90,8 @@ export const ProductsTable = (props) => {
         <Table hover>
           <thead>
             <tr>
-              <th className="border-gray-200">カテゴリー</th>
               <th className="border-gray-200">商品名</th>
+              <th className="border-gray-200">カテゴリー</th>
               <th className="border-gray-200">販売価格</th>
               <th className="border-gray-200">残在庫数</th>
               <th className="border-gray-200">編集・削除</th>

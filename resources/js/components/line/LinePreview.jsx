@@ -7,7 +7,6 @@ import { Col, Row, Card, Form, InputGroup, Image, Button, Modal, ProgressBar, To
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import IphoneImage from "@img/img/iphone14pro.png";
 import LineHeader from "@/components/line/LineHeader";
 import LineMainContents from "@/components/line/LineMainContents";
 import LineFooter from "@/components/line/LineFooter";

@@ -1,6 +1,11 @@
 
 import moment from "moment-timezone";
 
+import pudding from "@img/img/products/pudding.jpeg"
+import juice from "@img/img/products/juice.jpeg"
+import dressing from "@img/img/products/dressing.jpeg"
+import shampoo from "@img/img/products/shampoo.jpeg"
+
 export default [
     {
         "id": 1,
@@ -8,6 +13,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": shampoo
     },
     {
         "id": 2,
@@ -15,6 +21,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": shampoo
     },
     {
         "id": 3,
@@ -22,6 +29,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": shampoo
     },
     {
         "id": 4,
@@ -29,6 +37,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": shampoo
     },
     {
         "id": 5,
@@ -36,6 +45,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": shampoo
     },
     {
         "id": 6,
@@ -43,6 +53,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": shampoo
     },
     {
         "id": 7,
@@ -50,6 +61,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": shampoo
     },
     {
         "id": 8,
@@ -57,6 +69,7 @@ export default [
         "name": "北海道ミルクプリン",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": pudding
     },
     {
         "id": 9,
@@ -64,6 +77,7 @@ export default [
         "name": "生搾りジュース",
         "price": "￥3,000",
         "stockQuantity": 90,
+        "img": juice
     },
     {
         "id": 10,
@@ -71,5 +85,6 @@ export default [
         "name": "ドレッシング",
         "price": "￥3,000",
         "stockQuantity": 93,
+        "img": dressing
     },
 ]

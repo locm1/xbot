@@ -20,6 +20,7 @@ export const Paths = {
     VisitorHistories: { path: "/visitor/history" },
     EditVisitorHistory: { path: "/visitor/history/edit/:id" },
     Products: { path: "/product/list" },
+    EditProduct: { path: "/product/edit/:id" },
     CreateProduct: { path: "/product/create" },
     Coupons: { path: "/coupon/list" },
     CreateCoupon: { path: "/coupon/create" },

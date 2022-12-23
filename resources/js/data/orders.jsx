@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default [
     {
-        "id": uuidv4(),
+        "id": 1,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -12,7 +12,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 2,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -20,7 +20,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 3,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -28,7 +28,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 4,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -36,7 +36,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 5,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -44,7 +44,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 6,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -52,7 +52,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 7,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -60,7 +60,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 8,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -68,7 +68,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 9,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -76,7 +76,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 10,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -84,7 +84,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 11,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -92,7 +92,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 12,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -100,7 +100,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 13,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -108,7 +108,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 14,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",
@@ -116,7 +116,7 @@ export default [
         "status": "注文内容確認中"
     },
     {
-        "id": uuidv4(),
+        "id": 15,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "prefectures": "北海道",

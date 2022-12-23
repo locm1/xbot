@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import moment from "moment-timezone";
-import Datetime from "react-datetime";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { ProductsTable } from "@/pages/product/ProductsTable";
 import products from "@/data/products";
+import { Paths } from "@/paths";
 
 export default () => {
   const [transactions, setTransactions] = useState(products.map(t => ({ ...t, show: true })));
@@ -44,9 +44,13 @@ export default () => {
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
             <Breadcrumb.Item>商品管理</Breadcrumb.Item>
-            <Breadcrumb.Item active>商品リスト</Breadcrumb.Item>
           </Breadcrumb>
-          <h1 className="page-title">商品リスト</h1>
+          <h1 className="page-title">商品管理</h1>
+        </div>
+        <div className="btn-toolbar mb-2 mb-md-0">
+          <Button as={Link} to={Paths.CreateProduct.path} variant="gray-800" size="sm" className="d-inline-flex align-items-center">
+            <PlusIcon className="icon icon-xs me-2" /> 商品追加
+          </Button>
         </div>
       </div>
 

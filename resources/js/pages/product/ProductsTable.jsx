@@ -3,8 +3,6 @@ import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIco
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Badge } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
-import { Paths } from "@/paths";
-
 
 export const ProductsTable = (props) => {
   const { products } = props;
@@ -46,8 +44,7 @@ export const ProductsTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { category, name, price, stockQuantity, img } = props;
-    const categoryVariant = category === 1 ? "Secondary" : category === 2 ? "Success" : "primary";
+    const { category, name, price, stockQuantity, img, id } = props;
 
     return (
       <tr className="border-bottom product-table-tr">
@@ -75,7 +72,7 @@ export const ProductsTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={Paths.Invoice.path}>
+          <Link to={`/product/edit/${id}`}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
           <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />

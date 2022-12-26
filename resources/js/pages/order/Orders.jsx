@@ -5,6 +5,7 @@ import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { OrdersTable } from "@/pages/order/OrdersTable";
+import { ChangeStatusModal } from "@/pages/order/changeStatusModal";
 import orders from "@/data/orders";
 
 export default () => {
@@ -12,6 +13,7 @@ export default () => {
   const [searchValue, setSearchValue] = useState("");
   const [birthday, setBirthday] = useState("");
   const [statusValue, setStatusValue] = useState("all");
+  const [modalOpen, setModalOpen] = useState(false);
 
   const changeSearchValue = (e) => {
     const newSearchValue = e.target.value;
@@ -37,8 +39,18 @@ export default () => {
     setTransactions(newTransactions);
   };
 
+  const changeStatusModal = () => {
+    setModalOpen(!modalOpen);
+  }
+
   return (
     <>
+      {modalOpen && (
+        <ChangeStatusModal
+          show={modalOpen}
+          setModalOpen={setModalOpen}
+        />
+      )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
@@ -108,6 +120,7 @@ export default () => {
 
       <OrdersTable
         orders={transactions.filter(t => t.show)}
+        changeStatusModal={changeStatusModal}
       />
     </>
   );

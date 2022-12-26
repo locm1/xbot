@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
@@ -9,11 +9,36 @@ import { create } from "lodash";
 
 
 export const OrdersTable = (props) => {
-  const { orders } = props;
+  const { orders, changeStatusModal } = props;
   const totalOrders = orders.length;
 
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 1:
+        return {
+          class: 'warning',
+          name: '注文内容確認中'
+        }
+      case 2:
+        return {
+          class: 'success',
+          name: '配送準備中'
+        }
+      case 3:
+        return {
+          class: 'info',
+          name: '当店より発送済み'
+        }
+      case 4:
+        return {
+          class: 'danger',
+          name: 'キャンセル'
+        }
+    }
+  }
+
   const TableRow = (props) => {
-    const { id, createdAt, name, prefectures, productName, status } = props;
+    const { id, createdAt, name, prefectures, products, status, userImage } = props;
 
     return (
       <tr className="border-bottom">
@@ -28,9 +53,22 @@ export const OrdersTable = (props) => {
           </span>
         </td>
         <td>
-          <span className="fw-normal">
-            {name}
-          </span>
+          <div className="d-flex align-items-center">
+            {userImage
+              ? (
+                <Image
+                  src={userImage}
+                  className="avatar rounded-circle me-3"
+                />
+              ) : (
+                <div className="avatar d-flex align-items-center justify-content-center fw-bold rounded bg-secondary me-3">
+                  <span>{getFirstLetterOfEachWord(name)}</span>
+                </div>
+              )}
+            <div className="d-block">
+              <span className="fw-bold">{name}</span>
+            </div>
+          </div>
         </td>
         <td>
           <span className="fw-normal">
@@ -38,17 +76,24 @@ export const OrdersTable = (props) => {
           </span>
         </td>
         <td>
-          <span className="fw-bold">
-            {productName}
-          </span>
+          {products.map((product, index) => 
+            <div className={`d-flex align-items-center ${index == 0 ? "" : 'pt-2'}`}>
+              <Image src={product.img} className="me-3 product-image"/>
+              <div className="d-block">
+                <span className="fw-bold">{product.name}</span>
+              </div>
+            </div>
+          )}
         </td>
         <td>
-          <span className={`fw-bold`}>
-            {status}
-          </span>
+        <Card.Link className="d-flex align-items-center" onClick={changeStatusModal}>
+          <Badge bg={getStatusClass(status).class} className="me-1 order-status-badge fw-normal">
+            {getStatusClass(status).name}
+          </Badge>
+        </Card.Link>
         </td>
         <td>
-          <Link to={`#`}>
+          <Link to={`/product/detail/${id}`}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
           <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
@@ -69,7 +114,7 @@ export const OrdersTable = (props) => {
               <th className="border-gray-200">都道府県</th>
               <th className="border-gray-200">商品名</th>
               <th className="border-gray-200">ステータス</th>
-              <th className="border-gray-200">編集・削除</th>
+              <th className="border-gray-200">詳細・削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

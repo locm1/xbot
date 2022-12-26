@@ -5,7 +5,7 @@ import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { OrdersTable } from "@/pages/order/OrdersTable";
-import { ChangeStatusModal } from "@/pages/order/changeStatusModal";
+import { ChangeStatusModal } from "@/pages/order/ChangeStatusModal";
 import orders from "@/data/orders";
 
 export default () => {

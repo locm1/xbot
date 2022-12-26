@@ -110,3 +110,16 @@ $base_color: #707070;
   width: 48px;
   height: 48px;
 }
+
+.order-status-badge {
+  padding: 10px;
+  font-size: 13px;
+}
+
+.nav-link {
+  &.active {
+    background-color: #1F2937 !important;
+    color: white !important;
+    border-color: #1F2937 !important;
+  }
+}

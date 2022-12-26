@@ -22,6 +22,7 @@ export const Paths = {
     Products: { path: "/product/list" },
     EditProduct: { path: "/product/edit/:id" },
     CreateProduct: { path: "/product/create" },
+    OrderDetail: { path: "/product/detail/:id" },
     Coupons: { path: "/coupon/list" },
     CreateCoupon: { path: "/coupon/create" },
     Orders: { path: "/order/list" },

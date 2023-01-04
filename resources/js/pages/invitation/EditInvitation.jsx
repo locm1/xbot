@@ -2,56 +2,55 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, PencilAltIcon, TrashIcon} from "@heroicons/react/solid";
-import { Col, Row, Form, Button, Breadcrumb, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
+import { Col, Row, Form, Button, Badge , Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 
 import { CouponsTable } from "@/pages/coupon/CouponsTable";
 import coupons from "@/data/coupons";
 import users from "@/data/users";
+import issueUsers from "@/data/issueUsers";
 import { Paths } from "@/paths";
 
 export default () => {
-  const [transactions, setTransactions] = useState(coupons.map(t => ({ ...t, show: true })));
-  const [searchValue, setSearchValue] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
+  const [formValue, setFormValue] = useState(
+    {name: '', content: ''}
+  );
 
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
-
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
+  const handleChange = (e, input) => {
+    return setFormValue({...formValue, [input]: e.target.value})
   };
 
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
 
   const getFirstLetterOfEachWord = (text) => (
     text.match(/\b\w/g).join('')
   );
 
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 1:
+        return {
+          class: 'tertiary',
+          name: '未'
+        }
+      case 2:
+        return {
+          class: 'info',
+          name: '済'
+        }
+    }
+  }
+
   const TableRow = (props) => {
-    const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
-    const { id, image, name, tel, sex, birthDate, area, isSelected } = props;
-    const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "primary";
+    const { id, image, name, getTime, status } = props;
 
     return (
       <tr className="border-bottom">
+        <td>
+          <span className="fw-normal">
+            {getTime}
+          </span>
+        </td>
         <td>
           <div className="d-flex align-items-center">
             {image
@@ -73,19 +72,9 @@ export default () => {
           </div>
         </td>
         <td>
-          <span className="fw-normal">
-            {tel}
-          </span>
-        </td>
-        <td>
-          <span className={`fw-normal text-${sexVariant}`}>
-            {sex_array[sex]}
-          </span>
-        </td>
-        <td>
-          <span className="fw-normal">
-            {birthDate}
-          </span>
+          <Badge bg={getStatusClass(status).class} className="me-1 order-status-badge fw-normal">
+            {getStatusClass(status).name}
+          </Badge>
         </td>
       </tr>
     );
@@ -95,12 +84,7 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item>クーポン管理</Breadcrumb.Item>
-            <Breadcrumb.Item active>クーポン追加</Breadcrumb.Item>
-          </Breadcrumb>
-          <h1 className="page-title">クーポン追加</h1>
+          <h1 className="page-title">招待編集</h1>
         </div>
       </div>
       <Card border="0" className="shadow mb-4">
@@ -111,33 +95,19 @@ export default () => {
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>管理名称</Form.Label>
-                <Form.Control required type="text" placeholder="Enter your first name" />
+                <Form.Control required type="text" name="name" value={formValue.name} onChange={(e) => handleChange(e, 'name')} />
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>使用上限数</Form.Label>
-                <Form.Control required type="text" placeholder="Also your last name" />
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>割引率(%)</Form.Label>
-                <Form.Control required type="text" placeholder="Enter your first name" />
-              </Form.Group>
-            </Col>
-            <Col md={6} className="mb-3">
-              <Form.Group id="lastName">
-                <Form.Label>利用コード</Form.Label>
-                <Form.Control required type="text" placeholder="Also your last name" />
+                <Form.Label>特典内容</Form.Label>
+                <Form.Control required type="text" name="content" value={formValue.content} onChange={(e) => handleChange(e, 'content')} />
               </Form.Group>
             </Col>
           </Row>
           <div className="mt-3">
             <Button variant="gray-800" type="submit" className="mt-2 animate-up-2">
-              保存する
+              更新する
             </Button>
           </div>
         </Form>
@@ -145,18 +115,17 @@ export default () => {
     </Card>
     <Card border="0" className="table-wrapper table-responsive shadow">
       <Card.Body>
-        <h5 className="mb-4 border-bottom pb-3">クーポン利用者一覧</h5>
+        <h5 className="mb-4 border-bottom pb-3">発行者一覧</h5>
         <Table hover>
           <thead>
             <tr>
-              <th className="border-bottom">氏名</th>
-              <th className="border-bottom">電話番号</th>
-              <th className="border-bottom">性別</th>
-              <th className="border-bottom">誕生日</th>
+              <th className="border-bottom">取得日時</th>
+              <th className="border-bottom">利用者</th>
+              <th className="border-bottom">使用状況</th>
             </tr>
           </thead>
           <tbody className="border-0">
-            {users.map(t => <TableRow key={`coupons-${t.id}`} {...t} />)}
+            {issueUsers.map(t => <TableRow key={`issue-user-${t.id}`} {...t} />)}
           </tbody>
         </Table>
         <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">

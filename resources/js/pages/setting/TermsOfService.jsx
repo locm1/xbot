@@ -90,43 +90,11 @@ export default () => {
   以上`
 
   const [termsOfService, setTermsOfService] = useState(text);
-  const [searchValue, setSearchValue] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
-
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
-
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
-  };
-
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
 
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item active>サイト設定</Breadcrumb.Item>
-            <Breadcrumb.Item active>利用規約</Breadcrumb.Item>
-          </Breadcrumb>
           <h1 className="page-title">利用規約</h1>
         </div>
       </div>
@@ -137,7 +105,7 @@ export default () => {
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label>利用規約</Form.Label>
-                  <Form.Control as="textarea" rows="30" maxlength="5000" value={termsOfService} />
+                  <Form.Control as="textarea" rows="30" maxlength="5000" name="terms_of_service" value={termsOfService} onChange={(e) => setTermsOfService(e.target.value)} />
                 </Form.Group>
                 <div className="mt-3">
                   <Button variant="gray-800" type="submit" className="mt-2 animate-up-2">

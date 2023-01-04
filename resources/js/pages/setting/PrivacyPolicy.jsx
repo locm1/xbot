@@ -67,43 +67,11 @@ export default () => {
   担当部署：DEMO MEN
   Eメールアドレス：info@demo.co.jp`
   const [privacyPolicy, setPrivacyPolicy] = useState(text);
-  const [searchValue, setSearchValue] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
-
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
-
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
-  };
-
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
 
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item active>サイト設定</Breadcrumb.Item>
-            <Breadcrumb.Item active>プライバシーポリシー</Breadcrumb.Item>
-          </Breadcrumb>
           <h1 className="page-title">プライバシーポリシー</h1>
         </div>
       </div>
@@ -114,7 +82,7 @@ export default () => {
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label>プライバシーポリシー</Form.Label>
-                  <Form.Control as="textarea" rows="30" maxlength="5000" value={privacyPolicy} />
+                  <Form.Control as="textarea" rows="30" maxlength="5000" name="privacy_policy" value={privacyPolicy} onChange={(e) => setPrivacyPolicy(e.target.value)} />
                 </Form.Group>
                 <div className="mt-3">
                   <Button variant="gray-800" type="submit" className="mt-2 animate-up-2">

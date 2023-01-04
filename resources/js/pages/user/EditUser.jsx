@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { HomeIcon } from "@heroicons/react/solid";
-import { Col, Row, Card, Form, Image, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
+import { HomeIcon, UserIcon } from "@heroicons/react/solid";
+import { Col, Row, Card, Form, Nav, Button, Tab, Breadcrumb } from 'react-bootstrap';
 import { ProfileCardWidget } from "@/components/Widgets";
 
 // forms
@@ -62,53 +62,76 @@ export default () => {
         </div>
       </div>
 
-      <Row>
-        <Col xs={12} xl={8}>
-          <UserInfoForm handleChange={handleChange} formValue={formValue} />
-          <QuestionnaireForm />
-        </Col>
-
-        <Col xs={12} xl={4}>
-          <Row>
-            <Col xs={12} className="mb-4">
-              <ProfileCardWidget
-                fullName="Neil Sims"
-                picture={Profile1}
-                jobTitle="Senior Software Engineer"
-                location="New York, USA"
-              />
-            </Col>
-            <Col xs={12} className="mb-4">
-              <PurchaseTimeForm title="来店 / ポイント / 購入回数" />
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12} className="mb-4">
-          <HistoryTable title="来店履歴" headers={visitorHistoryHeaders} histories={visitorHistories} />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12} className="mb-4">
-          <HistoryTable title="紹介履歴" headers={inviteHistoryHeaders} histories={inviteHistories} />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12} className="mb-4">
-          <HistoryTable title="注文履歴" headers={orderHistoryHeaders} histories={orders} />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12} className="mb-4">
-          <HistoryTable title="取置履歴" headers={reserveHistoryHeaders} histories={reserves} />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12} xl={12}>
-          <TagForm />
-        </Col>
-      </Row>
+      <Tab.Container defaultActiveKey="user_info" className="mb-6">
+        <Row>
+          <Col lg={12}>
+            <Nav fill variant="pills" className="flex-column flex-sm-row">
+              <Nav.Item>
+                <Nav.Link eventKey="user_info" className="mb-sm-3 mb-md-0">
+                  <UserIcon className="icon icon-xs me-2" /> ユーザー情報
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="history" className="mb-sm-3 mb-md-0">
+                  <UserIcon className="icon icon-xs me-2" /> 履歴一覧
+                </Nav.Link>
+              </Nav.Item>
+            </Nav>
+            <Tab.Content>
+              <Tab.Pane eventKey="user_info" className="py-4">
+                <Row>
+                  <Col xs={12} xl={8}>
+                    <UserInfoForm handleChange={handleChange} formValue={formValue} />
+                    <QuestionnaireForm />
+                  </Col>
+                  <Col xs={12} xl={4}>
+                    <Row>
+                      <Col xs={12} className="mb-4">
+                        <ProfileCardWidget
+                          fullName="Neil Sims"
+                          picture={Profile1}
+                          jobTitle="Senior Software Engineer"
+                          location="New York, USA"
+                        />
+                      </Col>
+                      <Col xs={12} className="mb-4">
+                        <PurchaseTimeForm title="来店 / ポイント / 購入回数" />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} xl={12}>
+                    <TagForm />
+                  </Col>
+                </Row>
+              </Tab.Pane>
+              <Tab.Pane eventKey="history" className="py-4">
+                <Row>
+                  <Col xs={12} className="mb-4">
+                    <HistoryTable title="来店履歴" headers={visitorHistoryHeaders} histories={visitorHistories} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} className="mb-4">
+                    <HistoryTable title="紹介履歴" headers={inviteHistoryHeaders} histories={inviteHistories} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} className="mb-4">
+                    <HistoryTable title="注文履歴" headers={orderHistoryHeaders} histories={orders} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} className="mb-4">
+                    <HistoryTable title="取置履歴" headers={reserveHistoryHeaders} histories={reserves} />
+                  </Col>
+                </Row>
+              </Tab.Pane>
+            </Tab.Content>
+          </Col>
+        </Row>
+      </Tab.Container>
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
         <Button href={Paths.Users.path} variant="gray-800" className="mt-2 animate-up-2">
           ユーザーリストに戻る

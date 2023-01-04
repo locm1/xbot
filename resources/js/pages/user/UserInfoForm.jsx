@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
-import { Col, Row, Card, Form, Image, Button, InputGroup } from 'react-bootstrap';
+import { Col, Row, Card, Form, Image, Tab, InputGroup } from 'react-bootstrap';
 
 export const DropFilesForm = () => {
   const [files, setFiles] = useState([]);
@@ -56,7 +56,7 @@ export const UserInfoForm = (props) => {
   return (
     <Card border="0" className="shadow mb-4">
       <Card.Body>
-        <h5 className="mb-4">お客様情報</h5>
+        <h5 className="mb-4 border-bottom pb-3">お客様情報</h5>
         <Form>
           <Row>
             <Col md={6} className="mb-3">

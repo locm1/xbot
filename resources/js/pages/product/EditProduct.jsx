@@ -100,7 +100,7 @@ export default () => {
         <Col xs={12} xl={6}>
           <Card border="0" className="shadow mb-4">
             <Card.Body>
-              <h5 className="mb-4">商品情報</h5>
+              <h5 className="mb-4 border-bottom pb-3">商品情報</h5>
               <Form>
                 <Col xs={12} xl={12}>
                   <Row>
@@ -153,7 +153,7 @@ export default () => {
         <Col xs={12} xl={6}>
           <Card border="0" className="shadow mb-4">
             <Card.Body>
-              <h5 className="mb-4">商品画像</h5>
+              <h5 className="mb-4 border-bottom pb-3">商品画像</h5>
               <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
                 <Form.Control {...getInputProps()} />
                 <div className="dz-default dz-message text-center">
@@ -169,7 +169,7 @@ export default () => {
         <Col xs={12} xl={12}>
           <Card border="0" className="shadow mb-4">
             <Card.Body>
-              <h5 className="mb-4">商品概要</h5>
+              <h5 className="mb-4 border-bottom pb-3">商品概要</h5>
               {
                 overviews.map((overview, index) => 
                   <ProductOverview key={index} {...overview} deleteProductOverview={deleteProductOverview} />

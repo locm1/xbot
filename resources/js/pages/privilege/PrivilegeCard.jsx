@@ -1,18 +1,12 @@
 import React, { useState } from "react";
-import { PlusIcon, MinusIcon, PencilAltIcon, SelectorIcon, TagIcon, TrashIcon, UserIcon } from "@heroicons/react/solid";
+import { PlusIcon, MinusIcon } from "@heroicons/react/solid";
 import { Card, Button, Image, Col, Row, Form } from "react-bootstrap";
 
 export default (props) => {
-  const [showEditCardModal, setShowEditCardModal] = useState(false);
   const { visitTimes, id, products, privilegeLists, setPrivilegeLists } = props; 
   const [time, setTime] = useState(visitTimes);
   const [name, setName] = useState("");
-  const [isTitleEditable, setIsTitleEditable] = useState(false);
   const [privileges, setPrivileges] = useState(products);
-
-  const toggleIsTitleEditable = () => {
-    setIsTitleEditable(!isTitleEditable);
-  };
 
   const handleChange = (e, id) => {
     const changePrivileges = {
@@ -62,7 +56,7 @@ export default (props) => {
   return (
     <>
       <Card border={1} className="p-4 privilege-card-item">
-      <Card.Header className="d-flex align-items-center justify-content-start border-0 p-0 mb-3">
+      <Card.Header className="d-flex align-items-center justify-content-start border-0 p-0 mb-3 border-bottom pb-3">
         <h5 className="mb-0">来店回数</h5>
         <Form.Control required type="number" className="text-dark mb-1 visit-time-input" value={visitTimes} onChange={(e) => visitTimesChange(e, id)} />
         <h5 className="mb-0">回</h5>

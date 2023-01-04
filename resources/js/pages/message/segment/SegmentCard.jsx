@@ -45,7 +45,7 @@ export default (props) => {
 
   return (
     <Card border={1} className="p-4" ref={cardRef}{...extraProps} style={style}>
-      <Card.Header className="d-flex align-items-center justify-content-between border-0 p-0 mb-3">
+      <Card.Header className="d-flex align-items-center justify-content-between border-0 p-0 mb-3 border-bottom pb-3">
         <h5 className="mb-0">{title}</h5>
         <div>
           <Button variant="close" onClick={onDelete} size="xs" className="fs-7 px-1 py-0" />

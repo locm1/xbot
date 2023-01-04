@@ -32,6 +32,7 @@ export const Paths = {
     ScheduleCalendar: { path: "/schedule/calendar" },
     Schedules: { path: "/schedule/list" },
     Invitations: { path: "/invitation/list" },
+    EditInvitation: { path: "/invitation/edit/:id" },
     PrivacyPolicy: { path: "/setting/privacy-policy" },
     TermsOfService: { path: "/setting/terms-of-service" },
     SpecificTrades: { path: "/setting/specific-trades" },

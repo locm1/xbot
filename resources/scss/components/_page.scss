@@ -123,3 +123,13 @@ $base_color: #707070;
     border-color: #1F2937 !important;
   }
 }
+
+.orderer-info-wrap {
+  h6, h4 {
+    text-align: left;
+  }
+  span {
+    display: block;
+    text-align: left;
+  }
+}

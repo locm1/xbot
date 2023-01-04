@@ -27,6 +27,7 @@ import Events from '@/pages/event/Events';
 import ScheduleCalendar from '@/pages/schedule/ScheduleCalendar';
 import Schedules from '@/pages/schedule/Schedules';
 import Invitations from '@/pages/invitation/Invitations';
+import EditInvitation from '@/pages/invitation/EditInvitation';
 import PrivacyPolicy from '@/pages/setting/PrivacyPolicy';
 import TermsOfService from '@/pages/setting/TermsOfService';
 import SpecificTrades from '@/pages/setting/SpecificTrades';
@@ -136,6 +137,7 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.ScheduleCalendar.path} component={ScheduleCalendar} />
       <RouteWithSidebar exact path={Paths.Schedules.path} component={Schedules} />
       <RouteWithSidebar exact path={Paths.Invitations.path} component={Invitations} />
+      <RouteWithSidebar exact path={Paths.EditInvitation.path} component={EditInvitation} />
       <RouteWithSidebar exact path={Paths.PrivacyPolicy.path} component={PrivacyPolicy} />
       <RouteWithSidebar exact path={Paths.TermsOfService.path} component={TermsOfService} />
       <RouteWithSidebar exact path={Paths.SpecificTrades.path} component={SpecificTrades} />

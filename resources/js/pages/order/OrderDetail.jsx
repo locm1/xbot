@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import { Row, Col, Nav, Breadcrumb, Card } from 'react-bootstrap';
 import { HomeIcon, UserCircleIcon, CogIcon, MailIcon, ShoppingCartIcon } from '@heroicons/react/solid';
 
-import OrderTop from "@/pages/order/detail/OrderTop";
-import { OrderInformation } from "@/pages/order/detail/OrderInformation";
+import OrdererInformation from "@/pages/order/detail/OrdererInformation";
+import { ProductWidget } from "@/pages/order/detail/ProductWidget";
 import { DetailWidget } from "@/pages/order/detail/DetailWidget";
-import orders from "@/data/orders";
 import Cosmetics from '@img/img/products/cosmetics.jpeg';
 import Treatment from '@img/img/products/treatment.jpeg';
 
 export default () => {
-  const ordererInformations = [
-    {id: 1, title: '氏名', value: '宮島拡夢'},
-    {id: 2, title: '氏名（フリガナ）', value: 'ミヤジマヒロム'},
-    {id: 3, title: '郵便番号', value: '0030809'},
-    {id: 4, title: '住所', value: '北海道札幌市白石区菊水九条4-1-708'},
-    {id: 5, title: '電話番号', value: '08060666789'},
-    {id: 6, title: '購入回数', value: '3回'},
+  const ordererInformations = {
+    name: '宮島拡夢',
+    nameKana: 'ミヤジマヒロム',
+  };
+  const details = [
+    {id: 1, title: '郵便番号', value: '0030809'},
+    {id: 2, title: '住所', value: '北海道札幌市白石区菊水九条4-1-708'},
+    {id: 3, title: '電話番号', value: '08060666789'},
+    {id: 4, title: '購入回数', value: '3回'},
   ];
 
   const orders = [
@@ -53,19 +54,18 @@ export default () => {
           <h1 className="page-title">注文情報</h1>
         </div>
       </div>
-      <OrderTop />
       <Row className="mt-5">
-        <Col xs={12} xl={6}>
-          <DetailWidget details={ordererInformations} title='注文者情報' />
-          <Col className="mt-5">
-            <DetailWidget details={deliveries} title='配送先情報' />
-          </Col>
-        </Col>
-        <Col xs={12} xl={6}>
+        <Col xs={12} xl={8}>
           <DetailWidget details={orders} title='注文情報' />
           <Col className="mt-5">
-            <DetailWidget details={products} title='商品情報' />
+            <ProductWidget details={products} title='商品情報' />
           </Col>
+          <Col className="mt-5">
+            <DetailWidget details={deliveries} title='配送情報' />
+          </Col>
+        </Col>
+        <Col xs={12} xl={4}>
+          <OrdererInformation {...ordererInformations} details={details} />
         </Col>
       </Row>
     </>

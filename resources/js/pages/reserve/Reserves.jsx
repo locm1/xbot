@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { ReservesTable } from "@/pages/reserve/ReservesTable";
 import reserves from "@/data/reserves";
+
+const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-primary me-3',
+    cancelButton: 'btn btn-gray'
+  },
+  buttonsStyling: false
+}));
 
 export default () => {
   const [transactions, setTransactions] = useState(reserves.map(t => ({ ...t, show: true })));
@@ -35,6 +45,29 @@ export default () => {
 
     setStatusValue(newStatusValue);
     setTransactions(newTransactions);
+  };
+
+  const deleteUsers = async (ids) => {
+    const usersToBeDeleted = ids ? ids : selectedUsersIds;
+    const usersNr = usersToBeDeleted.length;
+    const textMessage = "本当にこのデータを削除しますか？";
+
+    const result = await SwalWithBootstrapButtons.fire({
+      icon: "error",
+      title: "削除確認",
+      text: textMessage,
+      showCancelButton: true,
+      confirmButtonText: "削除",
+      cancelButtonText: "キャンセル"
+    });
+
+    if (result.isConfirmed) {
+      const newUsers = users.filter(f => !usersToBeDeleted.includes(f.id));
+      const confirmMessage = "選択したデータは削除されました。";
+
+      setUsers(newUsers);
+      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    }
   };
 
   return (
@@ -91,6 +124,7 @@ export default () => {
 
       <ReservesTable
         reserves={transactions.filter(t => t.show)}
+        deleteUsers={deleteUsers}
       />
     </>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Badge} from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
@@ -11,8 +11,12 @@ export const ReservesTable = (props) => {
   const { reserves } = props;
   const totalReserves = reserves.length;
 
+  const deleteUsers = (ids) => {
+    props.deleteUsers && props.deleteUsers(ids)
+  }
+
   const TableRow = (props) => {
-    const { userName, name, quantity, price, deadline, status } = props;
+    const { id, userName, name, quantity, price, deadline, status } = props;
 
     return (
       <tr className="border-bottom">
@@ -43,14 +47,16 @@ export const ReservesTable = (props) => {
         </td>
         <td>
           <span className="fw-normal">
-            {status}
+          <React.Fragment>
+            <Badge pill={true} bg="success" className="me-1">{status}</Badge>
+          </React.Fragment>
           </span>
         </td>
         <td>
           <Link to={`#`}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
-          <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
+          <TrashIcon role="button" onClick={() => deleteUsers([id])} className="icon icon-xs text-danger me-2" />
         </td>
       </tr>
     );

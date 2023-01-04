@@ -60,7 +60,7 @@ export const TagForm = () => {
   return (
     <Card border="0" className="shadow mb-4">
       <Card.Body>
-        <h5 className="mb-4">タグ</h5>
+        <h5 className="mb-4 border-bottom pb-3">タグ</h5>
         <Form>
           <Row>
             <Col md={12} className="mb-3">

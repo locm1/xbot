@@ -9,7 +9,7 @@ export const HistoryTable = (props) => {
   return (
     <Card border="0" className="shadow">
       <Card.Body>
-        <h5 className="mb-4">{title}</h5>
+        <h5 className="mb-4 border-bottom pb-3">{title}</h5>
         <Table responsive className="table-centered table-nowrap rounded mb-0">
           <thead className="thead-light">
             <tr>

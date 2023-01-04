@@ -10,26 +10,10 @@ import PrivilegeCard from "@/pages/privilege/PrivilegeCard";
 import privileges from "@/data/privileges";
 import { Paths } from "@/paths";
 
-const ArchiveIconHtml = ReactDOMServer.renderToString(
-  <ArchiveIcon className="h-50 w-auto" />
-);
-
-const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
-  customClass: {
-    confirmButton: "btn btn-primary me-3",
-    cancelButton: "btn btn-gray"
-  },
-  buttonsStyling: false
-}));
-
 export default () => {
   const [privilegeLists, setPrivilegeLists] = useState(privileges);
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
-
-  const toggleCreateCardModal = () => {
-    setShowCreateCardModal(!showCreateCardModal);
-  };
 
   const createCard = () => {
     const id = (privilegeLists === undefined) ? 1 : privilegeLists.length + 1;

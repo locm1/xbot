@@ -4,42 +4,42 @@ import { v4 as uuidv4 } from "uuid";
 
 export default [
     {
-        "id": uuidv4(),
+        "id": 1,
         "name": "招待者クーポン",
         "privilegeDetail": "QUOカードプレゼント",
     },
     {
-      "id": uuidv4(),
+      "id": 2,
       "name": "招待者クーポン",
       "privilegeDetail": "QUOカードプレゼント",
     },
     {
-      "id": uuidv4(),
+      "id": 3,
       "name": "招待者クーポン",
       "privilegeDetail": "QUOカードプレゼント",
     },
     {
-      "id": uuidv4(),
+      "id": 4,
       "name": "招待者クーポン",
       "privilegeDetail": "QUOカードプレゼント",
     },
     {
-      "id": uuidv4(),
+      "id": 5,
       "name": "招待者クーポン",
       "privilegeDetail": "QUOカードプレゼント",
     },
     {
-      "id": uuidv4(),
+      "id": 6,
       "name": "招待者クーポン",
       "privilegeDetail": "QUOカードプレゼント",
     },
     {
-      "id": uuidv4(),
+      "id": 7,
       "name": "招待者クーポン",
       "privilegeDetail": "QUOカードプレゼント",
     },
     {
-      "id": uuidv4(),
+      "id": 8,
       "name": "招待者クーポン",
       "privilegeDetail": "QUOカードプレゼント",
     },

@@ -38,7 +38,7 @@ export const OrdersTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, createdAt, name, prefectures, products, status, userImage } = props;
+    const { id, createdAt, name, prefectures, purchasePrice, status, userImage, shippingFee } = props;
 
     return (
       <tr className="border-bottom">
@@ -50,6 +50,16 @@ export const OrdersTable = (props) => {
         <td>
           <span className="fw-normal">
             {createdAt}
+          </span>
+        </td>
+        <td>
+          <span className="fw-normal">
+            {purchasePrice}
+          </span>
+        </td>
+        <td>
+          <span className="fw-normal">
+            {shippingFee}
           </span>
         </td>
         <td>
@@ -69,21 +79,6 @@ export const OrdersTable = (props) => {
               <span className="fw-bold">{name}</span>
             </div>
           </div>
-        </td>
-        <td>
-          <span className="fw-normal">
-            {prefectures}
-          </span>
-        </td>
-        <td>
-          {products.map((product, index) => 
-            <div className={`d-flex align-items-center ${index == 0 ? "" : 'pt-2'}`}>
-              <Image src={product.img} className="me-3 product-image"/>
-              <div className="d-block">
-                <span className="fw-bold">{product.name}</span>
-              </div>
-            </div>
-          )}
         </td>
         <td>
         <Card.Link className="d-flex align-items-center" onClick={changeStatusModal}>
@@ -110,9 +105,9 @@ export const OrdersTable = (props) => {
             <tr>
               <th className="border-gray-200">注文番号</th>
               <th className="border-gray-200">注文日時</th>
+              <th className="border-gray-200">購入金額</th>
+              <th className="border-gray-200">送料</th>
               <th className="border-gray-200">氏名</th>
-              <th className="border-gray-200">都道府県</th>
-              <th className="border-gray-200">商品名</th>
               <th className="border-gray-200">ステータス</th>
               <th className="border-gray-200">詳細・削除</th>
             </tr>

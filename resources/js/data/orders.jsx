@@ -17,6 +17,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 2,
@@ -29,6 +31,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 3,
@@ -41,6 +45,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 4,
@@ -53,6 +59,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 5,
@@ -65,6 +73,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 6,
@@ -77,6 +87,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 7,
@@ -89,6 +101,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 8,
@@ -101,6 +115,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 9,
@@ -113,6 +129,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 10,
@@ -125,6 +143,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 11,
@@ -137,6 +157,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 12,
@@ -149,6 +171,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 13,
@@ -161,6 +185,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 14,
@@ -173,6 +199,8 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
     {
         "id": 15,
@@ -185,5 +213,7 @@ export default [
         ],
         "status": 1,
         "userImage": Profile1,
+        "purchasePrice": 1000,
+        "shippingFee": 500,
     },
 ]

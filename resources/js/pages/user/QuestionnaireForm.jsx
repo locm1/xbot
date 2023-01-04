@@ -51,7 +51,7 @@ export const QuestionnaireForm = () => {
   return (
     <Card border="0" className="shadow mb-4">
       <Card.Body>
-        <h5 className="mb-4">アンケート</h5>
+        <h5 className="mb-4 border-bottom pb-3">アンケート</h5>
         <Form>
           <Row>
             <Col md={6} className="mb-3">

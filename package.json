@@ -54,5 +54,9 @@
         "sweetalert2": "^11.6.15",
         "sweetalert2-react-content": "^5.0.7",
         "uuid": "^9.0.0"
+    },
+    "dependencies": {
+        "@fullcalendar/core": "^6.0.1",
+        "react-flatpickr": "^3.10.13"
     }
 }

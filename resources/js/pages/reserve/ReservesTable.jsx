@@ -53,9 +53,6 @@ export const ReservesTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={`#`}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
-          </Link>
           <TrashIcon role="button" onClick={() => deleteUsers([id])} className="icon icon-xs text-danger me-2" />
         </td>
       </tr>
@@ -74,7 +71,7 @@ export const ReservesTable = (props) => {
               <th className="border-gray-200">金額</th>
               <th className="border-gray-200">期日</th>
               <th className="border-gray-200">ステータス</th>
-              <th className="border-gray-200">編集・削除</th>
+              <th className="border-gray-200">削除</th>
             </tr>
           </thead>
           <tbody className="border-0">
@@ -85,7 +82,7 @@ export const ReservesTable = (props) => {
           <Nav>
             <Pagination className="mb-0">
               <Pagination.Prev>
-                Previous
+                {'<'}
               </Pagination.Prev>
               <Pagination.Item active>1</Pagination.Item>
               <Pagination.Item>2</Pagination.Item>
@@ -93,7 +90,7 @@ export const ReservesTable = (props) => {
               <Pagination.Item>4</Pagination.Item>
               <Pagination.Item>5</Pagination.Item>
               <Pagination.Next>
-                Next
+                {'>'}
               </Pagination.Next>
             </Pagination>
           </Nav>

@@ -7,6 +7,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import bootstrapPlugin from "@fullcalendar/bootstrap";
 import interactionPlugin from "@fullcalendar/interaction";
+import allLocales from '@fullcalendar/core/locales-all';
 import { Card, Button, Breadcrumb } from "react-bootstrap";
 import React, { useRef, useState } from "react";
 
@@ -124,21 +125,7 @@ export default () => {
 
       <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-xl-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item>イベント管理</Breadcrumb.Item>
-            <Breadcrumb.Item active>イベントカレンダー</Breadcrumb.Item>
-          </Breadcrumb>
           <h1 className="page-title">イベントカレンダー</h1>
-        </div>
-        <div>
-          <Button
-            variant="outline-gray-600"
-            className="d-inline-flex align-items-center"
-            onClick={goToCalendarDocs}
-          >
-            <QuestionMarkCircleIcon className="icon icon-xs me-1" /> Calendar Docs
-          </Button>
         </div>
       </div>
 
@@ -149,22 +136,24 @@ export default () => {
             selectable
             ref={calendarRef}
             events={events}
-            displayEventTime={false}
+            displayEventTime={true}
             themeSystem="bootstrap"
             plugins={[dayGridPlugin, timeGridPlugin, bootstrapPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             buttonText={{
-              prev: "Previous",
-              next: "Next",
+              prev: "<",
+              next: ">",
               month: "Month",
               week: "Week",
               day: "Day",
-              today: "Today",
+              today: "今日",
             }}
             bootstrapFontAwesome={false}
             initialDate={currentDate}
             eventClick={onEventClick}
             dateClick={onDateClick}
+            locales={allLocales}
+            locale="ja"
           />
         </Card.Body>
       </Card>

@@ -8,6 +8,9 @@ import { Col, Row, Form, Modal, Button, InputGroup, Image, Badge, FloatingLabel 
 import KanbanAvatar from "@/components/KanbanAvatar";
 import { Members as BoardMembers, Labels as BoardLabels } from "@/data/kanban";
 
+import "flatpickr/dist/themes/material_green.css";
+import Flatpickr from "react-flatpickr";
+
 
 export const EventModal = (props) => {
   const [title, setTitle] = useState(props.title);
@@ -40,7 +43,7 @@ export const EventModal = (props) => {
       <Form className="modal-content">
         <Modal.Body>
           <Form.Group id="title" className="mb-4">
-            <Form.Label>Event title</Form.Label>
+            <Form.Label>題名</Form.Label>
             <Form.Control
               required
               autoFocus
@@ -51,31 +54,18 @@ export const EventModal = (props) => {
           <Row>
             <Col xs={12} lg={6}>
               <Form.Group id="startDate">
-                <Form.Label>Select start date</Form.Label>
-                <Datetime
-                  timeFormat={false}
-                  onChange={setStart}
-                  renderInput={(props, openCalendar) => (
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <CalendarIcon className="icon icon-xs" />
-                      </InputGroup.Text>
-                      <Form.Control
-                        required
-                        type="text"
-                        placeholder="YYYY-MM-DD"
-                        value={startDate}
-                        onFocus={openCalendar}
-                        onChange={() => { }} />
-                    </InputGroup>
-                  )} />
+                <Form.Label>開始</Form.Label>
+                <Flatpickr
+                  data-enable-time
+                  value={startDate}
+                />
               </Form.Group>
             </Col>
             <Col xs={12} lg={6}>
               <Form.Group id="endDate" className="mb-2">
-                <Form.Label>Select end date</Form.Label>
+                <Form.Label>終了</Form.Label>
                 <Datetime
-                  timeFormat={false}
+                  timeFormat={true}
                   onChange={setEnd}
                   isValidDate={currDate => currDate.isSameOrAfter(start)}
                   initialViewDate={end || start}

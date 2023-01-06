@@ -11,18 +11,18 @@ import tags from "@/data/tags";
 import { Paths } from "@/paths";
 
 export default () => {
-  const [tagsLists, setPrivilegeLists] = useState(tags);
+  const [tagsLists, setTagsLists] = useState(tags);
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
 
   const createCard = () => {
-    const id = (privilegeLists === undefined) ? 1 : privilegeLists.length + 1;
-    const newPrivilege = {
+    const id = (tagsLists === undefined) ? 1 : tagsLists.length + 1;
+    const newTags = {
       "id": id,
       "visitTimes": '',
       "products": []
     }
-    setPrivilegeLists([...privilegeLists, newPrivilege]);
+    setTagsLists([...tagsLists, newTags]);
   };
 
   const onHide = () => {
@@ -45,13 +45,13 @@ export default () => {
       <Container fluid className="cotainer py-4 px-0">
         <Row className="privilege-card-wrap">
           {
-            tagsLists.map(privilege => 
+            tagsLists.map(tags => 
               <TagsCard 
-                key={`privilege-${privilege.id}`}
-                {...privilege}
+                key={`tags-${tags.id}`}
+                {...tags}
                 setCardToEdit={setCardToEdit}
                 tagsLists={tagsLists}
-                setPrivilegeLists={setPrivilegeLists}
+                setTagsLists={setTagsLists}
               />
             )
           }

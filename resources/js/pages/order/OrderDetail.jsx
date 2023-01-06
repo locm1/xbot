@@ -23,9 +23,9 @@ export default () => {
   const orders = [
     {id: 1, title: '注文番号', value: 22},
     {id: 2, title: '注文日時', value: '2022年12月11日　15時57分'},
-    {id: 3, title: '利用クーポン', value: ''},
-    {id: 4, title: '購入金額', value: '5,000円'},
-    {id: 5, title: '送料', value: '500円'},
+    {id: 3, title: '購入金額', value: '5,000円'},
+    {id: 4, title: '送料', value: '500円'},
+    {id: 5, title: '利用クーポン', value: ''},
   ];
 
   const products = [

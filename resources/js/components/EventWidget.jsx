@@ -14,31 +14,35 @@ export default (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [eventUsers, setEventUsers] = useState();
+  const [eventProps, setEventProps] = useState();
 
   const onCardClick = (users) => {
     setOpenModal(!openModal);
     setEventUsers(users);
   }
 
+  const onHide = () => {
+    setOpenModal(!openModal);
+    setEventUsers(null);
+  }
+
+  const handleClose = () => {
+    setShowEditModal(false);
+  };
+
   const Event = (props) => {
-    const { eventName, eventSchedule, start, end, place, rowClassName, users, onCardClick, setEventUsers } = props;
+    const { id, eventName, eventSchedule, start, end, place, rowClassName, users, onCardClick, setEventProps, setShowEditModal, showEditModal } = props;
     const eventMonth = eventSchedule.split('-')[1];
     const eventDay = eventSchedule.split('-')[2];
+    const defaultModalProps = {title: eventName, id, start: start, end: end};
 
-    const onHide = () => {
-      setOpenModal(!openModal);
-      setEventUsers(null);
+    const changeEvent = () => {
+      setShowEditModal(!showEditModal);
+      setEventProps(defaultModalProps);
     }
 
     return (
       <>
-        {openModal && (
-          <ParticipantsModal
-            show={true}
-            users={eventUsers}
-            onHide={onHide}
-          />
-        )}
         <Row className={`align-items-center d-block d-sm-flex ${rowClassName}`}>
           <Col xs="auto" className="mb-3 mb-sm-0">
             <div className="calendar d-flex">
@@ -47,7 +51,7 @@ export default (props) => {
             </div>
           </Col>
           <Col>
-            <Card.Link as={Link} to={Paths.Calendar.path} className="mb-1">
+            <Card.Link className="mb-1" onClick={changeEvent}>
               <h5 className="mb-1">{eventName}</h5>
             </Card.Link>
             <div className="small fw-bold">{start} - {end}</div>
@@ -75,6 +79,23 @@ export default (props) => {
 
   return (
     <>
+      {openModal && (
+        <ParticipantsModal
+          show={true}
+          users={eventUsers}
+          onHide={onHide}
+        />
+      )}
+      {showEditModal && (
+        <EventModal
+          edit={true}
+          show={showEditModal}
+          {...eventProps}
+          onUpdate={handleClose}
+          onDelete={handleClose}
+          onHide={handleClose}
+        />
+      )}
     <Card border="0" className="shadow">
       <Card.Body>
         {
@@ -86,7 +107,10 @@ export default (props) => {
               rowClassName={(events.length - 1 === index) ? "" : "border-bottom pb-4 mb-4"}
               setEventUsers={setEventUsers}
               setOpenModal={setOpenModal}
+              setEventProps={setEventProps}
               openModal={openModal}
+              showEditModal={showEditModal}
+              setShowEditModal={setShowEditModal}
             />
           )
         }

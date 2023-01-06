@@ -8,20 +8,26 @@ import { Col, Row, Form, Modal, Button, InputGroup, Image, Badge, FloatingLabel 
 import KanbanAvatar from "@/components/KanbanAvatar";
 import { Members as BoardMembers, Labels as BoardLabels } from "@/data/kanban";
 
-import "flatpickr/dist/themes/material_green.css";
+import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
+import 'flatpickr/dist/l10n/ja.js';
 
 
 export const EventModal = (props) => {
+  const options = {
+    locale: 'ja',
+    onChange: (selectedDates, dateStr, instance) => setStart(dateStr)
+  }
   const [title, setTitle] = useState(props.title);
   const [start, setStart] = useState(props.start);
   const [end, setEnd] = useState(props.end);
 
   const { show = false, edit = false, id } = props;
-  const startDate = start ? moment(start).format("YYYY-MM-DD") : moment().format("YYYY-MM-DD");
-  const endDate = end ? moment(end).format("YYYY-MM-DD") : moment(start).format("YYYY-MM-DD");
+  const startDate = start ? moment(start).format("YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
+  const endDate = end ? moment(end).format("YYYY-MM-DD HH:mm") : moment(start).format("YYYY-MM-DD HH:mm");
 
   const onTitleChange = (e) => setTitle(e.target.value);
+  const onStartChange = (e) => setStart(e.target.value);
 
   const onConfirm = () => {
     const sameDay = startDate === endDate;
@@ -37,9 +43,11 @@ export const EventModal = (props) => {
   }
   const onDelete = () => edit && props.onDelete && props.onDelete(id);
   const onHide = () => props.onHide && props.onHide();
+  var focused = document.activeElement;
 
+  console.log(focused)
   return (
-    <Modal as={Modal.Dialog} centered show={show} onHide={onHide}>
+    <Modal as={Modal.Dialog} centered show={show} onHide={onHide} enforceFocus={false}>
       <Form className="modal-content">
         <Modal.Body>
           <Form.Group id="title" className="mb-4">
@@ -56,50 +64,70 @@ export const EventModal = (props) => {
               <Form.Group id="startDate">
                 <Form.Label>開始</Form.Label>
                 <Flatpickr
-                  data-enable-time
+                  options={ options }
                   value={startDate}
+                  render={(props, ref) => {
+                    return (
+                      <InputGroup>
+                      <InputGroup.Text>
+                        <CalendarIcon className="icon icon-xs" />
+                      </InputGroup.Text>
+                      <Form.Control
+                        data-enable-time
+                        data-time_24hr
+                        required
+                        type="text"
+                        placeholder="YYYY-MM-DD"
+                        ref={ref}
+                      />
+                    </InputGroup>
+                    );
+                  }}
                 />
               </Form.Group>
             </Col>
             <Col xs={12} lg={6}>
               <Form.Group id="endDate" className="mb-2">
                 <Form.Label>終了</Form.Label>
-                <Datetime
-                  timeFormat={true}
-                  onChange={setEnd}
-                  isValidDate={currDate => currDate.isSameOrAfter(start)}
-                  initialViewDate={end || start}
-                  renderInput={(props, openCalendar) => (
-                    <InputGroup>
+                <Flatpickr
+                  options={ options }
+                  render={(props, ref) => {
+                    return (
+                      <InputGroup>
                       <InputGroup.Text>
                         <CalendarIcon className="icon icon-xs" />
                       </InputGroup.Text>
                       <Form.Control
+                        data-enable-time
+                        data-time_24hr
                         required
                         type="text"
                         placeholder="YYYY-MM-DD"
                         value={endDate}
-                        onFocus={openCalendar}
-                        onChange={() => { }} />
-                    </InputGroup>
-                  )} />
+                        onChange={setEnd} 
+                        ref={ref}
+                        />
+                      </InputGroup>
+                    );
+                  }}
+                />
               </Form.Group>
             </Col>
           </Row>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" className="me-2" onClick={onConfirm}>
-            {edit ? "Update event" : "Add new event"}
+            {edit ? "更新" : "保存"}
           </Button>
 
           {edit ? (
             <Button variant="danger" onClick={onDelete}>
-              Delete event
+              削除
             </Button>
           ) : null}
 
           <Button variant="link" className="text-gray ms-auto" onClick={onHide}>
-            Close
+            閉じる
           </Button>
         </Modal.Footer>
       </Form>

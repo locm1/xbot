@@ -5,6 +5,7 @@ import { Paths } from "@/paths";
 // page
 import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
+import CreateQuestionnaire from '@/pages/questionnaire/CreateQuestionnaire';
 import Users from '@/pages/user/Users';
 import EditUser from '@/pages/user/EditUser';
 import SendSegments from '@/pages/message/SendSegments';
@@ -113,6 +114,7 @@ const Routing = () => {
         {<Redirect to="/dashboard" />}
       </Route>
       <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />
+      <RouteWithSidebar exact path={Paths.CreateQuestionnaire.path} component={CreateQuestionnaire} />
       <RouteWithSidebar exact path={Paths.Users.path} component={Users} />
       <RouteWithSidebar exact path={Paths.EditUser.path} component={EditUser} />
       <RouteWithSidebar exact path={Paths.SendSegments.path} component={SendSegments} />

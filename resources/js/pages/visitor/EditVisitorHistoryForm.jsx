@@ -5,6 +5,8 @@ import Datetime from "react-datetime";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, Image, Button, InputGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Paths } from "@/paths";
 
 export const DropFilesForm = () => {
   const [files, setFiles] = useState([]);
@@ -66,6 +68,11 @@ export const EditVisitorHistoryForm = (props) => {
             </Col>
           </Row>
         </Form>
+        <div className="d-flex flex-row-reverse">
+          <Button as={Link} to={Paths.Calendar.path} variant="gray-800" className="me-2 d-flex ">
+            保存する
+          </Button>
+        </div>
       </Card.Body>
     </Card>
   );

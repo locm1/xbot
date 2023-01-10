@@ -8,8 +8,19 @@ import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { EditVisitorHistoryForm } from "@/pages/visitor/EditVisitorHistoryForm";
 import visitorHistories from "@/data/visitorHistories";
+import UserInformation from "@/components/UserInformation.jsx";
 
 export default () => {
+  const userInformations = {
+    name: '宮島拡夢',
+    nameKana: 'ミヤジマヒロム',
+  };
+  const details = [
+    {id: 1, title: '郵便番号', value: '0030809'},
+    {id: 2, title: '住所', value: '北海道札幌市白石区菊水九条4-1-708'},
+    {id: 3, title: '電話番号', value: '08060666789'},
+    {id: 4, title: '来店回数', value: '3回'},
+  ];
   const [transactions, setTransactions] = useState(visitorHistories.map(t => ({ ...t, show: true })));
   const [searchValue, setSearchValue] = useState("");
   const [birthday, setBirthday] = useState("");
@@ -52,22 +63,16 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item active>来店履歴</Breadcrumb.Item>
-            <Breadcrumb.Item active>来店履歴詳細</Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
-        <div className="d-flex">
-          <Button as={Link} to={Paths.Calendar.path} variant="gray-800" className="me-2">
-            保存する
-          </Button>
+          <h1 className="page-title">来店履歴</h1>
         </div>
       </div>
 
       <Row>
-        <Col xs={12} xl={12}>
+        <Col xs={12} xl={8}>
           <EditVisitorHistoryForm handleChange={handleChange} formValue={formValue} />
+        </Col>
+        <Col xs={12} xl={4}>
+          <UserInformation {...userInformations} details={details} />
         </Col>
       </Row>
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">

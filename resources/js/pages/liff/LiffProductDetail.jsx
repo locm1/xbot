@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Row, Col, Nav, Breadcrumb, Card, Image } from 'react-bootstrap';
+import { Row, Col, Form, Button, Card, Image } from 'react-bootstrap';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
-import { HomeIcon, UserCircleIcon, CogIcon, MailIcon, ShoppingCartIcon } from '@heroicons/react/solid';
+import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 
 import OrdererInformation from "@/pages/order/detail/OrdererInformation";
 import { ProductWidget } from "@/pages/order/detail/ProductWidget";
@@ -10,81 +10,47 @@ import { DetailWidget } from "@/pages/order/detail/DetailWidget";
 import Cosmetics from '@img/img/products/cosmetics.jpeg';
 import Treatment from '@img/img/products/treatment.jpeg';
 
+import ProductDetailSlider from "@/pages/liff/ProductDetailSlider";
+const quantities = [...Array(10).keys()].map(i => ++i)
+
 export default () => {
 
-  const mainOptions = {
-    type: 'loop',
-    perPage: 1,
-    perMove: 1,
-    gap: '1rem',
-    pagination: false,
-    height: '18rem',
-    arrows: false
-  }
-
-  const thumbsOptions = {
-    type: 'slide',
-    rewind: true,
-    gap: '1rem',
-    pagination: false,
-    fixedWidth: 110,
-    fixedHeight: 70,
-    cover: true,
-    focus: 'center',
-    isNavigation: true,
-    arrows: false
-  };
-
-  const mainRef = useRef();
-  const thumbsRef = useRef();
-
-  useEffect(() => {
-    if ( mainRef.current && thumbsRef.current && thumbsRef.current.splide ) {
-      mainRef.current.sync( thumbsRef.current.splide );
-    }
-  });
-
   return (
-    <main className="content">
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap">
-        <div className="d-block mb-4 mb-md-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item active>商品</Breadcrumb.Item>
-            <Breadcrumb.Item active>商品</Breadcrumb.Item>
-          </Breadcrumb>
-          <h1 className="page-title">商品詳細</h1>
+    <main className="content liff-product-detail">
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
+      <ProductDetailSlider />
+      <div className="py-5">
+        <h2 className="fs-5 fw-bold mb-0">シャンプーリスト</h2>
+        <h4 className="liff-product-detail-price mt-2">￥5,940<span>税込</span></h4>
+        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center list-wrap border-bottom border-top py-3 px-0 mt-4">
+          <div className="px-3 pb-3">
+            <h4 className="fs-6 text-dark mb-0">数量</h4>
+          </div>
+          <div className="px-3 pb-3">
+            <Form.Select defaultValue="1" size="sm">
+              {
+                quantities.map((quantity, index) => <option key={index} value={quantity}>{quantity}</option>)
+              }
+            </Form.Select>
+          </div>
         </div>
+        <div className="d-flex justify-content-between flex-wrap align-items-center py-4">
+          <Button variant="warning" className="mt-2 liff-product-detail-button">
+            <ShoppingCartIcon className="icon icon-xs me-2" />
+            カートに入れる
+          </Button>
+          <Button variant="gray-800" className="mt-2 liff-product-detail-button">
+            <InboxIcon className="icon icon-xs me-2" />
+            取り置きする
+          </Button>
+        </div>
+        <Card border="0" className="shadow mb-4 mt-5">
+          <Card.Body>
+            <h5 className="mb-4 border-bottom pb-3">説明</h5>
+            <p>ここに商品の魅力や性能・効能についての具体的な説明を入れてください。</p>
+          </Card.Body>
+        </Card>
       </div>
-      <Splide
-        aria-labelledby="thumbnail-slider"
-        options={mainOptions}
-        ref={mainRef}
-      >
-        <SplideSlide>
-          <Image rounded src={Cosmetics} className="slide-img" />
-        </SplideSlide>
-        <SplideSlide>
-          <Image rounded src={Treatment} className="slide-img" />
-        </SplideSlide>
-        <SplideSlide>
-          <Image rounded src={Cosmetics} className="slide-img" />
-        </SplideSlide>
-      </Splide>
-      <Splide
-          options={ thumbsOptions }
-          ref={thumbsRef}
-      >
-        <SplideSlide>
-          <Image rounded src={Cosmetics} className="slide-img" />
-        </SplideSlide>
-        <SplideSlide>
-          <Image rounded src={Treatment} className="slide-img" />
-        </SplideSlide>
-        <SplideSlide>
-          <Image rounded src={Cosmetics} className="slide-img" />
-        </SplideSlide>
-      </Splide>
     </main>
   );
 };

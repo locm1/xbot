@@ -8,6 +8,7 @@ import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
 
 
 export const ReservesTable = (props) => {
+  const { orders, changeStatusModal } = props;
   const { reserves } = props;
   const totalReserves = reserves.length;
 
@@ -16,6 +17,25 @@ export const ReservesTable = (props) => {
   }
 
   const TableRow = (props) => {
+    const getStatusClass = (status) => {
+      switch (status) {
+        case 1:
+          return {
+            class: 'danger',
+            name: '取置停止'
+          }
+        case 2:
+          return {
+            class: 'success',
+            name: '取置予約中'
+          }
+        case 3:
+          return {
+            class: 'info',
+            name: '受渡済み'
+          }
+      }
+    }
     const { id, userName, name, quantity, price, deadline, status } = props;
 
     return (
@@ -46,11 +66,11 @@ export const ReservesTable = (props) => {
           </span>
         </td>
         <td>
-          <span className="fw-normal">
-          <React.Fragment>
-            <Badge pill={true} bg="success" className="me-1">{status}</Badge>
-          </React.Fragment>
-          </span>
+          <Card.Link className="d-flex align-items-center" onClick={changeStatusModal}>
+            <Badge bg={getStatusClass(status).class} className="me-1 order-status-badge fw-normal">
+              {getStatusClass(status).name}
+            </Badge>
+          </Card.Link>
         </td>
         <td>
           <TrashIcon role="button" onClick={() => deleteUsers([id])} className="icon icon-xs text-danger me-2" />

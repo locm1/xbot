@@ -8,6 +8,7 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 
 import { ReservesTable } from "@/pages/reserve/ReservesTable";
 import reserves from "@/data/reserves";
+import { ChangeStatusModal } from "@/pages/reserve/ChangeReserveStatusModal";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -22,6 +23,7 @@ export default () => {
   const [searchValue, setSearchValue] = useState("");
   const [birthday, setBirthday] = useState("");
   const [statusValue, setStatusValue] = useState("all");
+  const [modalOpen, setModalOpen] = useState(false);
 
   const changeSearchValue = (e) => {
     const newSearchValue = e.target.value;
@@ -70,8 +72,18 @@ export default () => {
     }
   };
 
+  const changeStatusModal = () => {
+    setModalOpen(!modalOpen);
+  }
+
   return (
     <>
+      {modalOpen && (
+        <ChangeStatusModal
+          show={modalOpen}
+          setModalOpen={setModalOpen}
+        />
+      )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
@@ -124,6 +136,7 @@ export default () => {
 
       <ReservesTable
         reserves={transactions.filter(t => t.show)}
+        changeStatusModal={changeStatusModal}
         deleteUsers={deleteUsers}
       />
     </>

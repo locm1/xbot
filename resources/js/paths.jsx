@@ -40,6 +40,10 @@ export const Paths = {
     QrCode: { path: "/qr-code" },
 
 
+    // LIFF
+    LiffProductDetail: { path: "/liff/product/detail/:id" },
+
+
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },
     DashboardProductAnalysis: { path: "/dashboard/product-analysis" },
     Kanban: { path: "/kanban" },

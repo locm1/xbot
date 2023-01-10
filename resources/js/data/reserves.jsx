@@ -10,7 +10,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -19,7 +19,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -28,7 +28,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -37,7 +37,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -46,7 +46,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -55,7 +55,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -64,7 +64,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -73,7 +73,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -82,7 +82,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -91,7 +91,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -100,7 +100,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -109,7 +109,7 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
     {
         "id": uuidv4(),
@@ -118,6 +118,6 @@ export default [
         "quantity": 1,
         "price": "1,000円（税込）",
         "deadline": "2022年12月21日まで",
-        "status": "取置予約中"
+        "status": 2
     },
 ]

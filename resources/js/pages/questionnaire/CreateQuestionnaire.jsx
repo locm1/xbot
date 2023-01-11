@@ -12,7 +12,7 @@ import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard";
 
 export default () => {
   const [isTitleEditable, setIsTitleEditable] = useState(false);
-  const [title, setTitle] = useState('質問');
+  const [title, setTitle] = useState('');
   const [inputType, setInputType] = useState(1);
   const [questionnaireTitles, setQuestionnaireTitles] = useState([
     {id: 1, name: '1列目', order: 1}

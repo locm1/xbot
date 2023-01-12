@@ -43,6 +43,7 @@ export const Paths = {
     // LIFF
     LiffProductDetail: { path: "/liff/product/detail/:id" },
     LiffProducts: { path: "/liff/product/list" },
+    LiffProductCategories: { path: "/liff/product/category/:id" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

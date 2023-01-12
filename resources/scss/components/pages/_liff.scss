@@ -46,8 +46,17 @@
   margin-bottom: 50px;
 }
 
-.liff-product-card-wrap {
-  height: 200px;
+.liff-product-view-all {
+  font-size: 13px;
+}
+
+.liff-product-card-splide {
+  margin: 0 calc(50% - 50vw);
+  width: 100vw;
+}
+
+.liff-product-card-list-wrap {
+  margin-bottom: 20px;
 }
 
 .card {
@@ -59,8 +68,13 @@
 .liff-product-card-title {
   font-size: 12px;
   text-align: left;
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .liff-product-card-price {
   text-align: left;
+  padding-top: 5px;
 }

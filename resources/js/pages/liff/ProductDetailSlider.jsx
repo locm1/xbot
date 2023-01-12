@@ -13,26 +13,26 @@ import Treatment from '@img/img/products/treatment.jpeg';
 export default () => {
 
   const mainOptions = {
-    type: 'loop',
+    type: 'fade',
     perPage: 1,
     perMove: 1,
-    gap: '1rem',
     pagination: false,
     height: '18rem',
-    arrows: false
+    drag: true,
+    lazyLoad: true
   }
 
   const thumbsOptions = {
-    type: 'slide',
     rewind: true,
     gap: '1rem',
     pagination: false,
-    fixedWidth: 110,
+    fixedWidth: 100,
     fixedHeight: 70,
     cover: true,
     focus: 'center',
     isNavigation: true,
-    arrows: false
+    arrows: false,
+    lazyLoad: true,
   };
 
   const mainRef = useRef();
@@ -66,13 +66,13 @@ export default () => {
           ref={thumbsRef}
           className="thumbnail-slider"
       >
-        <SplideSlide>
+        <SplideSlide className="thumbnail-slide-img">
           <Image rounded src={Cosmetics} className="slide-img" />
         </SplideSlide>
-        <SplideSlide>
+        <SplideSlide className="thumbnail-slide-img">
           <Image rounded src={Treatment} className="slide-img" />
         </SplideSlide>
-        <SplideSlide>
+        <SplideSlide className="thumbnail-slide-img">
           <Image rounded src={Cosmetics} className="slide-img" />
         </SplideSlide>
       </Splide>

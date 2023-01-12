@@ -38,6 +38,7 @@ import NotFound from '@/pages/error/NotFound';
 
 // LIFF pages
 import LiffProductDetail from '@/pages/liff/LiffProductDetail';
+import LiffProducts from '@/pages/liff/LiffProducts';
 
 
 // components
@@ -150,7 +151,7 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.QrCode.path} component={QrCode} />
 
       <Route exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
-
+      <Route exact path={Paths.LiffProducts.path} component={LiffProducts} />
       
       <Route component={NotFound} />
     </Switch>

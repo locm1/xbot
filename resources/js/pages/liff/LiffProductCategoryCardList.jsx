@@ -13,15 +13,15 @@ export default () => {
   return (
     <div className="liff-product-list">
       <div className="d-flex align-items-center">
-        <h2 className="fs-6 fw-bold mb-3">カテゴリー1</h2>
+        <h2 className="fs-6 fw-bold mb-3 ms-3">カテゴリー1</h2>
       </div>
-      <Row>
+      <div className="d-flex flex-wrap justify-content-evenly">
         {products.map((product, index) => 
-          <Col xs={6} lg={4} className="liff-product-card-list-wrap">
+          <div className="flex-grow-2 liff-product-card-list-wrap">
             <LiffProductCard {...product} key={index} />
-          </Col>
+          </div>
         )}
-      </Row>
+      </div>
     </div>
   );
 };

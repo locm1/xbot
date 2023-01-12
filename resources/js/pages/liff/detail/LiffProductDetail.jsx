@@ -10,7 +10,7 @@ import { DetailWidget } from "@/pages/order/detail/DetailWidget";
 import Cosmetics from '@img/img/products/cosmetics.jpeg';
 import Treatment from '@img/img/products/treatment.jpeg';
 
-import ProductDetailSlider from "@/pages/liff/ProductDetailSlider";
+import ProductDetailSlider from "@/pages/liff/detail/ProductDetailSlider";
 
 export default () => {
   const quantities = [...Array(10).keys()].map(i => ++i)
@@ -34,13 +34,13 @@ export default () => {
           </div>
         </div>
         <div className="d-flex justify-content-between flex-wrap align-items-center py-4">
-          <Button variant="warning" className="mt-2 liff-product-detail-button">
-            <ShoppingCartIcon className="icon icon-xs me-2" />
-            カートに入れる
-          </Button>
           <Button variant="gray-800" className="mt-2 liff-product-detail-button">
             <InboxIcon className="icon icon-xs me-2" />
             取り置きする
+          </Button>
+          <Button variant="tertiary" className="mt-2 liff-product-detail-button">
+            <ShoppingCartIcon className="icon icon-xs me-2" />
+            カートに入れる
           </Button>
         </div>
         <Card border="0" className="shadow mb-4 mt-5">

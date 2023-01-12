@@ -8,8 +8,7 @@ export const Paths = {
     DashboardOverview: { path: "/dashboard" },
     Users: { path: "/user/list" },
     EditUser: { path: "/user/edit/:id" },
-    CreateQuestionnaire: { path: "/questionnaire/create" },
-    Questionnaires: { path: "/questionnaire/list" },
+    CreateQuestionnaire: { path: "/questionnaire/list" },
     SendSegments: { path: "/message/send/segment" },
     TemplateMessages: { path: "/message/template/list" },
     CreateMessage: { path: "/message/template/create" },
@@ -44,6 +43,7 @@ export const Paths = {
     LiffProductDetail: { path: "/liff/product/detail/:id" },
     LiffProducts: { path: "/liff/product/list" },
     LiffProductCategories: { path: "/liff/product/category/:id" },
+    LiffCarts: { path: "/liff/cart" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

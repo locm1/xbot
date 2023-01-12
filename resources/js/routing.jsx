@@ -37,9 +37,10 @@ import QrCode from '@/pages/qrcode/QrCode';
 import NotFound from '@/pages/error/NotFound';
 
 // LIFF pages
-import LiffProductDetail from '@/pages/liff/LiffProductDetail';
+import LiffProductDetail from '@/pages/liff/detail/LiffProductDetail';
 import LiffProducts from '@/pages/liff/LiffProducts';
 import LiffProductCategories from '@/pages/liff/LiffProductCategories';
+import LiffCarts from '@/pages/liff/cart/LiffCarts';
 
 
 // components
@@ -154,6 +155,7 @@ const Routing = () => {
       <Route exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <Route exact path={Paths.LiffProducts.path} component={LiffProducts} />
       <Route exact path={Paths.LiffProductCategories.path} component={LiffProductCategories} />
+      <Route exact path={Paths.LiffCarts.path} component={LiffCarts} />
       
       <Route component={NotFound} />
     </Switch>

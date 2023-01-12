@@ -142,10 +142,7 @@ export default (props = {}) => {
               </Link>
               <GroupTitle name="User Management" />
               <NavItem title="ユーザーリスト" link={Paths.Users.path} icon={UserIcon} />
-              <CollapsableNavItem eventKey="questionnaire/" title="アンケート管理" icon={PencilAltIcon}>
-                <NavItem title="アンケート作成" link={Paths.CreateQuestionnaire.path} />
-                <NavItem title="アンケートリスト" link={Paths.Questionnaires.path} />
-              </CollapsableNavItem>
+              <NavItem title="アンケート管理" icon={PencilAltIcon} link={Paths.CreateQuestionnaire.path} />
               <CollapsableNavItem eventKey="message/" title="メッセージ管理" icon={UserGroupIcon}>
                 <NavItem title="セグメント配信" link={Paths.SendSegments.path} />
                 <NavItem title="テンプレートリスト" link={Paths.TemplateMessages.path} />

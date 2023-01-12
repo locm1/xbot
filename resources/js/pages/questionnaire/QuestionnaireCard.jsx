@@ -7,7 +7,7 @@ import QuestionnaireCheckBoxButton from "@/pages/questionnaire/QuestionnaireChec
 import QuestionnairePullDown from "@/pages/questionnaire/QuestionnairePullDown";
 
 export default (props) => {
-  const { questionnaireTitle, inputType } = props;
+  const { questionnaire } = props;
 
   const changeInputType = (inputType) => {
     switch (inputType) {
@@ -28,9 +28,9 @@ export default (props) => {
 
   return (
     <>
-      <Col xs={12} key={`questionnaireTitle-${questionnaireTitle.id}`} className="mb-4">
+      <Col xs={12} key={`questionnaire-${questionnaire.id}`} className="mb-4">
         <div className="">
-            {changeInputType(inputType)}
+            {changeInputType(questionnaire.type)}
         </div>
       </Col>
     </>

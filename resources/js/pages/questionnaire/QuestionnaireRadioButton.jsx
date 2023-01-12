@@ -1,34 +1,35 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, createRef } from "react";
 import { PlusIcon, MinusIcon } from "@heroicons/react/solid";
 import { Card, Button, Image, Col, Row, Form } from "react-bootstrap";
 
 export default (props) => {
   const { label } = props;
   const [name, setName] = useState("");
-  const inputEl = useRef(null)
   const [choiceNames, setChoiceName] = useState([
     {
       "id": 1,
       "name": name,
     },
   ]);
+
   const addChoiceName = () => {
-    const id = (choiceNames === undefined) ? 1 : choiceNames.slice(-1)[0].id + 1;
+    const id = (choiceNames.length === 0) ? 1 : choiceNames.slice(-1)[0].id + 1;
     const newChoiceName = {
       "id": id,
       "name": '',
     }
     setChoiceName([...choiceNames, newChoiceName]);
   }
-  useEffect(() => {
-    inputEl.current.focus();
-  },[choiceNames]);
+
+  const deleteChoiceName = (id) => {
+    setChoiceName(choiceNames.filter((choiceName) => (choiceName.id !== id)));
+  }
 
   return (
     <>
       {choiceNames && choiceNames.map((choiceName, index) => (
         <div key={`choice-name-${choiceName.id}`}>
-          <div className="privilege-delete-button">
+          <div className="privilege-delete-button" onClick={() => (deleteChoiceName(choiceName.id))}>
             <MinusIcon className="icon icon-xs" />
           </div>
           <div className="d-flex align-items-center mb-2">
@@ -39,7 +40,7 @@ export default (props) => {
               htmlFor="radio"
             />
             <div className="ps-3">
-              <Form.Control required type="text" className="text-dark mb-1 w-100" placeholder="選択肢" ref={inputEl} />  
+              <Form.Control required type="text" className="text-dark mb-1 w-100" placeholder="選択肢" autoFocus />  
             </div>
           </div>
         </div>

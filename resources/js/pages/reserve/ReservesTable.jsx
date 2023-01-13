@@ -6,6 +6,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
 
+import pudding from "@img/img/products/pudding.jpeg"
+import Profile1 from "@img/img/team/profile-picture-1.jpg"
+
 
 export const ReservesTable = (props) => {
   const { orders, changeStatusModal } = props;
@@ -36,19 +39,35 @@ export const ReservesTable = (props) => {
           }
       }
     }
-    const { id, userName, name, quantity, price, deadline, status } = props;
+    const { id, userName, name, quantity, price, deadline, status, userId, productId } = props;
 
     return (
-      <tr className="border-bottom">
+      <tr className="border-bottom product-table-tr">
         <td>
-          <span className="fw-normal">
-            {userName}
-          </span>
+          <Card.Link as={Link} to={`/user/edit/${userId}`} className="d-flex align-items-center">
+            {Profile1
+              ? (
+                <Image
+                  src={Profile1}
+                  className="avatar rounded-circle me-3"
+                />
+              ) : (
+                <div className="avatar d-flex align-items-center justify-content-center fw-bold rounded bg-secondary me-3">
+                  <span>{getFirstLetterOfEachWord(userName)}</span>
+                </div>
+              )}
+            <div className="d-block">
+              <span className="fw-bold">{userName}</span>
+            </div>
+          </Card.Link>
         </td>
         <td>
-          <span className="fw-normal">
-            {name}
-          </span>
+          <Card.Link as={Link} to={`/product/edit/${productId}`} className="d-flex align-items-center">
+            <Image src={pudding} className="me-3 product-image"/>
+            <div className="d-block">
+              <span className="fw-bold">{name}</span>
+            </div>
+          </Card.Link>
         </td>
         <td>
           <span className="fw-normal">
@@ -66,7 +85,7 @@ export const ReservesTable = (props) => {
           </span>
         </td>
         <td>
-          <Card.Link className="d-flex align-items-center" onClick={changeStatusModal}>
+          <Card.Link className="d-flex align-items-center mt-1" onClick={changeStatusModal}>
             <Badge bg={getStatusClass(status).class} className="me-1 order-status-badge fw-normal">
               {getStatusClass(status).name}
             </Badge>

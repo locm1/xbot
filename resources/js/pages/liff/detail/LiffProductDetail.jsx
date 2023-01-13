@@ -4,6 +4,9 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
 import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 
+import { Link } from 'react-router-dom';
+import { Paths } from "@/paths";
+
 import OrdererInformation from "@/pages/order/detail/OrdererInformation";
 import { ProductWidget } from "@/pages/order/detail/ProductWidget";
 import { DetailWidget } from "@/pages/order/detail/DetailWidget";
@@ -39,7 +42,7 @@ export default () => {
             取り置きする
           </Button>
           <Button variant="tertiary" className="mt-2 liff-product-detail-button">
-            <ShoppingCartIcon className="icon icon-xs me-2" />
+            <ShoppingCartIcon as={Link} to={Paths.LiffProducts.path} className="icon icon-xs me-2" />
             カートに入れる
           </Button>
         </div>

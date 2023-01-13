@@ -38,7 +38,7 @@ export const OrdersTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, createdAt, name, prefectures, purchasePrice, status, userImage, shippingFee } = props;
+    const { id, createdAt, name, prefectures, purchasePrice, status, userImage, shippingFee, userId } = props;
 
     return (
       <tr className="border-bottom">
@@ -63,7 +63,7 @@ export const OrdersTable = (props) => {
           </span>
         </td>
         <td>
-          <div className="d-flex align-items-center">
+          <Card.Link as={Link} to={`/user/edit/${userId}`} className="d-flex align-items-center">
             {userImage
               ? (
                 <Image
@@ -78,7 +78,7 @@ export const OrdersTable = (props) => {
             <div className="d-block">
               <span className="fw-bold">{name}</span>
             </div>
-          </div>
+          </Card.Link>
         </td>
         <td>
         <Card.Link className="d-flex align-items-center" onClick={changeStatusModal}>

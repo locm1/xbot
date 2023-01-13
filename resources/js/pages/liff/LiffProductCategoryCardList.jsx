@@ -17,7 +17,7 @@ export default () => {
       </div>
       <div className="d-flex flex-wrap justify-content-evenly">
         {products.map((product, index) => 
-          <div className="flex-grow-2 liff-product-card-list-wrap">
+          <div key={index} className="flex-grow-2 liff-product-card-list-wrap">
             <LiffProductCard {...product} key={index} />
           </div>
         )}

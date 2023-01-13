@@ -18,60 +18,6 @@ export default [
     },
     {
         "id": 2,
-        "category": 1,
-        "name": "シャンプー&トリートメント",
-        "price": 3000,
-        "stockQuantity": 93,
-        "quantity": 1,
-        "img": shampoo
-    },
-    {
-        "id": 3,
-        "category": 1,
-        "name": "シャンプー&トリートメント",
-        "price": 3000,
-        "stockQuantity": 93,
-        "quantity": 1,
-        "img": shampoo
-    },
-    {
-        "id": 4,
-        "category": 1,
-        "name": "シャンプー&トリートメント",
-        "price": 3000,
-        "stockQuantity": 93,
-        "quantity": 1,
-        "img": shampoo
-    },
-    {
-        "id": 5,
-        "category": 1,
-        "name": "シャンプー&トリートメント",
-        "price": 3000,
-        "stockQuantity": 93,
-        "quantity": 1,
-        "img": shampoo
-    },
-    {
-        "id": 6,
-        "category": 1,
-        "name": "シャンプー&トリートメント",
-        "price": 3000,
-        "stockQuantity": 93,
-        "quantity": 1,
-        "img": shampoo
-    },
-    {
-        "id": 7,
-        "category": 1,
-        "name": "シャンプー&トリートメント",
-        "price": 3000,
-        "stockQuantity": 93,
-        "quantity": 1,
-        "img": shampoo
-    },
-    {
-        "id": 8,
         "category": 5,
         "name": "北海道ミルクプリン",
         "price": 3000,
@@ -80,7 +26,7 @@ export default [
         "img": pudding
     },
     {
-        "id": 9,
+        "id": 3,
         "category": 5,
         "name": "生搾りジュース",
         "price": 3000,
@@ -89,7 +35,7 @@ export default [
         "img": juice
     },
     {
-        "id": 10,
+        "id": 4,
         "category": 3,
         "name": "ドレッシング",
         "price": 3000,

@@ -48,7 +48,7 @@ export default () => {
           </Row>
         </Link>
         <Row className="mt-2">
-          <Col xs="6">
+          <Col xs="5">
             <InputGroup className="liff-cart-change-quantity">
               {(() => {
                 if (quantity >= 2) {
@@ -71,7 +71,7 @@ export default () => {
               </InputGroup.Text>
             </InputGroup>
           </Col>
-          <Col xs="6" className="px-0 m-0">
+          <Col xs="7" className="px-0 m-0">
             <Button variant="primary" size="sm" className="me-1" onClick={() => deleteCart(id)}>削除</Button>
           </Col>
         </Row>

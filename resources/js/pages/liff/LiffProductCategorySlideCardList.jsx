@@ -38,7 +38,7 @@ export default () => {
         className="mt-3 liff-product-card-splide"
       >
         {products.map((product, index) => 
-          <SplideSlide className="liff-product-card-wrap">
+          <SplideSlide key={index} className="liff-product-card-wrap">
             <LiffProductCard {...product} key={index} />
           </SplideSlide>
         )}

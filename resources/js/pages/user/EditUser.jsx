@@ -49,11 +49,6 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item active>ユーザーリスト</Breadcrumb.Item>
-            <Breadcrumb.Item active>ユーザー管理</Breadcrumb.Item>
-          </Breadcrumb>
         </div>
         <div className="d-flex">
           <Button as={Link} to={Paths.Calendar.path} variant="gray-800" className="me-2">

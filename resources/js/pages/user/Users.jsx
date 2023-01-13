@@ -79,10 +79,6 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap">
         <div className="d-block mb-4 mb-md-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><HomeIcon className="icon icon-xs" /></Breadcrumb.Item>
-            <Breadcrumb.Item active>ユーザーリスト</Breadcrumb.Item>
-          </Breadcrumb>
           <h1 className="page-title">ユーザーリスト</h1>
           <div className="list-head d-flex flex-wrap mb-4 align-items-center">
             <div className="list-head__items">

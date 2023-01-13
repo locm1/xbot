@@ -46,8 +46,18 @@
   margin-bottom: 50px;
 }
 
-.liff-product-card-wrap {
-  height: 200px;
+.liff-product-view-all {
+  font-size: 13px;
+}
+
+.liff-product-card-splide {
+  margin: 0 calc(50% - 50vw);
+  width: 100vw;
+}
+
+.liff-product-card-list-wrap {
+  width: 45%;
+  margin-bottom: 15px;
 }
 
 .card {
@@ -59,8 +69,24 @@
 .liff-product-card-title {
   font-size: 12px;
   text-align: left;
+  width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .liff-product-card-price {
   text-align: left;
+  padding-top: 5px;
+}
+
+.liff-cart-img {
+  img {
+    width: 120px;
+    height: 110px;
+  }
+}
+
+.liff-cart-change-quantity {
+  width: 120px;
 }

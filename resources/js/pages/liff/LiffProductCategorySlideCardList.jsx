@@ -10,13 +10,14 @@ import productData from "@/data/products";
 export default () => {
   const [products, setProducts] = useState(productData);
   const mainOptions = {
-    type: 'loop',
-    perPage: 1.5,
+    perPage: 3,
+    gap: '1rem',
     drag: 'free',
+    snap: true,
+    omitEnd: true,
     pagination: false,
     arrows: false,
-    fixedWidth: 200,
-    fixedHeight: 200,
+    fixedWidth: 160,
     cover: false,
     focus: 'center',
   }
@@ -24,20 +25,20 @@ export default () => {
   return (
     <div className="liff-product-list">
       <div className="d-flex align-items-center">
-        <h2 className="fs-5 fw-bold mb-0">カテゴリー1</h2>
+        <h2 className="fs-6 fw-bold mb-0">カテゴリー1</h2>
         <div className="ms-auto">
-          <Link href="#" className="d-inline-flex align-items-center fw-normal">
-            すべて見る
-          </Link>
+          <Card.Link href={`/liff/product/category/1`} className="d-inline-flex align-items-center fw-normal liff-product-view-all">
+            すべてを見る
+          </Card.Link>
         </div>
       </div>
       <Splide
         aria-labelledby="card-slider"
         options={mainOptions}
-        className="mt-4"
+        className="mt-3 liff-product-card-splide"
       >
         {products.map((product, index) => 
-          <SplideSlide>
+          <SplideSlide key={index} className="liff-product-card-wrap">
             <LiffProductCard {...product} key={index} />
           </SplideSlide>
         )}

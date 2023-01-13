@@ -4,6 +4,12 @@ import Datetime from "react-datetime";
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, Breadcrumb, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {
+  DropResult,
+  DroppableProvided,
+  DraggableProvided
+} from "react-beautiful-dnd";
 
 import users from "@/data/users";
 import { Paths } from "@/paths";
@@ -49,7 +55,7 @@ export default () => {
     const newQuestionnaires = {
       "id": id,
       "title": '',
-      "type": '',
+      "type": 1,
       "order": id
     }
     setQuestionnaires([...questionnaires, newQuestionnaires]);
@@ -59,6 +65,18 @@ export default () => {
     setQuestionnaires(questionnaires.filter((questionnaire) => (questionnaire.id !== id)));
   }
 
+  const handleOnDragEnd = (result) => {
+    // ドロップ先がない
+    if (!result.destination) {
+      return;
+    }
+    const [reorderedItem] = questionnaires.splice(result.source.index, 1);
+    console.log(reorderedItem);
+    questionnaires.splice(result.destination.index, 0, reorderedItem);
+  }
+
+  const test = () => {console.log(questionnaires);}
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -66,32 +84,46 @@ export default () => {
           <h1 className="page-title">アンケート管理</h1>
         </div>
       </div>
-      {questionnaires.map((questionnaire, index) => (
-      <Card border="0" className="shadow mb-4" key={index}>
-        <Card.Body>
-        <div className="d-flex align-items-center justify-content-between flex-row-reverse">
-          <Button className="mb-3" variant="close" onClick={() => deleteQuestionnaireCard(questionnaire.id)} />
-        </div>
-          <Row>
-            <Col md={6} className="mb-3">
-              <Form.Control as="textarea" value={questionnaire.title} onChange={e => handleTitleChange(e, questionnaire.id)} placeholder="無題の質問" />
-            </Col>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Select defaultValue="0" className="mb-0" onChange={(e) => handleInputTypeChange(e, questionnaire.id)}>
-                  {
-                    types.map((type, index) => <option key={index} value={type.value}>{type.title}</option>)
-                  }
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row className="mb-4 mb-lg-0 mt-4">
-            <QuestionnaireCard key={index} questionnaire={questionnaire}/>
-        </Row>
-        </Card.Body>
-      </Card>
-      ))}
+      <Button onClick={test} />
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="questionnaireCards">
+          {(provided) => (
+            <div className="questionnaireCards" {...provided.droppableProps} ref={provided.innerRef}>
+              {questionnaires.map((questionnaire, index) => (
+                <Draggable key={questionnaire.id} draggableId={"q-" + questionnaire.id} index={index}>
+                  {(provided) => (
+                  <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} border="0" className="shadow mb-4" key={index}>
+                    <Card.Body>
+                      <div className="d-flex align-items-center justify-content-between flex-row-reverse">
+                        <Button className="mb-3" variant="close" onClick={() => deleteQuestionnaireCard(questionnaire.id)} />
+                      </div>
+                        <Row>
+                          <Col md={6} className="mb-3">
+                            <Form.Control as="textarea" value={questionnaire.title} onChange={e => handleTitleChange(e, questionnaire.id)} placeholder="無題の質問" />
+                          </Col>
+                          <Col md={6} className="mb-3">
+                            <Form.Group id="firstName">
+                              <Form.Select defaultValue={questionnaire.type} className="mb-0" onChange={(e) => handleInputTypeChange(e, questionnaire.id)}>
+                                {
+                                  types.map((type, index) => <option key={index} value={type.value}>{type.title}</option>)
+                                }
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <Row className="mb-4 mb-lg-0 mt-4">
+                          <QuestionnaireCard key={index} questionnaire={questionnaire}/>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <div className="privilege-button">
         <Button
           variant="outline-gray-500"

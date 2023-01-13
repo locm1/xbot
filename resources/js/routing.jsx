@@ -41,7 +41,9 @@ import LiffProductDetail from '@/pages/liff/detail/LiffProductDetail';
 import LiffProducts from '@/pages/liff/LiffProducts';
 import LiffProductCategories from '@/pages/liff/LiffProductCategories';
 import LiffCarts from '@/pages/liff/cart/LiffCarts';
-
+import LiffCheckout from '@/pages/liff/checkout/LiffCheckout';
+// import LiffCheckoutAddAddress from '@/pages/liff/checkout/LiffCheckoutAddAddress';
+// import LiffCheckoutConfirm from '@/pages/liff/checkout/LiffCheckoutConfirm';
 
 // components
 import Sidebar from '@/components/Sidebar';
@@ -156,6 +158,9 @@ const Routing = () => {
       <Route exact path={Paths.LiffProducts.path} component={LiffProducts} />
       <Route exact path={Paths.LiffProductCategories.path} component={LiffProductCategories} />
       <Route exact path={Paths.LiffCarts.path} component={LiffCarts} />
+      <Route exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
+      {/* <Route exact path={Paths.LiffCheckoutAddAddress.path} component={LiffCheckoutAddAddress} />
+      <Route exact path={Paths.LiffCheckoutConfirm.path} component={LiffCheckoutConfirm} /> */}
       
       <Route component={NotFound} />
     </Switch>

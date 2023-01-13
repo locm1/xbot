@@ -104,7 +104,7 @@ export default () => {
                   <InboxIcon className="icon icon-xs me-2" />
                   他の商品を見る
                 </Button>
-                <Button variant="tertiary" className="mt-2 liff-product-detail-button">
+                <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="mt-2 liff-product-detail-button">
                   <ShoppingCartIcon className="icon icon-xs me-2" />
                   レジに進む
                 </Button>

@@ -43,7 +43,11 @@ export const Paths = {
     LiffProductDetail: { path: "/liff/product/detail/:id" },
     LiffProducts: { path: "/liff/product/list" },
     LiffProductCategories: { path: "/liff/product/category/:id" },
-    LiffCarts: { path: "/liff/cart" },
+    LiffCarts: { path: "/cart" },
+    LiffCheckout: { path: "/checkout" },
+    LiffCheckoutDestinations: { path: "/checkout/destination" },
+    LiffCheckoutConfirm: { path: "/checkout/confirm" },
+    LiffCheckoutAddress: { path: "/checkout/address" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

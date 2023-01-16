@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import moment from "moment-timezone";
 import { useDropzone } from "react-dropzone";
-import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
-import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown } from 'react-bootstrap';
+import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
+import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import CheckboxButton from "@/components/CheckboxButton";
 
 import ProductOverview from "@/pages/product/ProductOverview";
 import products from "@/data/products";
@@ -84,6 +85,10 @@ export default () => {
     );
   };
 
+  const [disableInputForm, setDisable] = useState(false);
+
+  const [privateProduct, setPrivate] = useState(false);
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -95,7 +100,18 @@ export default () => {
         <Col xs={12} xl={6}>
           <Card border="0" className="shadow mb-4">
             <Card.Body>
+              <div className="d-flex justify-content-between">
               <h5 className="mb-4 border-bottom pb-3">商品情報</h5>
+              <Form.Group id="category">
+                <Form.Check
+                type="switch"
+                label="非公開にする"
+                id="switch1"
+                htmlFor="switch1"
+                onClick={() => setPrivate(!privateProduct)}
+                />
+              </Form.Group>
+              </div>
               <Form>
                 <Col xs={12} xl={12}>
                   <Row>
@@ -118,10 +134,26 @@ export default () => {
                       </Form.Group>
                     </Col>
                     <Col md={6} className="mb-3">
-                      <Form.Group id="stock_quantity">
-                        <Form.Label>在庫数</Form.Label>
-                        <Form.Control required type="number" name="stock_quantity" placeholder="" />
-                      </Form.Group>
+                      <Form.Label>在庫数</Form.Label>
+                      <InputGroup className="me-2 me-lg-3 fmxw-300">
+                        <InputGroup.Text className="d-flex">
+                          {/* <Form.Label htmlFor="checkbox1">無制限</Form.Label> */}
+                          <OverlayTrigger
+                          key="example"
+                          overlay={<Tooltip id="top" className="m-0">在庫数を無制限とします</Tooltip>}
+                          >
+                            {/* <QuestionMarkCircleIcon className="icon icon-xs me-1" /> */}
+                          <Form.Check id="checkbox1" htmlFor="checkbox1" onClick={() => setDisable(!disableInputForm)} />
+                          </OverlayTrigger>
+                        </InputGroup.Text>
+                        <Form.Control
+                          disabled={disableInputForm}
+                          type="number"
+                          placeholder=""
+                          id="stock_quantity"
+                          name="stock_quantity"
+                        />
+                      </InputGroup>
                     </Col>
                     <Col md={6} className="mb-3">
                       <Form.Group id="category">

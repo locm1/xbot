@@ -177,7 +177,11 @@ export default (props = {}) => {
                 <NavItem title="利用規約" link={Paths.TermsOfService.path} />
                 <NavItem title="特定商取引法に基づく表記" link={Paths.SpecificTrades.path} />
               </CollapsableNavItem>
-              <NavItem title="タグ管理" icon={CogIcon} link={Paths.Tags.path} />
+              <CollapsableNavItem eventKey="master/" title="マスタ管理" icon={CogIcon}>
+                <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
+                <NavItem title="API設定" link={Paths.Api.path} />
+                <NavItem title="タグ管理" icon={CogIcon} link={Paths.Tags.path} />
+              </CollapsableNavItem>
               <NavItem title="お友達追加用QR" icon={QrcodeIcon} link={Paths.QrCode.path} />
             </Nav>
           </div>

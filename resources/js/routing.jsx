@@ -156,6 +156,8 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.SpecificTrades.path} component={SpecificTrades} />
       <RouteWithSidebar exact path={Paths.Tags.path} component={Tags} />
       <RouteWithSidebar exact path={Paths.QrCode.path} component={QrCode} />
+      <RouteWithSidebar exact path={Paths.Api.path} component={Api} />
+      <RouteWithSidebar exact path={Paths.Greeting.path} component={Greeting} />
 
       <Route exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <Route exact path={Paths.LiffProducts.path} component={LiffProducts} />

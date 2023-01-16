@@ -53,6 +53,8 @@ export const Paths = {
     LiffPrivacyPolicy: { path: "/privacy-policy" },
     LiffTermsOfService: { path: "/terms-of-service" },
     LiffSpecificTrades: { path: "/specific-trades" },
+    LiffVisitor: { path: "/visitor" },
+    LiffAboutVisitorPrivileges: { path: "/visitor/privilege" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

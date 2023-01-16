@@ -1,4 +1,7 @@
 @import "./../footer";
+@import "liff_visitor";
+
+$liff_default_color: #D5908C;
 
 .thumbnail-slider {
   margin-top: 10px;
@@ -107,9 +110,9 @@
 
 .liff-specific-trades-link {
   text-decoration: underline;
-  color: #D5908C;
+  color: $liff_default_color;
   &:hover {
-    color: #D5908C;
+    color: $liff_default_color;
     text-decoration: underline;
   }
 }

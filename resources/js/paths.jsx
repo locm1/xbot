@@ -37,6 +37,8 @@ export const Paths = {
     SpecificTrades: { path: "/setting/specific-trades" },
     Tags: { path: "/tag" },
     QrCode: { path: "/qr-code" },
+    Api: {path: "/api"},
+    Greeting: {path: "/greeting"},
 
 
     // LIFF
@@ -46,8 +48,8 @@ export const Paths = {
     LiffCarts: { path: "/cart" },
     LiffCheckout: { path: "/checkout" },
     LiffCheckoutDestinations: { path: "/checkout/destination" },
-    LiffCheckoutConfirm: { path: "/checkout/confirm" },
     LiffCheckoutAddress: { path: "/checkout/address" },
+    LiffCheckoutDelivery: { path: "/checkout/delivery" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

@@ -34,6 +34,8 @@ import TermsOfService from '@/pages/setting/TermsOfService';
 import SpecificTrades from '@/pages/setting/SpecificTrades';
 import Tags from '@/pages/tag/Tags';
 import QrCode from '@/pages/qrcode/QrCode';
+import Api from '@/pages/api/createApi';
+import Greeting from '@/pages/greeting/Greeting';
 import NotFound from '@/pages/error/NotFound';
 
 // LIFF pages
@@ -42,8 +44,9 @@ import LiffProducts from '@/pages/liff/LiffProducts';
 import LiffProductCategories from '@/pages/liff/LiffProductCategories';
 import LiffCarts from '@/pages/liff/cart/LiffCarts';
 import LiffCheckout from '@/pages/liff/checkout/LiffCheckout';
-// import LiffCheckoutAddAddress from '@/pages/liff/checkout/LiffCheckoutAddAddress';
-// import LiffCheckoutConfirm from '@/pages/liff/checkout/LiffCheckoutConfirm';
+import LiffCheckoutAddress from '@/pages/liff/checkout/LiffCheckoutAddress';
+import LiffCheckoutAddAddress from '@/pages/liff/checkout/LiffCheckoutAddAddress';
+import LiffCheckoutDelivery from '@/pages/liff/checkout/LiffCheckoutDelivery';
 
 // components
 import Sidebar from '@/components/Sidebar';
@@ -159,8 +162,10 @@ const Routing = () => {
       <Route exact path={Paths.LiffProductCategories.path} component={LiffProductCategories} />
       <Route exact path={Paths.LiffCarts.path} component={LiffCarts} />
       <Route exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
-      {/* <Route exact path={Paths.LiffCheckoutAddAddress.path} component={LiffCheckoutAddAddress} />
-      <Route exact path={Paths.LiffCheckoutConfirm.path} component={LiffCheckoutConfirm} /> */}
+      <Route exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
+      <Route exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
+      <Route exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
+
       
       <Route component={NotFound} />
     </Switch>

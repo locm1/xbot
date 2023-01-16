@@ -19,7 +19,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 export default () => {
   const events = [
     {
-      id: 1, name: '明治安田生命JIリーグ第1節', time: '13:00 〜 16:00',
+      id: 1, name: '明治安田生命J1リーグ第1節', time: '13:00 〜 16:00',
       place: '札幌ドーム', borderNumber: 6,
     },
     {

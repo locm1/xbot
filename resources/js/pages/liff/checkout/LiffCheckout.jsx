@@ -23,8 +23,8 @@ export default () => {
           <Col xs="8" className="px-0">
             <div className="m-1">
               <h4 className="fs-6 text-dark mb-0">{lastName} {firstName} 様</h4>
-              <h4 className="fs-6 text-dark mt-1">{zipcode}</h4>
-              <h4 className="fs-6 text-dark mt-1">
+              <h4 className="fs-6 text-dark mt-2">
+                〒{zipcode}<br />
                 {prefectures} {city} {address} {buildingName} {roomNumber}
               </h4>
               <h4 className="fs-6 text-dark mt-1">{tel}</h4>

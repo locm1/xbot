@@ -19,9 +19,9 @@ export default () => {
         <Row className="">
           <Col xs="8" className="px-0">
             <div className="m-1">
-              <h4 className="fs-6 text-dark mb-0">クレジットカード</h4>
-              <h4 className="liff-checkout-payment-title text-dark mt-1">カード番号：xxxx-xxxx-xxxx-xxxx</h4>
-              <h4 className="liff-checkout-payment-title text-dark mt-1">支払い回数：3回払い</h4>
+              <h4 className="fs-6 text-dark">クレジットカード</h4>
+              <div className="liff-checkout-payment-title">カード番号：xxxx-xxxx-xxxx-xxxx</div>
+              <div className="liff-checkout-payment-title text-dark">支払い回数：3回払い</div>
             </div>
           </Col>
           <Col xs="4" className="">

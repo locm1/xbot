@@ -84,7 +84,6 @@ export default () => {
           <h1 className="page-title">アンケート管理</h1>
         </div>
       </div>
-      <Button onClick={test} />
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable droppableId="questionnaireCards">
           {(provided) => (
@@ -92,7 +91,7 @@ export default () => {
               {questionnaires.map((questionnaire, index) => (
                 <Draggable key={questionnaire.id} draggableId={"q-" + questionnaire.id} index={index}>
                   {(provided) => (
-                  <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} border="0" className="shadow mb-4" key={index}>
+                  <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} border="0" className="mb-4" key={index}>
                     <Card.Body>
                       <div className="d-flex align-items-center justify-content-between flex-row-reverse">
                         <Button className="mb-3" variant="close" onClick={() => deleteQuestionnaireCard(questionnaire.id)} />

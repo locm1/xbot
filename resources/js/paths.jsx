@@ -37,6 +37,8 @@ export const Paths = {
     SpecificTrades: { path: "/setting/specific-trades" },
     Tags: { path: "/tag" },
     QrCode: { path: "/qr-code" },
+    Api: {path: "/api"},
+    Greeting: {path: "/Greeting"},
 
 
     // LIFF

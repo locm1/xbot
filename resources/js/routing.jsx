@@ -35,6 +35,8 @@ import SpecificTrades from '@/pages/setting/SpecificTrades';
 import Tags from '@/pages/tag/Tags';
 import QrCode from '@/pages/qrcode/QrCode';
 import NotFound from '@/pages/error/NotFound';
+import Api from '@/pages/api/createApi';
+import Greeting from '@/pages/greeting/Greeting';
 
 // LIFF pages
 import LiffProductDetail from '@/pages/liff/detail/LiffProductDetail';
@@ -153,6 +155,8 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.SpecificTrades.path} component={SpecificTrades} />
       <RouteWithSidebar exact path={Paths.Tags.path} component={Tags} />
       <RouteWithSidebar exact path={Paths.QrCode.path} component={QrCode} />
+      <RouteWithSidebar exact path={Paths.Api.path} component={Api} />
+      <RouteWithSidebar exact path={Paths.Greeting.path} component={Greeting} />
 
       <Route exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <Route exact path={Paths.LiffProducts.path} component={LiffProducts} />

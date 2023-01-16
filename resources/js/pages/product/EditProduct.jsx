@@ -87,6 +87,8 @@ export default () => {
 
   const [disableInputForm, setDisable] = useState(false);
 
+  const [privateProduct, setPrivate] = useState(false);
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -98,7 +100,18 @@ export default () => {
         <Col xs={12} xl={6}>
           <Card border="0" className="shadow mb-4">
             <Card.Body>
+              <div className="d-flex justify-content-between">
               <h5 className="mb-4 border-bottom pb-3">商品情報</h5>
+              <Form.Group id="category">
+                <Form.Check
+                type="switch"
+                label="非公開にする"
+                id="switch1"
+                htmlFor="switch1"
+                onClick={() => setPrivate(!privateProduct)}
+                />
+              </Form.Group>
+              </div>
               <Form>
                 <Col xs={12} xl={12}>
                   <Row>

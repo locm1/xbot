@@ -45,7 +45,7 @@ export default () => {
             <div className="m-1">
               <h4 className="fs-6 text-dark mb-0">日時指定なし</h4>
               <h4 className="liff-checkout-payment-title text-dark mt-1">
-                ※送料については、<Link className="liff-specific-trades-link" to={Paths.LiffCheckoutDestinations.path}>特定商法取引法に基づく表記</Link>をご覧ください。
+                ※送料については、<Card.Link href={Paths.LiffSpecificTrades.path} target="_blank" className="liff-specific-trades-link">特定商法取引法に基づく表記</Card.Link>をご覧ください。
               </h4>
             </div>
           </Col>

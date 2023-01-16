@@ -49,13 +49,13 @@ export default () => {
                   </Form.Select>
                 </Form.Group>
                 <h4 className="liff-checkout-payment-title text-dark mt-3">
-                  ※送料については、<Link className="liff-specific-trades-link" to={Paths.LiffCheckoutDestinations.path}>特定商法取引法に基づく表記</Link>をご覧ください。
+                  ※送料については、<Card.Link href={Paths.LiffSpecificTrades.path} target="_blank" className="liff-specific-trades-link">特定商法取引法に基づく表記</Card.Link>をご覧ください。
                 </h4>
               </Col>
             </Row>
           </Card.Body>
         </Card>
-        <div className="align-items-center mt-4 mb-4">
+        <div className="align-items-center mt-4 liff-checkout-delivery-button">
           <Button variant="tertiary" as={Link} to={Paths.LiffCheckout.path} className="w-100 p-3">
             追加する
           </Button>

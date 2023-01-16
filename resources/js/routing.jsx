@@ -47,8 +47,12 @@ import LiffCheckout from '@/pages/liff/checkout/LiffCheckout';
 import LiffCheckoutAddress from '@/pages/liff/checkout/LiffCheckoutAddress';
 import LiffCheckoutAddAddress from '@/pages/liff/checkout/LiffCheckoutAddAddress';
 import LiffCheckoutDelivery from '@/pages/liff/checkout/LiffCheckoutDelivery';
+import LiffPrivacyPolicy from '@/pages/liff/LiffPrivacyPolicy';
+import LiffTermsOfService from '@/pages/liff/LiffTermsOfService';
+import LiffSpecificTrades from '@/pages/liff/LiffSpecificTrades';
 
 // components
+import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
 
@@ -113,8 +117,16 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   );
 };
 
-const RedirectDashboard = () => {
-  
+const LiffRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route {...rest} render={props => (
+      <>
+        <Component {...props} />
+        <Footer />
+      </>
+    )}
+    />
+  );
 }
 
 const Routing = () => {
@@ -159,15 +171,17 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.Api.path} component={Api} />
       <RouteWithSidebar exact path={Paths.Greeting.path} component={Greeting} />
 
-      <Route exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
-      <Route exact path={Paths.LiffProducts.path} component={LiffProducts} />
-      <Route exact path={Paths.LiffProductCategories.path} component={LiffProductCategories} />
-      <Route exact path={Paths.LiffCarts.path} component={LiffCarts} />
-      <Route exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
-      <Route exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
-      <Route exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
-      <Route exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
-
+      <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
+      <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
+      <LiffRoute exact path={Paths.LiffProductCategories.path} component={LiffProductCategories} />
+      <LiffRoute exact path={Paths.LiffCarts.path} component={LiffCarts} />
+      <LiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
+      <LiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
+      <LiffRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
+      <LiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
+      <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
+      <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
+      <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
       
       <Route component={NotFound} />
     </Switch>

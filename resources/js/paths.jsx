@@ -50,6 +50,9 @@ export const Paths = {
     LiffCheckoutDestinations: { path: "/checkout/destination" },
     LiffCheckoutAddress: { path: "/checkout/address" },
     LiffCheckoutDelivery: { path: "/checkout/delivery" },
+    LiffPrivacyPolicy: { path: "/privacy-policy" },
+    LiffTermsOfService: { path: "/terms-of-service" },
+    LiffSpecificTrades: { path: "/specific-trades" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

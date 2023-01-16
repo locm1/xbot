@@ -70,7 +70,7 @@ export default () => {
             </Link>
             </Card.Body>
           </Card>
-          <div className="align-items-center mt-4">
+          <div className="align-items-center mt-4 mb-8">
             <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="w-100 p-3">
               変更する
             </Button>

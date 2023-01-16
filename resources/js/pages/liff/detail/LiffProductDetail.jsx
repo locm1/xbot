@@ -7,12 +7,6 @@ import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
-import OrdererInformation from "@/pages/order/detail/OrdererInformation";
-import { ProductWidget } from "@/pages/order/detail/ProductWidget";
-import { DetailWidget } from "@/pages/order/detail/DetailWidget";
-import Cosmetics from '@img/img/products/cosmetics.jpeg';
-import Treatment from '@img/img/products/treatment.jpeg';
-
 import ProductDetailSlider from "@/pages/liff/detail/ProductDetailSlider";
 
 export default () => {
@@ -41,8 +35,8 @@ export default () => {
             <InboxIcon className="icon icon-xs me-2" />
             取り置きする
           </Button>
-          <Button variant="tertiary" className="mt-2 liff-product-detail-button">
-            <ShoppingCartIcon as={Link} to={Paths.LiffProducts.path} className="icon icon-xs me-2" />
+          <Button variant="tertiary" as={Link} to={Paths.LiffCarts.path} className="mt-2 liff-product-detail-button">
+            <ShoppingCartIcon className="icon icon-xs me-2" />
             カートに入れる
           </Button>
         </div>

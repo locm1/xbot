@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger, Form, Button, Image } from 'react-bootstrap';
-import { ChatIcon, XIcon, ChevronDownIcon, ChevronUpIcon, PhotographIcon, TicketIcon } from "@heroicons/react/outline";
+import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger, Form, Button, Image, Card } from 'react-bootstrap';
+import { ChatIcon, XIcon, ChevronDownIcon, ChevronUpIcon, PhotographIcon, TicketIcon, FilmIcon, PencilIcon } from "@heroicons/react/outline";
+import { Link } from 'react-router-dom';
 
 import { SmileIcon } from "@/components/icons/Icons";
 
@@ -87,6 +88,26 @@ export default (props) => {
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="movie" className="mb-sm-3 mb-md-0 message-editor-header-item">
+                    <OverlayTrigger 
+                      key="example"
+                      overlay={<Tooltip id="top" className="m-0">動画</Tooltip>}
+                    >
+                      <FilmIcon className="icon icon-sm" />
+                    </OverlayTrigger>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="card" className="mb-sm-3 mb-md-0 message-editor-header-item">
+                    <OverlayTrigger 
+                      key="example"
+                      overlay={<Tooltip id="top" className="m-0">リッチーカード</Tooltip>}
+                    >
+                      <PencilIcon className="icon icon-sm" />
+                    </OverlayTrigger>
+                  </Nav.Link>
+                </Nav.Item>
               </Nav>
             </Col>
             <Col lg={2} className="d-flex justify-content-center">
@@ -129,6 +150,21 @@ export default (props) => {
                     {files.map(file => <DropzoneFile key={file.path} {...file} />)}
                   </Row>
                 </Tab.Pane>
+                <Tab.Pane eventKey="movie" className="py-4">
+                  {files.length == 0 ? (
+                    <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
+                      <Form.Control {...getInputProps()} id="preview-picture" />
+                        <div className="dz-default dz-message text-center">
+                          <p className="dz-button mb-0">動画をアップロード</p>
+                        </div>
+                    </Form>
+                  ) : (
+                    ''
+                  )} 
+                  <Row className="dropzone-files">
+                    {files.map(file => <DropzoneFile key={file.path} {...file} />)}
+                  </Row>
+                </Tab.Pane>
                 <Tab.Pane eventKey="coupon" className="py-4">
                   <Form.Select defaultValue="1" className="mb-0" id="preview-coupon">
                     {
@@ -142,6 +178,13 @@ export default (props) => {
                       lists.map((item, index) => <option key={index} value={index + 1}>{item}</option>)
                     }
                   </Form.Select>
+                </Tab.Pane>
+                <Tab.Pane eventKey="card" className="py-4">
+                  <Card>
+                    <Card.Body>
+                      <Link to="#" className="">リッチカードを選択</Link>
+                    </Card.Body>
+                  </Card>
                 </Tab.Pane>
               </Tab.Content>
             </Col>

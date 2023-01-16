@@ -52,6 +52,7 @@ import LiffTermsOfService from '@/pages/liff/LiffTermsOfService';
 import LiffSpecificTrades from '@/pages/liff/LiffSpecificTrades';
 import LiffVisitor from '@/pages/liff/visitor/LiffVisitor';
 import LiffAboutVisitorPrivileges from '@/pages/liff/visitor/LiffAboutVisitorPrivileges';
+import LiffEventReservations from '@/pages/liff/event/LiffEventReservations';
 
 // components
 import Footer from '@/components/Footer';
@@ -186,6 +187,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
       <LiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} />
       <LiffRoute exact path={Paths.LiffAboutVisitorPrivileges.path} component={LiffAboutVisitorPrivileges} />
+      <LiffRoute exact path={Paths.LiffEventReservations.path} component={LiffEventReservations} />
       
       <Route component={NotFound} />
     </Switch>

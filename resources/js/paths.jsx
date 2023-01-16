@@ -55,6 +55,7 @@ export const Paths = {
     LiffSpecificTrades: { path: "/specific-trades" },
     LiffVisitor: { path: "/visitor" },
     LiffAboutVisitorPrivileges: { path: "/visitor/privilege" },
+    LiffEventReservations: { path: "/event/reservation" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

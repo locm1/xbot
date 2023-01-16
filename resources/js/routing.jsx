@@ -34,8 +34,6 @@ import TermsOfService from '@/pages/setting/TermsOfService';
 import SpecificTrades from '@/pages/setting/SpecificTrades';
 import Tags from '@/pages/tag/Tags';
 import QrCode from '@/pages/qrcode/QrCode';
-import Api from '@/pages/api/createApi';
-import Greeting from '@/pages/greeting/Greeting';
 import NotFound from '@/pages/error/NotFound';
 import Api from '@/pages/api/createApi';
 import Greeting from '@/pages/greeting/Greeting';

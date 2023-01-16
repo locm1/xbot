@@ -37,6 +37,8 @@ import QrCode from '@/pages/qrcode/QrCode';
 import Api from '@/pages/api/createApi';
 import Greeting from '@/pages/greeting/Greeting';
 import NotFound from '@/pages/error/NotFound';
+import Api from '@/pages/api/createApi';
+import Greeting from '@/pages/greeting/Greeting';
 
 // LIFF pages
 import LiffProductDetail from '@/pages/liff/detail/LiffProductDetail';

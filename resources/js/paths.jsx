@@ -60,6 +60,8 @@ export const Paths = {
     LiffVisitor: { path: "/visitor" },
     LiffAboutVisitorPrivileges: { path: "/visitor/privilege" },
     LiffEventReservations: { path: "/event/reservation" },
+    LiffQuestionnaire: { path: "/questionnaire" },
+    LiffQuestionnaireComplete: { path: "/questionnaire/complete" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

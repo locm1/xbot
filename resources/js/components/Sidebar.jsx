@@ -153,7 +153,6 @@ export default (props = {}) => {
 
               <GroupTitle name="Electroic Commerce" />
               <NavItem title="商品管理" icon={StoreIcon} link={Paths.Products.path} />
-              <NavItem title="商品管理" icon={StoreIcon} link={Paths.Products_.path} />
               <NavItem title="カテゴリ管理" icon={StoreIcon} link={Paths.ProductCategory.path} />
               <CollapsableNavItem eventKey="coupon/" title="クーポン管理" icon={CurrencyYenIcon}>
                 <NavItem title="クーポンリスト" link={Paths.Coupons.path} />
@@ -182,7 +181,7 @@ export default (props = {}) => {
               <CollapsableNavItem eventKey="master/" title="マスタ管理" icon={CogIcon}>
                 <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
                 <NavItem title="API設定" link={Paths.Api.path} />
-                <NavItem title="タグ管理" icon={CogIcon} link={Paths.Tags.path} />
+                <NavItem title="タグ管理" link={Paths.Tags.path} />
               </CollapsableNavItem>
               <NavItem title="お友達追加用QR" icon={QrcodeIcon} link={Paths.QrCode.path} />
             </Nav>

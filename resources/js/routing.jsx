@@ -17,8 +17,8 @@ import VisitorHistories from '@/pages/visitor/VisitorHistories';
 import EditVisitorHistory from '@/pages/visitor/EditVisitorHistory';
 import Privileges from '@/pages/privilege/Privileges';
 import Products from '@/pages/product/Products';
-import Products_ from '@/pages/product/Products_';
 import ProductCategory from '@/pages/product/ProductCategory';
+import EditCategory from '@/pages/product/EditCategory'
 import EditProduct from '@/pages/product/EditProduct';
 import OrderDetail from '@/pages/order/OrderDetail';
 import Coupons from '@/pages/coupon/Coupons';
@@ -39,6 +39,7 @@ import QrCode from '@/pages/qrcode/QrCode';
 import NotFound from '@/pages/error/NotFound';
 import Api from '@/pages/api/createApi';
 import Greeting from '@/pages/greeting/Greeting';
+import Display from '@/pages/display/DisplayOrderCategory';
 
 // LIFF pages
 import LiffProductDetail from '@/pages/liff/detail/LiffProductDetail';
@@ -160,8 +161,8 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.EditVisitorHistory.path} component={EditVisitorHistory} />
       <RouteWithSidebar exact path={Paths.Privileges.path} component={Privileges} />
       <RouteWithSidebar exact path={Paths.Products.path} component={Products} />
-      <RouteWithSidebar exact path={Paths.Products_.path} component={Products_} />
       <RouteWithSidebar exact path={Paths.ProductCategory.path} component={ProductCategory} />
+      <RouteWithSidebar exact path={Paths.EditCategory.path} component={EditCategory} />
       <RouteWithSidebar exact path={Paths.CreateProduct.path} component={EditProduct} />
       <RouteWithSidebar exact path={Paths.EditProduct.path} component={EditProduct} />
       <RouteWithSidebar exact path={Paths.OrderDetail.path} component={OrderDetail} />
@@ -182,6 +183,7 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.QrCode.path} component={QrCode} />
       <RouteWithSidebar exact path={Paths.Api.path} component={Api} />
       <RouteWithSidebar exact path={Paths.Greeting.path} component={Greeting} />
+      <RouteWithSidebar exact path={Paths.Display.path} component={Display} />
 
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />

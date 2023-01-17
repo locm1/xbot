@@ -4,6 +4,7 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 import { Link } from 'react-router-dom';
 
 import ProductCategoryTable from "@/pages/product/ProductCategoryTable";
+import DisplayOrderCategoryTable from "@/pages/display/DisplayOrderCategoryTable";
 import products from "@/data/products";
 import { Paths } from "@/paths";
 
@@ -11,6 +12,21 @@ export default () => {
   const [transactions, setTransactions] = useState(products.map(t => ({ ...t, show: true })));
   const [searchValue, setSearchValue] = useState("");
   const [statusValue, setStatusValue] = useState("all");
+  const [isEditing, setIsEditing] = useState(false);
+
+  const ChangeOrderCategoryTable = () => {
+    if(isEditing) {
+      return <DisplayOrderCategoryTable />
+    } else {
+      return <ProductCategoryTable />
+    }
+  }
+
+  const editingHandler = (e) => {
+    setIsEditing(!isEditing);
+    e
+  }
+
   const changeSearchValue = (e) => {
     const newSearchValue = e.target.value;
     const newTransactions = transactions.map(t => {
@@ -26,6 +42,7 @@ export default () => {
     setSearchValue(newSearchValue);
     setTransactions(newTransactions);
   };
+
   const changeStatusValue = (e) => {
     const newStatusValue = e.target.value;
     const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
@@ -38,15 +55,45 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">カテゴリ管理</h1>
-          <p className="text-black-50">※こちらでユーザーに表示されるカテゴリの順番を変更することができます。</p>
         </div>
         <div className="btn-toolbar mb-2 mb-md-0">
-          <Button as={Link} to={Paths.CreateProduct.path} variant="gray-800" size="sm" className="d-inline-flex align-items-center">
+          <Button as={Link} to={Paths.CreateProduct.path} variant="primary" size="sm" className="d-inline-flex align-items-center">
             <PlusIcon className="icon icon-xs me-2" /> カテゴリ追加
           </Button>
         </div>
       </div>
-      <ProductCategoryTable />
+
+      <div className="table-settings mb-4">
+        <Row className="d-flex justify-content-between align-items-center">
+          <Col xs={9} lg={6} className="d-md-flex">
+            <InputGroup className="me-2 me-lg-3 fmxw-400">
+              <InputGroup.Text>
+                <SearchIcon className="icon icon-xs" />
+              </InputGroup.Text>
+              <Form.Control
+                type="text"
+                placeholder="カテゴリ名検索"
+                value={searchValue}
+                onChange={changeSearchValue}
+              />
+            </InputGroup>
+            <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue}>
+              <option value="all">All</option>
+              <option value="paid">Paid</option>
+              <option value="due">Due</option>
+              <option value="cancelled">Cancelled</option>
+            </Form.Select>
+          </Col>
+          <Col xs={3} lg={4} className="d-flex justify-content-end">
+            <Button variant={isEditing ? "secondary" : "outline-secondary"} onClick={() => setIsEditing(!isEditing)}>
+              
+              {isEditing ? "カテゴリオーダー変更モード解除" : "カテゴリオーダー変更モード"}
+            </Button>
+          </Col>
+        </Row>
+      </div>
+
+      <ChangeOrderCategoryTable />
     </>
   );
 }

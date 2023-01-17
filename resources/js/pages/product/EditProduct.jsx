@@ -4,6 +4,8 @@ import { useDropzone } from "react-dropzone";
 import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import CheckboxButton from "@/components/CheckboxButton";
+import { Link, useHistory } from 'react-router-dom';
+import { Paths } from "@/paths";
 
 import ProductOverview from "@/pages/product/ProductOverview";
 import products from "@/data/products";
@@ -210,6 +212,11 @@ export default () => {
           </Card>
         </Col>
       </Row>
+      <div className="d-flex justify-content-end m-4 text-decoration-underline">
+        <Link to={Paths.Display.path}>
+          商品ディスプレイ変更
+        </Link>
+      </div>
     </>
   );
 };

@@ -90,14 +90,14 @@ export default () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                               </svg>
                               </td>
-                              <td style={{width: "300px"}}>
+                              <td style={{width: "500px"}}>
                                 <span className="fw-bold">
                                   <Link to={`/product/category/${t.id}`} className="fw-bolder">
                                   {t.name}
                                   </Link>
                                 </span>
                               </td>
-                              <td style={{width: "150px"}}>
+                              <td style={{width: "400px"}}>
                                 <span className="fw-normal">
                                   10
                                 </span>

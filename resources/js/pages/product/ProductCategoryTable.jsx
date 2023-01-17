@@ -2,11 +2,6 @@ import React, { useState } from "react";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, TrashIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Badge} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
-import { ProductsTable } from "@/pages/product/ProductsTable_";
-import products from "@/data/products";
-import { Paths } from "@/paths";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
@@ -85,14 +80,14 @@ export default () => {
                     <td style={{width: "30px"}}>
                       <FormCheckInput />
                     </td>
-                    <td style={{width: "300px"}}>
+                    <td style={{width: "500px"}}>
                       <span className="fw-bold">
                         <Link to={`/product/category/${t.id}`} className="fw-bolder">
                         {t.name}
                         </Link>
                       </span>
                     </td>
-                    <td style={{width: "150px"}}>
+                    <td style={{width: "400px"}}>
                       <span className="fw-normal">
                         10
                       </span>

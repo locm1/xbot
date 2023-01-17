@@ -47,6 +47,8 @@ import LiffCheckout from '@/pages/liff/checkout/LiffCheckout';
 import LiffCheckoutAddress from '@/pages/liff/checkout/LiffCheckoutAddress';
 import LiffCheckoutAddAddress from '@/pages/liff/checkout/LiffCheckoutAddAddress';
 import LiffCheckoutDelivery from '@/pages/liff/checkout/LiffCheckoutDelivery';
+import LiffCheckoutPaymentSelect from '@/pages/liff/checkout/LiffCheckoutPaymentSelect';
+import LiffCheckoutPaymentCreditCard from '@/pages/liff/checkout/LiffCheckoutPaymentCreditCard';
 import LiffPrivacyPolicy from '@/pages/liff/LiffPrivacyPolicy';
 import LiffTermsOfService from '@/pages/liff/LiffTermsOfService';
 import LiffSpecificTrades from '@/pages/liff/LiffSpecificTrades';
@@ -182,6 +184,8 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
       <LiffRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
       <LiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
+      <LiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
+      <LiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
       <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
       <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />

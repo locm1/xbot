@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
+import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form, FormGroup } from 'react-bootstrap';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
@@ -25,6 +25,29 @@ export default () => {
     setDelivery(e.target.value);
   }
 
+  const DeliveryCard = (props) => {
+    const { value, label, defaultChecked } = props;
+
+    return (
+      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0 checkout-card-check-wrap">
+        <Row className="">
+          <Col xs="12" className="">
+            <Form.Check
+                type="radio"
+                defaultChecked={defaultChecked}
+                value={value}
+                name="delivery"
+                label={label}
+                id={`delivery_address_${value}`}
+                htmlFor={`delivery_address_${value}`}
+                onChange={(e) => handleChange(e)}
+              />
+          </Col>
+        </Row>
+      </ListGroup.Item>
+    )
+  }
+
   return (
     <>
       <main className="content liff-product-detail">
@@ -45,47 +68,8 @@ export default () => {
           </Card.Header>
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
-              <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-                <Row className="">
-                  <Col xs="2" className="">
-                    <Form.Check
-                      type="radio"
-                      defaultChecked={true}
-                      value='1'
-                      name="delivery"
-                      id='delivery_address'
-                      htmlFor='delivery_address'
-                      onChange={(e) => handleChange(e)}
-                    />
-                  </Col>
-                  <Col xs="8" className="px-0">
-                    <div className="m-1">
-                      <h4 className="fs-6 text-dark mb-0">指定なし</h4>
-                    </div>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            </ListGroup> 
-            <ListGroup className="list-group-flush">
-              <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-                <Row className="">
-                  <Col xs="2" className="">
-                    <Form.Check
-                      type="radio"
-                      value='2'
-                      name="delivery"
-                      id='delivery_address'
-                      htmlFor='delivery_address'
-                      onChange={(e) => handleChange(e)}
-                    />
-                  </Col>
-                  <Col xs="8" className="px-0">
-                    <div className="m-1">
-                      <h4 className="fs-6 text-dark mb-0">日時指定</h4>
-                    </div>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
+              <DeliveryCard value={1} label="指定なし" defaultChecked={true} setDelivery={setDelivery} />
+              <DeliveryCard value={2} label="日時指定" defaultChecked={false} setDelivery={setDelivery} />
             </ListGroup> 
             {
               delivery == '2' && 

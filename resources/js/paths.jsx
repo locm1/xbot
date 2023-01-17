@@ -40,7 +40,7 @@ export const Paths = {
     Tags: { path: "/tag" },
     QrCode: { path: "/qr-code" },
     Api: {path: "/api"},
-    Greeting: {path: "/Greeting"},
+    Greeting: {path: "/greeting"},
 
 
     // LIFF
@@ -50,8 +50,14 @@ export const Paths = {
     LiffCarts: { path: "/cart" },
     LiffCheckout: { path: "/checkout" },
     LiffCheckoutDestinations: { path: "/checkout/destination" },
-    LiffCheckoutConfirm: { path: "/checkout/confirm" },
     LiffCheckoutAddress: { path: "/checkout/address" },
+    LiffCheckoutDelivery: { path: "/checkout/delivery" },
+    LiffPrivacyPolicy: { path: "/privacy-policy" },
+    LiffTermsOfService: { path: "/terms-of-service" },
+    LiffSpecificTrades: { path: "/specific-trades" },
+    LiffVisitor: { path: "/visitor" },
+    LiffAboutVisitorPrivileges: { path: "/visitor/privilege" },
+    LiffEventReservations: { path: "/event/reservation" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

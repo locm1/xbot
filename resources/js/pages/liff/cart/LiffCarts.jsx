@@ -99,7 +99,7 @@ export default () => {
                 <h4 className="fs-6 mb-0">商品合計</h4>
                 <h3 className="liff-product-detail-price mt-2">￥{total.toLocaleString()}</h3>
               </div>
-              <div className="d-flex justify-content-between flex-wrap align-items-center p-3">
+              <div className="d-flex justify-content-between flex-wrap align-items-center p-3 mb-4">
                 <Button as={Link} to={Paths.LiffProducts.path} variant="gray-800" className="mt-2 liff-product-detail-button">
                   <InboxIcon className="icon icon-xs me-2" />
                   他の商品を見る

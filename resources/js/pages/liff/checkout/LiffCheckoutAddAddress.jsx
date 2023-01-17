@@ -21,7 +21,7 @@ export default () => {
       <main className="content liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="">
-          <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
+          <Link to={Paths.LiffCheckoutDestinations.path} className="d-flex align-items-center p-2">
             <div className="">
               <span className="link-arrow">
                 <ChevronLeftIcon className="icon icon-sm" />
@@ -113,11 +113,11 @@ export default () => {
             </Row>
           </Card.Body>
         </Card>
-          <div className="align-items-center mt-4 mb-4">
-            <Button variant="tertiary" className="w-100 p-3">
-              追加する
-            </Button>
-          </div>
+        <div className="align-items-center mt-4 mb-4">
+          <Button variant="tertiary" as={Link} to={Paths.LiffCheckoutDestinations.path} className="w-100 p-3">
+            追加する
+          </Button>
+        </div>
       </main>
     </>
   );

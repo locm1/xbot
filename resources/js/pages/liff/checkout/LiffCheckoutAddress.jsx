@@ -28,7 +28,7 @@ export default () => {
             />
           </Col>
           <Col xs="8" className="px-0">
-            <Link className="fs-6 text-dark delivery-address-item-edit" to={Paths.LiffCheckoutAddAddress.path}>編集</Link>
+            <Link className="fs-6 text-dark delivery-address-item-edit" to={Paths.LiffCheckoutAddress.path}>編集</Link>
             <div className="m-1">
               <h4 className="fs-6 text-dark mb-0">{lastName} {firstName} 様</h4>
               <h4 className="fs-6 text-dark mt-1">{zipcode}</h4>
@@ -60,7 +60,7 @@ export default () => {
           </Card>
           <Card border="0" className="shadow">
             <Card.Body className="py-0">
-            <Link to={Paths.LiffCheckoutAddAddress.path} className="d-flex align-items-center p-2">
+            <Link to={Paths.LiffCheckoutAddress.path} className="d-flex align-items-center p-2">
               <h2 className="fs-6 fw-bold mb-0">お届け先住所を追加</h2>
               <div className="ms-auto">
                 <span className="link-arrow">
@@ -70,9 +70,9 @@ export default () => {
             </Link>
             </Card.Body>
           </Card>
-          <div className="align-items-center mt-4">
-            <Button as={Link} to={Paths.LiffCheckoutConfirm.path} variant="tertiary" className="w-100 p-3">
-              支払いに進む
+          <div className="align-items-center mt-4 mb-8">
+            <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="w-100 p-3">
+              変更する
             </Button>
           </div>
         </div>

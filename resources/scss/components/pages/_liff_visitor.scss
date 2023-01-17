@@ -1,0 +1,36 @@
+$liff_default_color: #D5908C;
+
+.liff-visitor-card {
+  background-color: $liff_default_color;
+}
+
+.liff-visitor-card-item {
+  h2 {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+  }
+}
+
+.liff-visitor-name {
+  span {
+    padding-left: 10px;
+    font-size: 17px;
+  }
+}
+
+.liff-visitor-count {
+  font-size: 35px !important;
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+.liff-visitor-qr-code-title {
+  font-weight: bold;
+}
+
+.liff-visitor-qrcode {
+  width: 70%;
+  height: auto;
+}

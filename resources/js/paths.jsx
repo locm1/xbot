@@ -19,8 +19,8 @@ export const Paths = {
     VisitorHistories: { path: "/visitor/history" },
     EditVisitorHistory: { path: "/visitor/history/edit/:id" },
     Products: { path: "/product/list" },
-    Products_: { path: "/product/list_" },
     ProductCategory: { path: "/product/category" },
+    EditCategory: { path: "/product/category/:id" },
     EditProduct: { path: "/product/edit/:id" },
     CreateProduct: { path: "/product/create" },
     OrderDetail: { path: "/product/detail/:id" },
@@ -41,6 +41,7 @@ export const Paths = {
     QrCode: { path: "/qr-code" },
     Api: {path: "/api"},
     Greeting: {path: "/greeting"},
+    Display: {path: "/display"},
 
 
     // LIFF

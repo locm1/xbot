@@ -3,7 +3,6 @@ import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, Trash
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Badge} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { ProductsTable } from "@/pages/product/ProductsTable_";
 import products from "@/data/products";
 import { Paths } from "@/paths";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -86,24 +85,24 @@ export default () => {
                         <Draggable key={t.id} draggableId={"q-" + t.id} index={index}>                    
                           {(provided) => (
                             <tr className="border-bottom" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                              <td style={{minWidth: `${5}vw`}}>
+                              <td style={{width: "30px"}}>
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="icon-xs icon">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                               </svg>
                               </td>
-                              <td style={{minWidth: `${53}vw`}}>
+                              <td style={{width: "300px"}}>
                                 <span className="fw-bold">
                                   <Link to={`/product/category/${t.id}`} className="fw-bolder">
                                   {t.name}
                                   </Link>
                                 </span>
                               </td>
-                              <td style={{minWidth: `${15}vw`}}>
+                              <td style={{width: "150px"}}>
                                 <span className="fw-normal">
                                   10
                                 </span>
                               </td>
-                              <td style={{minWidth: `${5}vw`}} className="">
+                              <td style={{width: "150px"}} className="">
                                 <TrashIcon role="button" onClick={() => deleteCategory(t.id)} className="icon icon-xs text-danger me-2" />
                               </td>
                               {provided.placeholder}

@@ -51,8 +51,10 @@ export const ProductsTable = (props) => {
         <td>
           <div className="d-flex align-items-center">
             <Image src={img} className="me-3 product-image"/>
-            <div className="d-block">
-              <span className="fw-bold">{name}</span>
+            <div className="fw-bold">
+              <Link to={`/product/edit/${id}`} className="fw-bolder">
+                <span className="">{name}</span>
+              </Link>
             </div>
           </div>
         </td>

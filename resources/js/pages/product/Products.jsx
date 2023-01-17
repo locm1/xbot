@@ -93,6 +93,11 @@ export default () => {
       <ProductsTable
         products={transactions.filter(t => t.show)}
       />
+      <div className="d-flex justify-content-end m-4 text-decoration-underline">
+        <Link to={Paths.Display.path}>
+          商品ディスプレイ変更
+        </Link>
+      </div>
     </>
   );
 };

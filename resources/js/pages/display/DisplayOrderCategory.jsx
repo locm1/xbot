@@ -3,7 +3,7 @@ import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import ProductCategoryTable from "@/pages/product/ProductCategoryTable";
+import DisplayOrderCategoryTable from "@/pages/display/DisplayOrderCategoryTable";
 import products from "@/data/products";
 import { Paths } from "@/paths";
 
@@ -46,7 +46,7 @@ export default () => {
           </Button>
         </div>
       </div>
-      <ProductCategoryTable />
+      <DisplayOrderCategoryTable />
     </>
   );
 }

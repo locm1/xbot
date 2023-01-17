@@ -153,6 +153,8 @@ export default (props = {}) => {
 
               <GroupTitle name="Electroic Commerce" />
               <NavItem title="商品管理" icon={StoreIcon} link={Paths.Products.path} />
+              <NavItem title="商品管理" icon={StoreIcon} link={Paths.Products_.path} />
+              <NavItem title="カテゴリ管理" icon={StoreIcon} link={Paths.ProductCategory.path} />
               <CollapsableNavItem eventKey="coupon/" title="クーポン管理" icon={CurrencyYenIcon}>
                 <NavItem title="クーポンリスト" link={Paths.Coupons.path} />
                 <NavItem title="クーポン追加" link={Paths.CreateCoupon.path} />

@@ -71,7 +71,6 @@ export default () => {
       return;
     }
     const [reorderedItem] = questionnaires.splice(result.source.index, 1);
-    console.log(reorderedItem);
     questionnaires.splice(result.destination.index, 0, reorderedItem);
   }
 

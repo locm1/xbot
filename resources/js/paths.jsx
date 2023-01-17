@@ -19,6 +19,8 @@ export const Paths = {
     VisitorHistories: { path: "/visitor/history" },
     EditVisitorHistory: { path: "/visitor/history/edit/:id" },
     Products: { path: "/product/list" },
+    Products_: { path: "/product/list_" },
+    ProductCategory: { path: "/product/category" },
     EditProduct: { path: "/product/edit/:id" },
     CreateProduct: { path: "/product/create" },
     OrderDetail: { path: "/product/detail/:id" },

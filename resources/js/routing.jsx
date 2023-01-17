@@ -17,6 +17,8 @@ import VisitorHistories from '@/pages/visitor/VisitorHistories';
 import EditVisitorHistory from '@/pages/visitor/EditVisitorHistory';
 import Privileges from '@/pages/privilege/Privileges';
 import Products from '@/pages/product/Products';
+import Products_ from '@/pages/product/Products_';
+import ProductCategory from '@/pages/product/ProductCategory';
 import EditProduct from '@/pages/product/EditProduct';
 import OrderDetail from '@/pages/order/OrderDetail';
 import Coupons from '@/pages/coupon/Coupons';
@@ -137,6 +139,8 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.EditVisitorHistory.path} component={EditVisitorHistory} />
       <RouteWithSidebar exact path={Paths.Privileges.path} component={Privileges} />
       <RouteWithSidebar exact path={Paths.Products.path} component={Products} />
+      <RouteWithSidebar exact path={Paths.Products_.path} component={Products_} />
+      <RouteWithSidebar exact path={Paths.ProductCategory.path} component={ProductCategory} />
       <RouteWithSidebar exact path={Paths.CreateProduct.path} component={EditProduct} />
       <RouteWithSidebar exact path={Paths.EditProduct.path} component={EditProduct} />
       <RouteWithSidebar exact path={Paths.OrderDetail.path} component={OrderDetail} />

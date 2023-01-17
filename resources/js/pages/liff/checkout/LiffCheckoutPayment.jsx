@@ -26,7 +26,7 @@ export default () => {
           </Col>
           <Col xs="4" className="">
             <div className="align-items-center mt-4 ms-4">
-              <Button  variant="info" className="w-80">
+              <Button as={Link} to={Paths.LiffCheckoutPayment.path} variant="info" className="w-80">
                 変更
               </Button>
             </div>

@@ -132,3 +132,32 @@ $liff_default_color: #D5908C;
 .liff-checkout-delivery-button {
   margin-bottom: 19rem !important;
 }
+
+.checkout-card-check-wrap {
+  label {
+    padding-left: 10px;
+  }
+}
+
+.liff-questionnaire-select-month {
+  width: 60%;
+}
+
+.liff-questionnaire-select-div {
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.liff-check-icon {
+  width: 20%;
+  height: 20%;
+}
+
+.liff-check-icon-wrap {
+  text-align: center;
+}
+
+.liff-check-complete-title {
+  color: #D5908C;
+  font-weight: bold;
+}

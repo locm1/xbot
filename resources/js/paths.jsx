@@ -53,12 +53,16 @@ export const Paths = {
     LiffCheckoutDestinations: { path: "/checkout/destination" },
     LiffCheckoutAddress: { path: "/checkout/address" },
     LiffCheckoutDelivery: { path: "/checkout/delivery" },
+    LiffCheckoutPayment: { path: "/checkout/payment" },
+    LiffCheckoutPaymentCreditCard: { path: "/checkout/payment/creditcard" },
     LiffPrivacyPolicy: { path: "/privacy-policy" },
     LiffTermsOfService: { path: "/terms-of-service" },
     LiffSpecificTrades: { path: "/specific-trades" },
     LiffVisitor: { path: "/visitor" },
     LiffAboutVisitorPrivileges: { path: "/visitor/privilege" },
     LiffEventReservations: { path: "/event/reservation" },
+    LiffQuestionnaire: { path: "/questionnaire" },
+    LiffQuestionnaireComplete: { path: "/questionnaire/complete" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

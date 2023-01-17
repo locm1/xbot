@@ -50,12 +50,16 @@ import LiffCheckout from '@/pages/liff/checkout/LiffCheckout';
 import LiffCheckoutAddress from '@/pages/liff/checkout/LiffCheckoutAddress';
 import LiffCheckoutAddAddress from '@/pages/liff/checkout/LiffCheckoutAddAddress';
 import LiffCheckoutDelivery from '@/pages/liff/checkout/LiffCheckoutDelivery';
+import LiffCheckoutPaymentSelect from '@/pages/liff/checkout/LiffCheckoutPaymentSelect';
+import LiffCheckoutPaymentCreditCard from '@/pages/liff/checkout/LiffCheckoutPaymentCreditCard';
 import LiffPrivacyPolicy from '@/pages/liff/LiffPrivacyPolicy';
 import LiffTermsOfService from '@/pages/liff/LiffTermsOfService';
 import LiffSpecificTrades from '@/pages/liff/LiffSpecificTrades';
 import LiffVisitor from '@/pages/liff/visitor/LiffVisitor';
 import LiffAboutVisitorPrivileges from '@/pages/liff/visitor/LiffAboutVisitorPrivileges';
 import LiffEventReservations from '@/pages/liff/event/LiffEventReservations';
+import LiffQuestionnaire from '@/pages/liff/questionnaire/LiffQuestionnaire';
+import LiffQuestionnaireComplete from '@/pages/liff/questionnaire/LiffQuestionnaireComplete';
 
 // components
 import Footer from '@/components/Footer';
@@ -188,12 +192,16 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
       <LiffRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
       <LiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
+      <LiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
+      <LiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
       <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
       <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
       <LiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} />
       <LiffRoute exact path={Paths.LiffAboutVisitorPrivileges.path} component={LiffAboutVisitorPrivileges} />
       <LiffRoute exact path={Paths.LiffEventReservations.path} component={LiffEventReservations} />
+      <LiffRoute exact path={Paths.LiffQuestionnaire.path} component={LiffQuestionnaire} />
+      <LiffRoute exact path={Paths.LiffQuestionnaireComplete.path} component={LiffQuestionnaireComplete} />
       
       <Route component={NotFound} />
     </Switch>

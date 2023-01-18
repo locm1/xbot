@@ -37,7 +37,10 @@ export default () => {
   const LiffVisitorQrCard = (props) => {
 
     return (
-      <Card border="0" className="shadow">
+      <Card border="0" className="shadow my-4">
+        <Card.Header className="border-bottom">
+          <h5 className="liff-product-detail-name mb-0">来店QRコード</h5>
+        </Card.Header>
         <Card.Body className="py-0">
           <Row className="">
             <Col xs="12" className="mt-3 mb-3">
@@ -71,7 +74,10 @@ export default () => {
     }
 
     return (
-      <Card border="0" className="shadow">
+      <Card border="0" className="shadow my-4">
+        <Card.Header className="border-bottom">
+          <h5 className="liff-product-detail-name mb-0">特典</h5>
+        </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
             {privileges.map(privilege => <LiffVisitorPrivilegeItem key={`privilege-${privilege.id}`} {...privilege} />)}
@@ -83,17 +89,11 @@ export default () => {
 
   return (
     <>
-      <main className="content liff-product-detail">
+      <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="liff-product-list">
           <LiffVisitorCard />
-          <div className="d-flex align-items-center mt-5">
-            <h2 className="fs-4 liff-visitor-qr-code-title mb-3 ms-3">来店QRコード</h2>
-          </div>
           <LiffVisitorQrCard />
-          <div className="d-flex align-items-center mt-5">
-            <h2 className="fs-4 liff-visitor-qr-code-title mb-3 ms-3">特典</h2>
-          </div>
           <LiffVisitorPrivilegeCard />
           <div className="align-items-center m-2 mt-5">
             <Button as={Link} to={Paths.LiffAboutVisitorPrivileges.path} variant="secondary" className="w-100 p-3">

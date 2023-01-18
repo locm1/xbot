@@ -6,45 +6,23 @@ import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import addresses from "@/data/deliveryAddresses";
+import { PurchaseItem, OrderDetailItem, PaymentDetailItem } from "@/pages/liff/history/LiffCardItem";
 
 export default () => {
   const [deliveryAddresses, setDeliveryAddresses] = useState(addresses);
 
-  const DeliveryAddressItem = (props) => {
-    const { id, index, lastName, firstName, lastNameKana, firstNameKana, zipcode, prefectures, city, address, buildingName, roomNumber, tel } = props;
-    const defaultChecked = (index == 0) ? true : false
-
-    return (
-      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-        <Row className="">
-          <Col xs="8" className="px-0">
-            <div className="m-1">
-              <h4 className="fs-6 text-dark">クレジットカード</h4>
-              <div className="liff-checkout-payment-title">カード番号：xxxx-xxxx-xxxx-xxxx</div>
-              <div className="liff-checkout-payment-title text-dark">支払い回数：3回払い</div>
-            </div>
-          </Col>
-          <Col xs="4" className="">
-            <div className="align-items-center mt-4 ms-4">
-              <Button as={Link} to={Paths.LiffCheckoutPayment.path} variant="info" className="w-80">
-                変更
-              </Button>
-            </div>
-          </Col>
-        </Row>
-      </ListGroup.Item>
-    );
-  }
-
   return (
     <>
-      <div className="d-flex align-items-center mt-4">
+      {/* <div className="d-flex align-items-center mt-4">
         <h2 className="fs-5 liff-product-detail-name mb-3 ms-3">支払い方法</h2>
-      </div>
-      <Card border="0" className="shadow">
+      </div> */}
+      <Card border="0" className="shadow my-3">
+        <Card.Header className="border-bottom">
+              <h5 className="liff-product-detail-name mb-0">支払い方法</h5>
+            </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            {<DeliveryAddressItem {...deliveryAddresses[0]} />}
+            <PaymentDetailItem />
           </ListGroup>
         </Card.Body>
       </Card>

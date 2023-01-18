@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import cartData from "@/data/carts";
+import { OrderDetailItem } from "@/pages/liff/history/LiffCardItem";
 
 export default () => {
   const [carts, setCarts] = useState(cartData);
@@ -61,37 +62,15 @@ export default () => {
     );
   }
 
-  const OrderDetailItem = (props) => {
-    const { img, name, price, id, quantity } = props;
-
-    return (
-      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-        <Row className="">
-          <Col xs="7" className="px-0">
-            <div className="m-1">
-              <h4 className="fs-6 text-dark mb-0">商品合計</h4>
-              <h4 className="fs-6 text-dark mb-0 mt-1">送料</h4>
-              <h3 className="text-dark mb-0 mt-2 liff-pay-total-title">お支払い金額（税込）</h3>
-            </div>
-          </Col>
-          <Col xs="5" className="">
-            <div className="m-1 text-end">
-              <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>
-              <h4 className="fs-6 text-dark mb-0 mt-1">￥ 500</h4>
-              <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {total.toLocaleString()}</h3>
-            </div>
-          </Col>
-        </Row>
-      </ListGroup.Item>
-    );
-  }
-
   return (
     <>
-      <div className="d-flex align-items-center mt-4">
+      {/* <div className="d-flex align-items-center mt-4">
         <h2 className="fs-5 liff-product-detail-name mb-3 ms-3">購入商品</h2>
-      </div>
-      <Card border="0" className="shadow">
+      </div> */}
+      <Card border="0" className="shadow my-3">
+      <Card.Header className="border-bottom">
+              <h5 className="liff-product-detail-name mb-0">購入商品</h5>
+            </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
             <TimeSpecificationItem />
@@ -100,7 +79,7 @@ export default () => {
             {carts.map(cart => <CartItem key={`cart-${cart.id}`} {...cart} />)}
           </ListGroup>
           <ListGroup className="list-group-flush">
-            <OrderDetailItem />
+            <OrderDetailItem total={total} orderTotal={orderTotal} />
           </ListGroup>
         </Card.Body>
       </Card>

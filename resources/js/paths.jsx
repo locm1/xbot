@@ -64,6 +64,8 @@ export const Paths = {
     LiffQuestionnaire: { path: "/questionnaire" },
     LiffQuestionnaireComplete: { path: "/questionnaire/complete" },
     LiffProductHistories: { path: "/history/product" },
+    LiffProductHistoryDetail: { path: "/history/product/purchase/:id" },
+    LiffInvite: { path: "/invite" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

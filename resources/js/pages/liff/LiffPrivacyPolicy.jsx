@@ -69,13 +69,13 @@ export default () => {
 
   return (
     <>
-      <main className="content liff-product-detail">
+      <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="liff-product-list">
-          <div className="d-flex align-items-center">
-            <h2 className="fs-5 liff-product-detail-name mb-3 ms-3">プライバシーポリシー</h2>
-          </div>
           <Card border="0" className="shadow">
+            <Card.Header className="border-bottom">
+              <h5 className="liff-product-detail-name mb-0">プライバシーポリシー</h5>
+            </Card.Header>
             <Card.Body className="py-0">
               <Row className="">
                 <Col xs="12" className="mt-3 mb-3">

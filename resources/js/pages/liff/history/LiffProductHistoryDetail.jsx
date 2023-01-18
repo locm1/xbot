@@ -19,6 +19,9 @@ export default () => {
   const PurchaseDetailCard = (props) => {
     return (
       <Card border="0" className="shadow">
+        <Card.Header className="border-bottom">
+            <h5 className="liff-product-detail-name mb-0">注文詳細</h5>
+          </Card.Header>
         <Card.Body className="py-0">
           <Row className="mt-3 mb-3 pb-3 border-bottom">
             <Col xs={5}>
@@ -38,6 +41,11 @@ export default () => {
           <ListGroup className="list-group-flush">
             <OrderDetailItem total={total} orderTotal={orderTotal} />
           </ListGroup>
+          <div className="align-items-center my-4">
+            <Button as={Link} to={Paths.LiffProductHistories.path} variant="gray-800" className="w-100 p-3">
+              購入履歴に戻る
+            </Button>
+          </div>
         </Card.Body>
       </Card>
     );
@@ -45,38 +53,30 @@ export default () => {
 
   return (
     <>
-    <main className="content liff-product-detail">
+    <main className="liff-product-detail">
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
       <div className="liff-product-list">
-        <div className="d-flex align-items-center">
-        </div>
         <Card border="0" className="shadow mb-4">
-          <h5 className="fs-5 liff-product-detail-name mb-3 ms-3">お届け先情報</h5>
+          <Card.Header className="border-bottom">
+            <h5 className="liff-product-detail-name mb-0">お届け先情報</h5>
+          </Card.Header>
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
               <DeliveryAddressItem {...deliveryAddresses[0]} />
             </ListGroup>
           </Card.Body>
         </Card>
-        <div className="d-flex align-items-center">
-          <h2 className="fs-5 liff-product-detail-name mb-3 ms-3">お支払い情報</h2>
-        </div>
         <Card border="0" className="shadow mb-4">
+          <Card.Header className="border-bottom">
+            <h5 className="liff-product-detail-name mb-0">お支払い情報</h5>
+          </Card.Header>
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
               <PaymentDetailItem />
             </ListGroup>
           </Card.Body>
         </Card>
-        <div className="d-flex align-items-center">
-          <h2 className="fs-5 liff-product-detail-name mb-3 ms-3">注文詳細</h2>
-        </div>
         <PurchaseDetailCard />
-        <div className="align-items-center m-2 mt-4">
-          <Button as={Link} to={Paths.LiffProductHistories.path} variant="gray-800" className="w-100 p-3">
-            購入履歴に戻る
-          </Button>
-        </div>
       </div>
     </main>
     </>

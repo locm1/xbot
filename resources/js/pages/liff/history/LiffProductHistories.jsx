@@ -42,10 +42,10 @@ export default () => {
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>
-      <div className="d-flex align-items-center">
-        <h2 className="fs-5 liff-product-detail-name mt-3 mb-3 ms-3">キャンセルについて</h2>
-      </div>
       <Card border="0" className="shadow p-0 liff-product-card-splide mb-4">
+        <Card.Header className="border-bottom">
+          <h5 className="liff-product-detail-name mb-0">キャンセルについて</h5>
+        </Card.Header>
         <Card.Body className="pb-3 rounded-bottompt-3">
           <p>キャンセルする場合は、お手数ですが下記ボタンからご連絡ください。</p>
           <p>注文番号をお伝えいただくとスムーズです。</p>

@@ -50,7 +50,7 @@ export default () => {
 
   return (
     <>
-      <main className="content liff-product-detail">
+      <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="">
           <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
@@ -89,13 +89,13 @@ export default () => {
                 </Col>
               </Row>
             }
+            <div className="align-items-center my-4">
+              <Button variant="tertiary" as={Link} to={Paths.LiffCheckout.path} className="w-100 p-3">
+                追加する
+              </Button>
+            </div>
           </Card.Body>
         </Card>
-        <div className="align-items-center mt-4 mb-9">
-          <Button variant="tertiary" as={Link} to={Paths.LiffCheckout.path} className="w-100 p-3">
-            追加する
-          </Button>
-        </div>
       </main>
     </>
   );

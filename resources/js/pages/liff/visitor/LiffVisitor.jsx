@@ -74,7 +74,7 @@ export default () => {
     }
 
     return (
-      <Card border="0" className="shadow my-4">
+      <Card border="0" className="shadow mt-4">
         <Card.Header className="border-bottom">
           <h5 className="liff-product-detail-name mb-0">特典</h5>
         </Card.Header>
@@ -83,7 +83,7 @@ export default () => {
             {privileges.map(privilege => <LiffVisitorPrivilegeItem key={`privilege-${privilege.id}`} {...privilege} />)}
           </ListGroup>
         </Card.Body>
-    </Card>
+      </Card>
     );
   }
 
@@ -91,14 +91,14 @@ export default () => {
     <>
       <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-        <div className="liff-product-list">
+        <div className="mb-2">
           <LiffVisitorCard />
           <LiffVisitorQrCard />
           <LiffVisitorPrivilegeCard />
-          <div className="align-items-center m-2 mt-5">
-            <Button as={Link} to={Paths.LiffAboutVisitorPrivileges.path} variant="secondary" className="w-100 p-3">
-              来店特典について
-            </Button>
+          <div className="d-flex justify-content-end me-2">
+            <Link to={Paths.LiffAboutVisitorPrivileges.path} className="text-decoration-underline py-3">
+              来店特典一覧確認
+            </Link>
           </div>
         </div>
       </main>

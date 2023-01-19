@@ -24,7 +24,7 @@ export default () => {
   
   return (
     <>
-      <main className="content">
+      <main className="">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="liff-product-list">
           <div className="d-flex align-items-center">

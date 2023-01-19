@@ -106,7 +106,7 @@ export default () => {
 
   return (
     <>
-      <main className="content liff-product-detail">
+      <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="">
           <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
@@ -136,25 +136,25 @@ export default () => {
                   )
                 }
                 <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-                  <Link to={Paths.LiffCheckoutPaymentCreditCard.path} className="d-flex align-items-center p-2">
+                  <a href={Paths.LiffCheckoutPaymentCreditCard.path} className="d-flex align-items-center p-2">
                     <h2 className="fs-6 fw-bold mb-0">カードを追加</h2>
                     <div className="ms-auto">
                       <span className="link-arrow">
                         <ChevronRightIcon className="icon icon-sm" />
                       </span>
                     </div>
-                  </Link>
+                  </a>
                 </ListGroup.Item>
                 </>
               }
             </ListGroup> 
+            <div className="align-items-center my-4">
+              <Button variant="tertiary" as={Link} to={Paths.LiffCheckout.path} className="w-100 p-3">
+                変更する
+              </Button>
+            </div>
           </Card.Body>
         </Card>
-        <div className="align-items-center mt-4 mb-5">
-          <Button variant="tertiary" as={Link} to={Paths.LiffCheckout.path} className="w-100 p-3">
-            変更する
-          </Button>
-        </div>
       </main>
     </>
   );

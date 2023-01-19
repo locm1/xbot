@@ -6,6 +6,9 @@
         <link rel="shortcut icon" href="favicon.ico">
         <title>Xbot</title>
         <script src="{{ mix('js/index.js') }}" defer></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet">
     </head>
     <body>
         <div id="app"></div>

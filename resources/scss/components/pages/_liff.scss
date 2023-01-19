@@ -1,8 +1,8 @@
 @import "./../footer";
 @import "liff_visitor";
 @import "liff_event";
-
-$liff_default_color: #D5908C;
+@import "liff_invite";
+@import "variables";
 
 .thumbnail-slider {
   margin-top: 10px;
@@ -158,6 +158,10 @@ $liff_default_color: #D5908C;
 }
 
 .liff-check-complete-title {
-  color: #D5908C;
+  color: $liff_default_color;
   font-weight: bold;
+}
+
+.liff-purchase-detail-card-title {
+  color: #888888;
 }

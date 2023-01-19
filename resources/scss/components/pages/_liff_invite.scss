@@ -1,0 +1,153 @@
+@import "variables";
+
+.liff-content {
+  background-color: #FDF9F8;
+  max-width: 75rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.coupon-box-head {
+  background-color: #E7D2D2;
+  height: 9.5rem;
+}
+
+.liff-invite-image {
+  width: 13rem;
+  margin: auto;
+  transform: translate(0, 1.5rem);
+  display: block;
+}
+
+.c-box {
+  background: #fff;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.coupon-title {
+  text-align: center;
+  font-size: 1.3rem;
+  color: $liff_default_color;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.coupon-label {
+  display: table;
+  margin: auto;
+  min-width: 8.5rem;
+  height: 1rem;
+  line-height: 1.7rem;
+  color: #fff;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  padding: 0 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: $liff_default_color;
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 100%);
+    border: solid 4px transparent;
+    border-top-color: $liff_default_color;
+    border-top-width: 9px;
+  }
+}
+
+.coupon-text {
+  font-size: 0.8rem;
+    margin: 1rem auto 1.5rem;
+    padding-bottom: 1.8rem;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.coupon-input {
+  margin: 1rem auto 1.5rem;
+  position: relative;
+  input {
+    background-color: #F0EFF0;
+    font-size: 16px;
+    padding: 0.8rem;
+    border-radius: 3px;
+    width: 100%;
+    border: 0;
+  }
+}
+
+.common-button {
+  color: #fff;
+  background-color: #B49F6F;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 31.5rem;
+  height: 3rem;
+  margin: auto;
+  border: 0;
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+}
+
+.common-button--line {
+  background-color: #39B901;
+  border-radius: 0;
+  &:hover {
+    background-color: #39B901;
+  }
+}
+
+.coupon-main {
+  background-color: $liff_default_color;
+  color: #fff;
+  border: solid 1px $liff_default_color;
+  text-align: center;
+  position: relative;
+  padding: 1.8rem 0 1rem;
+  border-radius: 0;
+}
+
+.cp-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.coupon-main__t1 {
+  font-size: 1rem;
+  font-family: 'Knewave', cursive;
+}
+
+.coupon-main__price {
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 10px;
+}
+
+.coupon-main__t2 {
+  font-size: 0.6rem;
+}
+
+.cp-img2 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: auto;
+  left: auto;
+}
+
+.coupon-main__t3 {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: $liff_default_color;
+  border: solid 2px;
+  padding: 0.8rem;
+}

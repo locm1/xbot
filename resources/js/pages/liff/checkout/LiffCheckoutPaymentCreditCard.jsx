@@ -24,7 +24,7 @@ export default () => {
 
   return (
     <>
-      <main className="content liff-product-detail">
+      <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="">
           <Link to={Paths.LiffCheckoutPayment.path} className="d-flex align-items-center p-2">
@@ -45,13 +45,13 @@ export default () => {
               <p>下記「カード情報を入力する」から利用するカードのカード番号・有効期限・CVC番号・名義をお間違いなくご入力ください。</p>
             </div>
             <div id="pay-jp" className="m-3"></div>
+            <div className="align-items-center mt-4 mb-5">
+              <Button variant="tertiary" as={Link} to={Paths.LiffCheckoutPayment.path} className="w-100 p-3">
+                カードを追加する
+              </Button>
+            </div>
           </Card.Body>
         </Card>
-        <div className="align-items-center mt-4 mb-5">
-          <Button variant="tertiary" as={Link} to={Paths.LiffCheckoutPayment.path} className="w-100 p-3">
-            カードを追加する
-          </Button>
-        </div>
       </main>
     </>
   );

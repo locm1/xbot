@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { PencilAltIcon, ShieldExclamationIcon, TrashIcon, DocumentDuplicateIcon } from "@heroicons/react/solid";
+import { PencilAltIcon, PaperAirplaneIcon, TrashIcon, DocumentDuplicateIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -66,8 +66,10 @@ export const TemplateMessageTable = (props) => {
     return (
       <tr className="border-bottom">
         <td>
-          <span className="fw-normal">
-            {title}
+          <span className="fw-normal fw-bolder">
+            <Link to={`/message/template/edit/${id}`}>
+              {title}
+            </Link>
           </span>
         </td>
         <td>
@@ -77,10 +79,21 @@ export const TemplateMessageTable = (props) => {
         </td>
         <td>
           <Link to={`/message/template/edit/${id}`}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
+            <OverlayTrigger key={"edit-" + id} overlay={<Tooltip id="top" className="m-0">編集</Tooltip>}>
+              <PencilAltIcon className="icon icon-xs me-2"/>
+            </OverlayTrigger>
           </Link>
-          <DocumentDuplicateIcon role={"button"} onClick={() => duplicateTemplate(id)} className="icon icon-xs me-2" />
-          <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
+          <Link to={`/message/send/segment`}>
+            <OverlayTrigger key={"use-" + id} overlay={<Tooltip id="top" className="m-0">このテンプレートを使用</Tooltip>}>
+              <PaperAirplaneIcon className="icon icon-xs me-2"/>
+            </OverlayTrigger>
+          </Link>
+          <OverlayTrigger key={"copy-" + id} overlay={<Tooltip id="top" className="m-0">コピー</Tooltip>}>
+            <DocumentDuplicateIcon role={"button"} onClick={() => duplicateTemplate(id)} className="icon icon-xs me-2" />
+          </OverlayTrigger>
+          <OverlayTrigger key={"delete-" + id} overlay={<Tooltip id="top" className="m-0">削除</Tooltip>}>
+            <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
+          </OverlayTrigger>
         </td>
       </tr>
     );
@@ -94,7 +107,7 @@ export const TemplateMessageTable = (props) => {
             <tr>
               <th className="border-gray-200">タイトル</th>
               <th className="border-gray-200">追加日時</th>
-              <th className="border-gray-200">編集・削除</th>
+              <th className="border-gray-200">アクション</th>
             </tr>
           </thead>
           <tbody className="border-0">

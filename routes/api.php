@@ -15,8 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+const VERSION = 'v1';
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('users', [UserController::class, 'index']);
+Route::group(['prefix' => VERSION], function() {
+    Route::get('/users', [UserController::class, 'index']);
+});

@@ -151,7 +151,7 @@ const Routing = () => {
     <Switch>
       <Route exact path={Paths.Signin.path} component={SignIn} />
       <Route exact path={Paths.Route.path}>
-        {<Redirect to="/dashboard" />}
+        {<Redirect to={Paths.DashboardOverview.path} />}
       </Route>
       <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />
       <RouteWithSidebar exact path={Paths.CreateQuestionnaire.path} component={CreateQuestionnaire} />

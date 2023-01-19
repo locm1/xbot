@@ -6,7 +6,7 @@ import CheckboxButton from "@/components/CheckboxButton";
 
 
 export default (props) => {
-  const { cardRef, title, style = {}, extraProps = {}, card } = props;
+  const { cardRef, title, style = {}, extraProps = {}, card, selected } = props;
 
   const onDelete = () => {
     props.onDelete && props.onDelete();
@@ -30,7 +30,7 @@ export default (props) => {
         return <p>a</p>
       case 4:
         return (
-          items.map((item, index) => <CheckboxButton key={index} name={card.name} id={item.id} title={item.title} value={index + 1} />)
+          items.map((item, index) => <CheckboxButton key={index} name={card.name} id={item.id} title={item.title} value={index + 1} {...selected ? defaultChecked : "" } />)
         );
       case 5:
         return (

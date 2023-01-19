@@ -182,6 +182,10 @@ export default () => {
     setFieldList(diffResultCards);
   }, [segmentLists]);
 
+  const changeTemplate = () => {
+    
+  }
+
   return (
     <>
 
@@ -209,11 +213,11 @@ export default () => {
         </div>
         </Col>
         <Col xs={6} xl={6} className="justify-content-end d-flex">
-          <Form.Select className="w-50 h-50">
+          <Form.Select className="w-50 h-50" onChange={() => changeTemplate(e)}>
             <option defaultValue>テンプレートを選択</option>
-            <option>テンプレート1</option>
-            <option>テンプレート2</option>
-            <option>テンプレート3</option>
+            <option value={1}>テンプレート1</option>
+            <option value={2}>テンプレート2</option>
+            <option value={3}>テンプレート3</option>
           </Form.Select>
         </Col>
       </Row>

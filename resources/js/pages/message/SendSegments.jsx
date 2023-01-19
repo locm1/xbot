@@ -3,7 +3,7 @@ import ReactDOMServer from "react-dom/server";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Col, Row, Button, Container, Breadcrumb } from "react-bootstrap";
+import { Col, Row, Button, Container, Breadcrumb, Form } from "react-bootstrap";
 
 import KANBAN_LISTS from "@/data/kanban";
 import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
@@ -200,13 +200,21 @@ export default () => {
         </div>
       </div>
       <Row>
-        <Col xs={12} xl={12}>
+        <Col xs={6} xl={6}>
         <div className="btn-group target-count-wrap" role="group" aria-label="Basic radio toggle button group">
           <div className="btn btn-primary d-flex pe-none align-items-center">キーワード選択</div>
             <div className="btn btn-outline-primary pe-none bg-white">該当人数
             <div className="fs-4 people-wrap d-inline"> <span className="people text-primary" id="people">28</span> </div>人 
           </div>
         </div>
+        </Col>
+        <Col xs={6} xl={6} className="justify-content-end d-flex">
+          <Form.Select className="w-50 h-50">
+            <option defaultValue>テンプレートを選択</option>
+            <option>テンプレート1</option>
+            <option>テンプレート2</option>
+            <option>テンプレート3</option>
+          </Form.Select>
         </Col>
       </Row>
 
@@ -266,15 +274,18 @@ export default () => {
             })}
           </DragDropContext>
         </Row>
+        <Button variant="tertiary" className="mt-2 w-100">
+          セグメント結果を保存する
+        </Button>
       </Container>
       
       <MessageDetail />
 
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.Users.path} variant="gray-800" className="mt-2 animate-up-2 w-50 segment-button-position">
+        <Button href={Paths.Users.path} variant="gray-800" className="mt-2 animate-up-2 w-50 me-3">
           ユーザーID抽出
         </Button>
-        <Button href={Paths.Users.path} variant="gray-800" className="mt-2 animate-up-2 w-50 segment-button-position">
+        <Button href={Paths.Users.path} variant="gray-800" className="mt-2 animate-up-2 w-50 ms-3">
           配信する
         </Button>
       </div>

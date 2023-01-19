@@ -40,6 +40,10 @@ import NotFound from '@/pages/error/NotFound';
 import Api from '@/pages/api/createApi';
 import Greeting from '@/pages/greeting/Greeting';
 import Display from '@/pages/display/DisplayOrderCategory';
+import RichMenu from '@/pages/richmenu/RichMenu';
+
+// Account
+import Accounts from '@/pages/account/Accounts';
 
 // LIFF pages
 import LiffProductDetail from '@/pages/liff/detail/LiffProductDetail';
@@ -186,6 +190,9 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.Api.path} component={Api} />
       <RouteWithSidebar exact path={Paths.Greeting.path} component={Greeting} />
       <RouteWithSidebar exact path={Paths.Display.path} component={Display} />
+      <RouteWithSidebar exact path={Paths.RichMenu.path} component={RichMenu} />
+
+      <RouteWithSidebar exact path={Paths.Accounts.path} component={Accounts} />
 
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />

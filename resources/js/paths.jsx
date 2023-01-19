@@ -37,11 +37,15 @@ export const Paths = {
     PrivacyPolicy: { path: "/setting/privacy-policy" },
     TermsOfService: { path: "/setting/terms-of-service" },
     SpecificTrades: { path: "/setting/specific-trades" },
-    Tags: { path: "/tag" },
+    Tags: { path: "/master/tag" },
     QrCode: { path: "/qr-code" },
-    Api: {path: "/api"},
-    Greeting: {path: "/greeting"},
+    Api: {path: "/master/api"},
+    Greeting: {path: "/master/greeting"},
     Display: {path: "/display"},
+    RichMenu: {path: "/master/richmenu"},
+
+    // Accounts
+    Accounts: { path: "/account/list" },
 
 
     // LIFF

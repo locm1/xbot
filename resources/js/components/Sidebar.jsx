@@ -141,7 +141,7 @@ export default (props = {}) => {
                 <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
               </Link>
               <GroupTitle name="User Management" />
-              <NavItem title="ユーザーリスト" link={Paths.Users.path} icon={UserIcon} />
+              <NavItem title="ユーザー管理" link={Paths.Users.path} icon={UserIcon} />
               <NavItem title="アンケート管理" icon={PencilAltIcon} link={Paths.CreateQuestionnaire.path} />
               <CollapsableNavItem eventKey="message/" title="メッセージ管理" icon={UserGroupIcon}>
                 <NavItem title="セグメント配信" link={Paths.SendSegments.path} />
@@ -158,8 +158,8 @@ export default (props = {}) => {
                 <NavItem title="クーポンリスト" link={Paths.Coupons.path} />
                 <NavItem title="クーポン追加" link={Paths.CreateCoupon.path} />
               </CollapsableNavItem>
-              <NavItem title="注文リスト" icon={ShoppingCartIcon} link={Paths.Orders.path} />
-              <NavItem title="取置リスト" icon={InboxIcon} link={Paths.Reserves.path} />
+              <NavItem title="注文管理" icon={ShoppingCartIcon} link={Paths.Orders.path} />
+              <NavItem title="取置管理" icon={InboxIcon} link={Paths.Reserves.path} />
               <CollapsableNavItem eventKey="event/" title="イベント管理" icon={CalendarIcon}>
                 <NavItem title="イベントカレンダー" link={Paths.EventCalendar.path} />
                 <NavItem title="イベント案内リスト" link={Paths.Events.path} />
@@ -170,18 +170,20 @@ export default (props = {}) => {
               </CollapsableNavItem>
 
               <GroupTitle name="Invitation" />
-              <NavItem title="招待リスト" link={Paths.Invitations.path} icon={UserAddIcon} />
+              <NavItem title="招待管理" link={Paths.Invitations.path} icon={UserAddIcon} />
 
               <GroupTitle name="Configure" />
+              <CollapsableNavItem eventKey="master/" title="マスタ管理" icon={CogIcon}>
+                <NavItem title="アカウント管理" link={Paths.Accounts.path} />
+                <NavItem title="リッチメニュー設定" link={Paths.RichMenu.path} />
+                <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
+                <NavItem title="API設定" link={Paths.Api.path} />
+                <NavItem title="タグ管理" link={Paths.Tags.path} />
+              </CollapsableNavItem>
               <CollapsableNavItem eventKey="setting/" title="サイト設定" icon={CogIcon}>
                 <NavItem title="プライバシーポリシー" link={Paths.PrivacyPolicy.path} />
                 <NavItem title="利用規約" link={Paths.TermsOfService.path} />
                 <NavItem title="特定商取引法に基づく表記" link={Paths.SpecificTrades.path} />
-              </CollapsableNavItem>
-              <CollapsableNavItem eventKey="master/" title="マスタ管理" icon={CogIcon}>
-                <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
-                <NavItem title="API設定" link={Paths.Api.path} />
-                <NavItem title="タグ管理" link={Paths.Tags.path} />
               </CollapsableNavItem>
               <NavItem title="お友達追加用QR" icon={QrcodeIcon} link={Paths.QrCode.path} />
             </Nav>

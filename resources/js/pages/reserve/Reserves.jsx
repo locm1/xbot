@@ -86,7 +86,7 @@ export default () => {
       )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">取置リスト</h1>
+          <h1 className="page-title">取置管理</h1>
         </div>
       </div>
 

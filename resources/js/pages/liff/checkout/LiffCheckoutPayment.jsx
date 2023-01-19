@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import addresses from "@/data/deliveryAddresses";
-import { PurchaseItem, OrderDetailItem, PaymentDetailItem } from "@/pages/liff/history/LiffCardItem";
+import { PaymentDetailItem } from "@/pages/liff/LiffCardItem";
 
 export default () => {
   const [deliveryAddresses, setDeliveryAddresses] = useState(addresses);

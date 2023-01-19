@@ -3,15 +3,17 @@ import { Row, Col, Form, ListGroup, Card, InputGroup, Image, Button } from 'reac
 import { SearchIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
+import AccordionComponent from "@/components/AccordionComponent";
 
-import Purchases from "@/data/purchases";
+import Carts from "@/data/carts";
 import { CartItem } from "@/pages/liff/LiffCardItem";
+import QrCode from "@img/img/add_friend_qr.png"
 
 export default () => {
   const date = new Date();
   const endYear = date.getFullYear();
   const startYear = endYear - 5;
-  const [purchases, setPurchases] = useState(Purchases);
+  const [reserves, setReserves] = useState(Carts);
 
   const getPurchaseTimes = () => {
     const purchaseTimes = [];
@@ -22,31 +24,26 @@ export default () => {
     return purchaseTimes.reverse();
   }
 
-  const PurchaseCard = (props) => {
-    const { id, products } = props;
+  const ReserveCard = (props) => {
+    const { id, reserve } = props;
 
     return (
       <Card border="0" className="shadow p-0 mb-4">
-        <Card.Header className="">
-            <h2 className="fs-5 fw-bold mb-0">注文内容確認中</h2>
-        </Card.Header>
         <Card.Body className="pb-3 rounded-bottompt-3">
-          <div className="d-flex align-items-center pb-3">
-            <small className="">購入日時：2023-01-17</small>
-            <div className="me-1 ms-1">｜</div>
-            <small className="">注文番号：47777</small>
-          </div>
           <ListGroup className="list-group-flush">
-            {products.map(product => <CartItem key={`product-${product.id}`} {...product} history="purchase" />)}
+            <CartItem {...reserve} history="reserve" />
           </ListGroup>
-          <div className="d-flex justify-content-between flex-wrap align-items-center mt-2 mb-2">
-            <Button as={Link} to={`/history/product/purchase/${id}`} variant="info" className="mt-2 liff-product-detail-button">
-              詳細を見る
-            </Button>
-            <Button as={Link} to={Paths.LiffCarts.path} variant="tertiary" className="mt-2 liff-product-detail-button">
-              再購入する
-            </Button>
-          </div>
+          <AccordionComponent
+            data={[
+              {
+                id: 1,
+                eventKey: "panel-1",
+                title: "QRコードを表示",
+              },
+            ]}
+          >
+            <Image src={QrCode} className="m-0" />
+          </AccordionComponent>
         </Card.Body>
       </Card>
     );
@@ -64,7 +61,7 @@ export default () => {
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                placeholder="すべての購入履歴を検索"
+                placeholder="すべての取り置き履歴を検索"
                 value=""
               />
             </InputGroup>
@@ -80,9 +77,9 @@ export default () => {
       </Card.Body>
     </Card>
     <div className="d-flex align-items-center content">
-      <p className="mb-3 mt-3">件数：{purchases.length}件</p>
+      <p className="mb-3 mt-3">件数：{reserves.length}件</p>
     </div>
-    {purchases.map(purchase => <PurchaseCard key={`purchase-${purchase.id}`} {...purchase} />)}
+    {reserves.map(reserve => <ReserveCard key={`reserve-${reserve.id}`} reserve={reserve} />)}
     </>
   );
 };

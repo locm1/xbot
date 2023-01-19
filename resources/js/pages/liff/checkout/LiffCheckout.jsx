@@ -8,7 +8,7 @@ import addresses from "@/data/deliveryAddresses";
 
 import LiffCheckoutPayment from "@/pages/liff/checkout/LiffCheckoutPayment";
 import LiffCheckoutOrders from "@/pages/liff/checkout/LiffCheckoutOrders";
-import { DeliveryAddressItem } from "@/pages/liff/history/LiffCardItem";
+import { DeliveryAddressItem } from "@/pages/liff/LiffCardItem";
 
 export default () => {
   const [deliveryAddresses, setDeliveryAddresses] = useState(addresses);

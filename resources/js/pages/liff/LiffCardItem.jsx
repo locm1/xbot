@@ -3,11 +3,11 @@ import { Row, Col, Image, Button, Card, ListGroup } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { Paths } from "@/paths";
 
-export const PurchaseItem = (props) => {
-  const { img, name, price, id, quantity } = props;
+export const CartItem = (props) => {
+  const { img, name, price, id, quantity, history } = props;
 
   return (
-    <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+    <ListGroup.Item className="bg-transparent py-3 px-0">
       <Link to={`/liff/product/detail/${id}`}>
         <Row className="">
           <Col xs="5">
@@ -18,7 +18,11 @@ export const PurchaseItem = (props) => {
           <Col xs="7" className="px-0 m-0">
             <h4 className="fs-6 text-dark mb-0">{name}</h4>
             <h4 className="liff-product-detail-price mt-2">￥{price.toLocaleString()}<span>税込</span></h4>
-            <p className="mt-2">個数：1個</p>
+            <div className="">数量：{quantity}個</div>
+            {
+              history == 'reserve' &&
+              <div className="">期間：2023年02月17日まで</div>
+            }
           </Col>
         </Row>
       </Link>

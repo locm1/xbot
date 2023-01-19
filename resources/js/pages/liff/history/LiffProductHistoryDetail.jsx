@@ -8,7 +8,7 @@ import { Paths } from "@/paths";
 
 import Purchases from "@/data/purchases";
 import addresses from "@/data/deliveryAddresses";
-import { PurchaseItem, OrderDetailItem, PaymentDetailItem, DeliveryAddressItem } from "@/pages/liff/history/LiffCardItem";
+import { CartItem, OrderDetailItem, PaymentDetailItem, DeliveryAddressItem } from "@/pages/liff/LiffCardItem";
 
 export default () => {
   const [purchases, setPurchases] = useState(Purchases);
@@ -36,7 +36,7 @@ export default () => {
             </Col>
           </Row>
           <ListGroup className="list-group-flush">
-          {purchases[0].products.map(product => <PurchaseItem key={`product-${product.id}`} {...product} />)}
+          {purchases[0].products.map(product => <CartItem key={`product-${product.id}`} {...product} />)}
           </ListGroup>
           <ListGroup className="list-group-flush">
             <OrderDetailItem total={total} orderTotal={orderTotal} />

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import LiffPurchaseHistories from "@/pages/liff/history/LiffPurchaseHistories";
+import LiffReserveHistories from "@/pages/liff/history/LiffReserveHistories";
 
 export default () => {
 
@@ -38,7 +39,7 @@ export default () => {
             <LiffPurchaseHistories />
           </Tab.Pane>
           <Tab.Pane eventKey="reserve_history" className="">
-            <p>b</p>
+            <LiffReserveHistories />
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>

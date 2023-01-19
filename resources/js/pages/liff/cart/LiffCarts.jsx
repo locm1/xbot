@@ -32,7 +32,7 @@ export default () => {
     }
 
     return (
-      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+      <ListGroup.Item className="bg-transparent py-3 px-0">
         <Link to={`/liff/product/detail/${id}`}>
           <Row className="">
             <Col xs="5">

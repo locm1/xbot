@@ -20,6 +20,7 @@ class UserController extends Controller
         $users = $this->user_service->getAllUsers();
         return response()->json([
             'users' => $users,
+            'code' => 200
         ]);
     }
 }

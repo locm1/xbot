@@ -39,6 +39,8 @@ export const OrdersTable = (props) => {
 
   const TableRow = (props) => {
     const { id, createdAt, name, prefectures, purchasePrice, status, userImage, shippingFee, userId } = props;
+    const userLink = Paths.EditUser.path.replace(':id', userId);
+    const productLink = Paths.EditProduct.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
@@ -63,7 +65,7 @@ export const OrdersTable = (props) => {
           </span>
         </td>
         <td>
-          <Card.Link as={Link} to={`/user/edit/${userId}`} className="d-flex align-items-center">
+          <Card.Link as={Link} to={userLink} className="d-flex align-items-center">
             {userImage
               ? (
                 <Image
@@ -88,7 +90,7 @@ export const OrdersTable = (props) => {
         </Card.Link>
         </td>
         <td>
-          <Link to={`/product/detail/${id}`}>
+          <Link to={productLink}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
           <TrashIcon role="button" className="icon icon-xs text-danger me-2" />

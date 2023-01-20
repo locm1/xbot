@@ -4,6 +4,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
 
 import { Link } from 'react-router-dom';
+import { Paths } from "@/paths";
 import LiffProductCard from "@/pages/liff/LiffProductCard";
 import productData from "@/data/products";
 
@@ -27,7 +28,7 @@ export default () => {
       <div className="d-flex align-items-center">
         <h2 className="fs-6 fw-bold mb-0">カテゴリー1</h2>
         <div className="ms-auto">
-          <Card.Link href={`/liff/product/category/1`} className="d-inline-flex align-items-center fw-normal liff-product-view-all">
+          <Card.Link href={`/product/category/1`} className="d-inline-flex align-items-center fw-normal liff-product-view-all">
             すべてを見る
           </Card.Link>
         </div>

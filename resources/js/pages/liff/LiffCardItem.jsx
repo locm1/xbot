@@ -5,10 +5,11 @@ import { Paths } from "@/paths";
 
 export const CartItem = (props) => {
   const { img, name, price, id, quantity, history } = props;
+  const link = Paths.LiffProductDetail.path.replace(':id', id);
 
   return (
     <ListGroup.Item className="bg-transparent py-3 px-0">
-      <Link to={`/liff/product/detail/${id}`}>
+      <Link to={link}>
         <Row className="">
           <Col xs="5">
             <div className="liff-cart-img">

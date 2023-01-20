@@ -150,7 +150,7 @@ const Routing = () => {
   return (
     <Switch>
       <Route exact path={Paths.Signin.path} component={SignIn} />
-      <Route exact path={Paths.Route.path}>
+      <Route exact path='/'>
         {<Redirect to={Paths.DashboardOverview.path} />}
       </Route>
       <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />

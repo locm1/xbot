@@ -26,7 +26,7 @@ class ServiceMakeCommand extends Command
      * @var string
      */
     private $className;
-    private $serviceDir;
+    private $serviceDirName;
 
     /**
      * @var string
@@ -41,19 +41,39 @@ class ServiceMakeCommand extends Command
     public function handle()
     {
         $this->className = $this->argument('serviceClassName');
-        $this->serviceDir = $this->argument('serviceDir');
-        $this->serviceFileName = self::SERVICES_PATH .$this->serviceDir .'/' .$this->className .'.php';
-        $this->createServiceFile($this->serviceDir);
+        $this->serviceDirName = $this->argument('serviceDir');
+        $serviceDir = self::SERVICES_PATH .$this->serviceDirName;
+        $this->serviceFileName = $serviceDir .'/' .$this->className .'Service.php';
+        
+        if (!file_exists($serviceDir)) {
+            $this->createDir($serviceDir);
+        }
+        
+        $this->createServiceFile($this->className, $this->serviceDirName);
         $this->info('Service created successfully.');
     }
 
     /**
      * Create Service File.
      */
-    private function createServiceFile($serviceDir): void
+    private function createServiceFile($className, $serviceDir): void
     {
-        $content = "<?php\n\nnamespace App\\Services\\$serviceDir;\n\n\nclass {$this->className} \n{\n    //\n}\n";
+        $index_function = "public function getAll{$className}s() \n    {\n        //\n    }\n";
+        $create_function = "public function create{$className}() \n    {\n        //\n    }\n";
+        $show_function = "public function get{$className}ById() \n    {\n        //\n    }\n";
+        $update_function = "public function update{$className}() \n    {\n        //\n    }\n";
+        $delete_function = "public function delete{$className}() \n    {\n        //\n    }\n";
+        $content = "<?php\n\nnamespace App\\Services\\$serviceDir;\n\n\nclass {$this->className}Service \n{\n\n    $index_function\n\n    $create_function\n\n    $show_function\n\n    $update_function\n\n    $delete_function\n}\n";
 
         file_put_contents($this->serviceFileName, $content);
+    }
+
+    /**
+     * Create Service File.
+     */
+
+    private function createDir($serviceDir)
+    {
+        mkdir("$serviceDir", 0775);
     }
 }

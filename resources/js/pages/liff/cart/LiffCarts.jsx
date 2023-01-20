@@ -18,6 +18,7 @@ export default () => {
 
   const CartItem = (props) => {
     const { img, name, price, id, quantity } = props;
+    const link = Paths.LiffProductDetail.path.replace(':id', id);
     
     const increaseQuantity = (id) => {
       const targetCart = carts.find((cart) => (cart.id === id));
@@ -33,7 +34,7 @@ export default () => {
 
     return (
       <ListGroup.Item className="bg-transparent py-3 px-0">
-        <Link to={`/liff/product/detail/${id}`}>
+        <Link to={link}>
           <Row className="">
             <Col xs="5">
               <div className="liff-cart-img">

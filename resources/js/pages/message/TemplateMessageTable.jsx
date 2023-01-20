@@ -62,12 +62,13 @@ export const TemplateMessageTable = (props) => {
   const TableRow = (props) => {
     const history = useHistory();
     const { title, addDate, id } = props;
+    const link = Paths.EditMessage.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
         <td>
           <span className="fw-normal fw-bolder">
-            <Link to={`/message/template/edit/${id}`}>
+            <Link to={link}>
               {title}
             </Link>
           </span>
@@ -78,12 +79,12 @@ export const TemplateMessageTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={`/message/template/edit/${id}`}>
+          <Link to={link}>
             <OverlayTrigger key={"edit-" + id} overlay={<Tooltip id="top" className="m-0">編集</Tooltip>}>
               <PencilAltIcon className="icon icon-xs me-2"/>
             </OverlayTrigger>
           </Link>
-          <Link to={`/message/send/segment`}>
+          <Link to={Paths.SendSegments.path}>
             <OverlayTrigger key={"use-" + id} overlay={<Tooltip id="top" className="m-0">このテンプレートを使用</Tooltip>}>
               <PaperAirplaneIcon className="icon icon-xs me-2"/>
             </OverlayTrigger>

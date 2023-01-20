@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Modal, ProgressBar, Pagination, Badge } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import { Paths } from "@/paths";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 
@@ -51,6 +52,8 @@ export const ChangeOrderProductsTable = (props) => {
 
   const TableRow = (props) => {
     const { category, name, price, stockQuantity, img, id, index } = props;
+    const link = Paths.EditProduct.path.replace(':id', id);
+
     if (category === 1) {
       return (
         <Draggable key={id} draggableId={"q-" + id} index={index}>
@@ -60,7 +63,7 @@ export const ChangeOrderProductsTable = (props) => {
                 <div className="d-flex align-items-center">
                   <Image src={img} className="me-3 product-image"/>
                   <div className="fw-bold">
-                    <Link to={`/product/edit/${id}`} className="fw-bolder">
+                    <Link to={link} className="fw-bolder">
                       <span className="">{name}</span>
                     </Link>
                   </div>
@@ -82,7 +85,7 @@ export const ChangeOrderProductsTable = (props) => {
                 </span>
               </td>
               <td style={{ width: "500px"}}>
-                <Link to={`/product/edit/${id}`}>
+                <Link to={link}>
                   <PencilAltIcon className="icon icon-xs me-2"/>
                 </Link>
                 <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />

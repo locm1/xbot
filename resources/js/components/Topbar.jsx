@@ -67,50 +67,16 @@ export default (props) => {
             </Button>
           </div>
           <Nav className="align-items-center">
-            <Dropdown as={Nav.Item} onToggle={markNotificationsAsRead} >
-              <Dropdown.Toggle as={Nav.Link} className={`text-dark notification-bell ${bellIconClasses}`}>
-                <BellIcon className="icon icon-sm bell-shake text-gray-900" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="dropdown-menu-lg dropdown-menu-center mt-2 py-0">
-                <ListGroup className="list-group-flush">
-                  <Nav.Link href="#" className="text-center text-primary fw-bold border-bottom border-light py-3">
-                    Notifications
-                  </Nav.Link>
-
-                  {notifications.map(n => <Notification key={`notification-${n.id}`} {...n} />)}
-
-                  <Dropdown.Item className="text-center text-primary fw-bold py-3">
-                    View all
-                  </Dropdown.Item>
-                </ListGroup>
-              </Dropdown.Menu>
-            </Dropdown>
 
             <Dropdown as={Nav.Item} className="ms-lg-3">
               <Dropdown.Toggle as={Nav.Link} className="pt-1 px-0">
                 <div className="media d-flex align-items-center">
-                  <Image src={Profile3} className="avatar rounded-circle" />
                   <div className="media-body ms-2 text-dark align-items-center d-none d-lg-block">
                     <span className="mb-0 font-small fw-bold text-gray-900">Bonnie Green</span>
                   </div>
                 </div>
               </Dropdown.Toggle>
               <Dropdown.Menu className="dashboard-dropdown dropdown-menu-end mt-2 py-1">
-                <Dropdown.Item className="d-flex align-items-center">
-                  <UserCircleIcon className="dropdown-icon text-gray-400 me-2" /> My Profile
-                </Dropdown.Item>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <CogIcon className="dropdown-icon text-gray-400 me-2" /> Settings
-                </Dropdown.Item>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <InboxIcon className="dropdown-icon text-gray-400 me-2" /> Messages
-                </Dropdown.Item>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <SupportIcon className="dropdown-icon text-gray-400 me-2" /> Support
-                </Dropdown.Item>
-
-                <Dropdown.Divider as="div" className="my-1" />
-
                 <Dropdown.Item className="d-flex align-items-center">
                   <LogoutIcon className="dropdown-icon text-danger me-2" /> Logout
                 </Dropdown.Item>

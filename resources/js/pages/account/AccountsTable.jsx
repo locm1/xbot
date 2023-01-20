@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import { Paths } from "@/paths";
 
 const getFirstLetterOfEachWord = (text) => (
   text.match(/\b\w/g).join('')
@@ -35,6 +36,7 @@ export const AccountsTable = (props) => {
 
   const TableRow = (props) => {
     const { id, userId, role, isSelected } = props;
+    const link = Paths.EditUser.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
@@ -51,7 +53,7 @@ export const AccountsTable = (props) => {
           </Badge>
         </td>
         <td className="text-center">
-          <Link to={`/user/edit/${id}`}>
+          <Link to={link}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
           <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />

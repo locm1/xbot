@@ -24,11 +24,12 @@ export const VisitorHistoriesTable = (props) => {
     const { visitorDate, name, sex, memo, id, image } = props;
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
     const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "primary";
+    const link = Paths.EditVisitorHistory.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
         <td>
-          <Card.Link className="d-flex align-items-center" as={Link} to={`/user/edit/${id}`}>
+          <Card.Link className="d-flex align-items-center" as={Link} to={link}>
             {image
               ? (
                 <Image
@@ -62,7 +63,7 @@ export const VisitorHistoriesTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={`/visitor/history/edit/${id}`}>
+          <Link to={link}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
           <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />

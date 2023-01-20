@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, TrashIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Badge} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { Paths } from "@/paths";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
@@ -82,7 +83,7 @@ export default () => {
                     </td>
                     <td style={{width: "500px"}}>
                       <span className="fw-bold">
-                        <Link to={`/product/category/${t.id}`} className="fw-bolder">
+                        <Link to={Paths.EditCategory.path.replace(':id', t.id)} className="fw-bolder">
                         {t.name}
                         </Link>
                       </span>

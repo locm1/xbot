@@ -14,6 +14,7 @@ export const InvitationsTable = (props) => {
 
   const TableRow = (props) => {
     const { name, privilegeDetail, id } = props;
+    const link = Paths.EditInvitation.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
@@ -28,7 +29,7 @@ export const InvitationsTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={`/invitation/edit/${id}`}>
+          <Link to={link}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
           <TrashIcon role="button" className="icon icon-xs text-danger me-2" />

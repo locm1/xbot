@@ -2,21 +2,18 @@
 
 namespace App\Services\user;
 
-use App\Repositories\user\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\User;
 
 class UserService
 {
-    protected $user_repository;
-
-    public function __construct(UserRepository $user_repository)
-    {
-        $this->user_repository = $user_repository;
-    }
-
+    /**
+     * ユーザー一覧を取得
+     *
+     * @return Collection
+     */
     public function getAllUsers(): Collection
     {
-        $users = $this->user_repository->getAllUsers();
-        return $users;
+        return User::all();
     }
 }

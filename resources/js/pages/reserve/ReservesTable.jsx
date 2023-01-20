@@ -40,11 +40,13 @@ export const ReservesTable = (props) => {
       }
     }
     const { id, userName, name, quantity, price, deadline, status, userId, productId } = props;
+    const userLink = Paths.EditUser.path.replace(':id', userId);
+    const productLink = Paths.EditProduct.path.replace(':id', productId);
 
     return (
       <tr className="border-bottom product-table-tr">
         <td>
-          <Card.Link as={Link} to={`/user/edit/${userId}`} className="d-flex align-items-center">
+          <Card.Link as={Link} to={userLink} className="d-flex align-items-center">
             {Profile1
               ? (
                 <Image
@@ -62,7 +64,7 @@ export const ReservesTable = (props) => {
           </Card.Link>
         </td>
         <td>
-          <Card.Link as={Link} to={`/product/edit/${productId}`} className="d-flex align-items-center">
+          <Card.Link as={Link} to={productLink} className="d-flex align-items-center">
             <Image src={pudding} className="me-3 product-image"/>
             <div className="d-block">
               <span className="fw-bold">{name}</span>

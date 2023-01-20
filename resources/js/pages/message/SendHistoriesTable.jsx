@@ -22,7 +22,8 @@ export const SendHistoriesTable = (props) => {
     const history = useHistory();
 
     const handleRowClick = (id) => {
-      history.push(`/message/send/detail/${id}`);
+      const link = Paths.SendHistoryDetail.path.replace(':id', id);
+      history.push(link);
     }
 
     return (

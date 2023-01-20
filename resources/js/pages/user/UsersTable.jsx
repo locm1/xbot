@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import { Paths } from "@/paths";
 
 const getFirstLetterOfEachWord = (text) => (
   text.match(/\b\w/g).join('')
@@ -38,6 +39,7 @@ export const UsersTable = (props) => {
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
     const { id, image, name, tel, sex, birthDate, area, isSelected } = props;
     const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "primary";
+    const link = Paths.EditUser.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
@@ -75,7 +77,7 @@ export const UsersTable = (props) => {
         <td><span className="fw-normal">{birthDate}</span></td>
         <td><span className="fw-normal">{area}</span></td>
         <td className="text-center">
-          <Link to={`/user/edit/${id}`}>
+          <Link to={link}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
           <TrashIcon role="button" onClick={() => deleteUsers([id])} className="icon icon-xs text-danger me-2 " />

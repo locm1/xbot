@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePrivacyPolicy extends FormRequest
+class PrivacyPolicyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,13 +35,5 @@ class StorePrivacyPolicy extends FormRequest
             'content.required' => 'プライバシーポリシー内容が未入力です',
         ];
     }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = (new ValidationException($validator))->errors();
-        throw new HttpResponseException(response()->json([
-            'message' => 'Failed validation',
-            'errors' => $errors,
-        ], 422, [], JSON_UNESCAPED_UNICODE));
-    }
 }
+

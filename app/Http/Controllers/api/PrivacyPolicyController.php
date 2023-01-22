@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PrivacyPolicy;
+use App\Http\Requests\PrivacyPolicyRequest;
 
 class PrivacyPolicyController extends Controller
 {
@@ -48,20 +49,21 @@ class PrivacyPolicyController extends Controller
         //
     }
 
-        /**
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
         $update = [
             'content' => $request->content,
         ];
-        $policy = PrivacyPolicy::where('id', $id)->update($update);
+        $policy = PrivacyPolicy::where('id', $request->id)->update($update);
         $policy = PrivacyPolicy::all();
         if ($policy) {
             return response()->json(
@@ -81,4 +83,3 @@ class PrivacyPolicyController extends Controller
         //
     }
 }
-

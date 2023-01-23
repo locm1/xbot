@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class PrivacyPolicyController extends Controller
      */
     public function index()
     {
-        $policy = $this->privacy_policy_service->getAllPrivacyPolicys();
+        $policy = $this->privacy_policy_service->getAllPrivacyPolicies();
         return response()->json(['policy' => $policy], 200);
     }
 
@@ -59,9 +59,9 @@ class PrivacyPolicyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PrivacyPolicyRequest $request)
+    public function update(PrivacyPolicyRequest $request, $id)
     {
-        $policy = $this->privacy_policy_service->updatePrivacyPolicy($request->id, $request->content ?? "");
+        $policy = $this->privacy_policy_service->updatePrivacyPolicy($id, $request->content ?? "");
         return response()->json(['policy' => $policy], 200);
     }
 

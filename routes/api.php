@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\admin\UserController;
-use App\Http\Controllers\api\PrivacyPolicyController;
+use App\Http\Controllers\api\admin\PrivacyPolicyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

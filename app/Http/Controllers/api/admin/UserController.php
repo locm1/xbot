@@ -15,12 +15,14 @@ class UserController extends Controller
         $this->user_service = $user_service;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $users = $this->user_service->getAllUsers();
-        return response()->json([
-            'users' => $users,
-            'code' => 200
-        ]);
+        return response()->json(['users' => $users], 200);
     }
 }

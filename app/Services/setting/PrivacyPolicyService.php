@@ -7,7 +7,7 @@ use App\Models\PrivacyPolicy;
 class PrivacyPolicyService 
 {
 
-    public function getAllPrivacyPolicys() 
+    public function getAllPrivacyPolicies() 
     {
         return PrivacyPolicy::all();
     }

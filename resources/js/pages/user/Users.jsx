@@ -17,21 +17,21 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
-  const [users, setUsers] = useState(USERS_DATA.map(u => ({ ...u, isSelected: false, show: true })));
-  // useEffect(() => {
-  //   console.log(users);
-  //   fetch(`/api/v1/users`)
-  //   .then((response) => {
-  //     return response.json()
-  //   })
-  //   .then((data) => {
-  //     // setUsers(data.users)
-  //     console.log(data.users);
-  //   })
-  //   .catch(error => {
-  //           console.error(error)
-  //   })
-  // }, []);
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    console.log(users);
+    fetch(`/api/v1/users`)
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      setUsers(data.users.map(u => ({ ...u, isSelected: false, show: true })));
+      console.log(data.users);
+    })
+    .catch(error => {
+            console.error(error)
+    })
+  }, []);
   const [searchValue, setSearchValue] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const selectedUsersIds = users.filter(u => u.isSelected).map(u => u.id);

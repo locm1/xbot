@@ -29,18 +29,20 @@ class UserFactory extends Factory
     public function definition()
     {
         $random_str = fake()->name() .fake()->emoji() .strval(fake()->randomDigit()) .fake()->randomAscii() .fake()->kanaName();
+        $img_path = str_replace('public', '', fake()->optional('90')->file('resources/assets/img/team', 'public/images/test_img'));
         
         return [
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'first_name_kana' => fake()->firstKanaName(),
-            'last_name_kana' => fake()->lastKanaName(),
+            'first_name' => fake()->optional('90')->firstName(),
+            'last_name' => fake()->optional('90')->lastName(),
+            'first_name_kana' => fake()->optional('90')->firstKanaName(),
+            'last_name_kana' => fake()->optional('90')->lastKanaName(),
             'nickname' => fake()->shuffleString($random_str),
-            'birth_date' => fake()->date(),
-            'sex' => fake()->numberBetween(1, 3),
-            'area' => fake()->city(),
-            'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->phoneNumber()),
-            'occupation' => fake()->jobTitle(),
+            'birth_date' => fake()->optional('90')->date(),
+            'sex' => fake()->optional('90')->numberBetween(1, 3),
+            'area' => fake()->optional('90')->city(),
+            'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->optional('90')->phoneNumber()),
+            'occupation' => fake()->optional('90')->jobTitle(),
+            'img_path' => $img_path,
             'is_registered' => fake()->numberBetween(0, 1),
             'line_id' => $this->mb_str_shuffle(20),
         ];

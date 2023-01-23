@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function() {
-    Route::get('/users', [UserController::class, 'index']);
+    Route::resource('users', UserController::class);
     Route::resource('privacy-policy', PrivacyPolicyController::class);
     Route::resource('terms-of-service', TermsOfServiceController::class);
 });

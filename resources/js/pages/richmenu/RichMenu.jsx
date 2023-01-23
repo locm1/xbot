@@ -6,6 +6,7 @@ import { useDropzone } from "react-dropzone";
 import TemplateMessageForm from "@/pages/message/form/TemplateMessageForm";
 import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import LinePreview from "@/components/line/LinePreview";
+import RichMenuContentCard from "@/pages/richmenu/RichMenuContentCard";
 
 export default () => {
   const handleChange = (e, input) => {
@@ -48,36 +49,20 @@ export default () => {
           <h1 className="page-title">リッチメニュー設定</h1>
         </div>
       </div>
-        {
-          previews.map((preview, index) => 
-            <div key={preview.id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-              <MessageEditor
-                index={index}
-                formValue={formValue}
-                files={files}
-                previews={previews}
-                setPreviews={setPreviews}
-                setFiles={setFiles} 
-                getRootProps={getRootProps}
-                getInputProps={getInputProps}
-                handleChange={handleChange}
-                handlePreviewChange={handlePreviewChange}
-                setFormId={setFormId}
-                handleDelete={handleDelete}
-              />
-            </div>
-          )
-        }
-      <div className="d-flex justify-content-flex-end flex-wrap flex-md-nowrap align-items-center">
-        <Button onClick={() => setPreviews([...previews, {id: previews.length + 1, key: '', content: '', files: ''}])} variant="gray-800" className="mt-2 animate-up-2">
-          <PlusIcon className="icon icon-xs me-2" /> 追加
-        </Button>
-      </div>
-			<div className="d-flex flex-row-reverse mt-3">
-        <Button as={Link} to={_} variant="gray-800" className="me-2">
-          保存する
-        </Button>
-      </div>
+      <Card border="0" className="shadow mb-4">
+        <Card.Body>
+          <h5 className="mb-4 border-bottom pb-3">基本設定</h5>
+          <Row>
+            <Col md={12} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label>タイトル</Form.Label>
+                <Form.Control required type="text" name="titler" value={formValue.title} onChange={(e) => handleChange(e, 'title')} placeholder="" />
+              </Form.Group>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+      <RichMenuContentCard />
       <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >
         <div className='mt-2 line-preview-button' onClick={() => setMessageDetailModal(!messageDetailModal)}>
           {

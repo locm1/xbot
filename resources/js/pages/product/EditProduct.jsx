@@ -24,6 +24,14 @@ export default () => {
     {id: 5, name: '食品'},
   ]
 
+  const relateProducts = [
+    {id: 1, name: '白菜'},
+    {id: 2, name: 'カレー'},
+    {id: 3, name: 'ロボット'},
+    {id: 4, name: '宇宙'},
+    {id: 5, name: '海'},
+  ]
+
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -189,6 +197,18 @@ export default () => {
                   <p className="dz-button mb-0">画像をアップロード、もしくはドラッグアンドドロップをしてください。</p>
                 </div>
               </Form>
+              <Row className="dropzone-files">
+                {files.map(file => <DropzoneFile key={file.path} {...file} />)}
+              </Row>
+            </Card.Body>
+          </Card>
+          <Card border="0" className="shadow mb-4">
+            <Card.Body>
+              <h5 className="mb-4 border-bottom pb-3">抱き合わせ商品選択</h5>
+              <Form.Select>
+                <option defaultValue>選択</option>
+                {relateProducts.map(product => <option key={product.id}>{product.name}</option>)}
+              </Form.Select>
               <Row className="dropzone-files">
                 {files.map(file => <DropzoneFile key={file.path} {...file} />)}
               </Row>

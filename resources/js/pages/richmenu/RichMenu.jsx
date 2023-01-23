@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row, Form, Button, Breadcrumb, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
+import { Col, Row, Form, Button, Breadcrumb, Card, Modal } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import MessageEditor from "@/pages/message/MessageEditor";
 import { useDropzone } from "react-dropzone";
@@ -7,6 +7,7 @@ import TemplateMessageForm from "@/pages/message/form/TemplateMessageForm";
 import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import LinePreview from "@/components/line/LinePreview";
 import RichMenuContentCard from "@/pages/richmenu/RichMenuContentCard";
+import ChangeTemplateModal from "@/pages/richmenu/ChangeTemplateModal";
 
 export default () => {
   const handleChange = (e, input) => {
@@ -19,13 +20,7 @@ export default () => {
     {id: 1, key: '', content: '', files:''}
   ]);
   const [files, setFiles] = useState([]);
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
-    onDrop: files => setFiles(files.map(file => ({
-      ...file,
-      preview: URL.createObjectURL(file)
-    })))
-  });
+
   const handlePreviewChange = (e, input, previewIndex, files) => {
     setFormId(e.target.id);
     if (input == 'content') {
@@ -41,9 +36,19 @@ export default () => {
     )
   };
   const [messageDetailModal, setMessageDetailModal] = useState(false);
+  const [templateModal, setTemplateModal] = useState(false);
 
 	return (
 		<>
+    {
+      templateModal && (
+        <ChangeTemplateModal 
+        show={templateModal}
+        templateModal={templateModal}
+        setTemplateModal={setTemplateModal}
+      />
+      )
+    }
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">リッチメニュー設定</h1>
@@ -62,7 +67,7 @@ export default () => {
           </Row>
         </Card.Body>
       </Card>
-      <RichMenuContentCard />
+      <RichMenuContentCard setFiles={setFiles} files={files} templateModal={templateModal} setTemplateModal={setTemplateModal} />
       <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >
         <div className='mt-2 line-preview-button' onClick={() => setMessageDetailModal(!messageDetailModal)}>
           {

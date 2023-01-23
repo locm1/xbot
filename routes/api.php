@@ -5,6 +5,8 @@ use App\Http\Controllers\api\admin\PrivacyPolicyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\TermsOfServiceController;
+use App\Http\Controllers\api\auth\LoginController;
+use App\Http\Controllers\api\auth\LogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function() {
+    # authentication
+    Route::post('/login', LoginController::class)->name('login');
+    Route::post('/logout', LogoutController::class)->name('logout');
+
     Route::get('/users', [UserController::class, 'index']);
     Route::resource('privacy-policy', PrivacyPolicyController::class);
     Route::resource('terms-of-service', TermsOfServiceController::class);

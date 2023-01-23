@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
+            $table->string('login_id')->nullable(false);
             $table->string('name', 50)->nullable(false);
             $table->string('password', 255)->nullable(false);
             $table->softDeletes();

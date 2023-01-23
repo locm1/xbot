@@ -39,11 +39,11 @@ export const Paths = {
     SpecificTrades: { path: `${prefix}/setting/specific-trades` },
     Tags: { path: `${prefix}/master/tag` },
     QrCode: { path: `${prefix}/qr-code` },
-    Api: { path: `${prefix}/master/api` },
-    Greeting: { path: `${prefix}/master/greeting` },
+    Api: { path: `${prefix}/xbot/api` },
+    Greeting: { path: `${prefix}/line/greeting` },
     Display: { path: `${prefix}/display` },
-    Accounts: { path: `${prefix}/master/account/list` },
-    RichMenu: { path: `${prefix}/master/richmenu` },
+    Accounts: { path: `${prefix}/master/xbot/account/list` },
+    RichMenu: { path: `${prefix}/line/richmenu` },
 
 
     // LIFF

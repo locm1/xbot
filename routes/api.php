@@ -28,7 +28,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::post('/login', LoginController::class)->name('login');
     Route::post('/logout', LogoutController::class)->name('logout');
 
-    Route::get('/users', [UserController::class, 'index']);
+    Route::resource('users', UserController::class);
     Route::resource('privacy-policy', PrivacyPolicyController::class);
     Route::resource('terms-of-service', TermsOfServiceController::class);
 });

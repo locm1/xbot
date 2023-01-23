@@ -3,10 +3,11 @@ import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIco
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import { first } from "lodash";
 
-const getFirstLetterOfEachWord = (text) => (
-  text.match(/\b\w/g).join('')
-);
+// const getFirstLetterOfEachWord = (text) => (
+//   text.match(/\b\w/g).join('')
+// );
 
 
 export const UsersTable = (props) => {
@@ -37,7 +38,8 @@ export const UsersTable = (props) => {
 
   const TableRow = (props) => {
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
-    const { id, image, name, tel, sex, birthDate, area, isSelected } = props;
+    const { id, last_name, first_name, last_name_kana, first_name_kana, img_path, nickname, tel, sex, birth_date, area, isSelected } = props;
+    const name = last_name + ' ' + first_name;
     const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "primary";
     const link = Paths.EditUser.path.replace(':id', id);
 
@@ -50,23 +52,21 @@ export const UsersTable = (props) => {
           </FormCheck>
         </td>
         <td>
+          <Link to={link}>
           <div className="d-flex align-items-center">
-            {image
-              ? (
-                <Image
-                  src={image}
-                  className="avatar rounded-circle me-3"
-                />
-              ) : (
-                <div className="avatar d-flex align-items-center justify-content-center fw-bold rounded bg-secondary me-3">
-                  <span>{getFirstLetterOfEachWord(name)}</span>
-                </div>
-              )}
+            {img_path && (<Image src={img_path} className="avatar rounded-circle me-3"/>)}
             <div className="d-block">
-              <span className="fw-bold">{name}</span>
-              {/* <div className="small text-gray">{email}</div> */}
+              {first_name && first_name_kana && last_name && last_name_kana ? 
+                <>
+                  <div className="text-gray small">{last_name_kana} {first_name_kana}</div>
+                  <span className="fw-bold text-decoration-underline">{name}</span> 
+                </>
+              :
+                <span className="fw-bold text-decoration-underline">{nickname}</span> 
+              }
             </div>
           </div>
+          </Link>
         </td>
         <td><span className="fw-normal">{tel}</span></td>
         <td>
@@ -74,7 +74,7 @@ export const UsersTable = (props) => {
             {sex_array[sex]}
           </span>
         </td>
-        <td><span className="fw-normal">{birthDate}</span></td>
+        <td><span className="fw-normal">{birth_date}</span></td>
         <td><span className="fw-normal">{area}</span></td>
         <td className="text-center">
           <Link to={link}>

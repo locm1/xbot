@@ -142,8 +142,7 @@ export default (props = {}) => {
               </Link>
               <GroupTitle name="User Management" />
               <NavItem title="ユーザー管理" link={Paths.Users.path} icon={UserIcon} />
-              <NavItem title="アンケート管理" icon={PencilAltIcon} link={Paths.CreateQuestionnaire.path} />
-              <CollapsableNavItem eventKey="message/" title="メッセージ管理" icon={UserGroupIcon}>
+              <CollapsableNavItem eventKey="message/" title="セグメント管理" icon={UserGroupIcon}>
                 <NavItem title="セグメント配信" link={Paths.SendSegments.path} />
                 <NavItem title="テンプレートリスト" link={Paths.TemplateMessages.path} />
                 <NavItem title="配信管理" link={Paths.SendHistories.path} />
@@ -152,19 +151,21 @@ export default (props = {}) => {
               <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.Privileges.path} />
 
               <GroupTitle name="Electroic Commerce" />
-              <NavItem title="商品管理" icon={StoreIcon} link={Paths.Products.path} />
               <NavItem title="カテゴリ管理" icon={StoreIcon} link={Paths.ProductCategory.path} />
+              <NavItem title="商品管理" icon={StoreIcon} link={Paths.Products.path} />
               <CollapsableNavItem eventKey="coupon/" title="クーポン管理" icon={CurrencyYenIcon}>
                 <NavItem title="クーポンリスト" link={Paths.Coupons.path} />
                 <NavItem title="クーポン追加" link={Paths.CreateCoupon.path} />
               </CollapsableNavItem>
               <NavItem title="注文管理" icon={ShoppingCartIcon} link={Paths.Orders.path} />
               <NavItem title="取置管理" icon={InboxIcon} link={Paths.Reserves.path} />
+
+              <GroupTitle name="Event" />
               <CollapsableNavItem eventKey="event/" title="イベント管理" icon={CalendarIcon}>
                 <NavItem title="イベントカレンダー" link={Paths.EventCalendar.path} />
                 <NavItem title="イベント案内リスト" link={Paths.Events.path} />
               </CollapsableNavItem>
-              <CollapsableNavItem eventKey="schedule/" title="日程調整管理" icon={CalendarIcon}>
+              <CollapsableNavItem eventKey="schedule/" title="日程調整" icon={CalendarIcon}>
                 <NavItem title="日程調整作成" link={Paths.ScheduleCalendar.path} />
                 <NavItem title="日程調整リスト" link={Paths.Schedules.path} />
               </CollapsableNavItem>
@@ -173,11 +174,13 @@ export default (props = {}) => {
               <NavItem title="招待管理" link={Paths.Invitations.path} icon={UserAddIcon} />
 
               <GroupTitle name="Configure" />
-              <CollapsableNavItem eventKey="master/" title="マスタ管理" icon={CogIcon}>
-                <NavItem title="アカウント管理" link={Paths.Accounts.path} />
+              <NavItem title="アンケート管理" icon={PencilAltIcon} link={Paths.CreateQuestionnaire.path} />
+              <CollapsableNavItem eventKey="line/" title="Lineアカウント設定" icon={CogIcon}>
                 <NavItem title="リッチメニュー設定" link={Paths.RichMenu.path} />
                 <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
-                <NavItem title="API設定" link={Paths.Api.path} />
+                <NavItem title="お友達追加用QR" icon={QrcodeIcon} link={Paths.QrCode.path} />
+              </CollapsableNavItem>
+              <CollapsableNavItem eventKey="master/" title="マスタ管理" icon={CogIcon}>
                 <NavItem title="タグ管理" link={Paths.Tags.path} />
               </CollapsableNavItem>
               <CollapsableNavItem eventKey="setting/" title="サイト設定" icon={CogIcon}>
@@ -185,7 +188,10 @@ export default (props = {}) => {
                 <NavItem title="利用規約" link={Paths.TermsOfService.path} />
                 <NavItem title="特定商取引法に基づく表記" link={Paths.SpecificTrades.path} />
               </CollapsableNavItem>
-              <NavItem title="お友達追加用QR" icon={QrcodeIcon} link={Paths.QrCode.path} />
+              <CollapsableNavItem eventKey="xbot/" title="Xbot設定" icon={CogIcon}>
+                <NavItem title="アカウント管理" link={Paths.Accounts.path} />
+                <NavItem title="API設定" link={Paths.Api.path} />
+              </CollapsableNavItem>
             </Nav>
           </div>
         </SimpleBar>

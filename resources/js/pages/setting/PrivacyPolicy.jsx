@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, Card, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
+// import { then } from "laravel-mix";
 
 
 
@@ -20,7 +21,7 @@ const PrivacyPolicy = (props) => {
     if(id == '') {
       //入力値を投げる
       await axios
-      .post('/api/setting/privacy-policy/store', {
+      .post('/api/v1/privacy-policy', {
         content: content
       })
       .then((res) => {
@@ -29,39 +30,40 @@ const PrivacyPolicy = (props) => {
         alert('登録しました');
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
     } else {
       //入力値を投げる
       await axios
-      .post('/api/setting/privacy-policy/update', {
+      .put(`/api/v1/privacy-policy/${id}`, {
         id: id,
         content: content
       })
       .then((res) => {
         //戻り値をtodosにセット
-        alert('登録しました');
+        alert('更新しました');
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
 
     }
   }
 
   useEffect(() => {
-    fetch(`/api/setting/privacy-policy`)
-    .then(response => response.json())
-    .then(data => {
-            if(data.length > 0) {
-                    setId(data[0]['id']);
-                    setContent(data[0]['content']);
-            }
+    fetch(`/api/v1/privacy-policy`)
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      setContent(data.policy[0].content)
+      setId(data.policy[0].id)
+
     })
     .catch(error => {
-            console.log(error)
+            console.error(error)
     })
-}, []);
+  }, []);
 
 return (
 <>

@@ -6,9 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PrivacyPolicy;
 use App\Http\Requests\PrivacyPolicyRequest;
+use App\Services\setting\PrivacyPolicyService;
 
 class PrivacyPolicyController extends Controller
 {
+    private $privacy_policy_service;
+
+    public function __construct(PrivacyPolicyService $privacy_policy_service) {
+        $this->privacy_policy_service = $privacy_policy_service;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,11 +22,8 @@ class PrivacyPolicyController extends Controller
      */
     public function index()
     {
-        //
-        $policy = PrivacyPolicy::all();
-        return response()->json(
-            $policy, 200
-        );
+        $policy = $this->privacy_policy_service->getAllPrivacyPolicys();
+        return response()->json(['policy' => $policy], 200);
     }
 
     /**
@@ -29,9 +32,8 @@ class PrivacyPolicyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PrivacyPolicyRequest $request)
     {
-        //
         $policy = PrivacyPolicy::create($request->all());
         return response()->json(
             $policy, 201
@@ -57,19 +59,10 @@ class PrivacyPolicyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(PrivacyPolicyRequest $request)
     {
-        //
-        $update = [
-            'content' => $request->content,
-        ];
-        $policy = PrivacyPolicy::where('id', $request->id)->update($update);
-        $policy = PrivacyPolicy::all();
-        if ($policy) {
-            return response()->json(
-                $policy
-            , 200);
-        }
+        $policy = $this->privacy_policy_service->updatePrivacyPolicy($request->id, $request->content ?? "");
+        return response()->json(['policy' => $policy], 200);
     }
 
     /**

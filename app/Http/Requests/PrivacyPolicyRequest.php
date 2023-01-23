@@ -24,8 +24,7 @@ class PrivacyPolicyRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-            'content' => 'required',
+            'content' => 'nullable',
         ];
     }
 

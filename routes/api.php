@@ -21,4 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1'], function() {
     Route::get('/users', [UserController::class, 'index']);
+    Route::get('/setting/privacy-policy', [PrivacyPolicyController::class, 'index']);
+    Route::post('/setting/privacy-policy/store', [PrivacyPolicyController::class, 'store']);
+    Route::post('/setting/privacy-policy/update', [PrivacyPolicyController::class, 'update']);
 });

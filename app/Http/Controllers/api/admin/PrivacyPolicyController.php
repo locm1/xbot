@@ -34,10 +34,8 @@ class PrivacyPolicyController extends Controller
      */
     public function store(PrivacyPolicyRequest $request)
     {
-        $policy = PrivacyPolicy::create($request->all());
-        return response()->json(
-            $policy, 201
-        );
+        $policy = $this->privacy_policy_service->createPrivacyPolicy($request->content);
+        return response()->json(['policy' => $policy], 201);
     }
 
     /**

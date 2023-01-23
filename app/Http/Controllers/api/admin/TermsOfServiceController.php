@@ -6,9 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TermsOfService;
 use App\Http\Requests\TermsOfServiceRequest;
+use App\Services\setting\TermsOfServiceService;
 
 class TermsOfServiceController extends Controller
 {
+    private $terms_of_service_service;
+
+    public function __construct(PrivacyPolicyService $terms_of_service_service) {
+        $this->terms_of_service_service = $terms_of_service_service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,11 +23,8 @@ class TermsOfServiceController extends Controller
      */
     public function index()
     {
-        //
-        $policy = TermsOfService::all();
-        return response()->json(
-            $policy, 200
-        );
+        $term = $this->terms_of_service_service->getAllTermsOfServices();
+        return response()->json(['term' => $term], 200);
     }
 
     /**
@@ -29,14 +33,12 @@ class TermsOfServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TermsOfServiceRequest $request)
     {
-        //
-        $policy = TermsOfService::create($request->all());
-        return response()->json(
-            $policy, 201
-        );
+        $term = $this->terms_of_service_service->createTermsOfService($request->content);
+        return response()->json(['term' => $term], 201);
     }
+
 
     /**
      * Display the specified resource.

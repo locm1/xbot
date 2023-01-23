@@ -13,9 +13,12 @@ class PrivacyPolicyService
     }
 
 
-    public function createPrivacyPolicy() 
+    public function createPrivacyPolicy(string $content) :PrivacyPolicy
     {
-        //
+        $data = ['content' => $content];
+        $policy = PrivacyPolicy::create($data);
+
+        return $policy;
     }
 
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Component } from 'react';
 import moment from "moment-timezone";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, Card, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
+// import { then } from "laravel-mix";
 
 
 
@@ -21,11 +21,10 @@ const TermsOfService = (props) => {
     if(id == '') {
       //入力値を投げる
       await axios
-      .post('/api/setting/terms-of-service/store', {
+      .post(`/api/v1/terms-of-service`, {
         content: content
       })
       .then((res) => {
-console.log(res)
         //戻り値をtodosにセット
         setId(res['data']['id'])
         alert('登録しました');
@@ -36,7 +35,7 @@ console.log(res)
     } else {
       //入力値を投げる
       await axios
-      .post('/api/setting/terms-of-service/update', {
+      .put(`/api/v1/terms-of-service/${id}`, {
         id: id,
         content: content
       })
@@ -52,7 +51,7 @@ console.log(res)
   }
 
   useEffect(() => {
-        fetch(`/api/setting/terms-of-service`)
+        fetch(`/api/v1/terms-of-service`)
         .then(response => response.json())
         .then(data => {
                 if(data.length > 0) {

@@ -4,7 +4,7 @@ use App\Http\Controllers\api\admin\UserController;
 use App\Http\Controllers\api\admin\PrivacyPolicyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\api\TermsOfServiceController;
+use App\Http\Controllers\api\admin\TermsOfServiceController;
 
 /*
 |--------------------------------------------------------------------------

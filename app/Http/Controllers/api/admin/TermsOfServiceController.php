@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ class TermsOfServiceController extends Controller
 {
     private $terms_of_service_service;
 
-    public function __construct(PrivacyPolicyService $terms_of_service_service) {
+    public function __construct(TermsOfServiceService $terms_of_service_service) {
         $this->terms_of_service_service = $terms_of_service_service;
     }
 

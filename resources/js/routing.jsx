@@ -41,6 +41,7 @@ import Api from '@/pages/api/createApi';
 import Greeting from '@/pages/greeting/Greeting';
 import Display from '@/pages/display/DisplayOrderCategory';
 import RichMenu from '@/pages/richmenu/RichMenu';
+import Postage from '@/pages/master/Postage';
 
 // Account
 import Accounts from '@/pages/account/Accounts';
@@ -191,6 +192,7 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.Greeting.path} component={Greeting} />
       <RouteWithSidebar exact path={Paths.Display.path} component={Display} />
       <RouteWithSidebar exact path={Paths.RichMenu.path} component={RichMenu} />
+      <RouteWithSidebar exact path={Paths.Postage.path} component={Postage} />
 
       <RouteWithSidebar exact path={Paths.Accounts.path} component={Accounts} />
 

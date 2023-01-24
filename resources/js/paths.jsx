@@ -44,6 +44,7 @@ export const Paths = {
     Display: { path: `${prefix}/display` },
     Accounts: { path: `${prefix}/master/xbot/account/list` },
     RichMenu: { path: `${prefix}/line/richmenu` },
+    Postage: {path: `${prefix}/master/postage`},
 
 
     // LIFF

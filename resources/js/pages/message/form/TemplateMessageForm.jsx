@@ -9,7 +9,18 @@ export default (props) => {
   return (
     <Card border="0" className="shadow mb-4">
       <Card.Body>
-        <h5 className="mb-4 border-bottom pb-3">メッセージ情報</h5>
+        <div className="d-flex mb-4 border-bottom pb-3 justify-content-between">
+          <h5 className="">メッセージ情報</h5>
+          <Form.Group id="category">
+            <Form.Check
+            type="switch"
+            label="非公開にする"
+            id="switch1"
+            htmlFor="switch1"
+            onClick={() => setPrivate(!privateProduct)}
+            />
+          </Form.Group>
+        </div>
         <Form>
           <Row>
             <Col md={12} className="mb-3">

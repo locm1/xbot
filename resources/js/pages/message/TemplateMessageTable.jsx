@@ -67,7 +67,7 @@ export const TemplateMessageTable = (props) => {
     return (
       <tr className="border-bottom">
         <td>
-          <span className="fw-normal fw-bolder">
+          <span className="fw-bold text-decoration-underline">
             <Link to={link}>
               {title}
             </Link>

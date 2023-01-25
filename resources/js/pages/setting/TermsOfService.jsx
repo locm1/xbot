@@ -26,7 +26,7 @@ const TermsOfService = (props) => {
       })
       .then((res) => {
         //戻り値をtodosにセット
-        setId(res['data']['id'])
+        setId(res['term'][0]['id'])
         alert('登録しました');
       })
       .catch(error => {
@@ -52,12 +52,13 @@ const TermsOfService = (props) => {
 
   useEffect(() => {
         fetch(`/api/v1/terms-of-service`)
-        .then(response => response.json())
-        .then(data => {
-                if(data.length > 0) {
-                        setId(data[0]['id']);
-                        setContent(data[0]['content']);
-                }
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          setContent(data.term[0].content)
+          setId(data.term[0].id)
+    
         })
         .catch(error => {
                 console.log(error)

@@ -4,8 +4,8 @@ import { Card, Button, Image, Col, Row, Form } from "react-bootstrap";
 
 export default (props) => {
   const { id, index, SpecificTrades, setSpecificTrades } = props;
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState(SpecificTrades[index].title);
+  const [content, setContent] = useState(SpecificTrades[index].content);
 
   const handleChange = (e, id) => {
     switch (e.target.name) {
@@ -16,7 +16,7 @@ export default (props) => {
         setContent(e.target.value);
         break;
     }
-    
+
     const changeSpecificTrades = {
       "id": id,
       "title": title,
@@ -32,7 +32,6 @@ export default (props) => {
       SpecificTrades.filter((SpecificTrade, index) => (SpecificTrade.id !== id))
     );
   };
-
   return (
     <>
       <Card border={1} className="p-4 privilege-card-item">
@@ -45,6 +44,7 @@ export default (props) => {
       <Card.Body className="p-0">
         <Row className="mb-4 mb-lg-0 mt-4">
           <Col md={12} className="mb-3">
+            <Form.Control required type="hidden" name="id" value={id} />
             <Form.Group id="firstName" className="mb-3">
               <Form.Label>タイトル</Form.Label>
               <Form.Control required type="text" name="title" value={title} onChange={(e) => handleChange(e, id)} />

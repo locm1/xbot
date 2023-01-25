@@ -182,6 +182,7 @@ export default (props = {}) => {
               </CollapsableNavItem>
               <CollapsableNavItem eventKey="master/" title="マスタ管理" icon={CogIcon}>
                 <NavItem title="タグ管理" link={Paths.Tags.path} />
+                <NavItem title="送料管理" link={Paths.Postage.path} />
               </CollapsableNavItem>
               <CollapsableNavItem eventKey="setting/" title="サイト設定" icon={CogIcon}>
                 <NavItem title="プライバシーポリシー" link={Paths.PrivacyPolicy.path} />

@@ -93,7 +93,15 @@ export default () => {
                   <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} border="0" className="mb-4" key={index}>
                     <Card.Body>
                       <div className="d-flex align-items-center justify-content-between flex-row-reverse">
-                        <Button className="mb-3" variant="close" onClick={() => deleteQuestionnaireCard(questionnaire.id)} />
+                      <Button className="mb-3" variant="close" onClick={() => deleteQuestionnaireCard(questionnaire.id)} />
+                      <Form>
+                        <Form.Check
+                        type="switch"
+                        label="非公開にする"
+                        id={`switch-${index}`}
+                        htmlFor={`switch-${index}`}
+                        />
+                      </Form>
                       </div>
                         <Row>
                           <Col md={6} className="mb-3">

@@ -5,6 +5,7 @@ use App\Http\Controllers\api\admin\PrivacyPolicyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\admin\TermsOfServiceController;
+use App\Http\Controllers\api\admin\SpecificTradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,5 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('/users', [UserController::class, 'index']);
     Route::resource('privacy-policy', PrivacyPolicyController::class);
     Route::resource('terms-of-service', TermsOfServiceController::class);
+    Route::resource('specific-trades', SpecificTradeController::class);
 });

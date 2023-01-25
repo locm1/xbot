@@ -18,7 +18,7 @@ export default () => {
 
   return (
     <>
-    <header class="line-preview-header">
+    <header className="line-preview-header">
       <Row>
         <Col xs={12} md={4} xl={6} className="mb-4 mb-md-0">
           <p className="mb-0 text-center text-lg-start">

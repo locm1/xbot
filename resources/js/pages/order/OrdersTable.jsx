@@ -40,7 +40,7 @@ export const OrdersTable = (props) => {
   const TableRow = (props) => {
     const { id, createdAt, name, prefectures, purchasePrice, status, userImage, shippingFee, userId } = props;
     const userLink = Paths.EditUser.path.replace(':id', userId);
-    const productLink = Paths.EditProduct.path.replace(':id', id);
+    const productLink = Paths.OrderDetail.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">

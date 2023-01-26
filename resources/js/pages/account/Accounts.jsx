@@ -38,8 +38,8 @@ export default () => {
           <h1 className="page-title">アカウント管理</h1>
         </div>
         <div className="btn-toolbar">
-          <Button as={Link} to={Paths.CreateMessage.path} variant="gray-800" size="sm" className="d-inline-flex align-items-center">
-            <PlusIcon className="icon icon-xs me-2" /> 新規アカウント作成
+          <Button as={Link} to={Paths.RegisterAccount.path} variant="gray-800" size="sm" className="d-inline-flex align-items-center">
+            <PlusIcon className="icon icon-xs me-2" /> 新規アカウント登録
           </Button>
         </div>
       </div>

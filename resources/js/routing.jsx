@@ -212,6 +212,7 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.Postage.path} component={Postage} />
       <RouteWithSidebar exact path={Paths.Accounts.path} component={Accounts} />
       <RouteWithSidebar exact path={Paths.EditAccount.path} component={EditAccount} />
+      <RouteWithSidebar exact path={Paths.RegisterAccount.path} component={EditAccount} />
         
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />

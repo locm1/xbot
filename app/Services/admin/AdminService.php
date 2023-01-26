@@ -34,13 +34,29 @@ class AdminService
      * @param  Admin $admin
      * @return array
      */
-    public function updateAdmin(array $data, Admin $admin): array
+    public function updateAdmin(array $data, Admin $admin, bool $is_checked): array
     {
         // パスワードハッシュ化して、リクエストの配列にマージする
-        $merge_service = new MergeHashedPasswordService($data['password'], $data);
-        $data = $data['is_check'] ? $merge_service->mergePasswordToArray() : $data;
+        $update_data = $this->getUpdateData($data, $is_checked);
+        $admin->update($update_data);
+        return $data;
+    }
 
-        $admin->update($data);
+    /**
+     * チェックの状態を判定し、キーを削除、もしくはマージ（ハッシュ化）後の配列を取得
+     *
+     * @param  array $data
+     * @param  bool $is_checked
+     * @return array
+     */
+    private function getUpdateData(array $data, bool $is_checked): array
+    {
+        if ($is_checked) {
+            $merge_service = new MergeHashedPasswordService($data['password'], $data);
+            $data = $merge_service->mergePasswordToArray();
+        } else {
+            unset($data['password']);
+        }
         return $data;
     }
 

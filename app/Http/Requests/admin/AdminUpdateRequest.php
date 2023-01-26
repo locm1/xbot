@@ -25,34 +25,35 @@ class AdminUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'login_id' => 'required',
-            'name' => 'required',
-            'role' => 'required|numeric|between:1,3',
-            'is_check' => 'required|boolean'
+            'data.login_id' => 'required',
+            'data.name' => 'required',
+            'data.role' => 'required|numeric|between:1,3',
+            'is_checked' => 'required|boolean',
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'ユーザー名',
-            'role' => '権限レベル',
-            'is_check'
+            'data.login_id' => 'ログインID',
+            'data.name' => 'ユーザー名',
+            'data.password' => 'パスワード',
+            'data.role' => '権限レベル',
         ];
     }
 
     public function withValidator($validator)
     {
         # パスワード変更用バリデーション
-        $is_check = $this->is_check;
+        $is_checked = $this->is_checked;
 
         $password_validate_rules = [
             'password' => ['required', 'confirmed'],
         ];
         foreach ($password_validate_rules as $key => $value) {
             # is_checkがtrueの時、つまりパスワードが変更されているときにバリデーション
-            $validator->sometimes($key, $value, function() use($is_check) {
-                return $is_check;
+            $validator->sometimes($key, $value, function() use($is_checked) {
+                return $is_checked;
             });
         }
     }

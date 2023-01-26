@@ -24,13 +24,9 @@ class MergeHashedPasswordService
     }
 
     /**
-     * undocumented function summary
+     * ハッシュ化したパスワードをマージ
      *
-     * Undocumented function long description
-     *
-     * @param Type $var Description
-     * @return type
-     * @throws array
+     * @return array
      **/
     public function mergePasswordToArray(): array
     {

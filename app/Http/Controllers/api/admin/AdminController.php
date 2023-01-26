@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\admin\AdminService;
 use Illuminate\Http\Request;
 use App\Http\Requests\admin\AdminUpdateRequest;
+use App\Http\Requests\admin\AdminStoreRequest;
 use App\Models\Admin;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -35,9 +36,10 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdminStoreRequest $request)
     {
-        //
+        $admin = $this->admin_service->createAdmin();
+        return response()->json(['admin' => $admin], 200);
     }
 
     /**
@@ -60,7 +62,7 @@ class AdminController extends Controller
      */
     public function update(AdminUpdateRequest $request, Admin $admin)
     {
-        $update_data = $this->admin_service->updateAdmin($request->all(), $admin);
+        $update_data = $this->admin_service->updateAdmin($request->data, $admin, $request->is_checked);
         return response()->json(['admin' => $update_data], 200);
     }
 

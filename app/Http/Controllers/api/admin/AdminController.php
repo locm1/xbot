@@ -38,7 +38,8 @@ class AdminController extends Controller
      */
     public function store(AdminStoreRequest $request)
     {
-        $admin = $this->admin_service->createAdmin();
+        $attributes = $request->only(['login_id', 'name', 'role', 'password']);
+        $admin = $this->admin_service->createAdmin($attributes);
         return response()->json(['admin' => $admin], 200);
     }
 
@@ -67,13 +68,14 @@ class AdminController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Admin $admin
+     * @return JsonResource
      */
-    public function destroy($id)
+    public function destroy(Admin $admin)
     {
-        //
+        $this->admin_service->deleteAdmin($admin);
+        return response()->json([], 204);
     }
 }

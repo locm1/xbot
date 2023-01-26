@@ -10,9 +10,7 @@ const getFirstLetterOfEachWord = (text) => (
 
 
 export const AccountsTable = (props) => {
-  const { accounts = [], allSelected } = props;
-  const [bulkOption, setBulkOption] = useState(0);
-  const disabledBulkMenu = accounts.filter(u => u.isSelected).length === 0;
+  const { accounts, showConfirmDeleteModal } = props;
 
   const getRoleClass = (role) => {
     switch (role) {
@@ -35,17 +33,11 @@ export const AccountsTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, login_id, name, role, isSelected } = props;
+    const { id, login_id, name, role } = props;
     const link = Paths.EditAccount.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
-        <td>
-          <FormCheck type="checkbox" className="dashboard-check">
-            <FormCheck.Input id={`admin-${id}`} checked={isSelected} />
-            <FormCheck.Label htmlFor={`admin-${id}`} />
-          </FormCheck>
-        </td>
         <td>
           <span className="fw-normal">{login_id}</span>
         </td>
@@ -61,7 +53,7 @@ export const AccountsTable = (props) => {
           <Link to={link}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
-          <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />
+          <TrashIcon onClick={(e) => showConfirmDeleteModal(e, id)} role="button" className="icon icon-xs text-danger me-2 " />
         </td>
       </tr>
     );
@@ -70,26 +62,9 @@ export const AccountsTable = (props) => {
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
       <Card.Body>
-        <div className="d-flex mb-3">
-          <Form.Select className="fmxw-200" value={bulkOption} >
-            <option>一括操作</option>
-            <option value="send_email">メッセージ送信</option>
-            <option value="tag">タグ付与</option>
-            <option value="delete_user">削除</option>
-          </Form.Select>
-          <Button variant="secondary" size="sm" className="ms-3" disabled={disabledBulkMenu} >
-            実行
-          </Button>
-        </div>
         <Table hover className="user-table align-items-center">
           <thead>
             <tr>
-              <th className="border-bottom">
-                <FormCheck type="checkbox" className="dashboard-check">
-                  <FormCheck.Input id="userCheckAll" checked={allSelected} />
-                  <FormCheck.Label htmlFor="userCheckAll" />
-                </FormCheck>
-              </th>
               <th className="border-bottom">ログインID</th>
               <th className="border-bottom">ユーザー名</th>
               <th className="border-bottom">権限レベル</th>

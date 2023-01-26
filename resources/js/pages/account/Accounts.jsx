@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { AdjustmentsIcon, CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { AccountsTable } from "@/pages/account/AccountsTable";
@@ -19,17 +19,48 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 export default () => {
   const [accounts, setAccounts] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const history = useHistory();
 
   useEffect(() => {
     axios.get('/api/v1/admins').then((response) => {
-        setAccounts(response.data.admins.map(u => ({ ...u, isSelected: false, show: true })))
+        setAccounts(response.data.admins)
     })
     .catch(error => {
-      
+      console.log(error);
     })
   }, []);
+
+  const showConfirmDeleteModal = async (e, id) => {
+    const textMessage = "本当にこのユーザーを削除しますか？";
+
+    const result = await SwalWithBootstrapButtons.fire({
+      icon: "error",
+      title: "削除確認",
+      text: textMessage,
+      showCancelButton: true,
+      confirmButtonText: "削除",
+      cancelButtonText: "キャンセル"
+    });
+
+    if (result.isConfirmed) {
+      await axios.delete(`/api/v1/admins/${id}`)
+      .then((response) => {
+        deleteAdmin()
+        console.log(response);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+  };
+
+  const deleteAdmin = async () => {
+    const confirmMessage = "選択したアカウントは削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
+  };
 
   return (
     <>
@@ -86,7 +117,8 @@ export default () => {
       </div>
 
       <AccountsTable
-        accounts={accounts.filter(u => u.show)}
+        accounts={accounts}
+        showConfirmDeleteModal={showConfirmDeleteModal}
       />
     </>
   );

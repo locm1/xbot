@@ -101,19 +101,19 @@ export default () => {
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>ログインID</Form.Label>
-                <Form.Control required type="text" name="login_id" value={formValue.login_id ?? ''} onChange={(e) => handleChange(e, 'login_id')} placeholder="" />
+                <Form.Control required type="text" name="login_id" value={formValue.login_id} onChange={(e) => handleChange(e, 'login_id')} placeholder="" />
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>ユーザー名</Form.Label>
-                <Form.Control required type="text" name="name" value={formValue.name ?? ''} onChange={(e) => handleChange(e, 'name')} placeholder="" />
+                <Form.Control required type="text" name="name" value={formValue.name} onChange={(e) => handleChange(e, 'name')} placeholder="" />
               </Form.Group>
             </Col>
             <Col md={12} className="mb-3">
               <Form.Group id="email">
                 <Form.Label>権限レベル</Form.Label>
-                <Form.Select className="mb-0" defaultValue={formValue.role ?? ''} onChange={(e) => handleChange(e, 'role')}>
+                <Form.Select className="mb-0" defaultValue={formValue.role} onChange={(e) => handleChange(e, 'role')}>
                   {
                     roles.map((role, index) => <option key={index} value={role.role}>{role.name}</option>)
                   }

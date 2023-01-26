@@ -8,24 +8,29 @@ use App\Services\common\MergeHashedPasswordService;
 
 class AdminService 
 {
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Collection
+     */
     public function getAllAdmins(): Collection
     {
         return Admin::all();
     }
 
 
-    public function createAdmin() 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  array $attributes
+     * @return Admin
+     */
+    public function createAdmin(array $attributes): Admin
     {
-        //
+        $merge_service = new MergeHashedPasswordService($attributes['password'], $attributes);
+        $data = $merge_service->mergePasswordToArray();
+        return Admin::create($data);
     }
-
-
-    public function getAdminById() 
-    {
-        //
-    }
-
 
     /**
      * Update the specified resource in storage.
@@ -43,7 +48,7 @@ class AdminService
     }
 
     /**
-     * チェックの状態を判定し、キーを削除、もしくはマージ（ハッシュ化）後の配列を取得
+     * チェックの状態を判定し、キーを削除、もしくはマージ（ハッシュ化）
      *
      * @param  array $data
      * @param  bool $is_checked
@@ -60,9 +65,15 @@ class AdminService
         return $data;
     }
 
-    public function deleteAdmin() 
+    /**
+     * Delete the specified resource.
+     *
+     * @param  Admin $admin
+     * @return JsonResource
+     */
+    public function deleteAdmin(Admin $admin) 
     {
-        //
+        return $admin->delete();
     }
 
 }

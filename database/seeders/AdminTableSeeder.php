@@ -18,6 +18,7 @@ class AdminTableSeeder extends Seeder
         $admins = [
             'login_id' => 'admin',
             'name' => '管理者用アカウント',
+            'role' => 1,
             'password' => bcrypt('admin2345'),
         ];
         DB::table('admins')->insert($admins);

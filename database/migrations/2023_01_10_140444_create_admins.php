@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('login_id')->nullable(false);
             $table->string('name', 50)->nullable(false);
+            $table->tinyInteger('role')->nullable(true);
             $table->string('password', 255)->nullable(false);
             $table->softDeletes();
             $table->timestamps();

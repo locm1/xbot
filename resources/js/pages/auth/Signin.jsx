@@ -27,11 +27,11 @@ export default () => {
     };
 
     axios.get('/sanctum/csrf-cookie').then(response => {
-      const xsrfToken = Cookies.get('XSRF-TOKEN')
-      Cookies.set('TOKEN', xsrfToken, { expires: 120/1440 })
-
       //ログイン
       axios.post('/api/v1/login', data).then(response => {
+        const xsrfToken = Cookies.get('XSRF-TOKEN')
+        Cookies.set('TOKEN', xsrfToken, { expires: 120/1440 })
+        
         history.push(Paths.DashboardOverview.path);
       }).catch(error => {
         Cookies.remove('TOKEN')

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { AdjustmentsIcon, CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
@@ -17,9 +17,18 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
-  const [accounts, setAccounts] = useState(ACCOUNTS_DATA.map(u => ({ ...u, isSelected: false, show: true })));
+  const [accounts, setAccounts] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
+  useEffect(() => {
+    axios.get('/api/v1/admins').then((response) => {
+        setAccounts(response.data.admins.map(u => ({ ...u, isSelected: false, show: true })))
+    })
+    .catch(error => {
+      
+    })
+  }, []);
 
   return (
     <>

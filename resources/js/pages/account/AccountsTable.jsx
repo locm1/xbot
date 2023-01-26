@@ -35,18 +35,23 @@ export const AccountsTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, userId, role, isSelected } = props;
+    const { id, login_id, name, role, isSelected } = props;
     const link = Paths.EditUser.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
         <td>
           <FormCheck type="checkbox" className="dashboard-check">
-            <FormCheck.Input id={`user-${id}`} checked={isSelected} />
-            <FormCheck.Label htmlFor={`user-${id}`} />
+            <FormCheck.Input id={`admin-${id}`} checked={isSelected} />
+            <FormCheck.Label htmlFor={`admin-${id}`} />
           </FormCheck>
         </td>
-        <td><span className="fw-normal">{userId}</span></td>
+        <td>
+          <span className="fw-normal">{login_id}</span>
+        </td>
+        <td>
+          <span className="fw-normal">{name}</span>
+        </td>
         <td>
           <Badge bg={getRoleClass(role).class} className="me-1 product-category-badge fw-normal">
             {getRoleClass(role).name}
@@ -86,6 +91,7 @@ export const AccountsTable = (props) => {
                 </FormCheck>
               </th>
               <th className="border-bottom">ユーザーID</th>
+              <th className="border-bottom">ユーザー名</th>
               <th className="border-bottom">権限レベル</th>
               <th className="border-bottom text-center">編集・削除</th>
             </tr>

@@ -1,5 +1,11 @@
+$line_bg_color: rgb(130, 159, 191);
+
 .line-preview {
   height: 600px;
+}
+
+.line-rich-menu-preview {
+  height: 800px;
 }
 
 .line-preview-header {
@@ -14,10 +20,11 @@
 }
 
 .line-preview-main {
-  height: 100%;
-  background-color: rgb(130, 159, 191);
+  height: 90%;
+  background-color: $line_bg_color;
   overflow-y: auto;
   overflow-x: hidden;
+  position: relative;
 }
 
 .line-preview-main-content {
@@ -105,3 +112,52 @@
 .line-preview-main-content-item-wrap {
   padding-bottom: 20px;
 }
+
+.line-rich-menu-preview {
+  width: 28vw;
+}
+
+.line-rich-menu-bar-wrap {
+  padding: 1.3rem 1.25rem;
+  background-color: white;
+  border-top: 1px solid rgba(0,0,0,0.125);
+  position: absolute;
+  bottom: 0;
+  width: 28vw;
+  border: 1px solid $line_bg_color;
+}
+
+.line-rich-menu-bar {
+  cursor: pointer;
+}
+
+.line-rich-menu-bar-item {
+  position: absolute;
+  left: 40%;
+}
+
+.line-rich-menu-wrap {
+  width: 28vw;
+  padding: 25% 1.25rem;
+  background-color: white;
+  position: absolute;
+  bottom: 9%;
+  border: 1px solid $line_bg_color;
+}
+
+.line-rich-menu-img-wrap {
+  position: absolute;
+  bottom: 9%;
+}
+
+.line-rich-menu2-wrap {
+  @extend .line-rich-menu-wrap;
+  padding: 2.3rem 1.25rem;
+}
+
+// .line-rich-menu-img {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: 0;
+// }

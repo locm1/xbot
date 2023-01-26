@@ -1,14 +1,44 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { LockClosedIcon, MailIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Card, Button, FormCheck, Container, InputGroup, Image } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import { Paths } from "@/paths";
 import Logo from "@img/img/logo_login.png";
 
 
 export default () => {
+  const [formValue, setFormValue] = useState(
+    {loginId: '', password: ''}
+  );
+  const history = useHistory();
+
+  const handleChange = (e, input) => {
+    setFormValue({...formValue, [input]: e.target.value})
+  };
+
+  const login = () => {
+    const data = {
+      login_id: formValue.loginId,
+      password: formValue.password
+    };
+
+    axios.get('/sanctum/csrf-cookie').then(response => {
+      const xsrfToken = Cookies.get('XSRF-TOKEN')
+      Cookies.set('TOKEN', xsrfToken, { expires: 120/1440 })
+
+      //ログイン
+      axios.post('/api/v1/login', data).then(response => {
+        history.push(Paths.DashboardOverview.path);
+      }).catch(error => {
+        Cookies.remove('TOKEN')
+      })
+    })
+  }
+  
   return (
     <main>
       <section className="d-flex align-items-center vh-lg-100 mt-5 mt-lg-0 bg-soft">
@@ -19,24 +49,24 @@ export default () => {
                 <div className="text-center text-md-center mb-4 mt-md-0">
                   <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
                 </div>
-                <Form className="mt-4">
+                <Form className="mt-4" onSubmit={login}>
                   <Form.Group id="id" className="mb-4">
-                    <Form.Label>ID</Form.Label>
+                    <Form.Label>ユーザーID</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
                         <MailIcon className="icon icon-xs text-gray-600" />
                       </InputGroup.Text>
-                      <Form.Control autoFocus required type="text" />
+                      <Form.Control autoFocus required type="text" name="login_id" value={formValue.loginId} onChange={(e) => handleChange(e, 'loginId')} />
                     </InputGroup>
                   </Form.Group>
                   <Form.Group>
                     <Form.Group id="password" className="mb-4">
-                      <Form.Label>Password</Form.Label>
+                      <Form.Label>パスワード</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
                           <LockClosedIcon className="icon icon-xs text-gray-600" />
                         </InputGroup.Text>
-                        <Form.Control required type="password" placeholder="Password" />
+                        <Form.Control required type="password" placeholder="Password" name="password" value={formValue.password} onChange={(e) => handleChange(e, 'password')} />
                       </InputGroup>
                     </Form.Group>
                     <div className="d-flex justify-content-between align-items-top mb-4">
@@ -48,7 +78,7 @@ export default () => {
                     </div>
                   </Form.Group>
                   <div className="d-grid">
-                    <Button as={Link} to={Paths.DashboardOverview.path} variant="gray-800" type="submit">ログイン</Button>
+                    <Button variant="gray-800" type="submit">ログイン</Button>
                   </div>
                 </Form>
               </div>

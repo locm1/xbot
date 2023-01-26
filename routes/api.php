@@ -19,15 +19,11 @@ use App\Http\Controllers\api\auth\LogoutController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
     return $request->user();
 });
 
 Route::group(['prefix' => 'v1'], function() {
-    # authentication
-    Route::post('/login', LoginController::class)->name('login');
-    Route::post('/logout', LogoutController::class)->name('logout');
-
     Route::resource('users', UserController::class);
     Route::resource('privacy-policy', PrivacyPolicyController::class);
     Route::resource('terms-of-service', TermsOfServiceController::class);

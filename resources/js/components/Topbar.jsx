@@ -7,12 +7,16 @@ import { Row, Col, Nav, Form, Image, Button, Navbar, Dropdown, Container, ListGr
 
 import { userNotifications } from "@/data/notifications";
 import Profile3 from "@img/img/team/profile-picture-3.jpg";
+import Cookies from 'js-cookie';
+import { Paths } from "@/paths";
+import { Link, useHistory } from 'react-router-dom';
 
 
 export default (props) => {
   const [notifications, setNotifications] = useState(userNotifications);
   const allNotificationsRead = notifications.reduce((acc, notif) => acc && notif.read, true);
   const bellIconClasses = !allNotificationsRead ? "unread" : "";
+  const history = useHistory();
 
   const markNotificationsAsRead = () => {
     setTimeout(() => {
@@ -51,6 +55,19 @@ export default (props) => {
     );
   };
 
+
+  const logout = (e) => {
+    e.preventDefault();
+
+    // ログアウト
+    axios.post('/api/v1/logout').then(response => {
+      Cookies.remove('TOKEN');
+      history.push(Paths.Signin.path);
+    }).catch(error => {
+      console.log(error);
+    })
+  };
+
   return (
     <Navbar expand variant="dark" className="navbar-top navbar-dashboard ps-0 pe-2 pb-0">
       <Container fluid className="px-0">
@@ -76,7 +93,7 @@ export default (props) => {
                   </div>
                 </div>
               </Dropdown.Toggle>
-              <Dropdown.Menu className="dashboard-dropdown dropdown-menu-end mt-2 py-1">
+              <Dropdown.Menu onClick={(e) => logout(e)} className="dashboard-dropdown dropdown-menu-end mt-2 py-1">
                 <Dropdown.Item className="d-flex align-items-center">
                   <LogoutIcon className="dropdown-icon text-danger me-2" /> Logout
                 </Dropdown.Item>

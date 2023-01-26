@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
 
 // page
 import SignIn from "@/pages/auth/Signin"
@@ -116,23 +117,30 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     localStorage.setItem('settingsVisible', !showSettings);
   }
 
-  return (
-    <Route {...rest} render={props => (
-      <>
-        <Sidebar
-          contracted={contractSidebar}
-          onMouseEnter={toggleMouseOver}
-          onMouseLeave={toggleMouseOver}
-        />
+  //認証しているかどうか
+  const isAuth = Cookies.get('TOKEN');
 
-        <main className="content">
-          <Topbar toggleContracted={toggleContracted} />
-          <Component {...props} />
-        </main>
-      </>
-    )}
-    />
-  );
+  if (isAuth) {
+    return (
+      <Route {...rest} render={props => (
+        <>
+          <Sidebar
+            contracted={contractSidebar}
+            onMouseEnter={toggleMouseOver}
+            onMouseLeave={toggleMouseOver}
+          />
+  
+          <main className="content">
+            <Topbar toggleContracted={toggleContracted} />
+            <Component {...props} />
+          </main>
+        </>
+      )}
+      />
+    );
+  } else {
+    return <Redirect to={Paths.Signin.path} />;
+  }
 };
 
 const LiffRoute = ({ component: Component, ...rest }) => {
@@ -147,10 +155,18 @@ const LiffRoute = ({ component: Component, ...rest }) => {
   );
 }
 
+const GuestRoute = ({ component: Component, ...rest }) => {
+  //認証しているかどうか
+  const isAuth = Cookies.get('TOKEN');
+
+  return isAuth ? <Redirect to={Paths.DashboardOverview.path} /> : <Route {...rest} render={props => (<Component {...props} />)} />;
+}
+
+
 const Routing = () => {
   return (
     <Switch>
-      <Route exact path={Paths.Signin.path} component={SignIn} />
+      <GuestRoute exact path={Paths.Signin.path} component={SignIn} />
       <Route exact path='/'>
         {<Redirect to={Paths.DashboardOverview.path} />}
       </Route>
@@ -193,9 +209,8 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.Display.path} component={Display} />
       <RouteWithSidebar exact path={Paths.RichMenu.path} component={RichMenu} />
       <RouteWithSidebar exact path={Paths.Postage.path} component={Postage} />
-
       <RouteWithSidebar exact path={Paths.Accounts.path} component={Accounts} />
-
+        
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
       <LiffRoute exact path={Paths.LiffProductCategories.path} component={LiffProductCategories} />
@@ -217,7 +232,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffProductHistories.path} component={LiffProductHistories} />
       <LiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
-      
+
       <Route component={NotFound} />
     </Switch>
   );

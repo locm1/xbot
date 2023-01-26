@@ -132,3 +132,24 @@ $base_color: #707070;
   width: 70%;
   cursor: pointer;
 }
+
+.richmenu-template {
+  padding: 10px;
+}
+
+.richmenu-template-image {
+  width: 160px;
+  height: auto;
+  &.active {
+    border: 2px solid #3cb37a;
+  }
+}
+
+.rich-menu-template-img-wrap {
+  padding: 20px;
+  border: 1px solid #dee2e6 !important;
+}
+
+.rich-menu-content {
+  width: 40vw;
+}

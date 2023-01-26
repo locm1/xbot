@@ -19,14 +19,12 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 export default () => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
-    console.log(users);
     fetch(`/api/v1/users`)
     .then((response) => {
       return response.json()
     })
     .then((data) => {
       setUsers(data.users.map(u => ({ ...u, isSelected: false, show: true })));
-      console.log(data.users);
     })
     .catch(error => {
             console.error(error)

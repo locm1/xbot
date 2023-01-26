@@ -71,25 +71,21 @@ export const CardWidget = (props) => {
 };
 
 export const ProfileCardWidget = (props) => {
-  const { fullName, picture, jobTitle, location } = props;
+  const { first_name, last_name, img_path, occupation, area } = props;
 
   return (
     <Card border="0" className="shadow text-center p-0">
       <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />
       <Card.Body className="pb-5">
-        <Card.Img src={picture} className="avatar-xl rounded-circle mx-auto mt-n7 mb-4" />
-        <Card.Title>{fullName}</Card.Title>
+        <Card.Img src={img_path} className="avatar-xl rounded-circle mx-auto mt-n7 mb-4" />
+        <Card.Title>{last_name} {first_name}</Card.Title>
         <Card.Subtitle className="fw-normal">
-          {jobTitle}
+          {occupation}
         </Card.Subtitle>
         <Card.Text className="text-gray mb-4">
-          {location}
+          {area}
         </Card.Text>
-
-        <Button variant="gray-800" size="sm" className="d-inline-flex align-items-center me-2">
-          <UserAddIcon className="icon icon-xs me-1" /> Connect
-        </Button>
-        <Button variant="secondary" size="sm">Send Message</Button>
+        <Button variant="secondary" size="sm">メッセージを送信</Button>
       </Card.Body>
     </Card>
   );

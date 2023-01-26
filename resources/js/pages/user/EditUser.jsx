@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HomeIcon, UserIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, Nav, Button, Tab, Breadcrumb } from 'react-bootstrap';
 import { ProfileCardWidget } from "@/components/Widgets";
@@ -9,13 +9,14 @@ import { UserInfoForm } from "@/pages/user/UserInfoForm";
 import { QuestionnaireForm } from "@/pages/user/QuestionnaireForm";
 import { PurchaseTimeForm } from "@/pages/user/PurchaseTimeForm";
 import { TagForm } from "@/pages/user/TagForm";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import Profile1 from "@img/img/team/profile-picture-1.jpg";
 
 
 export default () => {
+  const {id} = useParams();
   const orderHistoryHeaders = ['注文日時', '注文商品', '配送先住所'];
   const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '金額', '期日'];
   const inviteHistoryHeaders = ['紹介日時', '紹介者'];
@@ -36,14 +37,41 @@ export default () => {
     {id: 1, createdAt: '2022年11月02日 11:44', memo: ''},
   ];
 
-  const [formValue, setFormValue] = useState(
-    {firstName: '', lastName: '', firstNameKana: '', lastNameKana: '', birthDate: '', sex: 1, area: 1, tel: '', occupation: 1}
-  );
+  // const [formValue, setFormValue] = useState(
+  //   {firstName: '', lastName: '', firstNameKana: '', lastNameKana: '', birthDate: '', sex: 1, area: 1, tel: '', occupation: 1}
+  // );
   const [files, setFiles] = useState([]);
 
   const handleChange = (e, input) => {
-    return setFormValue({...formValue, [input]: e.target.value})
+    setUser({...user, [input]: e.target.value})
+    console.log(user);
   };
+
+  const saveUser = async() => {
+    await axios
+    .put(`/api/v1/users/${id}`, user)
+    .then((res) => {
+      alert('更新しました');
+      console.log(res);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`/api/v1/users/${id}`)
+      .then((res) => {
+        if(res.status !== 200) {
+          throw new Error("APIが正しく取得されませんでした");
+        } else {
+          setUser(res.data.user);
+        }
+      });
+  }, []);
 
   return (
     <>
@@ -51,7 +79,7 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
         </div>
         <div className="d-flex">
-          <Button as={Link} to={Paths.Calendar.path} variant="gray-800" className="me-2">
+          <Button variant="gray-800" className="me-2" onClick={saveUser}>
             保存する
           </Button>
         </div>
@@ -76,18 +104,13 @@ export default () => {
               <Tab.Pane eventKey="user_info" className="py-4">
                 <Row>
                   <Col xs={12} xl={8}>
-                    <UserInfoForm handleChange={handleChange} formValue={formValue} />
+                    <UserInfoForm handleChange={handleChange} {...user} />
                     <QuestionnaireForm />
                   </Col>
                   <Col xs={12} xl={4}>
                     <Row>
                       <Col xs={12} className="mb-4">
-                        <ProfileCardWidget
-                          fullName="Neil Sims"
-                          picture={Profile1}
-                          jobTitle="Senior Software Engineer"
-                          location="New York, USA"
-                        />
+                        <ProfileCardWidget {...user} />
                       </Col>
                       <Col xs={12} className="mb-4">
                         <PurchaseTimeForm title="来店 / ポイント / 購入回数" />

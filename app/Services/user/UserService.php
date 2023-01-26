@@ -7,13 +7,14 @@ use App\Models\User;
 
 class UserService
 {
-    /**
-     * ユーザー一覧を取得
-     *
-     * @return Collection
-     */
     public function getAllUsers(): Collection
     {
         return User::all();
+    }
+
+    public function updateUser(array $data, User $user): array
+    {
+        $user->update($data);
+        return $data;
     }
 }

@@ -2,48 +2,45 @@
 
 namespace App\Services\setting;
 
+use Illuminate\Database\Eloquent\Collection;
 use App\Models\SpecificTrade;
 
-class SpecificTradeService
+class SpecificTradeService 
 {
 
-    public function getAllSpecificTrades()
+    public function getAllSpecificTrades() :Collection
     {
         //
         return SpecificTrade::all();
     }
 
 
-    public function createSpecificTrade(string $title, string $content) :SpecificTrade
+    public function createSpecificTrade(array $data) :Collection
     {
         //
-        $save_data = ['title' => $title, 'content' => $content];
-        $specific = SpecificTrade::create($save_data);
-
-        return $specific;
+        $specific = SpecificTrade::upsert($data, ['id'], ['title', 'content']);
+        return SpecificTrade::all();
     }
 
 
-    public function getSpecificTradeById()
+    public function getSpecificTradeById() 
     {
         //
     }
 
 
-    public function updateSpecificTrade(int $id, string $title, string $content) :SpecificTrade
+    public function updateSpecificTrade(array $data, int $id) :Collection
     {
         //
-        $update = ['title' => $title, 'content' => $content];
-        SpecificTrade::find($id)->update($update);
-        $specific = SpecificTrade::find($id);
-
-        return $specific;
+        $specific = SpecificTrade::upsert($data, ['id'], ['title', 'content']);
+        return SpecificTrade::all();
     }
 
 
-    public function deleteSpecificTrade()
+    public function deleteSpecificTrade() 
     {
         //
     }
 
 }
+

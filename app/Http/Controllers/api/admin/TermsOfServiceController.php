@@ -5,7 +5,8 @@ namespace App\Http\Controllers\api\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TermsOfService;
-use App\Http\Requests\TermsOfServiceRequest;
+use App\Http\Requests\admin\setting\CreateTermsOfServiceRequest;
+use App\Http\Requests\admin\setting\UpdateTermsOfServiceRequest;
 use App\Services\setting\TermsOfServiceService;
 
 class TermsOfServiceController extends Controller
@@ -33,7 +34,7 @@ class TermsOfServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TermsOfServiceRequest $request)
+    public function store(CreateTermsOfServiceRequest $request)
     {
         $term = $this->terms_of_service_service->createTermsOfService($request->content);
         return response()->json(['term' => $term], 201);
@@ -59,19 +60,14 @@ class TermsOfServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(UpdateTermsOfServiceRequest $request, TermsOfService $terms)
     {
         //
         $update = [
             'content' => $request->content,
         ];
-        $policy = TermsOfService::where('id', $request->id)->update($update);
-        $policy = TermsOfService::all();
-        if ($policy) {
-            return response()->json(
-                $policy
-            , 200);
-        }
+	$res = $this->terms_of_service_service->updateTermsOfService($terms, $request->content ?? "");
+	return response()->json(['terms' => $res], 200);
     }
 
     /**

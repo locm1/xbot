@@ -5,7 +5,8 @@ namespace App\Http\Controllers\api\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PrivacyPolicy;
-use App\Http\Requests\PrivacyPolicyRequest;
+use App\Http\Requests\admin\setting\CreatePrivacyPolicyRequest;
+use App\Http\Requests\admin\setting\UpdatePrivacyPolicyRequest;
 use App\Services\setting\PrivacyPolicyService;
 
 class PrivacyPolicyController extends Controller
@@ -32,7 +33,7 @@ class PrivacyPolicyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PrivacyPolicyRequest $request)
+    public function store(CreatePrivacyPolicyRequest $request)
     {
         $policy = $this->privacy_policy_service->createPrivacyPolicy($request->content);
         return response()->json(['policy' => $policy], 201);
@@ -57,10 +58,10 @@ class PrivacyPolicyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PrivacyPolicyRequest $request, $id)
+    public function update(UpdatePrivacyPolicyRequest $request, PrivacyPolicy $policy)
     {
-        $policy = $this->privacy_policy_service->updatePrivacyPolicy($id, $request->content ?? "");
-        return response()->json(['policy' => $policy], 200);
+        $res = $this->privacy_policy_service->updatePrivacyPolicy($policy, $request->content ?? "");
+        return response()->json(['policy' => $res], 200);
     }
 
     /**

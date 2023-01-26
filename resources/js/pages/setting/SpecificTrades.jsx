@@ -8,7 +8,6 @@ import SpecificTradesCard from "@/pages/setting/SpecificTradesCard";
 
 const SpecificTradesService = (props) => {
   const [SpecificTrades, setSpecificTrades] = useState([
-    {id: '', title: '', content: ''}
   ]);
 
   const createCard = () => {
@@ -19,60 +18,34 @@ const SpecificTradesService = (props) => {
   };
 
   const savePost = async() => {
-    let err = false;
-    for(let i = 0; i < SpecificTrades.length; i++) {
-        if(SpecificTrades[i].id == '') {
-            //入力値を投げる
-            await axios
-            .post('/api/v1/specific-trades', {
-                title:SpecificTrades[i].title,
-                content:SpecificTrades[i].content
-            })
-            .then((res) => {
-                //戻り値をtodosにセット
-                setSpecificTrades(
-                        SpecificTrades.map((specific, index) => (index === i ? res['specific'] : specific))
-                );
-            })
-            .catch(error => {
-                console.error(error);
-                err = true;
-            });
-        } else {
-            //入力値を投げる
-            await axios
-            .put(`/api/v1/specific-trades/${SpecificTrades[i].id}`, {
-                id: SpecificTrades[i].id,
-                title:SpecificTrades[i].title,
-                content:SpecificTrades[i].content
-            })
-            .then((res) => {
-            })
-            .catch(error => {
-                console.error(error);
-                err = true;
-            });
-        }
-    }
-    if(!err) {
-        alert('更新しました。');
-    }
-  }
-
-  useEffect(() => {
-    fetch(`/api/v1/specific-trades`)
-    .then((response) => {
-      return response.json()
+    await axios
+    .post('/api/v1/specific-trades', {
+        data:SpecificTrades
     })
-    .then((data) => {
-      if(data['specific'].length > 0) {
-        setSpecificTrades(data['specific']);
-      }
+    .then((res) => {
+        //戻り値をtodosにセット
+        setSpecificTrades(res['data']['specific']);
+        alert('更新しました。');
     })
     .catch(error => {
-            console.log(error)
+        console.error(error);
+    });
+  }
+  useEffect(() => {
+    axios.get(`/api/v1/specific-trades`)
+    .then((data) => {
+        const responseSpecificTrades = data.data.specific.map(item => ({
+                id: item.id,
+                title: item.title,
+                content:  item.content,
+        }));
+        setSpecificTrades((prevState) => [...prevState, ...responseSpecificTrades]);
     })
+    .catch(error => {
+        console.error(error);
+    });
   }, []);
+
   return (
     <>
     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -80,7 +53,7 @@ const SpecificTradesService = (props) => {
         <h1 className="page-title">特定商取引法に基づく表記</h1>
       </div>
     </div>
-  
+
     <Container fluid className="cotainer py-4 px-0">
       <Row className="privilege-card-wrap">
         {
@@ -109,9 +82,9 @@ const SpecificTradesService = (props) => {
       <Button variant="gray-800" type="submit" className="mt-2 animate-up-2" onClick={savePost}>
         保存する
       </Button>
-    </div>
+      </div>
   </>
       )
   };
   export default SpecificTradesService;
-  
+

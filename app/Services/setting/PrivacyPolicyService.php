@@ -28,11 +28,10 @@ class PrivacyPolicyService
     }
 
 
-    public function updatePrivacyPolicy(int $id, string $content) :PrivacyPolicy
+    public function updatePrivacyPolicy(PrivacyPolicy $policy, string $content) :PrivacyPolicy
     {
         $update = ['content' => $content];
-        PrivacyPolicy::find($id)->update($update);
-        $policy = PrivacyPolicy::find($id);
+	    $policy->update($update);
 
         return $policy;
     }

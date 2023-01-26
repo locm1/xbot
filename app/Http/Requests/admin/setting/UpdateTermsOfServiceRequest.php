@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\admin\setting;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SpecificTradeRequest extends FormRequest
+class UpdateTermsOfServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class SpecificTradeRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,14 @@ class SpecificTradeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'content' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'content.required' => '内容が未入力です',
         ];
     }
 }

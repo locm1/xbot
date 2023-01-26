@@ -28,13 +28,12 @@ class TermsOfServiceService
     }
 
 
-    public function updateTermsOfService(int $id, string $content) :TermsOfService
+    public function updateTermsOfService(TermsOfService $terms, string $content) :TermsOfService
     {
         $update = ['content' => $content];
-        TermsOfService::find($id)->update($update);
-        $term = TermsOfService::find($id);
+        $terms->update($update);
 
-        return $term;
+        return $terms;
     }
 
 

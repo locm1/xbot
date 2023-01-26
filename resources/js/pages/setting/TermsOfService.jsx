@@ -26,7 +26,7 @@ const TermsOfService = (props) => {
       })
       .then((res) => {
         //戻り値をtodosにセット
-        setId(res['term'][0]['id'])
+        setId(res['data']['id'])
         alert('登録しました');
       })
       .catch(error => {
@@ -49,7 +49,6 @@ const TermsOfService = (props) => {
 
     }
   }
-
   useEffect(() => {
         fetch(`/api/v1/terms-of-service`)
         .then((response) => {
@@ -80,7 +79,7 @@ const TermsOfService = (props) => {
               <Form.Control required type="hidden" name="id" value={id} />
                 <Form.Group className="mb-3">
                   <Form.Label>利用規約</Form.Label>
-                  <Form.Control as="textarea" rows="30" maxlength="5000" name="content" value={content} onChange={(event) => changeContent(event)} />
+                  <Form.Control as="textarea" rows="30" maxLength="5000" name="content" value={content} onChange={(event) => changeContent(event)} />
                 </Form.Group>
                 <div className="mt-3">
                   <Button variant="gray-800" type="submit" className="mt-2 animate-up-2" onClick={savePost}>

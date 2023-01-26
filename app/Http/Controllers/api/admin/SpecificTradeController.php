@@ -5,7 +5,8 @@ namespace App\Http\Controllers\api\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SpecificTrade;
-use App\Http\Requests\SpecificTradeRequest;
+use App\Http\Requests\admin\setting\CreateSpecificTradeRequest;
+use App\Http\Requests\admin\setting\UpdateSpecificTradeRequest;
 use App\Services\setting\SpecificTradeService;
 
 class SpecificTradeController extends Controller
@@ -34,10 +35,10 @@ class SpecificTradeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateSpecificTradeRequest $request)
     {
         //
-        $specific = $this->specific_trade_service->createSpecificTrade($request->title, $request->content);
+	$specific = $this->specific_trade_service->createSpecificTrade($request->data);
         return response()->json(['specific' => $specific], 201);
     }
 
@@ -59,10 +60,10 @@ class SpecificTradeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateSpecificTradeRequest $request)
     {
         //
-        $specific = $this->specific_trade_service->updateSpecificTrade($id, $request->title, $request->content);
+	$specific = $this->specific_trade_service->createSpecificTrade($request->data);
         return response()->json(['specific' => $specific], 200);
     }
 
@@ -77,3 +78,4 @@ class SpecificTradeController extends Controller
         //
     }
 }
+

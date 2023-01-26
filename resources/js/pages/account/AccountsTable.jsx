@@ -36,7 +36,7 @@ export const AccountsTable = (props) => {
 
   const TableRow = (props) => {
     const { id, login_id, name, role, isSelected } = props;
-    const link = Paths.EditUser.path.replace(':id', id);
+    const link = Paths.EditAccount.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
@@ -90,7 +90,7 @@ export const AccountsTable = (props) => {
                   <FormCheck.Label htmlFor="userCheckAll" />
                 </FormCheck>
               </th>
-              <th className="border-bottom">ユーザーID</th>
+              <th className="border-bottom">ログインID</th>
               <th className="border-bottom">ユーザー名</th>
               <th className="border-bottom">権限レベル</th>
               <th className="border-bottom text-center">編集・削除</th>

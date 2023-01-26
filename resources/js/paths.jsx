@@ -43,6 +43,7 @@ export const Paths = {
     Greeting: { path: `${prefix}/line/greeting` },
     Display: { path: `${prefix}/display` },
     Accounts: { path: `${prefix}/master/xbot/account/list` },
+    EditAccount: { path: `${prefix}/master/xbot/account/edit/:id` },
     RichMenu: { path: `${prefix}/line/richmenu` },
     Postage: {path: `${prefix}/master/postage`},
 

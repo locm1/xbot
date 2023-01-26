@@ -5,6 +5,9 @@ namespace App\Http\Controllers\api\admin;
 use App\Http\Controllers\Controller;
 use App\Services\admin\AdminService;
 use Illuminate\Http\Request;
+use App\Http\Requests\admin\AdminUpdateRequest;
+use App\Models\Admin;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AdminController extends Controller
 {
@@ -18,7 +21,7 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResource
      */
     public function index()
     {
@@ -40,24 +43,25 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Admin $admin
+     * @return JsonResource
      */
-    public function show($id)
+    public function show(Admin $admin)
     {
-        //
+        return response()->json(['admin' => $admin], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  AdminUpdateRequest $request
+     * @param  Admin $admin
+     * @return JsonResource
      */
-    public function update(Request $request, $id)
+    public function update(AdminUpdateRequest $request, Admin $admin)
     {
-        //
+        $update_data = $this->admin_service->updateAdmin($request->all(), $admin);
+        return response()->json(['admin' => $update_data], 200);
     }
 
     /**

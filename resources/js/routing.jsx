@@ -46,6 +46,7 @@ import Postage from '@/pages/master/Postage';
 
 // Account
 import Accounts from '@/pages/account/Accounts';
+import EditAccount from '@/pages/account/EditAccount';
 
 // LIFF pages
 import LiffProductDetail from '@/pages/liff/detail/LiffProductDetail';
@@ -210,6 +211,7 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.RichMenu.path} component={RichMenu} />
       <RouteWithSidebar exact path={Paths.Postage.path} component={Postage} />
       <RouteWithSidebar exact path={Paths.Accounts.path} component={Accounts} />
+      <RouteWithSidebar exact path={Paths.EditAccount.path} component={EditAccount} />
         
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />

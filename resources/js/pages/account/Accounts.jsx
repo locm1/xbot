@@ -4,9 +4,10 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { AdjustmentsIcon, CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
+import { Paths } from "@/paths";
 import { AccountsTable } from "@/pages/account/AccountsTable";
-import ACCOUNTS_DATA from "@/data/accounts";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -32,16 +33,14 @@ export default () => {
 
   return (
     <>
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap">
-        <div className="d-block mb-4 mb-md-0">
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 mb-5 list-wrap">
+        <div className="d-block">
           <h1 className="page-title">アカウント管理</h1>
-          <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <div className="list-head__items">
-              <div className="list-head__item"> <span className="u-men"> 男性 </span>：19名 </div>
-              <div className="list-head__item"> <span className="u-women "> 女性 </span>：8名 </div>
-              <div className="list-head__item"> <span> その他 </span>：1名 </div>
-            </div>
-          </div>
+        </div>
+        <div className="btn-toolbar">
+          <Button as={Link} to={Paths.CreateMessage.path} variant="gray-800" size="sm" className="d-inline-flex align-items-center">
+            <PlusIcon className="icon icon-xs me-2" /> 新規アカウント作成
+          </Button>
         </div>
       </div>
 

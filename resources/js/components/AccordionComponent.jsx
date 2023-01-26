@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Accordion } from 'react-bootstrap';
 
 export default (props) => {
-  const { defaultKey, data = [], className = "", children, style } = props;
+  const { defaultKey, data, className = "", children, style, isShow } = props;
 
   const AccordionItem = (item) => {
     const { eventKey, title, children, style } = item;
@@ -22,8 +22,15 @@ export default (props) => {
   };
 
   return (
-    <Accordion className={className} defaultActiveKey={defaultKey}>
-      {data.map(d => <AccordionItem key={`accordion-${d.id}`} {...d} children={children} style={style} />)}
-    </Accordion>
+    <>
+    {/* <Accordion className={className}>
+      {data.map(d => <AccordionItem key={`accordion-${d.id}`} {...d} children={children} style={style} isShow={isShow} />)}
+    </Accordion> */}
+    {data.map(d => 
+      <Accordion className={className}>
+        <AccordionItem key={`accordion-${d.id}`} {...d} children={children} style={style} />
+      </Accordion>
+    )}
+    </>
   );
 };

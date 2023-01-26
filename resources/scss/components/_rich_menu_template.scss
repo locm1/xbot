@@ -68,6 +68,7 @@ $color: #3cb37a;
 }
 
 .line-rich-menu-template-item {
+  cursor: pointer;
   &.template-active {
     background-color: rgba(0,185,0,0.15);
   }

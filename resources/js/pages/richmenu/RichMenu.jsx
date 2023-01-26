@@ -60,7 +60,7 @@ export default () => {
   };
 
   const AccordionAction = (props) => {
-    const { richMenu } = props;
+    const { richMenu, templateActive } = props;
     
     const actions = [...Array(richMenu.size)].map((v, i) => {
       return {
@@ -76,6 +76,7 @@ export default () => {
       <AccordionComponent
         data={actions}
         style={{width: '400px'}}
+        isShow={templateActive}
       >
         <Row>
           <Col md={4}>
@@ -155,6 +156,21 @@ export default () => {
     );
   };
 
+  const ActionItem = (props) => {
+    const { richMenu, templateActive } = props;
+
+    return (
+      <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 py-4 border-bottom">
+        <div>
+          <Card.Text className="h6 mb-1">アクション</Card.Text>
+        </div>
+        <div>
+        <AccordionAction richMenu={richMenu} templateActive={templateActive}></AccordionAction>
+        </div>
+      </ListGroup.Item>
+    );
+  };
+
 	return (
 		<>
     {
@@ -216,13 +232,7 @@ export default () => {
                   files={files}
                   setFiles={setFiles}
                 />
-                <SettingsItem
-                  id={3}
-                  title="アクション"
-                  className='py-4'
-                >
-                  <AccordionAction richMenu={richMenu}></AccordionAction>
-                </SettingsItem>
+                <ActionItem richMenu={richMenu} templateActive={templateActive} />
                 <SettingsItem
                   id={3}
                   title="メニューバー設定"

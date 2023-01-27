@@ -24,7 +24,10 @@ class AdminStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'login_id' => 'required',
+            'name' => 'required',
+            'role' => 'required|numeric|between:1,3',
+            'password' => 'required|confirmed',
         ];
     }
 }

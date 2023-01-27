@@ -31,8 +31,8 @@ class ControllerServiceMakeCommand extends Command
         $className = $this->argument('ClassName');
         $dirName = $this->argument('targetDir');
         Artisan::call("make:controller api/admin/{$className}Controller --resource");
-        Artisan::call("make:request admin/{$dirName}/{$className}StoreRequest");
-        Artisan::call("make:request admin/{$dirName}/{$className}UpdateRequest");
+        Artisan::call("make:request admin/{$dirName}/Store{$className}Request");
+        Artisan::call("make:request admin/{$dirName}/Update{$className}Request");
         Artisan::call("make:model {$className}");
         Artisan::call("make:service {$className} {$dirName}");
         $this->info('all created successfully.');

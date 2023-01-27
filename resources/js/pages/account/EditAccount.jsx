@@ -74,11 +74,12 @@ export default () => {
   const updateAdmin = async () => {
     const newFormValues = {
       data: formValue,
-      is_checked: isCheck
+      is_checked: isCheck,
     }
     await axios.put(`/api/v1/admins/${id}`, newFormValues)
     .then((response) => {
       alert('更新しました');
+      console.log(newFormValues);
       console.log(response);
     })
     .catch(error => {

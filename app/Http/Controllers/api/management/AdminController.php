@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api\admin;
+namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
-use App\Services\admin\AdminService;
+use App\Services\management\admin\AdminService;
 use Illuminate\Http\Request;
-use App\Http\Requests\admin\AdminUpdateRequest;
-use App\Http\Requests\admin\AdminStoreRequest;
+use App\Http\Requests\management\admin\UpdateAdminRequest;
+use App\Http\Requests\management\admin\StoreAdminRequest;
 use App\Models\Admin;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -26,7 +26,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins = $this->admin_service->getAllAdmins();
+        $admins = $this->admin_service->index();
         return response()->json(['admins' => $admins], 200);
     }
 
@@ -36,10 +36,9 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AdminStoreRequest $request)
+    public function store(StoreAdminRequest $request)
     {
-        $attributes = $request->only(['login_id', 'name', 'role', 'password']);
-        $admin = $this->admin_service->createAdmin($attributes);
+        $admin = $this->admin_service->store($request);
         return response()->json(['admin' => $admin], 200);
     }
 
@@ -51,19 +50,20 @@ class AdminController extends Controller
      */
     public function show(Admin $admin)
     {
+        $admin = $this->admin_service->show($admin);
         return response()->json(['admin' => $admin], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  AdminUpdateRequest $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  Admin $admin
      * @return JsonResource
      */
-    public function update(AdminUpdateRequest $request, Admin $admin)
+    public function update(UpdateAdminRequest $request, Admin $admin)
     {
-        $update_data = $this->admin_service->updateAdmin($request->data, $admin, $request->is_checked);
+        $update_data = $this->admin_service->update($request, $admin);
         return response()->json(['admin' => $update_data], 200);
     }
 
@@ -75,7 +75,7 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        $this->admin_service->deleteAdmin($admin);
+        $this->admin_service->destroy($admin);
         return response()->json([], 204);
     }
 }

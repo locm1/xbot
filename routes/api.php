@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\api\admin\AdminController;
-use App\Http\Controllers\api\admin\UserController;
-use App\Http\Controllers\api\admin\PrivacyPolicyController;
+use App\Http\Controllers\api\management\AdminController;
+use App\Http\Controllers\api\management\UserController;
+use App\Http\Controllers\api\management\PrivacyPolicyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\api\admin\TermsOfServiceController;
-use App\Http\Controllers\api\admin\SpecificTradeController;
+use App\Http\Controllers\api\management\TermsOfServiceController;
+use App\Http\Controllers\api\management\SpecificTradeController;
 
 /*
 |--------------------------------------------------------------------------

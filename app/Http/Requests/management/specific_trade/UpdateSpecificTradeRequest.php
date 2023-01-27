@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Requests\management\specific_trade;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateSpecificTradeRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules()
+    {
+        return [
+            'title.*' => 'required',
+            'content.*' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title.*.required' => 'タイトルが未入力です',
+            'content.*.required' => '内容が未入力です',
+        ];
+    }
+}

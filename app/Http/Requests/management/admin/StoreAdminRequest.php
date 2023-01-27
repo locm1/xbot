@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\management\admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePrivacyPolicyRequest extends FormRequest
+class StoreAdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,10 @@ class UpdatePrivacyPolicyRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'required',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'content.required' => 'プライバシーポリシー内容が未入力です',
+            'login_id' => 'required',
+            'name' => 'required',
+            'role' => 'required|numeric|between:1,3',
+            'password' => 'required|confirmed',
         ];
     }
 }

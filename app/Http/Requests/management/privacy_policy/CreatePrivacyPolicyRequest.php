@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\management\privacy_policy;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTermsOfServiceRequest extends FormRequest
+class CreatePrivacyPolicyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +31,7 @@ class UpdateTermsOfServiceRequest extends FormRequest
     public function messages()
     {
         return [
-            'content.required' => '内容が未入力です',
+            'content.required' => 'プライバシーポリシー内容が未入力です',
         ];
     }
 }

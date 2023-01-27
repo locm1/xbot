@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\management\specific_trade;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTermsOfServiceRequest extends FormRequest
+class CreateSpecificTradeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,16 @@ class CreateTermsOfServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'required',
+            'title.*' => 'required',
+            'content.*' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'content.required' => '内容が未入力です',
+            'title.*.required' => 'タイトルが未入力です',
+            'content.*.required' => '内容が未入力です',
         ];
     }
 }

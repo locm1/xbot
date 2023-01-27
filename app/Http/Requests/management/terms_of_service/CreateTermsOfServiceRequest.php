@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\user;
+namespace App\Http\Requests\management\terms_of_service;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class CreateTermsOfServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,14 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'content' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'content.required' => '内容が未入力です',
         ];
     }
 }

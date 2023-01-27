@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\management\privacy_policy;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateSpecificTradeRequest extends FormRequest
+class UpdatePrivacyPolicyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,14 @@ class CreateSpecificTradeRequest extends FormRequest
     public function rules()
     {
         return [
-            'title.*' => 'required',
-            'content.*' => 'required',
+            'content' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'title.*.required' => 'タイトルが未入力です',
-            'content.*.required' => '内容が未入力です',
+            'content.required' => 'プライバシーポリシー内容が未入力です',
         ];
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api\admin;
+namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TermsOfService;
-use App\Http\Requests\admin\setting\CreateTermsOfServiceRequest;
-use App\Http\Requests\admin\setting\UpdateTermsOfServiceRequest;
+use App\Http\Requests\management\terms_of_service\CreateTermsOfServiceRequest;
+use App\Http\Requests\management\terms_of_service\UpdateTermsOfServiceRequest;
 use App\Services\setting\TermsOfServiceService;
 
 class TermsOfServiceController extends Controller

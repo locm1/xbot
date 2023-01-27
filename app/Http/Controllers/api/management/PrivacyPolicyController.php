@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api\admin;
+namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PrivacyPolicy;
-use App\Http\Requests\admin\setting\CreatePrivacyPolicyRequest;
-use App\Http\Requests\admin\setting\UpdatePrivacyPolicyRequest;
+use App\Http\Requests\management\privacy_policy\CreatePrivacyPolicyRequest;
+use App\Http\Requests\management\privacy_policy\UpdatePrivacyPolicyRequest;
 use App\Services\setting\PrivacyPolicyService;
 
 class PrivacyPolicyController extends Controller

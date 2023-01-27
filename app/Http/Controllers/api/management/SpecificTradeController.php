@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api\admin;
+namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SpecificTrade;
-use App\Http\Requests\admin\setting\CreateSpecificTradeRequest;
-use App\Http\Requests\admin\setting\UpdateSpecificTradeRequest;
+use App\Http\Requests\management\specific_trade\CreateSpecificTradeRequest;
+use App\Http\Requests\management\specific_trade\UpdateSpecificTradeRequest;
 use App\Services\setting\SpecificTradeService;
 
 class SpecificTradeController extends Controller

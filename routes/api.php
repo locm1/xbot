@@ -5,7 +5,8 @@ use App\Http\Controllers\api\admin\UserController;
 use App\Http\Controllers\api\admin\PrivacyPolicyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\api\TermsOfServiceController;
+use App\Http\Controllers\api\admin\TermsOfServiceController;
+use App\Http\Controllers\api\admin\SpecificTradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('privacy-policy', PrivacyPolicyController::class);
         Route::resource('terms-of-service', TermsOfServiceController::class);
+        Route::resource('specific-trades', SpecificTradeController::class);
     });
 });

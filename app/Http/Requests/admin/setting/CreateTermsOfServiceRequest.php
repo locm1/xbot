@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TermsOfServiceRequest extends FormRequest
+class CreateTermsOfServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class TermsOfServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
             'content' => 'required',
         ];
     }
@@ -32,7 +31,7 @@ class TermsOfServiceRequest extends FormRequest
     public function messages()
     {
         return [
-            'content.required' => 'プライバシーポリシー内容が未入力です',
+            'content.required' => '内容が未入力です',
         ];
     }
 }

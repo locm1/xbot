@@ -26,6 +26,7 @@ const PrivacyPolicy = (props) => {
       })
       .then((res) => {
         //戻り値をtodosにセット
+console.log(res)
         setId(res['data']['id'])
         alert('登録しました');
       })
@@ -41,6 +42,7 @@ const PrivacyPolicy = (props) => {
       })
       .then((res) => {
         //戻り値をtodosにセット
+console.log(res)
         alert('更新しました');
       })
       .catch(error => {

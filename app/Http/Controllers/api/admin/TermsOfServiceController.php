@@ -1,14 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TermsOfService;
-use App\Http\Requests\TermsOfServiceRequest;
+use App\Http\Requests\admin\setting\CreateTermsOfServiceRequest;
+use App\Http\Requests\admin\setting\UpdateTermsOfServiceRequest;
+use App\Services\setting\TermsOfServiceService;
 
 class TermsOfServiceController extends Controller
 {
+    private $terms_of_service_service;
+
+    public function __construct(TermsOfServiceService $terms_of_service_service) {
+        $this->terms_of_service_service = $terms_of_service_service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,11 +24,8 @@ class TermsOfServiceController extends Controller
      */
     public function index()
     {
-        //
-        $policy = TermsOfService::all();
-        return response()->json(
-            $policy, 200
-        );
+        $term = $this->terms_of_service_service->getAllTermsOfServices();
+        return response()->json(['term' => $term], 200);
     }
 
     /**
@@ -29,14 +34,12 @@ class TermsOfServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateTermsOfServiceRequest $request)
     {
-        //
-        $policy = TermsOfService::create($request->all());
-        return response()->json(
-            $policy, 201
-        );
+        $term = $this->terms_of_service_service->createTermsOfService($request->content);
+        return response()->json(['term' => $term], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -57,19 +60,14 @@ class TermsOfServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(UpdateTermsOfServiceRequest $request, TermsOfService $terms)
     {
         //
         $update = [
             'content' => $request->content,
         ];
-        $policy = TermsOfService::where('id', $request->id)->update($update);
-        $policy = TermsOfService::all();
-        if ($policy) {
-            return response()->json(
-                $policy
-            , 200);
-        }
+	$res = $this->terms_of_service_service->updateTermsOfService($terms, $request->content ?? "");
+	return response()->json(['terms' => $res], 200);
     }
 
     /**

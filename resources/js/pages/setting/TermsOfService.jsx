@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Component } from 'react';
 import moment from "moment-timezone";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, Card, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
+// import { then } from "laravel-mix";
 
 
 
@@ -21,11 +21,10 @@ const TermsOfService = (props) => {
     if(id == '') {
       //入力値を投げる
       await axios
-      .post('/api/setting/terms-of-service/store', {
+      .post(`/api/v1/terms-of-service`, {
         content: content
       })
       .then((res) => {
-console.log(res)
         //戻り値をtodosにセット
         setId(res['data']['id'])
         alert('登録しました');
@@ -36,7 +35,7 @@ console.log(res)
     } else {
       //入力値を投げる
       await axios
-      .post('/api/setting/terms-of-service/update', {
+      .put(`/api/v1/terms-of-service/${id}`, {
         id: id,
         content: content
       })
@@ -50,15 +49,15 @@ console.log(res)
 
     }
   }
-
   useEffect(() => {
-        fetch(`/api/setting/terms-of-service`)
-        .then(response => response.json())
-        .then(data => {
-                if(data.length > 0) {
-                        setId(data[0]['id']);
-                        setContent(data[0]['content']);
-                }
+        fetch(`/api/v1/terms-of-service`)
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          setContent(data.term[0].content)
+          setId(data.term[0].id)
+    
         })
         .catch(error => {
                 console.log(error)
@@ -80,7 +79,7 @@ console.log(res)
               <Form.Control required type="hidden" name="id" value={id} />
                 <Form.Group className="mb-3">
                   <Form.Label>利用規約</Form.Label>
-                  <Form.Control as="textarea" rows="30" maxlength="5000" name="content" value={content} onChange={(event) => changeContent(event)} />
+                  <Form.Control as="textarea" rows="30" maxLength="5000" name="content" value={content} onChange={(event) => changeContent(event)} />
                 </Form.Group>
                 <div className="mt-3">
                   <Button variant="gray-800" type="submit" className="mt-2 animate-up-2" onClick={savePost}>

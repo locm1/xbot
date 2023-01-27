@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PrivacyPolicyRequest extends FormRequest
+class UpdateTermsOfServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,14 @@ class PrivacyPolicyRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'nullable',
+            'content' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'content.required' => 'プライバシーポリシー内容が未入力です',
+            'content.required' => '内容が未入力です',
         ];
     }
 }
-

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\management;
+namespace App\Http\Controllers\api\management\privacy_policy;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

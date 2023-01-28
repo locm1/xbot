@@ -2,52 +2,21 @@ import { v4 as uuidv4 } from "uuid";
 
 export default [
     {
-        "id": uuidv4(),
-        "title": "Meeting with Ms. Bonnie from Themesberg LLC",
-        "time": "10:00 AM",
-        "statusKey": "inProgress",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pulvinar feugiat consequat. Duis lacus nibh, sagittis id varius vel, aliquet non augue."
+        "id": 1,
+        "title": "テスト１",
+        "content": "テスト１の内容テスト１の内容"
     },
     {
-        "id": uuidv4(),
-        "title": "Upgrate to Volt Pro",
-        "time": "10:00 AM",
-        "statusKey": "done",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pulvinar feugiat consequat. Duis lacus nibh, sagittis id varius vel, aliquet non augue."
+        "id": 2,
+        "title": "テスト２",
+        "content": `①リッチメニュー「商品購入・取置き」を押下
+        ②カテゴリーメニューのいずれかを押下
+        ③商品カード内の「詳細を見る」を押下
+        ④詳細ページ内設置の「カートに追加」を押下
+        ⑤カートページ内設置の「購入する」を押下
+        ⑥注文者情報、配送先の入力及び配送時間帯指定を選択
+        ⑦クレジットカード情報を入力し「注文を確定する」を押下
+        ⑧注文完了
+        ⑨リッチメニュー「購入履歴」から注文商品を確認`
     },
-    {
-        "id": uuidv4(),
-        "title": "Meeting with Ms. Bonnie from Themesberg LLC",
-        "time": "10:00 AM",
-        "statusKey": "inProgress",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pulvinar feugiat consequat. Duis lacus nibh, sagittis id varius vel, aliquet non augue."
-    },
-    {
-        "id": uuidv4(),
-        "title": "Meeting with Ms. Bonnie from Themesberg LLC",
-        "time": "10:00 AM",
-        "statusKey": "inProgress",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pulvinar feugiat consequat. Duis lacus nibh, sagittis id varius vel, aliquet non augue."
-    },
-    {
-        "id": uuidv4(),
-        "title": "Meeting with Ms. Bonnie from Themesberg LLC",
-        "time": "10:00 AM",
-        "statusKey": "waiting",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pulvinar feugiat consequat. Duis lacus nibh, sagittis id varius vel, aliquet non augue."
-    },
-    {
-        "id": uuidv4(),
-        "title": "Meeting with Ms. Bonnie from Themesberg LLC",
-        "time": "10:00 AM",
-        "statusKey": "waiting",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pulvinar feugiat consequat. Duis lacus nibh, sagittis id varius vel, aliquet non augue."
-    },
-    {
-        "id": uuidv4(),
-        "title": "Meeting with Ms. Bonnie from Themesberg LLC",
-        "time": "10:00 AM",
-        "statusKey": "done",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pulvinar feugiat consequat. Duis lacus nibh, sagittis id varius vel, aliquet non augue."
-    }
 ];

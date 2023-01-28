@@ -4,6 +4,7 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 
 export default () => {
+  const [SpecificTrades, setSpecificTrades] = useState([]);
   const requiredPrices = [
     '・消費税（商品代金欄に税込価格を表示）', 
     '・送料一律500円、5000円以上購入で送料無料'
@@ -31,8 +32,19 @@ export default () => {
     '不良品の場合は商品到着後7日以内にお電話にてご連絡ください。送料は当社負担で良品と交換させていただきます。'
   ];
 
+  useEffect(() => {
+    axios.get(`/api/v1/specific-trades`)
+    .then((data) => {
+      setSpecificTrades(data.data.specific_trades);
+      console.log(data.data.specific_trades);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+  }, []);
+
   const SpecificTradesItem = (props) => {
-    const { title, values } = props;
+    const { title, content } = props;
 
     return (
       <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
@@ -41,19 +53,7 @@ export default () => {
             <h4 className="fs-6 fw-bolder text-dark mb-0">{title}</h4>
           </Col>
           <Col xs="8" xl={8} className="pb-2 mt-2">
-            {(() => {
-              if (Array.isArray(values)) {
-                return (
-                  <>
-                    {values.map((value, index) => 
-                      <span key={index} className="fs-6 text-dark d-block">{value}</span>
-                    )}
-                  </>
-                )
-              } else {
-                return (<span className="fs-6 text-dark">{values}</span>)
-              }
-            })()}
+          <span className="fs-6 text-dark liff-specific-trade-content">{content}</span>
           </Col>
         </Row>
       </ListGroup.Item>
@@ -71,16 +71,10 @@ export default () => {
             </Card.Header>
             <Card.Body className="py-0">
               <ListGroup className="list-group-flush">
-                <SpecificTradesItem title="販売業者" values="Reno株式会社" />
-                <SpecificTradesItem title="運営責任者" values="宮島拡夢" />
-                <SpecificTradesItem title="住所" values="北海道札幌市中央区" />
-                <SpecificTradesItem title="電話番号" values="000-0000-0000" />
-                <SpecificTradesItem title="商品以外の必要代金" values={requiredPrices} />
-                <SpecificTradesItem title="注文方法" values={orderMethods} />
-                <SpecificTradesItem title="支払方法" values={paymentMethods} />
-                <SpecificTradesItem title="代金の支払い時期" values="商品購入時に決済" />
-                <SpecificTradesItem title="商品の引き渡し時期" values="決済完了後7営業日以内に発送" />
-                <SpecificTradesItem title="返品・交換不良品・解約について" values={others} />
+                {
+                  SpecificTrades.map((SpecificTrade, index) =>
+                  <SpecificTradesItem key={index} title={SpecificTrade.title} content={SpecificTrade.content} />
+                )}
               </ListGroup>
             </Card.Body>
           </Card>

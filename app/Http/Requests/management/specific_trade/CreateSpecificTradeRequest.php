@@ -24,16 +24,16 @@ class CreateSpecificTradeRequest extends FormRequest
     public function rules()
     {
         return [
-            'title.*' => 'required',
-            'content.*' => 'required',
+            'title' => 'required',
+            'content' => 'required',
         ];
     }
 
-    public function messages()
+    public function attributes()
     {
         return [
-            'title.*.required' => 'タイトルが未入力です',
-            'content.*.required' => '内容が未入力です',
+            'title' => 'タイトル',
+            'content' => '内容',
         ];
     }
 }

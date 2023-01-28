@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\api\management\AdminController;
-use App\Http\Controllers\api\management\UserController;
-use App\Http\Controllers\api\management\PrivacyPolicyController;
+use App\Http\Controllers\api\management\admin\AdminController;
+use App\Http\Controllers\api\management\user\UserController;
+use App\Http\Controllers\api\management\privacy_policy\PrivacyPolicyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\api\management\TermsOfServiceController;
-use App\Http\Controllers\api\management\SpecificTradeController;
+use App\Http\Controllers\api\management\terms_of_service\TermsOfServiceController;
+use App\Http\Controllers\api\management\specific_trade\SpecificTradeController;
+use App\Http\Controllers\api\management\specific_trade\SpecificTradeIndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +27,18 @@ Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'v1'], function() {
-        Route::resource('admins', AdminController::class);
-        Route::resource('users', UserController::class);
-        Route::resource('privacy-policy', PrivacyPolicyController::class);
-        Route::resource('terms-of-service', TermsOfServiceController::class);
-        Route::resource('specific-trades', SpecificTradeController::class);
+        Route::apiResource('admins', AdminController::class);
+        Route::apiResource('users', UserController::class);
+        Route::apiResource('privacy-policy', PrivacyPolicyController::class);
+        Route::apiResource('terms-of-service', TermsOfServiceController::class);
+        Route::apiResource('specific-trades', SpecificTradeController::class)->only([
+            'store', 'show', 'update', 'destroy'
+        ]);;
     });
+});
+
+
+// LIFF側で叩くAPI（認証なしでもできる）
+Route::group(['prefix' => 'v1'], function() {
+    Route::get('/specific-trades', SpecificTradeIndexController::class);
 });

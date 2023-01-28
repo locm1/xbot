@@ -34,7 +34,7 @@ import Invitations from '@/pages/invitation/Invitations';
 import EditInvitation from '@/pages/invitation/EditInvitation';
 import PrivacyPolicy from '@/pages/setting/PrivacyPolicy';
 import TermsOfService from '@/pages/setting/TermsOfService';
-import SpecificTrades from '@/pages/setting/SpecificTrades';
+import SpecificTrades from '@/pages/setting/specific_trades/SpecificTrades';
 import Tags from '@/pages/tag/Tags';
 import QrCode from '@/pages/qrcode/QrCode';
 import NotFound from '@/pages/error/NotFound';

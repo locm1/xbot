@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\management;
+namespace App\Http\Controllers\api\management\specific_trade;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SpecificTrade;
 use App\Http\Requests\management\specific_trade\CreateSpecificTradeRequest;
 use App\Http\Requests\management\specific_trade\UpdateSpecificTradeRequest;
-use App\Services\setting\SpecificTradeService;
+use App\Services\management\specific_trade\SpecificTradeService;
 
 class SpecificTradeController extends Controller
 {
@@ -15,18 +15,6 @@ class SpecificTradeController extends Controller
 
     public function __construct(SpecificTradeService $specific_trade_service) {
         $this->specific_trade_service = $specific_trade_service;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-        $specific = $this->specific_trade_service->getAllSpecificTrades();
-        return response()->json(['specific' => $specific], 200);
     }
 
     /**
@@ -38,7 +26,7 @@ class SpecificTradeController extends Controller
     public function store(CreateSpecificTradeRequest $request)
     {
         //
-	$specific = $this->specific_trade_service->createSpecificTrade($request->data);
+        $specific = $this->specific_trade_service->store($request);
         return response()->json(['specific' => $specific], 201);
     }
 
@@ -46,11 +34,12 @@ class SpecificTradeController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResource
      */
-    public function show($id)
+    public function show(SpecificTrade $specific_trade)
     {
-        //
+        $specific = $this->specific_trade_service->show($specific_trade);
+        return response()->json(['specific' => $specific], 200);
     }
 
     /**
@@ -60,10 +49,9 @@ class SpecificTradeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpecificTradeRequest $request)
+    public function update(UpdateSpecificTradeRequest $request, SpecificTrade $specific_trade)
     {
-        //
-	$specific = $this->specific_trade_service->createSpecificTrade($request->data);
+        $specific = $this->specific_trade_service->update($request, $specific_trade);
         return response()->json(['specific' => $specific], 200);
     }
 
@@ -73,9 +61,10 @@ class SpecificTradeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(SpecificTrade $specific_trade)
     {
-        //
+        $this->specific_trade_service->destroy($specific_trade);
+        return response()->json([], 204);
     }
 }
 

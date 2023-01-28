@@ -79,7 +79,7 @@ export default () => {
             <Card.Body className="py-0">
               <Row className="">
                 <Col xs="12" className="mt-3 mb-3">
-                  <div>
+                  <div className="liff-specific-trade-content">
                     {text}
                   </div>
                 </Col>

@@ -8,20 +8,14 @@ import ItalyFlag from '@img/img/flags/italy.svg';
 export default [
   {
     "id": 1,
-    "visitTimes": 1,
-    "products": [
-      {
-        "id": 1,
-        "name": "トリートメント",
-      },
-      {
-        "id": 2,
-        "name": "ドレッシング",
-      },
-      {
-        "id": 3,
-        "name": "生搾りジュース",
-      },
-    ]
+    "name": "トリートメント",
+  },
+  {
+    "id": 2,
+    "name": "ドレッシング",
+  },
+  {
+    "id": 3,
+    "name": "生搾りジュース",
   },
 ];

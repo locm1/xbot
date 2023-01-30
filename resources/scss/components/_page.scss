@@ -153,3 +153,9 @@ $base_color: #707070;
 .rich-menu-content {
   width: 40vw;
 }
+
+.management-tag-name {
+  &:hover {
+    cursor: pointer;
+  }
+}

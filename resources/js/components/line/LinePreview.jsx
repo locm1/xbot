@@ -141,9 +141,9 @@ export default (props) => {
         <div className="line-preview-main-content">
           {
             previews.map((preview, index) => 
-              <div className="line-preview-main-content-item-wrap">
+              <div className="line-preview-main-content-item-wrap" key={index}>
                 <Row>
-                  <ShowPreview key={index} preview={preview} />
+                  <ShowPreview preview={preview} />
                 </Row>
               </div>
             )

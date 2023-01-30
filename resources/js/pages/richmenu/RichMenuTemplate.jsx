@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Col, Row, Form, Button, ListGroup, Card, Modal, Image } from 'react-bootstrap';
 import { XIcon } from "@heroicons/react/solid";
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
 
 export default (props) => {
@@ -33,7 +34,14 @@ export default (props) => {
   };
 
   const handleClickContent = (value) => {
-    setTemplateActive(value)
+    // setTemplateActive(value);
+    if (templateActive.includes(value)) {
+      const index = templateActive.indexOf(value);
+      templateActive.splice(index, 1);
+    } else {
+      templateActive.push(value);
+    }
+    setTemplateActive([...templateActive]);
   };
 
   const RichMenuTemplate1 = () => {
@@ -42,7 +50,7 @@ export default (props) => {
         <div className="d-flex align-items-center flex-wrap line-rich-menu-template">
           {
             contents.map((content, index) =>
-              <div key={index} onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-1 ${templateActive == index + 1 ? 'template-active' : ''}`}>
+              <div key={index} onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-1 ${templateActive.includes(index + 1) ? 'template-active' : ''}`}>
                 {content}
               </div>
             )
@@ -58,7 +66,7 @@ export default (props) => {
         <div className="d-flex align-items-center flex-wrap line-rich-menu-template">
           {
             contents.map((content, index) => 
-              <div onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-2 ${templateActive == index + 1 ? 'template-active' : ''}`}>{content}</div>
+              <div key={index} onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-2 ${templateActive.includes(index + 1) ? 'template-active' : ''}`}>{content}</div>
             )
           }
         </div>
@@ -77,7 +85,7 @@ export default (props) => {
         <div className="d-flex align-items-center flex-wrap line-rich-menu-template">
           {
             contents.map((content, index) => 
-              <div onClick={() => handleClickContent(index + 2)} className={`line-rich-menu-template-item item-type-1 ${templateActive == index + 2 ? 'template-active' : ''}`}>{content}</div>
+              <div key={index} onClick={() => handleClickContent(index + 2)} className={`line-rich-menu-template-item item-type-1 ${templateActive == index + 2 ? 'template-active' : ''}`}>{content}</div>
             )
           }
         </div>
@@ -94,7 +102,7 @@ export default (props) => {
           <div className="line-rich-menu-template item-type-4-right">
             {
               contents.map((content, index) => 
-                <div onClick={() => handleClickContent(index + 2)} className={`line-rich-menu-template-item item-type-4-right-item ${templateActive == index + 2 ? 'template-active' : ''}`}>{content}</div>
+                <div key={index} onClick={() => handleClickContent(index + 2)} className={`line-rich-menu-template-item item-type-4-right-item ${templateActive == index + 2 ? 'template-active' : ''}`}>{content}</div>
               )
             }
           </div>
@@ -109,7 +117,7 @@ export default (props) => {
         <div className="line-rich-menu-template">
           {
             contents.map((content, index) => 
-              <div onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-5 ${templateActive == index + 1 ? 'template-active' : ''}`}>{content}</div>
+              <div key={index} onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-5 ${templateActive.includes(index + 1) ? 'template-active' : ''}`}>{content}</div>
             )
           }
         </div>
@@ -123,7 +131,7 @@ export default (props) => {
         <div className="d-flex align-items-center flex-wrap line-rich-menu-template">
           {
             contents.map((content, index) => 
-              <div onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-6 ${templateActive == index + 1 ? 'template-active' : ''}`}>{content}</div>
+              <div key={index} onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-6 ${templateActive.includes(index + 1) ? 'template-active' : ''}`}>{content}</div>
             )
           }
         </div>
@@ -147,7 +155,7 @@ export default (props) => {
         <div className="d-flex align-items-center flex-wrap line-rich-menu-template">
           {
             contents.map((content, index) => 
-              <div onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-1 ${templateActive == index + 1 ? 'template-active' : ''}`}>{content}</div>
+              <div key={index} onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-1 ${templateActive.includes(index + 1) ? 'template-active' : ''}`}>{content}</div>
             )
           }
         </div>
@@ -159,7 +167,7 @@ export default (props) => {
     return (
       <div className="line-rich-menu-template-wrap">
         <div className="d-flex align-items-center flex-wrap line-rich-menu-template">
-          <div onClick={() => handleClickContent(1)} className={`line-rich-menu-template-item item-type-3 item-type-4-right ${templateActive == 1 ? 'template-active' : ''}`}>A</div>
+          <div  onClick={() => handleClickContent(1)} className={`line-rich-menu-template-item item-type-3 item-type-4-right ${templateActive == 1 ? 'template-active' : ''}`}>A</div>
           <div onClick={() => handleClickContent(2)} className={`line-rich-menu-template-item item-type-3 item-type-9-right ${templateActive == 2 ? 'template-active' : ''}`}>B</div>
         </div>
       </div>
@@ -183,7 +191,7 @@ export default (props) => {
         <div className="d-flex align-items-center flex-wrap line-rich-menu-template">
           {
             contents.map((content, index) => 
-              <div onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-3 item-type-11 ${templateActive == index + 1 ? 'template-active' : ''}`}>{content}</div>
+              <div key={index} onClick={() => handleClickContent(index + 1)} className={`line-rich-menu-template-item item-type-3 item-type-11 ${templateActive.includes(index + 1) ? 'template-active' : ''}`}>{content}</div>
             )
           }
         </div>

@@ -36,7 +36,7 @@ export default () => {
   const [templateModal, setTemplateModal] = useState(false);
   const [richMenu, setRichMenu] = useState({id: 1, img: '', size: 6, type: 1});
   const [active, setActive] = useState();
-  const [templateActive, setTemplateActive] = useState();
+  const [templateActive, setTemplateActive] = useState([]);
   const [templateFrame, setTemplateFrame] = useState(true);
 
   const handleClickTemplate = () => {
@@ -60,7 +60,7 @@ export default () => {
   };
 
   const AccordionAction = (props) => {
-    const { richMenu, templateActive } = props;
+    const { richMenu, templateActive, setTemplateActive } = props;
     
     const actions = [...Array(richMenu.size)].map((v, i) => {
       return {
@@ -77,6 +77,7 @@ export default () => {
         data={actions}
         style={{width: '400px'}}
         isShow={templateActive}
+        setIsShow={setTemplateActive}
       >
         <Row>
           <Col md={4}>
@@ -165,7 +166,7 @@ export default () => {
           <Card.Text className="h6 mb-1">アクション</Card.Text>
         </div>
         <div>
-        <AccordionAction richMenu={richMenu} templateActive={templateActive}></AccordionAction>
+        <AccordionAction richMenu={richMenu} templateActive={templateActive} setTemplateActive={setTemplateActive}></AccordionAction>
         </div>
       </ListGroup.Item>
     );

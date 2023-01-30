@@ -1,15 +1,28 @@
-import React from 'react';
-import { Card, Accordion } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Card, Accordion, Button, Collapse } from 'react-bootstrap';
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
 export default (props) => {
-  const { defaultKey, data, className = "", children, style, isShow } = props;
+  const { defaultKey, data, className = "", children, style, isShow, setIsShow } = props;
+  const [activeKey, setActiveKey] = useState();
+
+  const handleClickContent = (value) => {
+    if (isShow.includes(value)) {
+      const index = isShow.indexOf(value);
+      isShow.splice(index, 1);
+    } else {
+      isShow.push(value);
+    }
+    setIsShow([...isShow]);
+  };
+
 
   const AccordionItem = (item) => {
-    const { eventKey, title, children, style } = item;
+    const { eventKey, title, children, style, index } = item;
 
     return (
       <Accordion.Item eventKey={eventKey} style={style}>
-        <Accordion.Button variant="link" className="w-100 d-flex justify-content-between">
+        <Accordion.Button variant="link" className="w-100 d-flex justify-content-between" onClick={() => handleClickContent(index)}>
           {title}
         </Accordion.Button>
         <Accordion.Body>
@@ -23,13 +36,12 @@ export default (props) => {
 
   return (
     <>
-    {/* <Accordion className={className}>
-      {data.map(d => <AccordionItem key={`accordion-${d.id}`} {...d} children={children} style={style} isShow={isShow} />)}
-    </Accordion> */}
     {data.map(d => 
-      <Accordion className={className}>
-        <AccordionItem key={`accordion-${d.id}`} {...d} children={children} style={style} />
+    <div key={`accordion-${d.id}`}>
+      <Accordion className={className}  activeKey={isShow} className="mb-2">
+        <AccordionItem {...d} children={children} style={style} index={d.id} />
       </Accordion>
+    </div>
     )}
     </>
   );

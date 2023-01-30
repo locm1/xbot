@@ -157,35 +157,15 @@ const SpecificTradesService = (props) => {
           />
         )}
 
-        {
-          SpecificTrades.length > 10 &&
-          (
-            <Row className="d-flex align-items-center p-4">
-              <Col xs={7} className="mt-1">
-                Showing 1 - {SpecificTrades.length} of 289
-              </Col>
-              <Col xs={5}>
-                <ButtonGroup className="float-end">
-                  <Button variant="light">
-                    <ChevronLeftIcon className="icon icon-xs" />
-                  </Button>
-                  <Button variant="primary">
-                    <ChevronRightIcon className="icon icon-xs" />
-                  </Button>
-                </ButtonGroup>
-              </Col>
-            </Row>
-          )
-        }
-      </div>
-      <div className="privilege-button d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-4">
-        <Button
-          onClick={createOpenModal}
-          variant="outline-gray-500"
-          className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-50"
-        >
-          <PlusIcon className="icon icon-xs me-2" /> 項目を追加
-        </Button>
+        <div className="privilege-button d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+          <Button
+            onClick={createOpenModal}
+            variant="primary"
+            className="d-inline-flex align-items-center"
+          >
+            <PlusIcon className="icon icon-xs me-2" /> 項目を追加
+          </Button>
+        </div>
       </div>
     </>
   )

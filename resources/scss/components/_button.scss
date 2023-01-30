@@ -101,3 +101,12 @@
 .liff-product-detail-button {
   width: 48%;
 }
+
+.tag-edit-button {
+  padding: 4px;
+  background-color: #D1D5DB;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+}

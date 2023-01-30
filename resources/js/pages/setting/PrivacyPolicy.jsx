@@ -21,7 +21,7 @@ const PrivacyPolicy = (props) => {
     if(id == '') {
       //入力値を投げる
       await axios
-      .post('/api/v1/privacy-policy', {
+      .post('/api/v1/management/privacy-policy', {
         content: content
       })
       .then((res) => {
@@ -36,7 +36,7 @@ console.log(res)
     } else {
       //入力値を投げる
       await axios
-      .put(`/api/v1/privacy-policy/${id}`, {
+      .put(`/api/v1/management/privacy-policy/${id}`, {
         id: id,
         content: content
       })
@@ -53,7 +53,7 @@ console.log(res)
   }
 
   useEffect(() => {
-    fetch(`/api/v1/privacy-policy`)
+    fetch(`/api/v1/management/privacy-policy`)
     .then((response) => {
       return response.json()
     })

@@ -45,7 +45,7 @@ export default () => {
   };
 
   const getAdmin = async () => {
-    await axios.get(`/api/v1/admins/${id}`)
+    await axios.get(`/api/v1/management/admins/${id}`)
     .then((response) => {
       const admin = response.data.admin;
       setFormValue({
@@ -59,7 +59,7 @@ export default () => {
   }
 
   const registerAdmin = async () => {
-    await axios.post('/api/v1/admins', formValue)
+    await axios.post('/api/v1/management/admins', formValue)
     .then((response) => {
       history.push(Paths.Accounts.path);
       alert('登録しました');
@@ -76,7 +76,7 @@ export default () => {
       data: formValue,
       is_checked: isCheck,
     }
-    await axios.put(`/api/v1/admins/${id}`, newFormValues)
+    await axios.put(`/api/v1/management/admins/${id}`, newFormValues)
     .then((response) => {
       alert('更新しました');
       console.log(newFormValues);

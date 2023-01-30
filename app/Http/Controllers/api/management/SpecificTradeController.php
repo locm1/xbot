@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\management\specific_trade;
+namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -28,6 +28,12 @@ class SpecificTradeController extends Controller
         //
         $specific = $this->specific_trade_service->store($request);
         return response()->json(['specific' => $specific], 201);
+    }
+
+    public function index()
+    {
+        $specific = $this->specific_trade_service->index();
+        return response()->json(['specific_trades' => $specific], 200);
     }
 
     /**

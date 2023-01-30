@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\management\terms_of_service;
+namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

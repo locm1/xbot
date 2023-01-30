@@ -21,7 +21,7 @@ const TermsOfService = (props) => {
     if(id == '') {
       //入力値を投げる
       await axios
-      .post(`/api/v1/terms-of-service`, {
+      .post(`/api/v1/management/terms-of-service`, {
         content: content
       })
       .then((res) => {
@@ -35,7 +35,7 @@ const TermsOfService = (props) => {
     } else {
       //入力値を投げる
       await axios
-      .put(`/api/v1/terms-of-service/${id}`, {
+      .put(`/api/v1/management/terms-of-service/${id}`, {
         id: id,
         content: content
       })
@@ -50,7 +50,7 @@ const TermsOfService = (props) => {
     }
   }
   useEffect(() => {
-        fetch(`/api/v1/terms-of-service`)
+        fetch(`/api/v1/management/terms-of-service`)
         .then((response) => {
           return response.json()
         })

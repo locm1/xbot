@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\management\admin;
+namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use App\Services\management\admin\AdminService;

@@ -29,7 +29,7 @@ const SpecificTradesService = (props) => {
 
   const createSpecificTrades = async() => {
     await axios
-    .post('/api/v1/specific-trades', formValue)
+    .post('/api/v1/management/specific-trades', formValue)
     .then((res) => {
         //戻り値をtodosにセット
         alert('追加しました。');
@@ -43,7 +43,7 @@ const SpecificTradesService = (props) => {
   }
 
   const updateSpecificTrades = async () => {
-    await axios.put(`/api/v1/specific-trades/${specificTradeId}`, formValue)
+    await axios.put(`/api/v1/management/specific-trades/${specificTradeId}`, formValue)
     .then((res) => {
         //戻り値をtodosにセット
         alert('更新しました。');
@@ -76,13 +76,12 @@ const SpecificTradesService = (props) => {
 
   const showSpecificTrades = async (id) => {
     console.log(id);
-    await axios.get(`/api/v1/specific-trades/${id}`)
+    await axios.get(`/api/v1/management/specific-trades/${id}`)
     .then((response) => {
       const specificTrade = response.data.specific;
       setFormValue({
         title: specificTrade.title, content: specificTrade.content
       });
-      console.log(specificTrade);
     })
     .catch(error => {
         console.error(error);
@@ -102,7 +101,7 @@ const SpecificTradesService = (props) => {
     });
 
     if (result.isConfirmed) {
-      await axios.delete(`/api/v1/specific-trades/${id}`)
+      await axios.delete(`/api/v1/management/specific-trades/${id}`)
       .then((response) => {
         deleteSpecificTrades()
         console.log(response);
@@ -120,7 +119,7 @@ const SpecificTradesService = (props) => {
   };
 
   useEffect(() => {
-    axios.get(`/api/v1/specific-trades`)
+    axios.get(`/api/v1/management/specific-trades`)
     .then((data) => {
       setSpecificTrades(data.data.specific_trades);
     })

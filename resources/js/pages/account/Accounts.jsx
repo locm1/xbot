@@ -22,7 +22,7 @@ export default () => {
   const history = useHistory();
 
   useEffect(() => {
-    axios.get('/api/v1/admins').then((response) => {
+    axios.get('/api/v1/management/admins').then((response) => {
         setAccounts(response.data.admins)
     })
     .catch(error => {
@@ -43,7 +43,7 @@ export default () => {
     });
 
     if (result.isConfirmed) {
-      await axios.delete(`/api/v1/admins/${id}`)
+      await axios.delete(`/api/v1/management/admins/${id}`)
       .then((response) => {
         deleteAdmin()
         console.log(response);

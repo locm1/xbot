@@ -12,7 +12,7 @@ import { Card, Button, Breadcrumb } from "react-bootstrap";
 import React, { useRef, useState } from "react";
 
 import { Paths } from "@/paths";
-import { EventModal } from "@/components/Modals";
+import { EventModal } from "./EventModal";
 import EVENTS_DATA from "@/data/events";
 import { HomeIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
 

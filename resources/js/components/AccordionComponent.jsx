@@ -38,7 +38,7 @@ export default (props) => {
     <>
     {data.map(d => 
     <div key={`accordion-${d.id}`}>
-      <Accordion className={className}  activeKey={isShow} className="mb-2">
+      <Accordion className={`${className}, mb-2`}  activeKey={isShow}>
         <AccordionItem {...d} children={children} style={style} index={d.id} />
       </Accordion>
     </div>

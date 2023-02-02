@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import { useDropzone } from "react-dropzone";
+import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
 import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import CheckboxButton from "@/components/CheckboxButton";
 
 import ProductOverview from "@/pages/product/ProductOverview";
 import products from "@/data/products";
+import { showCategory } from "@/pages/product/api/ProductCategoryApiMethods";
 import { ChangeOrderProductsTable } from "@/pages/product/ChangeOrderProductsTable";
 
 export default () => {
   const [transactions, setTransactions] = useState(products.map(t => ({ ...t, show: true })));
   const [privateProduct, setPrivate] = useState(false);
+  const [category, setCategory] = useState({});
+  const { id } = useParams();
+
+  useEffect(() => {
+    showCategory(id, setCategory)
+  }, []);
 
   return (
     <>
@@ -42,14 +50,14 @@ export default () => {
                     <Col md={12} className="mb-3">
                       <Form.Group id="name">
                         <Form.Label>カテゴリ名</Form.Label>
-                        <Form.Control required type="text" name="name" placeholder="" />
+                        <Form.Control required type="text" name="name" value={category.name} placeholder="" />
                       </Form.Group>
                     </Col>
                   </Row>
                   <Col md={12} className="mb-3">
                     <Form.Group id="overview">
                       <Form.Label>カテゴリ概要</Form.Label>
-                      <Form.Control as="textarea" rows="3" />
+                      <Form.Control as="textarea" rows="3" value={category.content} />
                     </Form.Group>
                   </Col>
                 </Col>

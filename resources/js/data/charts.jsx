@@ -205,3 +205,39 @@ export const trafficDistribution = [
     { id: uuidv4(), label: "Direct", value: 50, color: "secondary" },
     { id: uuidv4(), label: "Paid", value: 20, color: "tertiary" }
 ];
+
+
+export const pieChartTest = [
+    {
+        id: uuidv4(),
+        label: "Travel & Local",
+        color: "#f0bc74",
+        values: [
+            { value: 44, date: moment().subtract(8, "months").format("MMM") },
+            { value: 55, date: moment().subtract(7, "months").format("MMM") },
+            { value: 57, date: moment().subtract(6, "months").format("MMM") },
+            { value: 56, date: moment().subtract(5, "months").format("MMM") },
+            { value: 61, date: moment().subtract(4, "months").format("MMM") },
+            { value: 58, date: moment().subtract(3, "months").format("MMM") },
+            { value: 63, date: moment().subtract(2, "months").format("MMM") },
+            { value: 60, date: moment().subtract(1, "month").format("MMM") },
+            { value: 66, date: moment().format("MMM") },
+        ],
+    },
+    {
+        id: uuidv4(),
+        label: "Widgets",
+        color: "#31316A",
+        values: [
+            { value: 76, date: moment().subtract(8, "months").format("MMM") },
+            { value: 85, date: moment().subtract(7, "months").format("MMM") },
+            { value: 101, date: moment().subtract(6, "months").format("MMM") },
+            { value: 98, date: moment().subtract(5, "months").format("MMM") },
+            { value: 87, date: moment().subtract(4, "months").format("MMM") },
+            { value: 105, date: moment().subtract(3, "months").format("MMM") },
+            { value: 91, date: moment().subtract(2, "months").format("MMM") },
+            { value: 114, date: moment().subtract(1, "month").format("MMM") },
+            { value: 94, date: moment().format("MMM") },
+        ],
+    }
+];

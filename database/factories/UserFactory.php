@@ -38,13 +38,19 @@ class UserFactory extends Factory
             'last_name_kana' => fake()->optional('90')->lastKanaName(),
             'nickname' => fake()->shuffleString($random_str),
             'birth_date' => fake()->optional('90')->date(),
-            'sex' => fake()->optional('90')->numberBetween(1, 3),
-            'area' => fake()->optional('90')->city(),
+            'gender' => fake()->optional('90')->numberBetween(1, 3),
+            'zipcode' => fake()->optional('90')->postcode(),
+            'prefecture' => fake()->optional('90')->prefecture(),
+            'city' => fake()->optional('90')->city(),
+            'address' => fake()->optional('90')->streetAddress(),
+            'building_name' => fake()->optional('90')->secondaryAddress(),
             'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->optional('90')->phoneNumber()),
             'occupation' => fake()->optional('90')->jobTitle(),
             'img_path' => $img_path,
             'is_registered' => fake()->numberBetween(0, 1),
             'line_id' => $this->mb_str_shuffle(20),
+            'block_date' => fake()->optional('90')->date(),
+            'is_blocked' => fake()->numberBetween(0, 1),
         ];
     }
 

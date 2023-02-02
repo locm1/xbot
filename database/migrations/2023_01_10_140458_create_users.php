@@ -21,8 +21,12 @@ return new class extends Migration
             $table->string('last_name_kana', 50)->nullable(true);
             $table->string('nickname', 50)->nullable(false);
             $table->date('birth_date')->nullable(true);
-            $table->tinyInteger('sex')->nullable(true);
-            $table->string('area', 50)->nullable(true);
+            $table->tinyInteger('gender')->nullable(true);
+            $table->string('zipcode')->nullable(true);
+            $table->string('prefecture')->nullable(true);
+            $table->string('city')->nullable(true);
+            $table->string('address')->nullable(true);
+            $table->string('building_name')->nullable(true);
             $table->string('tel', 50)->nullable(true);
             $table->string('occupation', 50)->nullable(true);
             $table->text('img_path')->nullable(true);

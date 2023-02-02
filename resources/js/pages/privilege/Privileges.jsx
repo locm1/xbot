@@ -1,71 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOMServer from "react-dom/server";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { Col, Row, Button, Container, Breadcrumb } from "react-bootstrap";
+import { Col, Row, Button, Container, Card, Form, InputGroup } from "react-bootstrap";
 import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
 import { Link, useHistory } from 'react-router-dom';
 
 import PrivilegeCard from "@/pages/privilege/PrivilegeCard";
-import privileges from "@/data/privileges";
+import { storePrivileges, getPrivileges, updatePrivileges } from "@/pages/privilege/api/PrivilegeApiMethods";
 import { Paths } from "@/paths";
 
 export default () => {
-  const [privilegeLists, setPrivilegeLists] = useState(privileges);
-  const [showCreateCardModal, setShowCreateCardModal] = useState(false);
+  const [privileges, setPrivileges] = useState([]);
   const [cardToEdit, setCardToEdit] = useState(null);
+  const [isCreate, setIsCreate] = useState(false);
+  const [time, setTime] = useState('');
 
-  const createCard = () => {
-    const id = (privilegeLists === undefined) ? 1 : privilegeLists.length + 1;
-    const newPrivilege = {
-      "id": id,
-      "visitTimes": '',
-      "products": []
-    }
-    setPrivilegeLists([...privilegeLists, newPrivilege]);
+  const handleKeyDown = (e) => {
+    e.preventDefault();
+    storePrivileges(time, privileges, setPrivileges, setIsCreate)
   };
 
-  const onHide = () => {
-    setCardToEdit(null);
-    setShowEditCardModal(!showEditCardModal);
-  };
+  useEffect(() => {
+    getPrivileges(setPrivileges)
+  }, []);
 
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-        <div className="d-block mb-4 mb-md-0">
+        <div className="d-block mb-md-0">
           <h1 className="page-title">特典設定</h1>
-        </div>
-        <div className="d-flex">
-          <Button as={Link} variant="gray-800" className="me-2">
-            更新する
-          </Button>
         </div>
       </div>
 
-      <Container fluid className="cotainer py-4 px-0">
+      <Container fluid className="cotainer px-0">
         <Row className="privilege-card-wrap">
           {
-            privilegeLists.map(privilege => 
+            privileges && privileges.map(privilege => 
               <PrivilegeCard 
                 key={`privilege-${privilege.id}`}
                 {...privilege}
                 setCardToEdit={setCardToEdit}
-                privilegeLists={privilegeLists}
-                setPrivilegeLists={setPrivilegeLists}
+                privileges={privileges}
+                setPrivileges={setPrivileges}
+                getPrivileges={getPrivileges}
+                updatePrivileges={updatePrivileges}
               />
             )
           }
         </Row>
-        <div className="privilege-button">
-          <Button
-            variant="outline-gray-500"
-            onClick={createCard}
-            className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
-          >
-            <PlusIcon className="icon icon-xs me-2" /> 特典カード追加
-          </Button>
-        </div>
+        {
+          isCreate ? (
+            <Card border={1} className="p-4 privilege-card-item">
+              <div className="d-flex align-items-center m-0 privilege-create-wrap">
+                <p className="fw-bold p-2 m-0">来店回数</p>
+                <Form onSubmit={(e) => handleKeyDown(e)}>
+                  <Form.Control
+                    autoFocus
+                    value={time}
+                    className="fs-6 fw-bold p-2 m-0 lh-1 border-0"
+                    onChange={(e) => setTime(e.target.value)}
+                  />
+                </Form>
+                </div>
+                <div className="privilege-delete-button">
+                  <Button variant="close" onClick={() => setIsCreate(!isCreate)} />
+                </div>
+            </Card>
+          ) : (
+            <div className="privilege-button">
+              <Button
+                variant="outline-gray-500"
+                onClick={() => setIsCreate(!isCreate)}
+                className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+              >
+                <PlusIcon className="icon icon-xs me-2" /> 特典カード追加
+              </Button>
+            </div>
+          )
+        }
       </Container>
     </>
   );

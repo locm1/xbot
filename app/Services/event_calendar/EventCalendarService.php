@@ -13,6 +13,7 @@ class EventCalendarService
     {
         $events = Event::all()->toArray();
         $keys = ['id', 'title', 'start', 'end', 'location', 'remaining', 'is_unlimited', 'deadline', 'deleted_at', 'created_at', 'updated_at'];
+        
         foreach ($events as $event) {
             $formated_events[] = array_combine($keys, $event);
         }
@@ -40,17 +41,17 @@ class EventCalendarService
      * @param  Model $event
      * @return array
      */
-    public function update($request, $id): array
+    public function update($request, $event_calendar): array
     {
         $data = $request->all();
-        Event::where('id', $id)->update($data);
+        $event_calendar->update($data);
         return $data;
     }
 
 
-    public function destroy($id) 
+    public function destroy($event_calendar) 
     {
-        return Event::where('id', $id)->delete();
+        return $event_calendar->delete();
     }
 
 }

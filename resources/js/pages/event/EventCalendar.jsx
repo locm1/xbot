@@ -13,8 +13,6 @@ import React, { useRef, useState, useEffect } from "react";
 
 import { Paths } from "@/paths";
 import { EventModal } from "./EventModal";
-import EVENTS_DATA from "@/data/events";
-import { HomeIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
 import { DeleteEvent, GetAllEvents } from "./EventApiMethods"
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
@@ -28,7 +26,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 export default () => {
   const defaultModalProps = { id: "", title: "", start: null, end: null, location: "", remaining: 0, is_unlimited: 0 };
   const history = useHistory();
-  const [events, setEvents] = useState(EVENTS_DATA);
+  const [events, setEvents] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [modalProps, setModalProps] = useState(defaultModalProps);

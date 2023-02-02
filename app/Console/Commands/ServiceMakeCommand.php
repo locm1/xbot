@@ -20,7 +20,7 @@ class ServiceMakeCommand extends Command
      */
     protected $description = 'Create a new Service Class';
 
-    public const SERVICES_PATH = 'app/Services/';
+    public const SERVICES_PATH = 'app/Services/management';
 
     /**
      * @var string
@@ -42,7 +42,7 @@ class ServiceMakeCommand extends Command
     {
         $this->className = $this->argument('serviceClassName');
         $this->serviceDirName = $this->argument('serviceDir');
-        $serviceDir = self::SERVICES_PATH .$this->serviceDirName;
+        $serviceDir = self::SERVICES_PATH .'/' .$this->serviceDirName;
         $this->serviceFileName = $serviceDir .'/' .$this->className .'Service.php';
         
         if (!file_exists($serviceDir)) {
@@ -63,7 +63,7 @@ class ServiceMakeCommand extends Command
         $show_function = "public function show() \n    {\n        //\n    }\n";
         $update_function = "public function update() \n    {\n        //\n    }\n";
         $delete_function = "public function destroy() \n    {\n        //\n    }\n";
-        $content = "<?php\n\nnamespace App\\Services\\$serviceDir;\n\nuse App\Services\management\AbstractManagementService;\n\nclass {$this->className}Service extends AbstractManagementService \n{\n\n    $index_function\n\n    $create_function\n\n    $show_function\n\n    $update_function\n\n    $delete_function\n}\n";
+        $content = "<?php\n\nnamespace App\\Services\\management\\$serviceDir;\n\nuse App\Services\management\AbstractManagementService;\n\nclass {$this->className}Service extends AbstractManagementService \n{\n\n    $index_function\n\n    $create_function\n\n    $show_function\n\n    $update_function\n\n    $delete_function\n}\n";
 
         file_put_contents($this->serviceFileName, $content);
     }

@@ -6,6 +6,8 @@ import { useDropzone } from "react-dropzone";
 import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, Image, Tab, InputGroup } from 'react-bootstrap';
 
+import prefectures from "@/data/postage"
+
 export const DropFilesForm = () => {
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -46,7 +48,10 @@ export const DropFilesForm = () => {
 
 
 export const UserInfoForm = (props) => {
-  const { first_name, last_name, first_name_kana, last_name_kana, birth_date, sex, area, tel, occupation } = props;
+  const { 
+    first_name, last_name, first_name_kana, last_name_kana, birth_date, gender, 
+    zipcode, prefecture, city, address, building_name, tel, occupation
+  } = props;
   const [birthday, setBirthday] = useState("");
   const areas = [
     '中央区', '北区', '東区', '白石区', '厚別区', '豊平区', 
@@ -110,7 +115,7 @@ export const UserInfoForm = (props) => {
             <Col md={6} className="mb-3">
               <Form.Group id="gender">
                 <Form.Label>性別</Form.Label>
-                <Form.Select defaultValue={sex ?? ''} className="mb-0" onChange={(e) => props.handleChange(e, 'sex')}>
+                <Form.Select defaultValue={gender ?? ''} className="mb-0" onChange={(e) => props.handleChange(e, 'gender')}>
                   <option value="1">男性</option>
                   <option value="2">女性</option>
                   <option value="3">その他</option>
@@ -119,14 +124,38 @@ export const UserInfoForm = (props) => {
             </Col>
           </Row>
           <Row>
+          <Col md={4} className="mb-3">
+              <Form.Group id="zipcode">
+                <Form.Label>郵便番号</Form.Label>
+                <Form.Control required type="text" name="zipcode" value={zipcode ?? ''} onChange={(e) => props.handleChange(e, 'zipcode')} placeholder="" />
+              </Form.Group>
+            </Col>
             <Col md={4} className="mb-3">
               <Form.Group id="email">
-                <Form.Label>お住まいエリア</Form.Label>
-                <Form.Select defaultValue={area ?? ''} className="mb-0" onChange={(e) => props.handleChange(e, 'area')}>
+                <Form.Label>都道府県</Form.Label>
+                <Form.Select defaultValue={prefecture ?? ''} className="mb-0" onChange={(e) => props.handleChange(e, 'prefecture')}>
                   {
-                    areas.map((area, index) => <option key={index} value={index + 1}>{area}</option>)
+                    prefectures.map((prefecture, index) => <option key={index} value={index + 1}>{prefecture.name}</option>)
                   }
                 </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={4} className="mb-3">
+              <Form.Group id="city">
+                <Form.Label>市区町村</Form.Label>
+                <Form.Control required type="text" name="city" value={city ?? ''} onChange={(e) => props.handleChange(e, 'city')} placeholder="" />
+              </Form.Group>
+            </Col>
+            <Col md={4} className="mb-3">
+              <Form.Group id="address">
+                <Form.Label>丁目・番地・号</Form.Label>
+                <Form.Control required type="text" name="address" value={address ?? ''} onChange={(e) => props.handleChange(e, 'address')} placeholder="" />
+              </Form.Group>
+            </Col>
+            <Col md={4} className="mb-3">
+              <Form.Group id="building_name">
+                <Form.Label>建物名/会社名</Form.Label>
+                <Form.Control required type="text" name="building_name" value={building_name ?? ''} onChange={(e) => props.handleChange(e, 'building_name')} placeholder="" />
               </Form.Group>
             </Col>
             <Col md={4} className="mb-3">

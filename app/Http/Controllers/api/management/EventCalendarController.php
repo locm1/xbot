@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\management\event_calendar\UpdateEventCalendarRequest;
+use App\Http\Requests\management\event_calendar\StoreEventCalendarRequest;
 use App\Models\Event;
 use App\Services\event_calendar\EventCalendarService;
 use Illuminate\Http\JsonResponse;
@@ -29,58 +30,38 @@ class EventCalendarController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UpdateEventCalendarRequest $request)
+    public function store(StoreEventCalendarRequest $request)
     {
         $create_data = $this->event_calendar_service->store($request);
         return response()->json(['event' => $create_data], 200);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param Event $event_calendar
      * @return JsonResource
      */
-    public function update(UpdateEventCalendarRequest $request, $id): JsonResponse
+    public function update(UpdateEventCalendarRequest $request, Event $event_calendar): JsonResponse
     {
-        $update_data = $this->event_calendar_service->update($request, $id);
+        $update_data = $this->event_calendar_service->update($request, $event_calendar);
         return response()->json(['event' => $update_data], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Event $event_calendar
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Event $event_calendar)
     {
-        return $this->event_calendar_service->destroy($id);
+        return $this->event_calendar_service->destroy($event_calendar);
     }
 }

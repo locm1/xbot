@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\management\tag;
+namespace App\Http\Requests\management\privilege;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTagRequest extends FormRequest
+class UpdatePrivilegeItemRequest extends FormRequest
 {
-   /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -24,14 +24,14 @@ class StoreTagRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required'
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'タイトル',
+            'name' => '特典',
         ];
     }
 }

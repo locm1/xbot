@@ -20,7 +20,7 @@ class TagController extends Controller
     public function index()
     {
         $tag = $this->tag_service->index();
-        return response()->json(['tag_service' => $tag], 200);
+        return response()->json(['tags' => $tag], 200);
     }
 
     /**
@@ -31,7 +31,6 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request)
     {
-        //
         $tag = $this->tag_service->store($request);
         return response()->json(['tag' => $tag], 201);
     }

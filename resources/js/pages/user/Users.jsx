@@ -18,18 +18,6 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 export default () => {
   const [users, setUsers] = useState([]);
-  useEffect(() => {
-    fetch(`/api/v1/users`)
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      setUsers(data.users.map(u => ({ ...u, isSelected: false, show: true })));
-    })
-    .catch(error => {
-            console.error(error)
-    })
-  }, []);
   const [searchValue, setSearchValue] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const selectedUsersIds = users.filter(u => u.isSelected).map(u => u.id);
@@ -86,6 +74,16 @@ export default () => {
       await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
     }
   };
+
+  useEffect(() => {
+    axios.get('/api/v1/management/users')
+    .then((response) => {
+      setUsers(response.data.users.map(u => ({ ...u, isSelected: false, show: true })));
+    })
+    .catch(error => {
+        console.error(error);
+    });
+  }, []);
 
   return (
     <>

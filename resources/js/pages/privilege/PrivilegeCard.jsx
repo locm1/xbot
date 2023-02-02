@@ -1,93 +1,148 @@
-import React, { useState } from "react";
-import { PlusIcon, MinusIcon } from "@heroicons/react/solid";
-import { Card, Button, Image, Col, Row, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { PencilIcon, CheckIcon, TrashIcon, PlusIcon } from "@heroicons/react/solid";
+import { Card, Button, Image, Col, Row, Form, Badge, InputGroup } from "react-bootstrap";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+import PrivilegeItemCard from "@/pages/privilege/PrivilegeItemCard";
+import PrivilegeItemCreateCard from "@/pages/privilege/PrivilegeItemCreateCard";
+import { deletePrivileges } from "@/pages/privilege/api/PrivilegeApiMethods";
+import { storePrivilegeItem, updatePrivilegeItem, deletePrivilegeItem } from "@/pages/privilege/api/PrivilegeItemApiMethods";
+import { Paths } from "@/paths";
+import { Link, useHistory } from 'react-router-dom';
 
 export default (props) => {
-  const { visitTimes, id, products, privilegeLists, setPrivilegeLists } = props; 
-  const [time, setTime] = useState(visitTimes);
-  const [name, setName] = useState("");
-  const [privileges, setPrivileges] = useState(products);
+  const { 
+    id, visits_times, privilege_items, privileges, 
+    setPrivileges, updatePrivileges, getPrivileges
+  } = props; 
 
-  const handleChange = (e, id) => {
-    const changePrivileges = {
-      "id": id,
-      "name": e.target.value,
-    };
-    setPrivileges(
-      privileges.map((privilege) => (privilege.id === id ? changePrivileges : privilege))
-    );
-  };
+  const [isTimeEditable, setIsTimeEditable] = useState(false);
+  const [time, setTime] = useState(visits_times);
+  const [isCreate, setIsCreate] = useState(false);
+  const [privilegeItems, setPrivilegeItems] = useState(privilege_items);
+  const [isEdit, setIsEdit] = useState({
+    id: '', isEdit: false
+  });
+  const [isUpdate, setIsUpdate] = useState(false);
 
-  const addPrivilege = () => {
-    if (privileges === undefined) {
-      setPrivileges([{id: 1, name: name}]);
-    } else {
-      const newPrivileges = {
-        "id": privileges.length + 1,
-        "name": name,
-      };
-      setPrivileges([...privileges, newPrivileges]);
+  const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-primary me-3',
+      cancelButton: 'btn btn-gray'
+    },
+    buttonsStyling: false
+  }));
+
+  const showConfirmDeleteModal = async (id) => {
+    const textMessage = "本当にこの来店を削除しますか？";
+
+    const result = await SwalWithBootstrapButtons.fire({
+      icon: "error",
+      title: "削除確認",
+      text: textMessage,
+      showCancelButton: true,
+      confirmButtonText: "削除",
+      cancelButtonText: "キャンセル"
+    });
+
+    if (result.isConfirmed) {
+      deletePrivileges(id, deletePrivilege)
     }
   };
 
-  const deletePrivilege = (id) => {
-    setPrivileges(
-      privileges.filter((privilege, index) => (privilege.id !== id))
-    );
-  };
-  
-  const deletePrivilegeCard = (id) => {
-    setPrivilegeLists(
-      privilegeLists.filter((privilege, index) => (privilege.id !== id))
-    );
+  const deletePrivilege = async () => {
+    const confirmMessage = "選択した項目は削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    location.reload();
   };
 
-  const visitTimesChange = (e, id) => {
-    const newVisitTimes = {
-      "id": id,
-      "visitTimes": e.target.value,
-      "products": []
-    }
-    setPrivilegeLists(
-      privilegeLists.map((privilege) => (privilege.id === id ? newVisitTimes : privilege))
-    );
+  const handleKeyDown = (e) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
+    updatePrivileges(id, time, setIsUpdate, setIsTimeEditable);
   };
+
+  const handleTimeChange = () => {
+    setIsTimeEditable(!isTimeEditable);
+  };
+
+  const onTimeEditChange = () => {
+    setIsTimeEditable(!isTimeEditable);
+  };
+
+  useEffect(() => {
+    getPrivileges(setPrivileges)
+  }, [isUpdate]);
 
   return (
     <>
       <Card border={1} className="p-4 privilege-card-item">
-      <Card.Header className="d-flex align-items-center justify-content-start border-0 p-0 mb-3 border-bottom pb-3">
-        <h5 className="mb-0">来店回数</h5>
-        <Form.Control required type="number" className="text-dark mb-1 visit-time-input" value={visitTimes} onChange={(e) => visitTimesChange(e, id)} />
-        <h5 className="mb-0">回</h5>
-        <div className="privilege-delete-button">
-          <Button variant="close" onClick={() => deletePrivilegeCard(id)} />
-        </div>
-      </Card.Header>
-      <Card.Body className="p-0">
-        <Row className="mb-4 mb-lg-0 mt-4">
-          {privileges && privileges.map((privilege, index) => (
-            <Col xs={12} key={`kanban-comment-${privilege.id}`} className="mb-4">
-              <div className="bg-gray-50 border border-gray-100 rounded p-3">
-                <div className="d-flex align-items-center mb-2">
-                  <h3 className="fs-6 mb-0 me-3">
-                    特典{index + 1}
-                  </h3>
-                  <div className="privilege-delete-button" onClick={() => deletePrivilege(privilege.id)}>
-                    <MinusIcon className="icon icon-xs" />
-                  </div>
-                </div>
-                <Form.Control required type="text" className="text-dark mb-1 w-50" value={privilege.name} onChange={(e) => handleChange(e, privilege.id)} />
-              </div>
-            </Col>
-          ))}
-        </Row>
-        <Button variant="gray-800" className="me-2 text-start" onClick={addPrivilege}>
-          <PlusIcon className="icon icon-xs me-2" />
-          特典追加
-        </Button>
-      </Card.Body>
-    </Card>
+        <Card.Header className="d-flex align-items-center justify-content-start border-0 p-0 mb-3 pb-3">
+          {isTimeEditable ? (
+          <Form.Group id="title" className="w-50">
+            <InputGroup>
+              <h5 className="kanban-title d-flex align-items-center fw-bold p-2 m-0">来店回数</h5>
+              <Form.Control
+                autoFocus
+                type="number"
+                value={time}
+                className="fs-6 fw-bold p-2 m-0 lh-1 border-0"
+                onChange={(e) => setTime(e.target.value)}
+                onFocus={(e) => e.target.select()}
+                onBlur={handleTimeChange}
+                onKeyDown={(e) => handleKeyDown(e)} 
+              />
+            </InputGroup>
+          </Form.Group>
+        ) : (
+          <h5 className="kanban-title d-flex align-items-center w-50 fw-bold p-2 m-0" onClick={onTimeEditChange}>
+            来店回数 {time} 回
+          </h5>
+        )}
+          <div className="privilege-delete-button">
+            <Button variant="close" onClick={() => showConfirmDeleteModal(id)} />
+          </div>
+        </Card.Header>
+        {
+          privilegeItems && privilegeItems.map((privilegeItem, index) => 
+            <PrivilegeItemCard
+              key={index}
+              {...privilegeItem}
+              setIsCreate={setIsCreate}
+              setIsEdit={setIsEdit}
+              isEdit={isEdit}
+              privilegeItems={privilegeItems}
+              setPrivilegeItems={setPrivilegeItems}
+              updatePrivilegeItem={updatePrivilegeItem}
+              deletePrivilegeItem={deletePrivilegeItem}
+              privileges={privileges}
+              setPrivileges={setPrivileges}
+            />
+          )
+        }
+        {
+          !isCreate ? (
+            <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+              <Button
+                variant="primary"
+                className="d-inline-flex align-items-center"
+                onClick={() => setIsCreate(!isCreate)}
+              >
+                <PlusIcon className="icon icon-xs me-2" /> 特典を追加
+              </Button>
+            </div>
+          ) : (
+            <PrivilegeItemCreateCard 
+              id={id}
+              privilegeItems={privilegeItems}
+              setPrivilegeItems={setPrivilegeItems}
+              storePrivilegeItem={storePrivilegeItem}
+              setIsCreate={setIsCreate}
+              isCreate={isCreate}
+            />
+          )
+        }
+      </Card>
     </>
   );
 };

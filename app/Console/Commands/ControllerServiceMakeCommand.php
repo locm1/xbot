@@ -30,7 +30,7 @@ class ControllerServiceMakeCommand extends Command
     {
         $className = $this->argument('ClassName');
         $dirName = $this->argument('targetDir');
-        Artisan::call("make:controller api/management/{$className}Controller --resource");
+        Artisan::call("make:controller api/management/{$className}Controller --api");
         Artisan::call("make:request management/{$dirName}/Store{$className}Request");
         Artisan::call("make:request management/{$dirName}/Update{$className}Request");
         Artisan::call("make:model {$className}");

@@ -38,9 +38,9 @@ export const UsersTable = (props) => {
 
   const TableRow = (props) => {
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
-    const { id, last_name, first_name, last_name_kana, first_name_kana, img_path, nickname, tel, sex, birth_date, area, isSelected } = props;
+    const { id, last_name, first_name, last_name_kana, first_name_kana, img_path, nickname, tel, gender, birth_date, prefecture, isSelected } = props;
     const name = last_name + ' ' + first_name;
-    const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "primary";
+    const sexVariant = gender === 1 ? "info" : gender === 2 ? "danger" : "primary";
     const link = Paths.EditUser.path.replace(':id', id);
 
     return (
@@ -71,11 +71,11 @@ export const UsersTable = (props) => {
         <td><span className="fw-normal">{tel}</span></td>
         <td>
           <span className={`fw-normal text-${sexVariant}`}>
-            {sex_array[sex]}
+            {sex_array[gender]}
           </span>
         </td>
         <td><span className="fw-normal">{birth_date}</span></td>
-        <td><span className="fw-normal">{area}</span></td>
+        <td><span className="fw-normal">{prefecture}</span></td>
         <td className="text-center">
           <Link to={link}>
             <PencilAltIcon className="icon icon-xs me-2"/>
@@ -113,7 +113,7 @@ export const UsersTable = (props) => {
               <th className="border-bottom">電話番号</th>
               <th className="border-bottom">性別</th>
               <th className="border-bottom">生年月日</th>
-              <th className="border-bottom">お住まいエリア</th>
+              <th className="border-bottom">都道府県</th>
               <th className="border-bottom text-center">編集・削除</th>
             </tr>
           </thead>

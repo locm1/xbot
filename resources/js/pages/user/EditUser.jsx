@@ -8,6 +8,7 @@ import { HistoryTable } from "@/pages/user/HistoryTable";
 import { UserInfoForm } from "@/pages/user/UserInfoForm";
 import { QuestionnaireForm } from "@/pages/user/QuestionnaireForm";
 import { PurchaseTimeForm } from "@/pages/user/PurchaseTimeForm";
+import { LineBlockInfoForm } from "@/pages/user/LineBlockInfoForm";
 import { TagForm } from "@/pages/user/TagForm";
 import { Link, useParams } from 'react-router-dom';
 
@@ -62,15 +63,14 @@ export default () => {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    axios
-      .get(`/api/v1/users/${id}`)
-      .then((res) => {
-        if(res.status !== 200) {
-          throw new Error("APIが正しく取得されませんでした");
-        } else {
-          setUser(res.data.user);
-        }
-      });
+    axios.get(`/api/v1/management/users/${id}`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setUser(res.data.user);
+      }
+    });
   }, []);
 
   return (
@@ -114,6 +114,9 @@ export default () => {
                       </Col>
                       <Col xs={12} className="mb-4">
                         <PurchaseTimeForm title="来店 / ポイント / 購入回数" />
+                      </Col>
+                      <Col xs={12} className="mb-4">
+                        <LineBlockInfoForm title="ブロック情報" {...user} />
                       </Col>
                     </Row>
                   </Col>

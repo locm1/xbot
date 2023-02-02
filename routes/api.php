@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\management\AdminController;
+use App\Http\Controllers\api\management\CategoryItemController;
 use App\Http\Controllers\api\management\EventCalendarController;
 use App\Http\Controllers\api\management\EventController;
 use App\Http\Controllers\api\management\UserController;
@@ -44,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('events', EventController::class);
         Route::apiResource('event-calendars', EventCalendarController::class);
         Route::apiResource('categories', ProductCategoryController::class);
+        Route::apiResource('categories/{category}/products', CategoryItemController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

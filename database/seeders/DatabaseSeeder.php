@@ -14,6 +14,8 @@ use App\Models\ProductImage;
 use App\Models\Tag;
 use Database\Factories\ProductContentFactory;
 use Database\Factories\ProductImageFactory;
+use App\Models\EventUser;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -28,7 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminTableSeeder::class
         ]);
-        \App\Models\User::factory(100)->create();
+        User::factory(100)->create();
         Event::factory(20)->create();
         Privilege::factory(5)->create();
         PrivilegeItem::factory(20)->create();
@@ -37,5 +39,6 @@ class DatabaseSeeder extends Seeder
         Product::factory(50)->create();
         ProductImage::factory(70)->create();
         ProductContent::factory(70)->create();
+        EventUser::factory(50)->create();
     }
 }

@@ -7,97 +7,68 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 
 export const ChangeOrderProductsTable = (props) => {
-  const [{products}, setProducts] = useState(props);
-  const getCategoryClass = (category) => {
-    switch (category) {
-      case 1:
-        return {
-          class: 'secondary',
-          name: 'ヘアケア'
-        }
-      case 2:
-        return {
-          class: 'success',
-          name: 'テスト'
-        }
-      case 3:
-        return {
-          class: 'danger',
-          name: '野菜'
-        }
-      case 4:
-        return {
-          class: 'warning',
-          name: 'テスト'
-        }
-      case 5:
-        return {
-          class: 'info',
-          name: '食品'
-        }
-      default:
-        return {
-          class: 'primary',
-          name: 'テスト'
-        }
-    }
-  }
+  const { products, setProducts, categoryName, color } = props;
+
+  
   function handleOnDragEnd(result) {
     const items = Array.from(products);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
+    console.log(items);
 
-    setProducts({products});
+    setProducts(items);
   }
 
   const TableRow = (props) => {
-    const { category, name, price, stockQuantity, img, id, index } = props;
+    const { color, categoryName, product_category_id, name, price, stock_quantity, product_images, id, index } = props;
     const link = Paths.EditProduct.path.replace(':id', id);
 
-    if (category === 1) {
-      return (
-        <Draggable key={id} draggableId={"q-" + id} index={index}>
-          {(provided) => (
-            <tr className="border-bottom product-table-tr" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-              <td style={{ width: "500px"}}>
-                <div className="d-flex align-items-center">
-                  <Image src={img} className="me-3 product-image"/>
-                  <div className="fw-bold">
-                    <Link to={link} className="fw-bolder">
-                      <span className="">{name}</span>
-                    </Link>
-                  </div>
+    return (
+      <Draggable key={id} draggableId={"q-" + id} index={index}>
+        {(provided) => (
+          <tr className="border-bottom product-table-tr" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <td style={{ width: "500px"}}>
+              <div className="d-flex align-items-center">
+                {
+                  product_images && product_images[0] ? (
+                    <Image src={product_images[0].image_path} className="me-3 product-image"/>
+                  ) : (
+                    <Image src={'/images/test_img/products/4698f9ba-8427-3497-97d7-7d48d1a3951c.jpeg'} className="me-3 product-image"/>
+                  )
+                }
+                <div className="fw-bold">
+                  <Link to={link} className="fw-bolder">
+                    <span class="d-inline-block text-truncate" style={{maxWidth: '200px'}}>{name}</span>
+                  </Link>
                 </div>
-              </td>
-              <td style={{ width: "500px"}}>
-                <Badge bg={getCategoryClass(category).class} className="me-1 product-category-badge fw-normal">
-                  {getCategoryClass(category).name}
-                </Badge>
-              </td>
-              <td style={{ width: "500px"}}>
-                <span className="fw-normal">
-                  {price}
-                </span>
-              </td>
-              <td style={{ width: "500px"}}>
-                <span className="fw-normal">
-                  {stockQuantity}
-                </span>
-              </td>
-              <td style={{ width: "500px"}}>
-                <Link to={link}>
-                  <PencilAltIcon className="icon icon-xs me-2"/>
-                </Link>
-                <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />
-              </td>
-              {provided.placeholder}
-            </tr>
-          )}
-        </Draggable>
-      );
-    } else {
-      return;
-    };
+              </div>
+            </td>
+            <td style={{ width: "500px"}}>
+              <div style={{backgroundColor: color}} className="me-1 product-category-badge fw-normal">
+                {categoryName}
+              </div>
+            </td>
+            <td style={{ width: "500px"}}>
+              <span className="fw-normal">
+                {price}
+              </span>
+            </td>
+            <td style={{ width: "500px"}}>
+              <span className="fw-normal">
+                {stock_quantity}
+              </span>
+            </td>
+            <td style={{ width: "500px"}}>
+              <Link to={link}>
+                <PencilAltIcon className="icon icon-xs me-2"/>
+              </Link>
+              <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />
+            </td>
+            {provided.placeholder}
+          </tr>
+        )}
+      </Draggable>
+    );
   };
 
   return (
@@ -117,7 +88,11 @@ export const ChangeOrderProductsTable = (props) => {
               <Droppable droppableId="products">
                 {(provided) => (
                   <tbody className="border-0" {...provided.droppableProps} ref={provided.innerRef}>
-                    {products.map((t, index) => <TableRow key={`products-${t.id}`} {...t} index={index} />)}
+                    {
+                      products.map((t, index) => 
+                        <TableRow key={`products-${t.id}`} {...t} index={index} categoryName={categoryName} color={color} />
+                      )
+                    }
                   </tbody>
                 )}
               </Droppable>

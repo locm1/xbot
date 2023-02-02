@@ -7,18 +7,19 @@ import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, 
 import CheckboxButton from "@/components/CheckboxButton";
 
 import ProductOverview from "@/pages/product/ProductOverview";
-import products from "@/data/products";
 import { showCategory } from "@/pages/product/api/ProductCategoryApiMethods";
 import { ChangeOrderProductsTable } from "@/pages/product/ChangeOrderProductsTable";
+import { getCategoryItems } from "@/pages/product/api/ProductCategoryItemApiMethods";
 
 export default () => {
-  const [transactions, setTransactions] = useState(products.map(t => ({ ...t, show: true })));
+  const [categoryItems, setCategoryItems] = useState([]);
   const [privateProduct, setPrivate] = useState(false);
   const [category, setCategory] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
     showCategory(id, setCategory)
+    getCategoryItems(id, setCategoryItems)
   }, []);
 
   return (
@@ -70,8 +71,11 @@ export default () => {
             <Card.Body>
               <h5 className="mb-4 border-bottom pb-3">商品ディスプレイオーダー変更</h5>
               <ChangeOrderProductsTable
-                products={transactions.filter(t => t.show)}
-              />  
+                products={categoryItems}
+                categoryName={category.name}
+                setProducts={setCategoryItems}
+                color={category.color}
+              />
             </Card.Body>
           </Card>
         </Col>

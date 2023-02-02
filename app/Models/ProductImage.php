@@ -10,4 +10,9 @@ class ProductImage extends Model
 {
     use SoftDeletes;
     use HasFactory;
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

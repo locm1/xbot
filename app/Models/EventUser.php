@@ -8,10 +8,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Event extends Authenticatable
+class EventUser extends Authenticatable
 {
     use SoftDeletes;
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $table = 'event_user';
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +21,4 @@ class Event extends Authenticatable
      * @var array<int, string>
      */
     protected $guarded = ['id'];
-
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
-    }
 }

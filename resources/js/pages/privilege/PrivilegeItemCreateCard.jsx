@@ -14,12 +14,12 @@ export default (props) => {
   const handleKeyDown = (e) => {
     if (e.nativeEvent.isComposing || e.key !== 'Enter') return
     e.preventDefault();
-    storePrivilegeItem(id, name, privilegeItems, setPrivilegeItems, setIsCreate);
+    storePrivilegeItem(id, name, privilegeItems, setPrivilegeItems, setIsCreate, );
   };
 
   return (
     <>
-      <Card.Body className="d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-4">
+      <Card.Body className="d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-0">
         <Col xs={1} className="text-left text-sm-center mb-2 mb-sm-0">
           <div className="d-block d-sm-flex">
             <div className="ms-sm-3">

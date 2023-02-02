@@ -6,7 +6,6 @@ export const getPrivileges = async (setPrivileges) => {
   axios.get('/api/v1/management/privileges')
   .then((response) => {
     setPrivileges(response.data.privileges);
-    console.log(response.data.privileges);
   })
   .catch(error => {
       console.error(error);

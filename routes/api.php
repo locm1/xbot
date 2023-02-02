@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\api\management\AdminController;
+use App\Http\Controllers\api\management\EventCalendarController;
+use App\Http\Controllers\api\management\EventController;
 use App\Http\Controllers\api\management\UserController;
 use App\Http\Controllers\api\management\PrivacyPolicyController;
 use App\Http\Controllers\api\management\privilege\PrivilegeController;
@@ -38,6 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('tags', TagController::class);
         Route::apiResource('privileges', PrivilegeController::class);
         Route::apiResource('privileges/{privilege}/items', PrivilegeItemController::class);
+        Route::apiResource('events', EventController::class);
+        Route::apiResource('event-calendars', EventCalendarController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

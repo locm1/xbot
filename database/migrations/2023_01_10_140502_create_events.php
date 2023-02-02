@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('title', 50)->nullable(false);
-            $table->dateTime('event_date')->nullable(false);
-            $table->dateTime('first_time')->nullable(false);
-            $table->dateTime('last_time')->nullable(false);
+            $table->dateTime('start_date')->nullable(false);
+            $table->dateTime('end_date')->nullable(false);
             $table->string('location', 255)->nullable(false);
-            $table->dateTime('deadline')->nullable(false);
+            $table->integer('remaining')->nullable(false);
+            $table->tinyInteger('is_unlimited')->default(0)->nullable(false);
+            $table->dateTime('deadline')->nullable(true);
             $table->softDeletes();
             $table->timestamps();
         });

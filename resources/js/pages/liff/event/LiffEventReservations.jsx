@@ -50,7 +50,7 @@ export default () => {
               <h4 className="fs-6 mb-1 liff-event-venue-title">{name}</h4>
             </Col>
             <Col xs="7" className="px-0">
-              <small>開催時間：{time}</small>
+              <small>時間：{time}</small>
             </Col>
             <Col xs="5" className="text-end">
               <small>残枠数：</small>

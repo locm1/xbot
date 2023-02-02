@@ -33,7 +33,7 @@ export default () => {
       console.log(response.config.headers['X-XSRF-TOKEN']);
       axios.post('/api/v1/login', data).then(response => {
         const xsrfToken = Cookies.get('XSRF-TOKEN')
-        Cookies.set('TOKEN', xsrfToken, { expires: 120/1440 })
+        Cookies.set('TOKEN', xsrfToken)
         
         history.push(Paths.DashboardOverview.path);
       }).catch(error => {

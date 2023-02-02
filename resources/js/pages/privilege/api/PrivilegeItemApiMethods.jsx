@@ -6,12 +6,14 @@ export const storePrivilegeItem = async (id, name, privilegeItems, setPrivilegeI
   })
   .then((response) => {
     const privilegeItem = response.data.privilegeItem;
-    const newPrivilegeItem = {
-      privilege_id: id,
-      id: privilegeItem.id,
-      name: privilegeItem.name
+    if (privilegeItems.length === 0) {
+      setPrivilegeItems([{
+        id: privilegeItem.id, privilege_id: id, name: privilegeItem.name
+      }])
+    } else if (privilegeItems.length >= 1) {
+      console.log(privilegeItem);
+      setPrivilegeItems([...privilegeItems, privilegeItem])
     }
-    setPrivilegeItems([...privilegeItems, newPrivilegeItem]);
     setIsCreate(false);
   })
   .catch(error => {
@@ -24,7 +26,6 @@ export const updatePrivilegeItem = async (privilegeId, id, name, privilegeItems,
     name: name
   })
   .then((response) => {
-    console.log(response);
     const currentPrivilegeItem = privileges.filter(privilege => (privilege.id === privilegeId))[0]
     const newPrivilegeItem = {
       id: id,
@@ -51,7 +52,6 @@ export const deletePrivilegeItem = async (privilegeId, id, deleteItem) => {
   await axios.delete(`/api/v1/management/privileges/${privilegeId}/items/${id}`)
   .then((response) => {
     deleteItem()
-    console.log(response);
   })
   .catch(error => {
     console.error(error);

@@ -3,24 +3,31 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { CalendarIcon,} from "@heroicons/react/solid";
-import { Col, Row, Form, Modal, Button, InputGroup,} from 'react-bootstrap';
+import { Col, Row, Form, Modal, Button, InputGroup, Alert,} from 'react-bootstrap';
 
 import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
+import { CreateEvent, DeleteEvent, UpdateEvent } from "./EventApiMethods";
 
 
 export const EventModal = (props) => {
-  const options = {
+  const startOptions = {
     locale: 'ja',
     onChange: (selectedDates, dateStr, instance) => setStart(dateStr)
+  }
+  const endOptions = {
+    locale: 'ja',
+    onChange: (selectedDates, dateStr, instance) => setEnd(dateStr)
   }
   const [title, setTitle] = useState(props.title);
   const [start, setStart] = useState(props.start);
   const [end, setEnd] = useState(props.end);
-  const [remaining, setRemaining] = useState(0);
-  const [unlimited, setUnlimited] = useState(false);
-  const [place, setPlace] = useState(props.place);
+  const [remaining, setRemaining] = useState(props.remaining);
+  const [is_unlimited, setUnlimited] = useState(props.is_unlimited);
+  const [location, setLocation] = useState(props.location);
+
+  const [errors, setErrors] = useState(null);
 
   const { show = false, edit = false, id } = props;
   const startDate = start ? moment(start).format("YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
@@ -29,28 +36,56 @@ export const EventModal = (props) => {
   const onTitleChange = (e) => setTitle(e.target.value);
   const onStartChange = (e) => setStart(e.target.value);
   const onRemainingChange = (e) => setRemaining(e.target.value);
-  const onPlaceChange = (e) => setPlace(e.target.value);
+  const onLocationChange = (e) => setLocation(e.target.value);
 
   const onConfirm = () => {
     const sameDay = startDate === endDate;
+    const start_date = moment(start).format("YYYY-MM-DD HH:mm:ss");
+    const end_date = moment(end).format("YYYY-MM-DD HH:mm:ss");
     const finalStart = sameDay ? moment(startDate).toDate() : moment(startDate).startOf('day').toDate();
     const finalEnd = sameDay ? null : moment(endDate).endOf('day').toDate();
-    const payload = { id, title, sameDay, start: finalStart, end: finalEnd };
+    const payload = { id, title, sameDay, start: start_date, end: end_date, is_unlimited: is_unlimited, location: location, remaining: remaining };
+    const updateData = {title: title, start_date: start_date, end_date: end_date, remaining: remaining, is_unlimited: is_unlimited, location: location }
 
     if (edit) {
+      UpdateEvent(id, updateData);
       return props.onUpdate && props.onUpdate(payload);
+    } else {
+      CreateEvent(updateData, setErrors).then(response => {
+        if (response.result === 'failed') {
+          setErrors(response.errors);
+        } else {  
+          payload.id = response.res.data.event.id;
+          return props.onAdd && props.onAdd(payload);
+        }
+      });
     }
-
-    return props.onAdd && props.onAdd(payload);
   }
-  const onDelete = () => edit && props.onDelete && props.onDelete(id);
+  const onDelete = () => {
+    edit && props.onDelete && props.onDelete(id);
+  }
   const onHide = () => props.onHide && props.onHide();
   var focused = document.activeElement;
+  const Errors = () => {
+    if (errors) {
+      return (
+        <Alert variant="danger">
+          <ul>
+            {Object.values(errors).map(v => <li key={v}>{v}</li>)}
+          </ul>
+        </Alert>
+      )
+    }
+  }
+  const handleUnlimited = () => {
+    is_unlimited === 1 ? setUnlimited(0) : setUnlimited(1);
+  }
 
   return (
     <Modal as={Modal.Dialog} centered show={show} onHide={onHide} enforceFocus={false}>
       <Form className="modal-content">
         <Modal.Body>
+          <Errors />
           <Form.Group id="title" className="mb-4">
             <Form.Label>題名</Form.Label>
             <Form.Control
@@ -65,8 +100,8 @@ export const EventModal = (props) => {
               <Form.Group id="startDate">
                 <Form.Label>開始</Form.Label>
                 <Flatpickr
-                  options={ options }
-                  value={startDate}
+                  options={ startOptions }
+                  value={start}
                   render={(props, ref) => {
                     return (
                       <InputGroup>
@@ -91,7 +126,8 @@ export const EventModal = (props) => {
               <Form.Group id="endDate" className="mb-2">
                 <Form.Label>終了</Form.Label>
                 <Flatpickr
-                  options={ options }
+                  options={ endOptions }
+                  value={end}
                   render={(props, ref) => {
                     return (
                       <InputGroup>
@@ -104,8 +140,6 @@ export const EventModal = (props) => {
                         required
                         type="text"
                         placeholder="YYYY-MM-DD"
-                        value={endDate}
-                        onChange={setEnd} 
                         ref={ref}
                         />
                       </InputGroup>
@@ -115,12 +149,12 @@ export const EventModal = (props) => {
               </Form.Group>
             </Col>
             <Col xs={12} lg={6}>
-              <Form.Group id="place">
+              <Form.Group id="location">
                 <Form.Label>場所</Form.Label>
                 <Form.Control
                   type="text"
-                  value={place}
-                  onChange={onPlaceChange}
+                  value={location}
+                  onChange={onLocationChange}
                 />
               </Form.Group>
             </Col>
@@ -131,10 +165,10 @@ export const EventModal = (props) => {
                   type="number"
                   value={remaining}
                   onChange={onRemainingChange}
-                  disabled={unlimited}
+                  disabled={is_unlimited}
                    />
                   <div className="d-flex">
-                    <Form.Check label="無制限にする" id="checkbox1" htmlFor="checkbox1" className="" onClick={() => setUnlimited(!unlimited)} />
+                    <Form.Check label="無制限にする" id="checkbox1" htmlFor="checkbox1" className="" checked={is_unlimited === 1} onChange={() => handleUnlimited()} />
                   </div>
               </Form.Group>
             </Col>

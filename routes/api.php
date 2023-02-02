@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\api\management\AdminController;
+use App\Http\Controllers\api\management\EventCalendarController;
+use App\Http\Controllers\api\management\EventController;
 use App\Http\Controllers\api\management\UserController;
 use App\Http\Controllers\api\management\PrivacyPolicyController;
 use Illuminate\Http\Request;
@@ -33,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('terms-of-service', TermsOfServiceController::class);
         Route::apiResource('specific-trades', SpecificTradeController::class);
         Route::apiResource('tag', TagController::class);
+        Route::apiResource('events', EventController::class);
+        Route::apiResource('event-calendars', EventCalendarController::class);
     });
 });
 

@@ -9,12 +9,13 @@ import bootstrapPlugin from "@fullcalendar/bootstrap";
 import interactionPlugin from "@fullcalendar/interaction";
 import allLocales from '@fullcalendar/core/locales-all';
 import { Card, Button, Breadcrumb } from "react-bootstrap";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { Paths } from "@/paths";
 import { EventModal } from "./EventModal";
 import EVENTS_DATA from "@/data/events";
 import { HomeIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
+import { DeleteEvent, GetAllEvents } from "./EventApiMethods"
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -25,7 +26,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
-  const defaultModalProps = { id: "", title: "", start: null, end: null };
+  const defaultModalProps = { id: "", title: "", start: null, end: null, location: "", remaining: 0, is_unlimited: 0 };
   const history = useHistory();
   const [events, setEvents] = useState(EVENTS_DATA);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -34,24 +35,26 @@ export default () => {
   const calendarRef = useRef();
 
   const currentDate = moment().format("YYYY-MM-DD");
+  
+  useEffect(() => GetAllEvents(events, setEvents), []);
 
   const onDateClick = (props) => {
-    const id = events.length + 1;
+    // const id = events.length + 1;
     const date = new Date(props.date);
-    const endDate = moment(date).endOf("day").add(1, "day").toDate();
+    const endDate = moment(date).add(1, 'h').format("YYYY-MM-DD HH:mm");
 
-    setModalProps({ ...defaultModalProps, id, start: date, end: endDate });
+    setModalProps({ ...defaultModalProps, start: date, end: endDate  });
     setShowAddModal(true);
   };
 
   const onEventClick = (props) => {
-    const { event: { id, title, start, end } } = props;
-    setModalProps({ id, title, start, end });
+    const { event: { id, title, start, end, extendedProps: {location, remaining, is_unlimited} } } = props;
+    setModalProps({ id, title, start, end, location, remaining, is_unlimited });
     setShowEditModal(true);
   };
 
   const onEventUpdate = (props) => {
-    const { id, title, start, end, sameDay } = props;
+    const { id, title, start, end, sameDay, location, remaining, is_unlimited } = props;
     const calendarApi = calendarRef.current.getApi();
     const calendarElem = calendarApi.getEventById(id);
 
@@ -60,12 +63,29 @@ export default () => {
       calendarElem.setDates(start, end, { allDay: sameDay });
     }
 
+    const newEvents = events.map((v, k) => {
+      if (v.id === Number(id)) {
+        return (
+          v = {
+            id: Number(id),
+            title: title,
+            start: start,
+            end: end,
+            location: location,
+            remaining: remaining,
+            is_unlimited: is_unlimited,
+          }
+        )
+      } else {
+        return v;
+      }
+    })
+    setEvents(newEvents);
     setShowEditModal(false);
   };
 
   const onEventAdd = (props) => {
     const newEvent = { ...props, dragable: true, className: "bg-blue", allDay: props.sameDay };
-
     setShowAddModal(false);
     setEvents([...events, newEvent]);
     setModalProps(defaultModalProps);
@@ -74,21 +94,22 @@ export default () => {
   const onEventDelete = async (id) => {
     const result = await SwalWithBootstrapButtons.fire({
       icon: "error",
-      title: "Confirm deletion",
-      text: "Are you sure you want to delete this event?",
+      title: "削除の確認",
+      text: "本当にこのイベントを削除してもよろしいですか？",
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Cancel"
+      confirmButtonText: "OK",
+      cancelButtonText: "キャンセル"
     });
 
     setShowEditModal(false);
     setModalProps(defaultModalProps);
 
-    if (result.isConfirmed) {      
-      const newEvents = events.filter(e => e.id !== id);
+    if (result.isConfirmed) {     
+      DeleteEvent(id); 
+      const newEvents = events.filter(e => e.id != id);
       setEvents(newEvents);
 
-      await SwalWithBootstrapButtons.fire("Deleted!", "The event has been deleted.", "success");
+      await SwalWithBootstrapButtons.fire("削除完了", "このイベントは削除されました", "success");
     }
   };
 
@@ -136,7 +157,7 @@ export default () => {
             selectable
             ref={calendarRef}
             events={events}
-            displayEventTime={true}
+            displayEventTime={false}
             themeSystem="bootstrap"
             plugins={[dayGridPlugin, timeGridPlugin, bootstrapPlugin, interactionPlugin]}
             initialView="dayGridMonth"

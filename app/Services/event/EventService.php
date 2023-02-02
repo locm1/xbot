@@ -11,7 +11,7 @@ class EventService extends AbstractManagementService
 
     public function index(): Collection
     {
-        return Event::all();
+        return Event::find(1)->users()->get();
     }
 
 

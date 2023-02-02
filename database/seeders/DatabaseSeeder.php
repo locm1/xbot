@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Event;
 use App\Models\EventUser;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminTableSeeder::class
         ]);
-        \App\Models\User::factory(100)->create();
+        User::factory(100)->create();
         Event::factory(20)->create();
         EventUser::factory(50)->create();
     }

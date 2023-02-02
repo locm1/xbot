@@ -13,6 +13,8 @@ class EventUser extends Authenticatable
     use SoftDeletes;
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'event_user';
+
     /**
      * The attributes that are mass assignable.
      *

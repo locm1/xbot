@@ -19,4 +19,9 @@ class Event extends Authenticatable
      * @var array<int, string>
      */
     protected $guarded = ['id'];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

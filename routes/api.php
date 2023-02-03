@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\management\TermsOfServiceController;
 use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
+use App\Http\Controllers\api\management\PostageController;
 use App\Http\Controllers\api\management\ReportController;
 
 /*
@@ -40,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('terms-of-service', TermsOfServiceController::class);
         Route::apiResource('specific-trades', SpecificTradeController::class);
         Route::apiResource('tags', TagController::class);
+        Route::apiResource('postages', PostageController::class);
         Route::apiResource('privileges', PrivilegeController::class);
         Route::apiResource('privileges/{privilege}/items', PrivilegeItemController::class);
         Route::apiResource('events', EventController::class);

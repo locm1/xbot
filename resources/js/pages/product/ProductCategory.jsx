@@ -1,26 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import ProductCategoryTable from "@/pages/product/ProductCategoryTable";
 import DisplayOrderCategoryTable from "@/pages/display/DisplayOrderCategoryTable";
-import products from "@/data/products";
+import { getCategories } from "@/pages/product/api/ProductCategoryApiMethods";
 import { Paths } from "@/paths";
 
 export default () => {
-  const [transactions, setTransactions] = useState(products.map(t => ({ ...t, show: true })));
+  const [categories, setCategories] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [statusValue, setStatusValue] = useState("all");
   const [isEditing, setIsEditing] = useState(false);
-
-  const ChangeOrderCategoryTable = () => {
-    if(isEditing) {
-      return <DisplayOrderCategoryTable />
-    } else {
-      return <ProductCategoryTable />
-    }
-  }
 
   const editingHandler = (e) => {
     setIsEditing(!isEditing);
@@ -29,18 +21,17 @@ export default () => {
 
   const changeSearchValue = (e) => {
     const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
+    // const newTransactions = transactions.map(t => {
+    //   const subscription = t.subscription.toLowerCase();
+    //   const shouldShow = subscription.includes(newSearchValue)
+    //     || `${t.price}`.includes(newSearchValue)
+    //     || t.status.includes(newSearchValue)
+    //     || `${t.invoiceNumber}`.includes(newSearchValue);
 
-      return ({ ...t, show: shouldShow });
-    });
+    //   return ({ ...t, show: shouldShow });
+    // });
 
     setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
   };
 
   const changeStatusValue = (e) => {
@@ -50,6 +41,20 @@ export default () => {
     setStatusValue(newStatusValue);
     setTransactions(newTransactions);
   };
+
+  const ChangeOrderCategoryTable = () => {
+    if(isEditing) {
+      return <DisplayOrderCategoryTable />
+    } else {
+      return <ProductCategoryTable categories={categories} />
+    }
+  }
+
+
+  useEffect(() => {
+    getCategories(setCategories)
+  }, []);
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -77,12 +82,6 @@ export default () => {
                 onChange={changeSearchValue}
               />
             </InputGroup>
-            <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue}>
-              <option value="all">All</option>
-              <option value="paid">Paid</option>
-              <option value="due">Due</option>
-              <option value="cancelled">Cancelled</option>
-            </Form.Select>
           </Col>
           <Col xs={3} lg={4} className="d-flex justify-content-end">
             <Button variant={isEditing ? "secondary" : "outline-secondary"} onClick={() => setIsEditing(!isEditing)}>

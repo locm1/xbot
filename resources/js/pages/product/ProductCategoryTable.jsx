@@ -7,24 +7,8 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
 
-export default () => {
-  const [categories, setCategory] = useState([
-    {
-        id: 1,
-        name: "カテゴリー1",
-        deleted: false
-    },
-    {
-        id: 2,
-        name: "カテゴリー2",
-        deleted: false
-    },
-    {
-        id: 3,
-        name: "カテゴリー3",
-        deleted: false
-    },
-  ]);
+export default (props) => {
+  const { categories } = props;
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -90,7 +74,7 @@ export default () => {
                     </td>
                     <td style={{width: "400px"}}>
                       <span className="fw-normal">
-                        10
+                        {t.products_count}
                       </span>
                     </td>
                     <td style={{width: "150px"}} className="">

@@ -186,6 +186,7 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.Privileges.path} component={Privileges} />
       <RouteWithSidebar exact path={Paths.Products.path} component={Products} />
       <RouteWithSidebar exact path={Paths.ProductCategory.path} component={ProductCategory} />
+      <RouteWithSidebar exact path={Paths.CreateCategory.path} component={EditCategory} />
       <RouteWithSidebar exact path={Paths.EditCategory.path} component={EditCategory} />
       <RouteWithSidebar exact path={Paths.CreateProduct.path} component={EditProduct} />
       <RouteWithSidebar exact path={Paths.EditProduct.path} component={EditProduct} />

@@ -168,7 +168,7 @@ export const EventModal = (props) => {
                   value={remaining}
                   onChange={onRemainingChange}
                   disabled={is_unlimited}
-                   />
+                />
                   <div className="d-flex">
                     <Form.Check label="無制限にする" id="checkbox1" htmlFor="checkbox1" className="" checked={is_unlimited === 1} onChange={() => handleUnlimited()} />
                   </div>

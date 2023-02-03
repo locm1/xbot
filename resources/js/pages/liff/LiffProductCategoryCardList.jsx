@@ -13,7 +13,7 @@ export default () => {
   return (
     <div className="liff-product-list">
       <div className="d-flex align-items-center">
-        <h2 className="fs-6 fw-bold mb-3 ms-3">カテゴリー1</h2>
+        <h2 className="fs-6 fw-bold mb-3 ms-3">全ての商品</h2>
       </div>
       <div className="d-flex flex-wrap justify-content-evenly">
         {products.map((product, index) => 

@@ -1,32 +1,52 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment-timezone";
-import { useDropzone } from "react-dropzone";
 import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
-import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import CheckboxButton from "@/components/CheckboxButton";
+import { CirclePicker } from 'react-color';
 
-import ProductOverview from "@/pages/product/ProductOverview";
-import { showCategory } from "@/pages/product/api/ProductCategoryApiMethods";
-import { ChangeOrderProductsTable } from "@/pages/product/ChangeOrderProductsTable";
-import { getCategoryItems } from "@/pages/product/api/ProductCategoryItemApiMethods";
+import { storeCategory, showCategory, updateCategory } from "@/pages/product/api/ProductCategoryApiMethods";
 
 export default () => {
-  const [categoryItems, setCategoryItems] = useState([]);
+  const history = useHistory();
   const [privateProduct, setPrivate] = useState(false);
-  const [category, setCategory] = useState({});
+  const [category, setCategory] = useState({
+    name: '', content: ''
+  });
   const { id } = useParams();
+  const pathname = useLocation().pathname;
+  const [backgroundColor, setBackgroundColor] = useState();
+
+  const handleChange = (e, input) => {
+    setCategory({...category, [input]: e.target.value})
+  };
+
+  const handleBackgroundColorChange = (color) => {
+    const colorHex = color.hex;
+    setBackgroundColor(colorHex);
+  };
+
+  const handleClick = () => {
+    const isUndisclosed = (privateProduct ? 1 : 0)
+    category.is_undisclosed = isUndisclosed
+    category.color = backgroundColor
+
+    if (pathname.includes('/edit')) {
+      updateCategory(id, category)
+    } else {
+      storeCategory(category, history)
+    }
+  };
 
   useEffect(() => {
-    showCategory(id, setCategory)
-    getCategoryItems(id, setCategoryItems)
+    if (pathname.includes('/edit')) {
+      showCategory(id, setCategory, setBackgroundColor, setPrivate);
+    }
   }, []);
 
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">カテゴリ編集</h1>
+          <h1 className="page-title">{pathname.includes('/edit') ? 'カテゴリ編集' : 'カテゴリ追加'}</h1>
         </div>
       </div>
       <Row>
@@ -37,6 +57,7 @@ export default () => {
               <h5 className="mb-4 border-bottom pb-3">カテゴリ情報</h5>
               <Form.Group id="category">
                 <Form.Check
+                checked={privateProduct}
                 type="switch"
                 label="非公開にする"
                 id="switch1"
@@ -45,37 +66,36 @@ export default () => {
                 />
               </Form.Group>
               </div>
-              <Form>
-                <Col xs={12} xl={12}>
-                  <Row>
-                    <Col md={12} className="mb-3">
-                      <Form.Group id="name">
-                        <Form.Label>カテゴリ名</Form.Label>
-                        <Form.Control required type="text" name="name" value={category.name} placeholder="" />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Col md={12} className="mb-3">
-                    <Form.Group id="overview">
-                      <Form.Label>カテゴリ概要</Form.Label>
-                      <Form.Control as="textarea" rows="3" value={category.content} />
-                    </Form.Group>
-                  </Col>
+              <Row>
+                <Col md={12} className="mb-3">
+                  <Form.Group id="name">
+                    <Form.Label>カテゴリ名</Form.Label>
+                    <Form.Control required type="text" name="name" value={category.name} onChange={(e) => handleChange(e, 'name')} placeholder="" />
+                  </Form.Group>
                 </Col>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xs={12} xl={12}>
-          <Card>
-            <Card.Body>
-              <h5 className="mb-4 border-bottom pb-3">商品ディスプレイオーダー変更</h5>
-              <ChangeOrderProductsTable
-                products={categoryItems}
-                categoryName={category.name}
-                setProducts={setCategoryItems}
-                color={category.color}
-              />
+                <Col md={12} className="mb-3">
+                  <Form.Group id="overview">
+                    <Form.Label>カテゴリ概要</Form.Label>
+                    <Form.Control as="textarea" rows="3" value={category.content} onChange={(e) => handleChange(e, 'content')} />
+                  </Form.Group>
+                </Col>
+                <Col md={12} className="mb-3">
+                  <Form.Group id="overview">
+                    <Form.Label>カテゴリー色選択</Form.Label>
+                    <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} onChange={handleBackgroundColorChange} />
+                  </Form.Group>
+                  <div className="category-color" style={{backgroundColor: backgroundColor}}>{backgroundColor}</div>
+                </Col>
+              </Row>
+              <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+                <Button
+                  variant="primary"
+                  className="d-inline-flex align-items-center"
+                  onClick={handleClick}
+                >
+                  保存する
+                </Button>
+              </div>
             </Card.Body>
           </Card>
         </Col>

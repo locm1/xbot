@@ -6,13 +6,24 @@ use App\Services\management\AbstractManagementService;
 use App\Models\ProductCategory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\management\category\FormatProductCategoryAction;
 
-class ProductCategoryService extends AbstractManagementService 
+class ProductCategoryService
 {
 
-    public function index(): Collection
+    private $format_category_action;
+
+    public function __construct(FormatProductCategoryAction $format_category_action)
     {
-        return ProductCategory::withCount('products')->get();
+        $this->format_category_action = $format_category_action;
+    }
+
+    public function index($request): Collection
+    {
+        if ($request->name) {
+            return ProductCategory::where('name', 'like', "%{$request->name}%")->withCount('products')->orderBy('display_order', 'asc')->get();
+        }
+        return ProductCategory::withCount('products')->orderBy('display_order', 'asc')->get();
     }
 
 
@@ -23,8 +34,9 @@ class ProductCategoryService extends AbstractManagementService
      */
     public function store($request): ProductCategory
     {
-        $attributes = $request->only(['login_id', 'name', 'role', 'password']);
-        return ProductCategory::create($attributes);
+        $attributes = $request->only(['name', 'color', 'content', 'is_undisclosed']);
+        $data = $this->format_category_action->mergeDisplayOrderToArray($attributes);
+        return ProductCategory::create($data);
     }
 
     /**
@@ -41,7 +53,9 @@ class ProductCategoryService extends AbstractManagementService
 
     public function update($request, $category)
     {
-        return $category;
+        $data = $request->only(['name', 'color', 'content', 'is_undisclosed']);
+        $category->update($data);
+        return $data;
     }
 
     /**

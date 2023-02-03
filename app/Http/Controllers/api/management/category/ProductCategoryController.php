@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api\management;
+namespace App\Http\Controllers\api\management\category;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use App\Http\Requests\management\category\StoreProductCategoryRequest;
+use App\Http\Requests\management\category\UpdateProductCategoryRequest;
 use App\Services\management\category\ProductCategoryService;
 
 class ProductCategoryController extends Controller
@@ -17,12 +19,12 @@ class ProductCategoryController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
+     *  @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->category_service->index();
+        $categories = $this->category_service->index($request);
         return response()->json(['categories' => $categories], 200);
     }
 
@@ -32,9 +34,10 @@ class ProductCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductCategoryRequest $request)
     {
-        //
+        $category = $this->category_service->store($request);
+        return response()->json(['category' => $category], 200);
     }
 
     /**
@@ -53,22 +56,24 @@ class ProductCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  ProductCategory  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductCategoryRequest $request, ProductCategory $category)
     {
-        //
+        $category = $this->category_service->update($request, $category);
+        return response()->json(['category' => $category], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  ProductCategory $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ProductCategory $category)
     {
-        //
+        $this->category_service->destroy($category);
+        return response()->json([], 204);
     }
 }

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import ProductCategoryTable from "@/pages/product/ProductCategoryTable";
 import DisplayOrderCategoryTable from "@/pages/display/DisplayOrderCategoryTable";
-import { getCategories } from "@/pages/product/api/ProductCategoryApiMethods";
+import { getCategories, searchCategories, deleteCategory, sortCategory } from "@/pages/product/api/ProductCategoryApiMethods";
 import { Paths } from "@/paths";
 
 export default () => {
@@ -19,34 +21,21 @@ export default () => {
     e
   }
 
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    // const newTransactions = transactions.map(t => {
-    //   const subscription = t.subscription.toLowerCase();
-    //   const shouldShow = subscription.includes(newSearchValue)
-    //     || `${t.price}`.includes(newSearchValue)
-    //     || t.status.includes(newSearchValue)
-    //     || `${t.invoiceNumber}`.includes(newSearchValue);
-
-    //   return ({ ...t, show: shouldShow });
-    // });
-
-    setSearchValue(newSearchValue);
-  };
-
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
+    const params = {
+      params: {
+        name: e.target.value
+      }
+    };
+    searchCategories(params, setCategories);
   };
 
   const ChangeOrderCategoryTable = () => {
     if(isEditing) {
-      return <DisplayOrderCategoryTable />
+      return <DisplayOrderCategoryTable categories={categories} sortCategory={sortCategory} />
     } else {
-      return <ProductCategoryTable categories={categories} />
+      return <ProductCategoryTable categories={categories} deleteCategory={deleteCategory} />
     }
   }
 
@@ -62,7 +51,7 @@ export default () => {
           <h1 className="page-title">カテゴリ管理</h1>
         </div>
         <div className="btn-toolbar mb-2 mb-md-0">
-          <Button as={Link} to={Paths.CreateProduct.path} variant="primary" size="sm" className="d-inline-flex align-items-center">
+          <Button as={Link} to={Paths.CreateCategory.path} variant="primary" size="sm" className="d-inline-flex align-items-center">
             <PlusIcon className="icon icon-xs me-2" /> カテゴリ追加
           </Button>
         </div>
@@ -79,7 +68,7 @@ export default () => {
                 type="text"
                 placeholder="カテゴリ名検索"
                 value={searchValue}
-                onChange={changeSearchValue}
+                onChange={(e) => handleChange(e)}
               />
             </InputGroup>
           </Col>

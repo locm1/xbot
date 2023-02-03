@@ -4,6 +4,7 @@ import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { CalendarIcon,} from "@heroicons/react/solid";
 import { Col, Row, Form, Modal, Button, InputGroup, Alert,} from 'react-bootstrap';
+import { CirclePicker } from 'react-color';
 
 import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
@@ -26,6 +27,7 @@ export const EventModal = (props) => {
   const [remaining, setRemaining] = useState(props.remaining);
   const [is_unlimited, setUnlimited] = useState(props.is_unlimited);
   const [location, setLocation] = useState(props.location);
+  const [color, setColor] = useState(props.color);
 
   const [errors, setErrors] = useState(null);
 
@@ -171,6 +173,10 @@ export const EventModal = (props) => {
                     <Form.Check label="無制限にする" id="checkbox1" htmlFor="checkbox1" className="" checked={is_unlimited === 1} onChange={() => handleUnlimited()} />
                   </div>
               </Form.Group>
+            </Col>
+            <Col xs={12} lg={6}>
+              <Form.Label>色選択</Form.Label>
+              <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} />
             </Col>
           </Row>
         </Modal.Body>

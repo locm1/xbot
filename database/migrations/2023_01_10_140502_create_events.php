@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('location', 255)->nullable(false);
             $table->integer('remaining')->nullable(false);
             $table->tinyInteger('is_unlimited')->default(0)->nullable(false);
+            $table->string('color', 50)->nullable(false);
             $table->dateTime('deadline')->nullable(true);
             $table->softDeletes();
             $table->timestamps();

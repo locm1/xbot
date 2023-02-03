@@ -26,6 +26,7 @@ class EventFactory extends Factory
             'location' => fake()->streetName() . fake()->city() . fake()->streetAddress(),
             'remaining' => fake()->randomNumber(3),
             'is_unlimited' => fake()->boolean(),
+            'color' => fake()->hexColor(),
             'deadline' => $end_date,
         ];
     }

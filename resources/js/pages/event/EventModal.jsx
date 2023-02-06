@@ -27,7 +27,7 @@ export const EventModal = (props) => {
   const [remaining, setRemaining] = useState(props.remaining);
   const [is_unlimited, setUnlimited] = useState(props.is_unlimited);
   const [location, setLocation] = useState(props.location);
-  const [color, setColor] = useState(props.color);
+  const [backgroundColor, setBackgroundColor] = useState(props.backgroundColor);
 
   const [errors, setErrors] = useState(null);
 
@@ -176,7 +176,7 @@ export const EventModal = (props) => {
             </Col>
             <Col xs={12} lg={6}>
               <Form.Label>色選択</Form.Label>
-              <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} />
+              <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} {backgroundColor === } />
             </Col>
           </Row>
         </Modal.Body>

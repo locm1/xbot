@@ -64,7 +64,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $users = $this->user_service->destroy($user);
-        return response()->json(['users' => $users], 200);
+        $this->user_service->destroy($user);
+        return response()->json([], 204);
     }
 }

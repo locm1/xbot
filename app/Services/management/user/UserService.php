@@ -68,10 +68,10 @@ class UserService
     /**
      * Delete the specified resource.
      *
-     * @param  Admin $admin
+     * @param  User $user
      */
-    public function destroy(Model $admin)
+    public function destroy(Model $user)
     {
-        return $admin->delete();
+        return $user->delete();
     }
 }

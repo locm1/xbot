@@ -6,7 +6,7 @@ import { AdjustmentsIcon, CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } f
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { UsersTable } from "@/pages/user/UsersTable";
-import { getUsers, searchUsers, getDemographic } from "@/pages/user/api/UserApiMethods";
+import { getUsers, searchUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -58,9 +58,7 @@ export default () => {
     setUsers(newUsers);
   };
 
-  const deleteUsers = async (ids) => {
-    const usersToBeDeleted = ids ? ids : selectedUsersIds;
-    const usersNr = usersToBeDeleted.length;
+  const deleteUsers = async (id) => {
     const textMessage = "本当にこのユーザーを削除しますか？";
 
     const result = await SwalWithBootstrapButtons.fire({
@@ -73,12 +71,14 @@ export default () => {
     });
 
     if (result.isConfirmed) {
-      const newUsers = users.filter(f => !usersToBeDeleted.includes(f.id));
-      const confirmMessage = "選択したユーザーは削除されました。";
-
-      setUsers(newUsers);
-      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+      deleteUser(id, completeDelete)
     }
+  };
+
+  const completeDelete = async () => {
+    const confirmMessage = "選択したユーザーは削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    location.reload();
   };
 
   useEffect(() => {

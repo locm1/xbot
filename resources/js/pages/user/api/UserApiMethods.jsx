@@ -32,3 +32,13 @@ export const searchUsers = async (params, setUsers) => {
       console.error(error);
   });
 };
+
+export const deleteUser = async (id, completeDelete) => {
+  axios.delete(`/api/v1/management/users/${id}`)
+  .then((response) => {
+    completeDelete();
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};

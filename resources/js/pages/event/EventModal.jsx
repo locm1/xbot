@@ -27,7 +27,7 @@ export const EventModal = (props) => {
   const [remaining, setRemaining] = useState(props.remaining);
   const [is_unlimited, setUnlimited] = useState(props.is_unlimited);
   const [location, setLocation] = useState(props.location);
-  const [color, setColor] = useState(props.color);
+  const [backgroundColor, setBackgroundColor] = useState(props.backgroundColor);
 
   const [errors, setErrors] = useState(null);
 
@@ -46,8 +46,8 @@ export const EventModal = (props) => {
     const end_date = moment(end).format("YYYY-MM-DD HH:mm:ss");
     const finalStart = sameDay ? moment(startDate).toDate() : moment(startDate).startOf('day').toDate();
     const finalEnd = sameDay ? null : moment(endDate).endOf('day').toDate();
-    const payload = { id, title, sameDay, start: start_date, end: end_date, is_unlimited: is_unlimited, location: location, remaining: remaining };
-    const updateData = {title: title, start_date: start_date, end_date: end_date, remaining: remaining, is_unlimited: is_unlimited, location: location }
+    const payload = { id, title, sameDay, start: start_date, end: end_date, is_unlimited: is_unlimited, location: location, remaining: remaining, color: backgroundColor };
+    const updateData = {title: title, start_date: start_date, end_date: end_date, remaining: remaining, is_unlimited: is_unlimited, location: location, color: backgroundColor }
 
     if (edit) {
       UpdateEvent(id, updateData);
@@ -81,6 +81,9 @@ export const EventModal = (props) => {
   }
   const handleUnlimited = () => {
     is_unlimited === 1 ? setUnlimited(0) : setUnlimited(1);
+  }
+  const handleBackgroundColorChange = (props) => {
+    setBackgroundColor(props.hex);
   }
 
   return (
@@ -176,7 +179,8 @@ export const EventModal = (props) => {
             </Col>
             <Col xs={12} lg={6}>
               <Form.Label>色選択</Form.Label>
-              <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} />
+              <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} onChange={handleBackgroundColorChange}  />
+              <div className="category-color" style={{backgroundColor: backgroundColor}}>{backgroundColor}</div>
             </Col>
           </Row>
         </Modal.Body>

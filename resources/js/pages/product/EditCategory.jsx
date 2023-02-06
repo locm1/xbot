@@ -46,7 +46,7 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">{pathname.includes('/edit') ? 'カテゴリ編集' : 'カテゴリ追加'}</h1>
+          <h1 className="page-title">{pathname.includes('/edit') ? 'カテゴリー編集' : 'カテゴリー追加'}</h1>
         </div>
       </div>
       <Row>
@@ -54,7 +54,7 @@ export default () => {
           <Card border="0" className="shadow mb-4">
             <Card.Body>
               <div className="d-flex justify-content-between">
-              <h5 className="mb-4 border-bottom pb-3">カテゴリ情報</h5>
+              <h5 className="mb-4 border-bottom pb-3">カテゴリー情報</h5>
               <Form.Group id="category">
                 <Form.Check
                 checked={privateProduct}
@@ -69,13 +69,13 @@ export default () => {
               <Row>
                 <Col md={12} className="mb-3">
                   <Form.Group id="name">
-                    <Form.Label>カテゴリ名</Form.Label>
-                    <Form.Control required type="text" name="name" value={category.name} onChange={(e) => handleChange(e, 'name')} placeholder="" />
+                    <Form.Label>カテゴリー名</Form.Label>
+                    <Form.Control required type="text" name="name" value={category.name} onChange={(e) => handleChange(e, 'name')} placeholder="カテゴリー名" />
                   </Form.Group>
                 </Col>
                 <Col md={12} className="mb-3">
                   <Form.Group id="overview">
-                    <Form.Label>カテゴリ概要</Form.Label>
+                    <Form.Label>カテゴリー概要</Form.Label>
                     <Form.Control as="textarea" rows="3" value={category.content} onChange={(e) => handleChange(e, 'content')} />
                   </Form.Group>
                 </Col>

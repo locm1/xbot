@@ -19,7 +19,7 @@ export default (props) => {
 
   return (
     <>
-      <Card.Body className="d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-0">
+      <Card.Body className="d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-4">
         <Col xs={1} className="text-left text-sm-center mb-2 mb-sm-0">
           <div className="d-block d-sm-flex">
             <div className="ms-sm-3">
@@ -28,7 +28,7 @@ export default (props) => {
           </div>
         </Col>
         <Col xs={11} lg={12} className="px-0 mb-4 mb-md-0">
-          <div className="mb-2 w-50">
+          <div className="mb-2">
             <Form>
               <Form.Control 
                 required 
@@ -39,7 +39,8 @@ export default (props) => {
                 onKeyDown={(e) => handleKeyDown(e)} 
                 onBlur={() => setIsCreate(!isCreate)}
                 placeholder="特典名を入力してください" 
-                autoFocus={true} 
+                autoFocus={true}
+                style={{width: '900px'}}
               />
             </Form>
           </div>

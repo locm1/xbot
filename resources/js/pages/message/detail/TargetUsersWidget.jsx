@@ -23,7 +23,6 @@ export const TargetUsersWidget = (props) => {
                 {name}
               </Card.Link>
             </h4>
-            <small>{jobTitle}</small>
           </Col>
         </Row>
       </ListGroup.Item>
@@ -38,7 +37,7 @@ export const TargetUsersWidget = (props) => {
         </h2>
       </Card.Header>
       <Card.Body className="py-0">
-        <ListGroup className="list-group-flush">
+        <ListGroup className="list-group-flush send-target-user-widget">
           {authorEarnings.map(author => <AuthorItem key={`author-${author.id}`} {...author} />)}
         </ListGroup>
       </Card.Body>

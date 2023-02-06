@@ -212,13 +212,20 @@ export default () => {
           </div>
         </div>
         </Col>
-        <Col xs={6} xl={6} className="justify-content-end d-flex">
-          <Form.Select className="w-50 h-50" onChange={() => changeTemplate(e)}>
-            <option defaultValue>テンプレートを選択</option>
-            <option value={1}>テンプレート1</option>
-            <option value={2}>テンプレート2</option>
-            <option value={3}>テンプレート3</option>
-          </Form.Select>
+        <Col xs={6} xl={6}>
+          <div className="justify-content-end d-flex">
+            <Form.Select className="w-50 h-50" onChange={() => changeTemplate(e)}>
+              <option defaultValue>セグメント条件を選択</option>
+              <option value={1}>セグメント条件1</option>
+              <option value={2}>セグメント条件2</option>
+              <option value={3}>セグメント条件3</option>
+            </Form.Select>
+          </div>
+          <div className="justify-content-end d-flex mt-2">
+            <Button variant="tertiary" className="mt-2 w-50">
+              セグメント条件を保存する
+            </Button>
+          </div>
         </Col>
       </Row>
 
@@ -278,9 +285,6 @@ export default () => {
             })}
           </DragDropContext>
         </Row>
-        <Button variant="tertiary" className="mt-2 w-100">
-          セグメント結果を保存する
-        </Button>
       </Container>
       
       <MessageDetail />

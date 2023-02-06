@@ -13,6 +13,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 1,
         "img": shampoo
     },
     {
@@ -21,6 +22,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 0,
         "img": shampoo
     },
     {
@@ -29,6 +31,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 0,
         "img": shampoo
     },
     {
@@ -37,6 +40,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 1,
         "img": shampoo
     },
     {
@@ -45,6 +49,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 0,
         "img": shampoo
     },
     {
@@ -53,6 +58,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 0,
         "img": shampoo
     },
     {
@@ -61,6 +67,7 @@ export default [
         "name": "シャンプー&トリートメント",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 0,
         "img": shampoo
     },
     {
@@ -69,6 +76,7 @@ export default [
         "name": "北海道ミルクプリン",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 0,
         "img": pudding
     },
     {
@@ -77,6 +85,7 @@ export default [
         "name": "生搾りジュース",
         "price": "￥3,000",
         "stockQuantity": 90,
+        'isUndisclosed': 0,
         "img": juice
     },
     {
@@ -85,6 +94,7 @@ export default [
         "name": "ドレッシング",
         "price": "￥3,000",
         "stockQuantity": 93,
+        'isUndisclosed': 0,
         "img": dressing
     },
 ]

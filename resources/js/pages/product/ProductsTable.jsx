@@ -44,12 +44,21 @@ export const ProductsTable = (props) => {
     }
   }
 
+  const getIsUndisclosed = (isUndisclosed) => {
+    switch (isUndisclosed) {
+      case 1:
+        return '非公開'
+      case 0:
+        return '公開'
+    }
+  }
+
   const TableRow = (props) => {
-    const { category, name, price, stockQuantity, img, id } = props;
+    const { category, name, price, stockQuantity, isUndisclosed, img, id } = props;
     const link = Paths.EditProduct.path.replace(':id', id);
 
     return (
-      <tr className="border-bottom product-table-tr">
+      <tr className={`border-bottom product-table-tr ${isUndisclosed == 1 ? "bg-gray-200" : ""}`}>
         <td>
           <div className="d-flex align-items-center">
             <Image src={img} className="me-3 product-image"/>
@@ -76,6 +85,11 @@ export const ProductsTable = (props) => {
           </span>
         </td>
         <td>
+          <span className="fw-normal">
+            {getIsUndisclosed(isUndisclosed)}
+          </span>
+        </td>
+        <td>
           <Link to={link}>
             <PencilAltIcon className="icon icon-xs me-2"/>
           </Link>
@@ -95,6 +109,7 @@ export const ProductsTable = (props) => {
               <th className="border-gray-200">カテゴリー</th>
               <th className="border-gray-200">販売価格</th>
               <th className="border-gray-200">残在庫数</th>
+              <th className="border-gray-200">公開ステータス</th>
               <th className="border-gray-200">編集・削除</th>
             </tr>
           </thead>

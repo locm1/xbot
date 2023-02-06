@@ -151,12 +151,9 @@ export default (props = {}) => {
               <NavItem title="特典設定" icon={GiftIcon} badgeBg="danger" link={Paths.Privileges.path} />
 
               <GroupTitle name="Electroic Commerce" />
-              <NavItem title="カテゴリ管理" icon={StoreIcon} link={Paths.ProductCategory.path} />
+              <NavItem title="カテゴリー管理" icon={StoreIcon} link={Paths.ProductCategory.path} />
               <NavItem title="商品管理" icon={StoreIcon} link={Paths.Products.path} />
-              <CollapsableNavItem eventKey="coupon/" title="クーポン管理" icon={CurrencyYenIcon}>
-                <NavItem title="クーポンリスト" link={Paths.Coupons.path} />
-                <NavItem title="クーポン追加" link={Paths.CreateCoupon.path} />
-              </CollapsableNavItem>
+              <NavItem title="クーポン管理" icon={CurrencyYenIcon} link={Paths.Coupons.path} />
               <NavItem title="注文管理" icon={ShoppingCartIcon} link={Paths.Orders.path} />
               <NavItem title="取置管理" icon={InboxIcon} link={Paths.Reserves.path} />
 

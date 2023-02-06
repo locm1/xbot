@@ -85,11 +85,11 @@ export const TemplateMessageTable = (props) => {
             </OverlayTrigger>
           </Link>
           <Link to={Paths.SendSegments.path}>
-            <OverlayTrigger key={"use-" + id} overlay={<Tooltip id="top" className="m-0">このテンプレートを使用</Tooltip>}>
+            <OverlayTrigger key={"use-" + id} overlay={<Tooltip id="top" className="m-0">このテンプレートで配信</Tooltip>}>
               <PaperAirplaneIcon className="icon icon-xs me-2"/>
             </OverlayTrigger>
           </Link>
-          <OverlayTrigger key={"copy-" + id} overlay={<Tooltip id="top" className="m-0">コピー</Tooltip>}>
+          <OverlayTrigger key={"copy-" + id} overlay={<Tooltip id="top" className="m-0">複製</Tooltip>}>
             <DocumentDuplicateIcon role={"button"} onClick={() => duplicateTemplate(id)} className="icon icon-xs me-2" />
           </OverlayTrigger>
           <OverlayTrigger key={"delete-" + id} overlay={<Tooltip id="top" className="m-0">削除</Tooltip>}>

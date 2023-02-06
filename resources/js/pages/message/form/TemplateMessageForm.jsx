@@ -10,7 +10,7 @@ export default (props) => {
     <Card border="0" className="shadow mb-4">
       <Card.Body>
         <div className="d-flex mb-4 border-bottom pb-3 justify-content-between">
-          <h5 className="">メッセージ情報</h5>
+          <h5 className="">タイトル</h5>
           <Form.Group id="category">
             <Form.Check
             type="switch"

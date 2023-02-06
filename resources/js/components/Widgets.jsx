@@ -85,7 +85,6 @@ export const ProfileCardWidget = (props) => {
         <Card.Text className="text-gray mb-4">
           {area}
         </Card.Text>
-        <Button variant="secondary" size="sm">メッセージを送信</Button>
       </Card.Body>
     </Card>
   );

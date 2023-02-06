@@ -18,7 +18,7 @@ export const SendHistoriesTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { status, sendDate, targetCount, sendCount, id } = props;
+    const { status, templateName, sendDate, targetCount, sendCount, id } = props;
     const history = useHistory();
 
     const handleRowClick = (id) => {
@@ -29,6 +29,9 @@ export const SendHistoriesTable = (props) => {
     return (
       <tr className="border-bottom table-body-tr" onClick={() => handleRowClick(id)}>
         <td>{getStatus(status)}</td>
+        <td>
+          <span className="fw-normal">{templateName}</span>
+        </td>
         <td>
           <span className="fw-normal">{sendDate}</span>
         </td>
@@ -49,6 +52,7 @@ export const SendHistoriesTable = (props) => {
           <thead>
             <tr>
               <th className="border-gray-200">ステータス</th>
+              <th className="border-gray-200">テンプレート名</th>
               <th className="border-gray-200">配信日時</th>
               <th className="border-gray-200">該当人数</th>
               <th className="border-gray-200">配信数</th>

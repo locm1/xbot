@@ -21,12 +21,12 @@ export const OrdersTable = (props) => {
         }
       case 2:
         return {
-          class: 'success',
+          class: 'info',
           name: '配送準備中'
         }
       case 3:
         return {
-          class: 'info',
+          class: 'success',
           name: '当店より発送済み'
         }
       case 4:
@@ -38,7 +38,7 @@ export const OrdersTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, createdAt, name, prefectures, purchasePrice, status, userImage, shippingFee, userId } = props;
+    const { id, createdAt, name, deliveryAddress, purchasePrice, status, userImage, shippingFee, userId } = props;
     const userLink = Paths.EditUser.path.replace(':id', userId);
     const productLink = Paths.OrderDetail.path.replace(':id', id);
 
@@ -74,13 +74,18 @@ export const OrdersTable = (props) => {
                 />
               ) : (
                 <div className="avatar d-flex align-items-center justify-content-center fw-bold rounded bg-secondary me-3">
-                  <span>{getFirstLetterOfEachWord(name)}</span>
+                  <span className="text-decoration-underline">{getFirstLetterOfEachWord(name)}</span>
                 </div>
               )}
             <div className="d-block">
-              <span className="fw-bold">{name}</span>
+              <span className="fw-bold text-decoration-underline">{name}</span>
             </div>
           </Card.Link>
+        </td>
+        <td>
+          <span className="fw-normal">
+            {deliveryAddress}
+          </span>
         </td>
         <td>
         <Card.Link className="d-flex align-items-center" onClick={changeStatusModal}>
@@ -110,6 +115,7 @@ export const OrdersTable = (props) => {
               <th className="border-gray-200">購入金額</th>
               <th className="border-gray-200">送料</th>
               <th className="border-gray-200">氏名</th>
+              <th className="border-gray-200">配送先住所</th>
               <th className="border-gray-200">ステータス</th>
               <th className="border-gray-200">詳細・削除</th>
             </tr>

@@ -76,7 +76,15 @@ export default (props) => {
             isEdit.id == id ? (
               <div className="mb-2 d-flex flex-wrap flex-md-nowrap">
                 <Form onSubmit={(e) => handleSubmit(e)}>
-                  <Form.Control className="tag-edit-form" required type="text" name="name" value={updateName} onChange={(e) => editName(e)} placeholder="特典を入力してください" />
+                  <Form.Control 
+                    style={{width: '700px'}}
+                    className="tag-edit-form" 
+                    required type="text" 
+                    name="name" 
+                    value={updateName} 
+                    onChange={(e) => editName(e)} 
+                    placeholder="特典を入力してください" 
+                  />
                 </Form>
                 <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center">
                   <div onClick={handleClick} className="tag-edit-button ms-2"><CheckIcon className="icon icon-xs" /></div>

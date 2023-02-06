@@ -80,7 +80,7 @@ export const CouponsTable = (props) => {
             </Pagination>
           </Nav>
           <small className="fw-normal mt-4 mt-lg-0">
-            Showing <b>{TotalCoupons}</b> out of <b>25</b> entries
+            <b>{TotalCoupons}</b> 件中 1〜4 件表示
           </small>
         </Card.Footer>
       </Card.Body>

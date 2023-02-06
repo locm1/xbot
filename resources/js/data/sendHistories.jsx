@@ -5,6 +5,7 @@ export default [
     {
         "id": 1,
         "status": 1,
+        "templateName": "「テキストのみ」の配信",
         "sendDate": "2021-10-27 19:19:08	",
         "targetCount": 2,
         "sendCount": 2,
@@ -12,6 +13,7 @@ export default [
     {
       "id": 2,
       "status": 1,
+      "templateName": "「テキスト＋画像」の配信",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,
@@ -19,6 +21,7 @@ export default [
     {
       "id": 3,
       "status": 1,
+      "templateName": "「画像のみ」の配信",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,
@@ -26,6 +29,7 @@ export default [
     {
       "id": 4,
       "status": 1,
+      "templateName": "テスト",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,
@@ -33,6 +37,7 @@ export default [
     {
       "id": 5,
       "status": 1,
+      "templateName": "テスト",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,
@@ -40,6 +45,7 @@ export default [
     {
       "id": 6,
       "status": 1,
+      "templateName": "テスト",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,
@@ -47,6 +53,7 @@ export default [
     {
       "id": 7,
       "status": 1,
+      "templateName": "テスト",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,
@@ -54,6 +61,7 @@ export default [
     {
       "id": 8,
       "status": 1,
+      "templateName": "テスト",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,
@@ -61,6 +69,7 @@ export default [
     {
       "id": 9,
       "status": 1,
+      "templateName": "テスト",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,
@@ -68,6 +77,7 @@ export default [
     {
       "id": 10,
       "status": 1,
+      "templateName": "テスト",
       "sendDate": "2021-10-27 19:19:08	",
       "targetCount": 2,
       "sendCount": 2,

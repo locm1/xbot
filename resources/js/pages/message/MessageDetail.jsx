@@ -39,10 +39,26 @@ export default () => {
                 <Form.Label>配信タイミング</Form.Label>
                 <div className="message-detail-wrap">
                   <div className="message-detail">
-                    <Form.Check label="即時配信" id="checkbox1" htmlFor="checkbox1" />
+                    <Form.Check
+                      defaultChecked
+                      type="radio"
+                      defaultValue="option1"
+                      label="即時配信"
+                      name="segment"
+                      id="radio1"
+                      htmlFor="radio1"
+                    />
                   </div>
                   <div className="message-detail">
-                    <Form.Check label="予約配信" id="checkbox1" htmlFor="checkbox1" />
+                    <Form.Check
+                        defaultChecked
+                        type="radio"
+                        defaultValue="option1"
+                        label="予約配信"
+                        name="segment"
+                        id="radio1"
+                        htmlFor="radio1"
+                      />
                   </div>
                   <Datetime
                     timeFormat={false}

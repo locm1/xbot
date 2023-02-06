@@ -19,6 +19,7 @@ export default [
         "status": 1,
         "userImage": Profile1,
         "purchasePrice": 1000,
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "shippingFee": 500,
     },
     {
@@ -26,7 +27,7 @@ export default [
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "userId": 1,
-        "prefectures": "北海道",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -41,7 +42,7 @@ export default [
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "userId": 1,
-        "prefectures": "北海道",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -56,7 +57,7 @@ export default [
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "userId": 1,
-        "prefectures": "北海道",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -71,7 +72,7 @@ export default [
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "userId": 1,
-        "prefectures": "北海道",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -86,7 +87,7 @@ export default [
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
         "userId": 1,
-        "prefectures": "北海道",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -100,8 +101,7 @@ export default [
         "id": 7,
         "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
-        "userId": 1,
-        "prefectures": "北海道",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -114,9 +114,9 @@ export default [
     {
         "id": 8,
         "createdAt": "2022年11月18日 21:14",
-        "name": "宮島拡夢",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "userId": 1,
-        "prefectures": "北海道",
+        "name": "宮島拡夢",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -129,9 +129,9 @@ export default [
     {
         "id": 9,
         "createdAt": "2022年11月18日 21:14",
-        "name": "宮島拡夢",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "userId": 1,
-        "prefectures": "北海道",
+        "name": "宮島拡夢",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -144,9 +144,9 @@ export default [
     {
         "id": 10,
         "createdAt": "2022年11月18日 21:14",
-        "name": "宮島拡夢",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "userId": 1,
-        "prefectures": "北海道",
+        "name": "宮島拡夢",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},
@@ -159,69 +159,9 @@ export default [
     {
         "id": 11,
         "createdAt": "2022年11月18日 21:14",
-        "name": "宮島拡夢",
+        "deliveryAddress": "北海道札幌市白石区菊水九条4-1-708",
         "userId": 1,
-        "prefectures": "北海道",
-        "products": [
-            {id: 1, name: 'トリートメント', img: Treatment},
-            {id: 2, name: 'コスメセット', img: Cosmetics},
-        ],
-        "status": 1,
-        "userImage": Profile1,
-        "purchasePrice": 1000,
-        "shippingFee": 500,
-    },
-    {
-        "id": 12,
-        "createdAt": "2022年11月18日 21:14",
         "name": "宮島拡夢",
-        "userId": 1,
-        "prefectures": "北海道",
-        "products": [
-            {id: 1, name: 'トリートメント', img: Treatment},
-            {id: 2, name: 'コスメセット', img: Cosmetics},
-        ],
-        "status": 1,
-        "userImage": Profile1,
-        "purchasePrice": 1000,
-        "shippingFee": 500,
-    },
-    {
-        "id": 13,
-        "createdAt": "2022年11月18日 21:14",
-        "name": "宮島拡夢",
-        "userId": 1,
-        "prefectures": "北海道",
-        "products": [
-            {id: 1, name: 'トリートメント', img: Treatment},
-            {id: 2, name: 'コスメセット', img: Cosmetics},
-        ],
-        "status": 1,
-        "userImage": Profile1,
-        "purchasePrice": 1000,
-        "shippingFee": 500,
-    },
-    {
-        "id": 14,
-        "createdAt": "2022年11月18日 21:14",
-        "name": "宮島拡夢",
-        "userId": 1,
-        "prefectures": "北海道",
-        "products": [
-            {id: 1, name: 'トリートメント', img: Treatment},
-            {id: 2, name: 'コスメセット', img: Cosmetics},
-        ],
-        "status": 1,
-        "userImage": Profile1,
-        "purchasePrice": 1000,
-        "shippingFee": 500,
-    },
-    {
-        "id": 15,
-        "createdAt": "2022年11月18日 21:14",
-        "name": "宮島拡夢",
-        "userId": 1,
-        "prefectures": "北海道",
         "products": [
             {id: 1, name: 'トリートメント', img: Treatment},
             {id: 2, name: 'コスメセット', img: Cosmetics},

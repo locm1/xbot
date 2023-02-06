@@ -10,7 +10,7 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
 export default (props) => {
-  const { categories, sortCategory } = props;
+  const { categories, sortCategory, deleteCategory } = props;
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -20,7 +20,7 @@ export default (props) => {
     buttonsStyling: false
   }));
 
-  const deleteCategory = async(id) => {
+  const confirmDeleteCategory = async(id) => {
     const result = await SwalWithBootstrapButtons.fire({
       icon: "error",
       title: "削除確認",
@@ -31,11 +31,7 @@ export default (props) => {
     });
 
     if (result.isConfirmed) {
-      const newCategories = categories.filter((item) => item.id !== id);
-      setCategory(newCategories);
-      const confirmMessage = "選択したカテゴリは削除されました。";
-
-      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+      deleteCategory(id, completeDelete);
     }
   }
 
@@ -48,6 +44,15 @@ export default (props) => {
     const [reorderedItem] = categories.splice(result.source.index, 1);
     categories.splice(result.destination.index, 0, reorderedItem);
     sortCategories(reorderedItem);
+  }
+
+  const getIsUndisclosed = (isUndisclosed) => {
+    switch (isUndisclosed) {
+      case 1:
+        return '非公開'
+      case 0:
+        return '公開'
+    }
   }
 
 
@@ -90,6 +95,7 @@ export default (props) => {
               <th className="border-gray-200"></th>
               <th className="border-gray-200">カテゴリー名</th>
               <th className="border-gray-200">商品数</th>
+              <th className="border-gray-200">公開ステータス</th>
               <th className="border-gray-200 ">削除</th>
             </tr>
           </thead>
@@ -102,7 +108,7 @@ export default (props) => {
                       return (
                         <Draggable key={t.id} draggableId={"q-" + t.id} index={index}>                    
                           {(provided) => (
-                            <tr className="border-bottom" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                            <tr className={`border-bottom ${t.is_undisclosed == 1 ? "bg-gray-200" : ""}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                               <td style={{width: "30px"}}>
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="icon-xs icon">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -110,7 +116,7 @@ export default (props) => {
                               </td>
                               <td style={{width: "500px"}}>
                                 <span className="fw-bold">
-                                  <Link to={`/management/product/category/${t.id}`} className="fw-bolder">
+                                  <Link to={Paths.EditCategory.path.replace(':id', t.id)} className="fw-bolder text-decoration-underline">
                                   {t.name}
                                   </Link>
                                 </span>
@@ -120,8 +126,13 @@ export default (props) => {
                                   {t.products_count}
                                 </span>
                               </td>
+                              <td style={{width: "400px"}}>
+                                <span className="fw-normal">
+                                  {getIsUndisclosed(t.is_undisclosed)}
+                                </span>
+                              </td>
                               <td style={{width: "150px"}} className="">
-                                <TrashIcon role="button" onClick={() => deleteCategory(t.id)} className="icon icon-xs text-danger me-2" />
+                                <TrashIcon role="button" onClick={() => confirmDeleteCategory(t.id)} className="icon icon-xs text-danger me-2" />
                               </td>
                               {provided.placeholder}
                             </tr>

@@ -4,8 +4,6 @@ import withReactContent from 'sweetalert2-react-content';
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
-import ProductCategoryTable from "@/pages/product/ProductCategoryTable";
 import DisplayOrderCategoryTable from "@/pages/display/DisplayOrderCategoryTable";
 import { getCategories, searchCategories, deleteCategory, sortCategory } from "@/pages/product/api/ProductCategoryApiMethods";
 import { Paths } from "@/paths";
@@ -31,14 +29,6 @@ export default () => {
     searchCategories(params, setCategories);
   };
 
-  const ChangeOrderCategoryTable = () => {
-    if(isEditing) {
-      return <DisplayOrderCategoryTable categories={categories} sortCategory={sortCategory} />
-    } else {
-      return <ProductCategoryTable categories={categories} deleteCategory={deleteCategory} />
-    }
-  }
-
 
   useEffect(() => {
     getCategories(setCategories)
@@ -48,11 +38,11 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">カテゴリ管理</h1>
+          <h1 className="page-title">カテゴリー管理</h1>
         </div>
         <div className="btn-toolbar mb-2 mb-md-0">
           <Button as={Link} to={Paths.CreateCategory.path} variant="primary" size="sm" className="d-inline-flex align-items-center">
-            <PlusIcon className="icon icon-xs me-2" /> カテゴリ追加
+            <PlusIcon className="icon icon-xs me-2" /> カテゴリー追加
           </Button>
         </div>
       </div>
@@ -66,22 +56,16 @@ export default () => {
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                placeholder="カテゴリ名検索"
+                placeholder="カテゴリー名検索"
                 value={searchValue}
                 onChange={(e) => handleChange(e)}
               />
             </InputGroup>
           </Col>
-          <Col xs={3} lg={4} className="d-flex justify-content-end">
-            <Button variant={isEditing ? "secondary" : "outline-secondary"} onClick={() => setIsEditing(!isEditing)}>
-              
-              {isEditing ? "カテゴリオーダー変更モード解除" : "カテゴリオーダー変更モード"}
-            </Button>
-          </Col>
         </Row>
       </div>
 
-      <ChangeOrderCategoryTable />
+      <DisplayOrderCategoryTable categories={categories} deleteCategory={deleteCategory} sortCategory={sortCategory} />
     </>
   );
 }

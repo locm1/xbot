@@ -126,41 +126,6 @@ export default () => {
               />
             </InputGroup>
           </Col>
-          <Col xs={3} lg={4} className="d-flex justify-content-end">
-            <ButtonGroup>
-              <Dropdown className="me-1">
-                <Dropdown.Toggle split as={Button} variant="link" className="text-dark m-0 p-1">
-                  <AdjustmentsIcon className="icon icon-sm" />
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="dropdown-menu-end pb-0">
-                  <span className="small ps-3 fw-bold text-dark">
-                    Show
-                  </span>
-                  <Dropdown.Item className="d-flex align-items-center fw-bold">
-                    10 <CheckIcon className="icon icon-xxs ms-auto" />
-                  </Dropdown.Item>
-                  <Dropdown.Item className="fw-bold">20</Dropdown.Item>
-                  <Dropdown.Item className="fw-bold rounded-bottom">30</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-              <Dropdown>
-                <Dropdown.Toggle split as={Button} variant="link" className="text-dark m-0 p-1">
-                  <CogIcon className="icon icon-sm" />
-                  <span className="visually-hidden">Toggle Dropdown</span>
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-end pb-0">
-                  <span className="small ps-3 fw-bold text-dark">
-                    Show
-                  </span>
-                  <Dropdown.Item className="d-flex align-items-center fw-bold">
-                    10 <CheckIcon className="icon icon-xxs ms-auto" />
-                  </Dropdown.Item>
-                  <Dropdown.Item className="fw-bold">20</Dropdown.Item>
-                  <Dropdown.Item className="fw-bold rounded-bottom">30</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </ButtonGroup>
-          </Col>
         </Row>
       </div>
 

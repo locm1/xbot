@@ -12,7 +12,7 @@ class EventCalendarService
     public function index() 
     {
         $events = Event::all()->toArray();
-        $keys = ['id', 'title', 'start', 'end', 'location', 'remaining', 'is_unlimited', 'deadline', 'deleted_at', 'created_at', 'updated_at'];
+        $keys = ['id', 'title', 'start', 'end', 'location', 'remaining', 'is_unlimited', 'color', 'deadline', 'deleted_at', 'created_at', 'updated_at'];
         
         foreach ($events as $event) {
             $formated_events[] = array_combine($keys, $event);

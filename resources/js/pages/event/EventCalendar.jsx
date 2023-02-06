@@ -46,13 +46,13 @@ export default () => {
   };
 
   const onEventClick = (props) => {
-    const { event: { id, title, start, end, extendedProps: {location, remaining, is_unlimited} } } = props;
-    setModalProps({ id, title, start, end, location, remaining, is_unlimited });
+    const { event: { id, title, start, end, backgroundColor, extendedProps: {location, remaining, is_unlimited} } } = props;
+    setModalProps({ id, title, start, end, location, remaining, backgroundColor, is_unlimited });
     setShowEditModal(true);
   };
 
   const onEventUpdate = (props) => {
-    const { id, title, start, end, sameDay, location, remaining, is_unlimited } = props;
+    const { id, title, start, end, sameDay, location, color, remaining, is_unlimited } = props;
     const calendarApi = calendarRef.current.getApi();
     const calendarElem = calendarApi.getEventById(id);
 
@@ -70,6 +70,7 @@ export default () => {
             start: start,
             end: end,
             location: location,
+            color: color,
             remaining: remaining,
             is_unlimited: is_unlimited,
           }

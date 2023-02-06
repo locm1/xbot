@@ -81,6 +81,11 @@ export default () => {
     })
     setEvents(newEvents);
     setShowEditModal(false);
+    Swal.fire(
+      '更新完了',
+      'イベントの情報を更新しました',
+      'success'
+    )
   };
 
   const onEventAdd = (props) => {

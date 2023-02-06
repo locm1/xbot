@@ -13,7 +13,7 @@ class UpdateProductCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,20 @@ class UpdateProductCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required', 
+            'color' => 'required', 
+            'content' => 'required', 
+            'is_undisclosed' => 'required|boolean'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'カテゴリー名',
+            'color' => 'カラー', 
+            'content' => 'カテゴリー概要', 
+            'is_undisclosed' => '非公開'
         ];
     }
 }

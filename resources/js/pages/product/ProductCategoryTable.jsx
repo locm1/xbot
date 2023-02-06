@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
 
 export default (props) => {
-  const { categories } = props;
+  const { categories, deleteCategory } = props;
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -18,7 +18,13 @@ export default (props) => {
     buttonsStyling: false
   }));
 
-  const deleteCategory = async(id) => {
+  const completeDelete = async () => {
+    const confirmMessage = "選択したカテゴリは削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    location.reload();
+  };
+
+  const confirmDeleteCategory = async(id) => {
     const result = await SwalWithBootstrapButtons.fire({
       icon: "error",
       title: "削除確認",
@@ -29,11 +35,7 @@ export default (props) => {
     });
 
     if (result.isConfirmed) {
-      const newCategories = categories.filter((item) => item.id !== id);
-      setCategory(newCategories);
-      const confirmMessage = "選択したカテゴリは削除されました。";
-
-      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+      deleteCategory(id, completeDelete);
     }
   }
 
@@ -78,7 +80,7 @@ export default (props) => {
                       </span>
                     </td>
                     <td style={{width: "150px"}} className="">
-                      <TrashIcon role="button" onClick={() => deleteCategory(t.id)} className="icon icon-xs text-danger me-2" />
+                      <TrashIcon role="button" onClick={() => confirmDeleteCategory(t.id)} className="icon icon-xs text-danger me-2" />
                     </td>
                   </tr>
                 );

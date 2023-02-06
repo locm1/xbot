@@ -9,24 +9,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
-export default () => {
-  const [categories, setCategory] = useState([
-    {
-        id: 1,
-        name: "カテゴリー1",
-        deleted: false
-    },
-    {
-        id: 2,
-        name: "カテゴリー2",
-        deleted: false
-    },
-    {
-        id: 3,
-        name: "カテゴリー3",
-        deleted: false
-    },
-  ]);
+export default (props) => {
+  const { categories, sortCategory } = props;
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -59,8 +43,42 @@ export default () => {
     if (!result.destination) {
       return;
     }
+    console.log(result);
+    //reorderedItemがドラッグ&ドロップしたようそ
     const [reorderedItem] = categories.splice(result.source.index, 1);
     categories.splice(result.destination.index, 0, reorderedItem);
+    sortCategories(reorderedItem);
+  }
+
+
+  const sortCategories = async (reorderedItem) => {
+
+    const getAroundCategory = () => {
+      let prevItem = null;
+      let nextItem = null;
+      // 要素を先頭にドラッグ&ドロップした場合
+      if (reorderedItemIndex == 0) {
+        //先頭にした場合は、後ろの値だけ取ってくる
+        nextItem = categories[reorderedItemIndex + 1];
+      } else if (categories.slice(-1)[0].id == categories[reorderedItemIndex].id) {
+        // 配列の最後の要素とドラッグ&ドロップの要素が同じな場合（要素を最後にドラッグ&ドロップした場合）
+        //最後の場合は、前の値のみ取ってくる
+        prevItem = categories[reorderedItemIndex - 1];
+      } else {
+        prevItem = categories[reorderedItemIndex - 1];
+        nextItem = categories[reorderedItemIndex + 1];
+      }
+      return [prevItem, nextItem];
+    }
+
+    const reorderedItemIndex = categories.findIndex(({id}) => id === reorderedItem.id);
+    const [prevItem, nextItem] = getAroundCategory();
+    console.log(prevItem);
+    console.log(nextItem);
+    const displayOrder = {
+      begin_item: prevItem, end_item: nextItem
+    };
+    sortCategory(reorderedItem.id, displayOrder);
   }
 
   return (
@@ -92,14 +110,14 @@ export default () => {
                               </td>
                               <td style={{width: "500px"}}>
                                 <span className="fw-bold">
-                                  <Link to={`/product/category/${t.id}`} className="fw-bolder">
+                                  <Link to={`/management/product/category/${t.id}`} className="fw-bolder">
                                   {t.name}
                                   </Link>
                                 </span>
                               </td>
                               <td style={{width: "400px"}}>
                                 <span className="fw-normal">
-                                  10
+                                  {t.products_count}
                                 </span>
                               </td>
                               <td style={{width: "150px"}} className="">

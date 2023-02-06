@@ -38,7 +38,7 @@ export const ChangeOrderProductsTable = (props) => {
                 }
                 <div className="fw-bold">
                   <Link to={link} className="fw-bolder">
-                    <span class="d-inline-block text-truncate" style={{maxWidth: '200px'}}>{name}</span>
+                    <span className="d-inline-block text-truncate" style={{maxWidth: '200px'}}>{name}</span>
                   </Link>
                 </div>
               </div>

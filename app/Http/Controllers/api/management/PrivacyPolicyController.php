@@ -23,8 +23,8 @@ class PrivacyPolicyController extends Controller
      */
     public function index()
     {
-        $policy = $this->privacy_policy_service->getAllPrivacyPolicies();
-        return response()->json(['policy' => $policy], 200);
+        $privacy_policies = $this->privacy_policy_service->getAllPrivacyPolicies();
+        return response()->json(['privacy_policies' => $privacy_policies], 200);
     }
 
     /**
@@ -58,9 +58,9 @@ class PrivacyPolicyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePrivacyPolicyRequest $request, PrivacyPolicy $policy)
+    public function update(UpdatePrivacyPolicyRequest $request, PrivacyPolicy $privacy_policy)
     {
-        $res = $this->privacy_policy_service->updatePrivacyPolicy($policy, $request->content ?? "");
+        $res = $this->privacy_policy_service->updatePrivacyPolicy($privacy_policy, $request->content);
         return response()->json(['policy' => $res], 200);
     }
 

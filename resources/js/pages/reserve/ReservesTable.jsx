@@ -59,7 +59,7 @@ export const ReservesTable = (props) => {
                 </div>
               )}
             <div className="d-block">
-              <span className="fw-bold">{userName}</span>
+              <span className="fw-bold text-decoration-underline">{userName}</span>
             </div>
           </Card.Link>
         </td>
@@ -67,7 +67,7 @@ export const ReservesTable = (props) => {
           <Card.Link as={Link} to={productLink} className="d-flex align-items-center">
             <Image src={pudding} className="me-3 product-image"/>
             <div className="d-block">
-              <span className="fw-bold">{name}</span>
+              <span className="fw-bold text-decoration-underline">{name}</span>
             </div>
           </Card.Link>
         </td>

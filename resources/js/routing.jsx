@@ -28,8 +28,6 @@ import Orders from '@/pages/order/Orders';
 import Reserves from '@/pages/reserve/Reserves';
 import EventCalendar from '@/pages/event/EventCalendar';
 import Events from '@/pages/event/Events';
-import ScheduleCalendar from '@/pages/schedule/ScheduleCalendar';
-import Schedules from '@/pages/schedule/Schedules';
 import Invitations from '@/pages/invitation/Invitations';
 import EditInvitation from '@/pages/invitation/EditInvitation';
 import PrivacyPolicy from '@/pages/setting/PrivacyPolicy';
@@ -118,6 +116,19 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     localStorage.setItem('settingsVisible', !showSettings);
   }
 
+  //2時間経過後に再度ログインチェックを行う
+  const authCheck = async () => {
+    await axios.get('api/v1/user')
+    .then((response) => {
+      const xsrfToken = Cookies.get('XSRF-TOKEN')
+      Cookies.set('TOKEN', xsrfToken)
+    })
+    .catch(error => {
+        console.error(error);
+        return <Redirect to={Paths.Signin.path} />;
+    });
+  };
+
   //認証しているかどうか
   const isAuth = Cookies.get('TOKEN');
 
@@ -140,7 +151,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
       />
     );
   } else {
-    return <Redirect to={Paths.Signin.path} />;
+    authCheck();
   }
 };
 
@@ -197,8 +208,6 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.Reserves.path} component={Reserves} />
       <RouteWithSidebar exact path={Paths.EventCalendar.path} component={EventCalendar} />
       <RouteWithSidebar exact path={Paths.Events.path} component={Events} />
-      <RouteWithSidebar exact path={Paths.ScheduleCalendar.path} component={ScheduleCalendar} />
-      <RouteWithSidebar exact path={Paths.Schedules.path} component={Schedules} />
       <RouteWithSidebar exact path={Paths.Invitations.path} component={Invitations} />
       <RouteWithSidebar exact path={Paths.EditInvitation.path} component={EditInvitation} />
       <RouteWithSidebar exact path={Paths.PrivacyPolicy.path} component={PrivacyPolicy} />

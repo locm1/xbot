@@ -66,8 +66,8 @@ export default () => {
                 </div>
             )}
             <div className="d-block">
-              <Link to={`/user/edit/${id}`}>
-                <span className="fw-bold">{name}</span>
+              <Link to={Paths.EditUser.path.replace(':id', id)}>
+                <span className="fw-bold text-decoration-underline">{name}</span>
                 </Link>
             </div>
           </div>
@@ -106,13 +106,13 @@ export default () => {
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>管理名称</Form.Label>
-                <Form.Control required type="text" placeholder="名称を入力してください" />
+                <Form.Control required type="text" placeholder="例：友達紹介クーポン" />
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
                 <Form.Label>使用上限数</Form.Label>
-                <Form.Control required type="number" placeholder="上限数を入力してください" />
+                <Form.Control required type="number" placeholder="例：20" />
               </Form.Group>
             </Col>
           </Row>
@@ -120,13 +120,13 @@ export default () => {
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>割引率(%)</Form.Label>
-                <Form.Control required type="text" placeholder="Enter your first name" />
+                <Form.Control required type="number" placeholder="例：20" />
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
                 <Form.Label>利用コード</Form.Label>
-                <Form.Control required type="text" placeholder="Also your last name" />
+                <Form.Control required type="text" placeholder="例：#12f57G" />
               </Form.Group>
             </Col>
           </Row>
@@ -171,7 +171,7 @@ export default () => {
             </Pagination>
           </Nav>
           <small className="fw-normal mt-4 mt-lg-0">
-            Showing <b>total</b> out of <b>25</b> entries
+          {users.length} 件中 1〜{users.length} 件表示
           </small>
         </Card.Footer>
       </Card.Body>

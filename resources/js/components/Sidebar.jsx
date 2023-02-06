@@ -162,10 +162,6 @@ export default (props = {}) => {
                 <NavItem title="イベントカレンダー" link={Paths.EventCalendar.path} />
                 <NavItem title="イベント案内リスト" link={Paths.Events.path} />
               </CollapsableNavItem>
-              <CollapsableNavItem eventKey="schedule/" title="日程調整" icon={CalendarIcon}>
-                <NavItem title="日程調整作成" link={Paths.ScheduleCalendar.path} />
-                <NavItem title="日程調整リスト" link={Paths.Schedules.path} />
-              </CollapsableNavItem>
 
               <GroupTitle name="Invitation" />
               <NavItem title="招待管理" link={Paths.Invitations.path} icon={UserAddIcon} />

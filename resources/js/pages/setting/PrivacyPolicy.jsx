@@ -17,6 +17,7 @@ export default () => {
     if (typeof id === "undefined") {
       storePrivacyPolicy({content: content}, setId)
     } else {
+      console.log(id);
       const formValue = {
         id: id,
         content: content

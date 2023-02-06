@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('postages', function (Blueprint $table) {
+        Schema::create('prefectures', function (Blueprint $table) {
             $table->id();
-            $table->integer('pref_id')->nullable(false);
-            $table->integer('postage')->nullable(false);
+            $table->string('name');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('postages');
+        Schema::dropIfExists('prefectures');
     }
 };

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\management\management\postage;
+namespace App\Http\Requests\management\postage;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,15 +24,17 @@ class UpdatePostageRequest extends FormRequest
     public function rules()
     {
         return [
-            'pref_id' => 'required',
-            'postage' => 'required',
+            'postages' => 'required|array',
+            'postages.*.prefecture_id' => 'required|numeric',
+            'postages.*.postage' => 'required|numeric',
         ];
     }
 
-    public function messages()
+    public function attributes()
     {
         return [
-            'postage.required' => '送料が未入力です',
+            'postages.*.postage' => '送料',
+            'postages.*prefecture_id' => '都道府県ID'
         ];
     }
 }

@@ -7,11 +7,11 @@ use App\Models\Postage;
 use App\Services\management\AbstractManagementService;
 use Illuminate\Database\Eloquent\Model;
 
-class PostageService extends AbstractManagementService 
+class PostageService
 {
     public function index() :Collection
     {
-        return Postage::all();
+        return Postage::with('prefecture')->get();
     }
 
     /**
@@ -19,36 +19,10 @@ class PostageService extends AbstractManagementService
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function store($request) :Postage
+    public function upsert($request) :array
     {
-        $data = $request->only(['pref_id', 'postage']);
-        return Postage::create($data);
+        $postages = $request->postages;
+        Postage::upsert($postages, ['id'], ['postage', 'prefecture_id']);
+        return $postages;
     }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  Postage $postage
-     * @return Postage
-     */
-    public function show(Model $postage): Postage
-    {
-        return $postage;
-    }
-
-
-    public function update($request, Model $postage) :array
-    {
-        $data = $request->only(['pref_id', 'postage']);
-        $postage->update($data);
-        return $data;
-    }
-
-
-    public function destroy(Model $postage) 
-    {
-        return $postage->delete();
-    }
-
 }

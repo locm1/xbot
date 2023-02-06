@@ -4,13 +4,26 @@ namespace App\Services\management\user;
 
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\management\AbstractManagementService;
+use App\Services\management\user\SearchUserAction;
 use App\Models\User;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Model;
 
-class UserService extends AbstractManagementService
+class UserService
 {
-    public function index(): Collection
+    private $search_user_action;
+
+    public function __construct(SearchUserAction $search_user_action)
     {
+        $this->search_user_action = $search_user_action;
+    }
+
+    public function index($request): Collection
+    {
+        if (isset($request)) {
+            return $this->search_user_action->search($request);
+        }
+
         return User::all();
     }
 

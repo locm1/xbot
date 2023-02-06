@@ -4,7 +4,7 @@ use App\Http\Controllers\api\management\AdminController;
 use App\Http\Controllers\api\management\CategoryItemController;
 use App\Http\Controllers\api\management\EventCalendarController;
 use App\Http\Controllers\api\management\EventController;
-use App\Http\Controllers\api\management\UserController;
+use App\Http\Controllers\api\management\user\UserController;
 use App\Http\Controllers\api\management\PrivacyPolicyController;
 use App\Http\Controllers\api\management\privilege\PrivilegeController;
 use App\Http\Controllers\api\management\privilege\PrivilegeItemController;
@@ -18,6 +18,7 @@ use App\Http\Controllers\api\management\TagController;
 use App\Http\Controllers\api\management\PostageController;
 use App\Http\Controllers\api\management\PrefectureController;
 use App\Http\Controllers\api\management\ReportController;
+use App\Http\Controllers\api\management\user\UserDemographicController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'v1/management'], function() {
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
+        Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);
         Route::apiResource('terms-of-service', TermsOfServiceController::class);
         Route::apiResource('specific-trades', SpecificTradeController::class);

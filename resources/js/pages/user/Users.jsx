@@ -6,7 +6,7 @@ import { AdjustmentsIcon, CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } f
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { UsersTable } from "@/pages/user/UsersTable";
-import USERS_DATA from "@/data/users";
+import { getUsers, searchUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -18,18 +18,24 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 export default () => {
   const [users, setUsers] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState({
+    name: '', tel: ''
+  });
+  const [demographic, setDemographic] = useState({
+    man: '', women: '', others: ''
+  })
   const [statusFilter, setStatusFilter] = useState("all");
   const selectedUsersIds = users.filter(u => u.isSelected).map(u => u.id);
   const totalUsers = users.length;
   const allSelected = selectedUsersIds.length === totalUsers;
 
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newUsers = users.map(u => ({ ...u, show: u.name.toLowerCase().includes(newSearchValue.toLowerCase()) }));
+  const handleChange = (e, input) => {
+    setSearchValue({...searchValue, [input]: e.target.value})
 
-    setSearchValue(newSearchValue);
-    setUsers(newUsers);
+    const searchParams = {
+      params: {...searchValue, [input]: e.target.value}
+    };
+    searchUsers(searchParams, setUsers);
   };
 
   const changeStatusFilter = (e) => {
@@ -52,9 +58,7 @@ export default () => {
     setUsers(newUsers);
   };
 
-  const deleteUsers = async (ids) => {
-    const usersToBeDeleted = ids ? ids : selectedUsersIds;
-    const usersNr = usersToBeDeleted.length;
+  const deleteUsers = async (id) => {
     const textMessage = "本当にこのユーザーを削除しますか？";
 
     const result = await SwalWithBootstrapButtons.fire({
@@ -67,22 +71,19 @@ export default () => {
     });
 
     if (result.isConfirmed) {
-      const newUsers = users.filter(f => !usersToBeDeleted.includes(f.id));
-      const confirmMessage = "選択したユーザーは削除されました。";
-
-      setUsers(newUsers);
-      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+      deleteUser(id, completeDelete)
     }
   };
 
+  const completeDelete = async () => {
+    const confirmMessage = "選択したユーザーは削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    location.reload();
+  };
+
   useEffect(() => {
-    axios.get('/api/v1/management/users')
-    .then((response) => {
-      setUsers(response.data.users.map(u => ({ ...u, isSelected: false, show: true })));
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    getUsers(setUsers)
+    getDemographic(setDemographic)
   }, []);
 
   return (
@@ -92,9 +93,9 @@ export default () => {
           <h1 className="page-title">ユーザー管理</h1>
           <div className="list-head d-flex flex-wrap mb-4 align-items-center">
             <div className="list-head__items">
-              <div className="list-head__item"> <span className="u-men"> 男性 </span>：19名 </div>
-              <div className="list-head__item"> <span className="u-women "> 女性 </span>：8名 </div>
-              <div className="list-head__item"> <span> その他 </span>：1名 </div>
+              <div className="list-head__item"> <span className="u-men"> 男性 </span>：{demographic.man}名 </div>
+              <div className="list-head__item"> <span className="u-women "> 女性 </span>：{demographic.women}名 </div>
+              <div className="list-head__item"> <span> その他 </span>：{demographic.others}名 </div>
             </div>
           </div>
         </div>
@@ -110,8 +111,8 @@ export default () => {
               <Form.Control
                 type="text"
                 placeholder="氏名"
-                value={searchValue}
-                onChange={changeSearchValue}
+                value={searchValue.name}
+                onChange={(e) => handleChange(e, 'name')}
               />
             </InputGroup>
             <InputGroup className="me-2 me-lg-3 fmxw-300">
@@ -119,10 +120,10 @@ export default () => {
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
               <Form.Control
-                type="text"
+                type="tel"
                 placeholder="電話番号"
-                value={searchValue}
-                onChange={changeSearchValue}
+                value={searchValue.tel}
+                onChange={(e) => handleChange(e, 'tel')}
               />
             </InputGroup>
           </Col>

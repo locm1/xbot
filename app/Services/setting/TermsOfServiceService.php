@@ -28,12 +28,12 @@ class TermsOfServiceService
     }
 
 
-    public function updateTermsOfService(TermsOfService $terms, string $content) :TermsOfService
+    public function updateTermsOfService(TermsOfService $terms_of_service, string $content) :TermsOfService
     {
         $update = ['content' => $content];
-        $terms->update($update);
+        $terms_of_service->update($update);
 
-        return $terms;
+        return $terms_of_service;
     }
 
 

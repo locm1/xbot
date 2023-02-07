@@ -28,8 +28,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            AdminTableSeeder::class
+            AdminTableSeeder::class,
+            PrefecturesTableSeeder::class
         ]);
+        
         User::factory(100)->create();
         Event::factory(20)->create();
         Privilege::factory(5)->create();

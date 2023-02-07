@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\management;
+namespace App\Http\Controllers\api\management\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -21,14 +21,15 @@ class UserController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
+     *@param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->user_service->index();
+        $users = $this->user_service->index($request);
         return response()->json(['users' => $users], 200);
     }
+    
 
     public function store(StoreUserRequest $request)
     {
@@ -63,13 +64,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $users = $this->user_service->destroy($user);
-        return response()->json(['users' => $users], 200);
+        $this->user_service->destroy($user);
+        return response()->json([], 204);
     }
-
-    // public function search()
-    // {
-    //     $users = $this->user_service->getAllUsers();
-    //     return response()->json(['users' => $users], 200);
-    // }
 }

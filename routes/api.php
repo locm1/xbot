@@ -4,7 +4,7 @@ use App\Http\Controllers\api\management\AdminController;
 use App\Http\Controllers\api\management\CategoryItemController;
 use App\Http\Controllers\api\management\EventCalendarController;
 use App\Http\Controllers\api\management\EventController;
-use App\Http\Controllers\api\management\UserController;
+use App\Http\Controllers\api\management\user\UserController;
 use App\Http\Controllers\api\management\PrivacyPolicyController;
 use App\Http\Controllers\api\management\privilege\PrivilegeController;
 use App\Http\Controllers\api\management\privilege\PrivilegeItemController;
@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\management\TermsOfServiceController;
 use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
+use App\Http\Controllers\api\management\PostageController;
+use App\Http\Controllers\api\management\PrefectureController;
 use App\Http\Controllers\api\management\ReportController;
+use App\Http\Controllers\api\management\user\UserDemographicController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,16 +40,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'v1/management'], function() {
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
+        Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);
         Route::apiResource('terms-of-service', TermsOfServiceController::class);
         Route::apiResource('specific-trades', SpecificTradeController::class);
         Route::apiResource('tags', TagController::class);
+        Route::apiResource('postages', PostageController::class)->only([
+            'index', 'store'
+        ]);;
+        Route::put('postages', [PostageController::class, 'update']);
         Route::apiResource('privileges', PrivilegeController::class);
         Route::apiResource('privileges/{privilege}/items', PrivilegeItemController::class);
         Route::apiResource('events', EventController::class);
         Route::apiResource('event-calendars', EventCalendarController::class);
         Route::apiResource('categories', ProductCategoryController::class);
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
+        Route::get('prefectures', PrefectureController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

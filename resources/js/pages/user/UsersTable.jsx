@@ -32,8 +32,8 @@ export const UsersTable = (props) => {
     if (bulkOption === "delete_user") deleteUsers();
   }
 
-  const deleteUsers = (ids) => {
-    props.deleteUsers && props.deleteUsers(ids)
+  const deleteUsers = (id) => {
+    props.deleteUsers && props.deleteUsers(id)
   }
 
   const TableRow = (props) => {
@@ -83,7 +83,7 @@ export const UsersTable = (props) => {
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
-          <Button onClick={() => deleteUsers([id])} variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button onClick={() => deleteUsers(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
           {/* <TrashIcon role="button" onClick={() => deleteUsers([id])} className="icon icon-xs text-danger me-2 " /> */}

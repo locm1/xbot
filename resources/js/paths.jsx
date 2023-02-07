@@ -31,8 +31,6 @@ export const Paths = {
     Reserves: { path: `${prefix}/reserve/list` },
     EventCalendar: { path: `${prefix}/event/calendar` },
     Events: { path: `${prefix}/event/list` },
-    ScheduleCalendar: { path: `${prefix}/schedule/calendar` },
-    Schedules: { path: `${prefix}/schedule/list` },
     Invitations: { path: `${prefix}/invitation/list` },
     EditInvitation: { path: `${prefix}/invitation/edit/:id` },
     PrivacyPolicy: { path: `${prefix}/setting/privacy-policy` },

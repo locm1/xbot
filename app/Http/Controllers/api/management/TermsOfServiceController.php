@@ -24,8 +24,8 @@ class TermsOfServiceController extends Controller
      */
     public function index()
     {
-        $term = $this->terms_of_service_service->getAllTermsOfServices();
-        return response()->json(['term' => $term], 200);
+        $terms_of_services = $this->terms_of_service_service->getAllTermsOfServices();
+        return response()->json(['terms_of_services' => $terms_of_services], 200);
     }
 
     /**
@@ -36,8 +36,8 @@ class TermsOfServiceController extends Controller
      */
     public function store(CreateTermsOfServiceRequest $request)
     {
-        $term = $this->terms_of_service_service->createTermsOfService($request->content);
-        return response()->json(['term' => $term], 201);
+        $terms_of_service = $this->terms_of_service_service->createTermsOfService($request->content);
+        return response()->json(['terms_of_service' => $terms_of_service], 201);
     }
 
 
@@ -60,14 +60,14 @@ class TermsOfServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTermsOfServiceRequest $request, TermsOfService $terms)
+    public function update(UpdateTermsOfServiceRequest $request, TermsOfService $terms_of_service)
     {
         //
         $update = [
             'content' => $request->content,
         ];
-	$res = $this->terms_of_service_service->updateTermsOfService($terms, $request->content ?? "");
-	return response()->json(['terms' => $res], 200);
+        $res = $this->terms_of_service_service->updateTermsOfService($terms_of_service, $request->content);
+        return response()->json(['terms' => $res], 200);
     }
 
     /**

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 
@@ -76,6 +76,8 @@ import Topbar from '@/components/Topbar';
 
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
+  const history = useHistory();
+
   const resize = () => {
     var resize = setInterval(() => {
       window.dispatchEvent(new Event('resize'));
@@ -120,12 +122,12 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const authCheck = async () => {
     await axios.get('api/v1/user')
     .then((response) => {
-      const xsrfToken = Cookies.get('XSRF-TOKEN')
-      Cookies.set('TOKEN', xsrfToken, { expires: 120/1440 })
+      // const xsrfToken = Cookies.get('XSRF-TOKEN')
+      Cookies.set('TOKEN', xsrfToken, { expires: 60/1440 })
     })
     .catch(error => {
         console.error(error);
-        return <Redirect to={Paths.Signin.path} />;
+        history.push(Paths.Signin.path)
     });
   };
 

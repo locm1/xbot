@@ -61,7 +61,6 @@ export default (props) => {
 
     // ログアウト
     axios.post('/api/v1/logout').then(response => {
-      Cookies.remove('TOKEN');
       history.push(Paths.Signin.path);
     }).catch(error => {
       console.log(error);

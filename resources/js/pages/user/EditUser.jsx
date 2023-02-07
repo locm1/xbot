@@ -13,7 +13,6 @@ import { TagForm } from "@/pages/user/TagForm";
 import { Link, useParams } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import Profile1 from "@img/img/team/profile-picture-1.jpg";
 
 
 export default () => {
@@ -38,10 +37,7 @@ export default () => {
     {id: 1, createdAt: '2022年11月02日 11:44', memo: ''},
   ];
 
-  // const [formValue, setFormValue] = useState(
-  //   {firstName: '', lastName: '', firstNameKana: '', lastNameKana: '', birthDate: '', sex: 1, area: 1, tel: '', occupation: 1}
-  // );
-  const [files, setFiles] = useState([]);
+  const [birthDate, setBirthDate] = useState('');
 
   const handleChange = (e, input) => {
     setUser({...user, [input]: e.target.value})
@@ -104,7 +100,7 @@ export default () => {
               <Tab.Pane eventKey="user_info" className="py-4">
                 <Row>
                   <Col xs={12} xl={8}>
-                    <UserInfoForm handleChange={handleChange} {...user} />
+                    <UserInfoForm handleChange={handleChange} {...user} setBirthDate={setBirthDate} birthDate={birthDate} />
                     <QuestionnaireForm />
                   </Col>
                   <Col xs={12} xl={4}>

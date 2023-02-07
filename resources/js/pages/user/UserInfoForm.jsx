@@ -5,6 +5,9 @@ import Datetime from "react-datetime";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, Image, Tab, InputGroup } from 'react-bootstrap';
+import "flatpickr/dist/flatpickr.css";
+import Flatpickr from "react-flatpickr";
+import 'flatpickr/dist/l10n/ja.js';
 
 import prefectures from "@/data/postage"
 
@@ -49,10 +52,14 @@ export const DropFilesForm = () => {
 
 export const UserInfoForm = (props) => {
   const { 
-    first_name, last_name, first_name_kana, last_name_kana, birth_date, gender, 
-    zipcode, prefecture, city, address, building_name, tel, occupation
+    first_name, last_name, first_name_kana, last_name_kana, birthDate, gender, 
+    zipcode, prefecture, city, address, building_name, tel, occupation, setBirthDate
   } = props;
-  const [birthday, setBirthday] = useState("");
+
+  const birthDateOptions = {
+    locale: 'ja',
+    onChange: (selectedDates, dateStr, instance) => setBirthDate(dateStr)
+  }
   const areas = [
     '中央区', '北区', '東区', '白石区', '厚別区', '豊平区', 
     '清田区', '南区', '西区', '手稲区', '札幌市以外', '道外'
@@ -94,22 +101,26 @@ export const UserInfoForm = (props) => {
             <Col md={6} className="mb-3">
               <Form.Group id="birthday">
                 <Form.Label>生年月日</Form.Label>
-                <Datetime
-                  timeFormat={false}
-                  renderInput={(props, openCalendar) => (
-                    <InputGroup>
+                <Flatpickr
+                  options={ birthDateOptions }
+                  value={birthDate}
+                  render={(props, ref) => {
+                    return (
+                      <InputGroup>
                       <InputGroup.Text>
                         <CalendarIcon className="icon icon-xs" />
                       </InputGroup.Text>
                       <Form.Control
+                        data-time_24hr
                         required
                         type="text"
-                        value={birth_date ? moment(birth_date).format("YYYY/MM/DD") : ""}
-                        placeholder="yyyy/mm/dd"
-                        onFocus={openCalendar}
-                        onChange={(e) => props.handleChange(e, 'birth_date')} />
+                        placeholder="YYYY-MM-DD"
+                        ref={ref}
+                      />
                     </InputGroup>
-                  )} />
+                    );
+                  }}
+                />
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">

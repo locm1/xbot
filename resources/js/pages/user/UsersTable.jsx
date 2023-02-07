@@ -46,12 +46,6 @@ export const UsersTable = (props) => {
     return (
       <tr className="border-bottom">
         <td>
-          <FormCheck type="checkbox" className="dashboard-check">
-            <FormCheck.Input id={`user-${id}`} checked={isSelected} onChange={() => selectUser(id)} />
-            <FormCheck.Label htmlFor={`user-${id}`} />
-          </FormCheck>
-        </td>
-        <td>
           <Link to={link}>
           <div className="d-flex align-items-center">
             {img_path && (<Image src={img_path} className="avatar rounded-circle me-3"/>)}
@@ -95,26 +89,9 @@ export const UsersTable = (props) => {
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
       <Card.Body>
-        <div className="d-flex mb-3">
-          <Form.Select className="fmxw-200" value={bulkOption} onChange={bulkActionChange}>
-            <option>一括操作</option>
-            <option value="send_email">メッセージ送信</option>
-            <option value="tag">タグ付与</option>
-            <option value="delete_user">削除</option>
-          </Form.Select>
-          <Button variant="secondary" size="sm" className="ms-3" disabled={disabledBulkMenu} onClick={applyBulkAction}>
-            実行
-          </Button>
-        </div>
         <Table hover className="user-table align-items-center">
           <thead>
             <tr>
-              <th className="border-bottom">
-                <FormCheck type="checkbox" className="dashboard-check">
-                  <FormCheck.Input id="userCheckAll" checked={allSelected} onChange={selectAllUsers} />
-                  <FormCheck.Label htmlFor="userCheckAll" />
-                </FormCheck>
-              </th>
               <th className="border-bottom">氏名</th>
               <th className="border-bottom">電話番号</th>
               <th className="border-bottom">性別</th>

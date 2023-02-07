@@ -121,7 +121,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     await axios.get('api/v1/user')
     .then((response) => {
       const xsrfToken = Cookies.get('XSRF-TOKEN')
-      Cookies.set('TOKEN', xsrfToken)
+      Cookies.set('TOKEN', xsrfToken, { expires: 120/1440 })
     })
     .catch(error => {
         console.error(error);
@@ -143,7 +143,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
           />
   
           <main className="content">
-            <Topbar toggleContracted={toggleContracted} />
+            <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} />
             <Component {...props} />
           </main>
         </>

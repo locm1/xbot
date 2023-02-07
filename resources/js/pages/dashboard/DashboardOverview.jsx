@@ -111,7 +111,6 @@ export default () => {
             reportTitle="$456,678"
             reportSubtitle="Total Themesberg Sales"
           /> */}
-          <PieChart data={pieChartTest} />
         </Col>
 
         {/* <Col xs={12} md={6} xxl={4} className="mb-4">

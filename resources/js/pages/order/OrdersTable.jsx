@@ -66,17 +66,6 @@ export const OrdersTable = (props) => {
         </td>
         <td>
           <Card.Link as={Link} to={userLink} className="d-flex align-items-center">
-            {userImage
-              ? (
-                <Image
-                  src={userImage}
-                  className="avatar rounded-circle me-3"
-                />
-              ) : (
-                <div className="avatar d-flex align-items-center justify-content-center fw-bold rounded bg-secondary me-3">
-                  <span className="text-decoration-underline">{getFirstLetterOfEachWord(name)}</span>
-                </div>
-              )}
             <div className="d-block">
               <span className="fw-bold text-decoration-underline">{name}</span>
             </div>

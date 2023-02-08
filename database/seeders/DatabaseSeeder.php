@@ -15,6 +15,7 @@ use App\Models\Tag;
 use Database\Factories\ProductContentFactory;
 use Database\Factories\ProductImageFactory;
 use App\Models\EventUser;
+use App\Models\Occupation;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
             PrefecturesTableSeeder::class
         ]);
         
+        Occupation::factory(10)->create();
         User::factory(100)->create();
         Event::factory(20)->create();
         Privilege::factory(5)->create();

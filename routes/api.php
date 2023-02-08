@@ -21,6 +21,7 @@ use App\Http\Controllers\api\management\questionnaire\QuestionnaireItemControlle
 use App\Http\Controllers\api\management\ReportController;
 use App\Http\Controllers\api\management\user\UserDemographicController;
 use App\Http\Controllers\api\management\MeController;
+use App\Http\Controllers\api\management\OccupationController;
 use App\Http\Controllers\api\management\ProductController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
 
@@ -62,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
         Route::get('prefectures', PrefectureController::class);
         Route::apiResource('questionnaires', QuestionnaireController::class);
+        Route::apiResource('occupations', OccupationController::class);
         Route::apiResource('questionnaires/{questionnaire}/items', QuestionnaireItemController::class, array("as" => "api"))->only([
             'store', 'update', 'delete'
         ]);

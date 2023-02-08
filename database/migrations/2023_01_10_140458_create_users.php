@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('address')->nullable(true);
             $table->string('building_name')->nullable(true);
             $table->string('tel', 50)->nullable(true);
-            $table->string('occupation', 50)->nullable(true);
+            $table->foreignId('occupation_id')->constrained('occupations')->nullable(true);
             $table->text('img_path')->nullable(true);
             $table->tinyInteger('is_registered')->nullable(false);
             $table->text('line_id')->nullable(false);

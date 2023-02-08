@@ -21,6 +21,7 @@ use App\Http\Controllers\api\management\QuestionnaireController;
 use App\Http\Controllers\api\management\ReportController;
 use App\Http\Controllers\api\management\user\UserDemographicController;
 use App\Http\Controllers\api\management\MeController;
+use App\Http\Controllers\api\management\OccupationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
         Route::get('prefectures', PrefectureController::class);
         Route::apiResource('questionnaires', QuestionnaireController::class);
+        Route::apiResource('occupations', OccupationController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

@@ -45,7 +45,7 @@ class UserFactory extends Factory
             'address' => fake()->optional('90')->streetAddress(),
             'building_name' => fake()->optional('90')->secondaryAddress(),
             'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->optional('90')->phoneNumber()),
-            'occupation' => fake()->optional('90')->jobTitle(),
+            'occupation_id' => fake()->numberBetween(1, 10),
             'img_path' => $img_path,
             'is_registered' => fake()->numberBetween(0, 1),
             'line_id' => $this->mb_str_shuffle(20),

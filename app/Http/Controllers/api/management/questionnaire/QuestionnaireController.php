@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\api\management;
+namespace App\Http\Controllers\api\management\questionnaire;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\management\questionnaire\StoreQuestionnaireRequest;
+use App\Http\Requests\management\questionnaire\UpdateQuestionnaireRequest;
+use App\Models\Questionnaire;
 use App\Services\management\questionnaire\QuestionnaireService;
 
 class QuestionnaireController extends Controller
@@ -36,40 +37,31 @@ class QuestionnaireController extends Controller
     public function store(StoreQuestionnaireRequest $request)
     {
         $questionnaire = $this->questionnaire_service->store($request);
-        return response()->json(['questionnaire' => $questionnaire], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return response()->json(['questionnaire' => $questionnaire], 201);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Questionnaire $questionnaire
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateQuestionnaireRequest $request, Questionnaire $questionnaire)
     {
-        //
+        $questionnaire = $this->questionnaire_service->update($request, $questionnaire);
+        return response()->json(['questionnaire' => $questionnaire], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Questionnaire $questionnaire
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Questionnaire $questionnaire)
     {
-        //
+        $this->questionnaire_service->destroy($questionnaire);
+        return response()->json([], 204);
     }
 }

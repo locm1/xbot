@@ -2,36 +2,52 @@
 
 namespace App\Services\management\product;
 
-use App\Services\management\AbstractManagementService;
+use App\Models\Product;
+use App\Services\management\product\SearchProductAction;
 
-class ProductService extends AbstractManagementService 
+class ProductService
 {
+    private $search_product_action;
 
-    public function index() 
+    public function __construct(SearchProductAction $search_product_action)
+    {
+        $this->search_product_action = $search_product_action;
+    }
+
+    public function index($request) 
+    {
+        if ($request) {
+            return $this->search_product_action->search($request);
+        }
+        return Product::with(['productImages', 'productCategory'])->get();
+    }
+
+
+    public function store($request) 
     {
         //
     }
 
 
-    public function store() 
+    /**
+     * Display the specified resource.
+     *
+     * @param  Product $product
+     * @return Product
+     */
+    public function show(Product $product): Product
+    {
+        return $product::with('productImages')->find($product->id);
+    }
+
+
+    public function update($request, $model) 
     {
         //
     }
 
 
-    public function show() 
-    {
-        //
-    }
-
-
-    public function update() 
-    {
-        //
-    }
-
-
-    public function destroy() 
+    public function destroy($model) 
     {
         //
     }

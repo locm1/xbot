@@ -1,29 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, TrashIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tab, Nav } from 'react-bootstrap';
 import CheckboxButton from "@/components/CheckboxButton";
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import ProductOverview from "@/pages/product/ProductOverview";
 import products from "@/data/products";
 import Select from 'react-select'
 
+import { showProduct } from "@/pages/product/api/ProductApiMethods";
+import { getCategories } from "@/pages/product/api/ProductCategoryApiMethods";
+
 export default () => {
-  const [transactions, setTransactions] = useState(products.map(t => ({ ...t, show: true })));
-  const [statusValue, setStatusValue] = useState("all");
-  const [overviews, setOverviews] = useState([
-    {id:1, title: '', content: ''}
-  ]);
-  const categories = [
-    {id: 1, name: 'ヘアケア'},
-    {id: 2, name: 'テスト'},
-    {id: 3, name: '野菜'},
-    {id: 4, name: 'テスト'},
-    {id: 5, name: '食品'},
-  ]
+  const { id } = useParams();
+  const history = useHistory();
+  const pathname = useLocation().pathname;
+
+  const [product, setProduct] = useState({
+    product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
+    price: '', overview: '', is_undisclosed: 0, is_unlimited: 0
+  });
+  const [categories, setCategories] = useState([]);
 
   const [relatedProducts, setRelatedProducts] = useState([
     {id: 1, name: 'シャンプー&トリートメント', discountPrice: 200},
@@ -35,6 +35,12 @@ export default () => {
   if (!relatedProducts.some(v => v.id === 0)) {
     relatedProducts.push({id: 0, name: '', discountPrice: 0})
   }
+
+
+  const handleChange = (e, input) => {
+    setProduct({...product, [input]: e.target.value})
+  };
+
 
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -57,45 +63,6 @@ export default () => {
           </Button>  
         </div>
       </Col>
-    );
-  };
-
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
-
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
-  };
-
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
-
-  const addProductOverview = () => {
-    const newOverview = {
-      id: overviews.length + 1,
-      title: '',
-      content: ''
-    };
-    setOverviews([...overviews, newOverview]);
-  };
-
-  const deleteProductOverview = (id) => {
-    setOverviews(
-      overviews.filter((overview, index) => (overview.id !== id))
     );
   };
 
@@ -147,11 +114,18 @@ export default () => {
     setRelatedProducts(newRelatedProducts);
   }
 
+  useEffect(() => {
+    if (pathname.includes('/edit')) {
+      showProduct(id, setProduct);
+    }
+    getCategories(setCategories)
+  }, []);
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">商品編集</h1>
+          <h1 className="page-title">{pathname.includes('/edit') ? '商品編集' : '商品登録'}</h1>
         </div>
       </div>
       <Tab.Container defaultActiveKey="products" className="mb-6">
@@ -189,14 +163,14 @@ export default () => {
                         <Col md={12} className="mb-3">
                           <Form.Group id="name">
                             <Form.Label>商品名</Form.Label>
-                            <Form.Control required type="text" name="name" placeholder="" />
+                            <Form.Control required type="text" name="name" value={product.name} onChange={(e) => handleChange(e, 'name')} placeholder="シャンプー" />
                           </Form.Group>
                         </Col>
                         <Col md={6} className="mb-3">
                           <Form.Group id="name">
                             <Form.Label>税率</Form.Label>
                             <InputGroup>
-                              <Form.Control required type="number" name="tax" placeholder="" />
+                              <Form.Control required type="number" name="tax_rate" value={product.tax_rate} onChange={(e) => handleChange(e, 'tax_rate')} placeholder="10" />
                               <InputGroup.Text>％</InputGroup.Text>
                             </InputGroup>
                           </Form.Group>
@@ -205,7 +179,7 @@ export default () => {
                           <Form.Group id="price">
                             <Form.Label>販売価格（税込）</Form.Label>
                             <InputGroup>
-                              <Form.Control required type="number" name="price" placeholder="" />
+                              <Form.Control required type="number" name="price" value={product.price} onChange={(e) => handleChange(e, 'price')} placeholder="3000" />
                               <InputGroup.Text>円</InputGroup.Text>
                             </InputGroup>
                           </Form.Group>
@@ -220,16 +194,18 @@ export default () => {
                             <Form.Control
                               disabled={disableInputForm}
                               type="number"
-                              placeholder=""
+                              placeholder="25"
                               id="stock_quantity"
                               name="stock_quantity"
+                              value={product.stock_quantity}
+                              onChange={(e) => handleChange(e, 'stock_quantity')}
                             />
                           </InputGroup>
                         </Col>
                         <Col md={6} className="mb-3">
                           <Form.Group id="category">
                             <Form.Label>カテゴリー</Form.Label>
-                            <Form.Select defaultValue="0" className="mb-0">
+                            <Form.Select defaultValue={product.product_category_id} className="mb-0" onChange={(e) => handleChange(e, 'product_category_id')}>
                               {
                                 categories.map((category, index) => <option key={index} value={category.id}>{category.name}</option>)
                               }
@@ -240,20 +216,28 @@ export default () => {
                       <Col md={12} className="mb-3">
                         <Form.Group id="overview">
                           <Form.Label>商品概要</Form.Label>
-                          <Form.Control as="textarea" rows="3" />
+                          <Form.Control as="textarea" rows="3" value={product.overview} onChange={(e) => handleChange(e, 'overview')} placeholder="商品の概要を入力してください" />
                         </Form.Group>
                       </Col>
                           <Form.Label>商品画像</Form.Label>
                       <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
                         <Form.Control {...getInputProps()} />
                         <div className="dz-default dz-message text-center">
-                          <p className="dz-button mb-0">画像をアップロード、もしくはドラッグアンドドロップをしてください。</p>
+                          <p className="dz-button mb-0">画像をアップロード、もしくはドラッグアンドドロップをしてください。（複数選択可）</p>
                         </div>
                       </Form>
                       <Row className="dropzone-files">
                         {files.map(file => <DropzoneFile key={file.path} {...file} />)}
                       </Row>
                     </Col>
+                    <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+                      <Button
+                        variant="primary"
+                        className="d-inline-flex align-items-center"
+                      >
+                        保存する
+                      </Button>
+                    </div>
                 </Card.Body>
               </Card>
             </Col>

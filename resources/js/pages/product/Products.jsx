@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -7,35 +7,29 @@ import { ProductsTable } from "@/pages/product/ProductsTable";
 import products from "@/data/products";
 import { Paths } from "@/paths";
 
+import { getProducts, searchProducts } from "@/pages/product/api/ProductApiMethods";
+import { getCategories } from "@/pages/product/api/ProductCategoryApiMethods";
+
 export default () => {
-  const [transactions, setTransactions] = useState(products.map(t => ({ ...t, show: true })));
-  const [searchValue, setSearchValue] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [searchValue, setSearchValue] = useState({
+    name: '', category: 1
+  });
 
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
+  const handleChange = (e, input) => {
+    setSearchValue({...searchValue, [input]: e.target.value})
 
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
+    const searchParams = {
+      params: {...searchValue, [input]: e.target.value}
+    };
+    searchProducts(searchParams, setProducts);
   };
 
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
+  useEffect(() => {
+    getProducts(setProducts)
+    getCategories(setCategories)
+  }, []);
 
   return (
     <>
@@ -59,45 +53,24 @@ export default () => {
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                placeholder="Search orders"
-                value={searchValue}
-                onChange={changeSearchValue}
+                placeholder="商品名"
+                value={searchValue.name}
+                onChange={(e) => handleChange(e, 'name')}
               />
             </InputGroup>
-            <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue}>
-              <option value="all">All</option>
-              <option value="paid">Paid</option>
-              <option value="due">Due</option>
-              <option value="cancelled">Cancelled</option>
+            <Form.Select value={searchValue.category} className="mb-0" onChange={(e) => handleChange(e, 'category')}>
+              <option>カテゴリー名</option>
+              {
+                categories.map((category, index) => <option key={category.id} value={category.id}>{category.name}</option>)
+              }
             </Form.Select>
-          </Col>
-          <Col xs={3} lg={4} className="d-flex justify-content-end">
-            <Dropdown as={ButtonGroup}>
-              <Dropdown.Toggle split as={Button} variant="link" className="text-dark m-0 p-1">
-                <CogIcon className="icon icon-sm" />
-                <span className="visually-hidden">Toggle Dropdown</span>
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-end pb-0">
-                <small className="ps-3 fw-bold text-dark">Show</small>
-                <Dropdown.Item className="d-flex align-items-center fw-bold">
-                  10 <CheckIcon className="icon icon-xxs ms-auto" />
-                </Dropdown.Item>
-                <Dropdown.Item className="fw-bold">20</Dropdown.Item>
-                <Dropdown.Item className="fw-bold rounded-bottom">30</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
           </Col>
         </Row>
       </div>
 
       <ProductsTable
-        products={transactions.filter(t => t.show)}
+        products={products}
       />
-      <div className="d-flex justify-content-end m-4 text-decoration-underline">
-        <Link to={Paths.Display.path}>
-          商品ディスプレイ変更
-        </Link>
-      </div>
     </>
   );
 };

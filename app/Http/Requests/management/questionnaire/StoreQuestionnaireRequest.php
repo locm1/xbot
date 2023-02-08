@@ -26,7 +26,7 @@ class StoreQuestionnaireRequest extends FormRequest
         return [
             'type' => 'required|numeric|between:1,5',
             'is_undisclosed' => 'required|boolean',
-            'display_order' => 'required|boolean',
+            'display_order' => 'required|numeric',
         ];
     }
 

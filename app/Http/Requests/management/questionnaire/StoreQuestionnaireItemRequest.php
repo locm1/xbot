@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\management\event;
+namespace App\Http\Requests\management\questionnaire;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateEventRequest extends FormRequest
+class StoreQuestionnaireItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UpdateEventRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,14 @@ class UpdateEventRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' =>'nullable',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => '選択項目名',
         ];
     }
 }

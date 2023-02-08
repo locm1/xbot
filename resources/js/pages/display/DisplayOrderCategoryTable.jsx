@@ -9,6 +9,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
+import { handleOnDragEnd } from "@/components/common/Sort";
+
 export default (props) => {
   const { categories, sortCategory, deleteCategory } = props;
 
@@ -35,17 +37,6 @@ export default (props) => {
     }
   }
 
-  function handleOnDragEnd(result) {
-    if (!result.destination) {
-      return;
-    }
-    console.log(result);
-    //reorderedItemがドラッグ&ドロップしたようそ
-    const [reorderedItem] = categories.splice(result.source.index, 1);
-    categories.splice(result.destination.index, 0, reorderedItem);
-    sortCategories(reorderedItem);
-  }
-
   const getIsUndisclosed = (isUndisclosed) => {
     switch (isUndisclosed) {
       case 1:
@@ -55,35 +46,8 @@ export default (props) => {
     }
   }
 
-
-  const sortCategories = async (reorderedItem) => {
-
-    const getAroundCategory = () => {
-      let prevItem = null;
-      let nextItem = null;
-      // 要素を先頭にドラッグ&ドロップした場合
-      if (reorderedItemIndex == 0) {
-        //先頭にした場合は、後ろの値だけ取ってくる
-        nextItem = categories[reorderedItemIndex + 1];
-      } else if (categories.slice(-1)[0].id == categories[reorderedItemIndex].id) {
-        // 配列の最後の要素とドラッグ&ドロップの要素が同じな場合（要素を最後にドラッグ&ドロップした場合）
-        //最後の場合は、前の値のみ取ってくる
-        prevItem = categories[reorderedItemIndex - 1];
-      } else {
-        prevItem = categories[reorderedItemIndex - 1];
-        nextItem = categories[reorderedItemIndex + 1];
-      }
-      return [prevItem, nextItem];
-    }
-
-    const reorderedItemIndex = categories.findIndex(({id}) => id === reorderedItem.id);
-    const [prevItem, nextItem] = getAroundCategory();
-    console.log(prevItem);
-    console.log(nextItem);
-    const displayOrder = {
-      begin_item: prevItem, end_item: nextItem
-    };
-    sortCategory(reorderedItem.id, displayOrder);
+  const onDragEnd = (result) => {
+    handleOnDragEnd(result, categories, sortCategory)
   }
 
   return (
@@ -99,7 +63,7 @@ export default (props) => {
               <th className="border-gray-200 ">削除</th>
             </tr>
           </thead>
-          <DragDropContext onDragEnd={handleOnDragEnd}>
+          <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="categories">
               {(provided) => (
                 <tbody className="border-0" {...provided.droppableProps} ref={provided.innerRef}>

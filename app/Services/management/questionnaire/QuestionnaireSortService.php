@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Services\management\category;
+namespace App\Services\management\questionnaire;
 
-use App\Models\ProductCategory;
+use App\Models\Questionnaire;
 use App\Services\common\DisplayOrderUtility;
 
-class ProductCategorySortService
+class QuestionnaireSortService
 {
     /**
      * sort category.
      *
      * @param \Illuminate\Http\Request  $request
-     * @param ProductCategory $category
+     * @param PQuestionnaire $questionnaire
      */
-    public function sort($request, ProductCategory $category) 
+    public function sort($request, Questionnaire $questionnaire) 
     {
         $begin_item = $request->begin_item;
         $end_item = $request->end_item;
         $display_order = DisplayOrderUtility::getDisplayOrder($begin_item, $end_item);
-        $category->update(['display_order' => $display_order]);
+        $questionnaire->update(['display_order' => $display_order]);
         return $display_order;
     }
 

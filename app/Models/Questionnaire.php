@@ -18,8 +18,8 @@ class Questionnaire extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function questionnaireTitles()
+    public function questionnaireItems()
     {
-        return $this->hasMany(QuestionnaireTitle::class);
+        return $this->hasMany(QuestionnaireItem::class);
     }
 }

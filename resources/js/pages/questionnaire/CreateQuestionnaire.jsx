@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from "react";
-import moment from "moment-timezone";
-import Datetime from "react-datetime";
+import React, { useState, useEffect, useRef } from "react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, Breadcrumb, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {
-  DropResult,
-  DroppableProvided,
-  DraggableProvided
-} from "react-beautiful-dnd";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
-import users from "@/data/users";
 import { Paths } from "@/paths";
 
-import { getQuestionnaires, storeQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
+import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard";
+import { handleOnDragEnd } from "@/components/common/Sort";
 
 export default () => {
-  const [isUndisclosed, setIsUndisclosed] = useState(false);
-  const [title, setTitle] = useState('');
-  const [questionnaires, setQuestionnaires] = useState([]);
+  const [questionnaires, setQuestionnaires] = useState([
+    {id: '', title: ''}
+  ]);
+  const ref = useRef();
   const types = [
     {title: 'テキストボックス', value: 1},
     {title: 'テキストエリア', value: 2},
@@ -29,20 +25,34 @@ export default () => {
     {title: 'プルダウン', value: 5},
   ];
 
-  const handleInputTypeChange = (e, id) => {
-    const newQuestionnaire = {
-      id: id,
-      title: title,
-      type: e.target.value,
-      order: id,
-    }
+
+  const update = (e, id, column) => {
+    const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
+    newQuestionnaire[`${column}`] = e.target.value;
+    updateQuestionnaire(id, newQuestionnaire);
     setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? newQuestionnaire : questionnaire)));
+    return newQuestionnaire;
   };
 
-  const handleTitleChange = (e, id) => {
+
+  const handleTypeChange = (e, id) => {
+    const newQuestionnaire = update(e, id, 'type');
+    //配列の中にあるかどうか
+    const types = [3, 4, 5];
+    const isIncludes = (arr, target) => arr.some(el => target.includes(el));
+    
+    //タイプを更新したタイミングで、アイテムが存在しなかった場合
+    if (Object.keys(newQuestionnaire.questionnaire_items).length == 0 && isIncludes(types, newQuestionnaire.type)) {
+      ref.current.addItem()
+    }
+
+  };
+
+  const handleClick = (id) => {
     const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
-    newQuestionnaire.title = e.target.value;
+    newQuestionnaire.is_undisclosed = !newQuestionnaire.is_undisclosed;
     setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? newQuestionnaire : questionnaire)));
+    updateQuestionnaire(id, newQuestionnaire);
   };
 
   const addQuestionnaire = () => {
@@ -54,22 +64,44 @@ export default () => {
       type: 1,
       display_order: displayOrder,
       is_undisclosed: 0,
+      questionnaire_titles: []
     }
     storeQuestionnaire(newQuestionnaire, questionnaires, setQuestionnaires)
   }
 
+  const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-primary me-3',
+      cancelButton: 'btn btn-gray'
+    },
+    buttonsStyling: false
+  }));
 
-  const deleteQuestionnaireCard = (id) => {
-    setQuestionnaires(questionnaires.filter((questionnaire) => (questionnaire.id !== id)));
-  }
+  const showConfirmDeleteModal = async (id) => {
+    const textMessage = "本当にこのアンケートを削除しますか？";
 
-  const handleOnDragEnd = (result) => {
-    // ドロップ先がない
-    if (!result.destination) {
-      return;
+    const result = await SwalWithBootstrapButtons.fire({
+      icon: "error",
+      title: "削除確認",
+      text: textMessage,
+      showCancelButton: true,
+      confirmButtonText: "削除",
+      cancelButtonText: "キャンセル"
+    });
+
+    if (result.isConfirmed) {
+      deleteQuestionnaire(id, completeDelete, setQuestionnaires, questionnaires)
     }
-    const [reorderedItem] = questionnaires.splice(result.source.index, 1);
-    questionnaires.splice(result.destination.index, 0, reorderedItem);
+  };
+
+  const completeDelete = async () => {
+    const confirmMessage = "選択したアンケートは削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    location.reload();
+  };
+
+  const onDragEnd = (result) => {
+    handleOnDragEnd(result, questionnaires, sortQuestionnaire)
   }
 
   useEffect(() => {
@@ -83,7 +115,7 @@ export default () => {
           <h1 className="page-title">アンケート管理</h1>
         </div>
       </div>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
+      <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="questionnaireCards">
           {(provided) => (
             <div className="questionnaireCards" {...provided.droppableProps} ref={provided.innerRef}>
@@ -93,23 +125,25 @@ export default () => {
                   <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} border="0" className="mb-4" key={index}>
                     <Card.Body>
                       <div className="d-flex align-items-center justify-content-between flex-row-reverse">
-                      <Button className="mb-3" variant="close" onClick={() => deleteQuestionnaireCard(questionnaire.id)} />
+                      <Button className="mb-3" variant="close" onClick={() => showConfirmDeleteModal(questionnaire.id)} />
                       <Form>
                         <Form.Check
-                        type="switch"
-                        label="非公開にする"
-                        id={`switch-${index}`}
-                        htmlFor={`switch-${index}`}
+                          checked={questionnaire.is_undisclosed}
+                          type="switch"
+                          label="非公開にする"
+                          id={`switch-${index}`}
+                          htmlFor={`switch-${index}`}
+                          onChange={ () => handleClick(questionnaire.id) }
                         />
                       </Form>
                       </div>
                         <Row>
                           <Col md={6} className="mb-3">
-                            <Form.Control as="textarea" value={questionnaire.title} onChange={e => handleTitleChange(e, questionnaire.id)} placeholder="無題の質問" />
+                            <Form.Control as="textarea" value={questionnaire.title} onChange={e => update(e, questionnaire.id, 'title')} placeholder="無題の質問" />
                           </Col>
                           <Col md={6} className="mb-3">
                             <Form.Group id="firstName">
-                              <Form.Select defaultValue={questionnaire.type} className="mb-0" onChange={(e) => handleInputTypeChange(e, questionnaire.id)}>
+                              <Form.Select defaultValue={questionnaire.type} className="mb-0" onChange={(e) => handleTypeChange(e, questionnaire.id)}>
                                 {
                                   types.map((type, index) => <option key={index} value={type.value}>{type.title}</option>)
                                 }
@@ -118,7 +152,7 @@ export default () => {
                           </Col>
                         </Row>
                         <Row className="mb-4 mb-lg-0 mt-4">
-                          <QuestionnaireCard key={index} questionnaire={questionnaire}/>
+                          <QuestionnaireCard key={index} questionnaire={questionnaire} ref={ref} />
                       </Row>
                     </Card.Body>
                   </Card>
@@ -130,7 +164,7 @@ export default () => {
           )}
         </Droppable>
       </DragDropContext>
-      <div className="privilege-button">
+      <div className="privilege-button my-4">
         <Button
           variant="outline-gray-500"
           className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"

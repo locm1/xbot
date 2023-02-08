@@ -17,6 +17,7 @@ use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
 use App\Http\Controllers\api\management\PostageController;
 use App\Http\Controllers\api\management\PrefectureController;
+use App\Http\Controllers\api\management\QuestionnaireController;
 use App\Http\Controllers\api\management\ReportController;
 use App\Http\Controllers\api\management\user\UserDemographicController;
 use App\Http\Controllers\api\management\MeController;
@@ -58,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('categories', ProductCategoryController::class);
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
         Route::get('prefectures', PrefectureController::class);
+        Route::apiResource('questionnaires', QuestionnaireController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

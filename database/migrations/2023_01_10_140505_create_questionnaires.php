@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('questionnaires', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->string('title', 255)->nullable(false);
+            $table->unsignedBigInteger('admin_id');
+            $table->foreign('admin_id')->references('id')->on('admins');
+            $table->text('title')->nullable(true);
             $table->tinyInteger('type')->nullable(false);
-            $table->integer('display_order')->nullable(false);
+            $table->float('display_order')->nullable(false);
+            $table->tinyInteger('is_undisclosed');
             $table->softDeletes();
             $table->timestamps();
         });

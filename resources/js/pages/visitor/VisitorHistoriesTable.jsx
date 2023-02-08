@@ -42,8 +42,7 @@ export const VisitorHistoriesTable = (props) => {
                 </div>
               )}
             <div className="d-block">
-              <span className="fw-bold">{name}</span>
-              {/* <div className="small text-gray">{email}</div> */}
+              <span className="fw-bold text-decoration-underline">{name}</span>
             </div>
           </Card.Link>
         </td>
@@ -63,10 +62,12 @@ export const VisitorHistoriesTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={link}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
-          </Link>
-          <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />
+          <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+            編集
+          </Button>
+          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+            削除
+          </Button>
         </td>
       </tr>
     );
@@ -106,7 +107,7 @@ export const VisitorHistoriesTable = (props) => {
             </Pagination>
           </Nav>
           <small className="fw-normal mt-4 mt-lg-0">
-            Showing <b>{totalvisitorHistories}</b> out of <b>25</b> entries
+            {totalvisitorHistories} 件中 1〜{totalvisitorHistories} 件表示
           </small>
         </Card.Footer>
       </Card.Body>

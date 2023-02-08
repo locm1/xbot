@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('questionnaire_id');
             $table->foreign('questionnaire_id')->references('id')->on('questionnaires');
             $table->string('name', 255)->nullable(false);
-            $table->integer('order')->nullable(false);
             $table->softDeletes();
             $table->timestamps();
         });

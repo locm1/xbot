@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
@@ -14,14 +14,13 @@ import {
 import users from "@/data/users";
 import { Paths } from "@/paths";
 
+import { getQuestionnaires, storeQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard";
 
 export default () => {
-  const [isTitleEditable, setIsTitleEditable] = useState(false);
+  const [isUndisclosed, setIsUndisclosed] = useState(false);
   const [title, setTitle] = useState('');
-  const [questionnaires, setQuestionnaires] = useState([
-    {id: 1, title: title, type: 1, order: 1}
-  ]);
+  const [questionnaires, setQuestionnaires] = useState([]);
   const types = [
     {title: 'テキストボックス', value: 1},
     {title: 'テキストエリア', value: 2},
@@ -29,10 +28,6 @@ export default () => {
     {title: 'チェックボックス', value: 4},
     {title: 'プルダウン', value: 5},
   ];
-
-  const toggleIsTitleEditable = () => {
-    setIsTitleEditable(!isTitleEditable);
-  };
 
   const handleInputTypeChange = (e, id) => {
     const newQuestionnaire = {
@@ -51,15 +46,18 @@ export default () => {
   };
 
   const addQuestionnaire = () => {
-    const id = (questionnaires.length === 0) ? 1 : questionnaires.slice(-1)[0].id + 1;
-    const newQuestionnaires = {
-      "id": id,
-      "title": '',
-      "type": 1,
-      "order": id
+    const lastQuestionnaire = questionnaires.slice(-1)[0];
+    const displayOrder = (typeof lastQuestionnaire === "undefined") ? 1.0 : lastQuestionnaire.display_order + 1.0
+
+    const newQuestionnaire = {
+      title: '',
+      type: 1,
+      display_order: displayOrder,
+      is_undisclosed: 0,
     }
-    setQuestionnaires([...questionnaires, newQuestionnaires]);
+    storeQuestionnaire(newQuestionnaire, questionnaires, setQuestionnaires)
   }
+
 
   const deleteQuestionnaireCard = (id) => {
     setQuestionnaires(questionnaires.filter((questionnaire) => (questionnaire.id !== id)));
@@ -74,7 +72,9 @@ export default () => {
     questionnaires.splice(result.destination.index, 0, reorderedItem);
   }
 
-  const test = () => {console.log(questionnaires);}
+  useEffect(() => {
+    getQuestionnaires(setQuestionnaires)
+  }, []);
 
   return (
     <>
@@ -137,11 +137,6 @@ export default () => {
           onClick={addQuestionnaire}
         >
           <PlusIcon className="icon icon-xs me-2" /> 質問を追加
-        </Button>
-      </div>
-      <div className="d-flex flex-row-reverse mt-3">
-        <Button as={Link} to={_} variant="gray-800" className="me-2">
-          更新する
         </Button>
       </div>
     </>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 
@@ -76,6 +76,7 @@ import Topbar from '@/components/Topbar';
 
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
+  const history = useHistory();
   const resize = () => {
     var resize = setInterval(() => {
       window.dispatchEvent(new Event('resize'));
@@ -116,43 +117,35 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     localStorage.setItem('settingsVisible', !showSettings);
   }
 
-  //2時間経過後に再度ログインチェックを行う
-  const authCheck = async () => {
-    await axios.get('api/v1/user')
-    .then((response) => {
-      const xsrfToken = Cookies.get('XSRF-TOKEN')
-      Cookies.set('TOKEN', xsrfToken, { expires: 120/1440 })
+  const [admin, setAdmin] = useState(
+    {id: 1, login_id: 'admin', name: '管理者用アカウント', role: 1,}
+  );
+  useEffect(() => {
+    axios.get('/api/v1/management/me').then(response => {
+      setAdmin(response.data.admin);
+    }).catch(error => {
+      console.error(error);
+      history.push(Paths.Signin.path);
     })
-    .catch(error => {
-        console.error(error);
-        return <Redirect to={Paths.Signin.path} />;
-    });
-  };
+  }, [])
 
-  //認証しているかどうか
-  const isAuth = Cookies.get('TOKEN');
+  return (
+    <Route {...rest} render={props => (
+      <>
+        <Sidebar
+          contracted={contractSidebar}
+          onMouseEnter={toggleMouseOver}
+          onMouseLeave={toggleMouseOver}
+        />
 
-  if (isAuth) {
-    return (
-      <Route {...rest} render={props => (
-        <>
-          <Sidebar
-            contracted={contractSidebar}
-            onMouseEnter={toggleMouseOver}
-            onMouseLeave={toggleMouseOver}
-          />
-  
-          <main className="content">
-            <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} />
-            <Component {...props} />
-          </main>
-        </>
-      )}
-      />
-    );
-  } else {
-    authCheck();
-  }
+        <main className="content">
+          <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} admin={admin} />
+          <Component {...props} />
+        </main>
+      </>
+    )}
+    />
+  );
 };
 
 const LiffRoute = ({ component: Component, ...rest }) => {
@@ -171,7 +164,8 @@ const GuestRoute = ({ component: Component, ...rest }) => {
   //認証しているかどうか
   const isAuth = Cookies.get('TOKEN');
 
-  return isAuth ? <Redirect to={Paths.DashboardOverview.path} /> : <Route {...rest} render={props => (<Component {...props} />)} />;
+  // return isAuth ? <Redirect to={Paths.DashboardOverview.path} /> : <Route {...rest} render={props => (<Component {...props} />)} />;
+  return <Route {...rest} render={props => (<Component {...props} />)} />;
 }
 
 

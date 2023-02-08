@@ -19,6 +19,7 @@ use App\Http\Controllers\api\management\PostageController;
 use App\Http\Controllers\api\management\PrefectureController;
 use App\Http\Controllers\api\management\ReportController;
 use App\Http\Controllers\api\management\user\UserDemographicController;
+use App\Http\Controllers\api\management\MeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,7 @@ Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'v1/management'], function() {
+        Route::get('me', MeController::class);
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
         Route::get('demographic', UserDemographicController::class);

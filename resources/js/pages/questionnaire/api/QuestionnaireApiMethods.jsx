@@ -40,3 +40,15 @@ export const deleteQuestionnaire = async (id, completeDelete, setQuestionnaires,
       console.error(error);
   });
 };
+
+
+export const sortQuestionnaire = async (id, formValue) => {
+  await axios.put(`/api/v1/management/questionnaires/${id}/sort`, formValue)
+  .then((response) => {
+    const displayOrder = response.data.display_order;
+    console.log(displayOrder);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};

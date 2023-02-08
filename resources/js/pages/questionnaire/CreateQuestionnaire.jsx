@@ -8,8 +8,9 @@ import withReactContent from "sweetalert2-react-content";
 
 import { Paths } from "@/paths";
 
-import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
+import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard";
+import { handleOnDragEnd } from "@/components/common/Sort";
 
 export default () => {
   const [questionnaires, setQuestionnaires] = useState([
@@ -99,13 +100,8 @@ export default () => {
     location.reload();
   };
 
-  const handleOnDragEnd = (result) => {
-    // ドロップ先がない
-    if (!result.destination) {
-      return;
-    }
-    const [reorderedItem] = questionnaires.splice(result.source.index, 1);
-    questionnaires.splice(result.destination.index, 0, reorderedItem);
+  const onDragEnd = (result) => {
+    handleOnDragEnd(result, questionnaires, sortQuestionnaire)
   }
 
   useEffect(() => {
@@ -119,7 +115,7 @@ export default () => {
           <h1 className="page-title">アンケート管理</h1>
         </div>
       </div>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
+      <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="questionnaireCards">
           {(provided) => (
             <div className="questionnaireCards" {...provided.droppableProps} ref={provided.innerRef}>

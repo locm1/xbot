@@ -1,7 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\management\AdminController;
-use App\Http\Controllers\api\management\CategoryItemController;
 use App\Http\Controllers\api\management\EventCalendarController;
 use App\Http\Controllers\api\management\EventController;
 use App\Http\Controllers\api\management\user\UserController;
@@ -10,8 +11,6 @@ use App\Http\Controllers\api\management\privilege\PrivilegeController;
 use App\Http\Controllers\api\management\privilege\PrivilegeItemController;
 use App\Http\Controllers\api\management\category\ProductCategoryController;
 use App\Http\Controllers\api\management\category\ProductCategorySortController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\management\TermsOfServiceController;
 use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
@@ -22,6 +21,7 @@ use App\Http\Controllers\api\management\questionnaire\QuestionnaireItemControlle
 use App\Http\Controllers\api\management\ReportController;
 use App\Http\Controllers\api\management\user\UserDemographicController;
 use App\Http\Controllers\api\management\MeController;
+use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('tags', TagController::class);
         Route::apiResource('postages', PostageController::class)->only([
             'index', 'store'
-        ]);;
+        ]);
         Route::put('postages', [PostageController::class, 'update']);
         Route::apiResource('privileges', PrivilegeController::class);
         Route::apiResource('privileges/{privilege}/items', PrivilegeItemController::class);
@@ -61,7 +61,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
         Route::get('prefectures', PrefectureController::class);
         Route::apiResource('questionnaires', QuestionnaireController::class);
-        Route::apiResource('questionnaires/{questionnaire}/items', QuestionnaireItemController::class);
+        Route::apiResource('questionnaires/{questionnaire}/items', QuestionnaireItemController::class, array("as" => "api"))->only([
+            'store', 'update', 'delete'
+        ]);
+        Route::put('questionnaires/{questionnaire}/sort', QuestionnaireSortController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

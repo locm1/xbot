@@ -40,13 +40,13 @@ export default () => {
   const [birthDate, setBirthDate] = useState('');
 
   const handleChange = (e, input) => {
-    setUser({...user, [input]: e.target.value})
+    setUser({...user, [input]: e})
     console.log(user);
   };
 
   const saveUser = async() => {
     await axios
-    .put(`/api/v1/users/${id}`, user)
+    .put(`/api/v1/management/users/${id}`, user)
     .then((res) => {
       alert('更新しました');
       console.log(res);
@@ -65,6 +65,7 @@ export default () => {
         throw new Error("APIが正しく取得されませんでした");
       } else {
         setUser(res.data.user);
+        console.log(user);
       }
     });
   }, []);
@@ -73,11 +74,6 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-        </div>
-        <div className="d-flex">
-          <Button variant="gray-800" className="me-2" onClick={saveUser}>
-            保存する
-          </Button>
         </div>
       </div>
 
@@ -100,7 +96,7 @@ export default () => {
               <Tab.Pane eventKey="user_info" className="py-4">
                 <Row>
                   <Col xs={12} xl={8}>
-                    <UserInfoForm handleChange={handleChange} {...user} setBirthDate={setBirthDate} birthDate={birthDate} />
+                    <UserInfoForm handleChange={handleChange} saveUser={saveUser} {...user} setBirthDate={setBirthDate} birthDate={birthDate} />
                     <QuestionnaireForm />
                   </Col>
                   <Col xs={12} xl={4}>

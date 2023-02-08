@@ -10,6 +10,7 @@ import Profile3 from "@img/img/team/profile-picture-3.jpg";
 import Cookies from 'js-cookie';
 import { Paths } from "@/paths";
 import { Link, useHistory } from 'react-router-dom';
+import axios from "axios";
 
 
 export default (props) => {
@@ -66,6 +67,8 @@ export default (props) => {
       console.log(error);
     })
   };
+  const [adminName, setAdminName] = useState(props.admin.name);
+
 
   return (
     <Navbar expand variant="dark" className="navbar-top navbar-dashboard ps-0 pe-2 pb-0">
@@ -88,7 +91,7 @@ export default (props) => {
               <Dropdown.Toggle as={Nav.Link} className="pt-1 px-0">
                 <div className="media d-flex align-items-center">
                   <div className="media-body ms-2 text-dark align-items-center d-none d-lg-block">
-                    <span className="mb-0 font-small fw-bold text-gray-900">Bonnie Green</span>
+                    <span className="mb-0 font-small fw-bold text-gray-900">{adminName}</span>
                   </div>
                 </div>
               </Dropdown.Toggle>

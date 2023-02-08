@@ -60,7 +60,26 @@ class UserService
      */
     public function update($request, Model $user): array
     {
-        $data = $request->all();
+        $data = $request->only([
+            'address',
+            'birth_date',
+            'building_name',
+            'city',
+            'first_name',
+            'first_name_kana',
+            'gender',
+            'img_path',
+            'is_blocked',
+            'is_registered',
+            'last_name',
+            'last_name_kana',
+            'line_id',
+            'nickname',
+            'occupation',
+            'prefecture',
+            'tel',
+            'zipcode',
+        ]);
         $user->update($data);
         return $data;
     }

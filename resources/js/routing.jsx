@@ -170,6 +170,7 @@ const GuestRoute = ({ component: Component, ...rest }) => {
       console.error(error);
     })
   }, [])
+  console.log("でべそ");
   return <Route {...rest} render={props => (<Component {...props} />)} />;
 }
 

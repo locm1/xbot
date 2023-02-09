@@ -22,6 +22,7 @@ use App\Http\Controllers\api\management\ReportController;
 use App\Http\Controllers\api\management\user\UserDemographicController;
 use App\Http\Controllers\api\management\MeController;
 use App\Http\Controllers\api\management\OccupationController;
+use App\Http\Controllers\api\management\ProductController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
 
 /*
@@ -67,6 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
             'store', 'update', 'delete'
         ]);
         Route::put('questionnaires/{questionnaire}/sort', QuestionnaireSortController::class);
+        Route::apiResource('products', ProductController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

@@ -4,43 +4,18 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Modal, ProgressBar, Pa
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 
+import pudding from "@img/img/products/pudding.jpeg"
+
 
 export const ProductsTable = (props) => {
   const { products } = props;
   const totalProducts = products.length;
 
-  const getCategoryClass = (category) => {
-    switch (category) {
-      case 1:
-        return {
-          class: 'secondary',
-          name: 'ヘアケア'
-        }
-      case 2:
-        return {
-          class: 'success',
-          name: 'テスト'
-        }
-      case 3:
-        return {
-          class: 'danger',
-          name: '野菜'
-        }
-      case 4:
-        return {
-          class: 'warning',
-          name: 'テスト'
-        }
-      case 5:
-        return {
-          class: 'info',
-          name: '食品'
-        }
-      default:
-        return {
-          class: 'primary',
-          name: 'テスト'
-        }
+  const getImages = (image) => {
+    if (image) {
+      return image.image_path
+    } else {
+      return pudding;
     }
   }
 
@@ -54,39 +29,39 @@ export const ProductsTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { category, name, price, stockQuantity, isUndisclosed, img, id } = props;
+    const { name, price, stock_quantity, is_undisclosed, id, product_images, product_category } = props;
     const link = Paths.EditProduct.path.replace(':id', id);
 
     return (
-      <tr className={`border-bottom product-table-tr ${isUndisclosed == 1 ? "bg-gray-200" : ""}`}>
+      <tr className={`border-bottom product-table-tr ${is_undisclosed == 1 ? "bg-gray-200" : ""}`}>
         <td>
           <div className="d-flex align-items-center">
-            <Image src={img} className="me-3 product-image"/>
+            <Image src={getImages(product_images[0])} className="me-3 product-image"/>
             <div className="fw-bold">
               <Link to={link} className="fw-bolder">
-                <span className="">{name}</span>
+                <span className="text-decoration-underline">{name}</span>
               </Link>
             </div>
           </div>
         </td>
         <td>
-          <Badge bg={getCategoryClass(category).class} className="me-1 product-category-badge fw-normal">
-            {getCategoryClass(category).name}
-          </Badge>
+          <div style={{backgroundColor: product_category.color}} className="me-1 product-category-badge fw-normal">
+            {product_category.name}
+          </div>
         </td>
         <td>
           <span className="fw-normal">
-            {price}
+          {price.toLocaleString()}円
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {stockQuantity}
+            {stock_quantity}
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {getIsUndisclosed(isUndisclosed)}
+            {getIsUndisclosed(is_undisclosed)}
           </span>
         </td>
         <td>
@@ -117,26 +92,6 @@ export const ProductsTable = (props) => {
             {products.map(t => <TableRow key={`products-${t.id}`} {...t} />)}
           </tbody>
         </Table>
-        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                Previous
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                Next
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal mt-4 mt-lg-0">
-            Showing <b>{totalProducts}</b> out of <b>25</b> entries
-          </small>
-        </Card.Footer>
       </Card.Body>
     </Card>
   );

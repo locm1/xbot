@@ -16,7 +16,6 @@ class SearchUserAction
 
         if ($request->name) {
             $replace_name = str_replace(array(' ', '　'), '', $request->name);
-            Log::debug(print_r($replace_name, true));
             $this->searchByName($query, $replace_name);
         }
 

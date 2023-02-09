@@ -34,17 +34,13 @@ export const PurchaseTimeForm = (props) => {
   }
 
   return (
-    <Card border="0" className="shadow">
-      <Card.Header className="border-bottom">
-        <h2 className="fs-5 fw-bold mb-0">
-          {title}
-        </h2>
-      </Card.Header>
-      <Card.Body className="py-0">
-        <ListGroup className="list-group-flush">
-          {purchases.map(purchase => <PurchaseItem key={`purchaser-${purchase.id}`} {...purchase} />)}
-        </ListGroup>
-      </Card.Body>
-    </Card>
+    <>
+      <h2 className="fs-5 fw-bold mb-0">
+        {title}
+      </h2>
+      <ListGroup className="list-group-flush">
+        {purchases.map(purchase => <PurchaseItem key={`purchaser-${purchase.id}`} {...purchase} />)}
+      </ListGroup>
+    </>
   );
 };

@@ -17,6 +17,9 @@ import authorEarnings from "@/data/authorEarnings";
 import { productNotifications } from "@/data/notifications";
 import { GoogleIcon, TwitterIcon, YoutubeIcon } from "@/components/BrandIcons";
 
+import { PurchaseTimeForm } from "@/pages/user/PurchaseTimeForm";
+import { LineBlockInfoForm } from "@/pages/user/LineBlockInfoForm";
+
 const PeriodOverviewWidget = (props) => {
   const { category, title, period, percentage, ChartComponent = CustomersChart } = props;
   const PercentageIcon = percentage < 0 ? ChevronDownIcon : ChevronUpIcon;
@@ -71,8 +74,8 @@ export const CardWidget = (props) => {
 };
 
 export const ProfileCardWidget = (props) => {
-  const { first_name, last_name, img_path, occupation, area } = props;
-
+  const { first_name, last_name, img_path, occupation, area, is_blocked, block_date } = props;
+  console.log(props)
   return (
     <Card border="0" className="shadow text-center p-0">
       <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />
@@ -85,6 +88,12 @@ export const ProfileCardWidget = (props) => {
         <Card.Text className="text-gray mb-4">
           {area}
         </Card.Text>
+        <div className="py-5">
+          <PurchaseTimeForm title="来店 / ポイント / 購入回数" />
+        </div>
+        <div className="py-5">
+          <LineBlockInfoForm title="ブロック情報" is_blocked={is_blocked} block_date={block_date} />
+        </div>
       </Card.Body>
     </Card>
   );

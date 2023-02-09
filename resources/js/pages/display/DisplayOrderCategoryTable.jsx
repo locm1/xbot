@@ -96,7 +96,9 @@ export default (props) => {
                                 </span>
                               </td>
                               <td style={{width: "150px"}} className="">
-                                <TrashIcon role="button" onClick={() => confirmDeleteCategory(t.id)} className="icon icon-xs text-danger me-2" />
+                                <Button onClick={() => confirmDeleteCategory(t.id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+                                  削除
+                                </Button>
                               </td>
                               {provided.placeholder}
                             </tr>

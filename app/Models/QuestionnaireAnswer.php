@@ -16,8 +16,8 @@ class QuestionnaireAnswer extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function questionnaireAnswer()
+    public function questionnaire()
     {
-        return $this->hasMany(QuestionnaireAnswerItem::class);
+        return $this->belongsTo(Questionnaire::class);
     }
 }

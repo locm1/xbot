@@ -24,6 +24,8 @@ use App\Http\Controllers\api\management\MeController;
 use App\Http\Controllers\api\management\OccupationController;
 use App\Http\Controllers\api\management\ProductController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
+use App\Http\Controllers\api\management\QuestionnaireAnswerController;
+use App\Models\QuestionnaireAnswer;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('me', MeController::class);
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
+        Route::apiResource('users/{user}/questionnaire', QuestionnaireAnswerController::class);
         Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);
         Route::apiResource('terms-of-service', TermsOfServiceController::class);

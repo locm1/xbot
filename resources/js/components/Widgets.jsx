@@ -75,7 +75,6 @@ export const CardWidget = (props) => {
 
 export const ProfileCardWidget = (props) => {
   const { first_name, last_name, img_path, occupation, area, is_blocked, block_date } = props;
-  console.log(props)
   return (
     <Card border="0" className="shadow text-center p-0">
       <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />

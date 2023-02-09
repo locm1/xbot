@@ -1,12 +1,14 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, Image, Button, InputGroup } from 'react-bootstrap';
 
-export const DropFilesForm = () => {
+import QuestionnaireFormItem from "./QuestionnaireFormItem";
+
+export const DropFilesForm = (props) => {
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -45,8 +47,19 @@ export const DropFilesForm = () => {
 };
 
 
-export const QuestionnaireForm = () => {
+export const QuestionnaireForm = (props) => {
   const [birthday, setBirthday] = useState("");
+  const [questionnaireAnswers, setQuestionnaireAnswers] = useState([]);
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${props.userId}/questionnaire`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setQuestionnaireAnswers(res.data.questionnaireAnswers);
+      }
+    });
+  }, []);
 
   return (
     <Card border="0" className="shadow mb-4">
@@ -54,46 +67,9 @@ export const QuestionnaireForm = () => {
         <h5 className="mb-4 border-bottom pb-3">アンケート</h5>
         <Form>
           <Row>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>選択回答式でのアンケート</Form.Label>
-                <Row>
-                  <Col md={3} xs={6}>
-                    <Form.Check type="radio" name="radio" label="項目1" id="radio1" htmlFor="radio1" />
-                  </Col>
-                  <Col md={3} xs={6}>
-                    <Form.Check type="radio" name="radio" label="項目2" id="radio2" htmlFor="radio2" />
-                  </Col>
-                </Row>
-              </Form.Group>
-            </Col>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>選択回答式でのアンケート</Form.Label>
-                <Row>
-                  <Col md={3}>
-                    <Form.Check label="項目1" id="checkbox1" htmlFor="checkbox1" />
-                  </Col>
-                  <Col md={3}>
-                    <Form.Check label="項目1" id="checkbox1" htmlFor="checkbox1" />
-                  </Col>
-                  <Col md={3}>
-                    <Form.Check label="項目1" id="checkbox1" htmlFor="checkbox1" />
-                  </Col>
-                  <Col md={3}>
-                    <Form.Check label="項目1" id="checkbox1" htmlFor="checkbox1" />
-                  </Col>
-                </Row>
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row className="align-items-center">
-            <Col md={12} className="mb-3">
-              <Form.Group id="birthday">
-                <Form.Label>フリー回答式のアンケート</Form.Label>
-                <Form.Control as="textarea" rows="3" />
-              </Form.Group>
-            </Col>
+            {questionnaireAnswers.map((v, k) => (
+              <QuestionnaireFormItem key={`questionnaireFormItem-${k}`} {...v} />
+            ))}
           </Row>
         </Form>
       </Card.Body>

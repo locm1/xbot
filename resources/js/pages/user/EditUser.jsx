@@ -98,6 +98,11 @@ export default () => {
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
+                <Nav.Link eventKey="questionnaire" className="mb-sm-3 mb-md-0">
+                  <UserIcon className="icon icon-xs me-2" /> アンケート回答一覧
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
                 <Nav.Link eventKey="history" className="mb-sm-3 mb-md-0">
                   <UserIcon className="icon icon-xs me-2" /> 履歴一覧
                 </Nav.Link>
@@ -115,7 +120,6 @@ export default () => {
                       birthDate={birthDate}
                       occupations={occupations}
                     />  
-                    <QuestionnaireForm />
                   </Col>
                   <Col xs={12} xl={4}>
                     <Row>
@@ -152,6 +156,9 @@ export default () => {
                     <HistoryTable title="取置履歴" headers={reserveHistoryHeaders} histories={reserves} />
                   </Col>
                 </Row>
+              </Tab.Pane>
+              <Tab.Pane eventKey="questionnaire" className="py-4">
+                <QuestionnaireForm userId={id} />
               </Tab.Pane>
             </Tab.Content>
           </Col>

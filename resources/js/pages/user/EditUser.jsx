@@ -122,12 +122,6 @@ export default () => {
                       <Col xs={12} className="mb-4">
                         <ProfileCardWidget {...user} />
                       </Col>
-                      <Col xs={12} className="mb-4">
-                        <PurchaseTimeForm title="来店 / ポイント / 購入回数" />
-                      </Col>
-                      <Col xs={12} className="mb-4">
-                        <LineBlockInfoForm title="ブロック情報" {...user} />
-                      </Col>
                     </Row>
                   </Col>
                 </Row>

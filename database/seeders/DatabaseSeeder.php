@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Admin;
 use App\Models\Event;
 use App\Models\Privilege;
 use App\Models\PrivilegeItem;
@@ -16,6 +17,9 @@ use Database\Factories\ProductContentFactory;
 use Database\Factories\ProductImageFactory;
 use App\Models\EventUser;
 use App\Models\Occupation;
+use App\Models\Questionnaire;
+use App\Models\QuestionnaireAnswer;
+use App\Models\QuestionnaireItem;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -32,7 +36,7 @@ class DatabaseSeeder extends Seeder
             AdminTableSeeder::class,
             PrefecturesTableSeeder::class
         ]);
-        
+        Admin::factory(10)->create();
         Occupation::factory(10)->create();
         User::factory(100)->create();
         Event::factory(20)->create();
@@ -44,5 +48,8 @@ class DatabaseSeeder extends Seeder
         ProductImage::factory(70)->create();
         ProductContent::factory(70)->create();
         EventUser::factory(50)->create();
+        Questionnaire::factory(10)->create();
+        QuestionnaireItem::factory(30)->create();
+        QuestionnaireAnswer::factory(100)->create();
     }
 }

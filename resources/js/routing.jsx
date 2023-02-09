@@ -127,7 +127,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
       console.error(error);
       history.push(Paths.Signin.path);
     })
-  })
+  }, [])
 
   return (
     <Route {...rest} render={props => (
@@ -169,8 +169,7 @@ const GuestRoute = ({ component: Component, ...rest }) => {
     }).catch(error => {
       console.error(error);
     })
-  }, [])
-  console.log("でべそ");
+  }, []);
   return <Route {...rest} render={props => (<Component {...props} />)} />;
 }
 

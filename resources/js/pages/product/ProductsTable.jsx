@@ -37,7 +37,7 @@ export const ProductsTable = (props) => {
         <td>
           <div className="d-flex align-items-center">
             <Image src={getImages(product_images[0])} className="me-3 product-image"/>
-            <div className="fw-bold">
+            <div className="fw-bold product-name">
               <Link to={link} className="fw-bolder">
                 <span className="text-decoration-underline">{name}</span>
               </Link>
@@ -65,10 +65,12 @@ export const ProductsTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={link}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
-          </Link>
-          <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />
+          <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+            編集
+          </Button>
+          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+            削除
+          </Button>
         </td>
       </tr>
     );

@@ -127,7 +127,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
       console.error(error);
       history.push(Paths.Signin.path);
     })
-  }, [])
+  })
 
   return (
     <Route {...rest} render={props => (
@@ -160,12 +160,15 @@ const LiffRoute = ({ component: Component, ...rest }) => {
   );
 }
 
-const GuestRoute = ({ component: Component, ...rest }) => {
+const GuestRoute =  async ({ component: Component, ...rest }) => {
   //認証しているかどうか
-  const isAuth = Cookies.get('TOKEN');
-
-  // return isAuth ? <Redirect to={Paths.DashboardOverview.path} /> : <Route {...rest} render={props => (<Component {...props} />)} />;
-  return <Route {...rest} render={props => (<Component {...props} />)} />;
+  await axios.get('/api/v1/management/me').then(response => {
+    return <Redirect to={Paths.DashboardOverview.path} />;
+    //return <Route {...rest} render={props => (<Component {...props} />)} />
+  }).catch(error => {
+    console.log(error);
+    return <Route {...rest} render={props => (<Component {...props} />)} />
+  })
 }
 
 

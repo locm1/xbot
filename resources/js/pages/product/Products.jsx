@@ -58,7 +58,7 @@ export default () => {
                 onChange={(e) => handleChange(e, 'name')}
               />
             </InputGroup>
-            <Form.Select value={searchValue.category} className="mb-0" onChange={(e) => handleChange(e, 'category')}>
+            <Form.Select defaultValue={searchValue.category} className="mb-0" onChange={(e) => handleChange(e, 'category')}>
               <option>カテゴリー名</option>
               {
                 categories.map((category, index) => <option key={category.id} value={category.id}>{category.name}</option>)

@@ -195,3 +195,10 @@ $base_color: #707070;
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.product-name {
+  width: 20vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

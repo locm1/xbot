@@ -9,9 +9,9 @@ import { Col, Row, Card, ListGroup } from 'react-bootstrap';
 export const LineBlockInfoForm = (props) => {
   const { title, is_blocked, block_date } = props;
 
-  const blockVariant = is_blocked === 1 ? "ブロック中" : "";
+  const blockVariant = is_blocked === 1 ? "ブロック中" : "友達追加済";
   const purchases = [
-    {"id": 1, "name": "ブロック", "value": blockVariant},
+    {"id": 1, "name": "ブロック状態", "value": blockVariant},
     {"id": 2, "name": "ブロック日", "value": block_date},
   ]
 
@@ -35,17 +35,13 @@ export const LineBlockInfoForm = (props) => {
   }
 
   return (
-    <Card border="0" className="shadow">
-      <Card.Header className="border-bottom">
+    <>
         <h2 className="fs-5 fw-bold mb-0">
           {title}
         </h2>
-      </Card.Header>
-      <Card.Body className="py-0">
         <ListGroup className="list-group-flush">
           {purchases.map(purchase => <PurchaseItem key={`purchaser-${purchase.id}`} {...purchase} />)}
         </ListGroup>
-      </Card.Body>
-    </Card>
+    </>
   );
 };

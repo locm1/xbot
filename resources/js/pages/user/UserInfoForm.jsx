@@ -53,7 +53,7 @@ export const DropFilesForm = () => {
 export const UserInfoForm = (props) => {
   const { 
     first_name, last_name, first_name_kana, last_name_kana, birthDate, birth_date, gender, 
-    zipcode, prefecture, city, address, building_name, tel, occupation, setBirthDate, saveUser
+    zipcode, prefecture, city, address, building_name, tel, occupation_id, setBirthDate, saveUser, occupations
   } = props;
 
   const birthDateOptions = {
@@ -64,7 +64,8 @@ export const UserInfoForm = (props) => {
     '中央区', '北区', '東区', '白石区', '厚別区', '豊平区', 
     '清田区', '南区', '西区', '手稲区', '札幌市以外', '道外'
   ];
-  const occupations = ['会社員', '公務員', '自営業', '会社役員', '自由業', '専業主婦(夫)', '学生', 'パート・アルバイト', '無職'];
+
+
 
   return (
     <Card border="0" className="shadow mb-4">
@@ -182,10 +183,11 @@ export const UserInfoForm = (props) => {
             </Col>
             <Col md={4} className="mb-3">
               <Form.Group id="phone">
-                <Form.Label>ご職業</Form.Label>
-                <Form.Select value={occupation ?? ''} className="mb-0" name="occupation" onChange={(e) => props.handleChange(e.target.value, 'occupation')}>
+                <Form.Label>職業</Form.Label>
+                <Form.Select value={occupation_id ?? ''} className="mb-0" name="occupation" onChange={(e) => props.handleChange(e.target.value, 'occupation')}>
+                  <option>選択してください</option>
                   {
-                    occupations.map((occupation, index) => <option key={index} value={index + 1}>{occupation}</option>)
+                    occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)
                   }
                 </Form.Select>
               </Form.Group>

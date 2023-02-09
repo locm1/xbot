@@ -21,6 +21,7 @@ export default () => {
   const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '金額', '期日'];
   const inviteHistoryHeaders = ['紹介日時', '紹介者'];
   const visitorHistoryHeaders = ['来店日時', 'メモ'];
+  const [occupations, setOccupations] = useState([]);
 
   const orders = [
     {id: 1, createdAt: '2022年11月18日 21:14', name: 'トリートメント 、 コスメセット', address: '北海道札幌市白石区菊水九条4-1-708'},
@@ -65,10 +66,20 @@ export default () => {
         throw new Error("APIが正しく取得されませんでした");
       } else {
         setUser(res.data.user);
-        console.log(user);
       }
     });
   }, []);
+
+  useEffect(() => {
+    axios.get(`/api/v1/management/occupations`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setOccupations(res.data.occupations);
+      }
+    });
+  }, [])
 
   return (
     <>
@@ -96,7 +107,14 @@ export default () => {
               <Tab.Pane eventKey="user_info" className="py-4">
                 <Row>
                   <Col xs={12} xl={8}>
-                    <UserInfoForm handleChange={handleChange} saveUser={saveUser} {...user} setBirthDate={setBirthDate} birthDate={birthDate} />
+                    <UserInfoForm 
+                      handleChange={handleChange}
+                      saveUser={saveUser}
+                      {...user}
+                      setBirthDate={setBirthDate}
+                      birthDate={birthDate}
+                      occupations={occupations}
+                    />  
                     <QuestionnaireForm />
                   </Col>
                   <Col xs={12} xl={4}>

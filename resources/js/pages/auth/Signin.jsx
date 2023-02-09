@@ -33,9 +33,6 @@ export default () => {
     axios.get('/sanctum/csrf-cookie').then(response => {
       //ログイン
       axios.post('/api/v1/login', data).then(response => {
-        const xsrfToken = Cookies.get('XSRF-TOKEN')
-        Cookies.set('TOKEN', xsrfToken, { expires: 120/1440 })
-        
         history.push(Paths.DashboardOverview.path);
       }).catch(error => {
         console.log(error.response.status);
@@ -47,6 +44,13 @@ export default () => {
   }
 
   //ログインしている場合はダッシュボードに飛ばす
+  // useEffect(() => {
+  //   axios.get('/api/v1/management/me').then(response => {
+  //     history.push(Paths.DashboardOverview.path);
+  //   }).catch(error => {
+  //     console.log(error);
+  //   })
+  // }, [])
   return (
     <main>
       <section className="d-flex align-items-center vh-lg-100 mt-5 mt-lg-0 bg-soft">

@@ -118,7 +118,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   }
 
   const [admin, setAdmin] = useState(
-    {id: 1, login_id: 'admin', name: '管理者用アカウント', role: 1,}
+    {id: 1, login_id: 'admin', name: '管理者用アカウン', role: 1,}
   );
   useEffect(() => {
     axios.get('/api/v1/management/me').then(response => {
@@ -160,15 +160,17 @@ const LiffRoute = ({ component: Component, ...rest }) => {
   );
 }
 
-const GuestRoute =  async ({ component: Component, ...rest }) => {
+const GuestRoute = ({ component: Component, ...rest }) => {
+  const history = useHistory();
   //認証しているかどうか
-  await axios.get('/api/v1/management/me').then(response => {
-    return <Redirect to={Paths.DashboardOverview.path} />;
-    //return <Route {...rest} render={props => (<Component {...props} />)} />
-  }).catch(error => {
-    console.log(error);
-    return <Route {...rest} render={props => (<Component {...props} />)} />
-  })
+  useEffect(() => {
+    axios.get('/api/v1/management/me').then(response => {
+      history.push(Paths.DashboardOverview.path);
+    }).catch(error => {
+      console.error(error);
+    })
+  }, [])
+  return <Route {...rest} render={props => (<Component {...props} />)} />;
 }
 
 

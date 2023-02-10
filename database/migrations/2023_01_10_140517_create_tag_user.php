@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tag_users', function (Blueprint $table) {
+        Schema::create('tag_user', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('tag_id');
+            $table->unsignedBigInteger('user_tag_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('user_tag_id')->references('id')->on('user_tags');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tag_users');
+        Schema::dropIfExists('tag_user');
     }
 };

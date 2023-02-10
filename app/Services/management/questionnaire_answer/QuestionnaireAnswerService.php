@@ -12,7 +12,7 @@ class QuestionnaireAnswerService
 
     public function index(User $user) 
     {
-        return $user->questionnaireAnswers()->with('questionnaire')->get();
+        return $user->questionnaireAnswers()->with(['questionnaire', 'questionnaireAnswerItems'])->get();
     }
 
 

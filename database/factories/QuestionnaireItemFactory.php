@@ -21,7 +21,7 @@ class QuestionnaireItemFactory extends Factory
 
         return [
             'questionnaire_id' => fake()->randomElement($questionnaire_ids),
-            'name' => fake()->word(),
+            'name' => "回答value",
         ];
     }
 }

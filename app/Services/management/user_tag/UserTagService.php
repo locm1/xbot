@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Services\management\tag;
+namespace App\Services\management\user_tag;
 
 use Illuminate\Database\Eloquent\Collection;
-use App\Models\Tag;
+use App\Models\UserTag;
 use App\Services\management\AbstractManagementService;
 use Illuminate\Database\Eloquent\Model;
 
-class TagService extends AbstractManagementService 
+class UserTagService extends AbstractManagementService 
 {
 
     public function index() 
     {
         //
-        return Tag::all();
+        return UserTag::all();
     }
 
     /**
@@ -21,19 +21,19 @@ class TagService extends AbstractManagementService
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function store($request) :Tag
+    public function store($request) :UserTag
     {
         $data = $request->only(['name']);
-        return Tag::create($data);
+        return UserTag::create($data);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Tag $tag
-     * @return Tag
+     * @param  UserTag $tag
+     * @return UserTag
      */
-    public function show(Model $tag): Tag
+    public function show(Model $tag): UserTag
     {
         return $tag;
     }

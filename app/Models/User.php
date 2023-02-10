@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Occupation::class);
     }
+
+    public function userTags()
+    {
+        return $this->belongsToMany(UserTag::class, 'tag_user');
+    }
 }

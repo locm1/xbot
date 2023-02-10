@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Questionnaire;
+use App\Models\TagUser;
 use App\Models\User;
+use App\Models\UserTag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class QuestionnaireAnswerFactory extends Factory
+class TagUserFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,12 +19,12 @@ class QuestionnaireAnswerFactory extends Factory
      */
     public function definition()
     {
-        $user_ids  = User::pluck('id')->all();
-        $questionnaire_ids  = Questionnaire::pluck('id')->all();
+        $user_ids = User::pluck('id')->all();
+        $tag_ids = UserTag::pluck('id')->all();
 
         return [
             'user_id' => fake()->randomElement($user_ids),
-            'questionnaire_id' => fake()->randomElement($questionnaire_ids),
+            'user_tag_id' => fake()->randomElement($tag_ids)
         ];
     }
 }

@@ -21,7 +21,7 @@ class QuestionnaireFactory extends Factory
 
         return [
             'admin_id' => fake()->randomElement($admin_ids),
-            'title' => fake()->word(),
+            'title' => "昨日何を食べましたか？",
             'type' => fake()->numberBetween(1, 5),
             'display_order' => fake()->unique()->numberBetween(1,100),
             'is_undisclosed' => fake()->numberBetween(0, 1),

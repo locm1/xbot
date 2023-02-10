@@ -18,6 +18,6 @@ class QuestionnaireAnswerItem extends Model
      */
     public function questionnaireAnswer()
     {
-        return $this->hasOne(QuestionnaireAnswer::class);
+        return $this->belongsTo(QuestionnaireAnswer::class);
     }
 }

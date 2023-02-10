@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Questionnaire;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('questionnaire_answers', function (Blueprint $table) {
+        Schema::create('user_tags', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Questionnaire::class);
-            $table->timestamps();
+            $table->string('name', 255)->nullable(false);
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('questionnaire_answers');
+        Schema::dropIfExists('user_tags');
     }
 };

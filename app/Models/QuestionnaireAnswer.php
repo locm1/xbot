@@ -11,13 +11,13 @@ class QuestionnaireAnswer extends Model
 
     protected $guarded = ['id'];
 
-    /**
-     * Get all of the comments for the Questionnaire
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function questionnaire()
     {
         return $this->belongsTo(Questionnaire::class);
+    }
+
+    public function questionnaireAnswerItems()
+    {
+        return $this->hasMany(QuestionnaireAnswerItem::class);
     }
 }

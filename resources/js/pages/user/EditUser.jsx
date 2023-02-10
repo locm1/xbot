@@ -42,7 +42,6 @@ export default () => {
 
   const handleChange = (e, input) => {
     setUser({...user, [input]: e})
-    console.log(user);
   };
 
   const saveUser = async() => {
@@ -131,7 +130,7 @@ export default () => {
                 </Row>
                 <Row>
                   <Col xs={12} xl={12}>
-                    <TagForm />
+                    <TagForm userId={id} />
                   </Col>
                 </Row>
               </Tab.Pane>

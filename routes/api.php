@@ -25,6 +25,8 @@ use App\Http\Controllers\api\management\OccupationController;
 use App\Http\Controllers\api\management\ProductController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
 use App\Http\Controllers\api\management\QuestionnaireAnswerController;
+use App\Http\Controllers\api\management\TagUserController;
+use App\Http\Controllers\api\management\UserTagController;
 use App\Models\QuestionnaireAnswer;
 
 /*
@@ -49,11 +51,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('users/{user}/questionnaire', QuestionnaireAnswerController::class);
+        Route::get('users/{user}/user_tag', TagUserController::class);
         Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);
         Route::apiResource('terms-of-service', TermsOfServiceController::class);
         Route::apiResource('specific-trades', SpecificTradeController::class);
-        Route::apiResource('tags', TagController::class);
+        Route::apiResource('user_tags', UserTagController::class);
         Route::apiResource('postages', PostageController::class)->only([
             'index', 'store'
         ]);

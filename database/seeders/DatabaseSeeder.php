@@ -12,15 +12,15 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductContent;
 use App\Models\ProductImage;
-use App\Models\Tag;
-use Database\Factories\ProductContentFactory;
-use Database\Factories\ProductImageFactory;
 use App\Models\EventUser;
 use App\Models\Occupation;
 use App\Models\Questionnaire;
 use App\Models\QuestionnaireAnswer;
+use App\Models\QuestionnaireAnswerItem;
 use App\Models\QuestionnaireItem;
+use App\Models\TagUser;
 use App\Models\User;
+use App\Models\UserTag;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         Event::factory(20)->create();
         Privilege::factory(5)->create();
         PrivilegeItem::factory(20)->create();
-        Tag::factory(5)->create();
+        UserTag::factory(5)->create();
         ProductCategory::factory(10)->create();
         Product::factory(50)->create();
         ProductImage::factory(70)->create();
@@ -51,5 +51,7 @@ class DatabaseSeeder extends Seeder
         Questionnaire::factory(10)->create();
         QuestionnaireItem::factory(30)->create();
         QuestionnaireAnswer::factory(100)->create();
+        QuestionnaireAnswerItem::factory(300)->create();
+        TagUser::factory(100)->create();
     }
 }

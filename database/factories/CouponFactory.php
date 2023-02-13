@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class ProductContentFactory extends Factory
+class CouponFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,10 @@ class ProductContentFactory extends Factory
     public function definition()
     {
         return [
-            'product_id' => fake()->numberBetween(1, 50),
-            'title' => fake()->secondaryAddress(),
-            'content' => fake()->sentences(2, true),
+            'name' => 'クーポン' . fake()->firstKanaName(),
+            'upper_limit' => fake()->numberBetween(0, 1000),
+            'discount_price' => fake()->numberBetween(1, 1000000),
+            'code' => fake()->unique()->hexColor()
         ];
     }
 }

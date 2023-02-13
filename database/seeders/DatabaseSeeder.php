@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Admin;
+use App\Models\Coupon;
 use App\Models\Event;
 use App\Models\Privilege;
 use App\Models\PrivilegeItem;
@@ -14,6 +15,9 @@ use App\Models\ProductContent;
 use App\Models\ProductImage;
 use App\Models\EventUser;
 use App\Models\Occupation;
+use App\Models\OrderHistory;
+use App\Models\OrderProduct;
+use App\Models\OrderUser;
 use App\Models\Questionnaire;
 use App\Models\QuestionnaireAnswer;
 use App\Models\QuestionnaireAnswerItem;
@@ -54,6 +58,10 @@ class DatabaseSeeder extends Seeder
         QuestionnaireAnswer::factory(100)->create();
         QuestionnaireAnswerItem::factory(300)->create();
         TagUser::factory(100)->create();
+        Coupon::factory(100)->create();
         VisitorHistory::factory(100)->create();
+        OrderUser::factory(100)->create();
+        OrderHistory::factory(100)->create();
+        OrderProduct::factory(100)->create();
     }
 }

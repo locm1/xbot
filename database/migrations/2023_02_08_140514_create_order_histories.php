@@ -16,14 +16,12 @@ return new class extends Migration
         Schema::create('order_histories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('order_product_id');
             $table->unsignedBigInteger('order_user_id');
-            $table->unsignedBigInteger('delivery_address_id');
+            // $table->unsignedBigInteger('delivery_address_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('order_product_id')->references('id')->on('order_products');
             $table->foreign('order_user_id')->references('id')->on('order_users');
-            $table->foreign('delivery_address_id')->references('id')->on('delivery_addresses');
-            $table->tinyInteger('delivery_time')->nullable(false);
+            // $table->foreign('delivery_address_id')->references('id')->on('delivery_addresses');
+            $table->dateTime('delivery_time')->nullable(false);
             $table->integer('purchase_amount')->nullable(false);
             $table->tinyInteger('status')->nullable(false);
             $table->tinyInteger('payment_method')->nullable(false);

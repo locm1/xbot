@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100)->nullable(false);
             $table->integer('upper_limit')->nullable(false);
-            $table->integer('discount_rate')->nullable(false);
+            $table->integer('discount_price')->nullable(false);
             $table->string('code', 255)->nullable(false)->unique();
             $table->softDeletes();
             $table->timestamps();

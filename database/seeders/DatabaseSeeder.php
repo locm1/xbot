@@ -21,6 +21,7 @@ use App\Models\QuestionnaireItem;
 use App\Models\TagUser;
 use App\Models\User;
 use App\Models\UserTag;
+use App\Models\VisitorHistory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -53,5 +54,6 @@ class DatabaseSeeder extends Seeder
         QuestionnaireAnswer::factory(100)->create();
         QuestionnaireAnswerItem::factory(300)->create();
         TagUser::factory(100)->create();
+        VisitorHistory::factory(100)->create();
     }
 }

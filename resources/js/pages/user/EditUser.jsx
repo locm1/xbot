@@ -40,6 +40,8 @@ export default () => {
 
   const [birthDate, setBirthDate] = useState('');
 
+  const [visitCount, setVisitCount] = useState(0);
+
   const handleChange = (e, input) => {
     setUser({...user, [input]: e})
   };
@@ -79,6 +81,18 @@ export default () => {
       }
     });
   }, [])
+
+
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/visitor-history`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setVisitCount(res.data.visit_count);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -123,7 +137,7 @@ export default () => {
                   <Col xs={12} xl={4}>
                     <Row>
                       <Col xs={12} className="mb-4">
-                        <ProfileCardWidget {...user} />
+                        <ProfileCardWidget {...user} visitCount={visitCount} />
                       </Col>
                     </Row>
                   </Col>

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { useDropzone } from "react-dropzone";
@@ -7,11 +7,11 @@ import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, ListGroup } from 'react-bootstrap';
 
 export const PurchaseTimeForm = (props) => {
-  const { title } = props;
+  const { title, visitCount } = props;
+  
   const purchases = [
-    {"id": 1, "name": "来店回数", "value": 0},
-    {"id": 2, "name": "ポイント", "value": 0},
-    {"id": 3, "name": "購入回数", "value": 0},
+    {"name": "来店回数", "value": visitCount},
+    {"name": "購入回数", "value": 0},
   ]
 
   const PurchaseItem = (props) => {
@@ -39,7 +39,7 @@ export const PurchaseTimeForm = (props) => {
         {title}
       </h2>
       <ListGroup className="list-group-flush">
-        {purchases.map(purchase => <PurchaseItem key={`purchaser-${purchase.id}`} {...purchase} />)}
+        {purchases.map((purchase, k) => <PurchaseItem key={`purchaser-${k}`} {...purchase} />)}
       </ListGroup>
     </>
   );

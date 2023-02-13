@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(UserTag::class, 'tag_user');
     }
+
+    public function orderHistories()
+    {
+        return $this->hasMany(OrderHistory::class);
+    }
 }

@@ -42,6 +42,8 @@ export default () => {
 
   const [visitCount, setVisitCount] = useState(0);
 
+  const [purchaseTime, setPurchaseTime] = useState(0);
+
   const handleChange = (e, input) => {
     setUser({...user, [input]: e})
   };
@@ -94,6 +96,17 @@ export default () => {
     });
   }, []);
 
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/purchase`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setPurchaseTime(res.data.purchase_time);
+      }
+    });
+  }, []);
+  
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -137,7 +150,7 @@ export default () => {
                   <Col xs={12} xl={4}>
                     <Row>
                       <Col xs={12} className="mb-4">
-                        <ProfileCardWidget {...user} visitCount={visitCount} />
+                        <ProfileCardWidget {...user} visitCount={visitCount} purchaseTime={purchaseTime} />
                       </Col>
                     </Row>
                   </Col>

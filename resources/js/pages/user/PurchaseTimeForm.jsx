@@ -7,11 +7,11 @@ import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, ListGroup } from 'react-bootstrap';
 
 export const PurchaseTimeForm = (props) => {
-  const { title, visitCount } = props;
+  const { title, visitCount, purchaseTime } = props;
   
   const purchases = [
     {"name": "来店回数", "value": visitCount},
-    {"name": "購入回数", "value": 0},
+    {"name": "購入回数", "value": purchaseTime},
   ]
 
   const PurchaseItem = (props) => {

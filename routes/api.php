@@ -27,6 +27,7 @@ use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortControlle
 use App\Http\Controllers\api\management\QuestionnaireAnswerController;
 use App\Http\Controllers\api\management\TagUserController;
 use App\Http\Controllers\api\management\UserTagController;
+use App\Http\Controllers\UserPurchaseController;
 use App\Http\Controllers\UserVisitorHistoryController;
 use App\Models\QuestionnaireAnswer;
 
@@ -54,6 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users/{user}/questionnaire', QuestionnaireAnswerController::class);
         Route::get('users/{user}/user_tag', TagUserController::class);
         Route::apiResource('users/{user}/visitor-history', UserVisitorHistoryController::class);
+        Route::get('users/{user}/purchase', UserPurchaseController::class);
         Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);
         Route::apiResource('terms-of-service', TermsOfServiceController::class);

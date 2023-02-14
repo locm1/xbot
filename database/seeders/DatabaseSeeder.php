@@ -62,8 +62,8 @@ class DatabaseSeeder extends Seeder
         Coupon::factory(100)->create();
         VisitorHistory::factory(100)->create();
         OrderUser::factory(100)->create();
-        OrderHistory::factory(100)->create();
-        OrderProduct::factory(100)->create();
+        OrderHistory::factory(200)->create();
+        OrderProduct::factory(500)->create();
         InviteHistory::factory(100)->create();
     }
 }

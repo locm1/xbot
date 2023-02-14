@@ -9,11 +9,13 @@ export const HistoryTable = (props) => {
   const { title, headers, histories, fromInvitedUser } = props;
 
   const invitedUser = () => {
+    const location = () => {
+      window.location.href = `/manage/user/edit/${fromInvitedUser.inviter_users.id}`;
+    }
     if (typeof fromInvitedUser != 'undefined') {
-      console.log(fromInvitedUser);
       return (
         <h6>このユーザーを招待した人：
-          <Link to={`/manage/user/edit/${fromInvitedUser.inviter_users.id}`} className="text-decoration-underline pb-3">
+          <Link to={`/manage/user/edit/${fromInvitedUser.inviter_users.id}`} onClick={() => location()} className="text-decoration-underline pb-3">
             {fromInvitedUser.inviter_users.last_name} {fromInvitedUser.inviter_users.first_name}
           </Link>
         </h6>
@@ -40,19 +42,20 @@ export const HistoryTable = (props) => {
           </thead>
           <tbody className="border-0">
             {
-              histories.map((history) => 
+              histories.map((history, key) => 
                 {
                   if (title === '注文履歴') {
                     return (
-                      <tr key={history.id} className="border-bottom">
+                      <tr key={`order-${key}`} className="border-bottom">
                         <td className="fw-bold border-0">{moment(history.createdAt).format("YYYY年MM月DD日")}</td>
                         <td className="fw-bold border-0">{history.name}</td>
-                        <td className="fw-bold border-0">{history.address}</td>
+                        <td className="fw-bold border-0">{history.quantity}</td>
+                        <td className="fw-bold border-0">{history.price}</td>
                       </tr>
                     )
                   } else if (title === '取置履歴') {
                     return (
-                      <tr key={history.id} className="border-bottom">
+                      <tr key={`${key}`} className="border-bottom">
                         <td className="fw-bold border-0">{history.createdAt}</td>
                         <td className="fw-bold border-0">{history.name}</td>
                         <td className="fw-bold border-0">{history.quantity}</td>
@@ -62,14 +65,14 @@ export const HistoryTable = (props) => {
                     )
                   } else if (title === '紹介履歴') {
                     return (
-                      <tr key={history.id} className="border-bottom">
+                      <tr key={`invite-${key}`} className="border-bottom">
                         <td className="fw-bold border-0">{moment(history.created_at).format("YYYY年MM月DD日")}</td>
                         <td className="fw-bold border-0">{history.invitee_users.last_name} {history.invitee_users.first_name}</td>
                       </tr>
                     )
                   } else if (title === '来店履歴') {
                     return (
-                      <tr key={history.id} className="border-bottom">
+                      <tr key={`visit-${key}`} className="border-bottom">
                         <td className="fw-bold border-0">{moment(history.created_at).format("YYYY年MM月DD日")}</td>
                         <td className="fw-bold border-0">{history.memo}</td>
                       </tr>

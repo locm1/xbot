@@ -17,16 +17,13 @@ import { Paths } from "@/paths";
 
 export default () => {
   const {id} = useParams();
-  const orderHistoryHeaders = ['注文日時', '注文商品', '配送先住所'];
+  const orderHistoryHeaders = ['注文日時', '注文商品', '個数', '値段'];
   const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '金額', '期日'];
   const inviteHistoryHeaders = ['紹介日時', '紹介者'];
   const visitorHistoryHeaders = ['来店日時', 'メモ'];
   const [occupations, setOccupations] = useState([]);
+  const [orders, setOrders] = useState([]);
 
-  const orders = [
-    {id: 1, createdAt: '2022年11月18日 21:14', name: 'トリートメント 、 コスメセット', address: '北海道札幌市白石区菊水九条4-1-708'},
-    {id: 2, createdAt: '2022年11月10日 15:33', name: 'UV美容液 、 美容液セット', address: '北海道札幌市白石区菊水九条4-1-708'},
-  ];
   const reserves = [
     {id: 1, createdAt: '2022年11月10日', name: 'シャンプー&トリートメント', quantity: 1, price: 3000, deadline: '2022年12月10日まで'},
     {id: 2, createdAt: '2022年11月10日', name: 'トリートメント', quantity: 1, price: 3000, deadline: '2022年12月10日まで'},
@@ -120,7 +117,6 @@ export default () => {
     });
     axios.get(`/api/v1/management/user_tags`)
     .then((data) => {
-      console.log(data.data.tags);
       setTags(data.data.tags);
     })
     .catch(error => {
@@ -140,6 +136,28 @@ export default () => {
     });
   }, []);
 
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/order-history`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        const order = [];
+          res.data.order_histories.forEach(history => {
+            history.order_products.forEach(product => {
+              order.push({
+                "createdAt": product.created_at,
+                "name": product.name,
+                "price": product.price,
+                "quantity": product.quantity,
+              })
+            })
+          })
+        setOrders(order);
+      }
+    });
+  }, []);
+
   
   return (
     <>
@@ -147,7 +165,7 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
         </div>
       </div>
-
+<Button onClick={() => {console.log(orders)}} />
       <Tab.Container defaultActiveKey="user_info" className="mb-6">
         <Row>
           <Col lg={12}>

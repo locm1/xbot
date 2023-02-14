@@ -23,6 +23,7 @@ use App\Models\Questionnaire;
 use App\Models\QuestionnaireAnswer;
 use App\Models\QuestionnaireAnswerItem;
 use App\Models\QuestionnaireItem;
+use App\Models\ReserveHistory;
 use App\Models\TagUser;
 use App\Models\User;
 use App\Models\UserTag;
@@ -65,5 +66,6 @@ class DatabaseSeeder extends Seeder
         OrderHistory::factory(200)->create();
         OrderProduct::factory(500)->create();
         InviteHistory::factory(100)->create();
+        ReserveHistory::factory(300)->create();
     }
 }

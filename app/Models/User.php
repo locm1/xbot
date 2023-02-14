@@ -89,4 +89,9 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(User::class, InviteHistory::class, 'inviter_user_id', 'id', 'id', 'invitee_user_id');
     }
+
+    public function reserveHistories()
+    {
+        return $this->hasMany(ReserveHistory::class);
+    }
 }

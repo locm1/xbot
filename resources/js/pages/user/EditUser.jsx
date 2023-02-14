@@ -18,16 +18,12 @@ import { Paths } from "@/paths";
 export default () => {
   const {id} = useParams();
   const orderHistoryHeaders = ['注文日時', '注文商品', '個数', '値段'];
-  const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '金額', '期日'];
+  const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '期日'];
   const inviteHistoryHeaders = ['紹介日時', '紹介者'];
   const visitorHistoryHeaders = ['来店日時', 'メモ'];
   const [occupations, setOccupations] = useState([]);
   const [orders, setOrders] = useState([]);
-
-  const reserves = [
-    {id: 1, createdAt: '2022年11月10日', name: 'シャンプー&トリートメント', quantity: 1, price: 3000, deadline: '2022年12月10日まで'},
-    {id: 2, createdAt: '2022年11月10日', name: 'トリートメント', quantity: 1, price: 3000, deadline: '2022年12月10日まで'},
-  ];
+  const [reserves, setReserves] = useState([]);
   const [inviteHistories, setInviteHistories] = useState([]);
   const [fromInvitedUser, setFromInvitedUser] = useState(undefined);
   const [visitorHistories, setVisitorHistory] = useState([]);
@@ -158,6 +154,24 @@ export default () => {
     });
   }, []);
 
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/reserve-history`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setReserves(res.data.reserve_histories.map(v => (
+          {
+            createdAt: v.created_at,
+            name: v.product.name,
+            quantity: v.quantity,
+            deadline: v.deadline,
+          }
+        )));
+      }
+    });
+  }, []);
+
   
   return (
     <>
@@ -165,7 +179,6 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
         </div>
       </div>
-<Button onClick={() => {console.log(orders)}} />
       <Tab.Container defaultActiveKey="user_info" className="mb-6">
         <Row>
           <Col lg={12}>

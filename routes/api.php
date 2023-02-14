@@ -31,6 +31,7 @@ use App\Http\Controllers\api\management\UserInviteHistoryController;
 use App\Http\Controllers\api\management\UserOrderHistoryController;
 use App\Http\Controllers\api\management\UserOrderProductController;
 use App\Http\Controllers\api\management\UserPurchaseController;
+use App\Http\Controllers\api\management\UserReserveHistoryController;
 use App\Http\Controllers\api\management\UserVisitorHistoryController;
 use App\Models\QuestionnaireAnswer;
 
@@ -60,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users/{user}/visitor-history', UserVisitorHistoryController::class);
         Route::get('users/{user}/invite-history', UserInviteHistoryController::class);
         Route::get('users/{user}/order-history', UserOrderHistoryController::class);
+        Route::get('users/{user}/reserve-history', UserReserveHistoryController::class);
         Route::get('users/{user}/purchase', UserPurchaseController::class);
         Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);

@@ -56,11 +56,10 @@ export const HistoryTable = (props) => {
                   } else if (title === '取置履歴') {
                     return (
                       <tr key={`${key}`} className="border-bottom">
-                        <td className="fw-bold border-0">{history.createdAt}</td>
+                        <td className="fw-bold border-0">{moment(history.createdAt).format("YYYY年MM月DD日")}</td>
                         <td className="fw-bold border-0">{history.name}</td>
                         <td className="fw-bold border-0">{history.quantity}</td>
-                        <td className="fw-bold border-0">{history.price}</td>
-                        <td className="fw-bold border-0">{history.deadline}</td>
+                        <td className="fw-bold border-0">{moment(history.deadline).format("YYYY年MM月DD日 HH:mm:ss")}</td>
                       </tr>
                     )
                   } else if (title === '紹介履歴') {

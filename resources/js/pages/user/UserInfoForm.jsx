@@ -9,7 +9,8 @@ import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
 
-import prefectures from "@/data/postage"
+import prefectures from "@/data/postage";
+import { TagForm } from "./TagForm";
 
 export const DropFilesForm = () => {
   const [files, setFiles] = useState([]);
@@ -52,8 +53,9 @@ export const DropFilesForm = () => {
 
 export const UserInfoForm = (props) => {
   const { 
-    first_name, last_name, first_name_kana, last_name_kana, birthDate, birth_date, gender, 
-    zipcode, prefecture, city, address, building_name, tel, occupation_id, setBirthDate, saveUser, occupations
+    first_name, last_name, first_name_kana, last_name_kana, birthDate, birth_date, gender, id,
+    zipcode, prefecture, city, address, building_name, tel, occupation_id, setBirthDate, saveUser, occupations,
+    selectedTags, tags, setSelectedTags
   } = props;
 
   const birthDateOptions = {
@@ -64,6 +66,7 @@ export const UserInfoForm = (props) => {
     '中央区', '北区', '東区', '白石区', '厚別区', '豊平区', 
     '清田区', '南区', '西区', '手稲区', '札幌市以外', '道外'
   ];
+  console.log("userinfoform" + tags);
 
 
 
@@ -191,6 +194,9 @@ export const UserInfoForm = (props) => {
                   }
                 </Form.Select>
               </Form.Group>
+            </Col>
+            <Col md={12} className="mb-3">
+              <TagForm userId={id} tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
             </Col>
           </Row>
 

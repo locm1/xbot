@@ -16,7 +16,8 @@ class UserVisitorHistoryController extends Controller
     public function index(User $user)
     {
         return [
-            'visit_count' => VisitorHistory::where('user_id', $user->id)->count()
+            'visit_count' => VisitorHistory::where('user_id', $user->id)->count(),
+            'visit_history' => VisitorHistory::where('user_id', $user->id)->get()
         ];
     }
 

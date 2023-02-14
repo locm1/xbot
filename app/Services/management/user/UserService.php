@@ -60,7 +60,7 @@ class UserService
      */
     public function update($request, Model $user): array
     {
-        $data = $request->only([
+        $user_data = $request->only([
             'address',
             'birth_date',
             'building_name',
@@ -80,8 +80,17 @@ class UserService
             'tel',
             'zipcode',
         ]);
-        $user->update($data);
-        return $data;
+        $tag_data = $request->only([
+            'tags',
+        ]);
+        $update_tag_data = array();
+        foreach ($tag_data['tags'] as $key => $value) {
+          $update_tag_data[] = ['user_tag_id' => $value['value']];
+        };
+        $user->update($user_data);
+        $user->userTags()->sync($update_tag_data);
+        $combine_data = [$user_data, $tag_data];
+        return $combine_data;
     }
 
     /**

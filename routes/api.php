@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('users/{user}/questionnaire', QuestionnaireAnswerController::class);
-        Route::get('users/{user}/user_tag', TagUserController::class);
+        Route::apiResource('users/{user}/user_tag', TagUserController::class);
         Route::apiResource('users/{user}/visitor-history', UserVisitorHistoryController::class);
         Route::get('users/{user}/purchase', UserPurchaseController::class);
         Route::get('demographic', UserDemographicController::class);

@@ -34,9 +34,7 @@ export default () => {
   const inviteHistories = [
     {id: 1, createdAt: '2022年11月02日 11:44', inviteUserName: '長濱英也'},
   ];
-  const visitorHistories = [
-    {id: 1, createdAt: '2022年11月02日 11:44', memo: ''},
-  ];
+  const [visitorHistories, setVisitorHistory] = useState([]);
 
   const [birthDate, setBirthDate] = useState('');
 
@@ -50,14 +48,14 @@ export default () => {
 
   const saveUser = async() => {
     await axios
-    .put(`/api/v1/management/users/${id}`, user)
+    .put(`/api/v1/management/users/${id}`, {...user, "tags": selectedTags})
     .then((res) => {
       alert('更新しました');
       console.log(res);
     })
     .catch(error => {
       console.error(error);
-    });
+    })
   }
 
   const [user, setUser] = useState();
@@ -85,6 +83,7 @@ export default () => {
   }, [])
 
 
+
   useEffect(() => {
     axios.get(`/api/v1/management/users/${id}/visitor-history`)
     .then((res) => {
@@ -92,6 +91,7 @@ export default () => {
         throw new Error("APIが正しく取得されませんでした");
       } else {
         setVisitCount(res.data.visit_count);
+        setVisitorHistory(res.data.visit_history);
       }
     });
   }, []);
@@ -106,6 +106,29 @@ export default () => {
       }
     });
   }, []);
+
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/user_tag`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        const selectedOptions = res.data.user_tags.map(v => ({ value: v.id, label: v.name }));
+        setSelectedTags(selectedOptions);
+      }
+    });
+    axios.get(`/api/v1/management/user_tags`)
+    .then((data) => {
+      console.log(data.data.tags);
+      setTags(data.data.tags);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+  }, []);
+
   
   return (
     <>
@@ -145,6 +168,9 @@ export default () => {
                       setBirthDate={setBirthDate}
                       birthDate={birthDate}
                       occupations={occupations}
+                      selectedTags={selectedTags}
+                      tags={tags}
+                      setSelectedTags={setSelectedTags}
                     />  
                   </Col>
                   <Col xs={12} xl={4}>
@@ -153,11 +179,6 @@ export default () => {
                         <ProfileCardWidget {...user} visitCount={visitCount} purchaseTime={purchaseTime} />
                       </Col>
                     </Row>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} xl={12}>
-                    <TagForm userId={id} />
                   </Col>
                 </Row>
               </Tab.Pane>

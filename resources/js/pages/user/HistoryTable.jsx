@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { Card, Table } from 'react-bootstrap';
+import moment from "moment-timezone";
 
 
 export const HistoryTable = (props) => {
@@ -27,7 +28,7 @@ export const HistoryTable = (props) => {
                   if (title === '注文履歴') {
                     return (
                       <tr key={history.id} className="border-bottom">
-                        <td className="fw-bold border-0">{history.createdAt}</td>
+                        <td className="fw-bold border-0">{moment(history.createdAt).format("YYYY年MM月DD日")}</td>
                         <td className="fw-bold border-0">{history.name}</td>
                         <td className="fw-bold border-0">{history.address}</td>
                       </tr>
@@ -52,7 +53,7 @@ export const HistoryTable = (props) => {
                   } else if (title === '来店履歴') {
                     return (
                       <tr key={history.id} className="border-bottom">
-                        <td className="fw-bold border-0">{history.createdAt}</td>
+                        <td className="fw-bold border-0">{moment(history.created_at).format("YYYY年MM月DD日")}</td>
                         <td className="fw-bold border-0">{history.memo}</td>
                       </tr>
                     )

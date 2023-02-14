@@ -69,4 +69,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(VisitorHistory::class);
     }
+
+    public function inviteHistories()
+    {
+        return $this->hasMany(InviteHistory::class, 'inviter_user_id');
+    }
+
+    public function inviteeHistories()
+    {
+        return $this->hasOne(InviteHistory::class, 'invitee_user_id');
+    }
+
+    public function fromInvitedUser()
+    {
+        return $this->hasOneThrough(User::class, InviteHistory::class, 'invitee_user_id', 'id', 'id', 'inviter_user_id');
+    }
+
+    public function toInviteUser()
+    {
+        return $this->hasManyThrough(User::class, InviteHistory::class, 'inviter_user_id', 'id', 'id', 'invitee_user_id');
+    }
 }

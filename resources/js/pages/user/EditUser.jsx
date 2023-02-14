@@ -31,9 +31,8 @@ export default () => {
     {id: 1, createdAt: '2022年11月10日', name: 'シャンプー&トリートメント', quantity: 1, price: 3000, deadline: '2022年12月10日まで'},
     {id: 2, createdAt: '2022年11月10日', name: 'トリートメント', quantity: 1, price: 3000, deadline: '2022年12月10日まで'},
   ];
-  const inviteHistories = [
-    {id: 1, createdAt: '2022年11月02日 11:44', inviteUserName: '長濱英也'},
-  ];
+  const [inviteHistories, setInviteHistories] = useState([]);
+  const [fromInvitedUser, setFromInvitedUser] = useState(undefined);
   const [visitorHistories, setVisitorHistory] = useState([]);
 
   const [birthDate, setBirthDate] = useState('');
@@ -129,6 +128,18 @@ export default () => {
     });
   }, []);
 
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/invite-history`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setInviteHistories(res.data.invite_histories);
+        setFromInvitedUser(res.data.from_invited_user);
+      }
+    });
+  }, []);
+
   
   return (
     <>
@@ -190,7 +201,7 @@ export default () => {
                 </Row>
                 <Row>
                   <Col xs={12} className="mb-4">
-                    <HistoryTable title="紹介履歴" headers={inviteHistoryHeaders} histories={inviteHistories} />
+                    <HistoryTable title="紹介履歴" headers={inviteHistoryHeaders} histories={inviteHistories} fromInvitedUser={fromInvitedUser} />
                   </Col>
                 </Row>
                 <Row>

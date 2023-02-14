@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api\management;
 
+use App\Http\Controllers\Controller;
 use App\Models\OrderHistory;
 use App\Models\User;
 use Illuminate\Http\Request;

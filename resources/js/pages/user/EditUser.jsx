@@ -13,6 +13,7 @@ import { TagForm } from "@/pages/user/TagForm";
 import { Link, useParams } from 'react-router-dom';
 
 import { Paths } from "@/paths";
+import Swal from "sweetalert2";
 
 
 export default () => {
@@ -42,7 +43,7 @@ export default () => {
     await axios
     .put(`/api/v1/management/users/${id}`, {...user, "tags": selectedTags})
     .then((res) => {
-      alert('更新しました');
+      confirmSave();
       console.log(res);
     })
     .catch(error => {
@@ -171,6 +172,14 @@ export default () => {
       }
     });
   }, []);
+
+  const confirmSave = () => {
+    Swal.fire(
+      '保存完了',
+      'ユーザー情報の保存に成功しました',
+      'success'
+    )
+  }
 
   
   return (

@@ -9,7 +9,6 @@ import { Col, Row, Card, Form, Image, Button, InputGroup } from 'react-bootstrap
 
 export const TagForm = (props) => {
   const {tags, selectedTags, setSelectedTags} = props;
-  console.log("TagForm" + tags);
   const selectOptions = tags.map(v => ({ value: v.id, label: v.name }));
 
   return (

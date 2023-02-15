@@ -48,7 +48,7 @@ export const UsersTable = (props) => {
         <td>
           <Link to={link}>
           <div className="d-flex align-items-center">
-            {img_path && (<Image src={img_path} className="avatar rounded-circle me-3"/>)}
+            {img_path ? (<Image src={img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
             <div className="d-block">
               {first_name && first_name_kana && last_name && last_name_kana ? 
                 <>

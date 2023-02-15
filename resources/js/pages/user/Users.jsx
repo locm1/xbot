@@ -11,7 +11,7 @@ import { getUsers, searchUsers, getDemographic, deleteUser } from "@/pages/user/
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
     confirmButton: 'btn btn-primary me-3',
-    cancelButton: 'btn btn-gray'
+    cancelButton: 'btn btn-gray-100'
   },
   buttonsStyling: false
 }));

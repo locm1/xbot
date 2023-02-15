@@ -13,7 +13,7 @@ import { ChangeStatusModal } from "@/pages/reserve/ChangeReserveStatusModal";
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
     confirmButton: 'btn btn-primary me-3',
-    cancelButton: 'btn btn-gray'
+    cancelButton: 'btn btn-gray-100'
   },
   buttonsStyling: false
 }));

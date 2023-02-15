@@ -22,7 +22,7 @@ class SearchUserAction
         if ($request->tel) {
             $this->searchByTel($query, $request->tel);
         }
-        return $query->get();
+        return $query->paginate(10);
     }
 
 

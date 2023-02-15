@@ -18,13 +18,13 @@ class UserService
         $this->search_user_action = $search_user_action;
     }
 
-    public function index($request): Collection
+    public function index($request)
     {
         if (isset($request)) {
             return $this->search_user_action->search($request);
         }
 
-        return User::all();
+        return User::get()->pagination(10);
     }
 
     /**

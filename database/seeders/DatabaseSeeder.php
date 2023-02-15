@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
         UserTag::factory(5)->create();
         ProductCategory::factory(10)->create();
         Product::factory(50)->create();
-        ProductImage::factory(70)->create();
+        ProductImage::factory(100)->create();
         ProductContent::factory(70)->create();
         EventUser::factory(50)->create();
         Questionnaire::factory(10)->create();

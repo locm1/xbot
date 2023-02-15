@@ -4,26 +4,19 @@ namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Services\management\product\ProductService;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class ProductImageController extends Controller
 {
-    private $product_service;
-
-    public function __construct(ProductService $product_service)
-    {
-        $this->product_service = $product_service;
-    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Product $product)
     {
-        $products = $this->product_service->index($request);
-        return response()->json(['products' => $products], 200);
+        return ['product_images' => $product->productImages()->get()];
     }
 
     /**
@@ -40,13 +33,12 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Product $product
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        $product = $this->product_service->show($product);
-        return response()->json(['product' => $product], 200);
+        //
     }
 
     /**
@@ -56,9 +48,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        return $this->product_service->update($request, $product);
+        //
     }
 
     /**

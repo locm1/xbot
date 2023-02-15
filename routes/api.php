@@ -23,6 +23,7 @@ use App\Http\Controllers\api\management\user\UserDemographicController;
 use App\Http\Controllers\api\management\MeController;
 use App\Http\Controllers\api\management\OccupationController;
 use App\Http\Controllers\api\management\ProductController;
+use App\Http\Controllers\api\management\ProductImageController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
 use App\Http\Controllers\api\management\QuestionnaireAnswerController;
 use App\Http\Controllers\api\management\TagUserController;
@@ -86,6 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
         Route::put('questionnaires/{questionnaire}/sort', QuestionnaireSortController::class);
         Route::apiResource('products', ProductController::class);
+        Route::apiResource('products/{product}/product-image', ProductImageController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

@@ -41,9 +41,11 @@ class ProductService
     }
 
 
-    public function update($request, $model) 
+    public function update($request, $product) 
     {
-        //
+        return $product->update($request->only(
+            'name', 'product_category_id', 'stock_quantity', 'tax_rate', 'price', 'overview', 'is_undisclosed', 'is_unlimited'
+        ));
     }
 
 

@@ -11,13 +11,14 @@ import ProductOverview from "@/pages/product/ProductOverview";
 import products from "@/data/products";
 import Select from 'react-select'
 
-import { showProduct } from "@/pages/product/api/ProductApiMethods";
-import { getCategories } from "@/pages/product/api/ProductCategoryApiMethods";
+import { showProduct, storeProduct, updateProduct, getProductImages } from "@/pages/product/api/ProductApiMethods";
+import { getCategories, } from "@/pages/product/api/ProductCategoryApiMethods";
 
 export default () => {
   const { id } = useParams();
   const history = useHistory();
   const pathname = useLocation().pathname;
+  const [productImages, setProductImages] = useState([]);
 
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
@@ -40,7 +41,6 @@ export default () => {
   const handleChange = (e, input) => {
     setProduct({...product, [input]: e.target.value})
   };
-
 
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -120,6 +120,18 @@ export default () => {
     }
     getCategories(setCategories)
   }, []);
+
+  const onSaveProduct = () => {
+    updateProduct(id, product);
+  }
+
+  useEffect(() => {
+    getProductImages(id, setProductImages);
+  }, [])
+
+  const selectProductImage = () => {
+    <Form.Control {...getInputProps()} />
+  }
 
   return (
     <>
@@ -205,9 +217,9 @@ export default () => {
                         <Col md={6} className="mb-3">
                           <Form.Group id="category">
                             <Form.Label>カテゴリー</Form.Label>
-                            <Form.Select defaultValue={product.product_category_id} className="mb-0" onChange={(e) => handleChange(e, 'product_category_id')}>
+                            <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => {handleChange(e, 'product_category_id')}}>
                               {
-                                categories.map((category, index) => <option key={index} value={category.id}>{category.name}</option>)
+                                categories.map((category, index) => <option key={`category-${index}`} value={category.id}>{category.name}</option>)
                               }
                             </Form.Select>
                           </Form.Group>
@@ -219,21 +231,33 @@ export default () => {
                           <Form.Control as="textarea" rows="3" value={product.overview} onChange={(e) => handleChange(e, 'overview')} placeholder="商品の概要を入力してください" />
                         </Form.Group>
                       </Col>
-                          <Form.Label>商品画像</Form.Label>
-                      <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
-                        <Form.Control {...getInputProps()} />
-                        <div className="dz-default dz-message text-center">
-                          <p className="dz-button mb-0">画像をアップロード、もしくはドラッグアンドドロップをしてください。（複数選択可）</p>
-                        </div>
-                      </Form>
-                      <Row className="dropzone-files">
-                        {files.map(file => <DropzoneFile key={file.path} {...file} />)}
+                      <Form.Label>商品画像</Form.Label>
+                      <Row>
+                        {productImages.map((v, k) => (
+                          <Col md={2} className="py-2">
+                            <div>{k + 1}枚目</div>
+                            <Image src="https://via.placeholder.com/300.png/09f/fff" className="py-1" />
+                          </Col>
+                        ))}
+                        <Col md={2}>
+                          <div className="py-2">画像を追加</div>
+                          <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="200px" >
+                            <Form.Control {...getInputProps()} />
+                            <div className="dz-default dz-message text-center">
+                              <p className="dz-button mb-0">画像をアップロード、もしくはドラッグアンドドロップをしてください</p>
+                            </div>
+                          </Form>
+                          <Row className="dropzone-files">
+                            {files.map(file => <DropzoneFile key={file.path} {...file} />)}
+                          </Row>
+                        </Col>
                       </Row>
                     </Col>
                     <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
                       <Button
                         variant="primary"
                         className="d-inline-flex align-items-center"
+                        onClick={() => onSaveProduct()}
                       >
                         保存する
                       </Button>

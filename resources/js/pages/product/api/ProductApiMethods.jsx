@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export const getProducts = async (setProducts) => {
   axios.get('/api/v1/management/products')
@@ -50,7 +51,6 @@ export const showProduct = async (id, setProduct) => {
 export const updateProduct = (id, formValue) => {
   axios.put(`/api/v1/management/products/${id}`, formValue)
   .then((response) => {
-    const product = response.data.product;
     Swal.fire(
       '保存完了',
       'ユーザー情報の保存に成功しました',
@@ -88,6 +88,38 @@ export const getProductImages = async (id, setProductImages) => {
   .then((response) => {
     setProductImages(response.data.product_images);
     console.log(response.data.product_images);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getRelatedProducts = (id, setRelatedProducts) => {
+  axios.get(`/api/v1/management/products/${id}/related-product`)
+  .then((response) => {
+    setRelatedProducts(
+      response.data.related_products.map(v => ({
+        id: v.related_product_id,
+        table_id: v.id,
+        name: v.related_product.name,
+        discountPrice: v.discount_price,
+      }))
+    )
+  })
+  .catch(error => {
+    console.error(error);
+  })
+}
+
+export const updateRelatedProduct = (id, formValue) => {
+  axios.post(`/api/v1/management/products/${id}/related-product`, formValue)
+  .then((response) => {
+    console.log(response.data);
+    Swal.fire(
+      '保存完了',
+      'ユーザー情報の保存に成功しました',
+      'success'
+    )
   })
   .catch(error => {
       console.error(error);

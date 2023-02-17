@@ -422,6 +422,7 @@ $box-shadow      : 0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06
 $box-shadow-sm   : 0 2px 5px rgba(140, 152, 164, .2) !default;
 $box-shadow-lg   : 0 1rem 3rem rgba($black, .175) !default;
 $box-shadow-inset: inset 0 1px 2px rgba($black, .0125) !default;
+$box-shadow-success :0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 255, 85, 0.06) !default;
 
 $component-active-color: $white !default;
 $component-active-bg   : $primary !default;

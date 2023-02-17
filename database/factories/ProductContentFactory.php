@@ -18,7 +18,7 @@ class ProductContentFactory extends Factory
     {
         return [
             'product_id' => fake()->numberBetween(1, 50),
-            'title' => fake()->sentence(),
+            'title' => fake()->secondaryAddress(),
             'content' => fake()->sentences(2, true),
         ];
     }

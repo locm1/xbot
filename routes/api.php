@@ -23,7 +23,19 @@ use App\Http\Controllers\api\management\user\UserDemographicController;
 use App\Http\Controllers\api\management\MeController;
 use App\Http\Controllers\api\management\OccupationController;
 use App\Http\Controllers\api\management\ProductController;
+use App\Http\Controllers\api\management\ProductImageController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
+use App\Http\Controllers\api\management\QuestionnaireAnswerController;
+use App\Http\Controllers\api\management\RelatedProductController;
+use App\Http\Controllers\api\management\TagUserController;
+use App\Http\Controllers\api\management\UserTagController;
+use App\Http\Controllers\api\management\UserInviteHistoryController;
+use App\Http\Controllers\api\management\UserOrderHistoryController;
+use App\Http\Controllers\api\management\UserOrderProductController;
+use App\Http\Controllers\api\management\UserPurchaseController;
+use App\Http\Controllers\api\management\UserReserveHistoryController;
+use App\Http\Controllers\api\management\UserVisitorHistoryController;
+use App\Models\QuestionnaireAnswer;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,11 +58,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('me', MeController::class);
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
+        Route::apiResource('users/{user}/questionnaire', QuestionnaireAnswerController::class);
+        Route::apiResource('users/{user}/user_tag', TagUserController::class);
+        Route::apiResource('users/{user}/visitor-history', UserVisitorHistoryController::class);
+        Route::get('users/{user}/invite-history', UserInviteHistoryController::class);
+        Route::get('users/{user}/order-history', UserOrderHistoryController::class);
+        Route::get('users/{user}/reserve-history', UserReserveHistoryController::class);
+        Route::get('users/{user}/purchase', UserPurchaseController::class);
         Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);
         Route::apiResource('terms-of-service', TermsOfServiceController::class);
         Route::apiResource('specific-trades', SpecificTradeController::class);
-        Route::apiResource('tags', TagController::class);
+        Route::apiResource('user_tags', UserTagController::class);
         Route::apiResource('postages', PostageController::class)->only([
             'index', 'store'
         ]);
@@ -69,6 +88,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
         Route::put('questionnaires/{questionnaire}/sort', QuestionnaireSortController::class);
         Route::apiResource('products', ProductController::class);
+        Route::apiResource('products/{product}/product-image', ProductImageController::class);
+        Route::apiResource('products/{product}/related-product', RelatedProductController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

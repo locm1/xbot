@@ -9,51 +9,16 @@ import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
 
-import prefectures from "@/data/postage"
-
-export const DropFilesForm = () => {
-  const [files, setFiles] = useState([]);
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
-    onDrop: files => setFiles(files.map(file => ({
-      ...file,
-      preview: URL.createObjectURL(file)
-    })))
-  });
-
-  const DropzoneFile = (props) => {
-    const { path, preview } = props;
-
-    return (
-      <Col xs={6} className="dropzone-preview">
-        <Image src={preview} className="dropzone-image" />
-        <Card.Text className="dropzone-filename">
-          {path}
-        </Card.Text>
-      </Col>
-    );
-  };
-
-  return (
-    <>
-      <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
-        <Form.Control {...getInputProps()} />
-        <div className="dz-default dz-message text-center">
-          <p className="dz-button mb-0">Drop files here to upload</p>
-        </div>
-      </Form>
-      <Row className="dropzone-files">
-        {files.map(file => <DropzoneFile key={file.path} {...file} />)}
-      </Row>
-    </>
-  );
-};
-
+import prefectures from "@/data/postage";
+import { TagForm } from "./TagForm";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export const UserInfoForm = (props) => {
   const { 
-    first_name, last_name, first_name_kana, last_name_kana, birthDate, birth_date, gender, 
-    zipcode, prefecture, city, address, building_name, tel, occupation_id, setBirthDate, saveUser, occupations
+    first_name, last_name, first_name_kana, last_name_kana, birthDate, birth_date, gender, id,
+    zipcode, prefecture, city, address, building_name, tel, occupation_id, setBirthDate, saveUser, occupations,
+    selectedTags, tags, setSelectedTags
   } = props;
 
   const birthDateOptions = {
@@ -64,6 +29,14 @@ export const UserInfoForm = (props) => {
     '中央区', '北区', '東区', '白石区', '厚別区', '豊平区', 
     '清田区', '南区', '西区', '手稲区', '札幌市以外', '道外'
   ];
+
+  const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-primary me-3",
+      cancelButton: "btn btn-gray-100"
+    },
+    buttonsStyling: false
+  }));
 
 
 
@@ -191,6 +164,9 @@ export const UserInfoForm = (props) => {
                   }
                 </Form.Select>
               </Form.Group>
+            </Col>
+            <Col md={12} className="mb-3">
+              <TagForm userId={id} tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
             </Col>
           </Row>
 

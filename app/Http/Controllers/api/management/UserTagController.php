@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\Tag;
 use App\Http\Requests\management\tag\StoreTagRequest;
 use App\Http\Requests\management\tag\UpdateTagRequest;
-use App\Services\management\tag\TagService;
+use App\Models\UserTag;
+use App\Services\management\user_tag\UserTagService;
 
-class TagController extends Controller
+class UserTagController extends Controller
 {
     private $tag_service;
 
-    public function __construct(TagService $tag_service) {
+    public function __construct(UserTagService $tag_service) {
         $this->tag_service = $tag_service;
     }
 
@@ -41,7 +42,7 @@ class TagController extends Controller
      * @param  int  $id
      * @return JsonResource
      */
-    public function show(Tag $tag)
+    public function show(UserTag $tag)
     {
         $tag = $this->tag_service->show($tag);
         return response()->json(['tag' => $tag], 200);
@@ -54,7 +55,7 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTagRequest $request, Tag $tag)
+    public function update(UpdateTagRequest $request, UserTag $tag)
     {
         $tag = $this->tag_service->update($request, $tag);
         return response()->json(['tag' => $tag], 200);
@@ -66,7 +67,7 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy(UserTag $tag)
     {
         $this->tag_service->destroy($tag);
         return response()->json([], 204);

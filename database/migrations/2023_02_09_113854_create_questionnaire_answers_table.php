@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Questionnaire;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,14 +15,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tag_users', function (Blueprint $table) {
+        Schema::create('questionnaire_answers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('tag_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('tag_id')->references('id')->on('tags');
-            $table->softDeletes();
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Questionnaire::class);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tag_users');
+        Schema::dropIfExists('questionnaire_answers');
     }
 };

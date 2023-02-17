@@ -13,48 +13,42 @@ import { TagForm } from "@/pages/user/TagForm";
 import { Link, useParams } from 'react-router-dom';
 
 import { Paths } from "@/paths";
+import Swal from "sweetalert2";
 
 
 export default () => {
   const {id} = useParams();
-  const orderHistoryHeaders = ['注文日時', '注文商品', '配送先住所'];
-  const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '金額', '期日'];
+  const orderHistoryHeaders = ['注文日時', '注文商品', '個数', '値段'];
+  const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '期日'];
   const inviteHistoryHeaders = ['紹介日時', '紹介者'];
   const visitorHistoryHeaders = ['来店日時', 'メモ'];
   const [occupations, setOccupations] = useState([]);
-
-  const orders = [
-    {id: 1, createdAt: '2022年11月18日 21:14', name: 'トリートメント 、 コスメセット', address: '北海道札幌市白石区菊水九条4-1-708'},
-    {id: 2, createdAt: '2022年11月10日 15:33', name: 'UV美容液 、 美容液セット', address: '北海道札幌市白石区菊水九条4-1-708'},
-  ];
-  const reserves = [
-    {id: 1, createdAt: '2022年11月10日', name: 'シャンプー&トリートメント', quantity: 1, price: 3000, deadline: '2022年12月10日まで'},
-    {id: 2, createdAt: '2022年11月10日', name: 'トリートメント', quantity: 1, price: 3000, deadline: '2022年12月10日まで'},
-  ];
-  const inviteHistories = [
-    {id: 1, createdAt: '2022年11月02日 11:44', inviteUserName: '長濱英也'},
-  ];
-  const visitorHistories = [
-    {id: 1, createdAt: '2022年11月02日 11:44', memo: ''},
-  ];
+  const [orders, setOrders] = useState([]);
+  const [reserves, setReserves] = useState([]);
+  const [inviteHistories, setInviteHistories] = useState([]);
+  const [fromInvitedUser, setFromInvitedUser] = useState(undefined);
+  const [visitorHistories, setVisitorHistory] = useState([]);
 
   const [birthDate, setBirthDate] = useState('');
 
+  const [visitCount, setVisitCount] = useState(0);
+
+  const [purchaseTime, setPurchaseTime] = useState(0);
+
   const handleChange = (e, input) => {
     setUser({...user, [input]: e})
-    console.log(user);
   };
 
   const saveUser = async() => {
     await axios
-    .put(`/api/v1/management/users/${id}`, user)
+    .put(`/api/v1/management/users/${id}`, {...user, "tags": selectedTags})
     .then((res) => {
-      alert('更新しました');
+      confirmSave();
       console.log(res);
     })
     .catch(error => {
       console.error(error);
-    });
+    })
   }
 
   const [user, setUser] = useState();
@@ -81,13 +75,119 @@ export default () => {
     });
   }, [])
 
+
+
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/visitor-history`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setVisitCount(res.data.visit_count);
+        setVisitorHistory(res.data.visit_history);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/purchase`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setPurchaseTime(res.data.purchase_time);
+      }
+    });
+  }, []);
+
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/user_tag`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        const selectedOptions = res.data.user_tags.map(v => ({ value: v.id, label: v.name }));
+        setSelectedTags(selectedOptions);
+      }
+    });
+    axios.get(`/api/v1/management/user_tags`)
+    .then((data) => {
+      setTags(data.data.tags);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/invite-history`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setInviteHistories(res.data.invite_histories);
+        setFromInvitedUser(res.data.from_invited_user);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/order-history`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        const order = [];
+          res.data.order_histories.forEach(history => {
+            history.order_products.forEach(product => {
+              order.push({
+                "createdAt": product.created_at,
+                "name": product.name,
+                "price": product.price,
+                "quantity": product.quantity,
+              })
+            })
+          })
+        setOrders(order);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`/api/v1/management/users/${id}/reserve-history`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setReserves(res.data.reserve_histories.map(v => (
+          {
+            createdAt: v.created_at,
+            name: v.product.name,
+            quantity: v.quantity,
+            deadline: v.deadline,
+          }
+        )));
+      }
+    });
+  }, []);
+
+  const confirmSave = () => {
+    Swal.fire(
+      '保存完了',
+      'ユーザー情報の保存に成功しました',
+      'success'
+    )
+  }
+
+  
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
         </div>
       </div>
-
       <Tab.Container defaultActiveKey="user_info" className="mb-6">
         <Row>
           <Col lg={12}>
@@ -95,6 +195,11 @@ export default () => {
               <Nav.Item>
                 <Nav.Link eventKey="user_info" className="mb-sm-3 mb-md-0">
                   <UserIcon className="icon icon-xs me-2" /> ユーザー情報
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="questionnaire" className="mb-sm-3 mb-md-0">
+                  <UserIcon className="icon icon-xs me-2" /> アンケート回答一覧
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
@@ -114,26 +219,17 @@ export default () => {
                       setBirthDate={setBirthDate}
                       birthDate={birthDate}
                       occupations={occupations}
+                      selectedTags={selectedTags}
+                      tags={tags}
+                      setSelectedTags={setSelectedTags}
                     />  
-                    <QuestionnaireForm />
                   </Col>
                   <Col xs={12} xl={4}>
                     <Row>
                       <Col xs={12} className="mb-4">
-                        <ProfileCardWidget {...user} />
-                      </Col>
-                      <Col xs={12} className="mb-4">
-                        <PurchaseTimeForm title="来店 / ポイント / 購入回数" />
-                      </Col>
-                      <Col xs={12} className="mb-4">
-                        <LineBlockInfoForm title="ブロック情報" {...user} />
+                        <ProfileCardWidget {...user} visitCount={visitCount} purchaseTime={purchaseTime} />
                       </Col>
                     </Row>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} xl={12}>
-                    <TagForm />
                   </Col>
                 </Row>
               </Tab.Pane>
@@ -145,7 +241,7 @@ export default () => {
                 </Row>
                 <Row>
                   <Col xs={12} className="mb-4">
-                    <HistoryTable title="紹介履歴" headers={inviteHistoryHeaders} histories={inviteHistories} />
+                    <HistoryTable title="紹介履歴" headers={inviteHistoryHeaders} histories={inviteHistories} fromInvitedUser={fromInvitedUser} />
                   </Col>
                 </Row>
                 <Row>
@@ -158,6 +254,9 @@ export default () => {
                     <HistoryTable title="取置履歴" headers={reserveHistoryHeaders} histories={reserves} />
                   </Col>
                 </Row>
+              </Tab.Pane>
+              <Tab.Pane eventKey="questionnaire" className="py-4">
+                <QuestionnaireForm userId={id} />
               </Tab.Pane>
             </Tab.Content>
           </Col>

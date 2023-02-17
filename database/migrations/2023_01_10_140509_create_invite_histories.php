@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('invite_histories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('inviter_user_id');
-            $table->unsignedBigInteger('invitee_user_id');
+            $table->unsignedBigInteger('invitee_user_id')->unique();
             $table->foreign('inviter_user_id')->references('id')->on('users');
             $table->foreign('invitee_user_id')->references('id')->on('users');
             $table->softDeletes();

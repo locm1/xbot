@@ -48,7 +48,7 @@ export const UsersTable = (props) => {
         <td>
           <Link to={link}>
           <div className="d-flex align-items-center">
-            {img_path && (<Image src={img_path} className="avatar rounded-circle me-3"/>)}
+            {img_path ? (<Image src={img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
             <div className="d-block">
               {first_name && first_name_kana && last_name && last_name_kana ? 
                 <>
@@ -105,6 +105,26 @@ export const UsersTable = (props) => {
           </tbody>
         </Table>
       </Card.Body>
+      <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+          <Nav>
+            <Pagination className="mb-0">
+              <Pagination.Prev>
+                前
+              </Pagination.Prev>
+              <Pagination.Item active>1</Pagination.Item>
+              <Pagination.Item>2</Pagination.Item>
+              <Pagination.Item>3</Pagination.Item>
+              <Pagination.Item>4</Pagination.Item>
+              <Pagination.Item>5</Pagination.Item>
+              <Pagination.Next>
+                次
+              </Pagination.Next>
+            </Pagination>
+          </Nav>
+          <small className="fw-normal small mt-4 mt-lg-0">
+            Showing <b>{users.length}</b> out of <b>25</b> entries
+          </small>
+        </Card.Footer>
     </Card>
   );
 };

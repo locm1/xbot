@@ -8,16 +8,16 @@ import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import ProductOverview from "@/pages/product/ProductOverview";
-import products from "@/data/products";
 import Select from 'react-select'
 
-import { showProduct } from "@/pages/product/api/ProductApiMethods";
-import { getCategories } from "@/pages/product/api/ProductCategoryApiMethods";
+import { showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts, getProducts, updateRelatedProduct } from "@/pages/product/api/ProductApiMethods";
+import { getCategories, } from "@/pages/product/api/ProductCategoryApiMethods";
 
 export default () => {
   const { id } = useParams();
   const history = useHistory();
   const pathname = useLocation().pathname;
+  const [productImages, setProductImages] = useState([]);
 
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
@@ -25,26 +25,21 @@ export default () => {
   });
   const [categories, setCategories] = useState([]);
 
-  const [relatedProducts, setRelatedProducts] = useState([
-    {id: 1, name: 'シャンプー&トリートメント', discountPrice: 200},
-    {id: 2, name: '北海道ミルクプリン', discountPrice: 200},
-    {id: 3, name: '生搾りジュース', discountPrice: 200},
-    {id: 4, name: '宇宙', discountPrice: 200},
-    {id: 5, name: '海', discountPrice: 200},
-  ]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   if (!relatedProducts.some(v => v.id === 0)) {
-    relatedProducts.push({id: 0, name: '', discountPrice: 0})
+    relatedProducts.push({id: 0, table_id: '', name: '', discountPrice: 0})
   }
+
+  const[products, setProducts] = useState([]);
 
 
   const handleChange = (e, input) => {
     setProduct({...product, [input]: e.target.value})
   };
 
-
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: {'image/*': ['.jpeg', '.jpg', '.png'],},
     onDrop: files => setFiles(files.map(file => ({
       ...file,
       preview: URL.createObjectURL(file)
@@ -71,16 +66,15 @@ export default () => {
   const [privateProduct, setPrivate] = useState(false);
 
   // セット割商品の選択オプションを登録商品から出すが、すでに選択されているものは除外する
-  const options = products.filter(v => !(relatedProducts.some(b => b.name === v.name))).map(v => ({value: v.name, label: v.name }))
+  const options = products.filter(v => !(relatedProducts.some(b => b.name === v.name))).map(v => ({value: v.id, label: v.name }))
 
   const handleRelatedProducts = (e, id) => {
     if (id === 0) {
       // const maxId = Math.max({...relatedProducts}.id);
       const ids = relatedProducts.map(v => (v.id));
-      const maxId = Math.max(...ids)
       const newRelatedProducts = relatedProducts.map(v => {
         if (v.id === 0) {
-         return {id: maxId + 1, name: e.value, price: 0}
+         return {id: e.value, table_id: null, name: e.label, discountPrice: 0}
         } else {
           return {...v}
         }
@@ -89,7 +83,7 @@ export default () => {
     } else {
       const newRelatedProducts = relatedProducts.map(v => {
         if (v.id === id) {
-          return {id: maxId + 1, name: e.value, price: v.price}
+          return {id: e.value, table_id: v.table_id, name: e.label, discountPrice: v.discountPrice}
         } else {
           return {...v}
         }
@@ -120,6 +114,24 @@ export default () => {
     }
     getCategories(setCategories)
   }, []);
+
+  const onSaveProduct = () => {
+    updateProduct(id, product);
+  }
+
+  const onSaveRelatedProduct = () => {
+    updateRelatedProduct(id, relatedProducts);
+  }
+
+  useEffect(() => {
+    getProductImages(id, setProductImages);
+    getRelatedProducts(id, setRelatedProducts);
+    getProducts(setProducts);
+  }, [])
+
+  const selectProductImage = () => {
+    <Form.Control {...getInputProps()} />
+  }
 
   return (
     <>
@@ -205,9 +217,9 @@ export default () => {
                         <Col md={6} className="mb-3">
                           <Form.Group id="category">
                             <Form.Label>カテゴリー</Form.Label>
-                            <Form.Select defaultValue={product.product_category_id} className="mb-0" onChange={(e) => handleChange(e, 'product_category_id')}>
+                            <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => {handleChange(e, 'product_category_id')}}>
                               {
-                                categories.map((category, index) => <option key={index} value={category.id}>{category.name}</option>)
+                                categories.map((category, index) => <option key={`category-${index}`} value={category.id}>{category.name}</option>)
                               }
                             </Form.Select>
                           </Form.Group>
@@ -219,21 +231,33 @@ export default () => {
                           <Form.Control as="textarea" rows="3" value={product.overview} onChange={(e) => handleChange(e, 'overview')} placeholder="商品の概要を入力してください" />
                         </Form.Group>
                       </Col>
-                          <Form.Label>商品画像</Form.Label>
-                      <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
-                        <Form.Control {...getInputProps()} />
-                        <div className="dz-default dz-message text-center">
-                          <p className="dz-button mb-0">画像をアップロード、もしくはドラッグアンドドロップをしてください。（複数選択可）</p>
-                        </div>
-                      </Form>
-                      <Row className="dropzone-files">
-                        {files.map(file => <DropzoneFile key={file.path} {...file} />)}
+                      <Form.Label>商品画像</Form.Label>
+                      <Row>
+                        {productImages.map((v, k) => (
+                          <Col md={2} className="py-2" key={`product-image-${k}`}>
+                            <div>{k + 1}枚目</div>
+                            <Image src="https://via.placeholder.com/300.png/09f/fff" className="py-1" />
+                          </Col>
+                        ))}
+                        <Col md={2}>
+                          <div className="py-2">画像を追加</div>
+                          <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="200px" >
+                            <Form.Control {...getInputProps()} />
+                            <div className="dz-default dz-message text-center">
+                              <p className="dz-button mb-0">画像をアップロード、もしくはドラッグアンドドロップをしてください</p>
+                            </div>
+                          </Form>
+                          <Row className="dropzone-files">
+                            {files.map(file => <DropzoneFile key={file.path} {...file} />)}
+                          </Row>
+                        </Col>
                       </Row>
                     </Col>
                     <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
                       <Button
                         variant="primary"
                         className="d-inline-flex align-items-center"
+                        onClick={() => onSaveProduct()}
                       >
                         保存する
                       </Button>
@@ -253,7 +277,7 @@ export default () => {
                     {relatedProducts.map((v,k) => (
                       <React.Fragment key={`relatedProducts-${k}`}>
                         <Col xl={8} className={"my-2"}>
-                          <Select options={options} value={{label: v.name, value: v.name}} onChange={(e) => handleRelatedProducts(e, v.id)} />
+                          <Select options={options} value={{label: v.name, value: v.id}} onChange={(e) => handleRelatedProducts(e, v.id)} />
                         </Col>
                         <Col xl={3} className={"my-2"}>
                         <Form.Group>
@@ -271,6 +295,15 @@ export default () => {
                       </React.Fragment>
                     ))}
                   </Row>
+                  <div className="d-flex justify-content-end">
+                    <Button
+                      variant="primary"
+                      className="d-inline-flex align-items-center"
+                      onClick={() => onSaveRelatedProduct()}
+                    >
+                      保存する
+                    </Button>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>

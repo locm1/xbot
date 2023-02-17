@@ -1,7 +1,7 @@
 export const getUsers = async (setUsers) => {
   axios.get('/api/v1/management/users')
   .then((response) => {
-    setUsers(response.data.users.map(u => ({ ...u, isSelected: false, show: true })));
+    setUsers(response.data.users.data.map(u => ({ ...u, isSelected: false, show: true })));
   })
   .catch(error => {
       console.error(error);

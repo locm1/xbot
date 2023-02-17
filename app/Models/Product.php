@@ -12,6 +12,13 @@ class Product extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = ['id'];
+
+    /**
      * Get the user that owns the PrivilegeItem
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -24,5 +31,10 @@ class Product extends Model
     public function productImages()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function relatedProducts()
+    {
+        return $this->hasMany(RelatedProduct::class);
     }
 }

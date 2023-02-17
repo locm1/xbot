@@ -24,7 +24,7 @@ export default () => {
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
       confirmButton: 'btn btn-primary me-3',
-      cancelButton: 'btn btn-gray'
+      cancelButton: 'btn btn-gray-100'
     },
     buttonsStyling: false
   }));
@@ -101,7 +101,7 @@ export default () => {
   };
 
   useEffect(() => {
-    axios.get(`/api/v1/management/tags`)
+    axios.get(`/api/v1/management/user_tags`)
     .then((data) => {
       setTags(data.data.tags);
     })
@@ -111,7 +111,7 @@ export default () => {
   }, []);
 
   const showTags = async (id) => {
-    await axios.get(`/api/v1/management/tags/${id}`)
+    await axios.get(`/api/v1/management/user_tags/${id}`)
     .then((response) => {
       setName(response.data.tag.name);
     })

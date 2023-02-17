@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 export const getProducts = async (setProducts) => {
   axios.get('/api/v1/management/products')
@@ -22,12 +24,12 @@ export const searchProducts = async (params, setProducts) => {
   });
 };
 
-export const storeCategory = async (formValue, history) => {
-  axios.post(`/api/v1/management/categories/`, formValue)
+export const storeProduct = async (formValue, history) => {
+  axios.post(`/api/v1/management/products/`, formValue)
   .then((response) => {
-    const category = response.data.category;
-    console.log(category);
-    history.push(Paths.ProductCategory.path);
+    const product = response.data.product;
+    console.log(product);
+    history.push(Paths.ProductProduct.path);
     alert('登録しました');
   })
   .catch(error => {
@@ -46,20 +48,22 @@ export const showProduct = async (id, setProduct) => {
   });
 };
 
-export const updateCategory = async (id, formValue) => {
-  axios.put(`/api/v1/management/categories/${id}`, formValue)
+export const updateProduct = (id, formValue) => {
+  axios.put(`/api/v1/management/products/${id}`, formValue)
   .then((response) => {
-    const category = response.data.category;
-    console.log(category);
-    alert('更新しました');
+    Swal.fire(
+      '保存完了',
+      'ユーザー情報の保存に成功しました',
+      'success'
+    )
   })
   .catch(error => {
       console.error(error);
   });
 };
 
-export const deleteCategory = async (id, completeDelete) => {
-  axios.delete(`/api/v1/management/categories/${id}`)
+export const deleteProduct = async (id, completeDelete) => {
+  axios.delete(`/api/v1/management/products/${id}`)
   .then((response) => {
     completeDelete();
   })
@@ -68,11 +72,54 @@ export const deleteCategory = async (id, completeDelete) => {
   });
 };
 
-export const sortCategory = async (id, formValue) => {
-  axios.put(`/api/v1/management/categories/${id}/sort`, formValue)
+export const sortProduct = async (id, formValue) => {
+  axios.put(`/api/v1/management/products/${id}/sort`, formValue)
   .then((response) => {
     const displayOrder = response.data.display_order;
     console.log(displayOrder);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getProductImages = async (id, setProductImages) => {
+  axios.get(`/api/v1/management/products/${id}/product-image`)
+  .then((response) => {
+    setProductImages(response.data.product_images);
+    console.log(response.data.product_images);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getRelatedProducts = (id, setRelatedProducts) => {
+  axios.get(`/api/v1/management/products/${id}/related-product`)
+  .then((response) => {
+    setRelatedProducts(
+      response.data.related_products.map(v => ({
+        id: v.related_product_id,
+        table_id: v.id,
+        name: v.related_product.name,
+        discountPrice: v.discount_price,
+      }))
+    )
+  })
+  .catch(error => {
+    console.error(error);
+  })
+}
+
+export const updateRelatedProduct = (id, formValue) => {
+  axios.post(`/api/v1/management/products/${id}/related-product`, formValue)
+  .then((response) => {
+    console.log(response.data);
+    Swal.fire(
+      '保存完了',
+      'ユーザー情報の保存に成功しました',
+      'success'
+    )
   })
   .catch(error => {
       console.error(error);

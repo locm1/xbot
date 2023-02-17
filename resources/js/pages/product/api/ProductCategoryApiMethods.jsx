@@ -6,7 +6,6 @@ export const getCategories = async (setCategories) => {
   axios.get('/api/v1/management/categories')
   .then((response) => {
     const categories = response.data.categories;
-    console.log(categories);
     setCategories(categories.map(category => ({ ...category, show: true, deleted: false })));
   })
   .catch(error => {
@@ -18,7 +17,6 @@ export const searchCategories = async (params, setCategories) => {
   axios.get('/api/v1/management/categories', params)
   .then((response) => {
     const categories = response.data.categories;
-    console.log(categories);
     setCategories(categories.map(category => ({ ...category, show: true, deleted: false })));
   })
   .catch(error => {
@@ -30,7 +28,6 @@ export const storeCategory = async (formValue, history) => {
   axios.post(`/api/v1/management/categories/`, formValue)
   .then((response) => {
     const category = response.data.category;
-    console.log(category);
     history.push(Paths.ProductCategory.path);
     alert('登録しました');
   })
@@ -44,7 +41,6 @@ export const showCategory = async (id, setCategory, setBackgroundColor, setPriva
   axios.get(`/api/v1/management/categories/${id}`)
   .then((response) => {
     const category = response.data.category;
-    console.log(category);
     setCategory(category);
     setBackgroundColor(category.color)
     setPrivate(category.is_undisclosed)

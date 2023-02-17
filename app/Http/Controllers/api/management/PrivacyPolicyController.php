@@ -5,7 +5,6 @@ namespace App\Http\Controllers\api\management;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PrivacyPolicy;
-use App\Http\Requests\management\privacy_policy\CreatePrivacyPolicyRequest;
 use App\Http\Requests\management\privacy_policy\UpdatePrivacyPolicyRequest;
 use App\Services\setting\PrivacyPolicyService;
 
@@ -23,31 +22,8 @@ class PrivacyPolicyController extends Controller
      */
     public function index()
     {
-        $privacy_policies = $this->privacy_policy_service->getAllPrivacyPolicies();
-        return response()->json(['privacy_policies' => $privacy_policies], 200);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CreatePrivacyPolicyRequest $request)
-    {
-        $policy = $this->privacy_policy_service->createPrivacyPolicy($request->content);
-        return response()->json(['policy' => $policy], 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $privacy_policy = $this->privacy_policy_service->getPrivacyPolicyById();
+        return response()->json(['privacy_policy' => $privacy_policy], 200);
     }
 
 

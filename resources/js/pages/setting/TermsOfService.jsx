@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, Card, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
-
+import Swal from "sweetalert2";
 import { getTermsOfService, storeTermsOfService, updateTermsOfService } from "@/pages/setting/api/TermsOfServiceApiMethods";
 
 export default () => {
@@ -14,15 +14,19 @@ export default () => {
   };
 
   const handleClick = async() => {
-    if (typeof id === "undefined") {
-      storeTermsOfService({content: content}, setId)
-    } else {
-      const formValue = {
-        id: id,
-        content: content
-      }
-      updateTermsOfService(id, formValue)
+    const formValue = {
+      id: id,
+      content: content
     }
+    updateTermsOfService(id, formValue, updateCompleteModal)
+  }
+
+  const updateCompleteModal = () => {
+    Swal.fire(
+      '更新完了',
+      '利用規約の更新に成功しました',
+      'success'
+    )
   }
 
   useEffect(() => {

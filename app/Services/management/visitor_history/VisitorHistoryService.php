@@ -10,7 +10,7 @@ class VisitorHistoryService extends AbstractManagementService
 
     public function index() 
     {
-        return 
+        return '';
     }
 
 

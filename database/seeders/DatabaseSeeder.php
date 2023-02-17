@@ -42,7 +42,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminTableSeeder::class,
-            PrefecturesTableSeeder::class
+            PrefecturesTableSeeder::class,
+            PrivacyPoliciesTableSeeder::class,
+            TermsOfServicesTableSeeder::class
         ]);
         Admin::factory(10)->create();
         Occupation::factory(10)->create();

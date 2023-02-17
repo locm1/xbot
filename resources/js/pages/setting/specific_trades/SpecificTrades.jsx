@@ -31,8 +31,6 @@ const SpecificTradesService = (props) => {
     await axios
     .post('/api/v1/management/specific-trades', formValue)
     .then((res) => {
-        //戻り値をtodosにセット
-        alert('追加しました。');
         console.log(res);
         setSpecificTrades([...SpecificTrades, res.data.specific])
         setIsOpen(false)
@@ -45,8 +43,6 @@ const SpecificTradesService = (props) => {
   const updateSpecificTrades = async () => {
     await axios.put(`/api/v1/management/specific-trades/${specificTradeId}`, formValue)
     .then((res) => {
-        //戻り値をtodosにセット
-        alert('更新しました。');
         console.log(res);
         location.reload();
     })

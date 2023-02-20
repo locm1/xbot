@@ -30,12 +30,12 @@ class OrderHistoryFactory extends Factory
             'user_id' => fake()->randomElement($user_ids),
             // 'order_product_id' => fake()->randomElement($order_product_ids),
             'order_user_id' => fake()->randomElement($order_user_ids),
-            'delivery_time' => fake()->dateTime(),
+            'delivery_time' => fake()->numberBetween(1,8),
             'purchase_amount' => fake()->numberBetween(100, 10000000),
-            'status' => fake()->numberBetween(0, 5),
-            'payment_method' => fake()->numberBetween(0,5),
+            'status' => fake()->numberBetween(1, 4),
+            'payment_method' => fake()->numberBetween(1, 5),
             'shipping_fee' => fake()->numberBetween(0, 1000),
-            'coupon_code_id' => fake()->randomElement($coupon_ids),
+            'coupon_id' => fake()->randomElement($coupon_ids),
             'tax' => fake()->numberBetween(1, 50),
         ];
     }

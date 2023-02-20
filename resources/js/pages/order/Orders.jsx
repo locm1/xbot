@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
@@ -6,30 +6,15 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 
 import { OrdersTable } from "@/pages/order/OrdersTable";
 import { ChangeStatusModal } from "@/pages/order/ChangeStatusModal";
-import orders from "@/data/orders";
+
+import { getOrders, updateOrder } from "@/pages/order/api/OrderApiMethods";
 
 export default () => {
-  const [transactions, setTransactions] = useState(orders.map(t => ({ ...t, show: true })));
+  const [orders, setOrders] = useState([]);
+  const [orderId, setOrderId] = useState();
   const [searchValue, setSearchValue] = useState("");
-  const [birthday, setBirthday] = useState("");
   const [statusValue, setStatusValue] = useState("all");
   const [modalOpen, setModalOpen] = useState(false);
-
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
-
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
-  };
 
   const changeStatusValue = (e) => {
     const newStatusValue = e.target.value;
@@ -39,9 +24,14 @@ export default () => {
     setTransactions(newTransactions);
   };
 
-  const changeStatusModal = () => {
+  const changeStatusModal = (id) => {
     setModalOpen(!modalOpen);
+    setOrderId(id);
   }
+
+  useEffect(() => {
+    getOrders(setOrders);
+  }, []);
 
   return (
     <>
@@ -49,6 +39,10 @@ export default () => {
         <ChangeStatusModal
           show={modalOpen}
           setModalOpen={setModalOpen}
+          updateOrder={updateOrder}
+          orders={orders}
+          setOrders={setOrders}
+          orderId={orderId}
         />
       )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -68,7 +62,6 @@ export default () => {
                 type="text"
                 placeholder="氏名"
                 value={searchValue}
-                onChange={changeSearchValue}
               />
             </InputGroup>
           </Col>
@@ -94,7 +87,6 @@ export default () => {
                 type="text"
                 placeholder="注文番号"
                 value={searchValue}
-                onChange={changeSearchValue}
               />
             </InputGroup>
           </Col>
@@ -115,7 +107,7 @@ export default () => {
       </div>
 
       <OrdersTable
-        orders={transactions.filter(t => t.show)}
+        orders={orders}
         changeStatusModal={changeStatusModal}
       />
     </>

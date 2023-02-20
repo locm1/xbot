@@ -21,13 +21,13 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('order_user_id')->references('id')->on('order_users');
             // $table->foreign('delivery_address_id')->references('id')->on('delivery_addresses');
-            $table->dateTime('delivery_time')->nullable(false);
+            $table->tinyInteger('delivery_time')->nullable(false);
             $table->integer('purchase_amount')->nullable(false);
             $table->tinyInteger('status')->nullable(false);
             $table->tinyInteger('payment_method')->nullable(false);
             $table->integer('shipping_fee')->nullable(false);
-            $table->unsignedBigInteger('coupon_code_id');
-            $table->foreign('coupon_code_id')->references('id')->on('coupons');
+            $table->unsignedBigInteger('coupon_id');
+            $table->foreign('coupon_id')->references('id')->on('coupons');
             $table->integer('tax')->nullable(false);
             $table->softDeletes();
             $table->timestamps();

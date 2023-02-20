@@ -134,18 +134,18 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    axios.get(`/api/v1/management/users/${id}/order-history`)
+    axios.get(`/api/v1/management/users/${id}/orders`)
     .then((res) => {
       if(res.status !== 200) {
         throw new Error("APIが正しく取得されませんでした");
       } else {
         const order = [];
-          res.data.order_histories.forEach(history => {
+          res.data.orders.forEach(history => {
             history.order_products.forEach(product => {
               order.push({
                 "createdAt": product.created_at,
-                "name": product.name,
-                "price": product.price,
+                "name": product.product.name,
+                "price": product.product.price,
                 "quantity": product.quantity,
               })
             })

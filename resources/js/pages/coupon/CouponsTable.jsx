@@ -68,7 +68,7 @@ export const CouponsTable = (props) => {
             {code}
           </span>
         </td>
-        <td>
+        <td className="text-center">
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
@@ -90,7 +90,7 @@ export const CouponsTable = (props) => {
               <th className="border-gray-200">割引率</th>
               <th className="border-gray-200">残数</th>
               <th className="border-gray-200">利用コード</th>
-              <th className="border-gray-200">編集・削除</th>
+              <th className="border-gray-200 text-center">編集・削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

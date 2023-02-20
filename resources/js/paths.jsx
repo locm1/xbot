@@ -24,7 +24,7 @@ export const Paths = {
     CreateCategory: { path: `${prefix}/product/category/create` },
     EditProduct: { path: `${prefix}/product/edit/:id` },
     CreateProduct: { path: `${prefix}/product/create` },
-    OrderDetail: { path: `${prefix}/product/detail/:id` },
+    OrderDetail: { path: `${prefix}/order/detail/:id` },
     Coupons: { path: `${prefix}/coupon/list` },
     CreateCoupon: { path: `${prefix}/coupon/create` },
     EditCoupon: { path: `${prefix}/coupon/edit/:id` },

@@ -1,8 +1,3 @@
-
-
-
-
-
 import React, { useState } from "react";
 import { PencilIcon, CheckIcon, TrashIcon, PlusIcon } from "@heroicons/react/solid";
 import { Card, Button, Image, Col, Row, Form, Badge, InputGroup } from "react-bootstrap";

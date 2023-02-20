@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
@@ -7,37 +7,27 @@ import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { CouponsTable } from "@/pages/coupon/CouponsTable";
-import coupons from "@/data/coupons";
+
+import { getCoupons, searchCoupons, deleteCoupon } from "@/pages/coupon/api/CouponApiMethods";
 
 export default () => {
-  const [transactions, setTransactions] = useState(coupons.map(t => ({ ...t, show: true })));
-  const [searchValue, setSearchValue] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
+  const [coupons, setCoupons] = useState([]);
+  const [name, setName] = useState('');
 
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
+  const handleChange = (e) => {
+    setName(e.target.value)
 
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
+    const searchParams = {
+      params: {
+        name: name
+      }
+    };
+    searchCoupons(searchParams, setCoupons);
   };
 
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
+  useEffect(() => {
+    getCoupons(setCoupons);
+  }, []);
 
   return (
     <>
@@ -51,10 +41,6 @@ export default () => {
               <PlusIcon className="icon icon-xs me-2" /> 新規作成
             </Button>
           </Link>
-          <ButtonGroup className="ms-2 ms-lg-3">
-            <Button variant="outline-gray-600" size="sm">CSVインポート</Button>
-            <Button variant="outline-gray-600" size="sm">CSVエクスポート</Button>
-          </ButtonGroup>
         </div>
       </div>
 
@@ -68,8 +54,8 @@ export default () => {
               <Form.Control
                 type="text"
                 placeholder="管理名称検索"
-                value={searchValue}
-                onChange={changeSearchValue}
+                value={name}
+                onChange={(e) => handleChange(e)}
               />
             </InputGroup>
           </Col>
@@ -77,7 +63,9 @@ export default () => {
       </div>
 
       <CouponsTable
-        coupons={transactions.filter(t => t.show)}
+        coupons={coupons}
+        setCoupons={setCoupons}
+        deleteCoupon={deleteCoupon}
       />
     </>
   );

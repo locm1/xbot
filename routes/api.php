@@ -11,6 +11,8 @@ use App\Http\Controllers\api\management\privilege\PrivilegeController;
 use App\Http\Controllers\api\management\privilege\PrivilegeItemController;
 use App\Http\Controllers\api\management\category\ProductCategoryController;
 use App\Http\Controllers\api\management\category\ProductCategorySortController;
+use App\Http\Controllers\api\management\coupon\CouponController;
+use App\Http\Controllers\api\management\coupon\CouponUserController;
 use App\Http\Controllers\api\management\TermsOfServiceController;
 use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
@@ -95,6 +97,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/users', [ReportController::class, 'getUserByDate']);
             Route::get('/user/analysis', [ReportController::class, 'getUserByMonth']);
         });
+        Route::apiResource('coupons', CouponController::class);
+        Route::get('coupons/{coupon}/users', CouponUserController::class);
     });
 });
 

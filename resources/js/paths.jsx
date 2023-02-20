@@ -27,6 +27,7 @@ export const Paths = {
     OrderDetail: { path: `${prefix}/product/detail/:id` },
     Coupons: { path: `${prefix}/coupon/list` },
     CreateCoupon: { path: `${prefix}/coupon/create` },
+    EditCoupon: { path: `${prefix}/coupon/edit/:id` },
     Orders: { path: `${prefix}/order/list` },
     Reserves: { path: `${prefix}/reserve/list` },
     EventCalendar: { path: `${prefix}/event/calendar` },

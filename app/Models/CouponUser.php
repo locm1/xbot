@@ -5,22 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User;
 
-class Coupon extends Model
+class CouponUser extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
     protected $guarded = ['id'];
 
+    protected $table = 'coupon_user';
+
     /**
-     * The roles that belong to the Coupon
+     * Get all of the comments for the CouponUser
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function users()
     {
-        return $this->belongsToMany(User::class)->withPivot('created_at');
+        return $this->hasMany(User::class);
     }
 }

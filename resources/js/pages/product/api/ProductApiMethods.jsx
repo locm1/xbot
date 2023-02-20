@@ -38,10 +38,14 @@ export const storeProduct = async (formValue, history) => {
 };
 
 
-export const showProduct = async (id, setProduct) => {
+export const showProduct = async (id, setProduct, setPrivate, setIsPickedUp) => {
   axios.get(`/api/v1/management/products/${id}`)
   .then((response) => {
-    setProduct(response.data.product)
+    const product = response.data.product;
+    console.log(product);
+    setProduct(product)
+    setPrivate(product.is_undisclosed == 1 ? true : false)
+    setIsPickedUp(product.is_picked_up == 1 ? true : false)
   })
   .catch(error => {
       console.error(error);

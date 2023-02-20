@@ -4,15 +4,47 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar,
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 
 export const CouponsTable = (props) => {
-  const { coupons } = props;
+  const { coupons, setCoupons, deleteCoupon } = props;
   const TotalCoupons = coupons.length;
 
   const TableRow = (props) => {
-    const { name, upperLimit, discountRate, code } = props;
+    const { id, name, upper_limit, discount_price, code } = props;
+    const link = Paths.EditCoupon.path.replace(':id', id);
+
+    const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-primary me-3',
+        cancelButton: 'btn btn-gray-100'
+      },
+      buttonsStyling: false
+    }));
+
+    const showConfirmDeleteModal = async (id) => {
+      const textMessage = "本当にクーポンを削除しますか？";
+  
+      const result = await SwalWithBootstrapButtons.fire({
+        icon: "error",
+        title: "削除確認",
+        text: textMessage,
+        showCancelButton: true,
+        confirmButtonText: "削除",
+        cancelButtonText: "キャンセル"
+      });
+  
+      if (result.isConfirmed) {
+        deleteCoupon(id, deleteComplete, setCoupons, coupons)
+      }
+    };
+
+    const deleteComplete = async () => {
+      const confirmMessage = "選択した項目は削除されました。";
+      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    };
 
     return (
       <tr className="border-bottom">
@@ -23,12 +55,12 @@ export const CouponsTable = (props) => {
         </td>
         <td>
           <span className="fw-normal">
-            {upperLimit}
+            {discount_price}%
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {discountRate}
+            {upper_limit}
           </span>
         </td>
         <td>
@@ -37,10 +69,12 @@ export const CouponsTable = (props) => {
           </span>
         </td>
         <td>
-          <Link to={Paths.CreateCoupon.path}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
-          </Link>
-          <TrashIcon role="button" className="icon icon-xs text-danger me-2 " />
+          <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+            編集
+          </Button>
+          <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+            削除
+          </Button>
         </td>
       </tr>
     );
@@ -60,7 +94,7 @@ export const CouponsTable = (props) => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {coupons.map(t => <TableRow key={`coupons-${t.id}`} {...t} />)}
+            {coupons && coupons.map(t => <TableRow key={`coupons-${t.id}`} {...t} />)}
           </tbody>
         </Table>
         <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
@@ -80,7 +114,7 @@ export const CouponsTable = (props) => {
             </Pagination>
           </Nav>
           <small className="fw-normal mt-4 mt-lg-0">
-            <b>{TotalCoupons}</b> 件中 1〜4 件表示
+            <b>{TotalCoupons}</b> 件中 1〜{TotalCoupons} 件表示
           </small>
         </Card.Footer>
       </Card.Body>

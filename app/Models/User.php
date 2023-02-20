@@ -55,6 +55,16 @@ class User extends Authenticatable
         return $this->hasOne(Occupation::class);
     }
 
+    /**
+     * The roles that belong to the Coupon
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupons::class);
+    }
+
     public function userTags()
     {
         return $this->belongsToMany(UserTag::class, 'tag_user');

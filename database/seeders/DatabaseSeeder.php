@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\Coupon;
+use App\Models\CouponUser;
 use App\Models\Event;
 use App\Models\Privilege;
 use App\Models\PrivilegeItem;
@@ -29,6 +30,7 @@ use App\Models\TagUser;
 use App\Models\User;
 use App\Models\UserTag;
 use App\Models\VisitorHistory;
+use Database\Factories\CouponUserFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -64,6 +66,7 @@ class DatabaseSeeder extends Seeder
         QuestionnaireAnswerItem::factory(300)->create();
         TagUser::factory(100)->create();
         Coupon::factory(100)->create();
+        CouponUser::factory(100)->create();
         VisitorHistory::factory(100)->create();
         OrderUser::factory(100)->create();
         OrderHistory::factory(200)->create();

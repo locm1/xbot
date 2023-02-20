@@ -21,7 +21,7 @@ export default () => {
 
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
-    price: '', overview: '', is_undisclosed: 0, is_unlimited: 0
+    price: '', overview: '', is_undisclosed: 0, is_unlimited: 0, is_picked_up: 0,
   });
   const [categories, setCategories] = useState([]);
 
@@ -64,6 +64,7 @@ export default () => {
   const [disableInputForm, setDisable] = useState(false);
 
   const [privateProduct, setPrivate] = useState(false);
+  const [isPickedUp, setIsPickedUp] = useState(false);
 
   // セット割商品の選択オプションを登録商品から出すが、すでに選択されているものは除外する
   const options = products.filter(v => !(relatedProducts.some(b => b.name === v.name))).map(v => ({value: v.id, label: v.name }))
@@ -110,7 +111,7 @@ export default () => {
 
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      showProduct(id, setProduct);
+      showProduct(id, setProduct, setPrivate, setIsPickedUp);
     }
     getCategories(setCategories)
   }, []);
@@ -128,6 +129,16 @@ export default () => {
     getRelatedProducts(id, setRelatedProducts);
     getProducts(setProducts);
   }, [])
+
+  const updatePrivate = (privateProduct) => {
+    setProduct({...product, ['is_undisclosed']: privateProduct ? 1 : 0})
+    setPrivate(privateProduct)
+  }
+
+  const updateIsPickedUp = (isPickedUp) => {
+    setProduct({...product, ['is_picked_up']: isPickedUp ? 1 : 0})
+    setIsPickedUp(isPickedUp)
+  }
 
   const selectProductImage = () => {
     <Form.Control {...getInputProps()} />
@@ -166,7 +177,16 @@ export default () => {
                     label="非公開にする"
                     id="switch1"
                     htmlFor="switch1"
-                    onClick={() => setPrivate(!privateProduct)}
+                    checked={privateProduct}
+                    onClick={() => updatePrivate(!privateProduct)}
+                    />
+                    <Form.Check
+                    type="switch"
+                    label="ピックアップ商品に追加する"
+                    id="switch2"
+                    htmlFor="switch2"
+                    checked={isPickedUp}
+                    onClick={() => updateIsPickedUp(!isPickedUp)}
                     />
                   </Form.Group>
                   </div>
@@ -224,15 +244,15 @@ export default () => {
                             </Form.Select>
                           </Form.Group>
                         </Col>
+                        <Col md={12} className="mb-3">
+                          <Form.Group id="overview">
+                            <Form.Label>商品概要</Form.Label>
+                            <Form.Control as="textarea" rows="3" value={product.overview} onChange={(e) => handleChange(e, 'overview')} placeholder="商品の概要を入力してください" />
+                          </Form.Group>
+                        </Col>
                       </Row>
-                      <Col md={12} className="mb-3">
-                        <Form.Group id="overview">
-                          <Form.Label>商品概要</Form.Label>
-                          <Form.Control as="textarea" rows="3" value={product.overview} onChange={(e) => handleChange(e, 'overview')} placeholder="商品の概要を入力してください" />
-                        </Form.Group>
-                      </Col>
-                      <Form.Label>商品画像</Form.Label>
                       <Row>
+                        <Form.Label>商品画像</Form.Label>
                         {productImages.map((v, k) => (
                           <Col md={2} className="py-2" key={`product-image-${k}`}>
                             <div>{k + 1}枚目</div>

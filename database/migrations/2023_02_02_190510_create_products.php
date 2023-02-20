@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('overview')->nullable(false);
             $table->tinyInteger('is_undisclosed');
             $table->tinyInteger('is_unlimited');
-            $table->float('display_order')->nullable(false);
+            $table->tinyInteger('is_picked_up');
             $table->softDeletes();
             $table->timestamps();
         });

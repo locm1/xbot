@@ -7,9 +7,19 @@ use App\Services\management\AbstractManagementService;
 
 class OrderService
 {
+    private $search_order_action;
 
-    public function index() 
+    public function __construct(SearchOrderAction $search_order_action)
     {
+        $this->search_order_action = $search_order_action;
+    }
+
+    public function index($request) 
+    {
+        if (isset($request)) {
+            return $this->search_order_action->search($request);
+        }
+
         return OrderHistory::with(['orderUser', 'user'])->paginate(10);
     }
 

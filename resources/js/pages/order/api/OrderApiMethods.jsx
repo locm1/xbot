@@ -8,6 +8,26 @@ export const getOrders = async (setOrders) => {
   });
 };
 
+export const getPrefectures = async (setPrefectures) => {
+  axios.get('/api/v1/management/prefectures')
+  .then((response) => {
+    setPrefectures(response.data.prefectures);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const searchOrders = async (params, setOrders) => {
+  axios.get('/api/v1/management/orders', params)
+  .then((response) => {
+    setOrders(response.data.orders.data);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 
 export const showOrder = async (id, setOrder) => {
   axios.get(`/api/v1/management/orders/${id}`)

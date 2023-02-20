@@ -22,9 +22,9 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = $this->order_service->index();
+        $orders = $this->order_service->index($request);
         return response()->json(['orders' => $orders], 200);
     }
 

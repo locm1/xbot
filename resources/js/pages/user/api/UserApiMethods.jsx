@@ -25,7 +25,7 @@ export const getDemographic = async (setDemographic) => {
 export const searchUsers = async (params, setUsers) => {
   axios.get('/api/v1/management/users', params)
   .then((response) => {
-    const users = response.data.users;
+    const users = response.data.users.data;
     setUsers(users.map(u => ({ ...u, isSelected: false, show: true })));
   })
   .catch(error => {

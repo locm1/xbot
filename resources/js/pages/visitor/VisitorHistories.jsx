@@ -8,7 +8,7 @@ import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
 import { VisitorHistoriesTable } from "@/pages/visitor/VisitorHistoriesTable";
 
-import { getVisitorHistories, deleteVisitorHistory } from "@/pages/visitor/api/VisitorHistoryApiMethods";
+import { getVisitorHistories, deleteVisitorHistory, searchVisitorHistories } from "@/pages/visitor/api/VisitorHistoryApiMethods";
 
 export default () => {
   const [visitorHistories, setVisitorHistories] = useState([]);
@@ -17,16 +17,13 @@ export default () => {
   });
 
   const handleChange = (e, input) => {
-    if (input == 'start_created_at' || input == 'end_created_at') {
-      setSearchValue({...searchValue, [input]: e})
-    } else {
-      setSearchValue({...searchValue, [input]: e.target.value})
-    }
+    const value = (input == 'start_created_at' || input == 'end_created_at') ? e : e.target.value;
 
+    setSearchValue({...searchValue, [input]: value})
     const searchParams = {
-      params: {...searchValue, [input]: e.target.value}
+      params: {...searchValue, [input]: value}
     };
-    // searchProducts(searchParams, setProducts);
+    searchVisitorHistories(searchParams, setVisitorHistories);
   };
 
   const startOptions = {
@@ -110,7 +107,7 @@ export default () => {
                       data-time_24hr
                       required
                       type="text"
-                      placeholder="YYYY-MM-DD"
+                      placeholder="来店日（FROM）"
                       ref={ref}
                     />
                   );
@@ -125,7 +122,7 @@ export default () => {
                       data-time_24hr
                       required
                       type="text"
-                      placeholder="YYYY-MM-DD"
+                      placeholder="来店日（TO）"
                       ref={ref}
                     />
                   );

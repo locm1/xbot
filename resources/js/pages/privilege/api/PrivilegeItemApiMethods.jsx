@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
 
+export const getPrivilegeItems = async (id, setPrivilegeItems) => {
+  await axios.get(`/api/v1/management/privileges/${id}/items`)
+  .then((response) => {
+    setPrivilegeItems(response.data.privilegeItems);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 export const storePrivilegeItem = async (id, name, privilegeItems, setPrivilegeItems, setIsCreate) => {
   await axios.post(`/api/v1/management/privileges/${id}/items`, {
     name: name
@@ -21,12 +31,11 @@ export const storePrivilegeItem = async (id, name, privilegeItems, setPrivilegeI
   });
 };
 
-export const updatePrivilegeItem = async (privilegeId, id, name, privilegeItems, setPrivilegeItems, setIsEdit, setPrivileges, privileges) => {
+export const updatePrivilegeItem = async (privilegeId, id, name, privilegeItems, setPrivilegeItems, setIsEdit) => {
   await axios.put(`/api/v1/management/privileges/${privilegeId}/items/${id}`, {
     name: name
   })
   .then((response) => {
-    const currentPrivilegeItem = privileges.filter(privilege => (privilege.id === privilegeId))[0]
     const newPrivilegeItem = {
       id: id,
       privilege_id: privilegeId,
@@ -35,11 +44,6 @@ export const updatePrivilegeItem = async (privilegeId, id, name, privilegeItems,
     setPrivilegeItems(
       privilegeItems.map((privilegeItem) => (privilegeItem.id === id ? newPrivilegeItem : privilegeItem))
     );
-
-    currentPrivilegeItem.privilege_items = newPrivilegeItem;
-    setPrivileges(
-      privileges.map((privilege) => (privilege.id === id ? currentPrivilegeItem : privilege))
-    )
     setIsEdit(false)
   })
   .catch(error => {

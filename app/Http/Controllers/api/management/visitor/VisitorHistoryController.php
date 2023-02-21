@@ -21,9 +21,9 @@ class VisitorHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $visitors = $this->history_service->index();
+        $visitors = $this->history_service->index($request);
         return response()->json(['visitor_histories' => $visitors], 200);
     }
 

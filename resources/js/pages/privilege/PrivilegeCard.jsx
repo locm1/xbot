@@ -7,20 +7,19 @@ import withReactContent from "sweetalert2-react-content";
 import PrivilegeItemCard from "@/pages/privilege/PrivilegeItemCard";
 import PrivilegeItemCreateCard from "@/pages/privilege/PrivilegeItemCreateCard";
 import { deletePrivileges } from "@/pages/privilege/api/PrivilegeApiMethods";
-import { storePrivilegeItem, updatePrivilegeItem, deletePrivilegeItem } from "@/pages/privilege/api/PrivilegeItemApiMethods";
+import { getPrivilegeItems, storePrivilegeItem, updatePrivilegeItem, deletePrivilegeItem } from "@/pages/privilege/api/PrivilegeItemApiMethods";
 import { Paths } from "@/paths";
 import { Link, useHistory } from 'react-router-dom';
 
 export default (props) => {
   const { 
-    id, visits_times, privilege_items, privileges, 
-    setPrivileges, updatePrivileges, getPrivileges
+    id, visits_times, setPrivileges, updatePrivileges, getPrivileges, privileges
   } = props; 
 
   const [isTimeEditable, setIsTimeEditable] = useState(false);
   const [time, setTime] = useState(visits_times);
   const [isCreate, setIsCreate] = useState(false);
-  const [privilegeItems, setPrivilegeItems] = useState(privilege_items);
+  const [privilegeItems, setPrivilegeItems] = useState([]);
   const [isEdit, setIsEdit] = useState({
     id: '', isEdit: false
   });
@@ -71,8 +70,8 @@ export default (props) => {
   };
 
   useEffect(() => {
-    getPrivileges(setPrivileges)
-  }, [isUpdate]);
+    getPrivilegeItems(id, setPrivilegeItems)
+  }, []);
 
   return (
     <>
@@ -115,8 +114,6 @@ export default (props) => {
               setPrivilegeItems={setPrivilegeItems}
               updatePrivilegeItem={updatePrivilegeItem}
               deletePrivilegeItem={deletePrivilegeItem}
-              privileges={privileges}
-              setPrivileges={setPrivileges}
             />
           )
         }

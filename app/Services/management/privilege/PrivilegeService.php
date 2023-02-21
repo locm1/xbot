@@ -12,7 +12,7 @@ class PrivilegeService extends AbstractManagementService
 
     public function index(): Collection
     {
-        return Privilege::with('privilegeItems')->get();
+        return Privilege::orderBy('visits_times', 'asc')->get();
     }
 
 

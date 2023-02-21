@@ -8,9 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class VisitorHistoryService
 {
+    private $search_visitor_history_action;
 
-    public function index() 
+    public function __construct(SearchVisitorHistoryAction $search_visitor_history_action)
     {
+        $this->search_visitor_history_action = $search_visitor_history_action;
+    }
+
+    public function index($request) 
+    {
+        if (isset($request)) {
+            return $this->search_visitor_history_action->search($request);
+        }
+
         return VisitorHistory::with('user')->paginate(10);
     }
 

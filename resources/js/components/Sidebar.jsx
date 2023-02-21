@@ -118,7 +118,7 @@ export default (props = {}) => {
         </div>
       </Navbar>
       <CSSTransition timeout={300} in={show} classNames="sidebar-transition">
-        <SimpleBar {...events} className={`${contracted} ${showClass} sidebar d-lg-block bg-gray-800 text-white collapse`}>
+        <SimpleBar {...events} className={`${contracted} ${showClass} sidebar d-lg-block bg-gray-800 text-white collapse pb-4`}>
           <div className="sidebar-inner px-4 ptVolt Pro React-3">
             <div className="user-card d-flex d-md-none justify-content-between justify-content-md-center pb-4">
               <div className="d-flex align-items-center">

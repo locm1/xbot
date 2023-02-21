@@ -46,7 +46,8 @@ class DatabaseSeeder extends Seeder
             AdminTableSeeder::class,
             PrefecturesTableSeeder::class,
             PrivacyPoliciesTableSeeder::class,
-            TermsOfServicesTableSeeder::class
+            DefaultSegmentSeeder::class,
+            DefaultSegmentItemSeeder::class,
         ]);
         Admin::factory(10)->create();
         Occupation::factory(10)->create();

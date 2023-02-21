@@ -13,6 +13,7 @@ use App\Http\Controllers\api\management\category\ProductCategoryController;
 use App\Http\Controllers\api\management\category\ProductCategorySortController;
 use App\Http\Controllers\api\management\coupon\CouponController;
 use App\Http\Controllers\api\management\coupon\CouponUserController;
+use App\Http\Controllers\api\management\DefaultSegmentController;
 use App\Http\Controllers\api\management\TermsOfServiceController;
 use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\api\management\ProductImageController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
 use App\Http\Controllers\api\management\QuestionnaireAnswerController;
 use App\Http\Controllers\api\management\RelatedProductController;
+use App\Http\Controllers\api\management\SegmentController;
 use App\Http\Controllers\api\management\TagUserController;
 use App\Http\Controllers\api\management\UserTagController;
 use App\Http\Controllers\api\management\UserInviteHistoryController;
@@ -99,6 +101,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('products', ProductController::class);
         Route::apiResource('products/{product}/product-image', ProductImageController::class);
         Route::apiResource('products/{product}/related-product', RelatedProductController::class);
+        Route::get('default-segments', DefaultSegmentController::class);
+        Route::get('segments', SegmentController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

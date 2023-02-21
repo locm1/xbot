@@ -37,10 +37,12 @@ use App\Http\Controllers\api\management\TagUserController;
 use App\Http\Controllers\api\management\UserTagController;
 use App\Http\Controllers\api\management\UserInviteHistoryController;
 use App\Http\Controllers\api\management\user\UserOrderHistoryController;
-use App\Http\Controllers\api\management\UserOrderProductController;
-use App\Http\Controllers\api\management\UserPurchaseController;
+use App\Http\Controllers\api\management\user\UserVisitorCountController;
+use App\Http\Controllers\api\management\user\UserPurchaseController;
 use App\Http\Controllers\api\management\UserReserveHistoryController;
-use App\Http\Controllers\api\management\UserVisitorHistoryController;
+use App\Http\Controllers\api\management\user\UserVisitorHistoryController;
+use App\Http\Controllers\api\management\visitor\VisitorHistoryController;
+use App\Http\Controllers\api\management\visitor\VisitorHistoryUserController;
 use App\Models\QuestionnaireAnswer;
 
 /*
@@ -66,7 +68,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users', UserController::class);
         Route::apiResource('users/{user}/questionnaire', QuestionnaireAnswerController::class);
         Route::apiResource('users/{user}/user_tag', TagUserController::class);
-        Route::apiResource('users/{user}/visitor-history', UserVisitorHistoryController::class);
+        Route::get('users/{user}/visitor-histories', UserVisitorHistoryController::class);
+        Route::get('users/{user}/visitor-histories/count', UserVisitorCountController::class);
         Route::get('users/{user}/invite-history', UserInviteHistoryController::class);
         Route::get('users/{user}/orders', UserOrderHistoryController::class);
         Route::get('users/{user}/reserve-history', UserReserveHistoryController::class);
@@ -107,6 +110,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('orders/{order}/products', OrderProductController::class);
         Route::get('orders/{order}/user', OrderUserController::class);
         Route::get('orders/{order}/delivery', OrderDeliveryController::class);
+        Route::apiResource('visitor-histories', VisitorHistoryController::class);
+        Route::get('visitor-histories/{visitor_history}/user', VisitorHistoryUserController::class);
     });
 });
 

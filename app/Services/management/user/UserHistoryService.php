@@ -11,4 +11,9 @@ class UserHistoryService
     {
         return $user->orderHistories()->with('orderProducts.product')->get();
     }
+
+    public function getVisitorHistoriesById(User $user) 
+    {
+        return User::find($user->id)->visitorHistories;
+    }
 }

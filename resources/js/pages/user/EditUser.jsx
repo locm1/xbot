@@ -7,17 +7,17 @@ import { ProfileCardWidget } from "@/components/Widgets";
 import { HistoryTable } from "@/pages/user/HistoryTable";
 import { UserInfoForm } from "@/pages/user/UserInfoForm";
 import { QuestionnaireForm } from "@/pages/user/QuestionnaireForm";
-import { PurchaseTimeForm } from "@/pages/user/PurchaseTimeForm";
-import { LineBlockInfoForm } from "@/pages/user/LineBlockInfoForm";
-import { TagForm } from "@/pages/user/TagForm";
 import { Link, useParams } from 'react-router-dom';
+
+import { showUser, getOccupations, getUserTag, getUserPurchase } from "@/pages/user/api/UserApiMethods";
+import { getUserVisitorHistories, getUserVisitorHistoryCount, getUserOrders, getUserInviteHistories, getUserReserveHistories } from "@/pages/user/api/UserHistoryApiMethods";
 
 import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 
 
 export default () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const orderHistoryHeaders = ['注文日時', '注文商品', '個数', '値段'];
   const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '期日'];
   const inviteHistoryHeaders = ['紹介日時', '紹介者'];
@@ -52,125 +52,19 @@ export default () => {
   }
 
   const [user, setUser] = useState();
-
-  useEffect(() => {
-    axios.get(`/api/v1/management/users/${id}`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        setUser(res.data.user);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    axios.get(`/api/v1/management/occupations`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        setOccupations(res.data.occupations);
-      }
-    });
-  }, [])
-
-
-
-  useEffect(() => {
-    axios.get(`/api/v1/management/users/${id}/visitor-history`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        setVisitCount(res.data.visit_count);
-        setVisitorHistory(res.data.visit_history);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    axios.get(`/api/v1/management/users/${id}/purchase`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        setPurchaseTime(res.data.purchase_time);
-      }
-    });
-  }, []);
-
   const [selectedTags, setSelectedTags] = useState([]);
   const [tags, setTags] = useState([]);
-  useEffect(() => {
-    axios.get(`/api/v1/management/users/${id}/user_tag`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        const selectedOptions = res.data.user_tags.map(v => ({ value: v.id, label: v.name }));
-        setSelectedTags(selectedOptions);
-      }
-    });
-    axios.get(`/api/v1/management/user_tags`)
-    .then((data) => {
-      setTags(data.data.tags);
-    })
-    .catch(error => {
-        console.error(error);
-    });
-  }, []);
 
   useEffect(() => {
-    axios.get(`/api/v1/management/users/${id}/invite-history`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        setInviteHistories(res.data.invite_histories);
-        setFromInvitedUser(res.data.from_invited_user);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    axios.get(`/api/v1/management/users/${id}/orders`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        const order = [];
-          res.data.orders.forEach(history => {
-            history.order_products.forEach(product => {
-              order.push({
-                "createdAt": product.created_at,
-                "name": product.product.name,
-                "price": product.product.price,
-                "quantity": product.quantity,
-              })
-            })
-          })
-        setOrders(order);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    axios.get(`/api/v1/management/users/${id}/reserve-history`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        setReserves(res.data.reserve_histories.map(v => (
-          {
-            createdAt: v.created_at,
-            name: v.product.name,
-            quantity: v.quantity,
-            deadline: v.deadline,
-          }
-        )));
-      }
-    });
+    showUser(id, setUser)
+    getUserVisitorHistories(id, setVisitorHistory)
+    getUserVisitorHistoryCount(id, setVisitCount)
+    getOccupations(setOccupations)
+    getUserOrders(id, setOrders)
+    getUserTag(id, setSelectedTags, setTags)
+    getUserInviteHistories(id, setInviteHistories, setFromInvitedUser)
+    getUserPurchase(id, setPurchaseTime)
+    getUserReserveHistories(id, setReserves)
   }, []);
 
   const confirmSave = () => {

@@ -8,6 +8,7 @@ import { DetailWidget } from "@/pages/order/detail/DetailWidget";
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { showOrder } from "@/pages/order/api/OrderApiMethods";
 import { getOrderProducts, getOrderUser, getOrderDelivery } from "@/pages/order/api/OrderDetailApiMethods";
+import { getUserPurchase } from "@/pages/user/api/UserApiMethods";
 
 export default () => {
   const getStatus = (status) => {
@@ -74,7 +75,10 @@ export default () => {
     id: 1, first_name: '', last_name: '', first_name_kana: '', last_name_kana: '',
     zipcode: '', prefecture: '', city: '', address: '', building_name: '', tel: ''
   });
+  const [purchaseTime, setPurchaseTime] = useState(0);
+
   const { id } = useParams();
+  const { state } = useLocation();
 
   const ordererInformations = {
     name: `${orderUser.last_name} ${orderUser.first_name}`,
@@ -84,7 +88,7 @@ export default () => {
     {id: 1, title: '郵便番号', value: orderUser.zipcode},
     {id: 2, title: '住所', value: `${orderUser.prefecture}${orderUser.city}${orderUser.address} ${orderUser.building_name}`},
     {id: 3, title: '電話番号', value: orderUser.tel},
-    {id: 4, title: '購入回数', value: '3回'},
+    {id: 4, title: '購入回数', value: `${purchaseTime}回`},
   ];
 
   const orders = [
@@ -110,6 +114,7 @@ export default () => {
     getOrderProducts(id, setOrderProducts);
     getOrderUser(id, setOrderUser);
     getOrderDelivery(id, setOrderDelivery);
+    getUserPurchase(state, setPurchaseTime)
   }, []);
 
   return (

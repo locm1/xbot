@@ -9,6 +9,7 @@ import { Paths } from "@/paths";
 export const OrdersTable = (props) => {
   const { orders, changeStatusModal } = props;
   const totalOrders = orders.length;
+  const history = useHistory();
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -40,6 +41,10 @@ export const OrdersTable = (props) => {
     const userLink = Paths.EditUser.path.replace(':id', user_id);
     const link = Paths.OrderDetail.path.replace(':id', id);
     const date = new Date(created_at)
+
+    const handleClick = () => {
+      history.push(link, user_id)
+    }
 
     return (
       <tr className="border-bottom">
@@ -93,7 +98,7 @@ export const OrdersTable = (props) => {
         </Card.Link>
         </td>
         <td>
-          <Button as={Link} to={link} variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+          <Button onClick={handleClick} variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
             詳細
           </Button>
         </td>

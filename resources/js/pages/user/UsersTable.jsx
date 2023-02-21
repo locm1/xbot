@@ -5,32 +5,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { first } from "lodash";
 
-// const getFirstLetterOfEachWord = (text) => (
-//   text.match(/\b\w/g).join('')
-// );
-
-
 export const UsersTable = (props) => {
   const { users = [], allSelected } = props;
   const [bulkOption, setBulkOption] = useState(0);
-  const disabledBulkMenu = users.filter(u => u.isSelected).length === 0;
-
-  const selectUser = (id) => {
-    props.selectUser && props.selectUser(id);
-  };
-
-  const selectAllUsers = () => {
-    props.selectAllUsers && props.selectAllUsers();
-  };
-
-  const bulkActionChange = (e) => {
-    const newOption = e.target.value;
-    setBulkOption(newOption);
-  }
-
-  const applyBulkAction = () => {
-    if (bulkOption === "delete_user") deleteUsers();
-  }
 
   const deleteUsers = (id) => {
     props.deleteUsers && props.deleteUsers(id)

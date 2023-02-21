@@ -1,59 +1,122 @@
-import React from "react";
-import { Card, Button, Image, Dropdown, Col, Row, Form, InputGroup } from "react-bootstrap";
-
-//forms
+import { Card, Col, Form, InputGroup } from "react-bootstrap"
 import CheckboxButton from "@/components/CheckboxButton";
-
+import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
+import "flatpickr/dist/flatpickr.css";
+import Flatpickr from "react-flatpickr";
+import 'flatpickr/dist/l10n/ja.js';
 
 export default (props) => {
-  const { cardRef, title, style = {}, extraProps = {}, card, selected } = props;
-
-  const onDelete = () => {
-    props.onDelete && props.onDelete();
-  };
-
-
-  const showComponents = (card) => {
-    const items = card.titles;
-    switch (card.type) {
-      case 1:
-        return (
-          <InputGroup>
-            <Form.Control required type="text" name="last_name" placeholder={items[0].title} />
-              <InputGroup.Text><span>〜</span></InputGroup.Text>
-            <Form.Control required type="text" name="last_name" placeholder={items[1].title} />
-          </InputGroup>
-        );
-      case 2:
-        return <p>a</p>
-      case 3:
-        return <p>a</p>
-      case 4:
-        return (
-          items.map((item, index) => <CheckboxButton key={index} name={card.name} id={item.id} title={item.title} value={index + 1} {...selected ? defaultChecked : "" } />)
-        );
-      case 5:
-        return (
-          <Form.Select defaultValue="1" className="mb-0">
-            {
-              items.map((item, index) => <option key={index} value={index + 1}>{item.title}</option>)
-            }
-          </Form.Select>
-        );
-    }
+  const {questionTitle, type, questionnaireItems, handleChange, handleChangeForRange, id} = props;  
+  const flatpickerOptions = {
+    locale: 'ja',
+    onChange: (selectedDates, dateStr, instance) => setBirthDate(dateStr)
   }
 
-  return (
-    <Card border={1} className="p-4" ref={cardRef}{...extraProps} style={style}>
-      <Card.Header className="d-flex align-items-center justify-content-between border-0 p-0 mb-3 border-bottom pb-3">
-        <h5 className="mb-0">{title}</h5>
-        <div>
-          <Button variant="close" onClick={onDelete} size="xs" className="fs-7 px-1 py-0" />
-        </div>
-      </Card.Header>
-      <Card.Body className="p-0">
-        {showComponents(card)}
-      </Card.Body>
-    </Card>
-  );
-};
+  switch (type) {
+    case 1:
+      return (
+        <Col md={12} className="mb-4">
+          <Card>
+            <Card.Body>
+              <h5 className="mb-4">{questionTitle}</h5>
+              {questionnaireItems.map((v, k) => (
+                v.value == 1 ? <CheckboxButton type={type} name={v.name} id={v.name} segmentid={id} value={0} title={v.name} key={`questionnaire-item-${k}`} checked={true} change={handleChange} />
+                             : <CheckboxButton type={type} name={v.name} id={v.name} segmentid={id} value={1} title={v.name} key={`questionnaire-item-${k}`} checked={false} change={handleChange} /> 
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
+      )
+      break;
+    case 2:
+      return (
+        <Col md={12} className="mb-4">
+          <Card>
+            <Card.Body>
+              <h5 className="mb-4">{questionTitle}</h5>
+              <Form>
+                <Form.Group className="mb-3">
+                  <InputGroup>
+                    <Form.Control name={questionnaireItems[0].name} value={questionnaireItems[0].value} data-segmentid={id} type="number" onChange={handleChangeForRange} />
+                    <InputGroup.Text>〜</InputGroup.Text>
+                    <Form.Control name={questionnaireItems[1].name} value={questionnaireItems[1].value} data-segmentid={id} type="number" onChange={handleChangeForRange} />
+                  </InputGroup>
+                </Form.Group>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      )
+      break;
+    case 3:
+      return (
+        <Col md={12} className="mb-4">
+          <Card>
+            <Card.Body>
+              <h5 className="mb-4">{questionTitle}</h5>
+              <Form>
+                <InputGroup>
+                <Flatpickr
+                    options={ flatpickerOptions }
+                    value={questionnaireItems[0].value ?? ''}
+                    onChange={handleChangeForRange}
+                    render={(props, ref) => {
+                      return (
+                        <>
+                          <InputGroup.Text>
+                            <CalendarIcon className="icon icon-xs" />
+                          </InputGroup.Text>
+                          <Form.Control
+                            data-time_24hr
+                            required
+                            type="text"
+                            placeholder="YYYY-MM-DD"
+                            ref={ref}
+                          />
+                          <InputGroup.Text>〜</InputGroup.Text>
+                        </>
+                      );
+                    }}
+                  />
+                  <Flatpickr
+                      options={ flatpickerOptions }
+                      value={questionnaireItems[1].value ?? ''}
+                      onChange={handleChangeForRange}
+                      render={(props, ref) => {
+                        return (
+                          <>
+                            <Form.Control
+                              data-time_24hr
+                              required
+                              type="text"
+                              placeholder="YYYY-MM-DD"
+                              ref={ref}
+                            />
+                          </>
+                        );
+                      }}
+                    />
+                  </InputGroup>
+                </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      )
+      break;
+    default:
+      return (
+        <Col md={12} className="mb-4">
+          <Card>
+            <Card.Body>
+              <h5 className="mb-4">{questionTitle}</h5>
+              {questionnaireItems.map((v, k) => (
+                v.value == 1 ? <CheckboxButton title={v.name} key={`questionnaire-item-${k}`} checked="true" />
+                            : <CheckboxButton title={v.name} key={`questionnaire-item-${k}`} /> 
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
+      )
+      break;
+  }
+}

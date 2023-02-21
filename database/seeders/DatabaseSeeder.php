@@ -42,7 +42,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminTableSeeder::class,
-            PrefecturesTableSeeder::class
+            PrefecturesTableSeeder::class,
+            DefaultSegmentSeeder::class,
+            DefaultSegmentItemSeeder::class,
         ]);
         Admin::factory(10)->create();
         Occupation::factory(10)->create();

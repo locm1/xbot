@@ -3,7 +3,7 @@ import ReactDOMServer from "react-dom/server";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Col, Row, Button, Container, Breadcrumb, Form } from "react-bootstrap";
+import { Col, Row, Button, Container, Breadcrumb, Form, Card } from "react-bootstrap";
 
 import KANBAN_LISTS from "@/data/kanban";
 import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
@@ -14,10 +14,39 @@ import SegmentList from "@/pages/message/segment/Segments";
 import SegmentCard from "@/pages/message/segment/SegmentCard";
 import MessageDetail from "@/pages/message/MessageDetail";
 import { SegmentCardCreateModal } from "@/pages/message/segment/SegmentCardCreateModal";
+import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 
-const ArchiveIconHtml = ReactDOMServer.renderToString(
-  <ArchiveIcon className="h-50 w-auto" />
-);
+
+
+// const questionnaires = [
+//   {
+//     type: 1,
+//     questionTitle: 'questionTitle1',
+//     questionnaireItems: [
+//       {name: 'name1', value: '0'},
+//       {name: 'name2', value: '1'},
+//       {name: 'name3', value: '0'},
+//     ]
+//   },
+//   {
+//     type: 2,
+//     questionTitle: 'questionTitle2',
+//     questionnaireItems: [
+//       {name: 'name1', value: '10'},
+//       {name: 'name2', value: '30'},
+//     ]
+//   },
+//   {
+//     type: 3,
+//     questionTitle: 'questionTitle3',
+//     questionnaireItems: [
+//       {name: 'name1', value: '2023-1-1'},
+//       {name: 'name2', value: '2023-3-1'},
+//     ]
+//   },
+// ]
+
+
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -28,179 +57,106 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
-  const [cards, setCards] = useState(segments);
-  const [segmentLists, setSegments] = useState(segments);
-  const [kanbanLists, setKanbanLists] = useState(KANBAN_LISTS);
-  const createCardDefaultProps = { listId: kanbanLists[0].id, cardIndex: 0 };
-  const [showCreateCardModal, setShowCreateCardModal] = useState(false);
-  const [createCardProps, setCreateCardProps] = useState(createCardDefaultProps);
-  const [cardToMove, setCardToMove] = useState(null);
-  const [fieldList, setFieldList] = useState();
+  const [definedQuestion, setDefinedQuestion] = useState([]);
+  const [questionnaires, setQuestionnaires] = useState([]);
 
-  const toggleCreateCardModal = (props = {}) => {
-    setCreateCardProps({ ...createCardDefaultProps, ...props });
-    setShowCreateCardModal(!showCreateCardModal);
-  };
-
-  const getCardStyle = (style, snapshot) => {
-    const isJustDragging = snapshot.isDragging && !snapshot.isDropAnimating
-
-    if (!isJustDragging) {
-      return style;
-    }
-
-    return {
-      ...style,
-      transform: `${style.transform || ""} rotate(6deg)`
-    };
-  };
-
-  const createCard = (props = {}) => ({
-    "id": 111,
-    "title": props.title,
-    "type": props.type,
-    "name": props.name,
-    "titles": [props.titles],
-    ...props
-  });
-
-  const createCardInListAtIndex = (props) => {
-    const { listId, cardIndex, ...otherProps } = props;
-
-    const listsUpdated = segmentLists.map(l => {
-      if (listId !== l.id) return l;
-
-      const newCard = createCard(otherProps);
-      l.cards.splice(cardIndex, 0, newCard);
-
-      return l;
-    });
-
-    return listsUpdated;
-  };
-
-  const handleCreateCard = (props = {}) => {
-    const listsUpdated = createCardInListAtIndex({ ...createCardProps, ...props });
-
-    toggleCreateCardModal();
-    setSegments(listsUpdated);
-  };
-
-  const reorderCards = (cards = [], startIndex, endIndex) => {
-    const [cardRemoved] = cards.splice(startIndex, 1);
-    cards.splice(endIndex, 0, cardRemoved);
-
-    return cards;
-  };
-
-  const moveCardFromList = (sList, dList, sIndex, dIndex) => {
-    const sCards = [...sList.cards];
-    const dCards = [...dList.cards];
-
-    const [cardRemoved] = sCards.splice(sIndex, 1);
-    dCards.splice(dIndex, 0, cardRemoved);
-
-    return [
-      { ...sList, cards: sCards },
-      { ...dList, cards: dCards }
-    ];
-  };
-
-  const handleDragEnd = (dragResult) => {
-    const { source, destination } = dragResult;
-
-    //  dropped outside the list
-    if (!destination) {
-      return;
-    }
-
-    const { droppableId: sListId, index: sCardIndex } = source;
-    const { droppableId: dListId, index: dCardIndex } = destination;
-
-    const sList = segmentLists.find(list => Number(list.id) === Number(sListId));
-    const dList = segmentLists.find(list => Number(list.id) === Number(dListId));
-
-    if (sListId === dListId) {
-      // reorder cards in the list only if card's index changes
-      if (sCardIndex !== dCardIndex) {
-        const sCardsUpdated = reorderCards(sList.cards, sCardIndex, dCardIndex);
-        const listsUpdated = segmentLists.map(l => l.id === sListId ? { ...l, cards: sCardsUpdated } : l);
-        setSegments(listsUpdated);
-      }
+  const evenQuestionnaires = [];
+  const oddQuestionnaires = [];
+  questionnaires.forEach((v,k) => {
+    if (k & 1) {
+      oddQuestionnaires.push(v);
     } else {
-      const [sListUpdated, dListUpdated] = moveCardFromList(sList, dList, sCardIndex, dCardIndex);
-      const listsUpdated = segmentLists.map(l => Number(l.id) === Number(sListId) ? sListUpdated : Number(l.id) === Number(dListId) ? dListUpdated : l);
-      setSegments(listsUpdated);
+      evenQuestionnaires.push(v);
     }
-
-    if (cardToMove) {
-      setCardToMove(null);
-    }
-  };
-
-  const handleCardsDelete = async (cards = []) => {
-    const listsUpdated = removeCardsFromList(cards);
-    setSegments(listsUpdated);
-  };
-
-  const removeCardsFromList = (cards) => {
-    const cardsGroupedByListId = cards.reduce((acc, card) => {
-      const { listId, cardId } = card;
-
-      if (!acc[listId]) acc[listId] = [cardId];
-      else acc[listId].push(cardId);
-
-      return acc
-    }, {});
-
-    const listsUpdated = segmentLists.map(l => {
-      const cardsToDelete = cardsGroupedByListId[l.id];
-      if (!cardsToDelete) return l;
-
-      const cardsUpdated = l.cards.filter(c => !cardsToDelete.includes(c.id));
-      return ({ ...l, cards: cardsUpdated });
-    });
-
-    return listsUpdated;
-  };
-
-  // 現状のセグメント情報のリストを取得
-  const segmentCardCountDecision = (cards) => {
-    const cardLists = cards.map((segment) => segment.cards);
-    const resultCards = cardLists.reduce((card, element) => {
-      return card.concat(element);
-    });
-    return resultCards;
-  }
-
-  useEffect(() => {
-    const resultCards = segmentCardCountDecision(segmentLists);
-    const allCards = segmentCardCountDecision(cards);
-
-    // 現在のセグメントとの比較
-    const diffResultCards = allCards.filter((card) => resultCards.indexOf(card) == -1);
-    setFieldList(diffResultCards);
-  }, [segmentLists]);
+  })
 
   const changeTemplate = () => {
     
   }
+  useEffect(() => {
+    axios.get('/api/v1/management/default-segments')
+    .then((response) => {
+      const segments = response.data.segments;
+      const newSegments = [];
+      segments.forEach(v => {
+        if (v.type == 1) {
+          newSegments.push({
+            id: v.id, type: v.type, questionTitle: v.name, 
+            questionnaireItems: v.default_segment_items.map((item => ({name: item.name, value: 0})))
+          });
+        } else {
+          newSegments.push({
+            id: v.id, type: v.type, questionTitle: v.name, 
+            questionnaireItems: [{name: 'start_' + v.name, value:''}, {name: 'end_' + v.name, value:''}]
+          });
+        }
+      });
+      setQuestionnaires(newSegments);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+    getQuestionnaires(setDefinedQuestion);
+    
+  }, [])
+
+  const handleChange = (e) => {
+    const newQuestionnaires = questionnaires.map((v, k) => {
+      if (v.id == e.currentTarget.getAttribute('data-segmentid')) {
+        return ({
+          id: v.id,
+          type: v.type,
+          questionTitle: v.questionTitle,
+          questionnaireItems: [
+            ...v.questionnaireItems.map(b => {
+              if (b.name == e.target.name) {
+                return {name: b.name, value: e.target.value};
+              } else {
+                return {...b}
+              }
+            })
+          ]
+        })
+      } else {
+        return {...v};
+      }
+    })
+    setQuestionnaires(newQuestionnaires);
+  }
+
+  const handleChangeForRange = (e) => {
+    // console.log(e.target.value)
+    // console.log(e.currentTarget.getAttribute('data-segmentid'))
+    // console.log(e.target.name)
+    const newQuestionnaires = questionnaires.map((v, k) => {
+      if (v.id == e.currentTarget.getAttribute('data-segmentid')) {
+        return ({
+          id: v.id,
+          type: v.type,
+          questionTitle: v.questionTitle,
+          questionnaireItems: [
+            ...v.questionnaireItems.map(b => {
+              if (b.name == e.target.name) {
+                return {name: b.name, value: e.target.value};
+              } else {
+                return {...b}
+              }
+            })
+          ]
+        })
+      } else {
+        return {...v};
+      }
+    })
+    setQuestionnaires(newQuestionnaires);
+  }
 
   return (
     <>
-
-      {showCreateCardModal && (
-        <SegmentCardCreateModal
-          show={showCreateCardModal}
-          onHide={toggleCreateCardModal}
-          onSubmit={handleCreateCard}
-          fieldList={fieldList}
-        />
-      )}
-
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
+          <Button onClick={() => {console.log(definedQuestion)}} />
         </div>
       </div>
       <Row>
@@ -228,64 +184,18 @@ export default () => {
           </div>
         </Col>
       </Row>
-
-      <Container fluid className="cotainer py-4 px-0">
-        <Row className="d-flex flex-nowrap">
-          <DragDropContext onDragEnd={handleDragEnd}>
-            {segmentLists.map((list, ind) => {
-              const { id: listId, cards } = list;
-
-              return (
-                <Droppable index={ind} droppableId={`${listId}`} key={`segment-list-${listId}`}>
-                  {provided => {
-                    const { innerRef: listRef, placeholder, droppableProps } = provided;
-
-                    return (
-                      <SegmentList
-                        {...list}
-                        listRef={listRef}
-                        extraProps={droppableProps}
-                      >
-                        {cards.map((card, index) => {
-                          const { id: cardId } = card;
-
-                          return (
-                            <Draggable index={index} draggableId={`segment-card-${cardId}`} key={`segment-card-${cardId}`}>
-                              {(provided, snapshot) => {
-                                const { innerRef: cardRef, draggableProps, dragHandleProps } = provided;
-
-                                return (
-                                  <SegmentCard
-                                    {...card}
-                                    card={card}
-                                    cardRef={cardRef}
-                                    style={getCardStyle(draggableProps.style, snapshot)}
-                                    extraProps={{ ...draggableProps, ...dragHandleProps }}
-                                    onDelete={() => handleCardsDelete([{ listId, cardId }])}
-                                  />
-                                );
-                              }}
-                            </Draggable>
-                          )
-                        })}
-
-                        {placeholder}                
-                        <Button
-                          variant="outline-gray-500"
-                          onClick={() => toggleCreateCardModal({ listId, cardIndex: cards.length })}
-                          className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
-                        >
-                          <PlusIcon className="icon icon-xs me-2" /> 追加
-                        </Button>
-                      </SegmentList>
-                    );
-                  }}
-                </Droppable>
-              )
-            })}
-          </DragDropContext>
-        </Row>
-      </Container>
+      <Row>
+        <Col>
+          <Row className="mt-4">
+            {evenQuestionnaires.map((v, k) => <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} />)}
+          </Row>
+        </Col>
+        <Col>
+          <Row className="mt-4">
+            {oddQuestionnaires.map((v, k) => <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} />)}
+          </Row>
+        </Col>
+      </Row>
       
       <MessageDetail />
 

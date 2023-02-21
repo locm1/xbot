@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
@@ -6,42 +6,36 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 
 import { OrdersTable } from "@/pages/order/OrdersTable";
 import { ChangeStatusModal } from "@/pages/order/ChangeStatusModal";
-import orders from "@/data/orders";
+
+import { getOrders, updateOrder, searchOrders, getPrefectures } from "@/pages/order/api/OrderApiMethods";
 
 export default () => {
-  const [transactions, setTransactions] = useState(orders.map(t => ({ ...t, show: true })));
-  const [searchValue, setSearchValue] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
+  const [orders, setOrders] = useState([]);
+  const [prefectures, setPrefectures] = useState([]);
+  const [orderId, setOrderId] = useState();
+  const [searchValue, setSearchValue] = useState({
+    name: '', status: 0, id: '', prefecture: ''
+  });
   const [modalOpen, setModalOpen] = useState(false);
 
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
+  const handleChange = (e, input) => {
+    setSearchValue({...searchValue, [input]: e.target.value})
 
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
+    const searchParams = {
+      params: {...searchValue, [input]: e.target.value}
+    };
+    searchOrders(searchParams, setOrders);
   };
 
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
-
-  const changeStatusModal = () => {
+  const changeStatusModal = (id) => {
     setModalOpen(!modalOpen);
+    setOrderId(id);
   }
+
+  useEffect(() => {
+    getOrders(setOrders);
+    getPrefectures(setPrefectures)
+  }, []);
 
   return (
     <>
@@ -49,6 +43,10 @@ export default () => {
         <ChangeStatusModal
           show={modalOpen}
           setModalOpen={setModalOpen}
+          updateOrder={updateOrder}
+          orders={orders}
+          setOrders={setOrders}
+          orderId={orderId}
         />
       )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -67,34 +65,35 @@ export default () => {
               <Form.Control
                 type="text"
                 placeholder="氏名"
-                value={searchValue}
-                onChange={changeSearchValue}
+                value={searchValue.name}
+                onChange={(e) => handleChange(e, 'name')}
               />
             </InputGroup>
           </Col>
           <Col xs={3} lg={3} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-400">
+            <InputGroup className="fmxw-400">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
-              <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue} placeholder="ステータスを選択">
-                <option value="all">All</option>
-                <option value="paid">Paid</option>
-                <option value="due">Due</option>
-                <option value="cancelled">Cancelled</option>
+              <Form.Select value={searchValue.status} className="fmxw-200 d-none d-md-inline" onChange={(e) => handleChange(e, 'status')} placeholder="ステータスを選択">
+                <option value="0">ステータスを選択</option>
+                <option value="1">注文内容確認中</option>
+                <option value="2">配送準備中</option>
+                <option value="3">当店より発送済み</option>
+                <option value="4">キャンセル</option>
               </Form.Select>
             </InputGroup>
           </Col>
           <Col xs={3} lg={3} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-400">
+            <InputGroup className="fmxw-400">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
               <Form.Control
                 type="text"
                 placeholder="注文番号"
-                value={searchValue}
-                onChange={changeSearchValue}
+                value={searchValue.id}
+                onChange={(e) => handleChange(e, 'id')}
               />
             </InputGroup>
           </Col>
@@ -103,11 +102,11 @@ export default () => {
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
-              <Form.Select value={statusValue} className="fmxw-200 d-none d-md-inline" onChange={changeStatusValue} placeholder="都道府県を選択">
-                <option value="all">All</option>
-                <option value="paid">Paid</option>
-                <option value="due">Due</option>
-                <option value="cancelled">Cancelled</option>
+              <Form.Select value={searchValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="fmxw-200 d-none d-md-inline"  placeholder="都道府県を選択">
+                <option value="0">都道府県を選択</option>
+                {
+                  prefectures.map((prefecture, index) => <option key={prefecture.id} value={prefecture.name}>{prefecture.name}</option>)
+                }
               </Form.Select>
             </InputGroup>
           </Col>
@@ -115,7 +114,7 @@ export default () => {
       </div>
 
       <OrdersTable
-        orders={transactions.filter(t => t.show)}
+        orders={orders}
         changeStatusModal={changeStatusModal}
       />
     </>

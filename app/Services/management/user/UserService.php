@@ -24,7 +24,7 @@ class UserService
             return $this->search_user_action->search($request);
         }
 
-        return User::get()->pagination(10);
+        return User::get()->paginate(10);
     }
 
     /**

@@ -15,7 +15,14 @@ export const DetailWidget = (props) => {
               <Col key={index} md={6} className="mb-3">
                 <Form.Group>
                   <Form.Label className="border-bottom pb-2 pt-3">{detail.title}</Form.Label>
-                  <div>{detail.value}</div>
+                  {(() => {
+                    if (detail.title == '注文日時') {
+                      const date = new Date(detail.value)
+                      return <div>{date.toLocaleString()}</div>
+                    } else {
+                      return <div>{detail.value}</div>
+                    }
+                  })()}
                 </Form.Group>
               </Col>
             )}

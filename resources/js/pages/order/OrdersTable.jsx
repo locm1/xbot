@@ -4,13 +4,12 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, Pa
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
-import { create } from "lodash";
 
 
 export const OrdersTable = (props) => {
   const { orders, changeStatusModal } = props;
   const totalOrders = orders.length;
+  const history = useHistory();
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -38,9 +37,14 @@ export const OrdersTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, createdAt, name, deliveryAddress, purchasePrice, status, userImage, shippingFee, userId } = props;
-    const userLink = Paths.EditUser.path.replace(':id', userId);
-    const productLink = Paths.OrderDetail.path.replace(':id', id);
+    const { id, created_at, user, order_user, purchase_amount, status, shipping_fee, user_id } = props;
+    const userLink = Paths.EditUser.path.replace(':id', user_id);
+    const link = Paths.OrderDetail.path.replace(':id', id);
+    const date = new Date(created_at)
+
+    const handleClick = () => {
+      history.push(link, user_id)
+    }
 
     return (
       <tr className="border-bottom">
@@ -51,43 +55,52 @@ export const OrdersTable = (props) => {
         </td>
         <td>
           <span className="fw-normal">
-            {createdAt}
+            {date.toLocaleString()}
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {purchasePrice}
+            {purchase_amount.toLocaleString()}円
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {shippingFee}
+            {shipping_fee.toLocaleString()}円
           </span>
         </td>
         <td>
           <Card.Link as={Link} to={userLink} className="d-flex align-items-center">
             <div className="d-block">
-              <span className="fw-bold text-decoration-underline">{name}</span>
+              <span className="fw-bold text-decoration-underline">
+                {
+                  user.last_name && user.first_name ? (
+                    user.last_name + ' ' + user.first_name
+                  ) : (
+                    user.nickname
+                  )
+                }
+              </span>
             </div>
           </Card.Link>
         </td>
         <td>
-          <span className="fw-normal">
-            {deliveryAddress}
-          </span>
+          <div className="order-delivery_address">
+            <span className="fw-normal">
+              {order_user.prefecture}{order_user.city}{order_user.address} {order_user.building_name}
+            </span>
+          </div>
         </td>
         <td>
-        <Card.Link className="d-flex align-items-center" onClick={changeStatusModal}>
+        <Card.Link className="d-flex align-items-center" onClick={() => changeStatusModal(id)}>
           <Badge bg={getStatusClass(status).class} className="me-1 order-status-badge fw-normal">
             {getStatusClass(status).name}
           </Badge>
         </Card.Link>
         </td>
         <td>
-          <Link to={productLink}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
-          </Link>
-          <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
+          <Button onClick={handleClick} variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+            詳細
+          </Button>
         </td>
       </tr>
     );
@@ -106,7 +119,7 @@ export const OrdersTable = (props) => {
               <th className="border-gray-200">氏名</th>
               <th className="border-gray-200">配送先住所</th>
               <th className="border-gray-200">ステータス</th>
-              <th className="border-gray-200">詳細・削除</th>
+              <th className="border-gray-200">詳細</th>
             </tr>
           </thead>
           <tbody className="border-0">

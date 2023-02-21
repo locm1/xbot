@@ -44,7 +44,8 @@ class ProductService
     public function update($request, $product) 
     {
         return $product->update($request->only(
-            'name', 'product_category_id', 'stock_quantity', 'tax_rate', 'price', 'overview', 'is_undisclosed', 'is_unlimited'
+            'name', 'product_category_id', 'stock_quantity', 'tax_rate', 
+            'price', 'overview', 'is_undisclosed', 'is_unlimited', 'is_picked_up'
         ));
     }
 

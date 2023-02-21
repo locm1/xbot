@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Button, Modal, Card, Badge, Row, Col } from 'react-bootstrap';
 
 export const ChangeStatusModal = (props) => {
-  const { show, setModalOpen } = props;
+  const { show, setModalOpen, updateOrder, orders, setOrders, orderId } = props;
   const statuses = [
     {id: 1, name: '注文内容確認中', class: 'warning'},
-    {id: 2, name: '配送準備中', class: 'success'},
-    {id: 3, name: '当店より発送済み', class: 'info'},
+    {id: 2, name: '配送準備中', class: 'info'},
+    {id: 3, name: '当店より発送済み', class: 'success'},
     {id: 4, name: 'キャンセル', class: 'danger'},
   ];
 
@@ -19,7 +19,7 @@ export const ChangeStatusModal = (props) => {
       <Modal.Body>
         {statuses.map((status, index) => 
           <Card.Link className="me-2">
-            <Badge key={index} bg={status.class} className="me-1 order-status-badge fw-normal">
+            <Badge key={index} bg={status.class} onClick={() => updateOrder(orderId, status.id, setOrders, orders, setModalOpen)} className="me-1 order-status-badge fw-normal">
               {status.name}
             </Badge>
           </Card.Link>

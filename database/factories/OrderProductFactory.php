@@ -24,8 +24,6 @@ class OrderProductFactory extends Factory
         return [
             'product_id' => fake()->randomElement($product_ids),
             'quantity' => fake()->numberBetween(1, 100000),
-            'name' => "商品名" . fake()->firstKanaName(),
-            'price' => fake()->numberBetween(100, 1000000),
             'order_history_id' => fake()->randomElement($order_history_ids),
         ];
     }

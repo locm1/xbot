@@ -29,6 +29,11 @@ export const AccountsTable = (props) => {
           class: 'primary',
           name: '一般'
         }
+      default:
+        return {
+          class: 'tertiary',
+          name: '管理者'
+        }
     }
   }
 

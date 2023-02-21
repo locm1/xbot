@@ -6,25 +6,9 @@ use App\Models\PrivacyPolicy;
 
 class PrivacyPolicyService 
 {
-
-    public function getAllPrivacyPolicies() 
-    {
-        return PrivacyPolicy::all();
-    }
-
-
-    public function createPrivacyPolicy(string $content) :PrivacyPolicy
-    {
-        $data = ['content' => $content];
-        $policy = PrivacyPolicy::create($data);
-
-        return $policy;
-    }
-
-
     public function getPrivacyPolicyById() 
     {
-        //
+        return PrivacyPolicy::find(1);
     }
 
 
@@ -35,11 +19,4 @@ class PrivacyPolicyService
 
         return $privacy_policy;
     }
-
-
-    public function deletePrivacyPolicy() 
-    {
-        //
-    }
-
 }

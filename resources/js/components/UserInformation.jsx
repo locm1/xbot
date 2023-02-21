@@ -7,7 +7,7 @@ import ProfileCover from "@img/img/profile-cover.jpg";
 import { DetailWidget } from "@/pages/order/detail/DetailWidget";
 
 export default (props) => {
-  const { name, nameKana, details } = props;
+  const { name, nameKana, details, img_path } = props;
   return (
     <>
     <div>
@@ -16,7 +16,7 @@ export default (props) => {
           <Card border="0" className="shadow text-center p-0">
             <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />
             <Card.Body className="pb-5">
-              <Card.Img src={Profile1} className="avatar-xl rounded-circle mx-auto mt-n7 mb-4" />
+              <Card.Img src={img_path} className="avatar-xl rounded-circle mx-auto mt-n7 mb-4" />
               <Card.Title>{name}</Card.Title>
               <Card.Subtitle className="fw-normal">
                 {nameKana}

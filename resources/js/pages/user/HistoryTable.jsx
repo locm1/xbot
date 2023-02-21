@@ -42,7 +42,7 @@ export const HistoryTable = (props) => {
           </thead>
           <tbody className="border-0">
             {
-              histories.map((history, key) => 
+              histories && histories.map((history, key) => 
                 {
                   if (title === '注文履歴') {
                     return (

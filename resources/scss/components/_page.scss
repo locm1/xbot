@@ -202,3 +202,12 @@ $base_color: #707070;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.order-delivery_address {
+  @extend .product-name;
+  width: 15vw;
+}
+
+.text-area {
+  white-space: pre-wrap;
+}

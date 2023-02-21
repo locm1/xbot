@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\management\terms_of_service;
+namespace App\Http\Requests\management\order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTermsOfServiceRequest extends FormRequest
+class UpdateOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,14 @@ class CreateTermsOfServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'required',
+            'status' => 'required|numeric|between:1,4'
         ];
     }
 
-    public function messages()
+    public function attributes()
     {
         return [
-            'content.required' => '内容が未入力です',
+            'status' => '配送ステータス',
         ];
     }
 }

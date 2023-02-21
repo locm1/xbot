@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\api\management;
+namespace App\Http\Controllers\api\management\order;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\management\order\UpdateOrderRequest;
+use App\Models\OrderHistory;
+use App\Services\management\order\OrderService;
 use Illuminate\Http\Request;
-use App\Services\management\visitor_history\VisitorHistoryService;
 
-class VisitorHistoryController extends Controller
+class OrderController extends Controller
 {
-    private $history_service;
+    private $order_service;
 
-    public function __construct(VisitorHistoryService $history_service) {
-        $this->history_service = $history_service;
+    public function __construct(OrderService $order_service)
+    {
+        $this->order_service = $order_service;
     }
 
     /**
@@ -19,9 +22,10 @@ class VisitorHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->history_service->index();
+        $orders = $this->order_service->index($request);
+        return response()->json(['orders' => $orders], 200);
     }
 
     /**
@@ -41,21 +45,23 @@ class VisitorHistoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(OrderHistory $order)
     {
-        //
+        $order = $this->order_service->show($order);
+        return response()->json(['order' => $order], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  OrderHistory $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOrderRequest $request, OrderHistory $order)
     {
-        //
+        $order = $this->order_service->update($request, $order);
+        return response()->json(['order' => $order], 200);
     }
 
     /**

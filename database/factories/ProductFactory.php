@@ -27,7 +27,7 @@ class ProductFactory extends Factory
             'overview' => fake()->sentences(2, true),
             'is_undisclosed' => 0,
             'is_unlimited' => 0,
-            'display_order' => fake()->randomFloat(null, 1, 200)
+            'is_picked_up' => fake()->numberBetween(0, 1),
         ];
     }
 }

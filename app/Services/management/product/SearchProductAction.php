@@ -23,7 +23,7 @@ class SearchProductAction
 
     private function searchByName($query, $name)
     {
-        return $query->where('name', 'like', "%{$name}%");
+        return $query->where('name', 'like', "{$name}%");
     }
     
     

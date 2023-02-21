@@ -203,6 +203,7 @@ const Routing = () => {
       <RouteWithSidebar exact path={Paths.OrderDetail.path} component={OrderDetail} />
       <RouteWithSidebar exact path={Paths.Coupons.path} component={Coupons} />
       <RouteWithSidebar exact path={Paths.CreateCoupon.path} component={CreateCoupon} />
+      <RouteWithSidebar exact path={Paths.EditCoupon.path} component={CreateCoupon} />
       <RouteWithSidebar exact path={Paths.Orders.path} component={Orders} />
       <RouteWithSidebar exact path={Paths.Reserves.path} component={Reserves} />
       <RouteWithSidebar exact path={Paths.EventCalendar.path} component={EventCalendar} />

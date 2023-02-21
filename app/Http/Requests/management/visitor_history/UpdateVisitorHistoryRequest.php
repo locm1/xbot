@@ -13,7 +13,7 @@ class UpdateVisitorHistoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class UpdateVisitorHistoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'created_at' => 'required|date',
+            'memo' => 'required'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'created_at' => '来店日時',
+            'memo' => 'メモ',
         ];
     }
 }

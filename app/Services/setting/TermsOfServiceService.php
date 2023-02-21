@@ -7,26 +7,10 @@ use App\Models\TermsOfService;
 class TermsOfServiceService 
 {
 
-    public function getAllTermsOfServices() 
-    {
-        return TermsOfService::all();
-    }
-
-
-    public function createTermsOfService(string $content) :TermsOfService
-    {
-        $data = ['content' => $content];
-        $term = TermsOfService::create($data);
-
-        return $term;
-    }
-
-
     public function getTermsOfServiceById() 
     {
-        //
+        return TermsOfService::find(1);
     }
-
 
     public function updateTermsOfService(TermsOfService $terms_of_service, string $content) :TermsOfService
     {
@@ -35,11 +19,4 @@ class TermsOfServiceService
 
         return $terms_of_service;
     }
-
-
-    public function deleteTermsOfService() 
-    {
-        //
-    }
-
 }

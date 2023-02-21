@@ -4,68 +4,66 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar,
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
-
-
-const capitalizeFirstLetter = (string) => (
-  string[0].toUpperCase() + string.slice(1)
-);
-
-const getFirstLetterOfEachWord = (text) => (
-  text.match(/\b\w/g).join('')
-);
 
 
 export const VisitorHistoriesTable = (props) => {
-  const { visitorHistories } = props;
+  const { visitorHistories, deleteVisitorHistoryConfirmModal } = props;
   const totalvisitorHistories = visitorHistories.length;
+  const history = useHistory();
 
   const TableRow = (props) => {
-    const { visitorDate, name, sex, memo, id, image } = props;
+    const { created_at, memo, user, id, user_id } = props;
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
-    const sexVariant = sex === 1 ? "info" : sex === 2 ? "danger" : "primary";
+    const sexVariant = user.gender === 1 ? "info" : user.gender === 2 ? "danger" : "primary";
     const link = Paths.EditVisitorHistory.path.replace(':id', id);
+    const userlink = Paths.EditUser.path.replace(':id', user_id);
+    const date = new Date(created_at)
+
+    const handleClick = () => {
+      history.push(link, user_id)
+    }
 
     return (
       <tr className="border-bottom">
         <td>
-          <Card.Link className="d-flex align-items-center" as={Link} to={link}>
-            {image
-              ? (
-                <Image
-                  src={image}
-                  className="avatar rounded-circle me-3"
-                />
-              ) : (
-                <div className="avatar d-flex align-items-center justify-content-center fw-bold rounded bg-secondary me-3">
-                  <span>{getFirstLetterOfEachWord(name)}</span>
-                </div>
-              )}
-            <div className="d-block">
-              <span className="fw-bold text-decoration-underline">{name}</span>
+          <Card.Link className="d-flex align-items-center" as={Link} to={userlink}>
+            <div className="d-flex align-items-center">
+              {user.img_path ? (<Image src={user.img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
+              <div className="d-block">
+                {user.first_name && user.first_name_kana && user.last_name && user.last_name_kana ? 
+                  <>
+                    <div className="text-gray small">{user.last_name_kana} {user.first_name_kana}</div>
+                    <span className="fw-bold text-decoration-underline">{user.last_name} {user.first_name}</span> 
+                  </>
+                :
+                  <span className="fw-bold text-decoration-underline">{user.nickname}</span> 
+                }
+              </div>
             </div>
           </Card.Link>
         </td>
         <td>
           <span className={`fw-normal text-${sexVariant}`}>
-            {sex_array[sex]}
+            {sex_array[user.gender]}
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {visitorDate}
+            {date.toLocaleString()}
           </span>
         </td>
         <td>
-          <span className="fw-normal">
-            {memo}
-          </span>
+          <div className="product-name">
+            <span className="fw-normal">
+              {memo}
+            </span>
+          </div>
         </td>
         <td>
-          <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+          <Button onClick={handleClick} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
-          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button variant="danger" onClick={() => deleteVisitorHistoryConfirmModal(id)} size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
         </td>

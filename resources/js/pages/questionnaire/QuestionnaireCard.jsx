@@ -8,8 +8,9 @@ import QuestionnairePullDown from "@/pages/questionnaire/QuestionnairePullDown";
 import { storeQuestionnaireItem, updateQuestionnaireItem ,deleteQuestionnaireItem } from "@/pages/questionnaire/api/QuestionnaireItemApiMethods";
 
 export default forwardRef((props, ref) => {
-  const { questionnaire } = props;
+  const { questionnaire, setAlert, setMessage } = props;
   const [items, setItems] = useState(questionnaire.questionnaire_items);
+  const [timer, setTimer] = useState(null);
 
   useImperativeHandle(ref, () => ({
     addItem() {
@@ -28,7 +29,20 @@ export default forwardRef((props, ref) => {
     const changeItem = {
       name: e.target.value
     }
-    updateQuestionnaireItem(questionnaire.id, changeItem, id, items, setItems)
+    const currentItem = items.filter(item => (item.id === id))[0]
+    currentItem.name = e.target.value
+    setItems(
+      items.map((item) => (item.id === id ? currentItem : item))
+    );
+    clearTimeout(timer);
+
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      setMessage('更新しました')
+      updateQuestionnaireItem(questionnaire.id, changeItem, id, setAlert)
+    }, 1000)
+
+    setTimer(newTimer)
   }
 
   const deleteItem = (id) => {

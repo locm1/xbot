@@ -40,7 +40,7 @@ class QuestionnaireItemController extends Controller
      * @param  QuestionnaireItem $item
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateQuestionnaireItemRequest $request, Questionnaire $questionnaire, QuestionnaireItem $item)
+    public function update(Request $request, Questionnaire $questionnaire, QuestionnaireItem $item)
     {
         $questionnaire = $this->questionnaire_item_service->update($request, $questionnaire, $item);
         return response()->json(['questionnaire_item' => $questionnaire], 200);

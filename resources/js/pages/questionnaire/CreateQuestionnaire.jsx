@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
-import { Col, Row, Form, Button, Breadcrumb, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
+import { Col, Row, Form, Button, Breadcrumb, Card, Alert } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
-import { Paths } from "@/paths";
 
 import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard";
@@ -25,11 +23,24 @@ export default () => {
     {title: 'プルダウン', value: 5},
   ];
 
+  const [alert, setAlert] = useState(false);
+  const [message, setMessage] = useState('');
+  const [timer, setTimer] = useState(null);
 
   const update = (e, id, column) => {
     const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
     newQuestionnaire[`${column}`] = e.target.value;
-    updateQuestionnaire(id, newQuestionnaire);
+
+    clearTimeout(timer);
+
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      setMessage('更新しました')
+      updateQuestionnaire(id, newQuestionnaire, setAlert);
+    }, 1000)
+
+    setTimer(newTimer)
+
     setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? newQuestionnaire : questionnaire)));
     return newQuestionnaire;
   };
@@ -52,7 +63,16 @@ export default () => {
     const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
     newQuestionnaire.is_undisclosed = !newQuestionnaire.is_undisclosed;
     setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? newQuestionnaire : questionnaire)));
-    updateQuestionnaire(id, newQuestionnaire);
+    clearTimeout(timer);
+
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      setMessage('更新しました')
+      updateQuestionnaire(id, newQuestionnaire, setAlert);
+    }, 1000)
+
+    setTimer(newTimer)
+
   };
 
   const addQuestionnaire = () => {
@@ -110,6 +130,12 @@ export default () => {
 
   return (
     <>
+      <Alert variant="success" className="success-sticky-alert" style={{
+          transition: '0.5s',
+          opacity: alert ? 1 : 0,
+        }}>
+          {message}
+        </Alert>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">アンケート管理</h1>
@@ -152,7 +178,13 @@ export default () => {
                           </Col>
                         </Row>
                         <Row className="mb-4 mb-lg-0 mt-4">
-                          <QuestionnaireCard key={index} questionnaire={questionnaire} ref={ref} />
+                          <QuestionnaireCard 
+                            key={index} 
+                            questionnaire={questionnaire} 
+                            ref={ref} 
+                            setAlert={setAlert} 
+                            setMessage={setMessage}
+                          />
                       </Row>
                     </Card.Body>
                   </Card>

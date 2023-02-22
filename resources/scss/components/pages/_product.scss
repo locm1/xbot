@@ -1,0 +1,11 @@
+@import "../line_preview";
+
+.product-preview-image-wrap {
+  @extend .line-preview-image-wrap;
+  width: 200px !important;
+}
+
+.product-preview-image {
+  @extend .line-preview-image;
+  padding: 10px !important;
+}

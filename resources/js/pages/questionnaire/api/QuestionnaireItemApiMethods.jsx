@@ -9,14 +9,13 @@ export const storeQuestionnaireItem = async (id, formValue, items, setItems) => 
 };
 
 
-export const updateQuestionnaireItem = async (questionnaireId, formValue, id, items, setItems) => {
+export const updateQuestionnaireItem = async (questionnaireId, formValue, id, setAlert) => {
   await axios.put(`/api/v1/management/questionnaires/${questionnaireId}/items/${id}`, formValue)
   .then((response) => {
-    const currentItem = items.filter(item => (item.id === id))[0]
-    currentItem.name = response.data.questionnaire_item.name
-    setItems(
-      items.map((item) => (item.id === id ? currentItem : item))
-    );
+    setAlert(true);
+    setTimeout(() => {
+      setAlert(false);
+    }, 3000);
   })
   .catch(error => {
       console.error(error);

@@ -17,7 +17,9 @@ export default () => {
   const { id } = useParams();
   const history = useHistory();
   const pathname = useLocation().pathname;
-  const [productImages, setProductImages] = useState([]);
+  const [productImages, setProductImages] = useState([
+    {image_path: ''}
+  ]);
 
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
@@ -253,24 +255,25 @@ export default () => {
                       </Row>
                       <Row>
                         <Form.Label>商品画像</Form.Label>
-                        {productImages.map((v, k) => (
-                          <Col md={2} className="py-2" key={`product-image-${k}`}>
+                        {productImages && productImages.map((image, k) => (
+                          <Col md={2} key={`product-image-${k}`} className="dropzone-preview py-2 product-preview-image-wrap">
                             <div>{k + 1}枚目</div>
-                            <Image src="https://via.placeholder.com/300.png/09f/fff" className="py-1" />
+                            <div className="product-preview-image d-flex">
+                              <Image src={image.image_path} className="dropzone-image" />
+                              <Button variant="gray-800" className="product-image-button" onClick={() => setFiles([])}>
+                                <XIcon className="icon icon-sm line-preview-image-icon" />
+                              </Button>  
+                            </div>
                           </Col>
                         ))}
-                        <Col md={2}>
-                          <div className="py-2">画像を追加</div>
-                          <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="200px" >
-                            <Form.Control {...getInputProps()} />
-                            <div className="dz-default dz-message text-center">
-                              <p className="dz-button mb-0">画像をアップロード、もしくはドラッグアンドドロップをしてください</p>
-                            </div>
-                          </Form>
-                          <Row className="dropzone-files">
-                            {files.map(file => <DropzoneFile key={file.path} {...file} />)}
-                          </Row>
-                        </Col>
+                          <Col md={2} className="dropzone-preview py-2">
+                          <Button
+                            variant="primary"
+                            className="d-inline-flex align-items-center"
+                          >
+                            画像を追加
+                          </Button> 
+                          </Col>
                       </Row>
                     </Col>
                     <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">

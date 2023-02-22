@@ -5,7 +5,7 @@ import { PencilIcon, CheckIcon, TrashIcon, PlusIcon } from "@heroicons/react/sol
 import { Card, Button, Image, Col, Row, Form, Badge, InputGroup } from "react-bootstrap";
 
 export default (props) => {
-  const { id, privilege_id, name, isEdit, setIsEdit, updatePrivilegeItem, privilegeItems, setPrivilegeItems, deletePrivilegeItem, setPrivileges, privileges } = props; 
+  const { id, privilege_id, name, isEdit, setIsEdit, updatePrivilegeItem, privilegeItems, setPrivilegeItems, deletePrivilegeItem } = props; 
   const [isTimeEditable, setIsTimeEditable] = useState(false);
   const [updateName, setUpdateName] = useState(name);
 
@@ -18,7 +18,7 @@ export default (props) => {
   }));
 
   const handleClick = () => {
-    updatePrivilegeItem(privilege_id, id, updateName, privilegeItems, setPrivilegeItems, setIsEdit, setPrivileges, privileges);
+    updatePrivilegeItem(privilege_id, id, updateName, privilegeItems, setPrivilegeItems, setIsEdit);
     setIsEdit(!isEdit.isEdit)
   };
 

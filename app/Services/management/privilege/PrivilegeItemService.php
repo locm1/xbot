@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PrivilegeItemService
 {
+    public function index(Privilege $privilege): Collection
+    {
+        return PrivilegeItem::where('privilege_id', $privilege->id)->get();
+    }
+
     public function store($request, Privilege $privilege)
     {
         $data = [

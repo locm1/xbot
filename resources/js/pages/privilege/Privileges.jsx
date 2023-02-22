@@ -66,7 +66,7 @@ export default () => {
                 </div>
             </Card>
           ) : (
-            <div className="privilege-button">
+            <div className="privilege-button mb-4">
               <Button
                 variant="outline-gray-500"
                 onClick={() => setIsCreate(!isCreate)}

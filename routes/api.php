@@ -29,11 +29,12 @@ use App\Http\Controllers\api\management\order\OrderController;
 use App\Http\Controllers\api\management\order\OrderDeliveryController;
 use App\Http\Controllers\api\management\order\OrderProductController;
 use App\Http\Controllers\api\management\order\OrderUserController;
-use App\Http\Controllers\api\management\ProductController;
-use App\Http\Controllers\api\management\ProductImageController;
+use App\Http\Controllers\api\management\product\ProductController;
+use App\Http\Controllers\api\management\product\ProductImageController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
 use App\Http\Controllers\api\management\QuestionnaireAnswerController;
 use App\Http\Controllers\api\management\RelatedProductController;
+use App\Http\Controllers\api\management\ReserveHistoryController;
 use App\Http\Controllers\api\management\SegmentController;
 use App\Http\Controllers\api\management\TagUserController;
 use App\Http\Controllers\api\management\UserTagController;
@@ -99,7 +100,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
         Route::put('questionnaires/{questionnaire}/sort', QuestionnaireSortController::class);
         Route::apiResource('products', ProductController::class);
-        Route::apiResource('products/{product}/product-image', ProductImageController::class);
+        Route::apiResource('products/{product}/images', ProductImageController::class);
         Route::apiResource('products/{product}/related-product', RelatedProductController::class);
         Route::get('default-segments', DefaultSegmentController::class);
         Route::get('segments', SegmentController::class);
@@ -116,6 +117,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('orders/{order}/delivery', OrderDeliveryController::class);
         Route::apiResource('visitor-histories', VisitorHistoryController::class);
         Route::get('visitor-histories/{visitor_history}/user', VisitorHistoryUserController::class);
+        Route::apiResource('reserve-histories', ReserveHistoryController::class);
     });
 });
 

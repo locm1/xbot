@@ -88,7 +88,7 @@ export const sortProduct = async (id, formValue) => {
 };
 
 export const getProductImages = async (id, setProductImages) => {
-  axios.get(`/api/v1/management/products/${id}/product-image`)
+  axios.get(`/api/v1/management/products/${id}/images`)
   .then((response) => {
     setProductImages(response.data.product_images);
     console.log(response.data.product_images);

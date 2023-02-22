@@ -1,5 +1,6 @@
 @import "./pages/send_history";
 @import "./pages/liff";
+@import "./pages/product";
 
 $base_color: #707070;
 
@@ -210,4 +211,10 @@ $base_color: #707070;
 
 .text-area {
   white-space: pre-wrap;
+}
+
+.success-sticky-alert {
+  position: fixed;
+  top: 0;
+  z-index: 100;
 }

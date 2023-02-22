@@ -19,6 +19,17 @@ class PrivilegeItemController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Privilege $privilege)
+    {
+        $privilege_items = $this->privilege_item_service->index($privilege);
+        return response()->json(['privilegeItems' => $privilege_items], 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

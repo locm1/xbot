@@ -50,3 +50,14 @@ export const deleteVisitorHistory= async (id, completeDelete) => {
       console.error(error);
   });
 };
+
+
+export const searchVisitorHistories = async (params, setVisitorHistories) => {
+  axios.get('/api/v1/management/visitor-histories', params)
+  .then((response) => {
+    setVisitorHistories(response.data.visitor_histories.data);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};

@@ -37,7 +37,7 @@ class ProductService
      */
     public function show(Product $product): Product
     {
-        return $product::with('productImages')->find($product->id);
+        return $product;
     }
 
 

@@ -22,3 +22,23 @@ export const updateReserveHistory = async (id, status, setReserveHistories, rese
       console.error(error);
   });
 };
+
+export const deleteReserveHistory = async (id, completeDelete) => {
+  axios.delete(`/api/v1/management/reserve-histories/${id}`)
+  .then((response) => {
+    completeDelete();
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const searchReserveHistories = async (params, setReserveHistories) => {
+  axios.get('/api/v1/management/reserve-histories', params)
+  .then((response) => {
+    setReserveHistories(response.data.reserve_histories.data);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};

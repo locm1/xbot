@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 export const ReservesTable = (props) => {
-  const { reserves, changeStatusModal } = props;
+  const { reserves, changeStatusModal, deleteReserveHistoryConfirmModal } = props;
   const totalReserves = reserves.length;
 
   const deleteUsers = (ids) => {
@@ -43,14 +43,15 @@ export const ReservesTable = (props) => {
     const productLink = Paths.EditProduct.path.replace(':id', product_id);
 
     return (
-      <tr className="border-bottom product-table-tr">
+      <tr className="border-bottom">
         <td>
           <Card.Link className="d-flex align-items-center" as={Link} to={userLink}>
             <div className="d-flex align-items-center">
               {user.img_path ? (<Image src={user.img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
               <div className="d-block">
-                {user.first_name && user.first_name_kana ? 
+                {user.first_name && user.first_name_kana && user.last_name && user.last_name_kana ? 
                   <>
+                    <div className="text-gray small">{user.last_name_kana} {user.first_name_kana}</div>
                     <span className="fw-bold text-decoration-underline">{user.last_name} {user.first_name}</span> 
                   </>
                 :
@@ -68,19 +69,19 @@ export const ReservesTable = (props) => {
             </div>
           </Card.Link>
         </td>
-        <td>
+        <td className="product-table-tr">
           <span className="fw-normal">
             {quantity}
           </span>
         </td>
-        <td>
+        <td className="product-table-tr">
           <span className="fw-normal">
             {product.price.toLocaleString()}円
           </span>
         </td>
-        <td>
+        <td className="product-table-tr">
           <span className="fw-normal">
-            {deadline}
+            {deadline.split(' ')[0]}まで
           </span>
         </td>
         <td>
@@ -91,7 +92,7 @@ export const ReservesTable = (props) => {
           </Card.Link>
         </td>
         <td>
-          <Button onClick={() => deleteUsers(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button onClick={() => deleteReserveHistoryConfirmModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
         </td>

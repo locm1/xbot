@@ -17,12 +17,12 @@ class SearchVisitorHistoryAction
             $this->searchByName($query, $request->name);
         }
 
-        if ($request->start_created_at && empty($request->end_created_at)) {
+        if ($request->start_created_at) {
             $query->where('created_at', '>', $request->start_created_at);
-        } elseif (empty($request->start_created_at) && $request->end_created_at) {
+        }
+        
+        if ($request->end_created_at) {
             $query->where('created_at', '<', "$request->end_created_at 23:59:59");
-        } else if ($request->start_created_at && $request->end_created_at) {
-            $this->searchByCreatedAt($query, $request->end_created_at, $request->end_created_at);
         }
 
         return $query->with('user')->paginate(10);
@@ -37,14 +37,6 @@ class SearchVisitorHistoryAction
                 ->select('id');
                 SearchUtility::searchByName($query, $replace_name);
         });
-        return $query;
-    }
-    
-
-    private function searchByCreatedAt($query, $start_created_at, $end_created_at)
-    {
-        $query->where('created_at', '>', $start_created_at)
-            ->where('created_at', '<', "$end_created_at 23:59:59");
         return $query;
     }
 }

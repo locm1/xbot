@@ -9,51 +9,35 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 import { ReservesTable } from "@/pages/reserve/ReservesTable";
 import { ChangeStatusModal } from "@/pages/reserve/ChangeReserveStatusModal";
 
-import { getReserveHistories, updateReserveHistory } from "@/pages/reserve/api/ReserveHistoryApiMethods";
-
-const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
-  customClass: {
-    confirmButton: 'btn btn-primary me-3',
-    cancelButton: 'btn btn-gray-100'
-  },
-  buttonsStyling: false
-}));
+import { getReserveHistories, updateReserveHistory, deleteReserveHistory, searchReserveHistories } from "@/pages/reserve/api/ReserveHistoryApiMethods";
 
 export default () => {
   const [reserveHistories, setReserveHistories] = useState([]);
   const [reserveId, setReserveId] = useState();
-  const [searchValue, setSearchValue] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
+  const [searchValue, setSearchValue] = useState({
+    user_name: '', product_name: '', status: 0
+  });
   const [modalOpen, setModalOpen] = useState(false);
 
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
+  const handleChange = (e, input) => {
+    setSearchValue({...searchValue, [input]: e.target.value})
 
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
+    const searchParams = {
+      params: {...searchValue, [input]: e.target.value}
+    };
+    searchReserveHistories(searchParams, setReserveHistories);
   };
 
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
+  const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-primary me-3',
+      cancelButton: 'btn btn-gray-100'
+    },
+    buttonsStyling: false
+  }));
 
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
-
-  const deleteUsers = async (ids) => {
-    const usersToBeDeleted = ids ? ids : selectedUsersIds;
-    const usersNr = usersToBeDeleted.length;
-    const textMessage = "本当にこのデータを削除しますか？";
+  const deleteReserveHistoryConfirmModal = async (id) => {
+    const textMessage = "本当にこの取り置きを削除しますか？";
 
     const result = await SwalWithBootstrapButtons.fire({
       icon: "error",
@@ -65,12 +49,14 @@ export default () => {
     });
 
     if (result.isConfirmed) {
-      const newUsers = users.filter(f => !usersToBeDeleted.includes(f.id));
-      const confirmMessage = "選択したデータは削除されました。";
-
-      setUsers(newUsers);
-      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+      deleteReserveHistory(id, completeDelete)
     }
+  };
+
+  const completeDelete = async () => {
+    const confirmMessage = "選択した取り置きは削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    location.reload();
   };
 
   const changeStatusModal = (id) => {
@@ -110,8 +96,8 @@ export default () => {
               <Form.Control
                 type="text"
                 placeholder="ユーザー名検索"
-                value={searchValue}
-                onChange={changeSearchValue}
+                value={searchValue.user_name}
+                onChange={(e) => handleChange(e, 'user_name')}
               />
             </InputGroup>
             <InputGroup className="me-2 me-lg-3 fmxw-400">
@@ -121,8 +107,8 @@ export default () => {
               <Form.Control
                 type="text"
                 placeholder="商品名検索"
-                value={searchValue}
-                onChange={changeSearchValue}
+                value={searchValue.product_name}
+                onChange={(e) => handleChange(e, 'product_name')}
               />
             </InputGroup>
             <InputGroup className="fmxw-400">
@@ -143,7 +129,7 @@ export default () => {
       <ReservesTable
         reserves={reserveHistories}
         changeStatusModal={changeStatusModal}
-        deleteUsers={deleteUsers}
+        deleteReserveHistoryConfirmModal={deleteReserveHistoryConfirmModal}
       />
     </>
   );

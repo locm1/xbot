@@ -21,9 +21,9 @@ class ReserveHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reserve_histories = $this->reserve_history_service->index();
+        $reserve_histories = $this->reserve_history_service->index($request);
         return response()->json(['reserve_histories' => $reserve_histories], 200);
     }
 
@@ -65,11 +65,12 @@ class ReserveHistoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  ReserveHistory $reserve_history
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ReserveHistory $reserve_history)
     {
-        //
+        $this->reserve_history_service->destroy($reserve_history);
+        return response()->json([], 204);
     }
 }

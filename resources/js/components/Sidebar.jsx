@@ -160,8 +160,8 @@ export default (props = {}) => {
               </CollapsableNavItem>
 
               <CollapsableNavItem eventKey="ec/" title="EC管理" icon={ShoppingCartIcon}>
-                <NavItem title="商品登録" icon={StoreIcon} link={Paths.Products.path} />
-                <NavItem title="カテゴリー設定" icon={StoreIcon} link={Paths.ProductCategory.path} />
+                <NavItem title="商品登録" link={Paths.Products.path} />
+                <NavItem title="カテゴリー設定" link={Paths.ProductCategory.path} />
                 <NavItem title="クーポン作成" link={Paths.Coupons.path} />
                 <NavItem title="注文リスト" link={Paths.Orders.path} />
                 <NavItem title="取置リスト" link={Paths.Reserves.path} />

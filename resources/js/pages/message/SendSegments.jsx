@@ -15,6 +15,8 @@ import SegmentCard from "@/pages/message/segment/SegmentCard";
 import MessageDetail from "@/pages/message/MessageDetail";
 import { SegmentCardCreateModal } from "@/pages/message/segment/SegmentCardCreateModal";
 import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
+import { UsersTable } from "@/pages/user/UsersTable";
+import { getUsers, searchUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
 
 
 
@@ -59,11 +61,12 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 export default () => {
   const [definedQuestion, setDefinedQuestion] = useState([]);
   const [questionnaires, setQuestionnaires] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
   questionnaires.forEach((v,k) => {
-    if (k & 1) {
+    if (v.id & 1) {
       oddQuestionnaires.push(v);
     } else {
       evenQuestionnaires.push(v);
@@ -91,13 +94,28 @@ export default () => {
           });
         }
       });
-      setQuestionnaires(newSegments);
+      var maxId = newSegments[newSegments.length - 1].id;
+      getQuestionnaires(setDefinedQuestion)
+      .then((res) => {
+        console.log(res);
+        res.forEach(v => {
+          maxId++;
+          newSegments.push({
+            id: maxId,
+            type: v.type == 1 || v.type == 2 ? 4 : 1,
+            questionTitle: v.title,
+            questionnaireItems: 
+              v.questionnaire_items.map((b) => ({name: b.name, value: ''}))
+          })
+        })
+        console.log(newSegments);
+        setQuestionnaires(newSegments);
+        getUsers(setUsers)
+      });
     })
     .catch(error => {
         console.error(error);
-    });
-    getQuestionnaires(setDefinedQuestion);
-    
+    })
   }, [])
 
   const handleChange = (e) => {
@@ -156,7 +174,7 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          <Button onClick={() => {console.log(definedQuestion)}} />
+          <Button onClick={() => {console.log(questionnaires)}} />
         </div>
       </div>
       <Row>
@@ -187,16 +205,19 @@ export default () => {
       <Row>
         <Col>
           <Row className="mt-4">
-            {evenQuestionnaires.map((v, k) => <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} />)}
+            {oddQuestionnaires.map((v, k) => <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} />)}
           </Row>
         </Col>
         <Col>
           <Row className="mt-4">
-            {oddQuestionnaires.map((v, k) => <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} />)}
+            {evenQuestionnaires.map((v, k) => <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} />)}
           </Row>
         </Col>
       </Row>
-      
+        <h5 className="m-4">送信対象ユーザー</h5>
+        <UsersTable
+          users={users}
+        />
       <MessageDetail />
 
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">

@@ -4,12 +4,20 @@ import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
+import Tags from "@yaireo/tagify/dist/react.tagify"; // React-wrapper file
+import "@yaireo/tagify/dist/tagify.css"; // Tagify CSS
 
 export default (props) => {
   const {questionTitle, type, questionnaireItems, handleChange, handleChangeForRange, id} = props;  
   const flatpickerOptions = {
     locale: 'ja',
     onChange: (selectedDates, dateStr, instance) => setBirthDate(dateStr)
+  }
+  const baseTagifySettings = {
+    blacklist: ["xxx", "yyy", "zzz"],
+    maxTags: 4,
+    backspace: "edit",
+    placeholder: "最大４つまで設定することができます",
   }
 
   switch (type) {
@@ -103,6 +111,29 @@ export default (props) => {
         </Col>
       )
       break;
+      case 4:
+        return (
+          <Col md={12} className="mb-4">
+            <Card>
+              <Card.Body>
+                <h5 className="mb-4">{questionTitle}</h5>
+                <Form>
+                  <Form.Group className="mb-3">
+                    <Tags
+                      settings={baseTagifySettings} // tagify settings object
+                      defaultValue=""
+                      value={questionnaireItems[0].value}
+                      onChange={(e)=>{setTags(e.detail.value)}}
+                      className={`w-100`}
+                    />
+                    {/* <Form.Control name={questionnaireItems[0].name} value={questionnaireItems[0].value} data-segmentid={id} type="number" onChange={handleChangeForRange} /> */}
+                  </Form.Group>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        )
+        break;
     default:
       return (
         <Col md={12} className="mb-4">

@@ -41,11 +41,11 @@ class DefaultSegmentItemSeeder extends Seeder
                 'name' => $value,
             ]);
         }
-        foreach (OccupationConsts::ALL_OCCUPATIONS as $value) {
-            DefaultSegmentItem::create([
-                'default_segment_id' => 6,
-                'name' => $value,
-            ]);
-        }
+        // foreach (OccupationConsts::ALL_OCCUPATIONS as $value) {
+        //     DefaultSegmentItem::create([
+        //         'default_segment_id' => 6,
+        //         'name' => $value,
+        //     ]);
+        // }
     }
 }

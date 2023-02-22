@@ -1,9 +1,9 @@
 export const getQuestionnaires = async (setQuestionnaires) => {
-  await axios.get('/api/v1/management/questionnaires')
+  return await axios.get('/api/v1/management/questionnaires')
   .then((response) => {
     const questionnaires = response.data.questionnaires;
-    console.log(questionnaires);
     setQuestionnaires(questionnaires);
+    return questionnaires;
   })
   .catch(error => {
       console.error(error);

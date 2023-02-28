@@ -4,7 +4,7 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Modal, ProgressBar, Pa
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 
-import pudding from "@img/img/products/pudding.jpeg"
+import noImage from "@img/img/noimage.jpg"
 
 
 export const ProductsTable = (props) => {
@@ -15,7 +15,7 @@ export const ProductsTable = (props) => {
     if (image) {
       return image.image_path
     } else {
-      return pudding;
+      return noImage;
     }
   }
 

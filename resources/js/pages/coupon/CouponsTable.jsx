@@ -9,7 +9,7 @@ import withReactContent from "sweetalert2-react-content";
 
 
 export const CouponsTable = (props) => {
-  const { coupons, setCoupons, deleteCoupon } = props;
+  const { coupons, setCoupons, deleteCoupon, openModal, setOpenModal, setId } = props;
   const TotalCoupons = coupons.length;
 
   const TableRow = (props) => {
@@ -46,6 +46,11 @@ export const CouponsTable = (props) => {
       await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
     };
 
+    const showUsers = (id) => {
+      setOpenModal(!openModal);
+      setId(id);
+    };
+
     return (
       <tr className="border-bottom">
         <td>
@@ -72,6 +77,9 @@ export const CouponsTable = (props) => {
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
+          <Button onClick={() => showUsers(id)} variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+            利用者一覧
+          </Button>
           <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
@@ -90,7 +98,7 @@ export const CouponsTable = (props) => {
               <th className="border-gray-200">割引率</th>
               <th className="border-gray-200">残数</th>
               <th className="border-gray-200">利用コード</th>
-              <th className="border-gray-200 text-center">編集・削除</th>
+              <th className="border-gray-200 text-center">編集・利用者一覧・削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

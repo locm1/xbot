@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import moment from "moment-timezone";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, TrashIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tab, Nav } from 'react-bootstrap';
-import CheckboxButton from "@/components/CheckboxButton";
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
-import { Paths } from "@/paths";
-
-import ProductOverview from "@/pages/product/ProductOverview";
 import Select from 'react-select'
 
-import { showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts, getProducts, updateRelatedProduct } from "@/pages/product/api/ProductApiMethods";
+import { 
+  showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts, 
+  getProducts, updateRelatedProduct, deleteImages, storeImages
+} from "@/pages/product/api/ProductApiMethods";
 import { getCategories, } from "@/pages/product/api/ProductCategoryApiMethods";
 
 export default () => {
@@ -20,6 +19,8 @@ export default () => {
   const [productImages, setProductImages] = useState([
     {image_path: ''}
   ]);
+  const [deleteProductImages, setDeleteProductImages] = useState([]);
+  const [storeProductImages, setStoreProductImages] = useState([]);
 
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
@@ -39,23 +40,43 @@ export default () => {
     setProduct({...product, [input]: e.target.value})
   };
 
-  const [files, setFiles] = useState([]);
+  const onDrop = (acceptedFiles) => {
+    const currentImage = productImages.slice(-1)[0];
+    const newImage = {
+      product_id: id,
+      image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile))[0]
+    }
+
+    acceptedFiles.map(file => {
+      setStoreProductImages([...storeProductImages, file])
+    })
+
+    setProductImages([...productImages, newImage]);
+  };
+
+  const deleteImage = (id) => {
+    const deleteImage = productImages.find((image) => image.id === id)
+    setProductImages(productImages.filter(image => image.id !== id))
+    // 削除対象のstate から、idがない、つまりフロント側で追加した画像をバックエンドに送らないようにする
+    if (Object.keys(deleteImage).indexOf('id') !== -1) {
+      setDeleteProductImages([...deleteProductImages, deleteImage]);
+    }
+  };
+  
   const { getRootProps, getInputProps } = useDropzone({
     accept: {'image/*': ['.jpeg', '.jpg', '.png'],},
-    onDrop: files => setFiles(files.map(file => ({
-      ...file,
-      preview: URL.createObjectURL(file)
-    })))
+    onDrop
   });
 
   const DropzoneFile = (props) => {
-    const { path, preview } = props;
+    const { image_path, index, id } = props;
 
     return (
-      <Col xs={3} className="dropzone-preview line-preview-image-wrap">
-        <div className="line-preview-image d-flex">
-          <Image src={preview} className="dropzone-image" />
-          <Button variant="gray-800" className="product-image-button" onClick={() => setFiles([])}>
+      <Col md={2} className="dropzone-preview py-2 product-preview-image-wrap">
+        <div>{index + 1}枚目</div>
+        <div className="product-preview-image d-flex">
+          <Image src={image_path} className="dropzone-image" />
+          <Button variant="gray-800" className="product-image-button" onClick={() => deleteImage(id)}>
             <XIcon className="icon icon-sm line-preview-image-icon" />
           </Button>  
         </div>
@@ -77,7 +98,7 @@ export default () => {
       const ids = relatedProducts.map(v => (v.id));
       const newRelatedProducts = relatedProducts.map(v => {
         if (v.id === 0) {
-         return {id: e.value, table_id: null, name: e.label, discountPrice: 0}
+          return {id: e.value, table_id: null, name: e.label, discountPrice: 0}
         } else {
           return {...v}
         }
@@ -111,26 +132,34 @@ export default () => {
     setRelatedProducts(newRelatedProducts);
   }
 
-  useEffect(() => {
-    if (pathname.includes('/edit')) {
-      showProduct(id, setProduct, setPrivate, setIsPickedUp);
-    }
-    getCategories(setCategories)
-  }, []);
-
   const onSaveProduct = () => {
-    updateProduct(id, product);
+    // updateProduct(id, product);
+
+    // // 画像削除stateに値があればAPI発火
+    // if (deleteProductImages.length > 0) {
+    //   const params = {
+    //     ids: deleteProductImages.map(deleteProductImage => deleteProductImage.id),
+    //     image_paths: deleteProductImages.map(
+    //       deleteProductImage => deleteProductImage.image_path.split('/')[2] + '/' + deleteProductImage.image_path.split('/')[3]
+    //     )
+    //   }
+    //   deleteImages(id, params)
+    // }
+
+    // 画像保存stateに値があればAPI発火
+    if (storeProductImages.length > 0) {
+      const formData = new FormData();
+      storeProductImages.map((image) => {
+        console.log(image);
+        formData.append("product_images[]", image, image.name);
+      });
+      storeImages(id, formData)
+    }
   }
 
   const onSaveRelatedProduct = () => {
     updateRelatedProduct(id, relatedProducts);
   }
-
-  useEffect(() => {
-    getProductImages(id, setProductImages);
-    getRelatedProducts(id, setRelatedProducts);
-    getProducts(setProducts);
-  }, [])
 
   const updatePrivate = (privateProduct) => {
     setProduct({...product, ['is_undisclosed']: privateProduct ? 1 : 0})
@@ -142,9 +171,18 @@ export default () => {
     setIsPickedUp(isPickedUp)
   }
 
-  const selectProductImage = () => {
-    <Form.Control {...getInputProps()} />
-  }
+  useEffect(() => {
+    if (pathname.includes('/edit')) {
+      showProduct(id, setProduct, setPrivate, setIsPickedUp);
+    }
+    getCategories(setCategories)
+  }, []);
+
+  useEffect(() => {
+    getProductImages(id, setProductImages);
+    getRelatedProducts(id, setRelatedProducts);
+    getProducts(setProducts);
+  }, [])
 
   return (
     <>
@@ -256,24 +294,16 @@ export default () => {
                       <Row>
                         <Form.Label>商品画像</Form.Label>
                         {productImages && productImages.map((image, k) => (
-                          <Col md={2} key={`product-image-${k}`} className="dropzone-preview py-2 product-preview-image-wrap">
-                            <div>{k + 1}枚目</div>
-                            <div className="product-preview-image d-flex">
-                              <Image src={image.image_path} className="dropzone-image" />
-                              <Button variant="gray-800" className="product-image-button" onClick={() => setFiles([])}>
-                                <XIcon className="icon icon-sm line-preview-image-icon" />
-                              </Button>  
-                            </div>
-                          </Col>
+                          <DropzoneFile key={k} {...image} index={k} />
                         ))}
-                          <Col md={2} className="dropzone-preview py-2">
-                          <Button
-                            variant="primary"
-                            className="d-inline-flex align-items-center"
-                          >
-                            画像を追加
-                          </Button> 
-                          </Col>
+                        <Col md={2} className="pt-4">
+                          <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="150px" >
+                            <Form.Control {...getInputProps()} />
+                            <div className="dz-default dz-message text-center">
+                              <p className="dz-button mb-0">画像を追加</p>
+                            </div>
+                          </Form>
+                        </Col>
                       </Row>
                     </Col>
                     <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">

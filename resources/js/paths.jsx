@@ -37,7 +37,7 @@ export const Paths = {
     PrivacyPolicy: { path: `${prefix}/setting/privacy-policy` },
     TermsOfService: { path: `${prefix}/setting/terms-of-service` },
     SpecificTrades: { path: `${prefix}/setting/specific-trades` },
-    Tags: { path: `${prefix}/master/tag` },
+    Tags: { path: `${prefix}/user/tag` },
     QrCode: { path: `${prefix}/qr-code` },
     Api: { path: `${prefix}/xbot/api` },
     Greeting: { path: `${prefix}/line/greeting` },

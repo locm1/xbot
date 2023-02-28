@@ -84,6 +84,7 @@ export default (props) => {
           show={true}
           users={eventUsers}
           onHide={onHide}
+          title="参加者一覧"
         />
       )}
       {showEditModal && (

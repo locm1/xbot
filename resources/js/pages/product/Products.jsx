@@ -4,7 +4,6 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 import { Link } from 'react-router-dom';
 
 import { ProductsTable } from "@/pages/product/ProductsTable";
-import products from "@/data/products";
 import { Paths } from "@/paths";
 
 import { getProducts, searchProducts } from "@/pages/product/api/ProductApiMethods";

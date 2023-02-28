@@ -100,7 +100,11 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
         Route::put('questionnaires/{questionnaire}/sort', QuestionnaireSortController::class);
         Route::apiResource('products', ProductController::class);
-        Route::apiResource('products/{product}/images', ProductImageController::class);
+        Route::apiResource('products/{product}/images', ProductImageController::class)->only([
+            'index', 'store'
+        ]);
+        Route::put('products/{product}/images', [ProductImageController::class, 'update']);
+        Route::delete('products/{product}/images', [ProductImageController::class, 'destroy']);
         Route::apiResource('products/{product}/related-product', RelatedProductController::class);
         Route::get('default-segments', DefaultSegmentController::class);
         Route::get('segments', SegmentController::class);

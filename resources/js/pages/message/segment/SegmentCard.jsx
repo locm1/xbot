@@ -1,4 +1,4 @@
-import { Card, Col, Form, InputGroup } from "react-bootstrap"
+import { Button, Card, Col, Form, InputGroup } from "react-bootstrap"
 import CheckboxButton from "@/components/CheckboxButton";
 import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import "flatpickr/dist/flatpickr.css";
@@ -6,12 +6,12 @@ import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
 import Tags from "@yaireo/tagify/dist/react.tagify"; // React-wrapper file
 import "@yaireo/tagify/dist/tagify.css"; // Tagify CSS
+import { useState } from "react";
 
 export default (props) => {
-  const {questionTitle, type, questionnaireItems, handleChange, handleChangeForRange, id} = props;  
+  const {questionTitle, type, questionnaireItems, handleChange, handleChangeForRange, id, handleChangeTags, isDefault, displayOrder, searchTerms} = props;  
   const flatpickerOptions = {
     locale: 'ja',
-    onChange: (selectedDates, dateStr, instance) => setBirthDate(dateStr)
   }
   const baseTagifySettings = {
     blacklist: ["xxx", "yyy", "zzz"],
@@ -19,6 +19,7 @@ export default (props) => {
     backspace: "edit",
     placeholder: "最大４つまで設定することができます",
   }
+  const [tags, setTags] = useState([]);
 
   switch (type) {
     case 1:
@@ -28,8 +29,7 @@ export default (props) => {
             <Card.Body>
               <h5 className="mb-4">{questionTitle}</h5>
               {questionnaireItems.map((v, k) => (
-                v.value == 1 ? <CheckboxButton type={type} name={v.name} id={v.name} segmentid={id} value={0} title={v.name} key={`questionnaire-item-${k}`} checked={true} change={handleChange} />
-                             : <CheckboxButton type={type} name={v.name} id={v.name} segmentid={id} value={1} title={v.name} key={`questionnaire-item-${k}`} checked={false} change={handleChange} /> 
+                <CheckboxButton isDefault={isDefault} type={type} name={v.name} id={v.label} segmentid={id} value={v.value} title={v.label} key={`questionnaire-item-${k}`} change={handleChange} /> 
               ))}
             </Card.Body>
           </Card>
@@ -45,9 +45,9 @@ export default (props) => {
               <Form>
                 <Form.Group className="mb-3">
                   <InputGroup>
-                    <Form.Control name={questionnaireItems[0].name} value={questionnaireItems[0].value} data-segmentid={id} type="number" onChange={handleChangeForRange} />
+                    <Form.Control name={questionnaireItems[0].name} value={searchTerms[questionnaireItems[0].name]} data-segmentid={id} type="number" onChange={handleChangeForRange} />
                     <InputGroup.Text>〜</InputGroup.Text>
-                    <Form.Control name={questionnaireItems[1].name} value={questionnaireItems[1].value} data-segmentid={id} type="number" onChange={handleChangeForRange} />
+                    <Form.Control name={questionnaireItems[1].name} value={searchTerms[questionnaireItems[1].name]} data-segmentid={id} type="number" onChange={handleChangeForRange} />
                   </InputGroup>
                 </Form.Group>
               </Form>
@@ -66,8 +66,7 @@ export default (props) => {
                 <InputGroup>
                 <Flatpickr
                     options={ flatpickerOptions }
-                    value={questionnaireItems[0].value ?? ''}
-                    onChange={handleChangeForRange}
+                    onChange={(_, __, instance) => handleChangeForRange(instance.element)}
                     render={(props, ref) => {
                       return (
                         <>
@@ -79,6 +78,8 @@ export default (props) => {
                             required
                             type="text"
                             placeholder="YYYY-MM-DD"
+                            value={questionnaireItems[0].value ?? ''}
+                            name={questionnaireItems[0].name}
                             ref={ref}
                           />
                           <InputGroup.Text>〜</InputGroup.Text>
@@ -88,8 +89,7 @@ export default (props) => {
                   />
                   <Flatpickr
                       options={ flatpickerOptions }
-                      value={questionnaireItems[1].value ?? ''}
-                      onChange={handleChangeForRange}
+                      onChange={(_, __, instance) => handleChangeForRange(instance.element)}
                       render={(props, ref) => {
                         return (
                           <>
@@ -98,6 +98,8 @@ export default (props) => {
                               required
                               type="text"
                               placeholder="YYYY-MM-DD"
+                              value={questionnaireItems[1].value ?? ''}
+                              name={questionnaireItems[1].name}
                               ref={ref}
                             />
                           </>
@@ -122,11 +124,11 @@ export default (props) => {
                     <Tags
                       settings={baseTagifySettings} // tagify settings object
                       defaultValue=""
-                      value={questionnaireItems[0].value}
-                      onChange={(e)=>{setTags(e.detail.value)}}
+                      value={searchTerms[questionnaireItems.name]}
+                      onChange={handleChange}
                       className={`w-100`}
+                      name={questionnaireItems.name}
                     />
-                    {/* <Form.Control name={questionnaireItems[0].name} value={questionnaireItems[0].value} data-segmentid={id} type="number" onChange={handleChangeForRange} /> */}
                   </Form.Group>
                 </Form>
               </Card.Body>
@@ -139,11 +141,7 @@ export default (props) => {
         <Col md={12} className="mb-4">
           <Card>
             <Card.Body>
-              <h5 className="mb-4">{questionTitle}</h5>
-              {questionnaireItems.map((v, k) => (
-                v.value == 1 ? <CheckboxButton title={v.name} key={`questionnaire-item-${k}`} checked="true" />
-                            : <CheckboxButton title={v.name} key={`questionnaire-item-${k}`} /> 
-              ))}
+              <h5 className="mb-4">error</h5>
             </Card.Body>
           </Card>
         </Col>

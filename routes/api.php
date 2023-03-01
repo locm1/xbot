@@ -46,6 +46,7 @@ use App\Http\Controllers\api\management\UserReserveHistoryController;
 use App\Http\Controllers\api\management\user\UserVisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryUserController;
+use App\Http\Controllers\UserWithQuestionneireController;
 use App\Models\QuestionnaireAnswer;
 
 /*
@@ -104,6 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('products/{product}/related-product', RelatedProductController::class);
         Route::get('default-segments', DefaultSegmentController::class);
         Route::get('segments', SegmentController::class);
+        Route::get('user-with-questionnaires', UserWithQuestionneireController::class);
 
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);

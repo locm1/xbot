@@ -1,11 +1,11 @@
 import React from "react";
 
 export default (props) => {
-  const { name, title, id, value, checked, change, segmentid } = props;
+  const { name, title, id, value, checked, change, segmentid, isDefault } = props;
 
   return (
     <>
-      <input type="checkbox" className="btn-check" id={id} name={name} value={value} checked={checked} data-segmentid={segmentid} onChange={change} />
+      <input type="checkbox" className="btn-check" id={id} name={name} value={value} data-segmentid={segmentid} data-isdefault={isDefault} onChange={change} />
       <label className="btn btn-outline-tertiary rounded-pill checkbox-btn" htmlFor={id}>{title}</label>
     </>
   );

@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('default_segments', function (Blueprint $table) {
             $table->id();
+            $table->integer('display_order')->unique();
+            $table->string('title');
             $table->string('name');
             $table->tinyInteger('type');
             $table->timestamps();

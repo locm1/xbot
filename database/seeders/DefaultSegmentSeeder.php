@@ -17,52 +17,65 @@ class DefaultSegmentSeeder extends Seeder
     {
         DefaultSegment::create([
             'id' => 1,
-            'name' => '性別',
+            'display_order' => 1,
+            'title' => '性別',
+            'name' => 'gender',
             'type' => 1,
         ]);
         DefaultSegment::create([
             'id' => 2,
-            'name' => '年齢',
+            'display_order' => 2,
+            'title' => '年齢',
+            'name' => 'age',
             'type' => 2,
         ]);
         DefaultSegment::create([
             'id' => 3,
-            'name' => '誕生月',
+            'display_order' => 3,
+            'title' => '誕生月',
+            'name' => 'birth_date',
             'type' => 1,
         ]);
         DefaultSegment::create([
-            'id' => 4,
-            'name' => '来店回数',
-            'type' => 2,
-        ]);
-        DefaultSegment::create([
             'id' => 5,
-            'name' => '都道府県',
+            'display_order' => 4,
+            'title' => '都道府県',
+            'name' => 'prefecture',
             'type' => 1,
         ]);
         DefaultSegment::create([
             'id' => 6,
-            'name' => 'お住まいエリア',
+            'display_order' => 5,
+            'title' => 'お住まいエリア',
+            'name' => 'residence',
             'type' => 4,
         ]);
         // DefaultSegment::create([
             // 'id' => 6,
-        //     'name' => '職業',
+            // 'display_order' => 1,
+        //     'title' => '職業',
+        // 'name' => ''
         //     'type' => 1,
         // ]);
         DefaultSegment::create([
-            'id' => 8,
-            'name' => '来店回数',
+            'id' => 7,
+            'display_order' => 7,
+            'title' => '来店回数',
+            'name' => 'visit_count',
             'type' => 2,
         ]);
         DefaultSegment::create([
-            'id' => 9,
-            'name' => '最終来店日',
+            'id' => 8,
+            'display_order' => 8,
+            'title' => '最終来店日',
+            'name' => 'last_visit_date',
             'type' => 3,
         ]);
         DefaultSegment::create([
-            'id' => 10,
-            'name' => '購入回数',
+            'id' => 9,
+            'display_order' => 9,
+            'title' => '購入回数',
+            'name' => 'buy_count',
             'type' => 2,
         ]);
     }

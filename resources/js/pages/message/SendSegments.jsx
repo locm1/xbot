@@ -106,7 +106,10 @@ export default () => {
       getQuestionnaires(setDefinedQuestion)
       .then((res) => {
         res.forEach(v => {
-          maxDisplayOrder++;
+          if (v.questionnaire_items.length == 0) {
+            return;
+          } else
+          {maxDisplayOrder++;
           if (v.type == 1 || v.type == 2) {
             newSegments.push({
               id: v.id,
@@ -127,7 +130,7 @@ export default () => {
               questionnaireItems: 
                 v.questionnaire_items.map((b, k) => ({id: k, name: 'questionnaireId-' + v.id, label: b.name, value: ''}))
             })
-          }
+          }}
         })
         setQuestionnaires(newSegments);
         // getUsers(setUsers)

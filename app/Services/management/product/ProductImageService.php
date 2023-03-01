@@ -4,15 +4,15 @@ namespace App\Services\management\product;
 
 use App\Models\Product;
 use App\Models\ProductImage;
-use App\Services\management\product\FormatProductImageAction;
+use App\Services\management\product\StoreProductImageAction;
 use Illuminate\Support\Facades\Storage;
 
 class ProductImageService
 {
-    private $format_product_image_action;
+    private $store_product_image_action;
 
-    public function __construct(FormatProductImageAction $format_product_image_action) {
-        $this->format_product_image_action = $format_product_image_action;
+    public function __construct(StoreProductImageAction $store_product_image_action) {
+        $this->store_product_image_action = $store_product_image_action;
     }
 
     public function index($product) 
@@ -22,10 +22,14 @@ class ProductImageService
 
     public function store($request, $product)
     {
-        return $request->product_images;
-        $merged_product_images = $this->format_product_image_action->mergeProductIdToArray($request->product_images, $product);
+        $merged_product_images = $this->store_product_image_action->storeFiles($request->file('files'), $product);
+        return ProductImage::insert($merged_product_images);
+    }
+
+    public function update($request, $product)
+    {
+        $merged_product_images = $this->store_product_image_action->updateFiles($request);
         return $merged_product_images;
-        //return ProductImage::insert($merged_product_images);
     }
 
     public function destroy($request)

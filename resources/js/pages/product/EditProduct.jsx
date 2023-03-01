@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import moment from "moment-timezone";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, TrashIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
@@ -8,7 +8,7 @@ import Select from 'react-select'
 
 import { 
   showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts, 
-  getProducts, updateRelatedProduct, deleteImages, storeImages
+  getProducts, updateRelatedProduct, deleteImages, storeImages, updateImages
 } from "@/pages/product/api/ProductApiMethods";
 import { getCategories, } from "@/pages/product/api/ProductCategoryApiMethods";
 
@@ -21,6 +21,8 @@ export default () => {
   ]);
   const [deleteProductImages, setDeleteProductImages] = useState([]);
   const [storeProductImages, setStoreProductImages] = useState([]);
+  const [updateProductImages, setUpdateProductImages] = useState([]);
+  const [updateProductImageIds, setUpdateProductImageIds] = useState([]);
 
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
@@ -46,10 +48,7 @@ export default () => {
       product_id: id,
       image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile))[0]
     }
-
-    acceptedFiles.map(file => {
-      setStoreProductImages([...storeProductImages, file])
-    })
+    setStoreProductImages([...storeProductImages, ...acceptedFiles])
 
     setProductImages([...productImages, newImage]);
   };
@@ -69,16 +68,48 @@ export default () => {
   });
 
   const DropzoneFile = (props) => {
-    const { image_path, index, id } = props;
+    const inputFileRef = useRef();
+
+    const { image_path, index, id, setUpdateProductImages, updateProductImages } = props;
+    
+    const changeImage = (id) => {
+      const inputFile = inputFileRef.current;
+      if (!inputFile) return;
+      inputFile.click();
+    };
+
+    const handleChange = (id, e) => {
+      setUpdateProductImages([...updateProductImages, e.target.files[0]])
+      setUpdateProductImageIds([...updateProductImageIds, id])
+      
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const currentproductImage = productImages.filter(image => (image.id === id))[0]
+        currentproductImage.image_path = e.target.result
+        setProductImages(
+          productImages.map((image) => (image.id === id ? currentproductImage : image))
+        );
+      }
+      reader.readAsDataURL(e.target.files[0])
+    };
+    
 
     return (
       <Col md={2} className="dropzone-preview py-2 product-preview-image-wrap">
         <div>{index + 1}枚目</div>
         <div className="product-preview-image d-flex">
-          <Image src={image_path} className="dropzone-image" />
+          <Image src={image_path} className="dropzone-image" onClick={() => changeImage(id)} />
           <Button variant="gray-800" className="product-image-button" onClick={() => deleteImage(id)}>
             <XIcon className="icon icon-sm line-preview-image-icon" />
-          </Button>  
+          </Button>
+          <input
+            accept="image/*"
+            className="product-preview-input"
+            name="files"
+            type="file"
+            ref={inputFileRef}
+            onChange={(e) => handleChange(id, e)}
+          />
         </div>
       </Col>
     );
@@ -149,11 +180,18 @@ export default () => {
     // 画像保存stateに値があればAPI発火
     if (storeProductImages.length > 0) {
       const formData = new FormData();
-      storeProductImages.map((image) => {
-        console.log(image);
-        formData.append("product_images[]", image, image.name);
-      });
+      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
       storeImages(id, formData)
+    }
+
+    // 画像更新stateに値があればAPI発火
+    if (updateProductImages.length > 0) {
+      console.log(updateProductImages);
+      const formData = new FormData();
+      updateProductImages.forEach((image) => formData.append("files[]", image));
+      updateProductImageIds.forEach((id) => formData.append("product_image_ids[]", id));
+      formData.append('_method', 'PUT');
+      updateImages(id, formData)
     }
   }
 
@@ -294,7 +332,7 @@ export default () => {
                       <Row>
                         <Form.Label>商品画像</Form.Label>
                         {productImages && productImages.map((image, k) => (
-                          <DropzoneFile key={k} {...image} index={k} />
+                          <DropzoneFile key={k} {...image} index={k} updateProductImages={updateProductImages} setUpdateProductImages={setUpdateProductImages} />
                         ))}
                         <Col md={2} className="pt-4">
                           <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="150px" >

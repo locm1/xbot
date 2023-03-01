@@ -16,8 +16,9 @@ import MessageDetail from "@/pages/message/MessageDetail";
 import { SegmentCardCreateModal } from "@/pages/message/segment/SegmentCardCreateModal";
 import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import { UsersTable } from "@/pages/user/UsersTable";
-import { getUsers, searchUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
-
+import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
+import {SendSegmentUserCard} from "./segment/SendSegmentUserCard"
+import { calculateAge } from "../../components/common/CalculateAge";
 
 
 // const questionnaires = [
@@ -28,7 +29,7 @@ import { getUsers, searchUsers, getDemographic, deleteUser } from "@/pages/user/
 //       {name: 'name1', value: '0'},
 //       {name: 'name2', value: '1'},
 //       {name: 'name3', value: '0'},
-//     ]
+//     ]sda
 //   },
 //   {
 //     type: 2,
@@ -62,20 +63,22 @@ export default () => {
   const [definedQuestion, setDefinedQuestion] = useState([]);
   const [questionnaires, setQuestionnaires] = useState([]);
   const [users, setUsers] = useState([]);
+  const [searchResultUsers, setSearchResultUsers] = useState([]);
+  const [searchTerms, setSearchTerms] = useState({});
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
+
+  //奇数と偶数でディスプレイ表示を分ける
   questionnaires.forEach((v,k) => {
-    if (v.id & 1) {
+    if (v.displayOrder & 1) {
       oddQuestionnaires.push(v);
     } else {
       evenQuestionnaires.push(v);
     }
   })
 
-  const changeTemplate = () => {
-    
-  }
+
   useEffect(() => {
     axios.get('/api/v1/management/default-segments')
     .then((response) => {
@@ -84,33 +87,59 @@ export default () => {
       segments.forEach(v => {
         if (v.type == 1) {
           newSegments.push({
-            id: v.id, type: v.type, questionTitle: v.name, 
-            questionnaireItems: v.default_segment_items.map((item => ({name: item.name, value: 0})))
+            id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
+            questionnaireItems: v.default_segment_items.map((item, k) => ({id: k + 1, name: v.name, value: item.value, label: item.label}))
+          });
+        } else if (v.type == 4) {
+          newSegments.push({
+            id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
+            questionnaireItems: {value: [] ,name: v.name,}
           });
         } else {
           newSegments.push({
-            id: v.id, type: v.type, questionTitle: v.name, 
+            id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
             questionnaireItems: [{name: 'start_' + v.name, value:''}, {name: 'end_' + v.name, value:''}]
           });
         }
       });
-      var maxId = newSegments[newSegments.length - 1].id;
+      let maxDisplayOrder = newSegments[newSegments.length - 1].id;
       getQuestionnaires(setDefinedQuestion)
       .then((res) => {
-        console.log(res);
         res.forEach(v => {
-          maxId++;
-          newSegments.push({
-            id: maxId,
-            type: v.type == 1 || v.type == 2 ? 4 : 1,
-            questionTitle: v.title,
-            questionnaireItems: 
-              v.questionnaire_items.map((b) => ({name: b.name, value: ''}))
-          })
+          maxDisplayOrder++;
+          if (v.type == 1 || v.type == 2) {
+            newSegments.push({
+              id: v.id,
+              displayOrder: maxDisplayOrder,
+              isDefault: 0,
+              type: 4,
+              questionTitle: v.title,
+              questionnaireItems: 
+                {id: 1, name: 'questionnaireId-' + v.id, label: v.questionnaire_items[0].name, value: ''}
+            })
+          } else {
+            newSegments.push({
+              id: v.id,
+              displayOrder: maxDisplayOrder,
+              isDefault: 0,
+              type: 1,
+              questionTitle: v.title,
+              questionnaireItems: 
+                v.questionnaire_items.map((b, k) => ({id: k, name: 'questionnaireId-' + v.id, label: b.name, value: ''}))
+            })
+          }
         })
-        console.log(newSegments);
         setQuestionnaires(newSegments);
-        getUsers(setUsers)
+        // getUsers(setUsers)
+        axios.get('/api/v1/management/user-with-questionnaires')
+        .then((response) => {
+          const newUsers = response.data.users.map(u => ({ ...u, isSelected: false, show: true }));
+          setUsers(newUsers);
+          setSearchResultUsers(newUsers);
+        })
+        .catch(error => {
+            console.error(error);
+        });
       });
     })
     .catch(error => {
@@ -118,49 +147,172 @@ export default () => {
     })
   }, [])
 
-  const handleChange = (e) => {
-    const newQuestionnaires = questionnaires.map((v, k) => {
-      if (v.id == e.currentTarget.getAttribute('data-segmentid')) {
-        return ({
-          id: v.id,
-          type: v.type,
-          questionTitle: v.questionTitle,
-          questionnaireItems: [
-            ...v.questionnaireItems.map(b => {
-              if (b.name == e.target.name) {
-                return {name: b.name, value: e.target.value};
+  useEffect(() => {
+    let results = users;
+    Object.entries(searchTerms).forEach(([name, terms]) => {
+      if (terms.length > 0) {
+        results = results.filter((user) => {
+          return terms.some((term) => {
+            // user[name].includes(term)
+            if (name === 'gender') {
+              return user.gender == term;
+            } else if (name === 'birth_date') {
+              const d = new Date(user.birth_date);
+              return Number(d.getMonth() + 1) === Number(term);
+            } else if (name === 'prefecture') {
+              return user.prefecture === term;
+            } else if (name === 'start_age') {
+              if (user.birth_date) {
+                const birthday = new Date(user.birth_date);
+                const age = calculateAge(birthday);
+                return age >= Number(term);
               } else {
-                return {...b}
+                return false;
               }
-            })
-          ]
-        })
-      } else {
-        return {...v};
+            } else if (name === 'end_age') {
+              if (user.birth_date) {
+                const birthday = new Date(user.birth_date);
+                const age = calculateAge(birthday);
+                return age <= Number(term);
+              } else {
+                return false;
+              }
+            } else if (name === 'start_visit_count') {
+              if (user.visitor_histories) {
+                console.log(Number(term));
+                return user.visitor_histories.length >= Number(term);
+              } else {
+                return false;
+              }
+            } else if (name === 'end_visit_count') {
+              if (user.visitor_histories) {
+                console.log(Number(term));
+                return user.visitor_histories.length <= Number(term);
+              } else {
+                return false;
+              }
+            } else if (name === 'start_buy_count') {
+              if (user.order_histories) {
+                return user.order_histories.length >= Number(term);
+              } else {
+                return false;
+              }
+            } else if (name === 'end_buy_count') {
+              if (user.order_histories) {
+                return user.order_histories.length <= Number(term);
+              } else {
+                return false;
+              }
+            } else if (name === 'start_last_visit_date') {
+              if (user.visitor_histories.length !== 0) {
+                const latestHistory = user.visitor_histories.reduce((prev, current) => {
+                  return new Date(prev.created_at) > new Date(current.created_at) ? prev : current;
+                });
+                const visitLastDate = new Date(latestHistory.created_at);
+                const inputDate = new Date(term);
+                return visitLastDate >= inputDate;
+              } else {
+                return false;
+              }
+            } else if (name === 'end_last_visit_date') {
+              if (user.visitor_histories.length !== 0) {
+                const latestHistory = user.visitor_histories.reduce((prev, current) => {
+                  return new Date(prev.created_at) > new Date(current.created_at) ? prev : current;
+                });
+                const visitLastDate = new Date(latestHistory.created_at);
+                const inputDate = new Date(term);
+                return visitLastDate <= inputDate;
+              } else {
+                return false;
+              }
+            } else if (name === 'residence') {
+              if (user.city) {
+                return user.city.indexOf(term) !== -1;
+              } else {
+                return false;
+              }
+            } else {
+              const matchResult = name.match(/\d+/);
+              const questionnaireId = matchResult ? matchResult[0] : null;
+              const obj = questionnaires.find(questionnaire => questionnaire.id == questionnaireId);
+              const type = obj ? obj.type : null;
+              return user.questionnaire_answers.some(v => {
+                if (v.questionnaire_id == questionnaireId) {
+                  return v.questionnaire_answer_items.some(b => {
+                    if (type == 1) {
+                      return b.answer == term;
+                    } else {
+                      return b.answer.indexOf(term) !== -1;
+                    }
+                  })
+                } else {
+                  return false;
+                }
+              })
+            }
+          });
+        });
       }
-    })
-    setQuestionnaires(newQuestionnaires);
+      setSearchResultUsers(results);
+    });
+  }, [searchTerms])
+
+  const handleChange = (e) => {
+    let name, value, checked;
+    if (e.target.length !== 0) {
+      name = e.target.name;
+      value = e.target.value;
+    } else {
+      name = e.detail.tagify.DOM.originalInput.name;
+      value = e.detail.tagify.value[e.detail.tagify.value.length - 1].value ?? e.detail.tagify.value[0].value;
+    }
+    checked = e.target.checked ?? true;
+    setSearchTerms(prev => {
+      return ({ 
+        ...prev,
+        [name]: checked
+          ? [...(prev[name] || []), value]
+          : prev[name].filter((term) => term !== value)
+      })
+    });
+
   }
 
   const handleChangeForRange = (e) => {
-    // console.log(e.target.value)
-    // console.log(e.currentTarget.getAttribute('data-segmentid'))
-    // console.log(e.target.name)
+    let name, value;
+    if (e.target) {
+      name = e.target.name;
+      value = e.target.value;
+    } else {
+      name = e.name;
+      value = e.value;
+    }
+    setSearchTerms((prevSearchTerms) => {
+      if (value) { 
+        return {
+          ...prevSearchTerms,
+          [name]: [value]
+        };
+      } else {
+        delete prevSearchTerms[name];
+        return {
+          ...prevSearchTerms,
+        };
+      } 
+    });
+  }
+
+  const handleChangeTags = (e) => {
+    console.log(e.detail.tagify.value);
     const newQuestionnaires = questionnaires.map((v, k) => {
-      if (v.id == e.currentTarget.getAttribute('data-segmentid')) {
+      if (v.displayOrder == e.detail.tagify.DOM.originalInput.name) {
         return ({
           id: v.id,
+          displayOrder: v.displayOrder,
           type: v.type,
           questionTitle: v.questionTitle,
-          questionnaireItems: [
-            ...v.questionnaireItems.map(b => {
-              if (b.name == e.target.name) {
-                return {name: b.name, value: e.target.value};
-              } else {
-                return {...b}
-              }
-            })
-          ]
+          isDefault: v.isDefault,
+          questionnaireItems: e.detail.tagify.value
         })
       } else {
         return {...v};
@@ -175,6 +327,10 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
           <Button onClick={() => {console.log(questionnaires)}} />
+          <Button onClick={() => {console.log(definedQuestion)}} />
+          <Button onClick={() => {console.log(users)}} />
+          <Button onClick={() => {console.log(searchResultUsers)}} />
+          <Button onClick={() => {console.log(searchTerms)}} />
         </div>
       </div>
       <Row>
@@ -182,7 +338,7 @@ export default () => {
         <div className="btn-group target-count-wrap" role="group" aria-label="Basic radio toggle button group">
           <div className="btn btn-primary d-flex pe-none align-items-center">キーワード選択</div>
             <div className="btn btn-outline-primary pe-none bg-white">該当人数
-            <div className="fs-4 people-wrap d-inline"> <span className="people text-primary" id="people">28</span> </div>人 
+            <div className="fs-4 people-wrap d-inline"> <span className="people text-primary" id="people">{searchResultUsers.length}</span> </div>人 
           </div>
         </div>
         </Col>
@@ -205,18 +361,21 @@ export default () => {
       <Row>
         <Col>
           <Row className="mt-4">
-            {oddQuestionnaires.map((v, k) => <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} />)}
+            {oddQuestionnaires.map((v, k) => 
+              <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}
+            />)}
           </Row>
         </Col>
         <Col>
           <Row className="mt-4">
-            {evenQuestionnaires.map((v, k) => <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} />)}
+            {evenQuestionnaires.map((v, k) => 
+              <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}/>
+            )}
           </Row>
         </Col>
       </Row>
-        <h5 className="m-4">送信対象ユーザー</h5>
-        <UsersTable
-          users={users}
+        <SendSegmentUserCard
+        users={searchResultUsers}
         />
       <MessageDetail />
 

@@ -19,26 +19,31 @@ class DefaultSegmentItemSeeder extends Seeder
     {
         DefaultSegmentItem::create([
             'default_segment_id' => 1,
-            'name' => '男性',
+            'label' => '男性',
+            'value' => 1,
         ]);
         DefaultSegmentItem::create([
             'default_segment_id' => 1,
-            'name' => '女性',
+            'label' => '女性',
+            'value' => 2
         ]);
         DefaultSegmentItem::create([
             'default_segment_id' => 1,
-            'name' => 'その他',
+            'label' => 'その他',
+            'value' => 3
         ]);
         for ($i=1; $i < 13; $i++) { 
             DefaultSegmentItem::create([
                 'default_segment_id' => 3,
-                'name' => $i . '月',
+                'label' => $i . '月',
+                'value' => $i
             ]);
         }
         foreach (PrefectureConsts::ALL_PREFECTURES as $value) {
             DefaultSegmentItem::create([
                 'default_segment_id' => 5,
-                'name' => $value,
+                'label' => $value,
+                'value' => $value,
             ]);
         }
         // foreach (OccupationConsts::ALL_OCCUPATIONS as $value) {

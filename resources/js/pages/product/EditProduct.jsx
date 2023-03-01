@@ -164,18 +164,18 @@ export default () => {
   }
 
   const onSaveProduct = () => {
-    // updateProduct(id, product);
+    updateProduct(id, product);
 
-    // // 画像削除stateに値があればAPI発火
-    // if (deleteProductImages.length > 0) {
-    //   const params = {
-    //     ids: deleteProductImages.map(deleteProductImage => deleteProductImage.id),
-    //     image_paths: deleteProductImages.map(
-    //       deleteProductImage => deleteProductImage.image_path.split('/')[2] + '/' + deleteProductImage.image_path.split('/')[3]
-    //     )
-    //   }
-    //   deleteImages(id, params)
-    // }
+    // 画像削除stateに値があればAPI発火
+    if (deleteProductImages.length > 0) {
+      const params = {
+        ids: deleteProductImages.map(deleteProductImage => deleteProductImage.id),
+        image_paths: deleteProductImages.map(
+          deleteProductImage => deleteProductImage.image_path.split('/')[2] + '/' + deleteProductImage.image_path.split('/')[3]
+        )
+      }
+      deleteImages(id, params)
+    }
 
     // 画像保存stateに値があればAPI発火
     if (storeProductImages.length > 0) {
@@ -190,7 +190,6 @@ export default () => {
       const formData = new FormData();
       updateProductImages.forEach((image) => formData.append("files[]", image));
       updateProductImageIds.forEach((id) => formData.append("product_image_ids[]", id));
-      formData.append('_method', 'PUT');
       updateImages(id, formData)
     }
   }

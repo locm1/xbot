@@ -24,15 +24,18 @@ class UpdateProductImageRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'product_images' => 'required|array',
-            // 'product_images.*.file' => 'file|mimes:jpeg,png,jpg,pdf',
+            'files' => 'required|array',
+            'files.*' => 'file|mimes:jpeg,png,jpg,pdf',
+            'product_image_ids' => 'required|array',
+            'product_image_ids.*' => 'exists:product_images,id',
         ];
     }
 
     public function attributes()
     {
         return [
-            'product_images' => '画像ファイルリスト',
+            'files' => '画像ファイルリスト',
+            'product_image_ids' => '画像IDリスト',
         ];
     }
 }

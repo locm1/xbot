@@ -3,7 +3,7 @@
 namespace App\Services\management\product;
 use Illuminate\Support\Facades\Storage;
 
-class StoreProductImageAction
+class SaveStorageProductImageAction
 {
 
     public function storeFiles($files, $product)
@@ -25,7 +25,7 @@ class StoreProductImageAction
     }
 
 
-    public function updateFiles($request)
+    public function updateFiles($request, $product)
     {
         $merged_product_images = array();
 
@@ -37,6 +37,7 @@ class StoreProductImageAction
 
             $merged_product_images[] = [
                 'id' => $id,
+                'product_id' => $product->id,
                 'image_path' => '/storage/products/' .$file_name,
             ];
         }

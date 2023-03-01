@@ -159,7 +159,6 @@ export const storeImages = async (id, formData) => {
 };
 
 export const updateImages = async (id, formData) => {
-  //postData.append('_method', 'PUT');
   axios.post(`/api/v1/management/products/${id}/images`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',

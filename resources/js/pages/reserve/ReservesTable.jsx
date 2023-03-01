@@ -4,6 +4,7 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar,
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
+import noImage from "@img/img/noimage.jpg"
 
 export const ReservesTable = (props) => {
   const { reserves, changeStatusModal, deleteReserveHistoryConfirmModal } = props;
@@ -63,7 +64,7 @@ export const ReservesTable = (props) => {
         </td>
         <td>
           <Card.Link as={Link} to={productLink} className="d-flex align-items-center">
-            <Image src={product.product_images[0].image_path} className="me-3 product-image"/>
+            {product.product_images[0] ? (<Image src={product.product_images[0].image_path} className="me-3 product-image"/>) : (<Image src={noImage} className="me-3 product-image"/>)}
             <div className="d-block product-name">
               <span className="fw-bold text-decoration-underline">{product.name}</span>
             </div>

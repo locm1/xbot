@@ -129,3 +129,31 @@ export const updateRelatedProduct = (id, formValue) => {
       console.error(error);
   });
 };
+
+export const deleteImages = async (id, params) => {
+  axios.delete(`/api/v1/management/products/${id}/images`, {
+    data: params
+  })
+  .then((response) => {
+    console.log(response.data);
+    console.log('削除に成功しました。');
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const storeImages = async (id, params) => {
+  axios.post(`/api/v1/management/products/${id}/images`, params, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+  .then((response) => {
+    console.log(response.data);
+    console.log('保存に成功しました。');
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};

@@ -7,12 +7,15 @@ import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { CouponsTable } from "@/pages/coupon/CouponsTable";
+import ParticipantsModal from "@/components/ParticipantsModal";
 
-import { getCoupons, searchCoupons, deleteCoupon } from "@/pages/coupon/api/CouponApiMethods";
+import { getCoupons, searchCoupons, deleteCoupon, getCouponUsers } from "@/pages/coupon/api/CouponApiMethods";
 
 export default () => {
   const [coupons, setCoupons] = useState([]);
   const [name, setName] = useState('');
+  const [id, setId] = useState('');
+  const [openModal, setOpenModal] = useState(false);
 
   const handleChange = (e) => {
     setName(e.target.value)
@@ -25,12 +28,25 @@ export default () => {
     searchCoupons(searchParams, setCoupons);
   };
 
+  const onHide = () => {
+    setOpenModal(!openModal);
+  }
+
   useEffect(() => {
     getCoupons(setCoupons);
   }, []);
 
   return (
     <>
+      {openModal && (
+        <ParticipantsModal
+          show={true}
+          onHide={onHide}
+          title="クーポン利用者一覧"
+          getUsers={getCouponUsers}
+          id={id}
+        />
+      )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">クーポン管理</h1>
@@ -66,6 +82,9 @@ export default () => {
         coupons={coupons}
         setCoupons={setCoupons}
         deleteCoupon={deleteCoupon}
+        setOpenModal={setOpenModal}
+        openModal={openModal}
+        setId={setId}
       />
     </>
   );

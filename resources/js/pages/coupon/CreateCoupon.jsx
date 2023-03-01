@@ -13,12 +13,10 @@ export default () => {
   const [coupon, setCoupon] = useState({
     id: id, name: '', upper_limit: '', discount_price: '', code: ''
   });
-  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     if (pathname.includes('/edit')) {
       showCoupon(id, setCoupon);
-      getCouponUsers(id, setUsers);
     }
   }, []);
 
@@ -48,35 +46,6 @@ export default () => {
     } else {
       storeCoupon(coupon, storeComplete)
     }
-  };
-
-  const TableRow = (props) => {
-    const { id, last_name, first_name, last_name_kana, first_name_kana, img_path, nickname, pivot } = props;
-    const name = last_name + ' ' + first_name;
-    const link = Paths.EditUser.path.replace(':id', id);
-
-    return (
-      <tr className="border-bottom">
-        <td>
-          <Link to={link}>
-          <div className="d-flex align-items-center">
-            {img_path ? (<Image src={img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
-            <div className="d-block">
-              {first_name && first_name_kana && last_name && last_name_kana ? 
-                <>
-                  <div className="text-gray small">{last_name_kana} {first_name_kana}</div>
-                  <span className="fw-bold text-decoration-underline">{name}</span> 
-                </>
-              :
-                <span className="fw-bold text-decoration-underline">{nickname}</span> 
-              }
-            </div>
-          </div>
-          </Link>
-        </td>
-        <td><span className="fw-normal">{pivot.created_at}</span></td>
-      </tr>
-    );
   };
 
   return (
@@ -127,46 +96,6 @@ export default () => {
         </div>
       </Card.Body>
     </Card>
-    {
-      users && pathname.includes('/edit') && (
-        <Card border="0" className="table-wrapper table-responsive shadow">
-          <Card.Body>
-            <h5 className="mb-4 border-bottom pb-3">クーポン利用者一覧</h5>
-            <Table hover>
-              <thead>
-                <tr>
-                  <th className="border-bottom">氏名</th>
-                  <th className="border-bottom">利用日時</th>
-                </tr>
-              </thead>
-              <tbody className="border-0">
-                {users.map(t => <TableRow key={`coupon-users-${t.id}`} {...t} />)}
-              </tbody>
-            </Table>
-            <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-              <Nav>
-                <Pagination className="mb-0">
-                  <Pagination.Prev>
-                    Previous
-                  </Pagination.Prev>
-                  <Pagination.Item active>1</Pagination.Item>
-                  <Pagination.Item>2</Pagination.Item>
-                  <Pagination.Item>3</Pagination.Item>
-                  <Pagination.Item>4</Pagination.Item>
-                  <Pagination.Item>5</Pagination.Item>
-                  <Pagination.Next>
-                    Next
-                  </Pagination.Next>
-                </Pagination>
-              </Nav>
-              <small className="fw-normal mt-4 mt-lg-0">
-              {users.length} 件中 1〜{users.length} 件表示
-              </small>
-            </Card.Footer>
-          </Card.Body>
-        </Card>
-      )
-    }
     </>
   );
 };

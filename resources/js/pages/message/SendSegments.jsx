@@ -51,13 +51,7 @@ import { calculateAge } from "../../components/common/CalculateAge";
 
 
 
-const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
-  customClass: {
-    confirmButton: "btn btn-primary me-3",
-    cancelButton: "btn btn-gray"
-  },
-  buttonsStyling: false
-}));
+
 
 export default () => {
   const [definedQuestion, setDefinedQuestion] = useState([]);
@@ -65,9 +59,18 @@ export default () => {
   const [users, setUsers] = useState([]);
   const [searchResultUsers, setSearchResultUsers] = useState([]);
   const [searchTerms, setSearchTerms] = useState({});
+  const [segmentTemplates, setSegmentTemplates] = useState([]);
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
+
+  const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-primary me-3",
+      cancelButton: "btn btn-gray-100"
+    },
+    buttonsStyling: false
+  }));
 
   //奇数と偶数でディスプレイ表示を分ける
   questionnaires.forEach((v,k) => {
@@ -77,6 +80,50 @@ export default () => {
       evenQuestionnaires.push(v);
     }
   })
+
+  const showConfirmDeleteModal = async (e, id) => {
+    const textMessage = "保存するテンプレート名を入力してください";
+
+    const result = await SwalWithBootstrapButtons.fire({
+      icon: "question",
+      text: textMessage,
+      html: <div className="mb-2 p-2">
+              {textMessage}
+              <Form.Control className="m-1" id="segment-template" />
+            </div>,
+      showCancelButton: true,
+      confirmButtonText: "保存",
+      cancelButtonText: "キャンセル",
+      preConfirm: () => {
+        const templateName = Swal.getPopup().querySelector('#segment-template').value
+        if (!templateName) {
+          Swal.showValidationMessage(`Please enter login and password`)
+        }
+        return { templateName }
+      }
+    })
+
+    if (result.isConfirmed) {
+      await axios.post(`/api/v1/management/segment-template/`, {'name': result.value.templateName})
+      .then((response) => {
+        Swal.fire(
+          '保存完了',
+          `テンプレート名「${result.value.templateName}」を保存しました`,
+          'success'
+        )
+        const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
+        setSegmentTemplates(newSegmentTemplates);
+      })
+      .catch(error => {
+        console.error(error);
+        Swal.fire(
+          'エラー',
+          `テンプレート名「${result.value.templateName}」を保存できませんでした`,
+          'error'
+        )
+      });
+    }
+  };
 
 
   useEffect(() => {
@@ -139,6 +186,14 @@ export default () => {
           const newUsers = response.data.users.map(u => ({ ...u, isSelected: false, show: true }));
           setUsers(newUsers);
           setSearchResultUsers(newUsers);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+        axios.get('/api/v1/management/segment-template')
+        .then((response) => {
+          const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
+          setSegmentTemplates(newSegmentTemplates);
         })
         .catch(error => {
             console.error(error);
@@ -324,6 +379,11 @@ export default () => {
     setQuestionnaires(newQuestionnaires);
   }
 
+  const handleTemplateNameChange = (e) => {
+    console.log(e.target.value);
+    setTemplateName(e.target.value);
+  }
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -334,6 +394,7 @@ export default () => {
           <Button onClick={() => {console.log(users)}} />
           <Button onClick={() => {console.log(searchResultUsers)}} />
           <Button onClick={() => {console.log(searchTerms)}} />
+          <Button onClick={() => {console.log(segmentTemplates)}} />
         </div>
       </div>
       <Row>
@@ -349,13 +410,13 @@ export default () => {
           <div className="justify-content-end d-flex">
             <Form.Select className="w-50 h-50" onChange={() => changeTemplate(e)}>
               <option defaultValue>セグメント条件を選択</option>
-              <option value={1}>セグメント条件1</option>
-              <option value={2}>セグメント条件2</option>
-              <option value={3}>セグメント条件3</option>
+              {segmentTemplates.map(v => (
+                <option value={1} key={`template-${v.id}`}>{v.name}</option>
+              ))}
             </Form.Select>
           </div>
           <div className="justify-content-end d-flex mt-2">
-            <Button variant="tertiary" className="mt-2 w-50">
+            <Button variant="tertiary" className="mt-2 w-50" onClick={showConfirmDeleteModal}>
               セグメント条件を保存する
             </Button>
           </div>

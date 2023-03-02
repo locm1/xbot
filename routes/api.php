@@ -36,6 +36,7 @@ use App\Http\Controllers\api\management\QuestionnaireAnswerController;
 use App\Http\Controllers\api\management\RelatedProductController;
 use App\Http\Controllers\api\management\ReserveHistoryController;
 use App\Http\Controllers\api\management\SegmentController;
+use App\Http\Controllers\api\management\SegmentTemplateController;
 use App\Http\Controllers\api\management\TagUserController;
 use App\Http\Controllers\api\management\UserTagController;
 use App\Http\Controllers\api\management\UserInviteHistoryController;
@@ -124,6 +125,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('visitor-histories', VisitorHistoryController::class);
         Route::get('visitor-histories/{visitor_history}/user', VisitorHistoryUserController::class);
         Route::apiResource('reserve-histories', ReserveHistoryController::class);
+        Route::apiResource('segment-template', SegmentTemplateController::class);
     });
 });
 

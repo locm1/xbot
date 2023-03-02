@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('segment_templates', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->json('search_terms_json');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -9,4 +9,7 @@ class SegmentTemplate extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $casts = [
+        'search_terms_json'  => 'json',
+    ];
 }

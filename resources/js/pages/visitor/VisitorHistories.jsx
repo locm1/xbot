@@ -8,10 +8,12 @@ import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
 import { VisitorHistoriesTable } from "@/pages/visitor/VisitorHistoriesTable";
 
-import { getVisitorHistories, deleteVisitorHistory, searchVisitorHistories } from "@/pages/visitor/api/VisitorHistoryApiMethods";
+import { getVisitorHistories, deleteVisitorHistory, searchVisitorHistories, getVisitorHistoriesByPage } from "@/pages/visitor/api/VisitorHistoryApiMethods";
 
 export default () => {
   const [visitorHistories, setVisitorHistories] = useState([]);
+  const [links, setLinks] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState({
     name: '', start_created_at: '', end_created_at: ''
   });
@@ -68,7 +70,7 @@ export default () => {
   };
 
   useEffect(() => {
-    getVisitorHistories(setVisitorHistories);
+    getVisitorHistories(setVisitorHistories, setLinks, setCurrentPage);
   }, []);
 
   return (
@@ -136,6 +138,12 @@ export default () => {
       <VisitorHistoriesTable
         visitorHistories={visitorHistories}
         deleteVisitorHistoryConfirmModal={deleteVisitorHistoryConfirmModal}
+        links={links}
+        currentPage={currentPage}
+        getVisitorHistoriesByPage={getVisitorHistoriesByPage}
+        setLinks={setLinks}
+        setCurrentPage={setCurrentPage}
+        setVisitorHistories={setVisitorHistories}
       />
     </>
   );

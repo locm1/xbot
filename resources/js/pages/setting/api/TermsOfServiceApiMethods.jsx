@@ -2,6 +2,7 @@ export const getTermsOfService = async (setContent, setId) => {
   axios.get('/api/v1/management/terms-of-service')
   .then((response) => {
     const terms_of_service = response.data.terms_of_service;
+    console.log(terms_of_service);
     setContent(terms_of_service.content)
     setId(terms_of_service.id)
   })

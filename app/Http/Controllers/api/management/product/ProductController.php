@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\management\product;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Services\management\product\ProductService;
+use App\Http\Requests\management\product\StoreProductRequest;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -29,12 +30,13 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        //
+        $product = $this->product_service->store($request);
+        return response()->json(['product' => $product], 200);
     }
 
     /**

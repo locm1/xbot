@@ -25,7 +25,11 @@ class ProductService
 
     public function store($request) 
     {
-        //
+        $data = $request->only([
+            'name', 'product_category_id', 'stock_quantity', 'tax_rate', 
+            'price', 'overview', 'is_undisclosed', 'is_unlimited', 'is_picked_up'
+        ]);
+        return Product::create($data);
     }
 
 

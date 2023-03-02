@@ -1,29 +1,28 @@
 
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { PencilAltIcon, DotsHorizontalIcon, UserGroupIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, Badge, Image, Button, Dropdown, OverlayTrigger, ButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import KanbanAvatar from "@/components/KanbanAvatar";
-import { EventModal } from "@/components/Modals";
 import ParticipantsModal from "@/components/ParticipantsModal";
+
+import { GetEventUsers } from "@/pages/event/EventApiMethods"
 
 export default (props) => {
   const events = props.events;
+  const [id, setId] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [eventUsers, setEventUsers] = useState();
-  const [eventProps, setEventProps] = useState();
 
-  const onCardClick = (users) => {
+  const onCardClick = (id) => {
+    setId(id)
+    console.log(id);
     setOpenModal(!openModal);
-    setEventUsers(users);
   }
 
   const onHide = () => {
     setOpenModal(!openModal);
-    setEventUsers(null);
   }
 
   const handleClose = () => {
@@ -31,15 +30,10 @@ export default (props) => {
   };
 
   const Event = (props) => {
-    const { id, eventName, eventSchedule, start, end, place, rowClassName, users, onCardClick, setEventProps, setShowEditModal, showEditModal } = props;
-    const eventMonth = eventSchedule.split('-')[1];
-    const eventDay = eventSchedule.split('-')[2];
-    const defaultModalProps = {title: eventName, id, start: start, end: end};
-
-    const changeEvent = () => {
-      setShowEditModal(!showEditModal);
-      setEventProps(defaultModalProps);
-    }
+    const { id, title, start_date, end_date, location, rowClassName, users, onCardClick } = props;
+    const dateSplit = start_date.split(' ')[0];
+    const eventMonth = dateSplit.split('-')[1];
+    const eventDay = dateSplit.split('-')[2];
 
     return (
       <>
@@ -51,11 +45,9 @@ export default (props) => {
             </div>
           </Col>
           <Col>
-            <Card.Link className="mb-1" onClick={changeEvent}>
-              <h5 className="mb-1">{eventName}</h5>
-            </Card.Link>
-            <div className="small fw-bold">{start} - {end}</div>
-            <span className="small fw-bold">場所: {place}</span>
+            <h5 className="mb-1">{title}</h5>
+            <div className="small fw-bold">{start_date} - {end_date}</div>
+            <span className="small fw-bold">場所: {location}</span>
           </Col>
           <Col className="d-flex flex-row-reverse">
             <Card border={1} className="p-3 bg-gray-50 border border-gray-100 rounded event-widget-card" onClick={onCardClick}>
@@ -67,7 +59,7 @@ export default (props) => {
               </Card.Header>
               <Card.Body className="p-0">
                 <div className="avatar-group">
-                  {users.map(user => <KanbanAvatar key={`card-member-${user.id}`} {...user} />)}
+                  {users.map((user, index) => <KanbanAvatar key={`event-user-${index}`} name={user.last_name + ' ' + user.first_name} image={user.img_path} />)}
                 </div>
               </Card.Body>
             </Card>
@@ -82,36 +74,23 @@ export default (props) => {
       {openModal && (
         <ParticipantsModal
           show={true}
-          users={eventUsers}
           onHide={onHide}
           title="参加者一覧"
-        />
-      )}
-      {showEditModal && (
-        <EventModal
-          edit={true}
-          show={showEditModal}
-          {...eventProps}
-          onUpdate={handleClose}
-          onDelete={handleClose}
-          onHide={handleClose}
+          getUsers={GetEventUsers}
+          id={id}
         />
       )}
     <Card border="0" className="shadow">
       <Card.Body>
         {
-          events.map((event, index) => 
+          events && events.map((event, index) => 
             <Event 
               key={index}
               {...event}
-              onCardClick={() => onCardClick(event.users)}
+              onCardClick={() => onCardClick(event.id)}
               rowClassName={(events.length - 1 === index) ? "" : "border-bottom pb-4 mb-4"}
-              setEventUsers={setEventUsers}
               setOpenModal={setOpenModal}
-              setEventProps={setEventProps}
               openModal={openModal}
-              showEditModal={showEditModal}
-              setShowEditModal={setShowEditModal}
             />
           )
         }

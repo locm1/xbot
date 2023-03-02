@@ -26,9 +26,9 @@ export default (props) => {
 
         <Modal.Body className="px-3 pb-0">
           <div className="px-3">
-            {users.map(user => (
+            {users.map((user, index) => (
                 <Row
-                  key={`board-member-${user.id}`}
+                  key={`user-${index}`}
                   className="kanban-card-member border-bottom py-2"
                   as={Link}
                   to={Paths.EditUser.path.replace(':id', user.id)}

@@ -1,13 +1,13 @@
 import axios from "axios"
 
 export const GetAllEvents = (events, setEvents) => {
-  axios
-    .get(`/api/v1/management/event-calendars`)
+  axios.get(`/api/v1/management/event-calendars`)
     .then((res) => {
       if(res.status !== 200) {
         throw new Error("APIが正しく取得されませんでした");
       } else {
         setEvents(res.data.events);
+        console.log(res.data.events);
       }
     });
 }
@@ -45,4 +45,27 @@ export const DeleteEvent = async(id) => {
   })
   .catch(error => {
   });
+}
+
+export const GetEvents = (setEvents) => {
+  axios.get(`/api/v1/management/events`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setEvents(res.data.events.data);
+      }
+    });
+}
+
+export const GetEventUsers = (id, setUsers) => {
+  axios.get(`/api/v1/management/events/${id}/users`)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        setUsers(res.data.event_users);
+        console.log(res.data.event_users);
+      }
+    });
 }

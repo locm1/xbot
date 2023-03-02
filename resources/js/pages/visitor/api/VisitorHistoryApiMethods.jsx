@@ -1,7 +1,32 @@
-export const getVisitorHistories = async (setVisitorHistories) => {
+export const getVisitorHistories = async (setVisitorHistories, setLinks, setCurrentPage) => {
   axios.get('/api/v1/management/visitor-histories')
   .then((response) => {
-    setVisitorHistories(response.data.visitor_histories.data);
+    const visitorHistories = response.data.visitor_histories;
+    setVisitorHistories(visitorHistories.data);
+    const links = visitorHistories.links;
+    links.shift();
+    links.pop();
+    setLinks(links)
+    setCurrentPage(visitorHistories.current_page);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getVisitorHistoriesByPage = async (page, setVisitorHistories, setLinks, setCurrentPage) => {
+  axios.get('/api/v1/management/visitor-histories', {
+    params: {page: page}
+  })
+  .then((response) => {
+    const visitorHistories = response.data.visitor_histories;
+    console.log(visitorHistories);
+    setVisitorHistories(visitorHistories.data);
+    const links = visitorHistories.links;
+    links.shift();
+    links.pop();
+    setLinks(links)
+    setCurrentPage(visitorHistories.current_page);
   })
   .catch(error => {
       console.error(error);

@@ -180,7 +180,7 @@ export default (props = {}) => {
 
               <NavItem title="アンケート管理" icon={PencilAltIcon} link={Paths.CreateQuestionnaire.path} />
 
-              <CollapsableNavItem eventKey="line/" title="アカウント管理" icon={CogIcon}>
+              <CollapsableNavItem eventKey="account/" title="アカウント管理" icon={CogIcon}>
                 <NavItem title="リッチメニュー設定" link={Paths.RichMenu.path} />
                 <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
                 <NavItem title="お友達追加用QR" link={Paths.QrCode.path} />

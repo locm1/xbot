@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\api\management;
+namespace App\Http\Controllers\api\management\event;
 
 use App\Http\Controllers\Controller;
-use App\Services\event\EventService;
+use App\Services\management\event\EventService;
 use Illuminate\Http\Request;
 
 class EventController extends Controller

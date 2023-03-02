@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\event_calendar;
+namespace App\Services\management\event_calendar;
 
 use App\Models\Event;
 use App\Services\management\AbstractManagementService;

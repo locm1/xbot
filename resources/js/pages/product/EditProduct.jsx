@@ -164,33 +164,31 @@ export default () => {
   }
 
   const onSaveProduct = () => {
-    updateProduct(id, product);
+    if (pathname.includes('/edit')) {
+      updateProduct(id, product);
 
-    // 画像削除stateに値があればAPI発火
-    if (deleteProductImages.length > 0) {
-      const params = {
-        ids: deleteProductImages.map(deleteProductImage => deleteProductImage.id),
-        image_paths: deleteProductImages.map(
-          deleteProductImage => deleteProductImage.image_path.split('/')[2] + '/' + deleteProductImage.image_path.split('/')[3]
-        )
+      // 画像削除stateに値があればAPI発火
+      if (deleteProductImages.length > 0) {
+        const params = {
+          ids: deleteProductImages.map(deleteProductImage => deleteProductImage.id),
+          image_paths: deleteProductImages.map(
+            deleteProductImage => deleteProductImage.image_path.split('/')[2] + '/' + deleteProductImage.image_path.split('/')[3]
+          )
+        }
+        deleteImages(id, params)
       }
-      deleteImages(id, params)
-    }
 
-    // 画像保存stateに値があればAPI発火
-    if (storeProductImages.length > 0) {
-      const formData = new FormData();
-      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
-      storeImages(id, formData)
-    }
+      // 画像更新stateに値があればAPI発火
+      if (updateProductImages.length > 0) {
+        console.log(updateProductImages);
+        const formData = new FormData();
+        updateProductImages.forEach((image) => formData.append("files[]", image));
+        updateProductImageIds.forEach((id) => formData.append("product_image_ids[]", id));
+        updateImages(id, formData)
+      }
 
-    // 画像更新stateに値があればAPI発火
-    if (updateProductImages.length > 0) {
-      console.log(updateProductImages);
-      const formData = new FormData();
-      updateProductImages.forEach((image) => formData.append("files[]", image));
-      updateProductImageIds.forEach((id) => formData.append("product_image_ids[]", id));
-      updateImages(id, formData)
+    } else {
+      storeProduct(product, storeProductImages, storeImages)
     }
   }
 
@@ -208,18 +206,22 @@ export default () => {
     setIsPickedUp(isPickedUp)
   }
 
+  const updateIsUnlimited = (disableInputForm) => {
+    setProduct({...product, ['is_unlimited']: disableInputForm ? 1 : 0})
+    setDisable(disableInputForm)
+  }
+
   useEffect(() => {
     if (pathname.includes('/edit')) {
       showProduct(id, setProduct, setPrivate, setIsPickedUp);
+      getProductImages(id, setProductImages);
+      getRelatedProducts(id, setRelatedProducts);
+    } else {
+      setProductImages([]);
     }
     getCategories(setCategories)
-  }, []);
-
-  useEffect(() => {
-    getProductImages(id, setProductImages);
-    getRelatedProducts(id, setRelatedProducts);
     getProducts(setProducts);
-  }, [])
+  }, []);
 
   return (
     <>
@@ -297,7 +299,7 @@ export default () => {
                           <Form.Label>在庫数</Form.Label>
                           <InputGroup className="me-2 me-lg-3">
                             <InputGroup.Text className="d-flex">
-                              <Form.Check id="checkbox1" htmlFor="checkbox1" onClick={() => setDisable(!disableInputForm)} />
+                              <Form.Check id="checkbox1" htmlFor="checkbox1" onClick={() => updateIsUnlimited(!disableInputForm)} />
                               <Form.Label htmlFor="checkbox1" className="mb-0">無制限</Form.Label>
                             </InputGroup.Text>
                             <Form.Control

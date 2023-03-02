@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api\management;
+namespace App\Http\Controllers\api\management\event;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\management\event_calendar\UpdateEventCalendarRequest;
 use App\Http\Requests\management\event_calendar\StoreEventCalendarRequest;
 use App\Models\Event;
-use App\Services\event_calendar\EventCalendarService;
+use App\Services\management\event_calendar\EventCalendarService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

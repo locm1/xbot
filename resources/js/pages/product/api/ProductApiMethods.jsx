@@ -24,13 +24,29 @@ export const searchProducts = async (params, setProducts) => {
   });
 };
 
-export const storeProduct = async (formValue, history) => {
+export const storeProduct = async (formValue, storeProductImages, storeImages) => {
   axios.post(`/api/v1/management/products/`, formValue)
   .then((response) => {
     const product = response.data.product;
     console.log(product);
-    history.push(Paths.ProductProduct.path);
-    alert('登録しました');
+
+    Swal.fire(
+      '保存完了',
+      '商品情報の保存に成功しました',
+      'success'
+    )
+
+    // 画像保存stateに値があればAPI発火
+    if (storeProductImages.length > 0) {
+      const formData = new FormData();
+      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
+      storeImages(product.id, formData)
+    }
+
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
+
   })
   .catch(error => {
       console.error(error);

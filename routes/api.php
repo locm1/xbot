@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\management\AdminController;
-use App\Http\Controllers\api\management\EventCalendarController;
-use App\Http\Controllers\api\management\EventController;
+use App\Http\Controllers\api\management\event\EventCalendarController;
+use App\Http\Controllers\api\management\event\EventController;
 use App\Http\Controllers\api\management\user\UserController;
 use App\Http\Controllers\api\management\PrivacyPolicyController;
 use App\Http\Controllers\api\management\privilege\PrivilegeController;
@@ -14,6 +14,7 @@ use App\Http\Controllers\api\management\category\ProductCategorySortController;
 use App\Http\Controllers\api\management\coupon\CouponController;
 use App\Http\Controllers\api\management\coupon\CouponUserController;
 use App\Http\Controllers\api\management\DefaultSegmentController;
+use App\Http\Controllers\api\management\event\EventUserController;
 use App\Http\Controllers\api\management\TermsOfServiceController;
 use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
@@ -91,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('privileges', PrivilegeController::class);
         Route::apiResource('privileges/{privilege}/items', PrivilegeItemController::class);
         Route::apiResource('events', EventController::class);
+        Route::get('events/{event}/users', EventUserController::class);
         Route::apiResource('event-calendars', EventCalendarController::class);
         Route::apiResource('categories', ProductCategoryController::class);
         Route::put('categories/{category}/sort', ProductCategorySortController::class);

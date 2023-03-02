@@ -15,6 +15,8 @@ use App\Models\ProductCategory;
 use App\Models\ProductContent;
 use App\Models\ProductImage;
 use App\Models\EventUser;
+use App\Models\Invitation;
+use App\Models\InvitationUser;
 use App\Models\InviteHistory;
 use App\Models\Occupation;
 use App\Models\OrderHistory;
@@ -76,5 +78,7 @@ class DatabaseSeeder extends Seeder
         InviteHistory::factory(100)->create();
         ReserveHistory::factory(300)->create();
         RelatedProduct::factory(300)->create();
+        Invitation::factory(100)->create();
+        InvitationUser::factory(100)->create();
     }
 }

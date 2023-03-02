@@ -15,6 +15,7 @@ use App\Http\Controllers\api\management\coupon\CouponController;
 use App\Http\Controllers\api\management\coupon\CouponUserController;
 use App\Http\Controllers\api\management\DefaultSegmentController;
 use App\Http\Controllers\api\management\event\EventUserController;
+use App\Http\Controllers\api\management\invitation\InvitationController;
 use App\Http\Controllers\api\management\TermsOfServiceController;
 use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
@@ -128,6 +129,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('visitor-histories/{visitor_history}/user', VisitorHistoryUserController::class);
         Route::apiResource('reserve-histories', ReserveHistoryController::class);
         Route::apiResource('segment-template', SegmentTemplateController::class);
+        Route::apiResource('invitations', InvitationController::class);
     });
 });
 

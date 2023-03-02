@@ -1,30 +1,32 @@
-import React, { useState } from "react";
-import moment from "moment-timezone";
-import Datetime from "react-datetime";
-import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon, PencilAltIcon, TrashIcon} from "@heroicons/react/solid";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Form, Button, Badge , Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
-
-
-import { CouponsTable } from "@/pages/coupon/CouponsTable";
-import coupons from "@/data/coupons";
-import users from "@/data/users";
-import issueUsers from "@/data/issueUsers";
-import { Paths } from "@/paths";
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import Swal from "sweetalert2";
+import { showInvitation, updateInvitation } from "@/pages/invitation/api/InvitationApiMethods";
+import { getCoupons } from "@/pages/coupon/api/CouponApiMethods";
 
 export default () => {
-  const [formValue, setFormValue] = useState(
-    {name: '', content: ''}
+  const { id } = useParams();
+  const [invitation, setInvitation] = useState(
+    {coupon_id: '', privilege_detail: ''}
   );
+  const [coupons, setCoupons] = useState([]);
 
   const handleChange = (e, input) => {
-    return setFormValue({...formValue, [input]: e.target.value})
+    return setInvitation({...invitation, [input]: e.target.value})
   };
 
+  const updateComplete = () => {
+    Swal.fire(
+      '更新完了',
+      '招待情報の更新に成功しました',
+      'success'
+    )
+  } 
 
-  const getFirstLetterOfEachWord = (text) => (
-    text.match(/\b\w/g).join('')
-  );
+  const handleClick = () => {
+    updateInvitation(id, invitation, updateComplete)
+  };
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -80,6 +82,11 @@ export default () => {
     );
   };
 
+  useEffect(() => {
+    showInvitation(id, setInvitation)
+    getCoupons(setCoupons)
+  }, []);
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -90,30 +97,36 @@ export default () => {
       <Card border="0" className="shadow mb-4">
       <Card.Body>
         <h5 className="mb-4 border-bottom pb-3">クーポン情報</h5>
-        <Form>
-          <Row>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>管理名称</Form.Label>
-                <Form.Control required type="text" name="name" value={formValue.name} onChange={(e) => handleChange(e, 'name')} />
-              </Form.Group>
-            </Col>
-            <Col md={6} className="mb-3">
-              <Form.Group id="lastName">
-                <Form.Label>特典内容</Form.Label>
-                <Form.Control required type="text" name="content" value={formValue.content} onChange={(e) => handleChange(e, 'content')} />
-              </Form.Group>
-            </Col>
-          </Row>
-          <div className="mt-3">
-            <Button variant="gray-800" type="submit" className="mt-2 animate-up-2">
-              更新する
-            </Button>
-          </div>
-        </Form>
+        <Row>
+          <Col md={6} className="mb-3">
+            <Form.Group id="firstName">
+              <Form.Label>管理名称</Form.Label>
+              <Form.Select value={invitation.coupon_id} className="mb-0" onChange={(e) => {handleChange(e, 'coupon_id')}}>
+                {
+                  coupons.map((coupon, index) => <option key={`coupon-${index}`} value={coupon.id}>{coupon.name}</option>)
+                }
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md={6} className="mb-3">
+            <Form.Group id="lastName">
+              <Form.Label>特典内容</Form.Label>
+              <Form.Control required type="text" name="content" value={invitation.privilege_detail} onChange={(e) => handleChange(e, 'privilege_detail')} />
+            </Form.Group>
+          </Col>
+        </Row>
+        <div className="d-flex justify-content-end mt-3">
+          <Button
+            variant="primary"
+            className="d-inline-flex align-items-center"
+            onClick={handleClick}
+          >
+            更新する
+          </Button>
+        </div>
       </Card.Body>
     </Card>
-    <Card border="0" className="table-wrapper table-responsive shadow">
+    {/* <Card border="0" className="table-wrapper table-responsive shadow">
       <Card.Body>
         <h5 className="mb-4 border-bottom pb-3">発行者一覧</h5>
         <Table hover>
@@ -149,7 +162,7 @@ export default () => {
           </small>
         </Card.Footer>
       </Card.Body>
-    </Card>
+    </Card> */}
     </>
   );
 };

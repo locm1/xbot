@@ -13,26 +13,31 @@ export const InvitationsTable = (props) => {
   const totalInvitations = invitations.length;
 
   const TableRow = (props) => {
-    const { name, privilegeDetail, id } = props;
+    const { coupon, privilege_detail, id } = props;
     const link = Paths.EditInvitation.path.replace(':id', id);
 
     return (
       <tr className="border-bottom">
         <td>
         <span className="fw-normal">
-            {name}
+            {coupon.name}
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {privilegeDetail}
+            {privilege_detail}
           </span>
         </td>
         <td>
-          <Link to={link}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
-          </Link>
-          <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
+          <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+            編集
+          </Button>
+          <Button variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+            発行者一覧
+          </Button>
+          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+            削除
+          </Button>
         </td>
       </tr>
     );
@@ -44,9 +49,9 @@ export const InvitationsTable = (props) => {
         <Table hover>
           <thead>
             <tr>
-              <th className="border-gray-200">管理名称</th>
+              <th className="border-gray-200">クーポン管理名称</th>
               <th className="border-gray-200">特典内容</th>
-              <th className="border-gray-200">編集・削除</th>
+              <th className="border-gray-200">編集・発行者一覧・削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

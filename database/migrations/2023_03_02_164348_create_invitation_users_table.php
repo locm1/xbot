@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\DefaultSegmentItem;
-use App\Models\SegmentTemplate;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('default_segment_template_items', function (Blueprint $table) {
+        Schema::create('invitation_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(DefaultSegmentItem::class);
-            $table->foreignIdFor(SegmentTemplate::class);
-            $table->string('value');
+            $table->unsignedBigInteger('invitation_id');
+            $table->unsignedBigInteger('user_id');
+            $table->tinyInteger('usage_status');
+            $table->foreign('invitation_id')->references('id')->on('invitations');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('default_segment_template_items');
+        Schema::dropIfExists('invitation_users');
     }
 };

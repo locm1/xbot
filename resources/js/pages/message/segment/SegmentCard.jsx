@@ -29,7 +29,7 @@ export default (props) => {
             <Card.Body>
               <h5 className="mb-4">{questionTitle}</h5>
               {questionnaireItems.map((v, k) => (
-                <CheckboxButton isDefault={isDefault} type={type} name={v.name} id={v.label} segmentid={id} value={v.value} title={v.label} key={`questionnaire-item-${k}`} change={handleChange} /> 
+                <CheckboxButton checked={searchTerms[v.name] ? searchTerms[v.name].some(b => b == v.value) ? true : false : false} isDefault={isDefault} type={type} name={v.name} id={v.label} segmentid={id} value={v.value} title={v.label} key={`questionnaire-item-${k}`} change={handleChange} /> 
               ))}
             </Card.Body>
           </Card>
@@ -45,9 +45,9 @@ export default (props) => {
               <Form>
                 <Form.Group className="mb-3">
                   <InputGroup>
-                    <Form.Control name={questionnaireItems[0].name} value={searchTerms[questionnaireItems[0].name]} data-segmentid={id} type="number" onChange={handleChangeForRange} />
+                    <Form.Control name={questionnaireItems[0].name} value={searchTerms[questionnaireItems[0].name] ?? ""} data-segmentid={id} type="number" onChange={handleChangeForRange} />
                     <InputGroup.Text>〜</InputGroup.Text>
-                    <Form.Control name={questionnaireItems[1].name} value={searchTerms[questionnaireItems[1].name]} data-segmentid={id} type="number" onChange={handleChangeForRange} />
+                    <Form.Control name={questionnaireItems[1].name} value={searchTerms[questionnaireItems[1].name] ?? ""} data-segmentid={id} type="number" onChange={handleChangeForRange} />
                   </InputGroup>
                 </Form.Group>
               </Form>
@@ -78,6 +78,7 @@ export default (props) => {
                             required
                             type="text"
                             placeholder="YYYY-MM-DD"
+                            onChange={(_, __, instance) => handleChangeForRange(instance.element)}
                             value={questionnaireItems[0].value ?? ''}
                             name={questionnaireItems[0].name}
                             ref={ref}
@@ -98,6 +99,7 @@ export default (props) => {
                               required
                               type="text"
                               placeholder="YYYY-MM-DD"
+                              onChange={(_, __, instance) => handleChangeForRange(instance.element)}
                               value={questionnaireItems[1].value ?? ''}
                               name={questionnaireItems[1].name}
                               ref={ref}
@@ -123,8 +125,7 @@ export default (props) => {
                   <Form.Group className="mb-3">
                     <Tags
                       settings={baseTagifySettings} // tagify settings object
-                      defaultValue=""
-                      value={searchTerms[questionnaireItems.name]}
+                      value={searchTerms[questionnaireItems.name] ?? ""}
                       onChange={handleChange}
                       className={`w-100`}
                       name={questionnaireItems.name}

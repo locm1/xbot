@@ -26,9 +26,8 @@ class SegmentTemplateController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->only(['name']);
-        SegmentTemplate::create($data);
-        return ['segmentTemplate' => SegmentTemplate::all()];
+        $data = $request->only(['name', 'search_terms_json']);
+        return ['segmentTemplate' => SegmentTemplate::create($data)];
     }
 
     /**
@@ -49,9 +48,11 @@ class SegmentTemplateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, SegmentTemplate $SegmentTemplate)
     {
-        //
+        $data = $request->only(['search_terms_json']);
+        $SegmentTemplate->update($data);
+        return ['segmentTemplate' => SegmentTemplate::all()];
     }
 
     /**
@@ -60,8 +61,8 @@ class SegmentTemplateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(SegmentTemplate $SegmentTemplate)
     {
-        //
+        return ['segmentTemplate' => $SegmentTemplate->delete()];
     }
 }

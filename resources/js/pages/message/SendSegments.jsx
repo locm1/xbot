@@ -60,6 +60,7 @@ export default () => {
   const [searchResultUsers, setSearchResultUsers] = useState([]);
   const [searchTerms, setSearchTerms] = useState({});
   const [segmentTemplates, setSegmentTemplates] = useState([]);
+  const [segmentTemplateOption, setSegmentTemplateOption] = useState("0");
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
@@ -81,47 +82,84 @@ export default () => {
     }
   })
 
-  const showConfirmDeleteModal = async (e, id) => {
-    const textMessage = "保存するテンプレート名を入力してください";
+  const showConfirmModal = async (e, id) => {
+    if (segmentTemplateOption == 0) {
+      const textMessage = "保存するテンプレート名を入力してください";
 
-    const result = await SwalWithBootstrapButtons.fire({
-      icon: "question",
-      text: textMessage,
-      html: <div className="mb-2 p-2">
-              {textMessage}
-              <Form.Control className="m-1" id="segment-template" />
-            </div>,
-      showCancelButton: true,
-      confirmButtonText: "保存",
-      cancelButtonText: "キャンセル",
-      preConfirm: () => {
-        const templateName = Swal.getPopup().querySelector('#segment-template').value
-        if (!templateName) {
-          Swal.showValidationMessage(`Please enter login and password`)
+      const result = await SwalWithBootstrapButtons.fire({
+        icon: "question",
+        text: textMessage,
+        html: <div className="mb-2 p-2">
+                {textMessage}
+                <Form.Control className="m-1" id="segment-template" />
+              </div>,
+        showCancelButton: true,
+        confirmButtonText: "保存",
+        cancelButtonText: "キャンセル",
+        preConfirm: () => {
+          const templateName = Swal.getPopup().querySelector('#segment-template').value
+          if (!templateName) {
+            Swal.showValidationMessage(`Please enter login and password`)
+          }
+          return { templateName }
         }
-        return { templateName }
-      }
-    })
-
-    if (result.isConfirmed) {
-      await axios.post(`/api/v1/management/segment-template/`, {'name': result.value.templateName})
-      .then((response) => {
-        Swal.fire(
-          '保存完了',
-          `テンプレート名「${result.value.templateName}」を保存しました`,
-          'success'
-        )
-        const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
-        setSegmentTemplates(newSegmentTemplates);
       })
-      .catch(error => {
-        console.error(error);
-        Swal.fire(
-          'エラー',
-          `テンプレート名「${result.value.templateName}」を保存できませんでした`,
-          'error'
-        )
-      });
+
+      if (result.isConfirmed) {
+        await axios.post(`/api/v1/management/segment-template/`, {'name': result.value.templateName, 'search_terms_json': searchTerms})
+        .then((response) => {
+          Swal.fire(
+            '保存完了',
+            `テンプレート名「${result.value.templateName}」を保存しました`,
+            'success'
+          )
+          setSegmentTemplates(prev => {
+            prev.push(response.data.segmentTemplate);
+            return prev;
+          });
+          setSegmentTemplateOption(response.data.segmentTemplate.id);
+        })
+        .catch(error => {
+          console.error(error);
+          Swal.fire(
+            'エラー',
+            `テンプレート名「${result.value.templateName}」を保存できませんでした`,
+            'error'
+          )
+        });
+      }
+    } else {
+      const segmentTemplate = segmentTemplates.find(v => v.id == segmentTemplateOption);
+      const textMessage = `テンプレート名「${segmentTemplate.name}」を上書きしますか？`;
+
+      const result = await SwalWithBootstrapButtons.fire({
+        icon: "question",
+        text: textMessage,
+        showCancelButton: true,
+        confirmButtonText: "上書き",
+        cancelButtonText: "キャンセル",
+      })
+
+      if (result.isConfirmed) {
+        await axios.put(`/api/v1/management/segment-template/${segmentTemplate.id}`, {'search_terms_json': searchTerms})
+        .then((response) => {
+          Swal.fire(
+            '上書き完了',
+            `テンプレート名「${segmentTemplate.name}」を上書きしました`,
+            'success'
+          )
+          const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
+          setSegmentTemplates(newSegmentTemplates);
+        })
+        .catch(error => {
+          console.error(error);
+          Swal.fire(
+            'エラー',
+            `テンプレート名「${segmentTemplate.name}」を上書きできませんでした`,
+            'error'
+          )
+        });
+      }
     }
   };
 
@@ -237,14 +275,12 @@ export default () => {
               }
             } else if (name === 'start_visit_count') {
               if (user.visitor_histories) {
-                console.log(Number(term));
                 return user.visitor_histories.length >= Number(term);
               } else {
                 return false;
               }
             } else if (name === 'end_visit_count') {
               if (user.visitor_histories) {
-                console.log(Number(term));
                 return user.visitor_histories.length <= Number(term);
               } else {
                 return false;
@@ -320,20 +356,31 @@ export default () => {
     if (e.target.length !== 0) {
       name = e.target.name;
       value = e.target.value;
+      checked = e.target.checked ?? true;
+      setSearchTerms(prev => {
+        return ({ 
+          ...prev,
+          [name]: checked
+            ? [...(prev[name] || []), value]
+            : prev[name].filter((term) => term !== value)
+        })
+      });
     } else {
       name = e.detail.tagify.DOM.originalInput.name;
       value = e.detail.tagify.value[e.detail.tagify.value.length - 1].value ?? e.detail.tagify.value[0].value;
+      checked = e.target.checked ?? true;
+      setSearchTerms(prev => {
+        if (prev[name] ? prev[name].some(v => v === value) : false) {
+          return ({...prev});
+        }
+        return ({ 
+          ...prev,
+          [name]: checked
+            ? [...(prev[name] || []), value]
+            : prev[name].filter((term) => term !== value)
+        })
+      });
     }
-    checked = e.target.checked ?? true;
-    setSearchTerms(prev => {
-      return ({ 
-        ...prev,
-        [name]: checked
-          ? [...(prev[name] || []), value]
-          : prev[name].filter((term) => term !== value)
-      })
-    });
-
   }
 
   const handleChangeForRange = (e) => {
@@ -361,7 +408,6 @@ export default () => {
   }
 
   const handleChangeTags = (e) => {
-    console.log(e.detail.tagify.value);
     const newQuestionnaires = questionnaires.map((v, k) => {
       if (v.displayOrder == e.detail.tagify.DOM.originalInput.name) {
         return ({
@@ -379,9 +425,48 @@ export default () => {
     setQuestionnaires(newQuestionnaires);
   }
 
-  const handleTemplateNameChange = (e) => {
-    console.log(e.target.value);
-    setTemplateName(e.target.value);
+  const handleChangeSegmentTemplate = (e) => {
+    setSegmentTemplateOption(e.target.value);
+    if (e.target.value != 0) {
+      const selectSegmentTemplate = segmentTemplates.find(v => v.id == e.target.value);
+      setSearchTerms(selectSegmentTemplate.search_terms_json);
+    }
+  }
+
+  const deleteSegmentTemplate = async () => {
+    const segmentTemplate = segmentTemplates.find(v => v.id == segmentTemplateOption);
+    const textMessage = `テンプレート名「${segmentTemplate.name}」を削除しますか？`;
+    const title = "削除確認";
+
+    const result = await SwalWithBootstrapButtons.fire({
+      icon: "question",
+      title: title,
+      text: textMessage,
+      showCancelButton: true,
+      confirmButtonText: "削除",
+      cancelButtonText: "キャンセル",
+    });
+
+    if (result.isConfirmed) {
+      await axios.delete(`/api/v1/management/segment-template/${segmentTemplate.id}`)
+        .then((response) => {
+          Swal.fire(
+            '削除完了',
+            `テンプレート名「${segmentTemplate.name}」を削除しました`,
+            'success'
+          )
+          setSegmentTemplates(prev => (prev.filter(v => v.id != segmentTemplate.id)));
+          setSegmentTemplateOption('0');
+        })
+        .catch(error => {
+          console.error(error);
+          Swal.fire(
+            'エラー',
+            `テンプレート名「${segmentTemplate.name}」を削除できませんでした`,
+            'error'
+          )
+        });
+    };
   }
 
   return (
@@ -389,12 +474,13 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          <Button onClick={() => {console.log(questionnaires)}} />
+          {/* <Button onClick={() => {console.log(questionnaires)}} />
           <Button onClick={() => {console.log(definedQuestion)}} />
           <Button onClick={() => {console.log(users)}} />
           <Button onClick={() => {console.log(searchResultUsers)}} />
           <Button onClick={() => {console.log(searchTerms)}} />
           <Button onClick={() => {console.log(segmentTemplates)}} />
+          <Button onClick={() => {console.log(segmentTemplateOption)}} /> */}
         </div>
       </div>
       <Row>
@@ -406,17 +492,21 @@ export default () => {
           </div>
         </div>
         </Col>
-        <Col xs={6} xl={6}>
+        <Col xs={3} xl={3}>
+        </Col>
+        <Col xs={3} xl={3}>
           <div className="justify-content-end d-flex">
-            <Form.Select className="w-50 h-50" onChange={() => changeTemplate(e)}>
-              <option defaultValue>セグメント条件を選択</option>
+            <Form.Select value={segmentTemplateOption} className="h-50" onChange={handleChangeSegmentTemplate}>
+              <option value="0">セグメントテンプレート選択</option>
               {segmentTemplates.map(v => (
-                <option value={1} key={`template-${v.id}`}>{v.name}</option>
+                <option value={v.id} key={`template-${v.id}`}>{v.name}</option>
               ))}
             </Form.Select>
+            {segmentTemplateOption == 0 ? <Button variant="danger" className="ms-2" disabled onClick={deleteSegmentTemplate}>削除</Button> 
+                                        : <Button variant="danger" className="ms-2" onClick={deleteSegmentTemplate}>削除</Button>}
           </div>
           <div className="justify-content-end d-flex mt-2">
-            <Button variant="tertiary" className="mt-2 w-50" onClick={showConfirmDeleteModal}>
+            <Button variant="tertiary" className="mt-2 w-100" onClick={showConfirmModal}>
               セグメント条件を保存する
             </Button>
           </div>

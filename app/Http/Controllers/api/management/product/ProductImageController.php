@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Services\management\product\ProductImageService;
+use App\Http\Requests\management\product_image\StoreProductImageRequest;
+use App\Http\Requests\management\product_image\UpdateProductImageRequest;
 use Illuminate\Http\Request;
 
 class ProductImageController extends Controller
@@ -31,13 +33,26 @@ class ProductImageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreProductImageRequest  $request
+     * @param  Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Product $product)
+    public function store(StoreProductImageRequest $request, Product $product)
     {
-        return $request;
         $product_image = $this->product_image_service->store($request, $product);
+        return response()->json(['product_image' => $product_image], 200);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  StoreProductImageRequest  $request
+     * @param  Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateProductImageRequest $request, Product $product)
+    {
+        $product_image = $this->product_image_service->update($request, $product);
         return response()->json(['product_image' => $product_image], 200);
     }
 

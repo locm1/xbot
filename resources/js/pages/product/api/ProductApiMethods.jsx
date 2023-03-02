@@ -143,8 +143,8 @@ export const deleteImages = async (id, params) => {
   });
 };
 
-export const storeImages = async (id, params) => {
-  axios.post(`/api/v1/management/products/${id}/images`, params, {
+export const storeImages = async (id, formData) => {
+  axios.post(`/api/v1/management/products/${id}/images`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -152,6 +152,22 @@ export const storeImages = async (id, params) => {
   .then((response) => {
     console.log(response.data);
     console.log('保存に成功しました。');
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const updateImages = async (id, formData) => {
+  axios.post(`/api/v1/management/products/${id}/images`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'X-HTTP-Method-Override': 'PUT',
+    },
+  })
+  .then((response) => {
+    console.log(response.data);
+    console.log('更新に成功しました。');
   })
   .catch(error => {
       console.error(error);

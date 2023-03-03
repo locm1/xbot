@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\api\FollowService;
 use Illuminate\Http\Request;
 use App\Services\api\LineBotService as LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
@@ -23,6 +24,9 @@ class LineWebhookController extends Controller
         $bot = new LINEBot($httpClient, ['channelSecret' => config('services.line.message.channel_secret')]);
 
         foreach ($events as $event) {
+            if ($event['source']['type'] === 'follow') {
+                new FollowService($bot, $event['source']['userId'])
+            }
             $response = $bot->replyText($event['replyToken'], $event['message']['text']);
         }
         return;

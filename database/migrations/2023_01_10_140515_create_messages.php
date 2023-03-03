@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 50)->nullable(false);
-            $table->tinyInteger('sex')->nullable(false);
+            $table->string('title')->nullable(false);
+            $table->tinyInteger('is_undisclosed')->nullable(false);
             $table->softDeletes();
             $table->timestamps();
         });

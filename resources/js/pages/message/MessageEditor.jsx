@@ -3,8 +3,6 @@ import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger, Form, Button, Image, Card 
 import { ChatIcon, XIcon, ChevronDownIcon, ChevronUpIcon, PhotographIcon, TicketIcon, FilmIcon, PencilIcon } from "@heroicons/react/outline";
 import { Link } from 'react-router-dom';
 
-import { SmileIcon } from "@/components/icons/Icons";
-
 export default (props) => {
   const lists = ['テスト', 'テスト', 'テスト', 'テスト'];
   const { setFiles, files, getRootProps, getInputProps, setPreviews, handlePreviewChange, index, previews, handleDelete } = props;
@@ -49,42 +47,12 @@ export default (props) => {
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="stamp" className="mb-sm-3 mb-md-0 message-editor-header-item">
-                    <OverlayTrigger 
-                      key="stamp"
-                      overlay={<Tooltip id="top" className="m-0">スタンプ</Tooltip>}
-                    >
-                      <SmileIcon className="icon icon-sm" />
-                    </OverlayTrigger>
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
                   <Nav.Link eventKey="picture" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="example"
                       overlay={<Tooltip id="top" className="m-0">写真</Tooltip>}
                     >
                       <PhotographIcon className="icon icon-sm" />
-                    </OverlayTrigger>
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="coupon" className="mb-sm-3 mb-md-0 message-editor-header-item">
-                    <OverlayTrigger 
-                      key="example"
-                      overlay={<Tooltip id="top" className="m-0">クーポン</Tooltip>}
-                    >
-                      <TicketIcon className="icon icon-sm" />
-                    </OverlayTrigger>
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="message" className="mb-sm-3 mb-md-0 message-editor-header-item">
-                    <OverlayTrigger 
-                      key="example"
-                      overlay={<Tooltip id="top" className="m-0">リッチメッセージ</Tooltip>}
-                    >
-                      <ChatIcon className="icon icon-sm" />
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
@@ -111,12 +79,6 @@ export default (props) => {
               </Nav>
             </Col>
             <Col lg={2} className="d-flex justify-content-center">
-              <div className="message-editor-header-item-right">
-                <ChevronUpIcon className="icon icon-sm" />
-              </div>
-              <div className="message-editor-header-item-right">
-                <ChevronDownIcon className="icon icon-sm" />
-              </div>
               <div className="message-editor-header-item-right" onClick={() => handleDelete(index)}>
                 <XIcon className="icon icon-sm" />
               </div>
@@ -125,7 +87,7 @@ export default (props) => {
               <Tab.Content>
                 <Tab.Pane eventKey="text" className="py-4">
                   <Form.Group className="mb-3">
-                    <Form.Control as="textarea" rows="5" placeholder="テキストを入力" id="preview-text" value={previews[index].content} onChange={(e) => handlePreviewChange(e, 'content', index, files)} />
+                    <Form.Control as="textarea" rows="5" placeholder="テキストを入力" id="preview-text" value={previews[index].text} onChange={(e) => handlePreviewChange(e, 'text', index, files)} />
                   </Form.Group>
                 </Tab.Pane>
                 <Tab.Pane eventKey="stamp" className="py-4">

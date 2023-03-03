@@ -27,6 +27,8 @@ use App\Http\Controllers\api\management\questionnaire\QuestionnaireItemControlle
 use App\Http\Controllers\api\management\ReportController;
 use App\Http\Controllers\api\management\user\UserDemographicController;
 use App\Http\Controllers\api\management\MeController;
+use App\Http\Controllers\api\management\message\MessageController;
+use App\Http\Controllers\api\management\message\MessageItemController;
 use App\Http\Controllers\api\management\OccupationController;
 use App\Http\Controllers\api\management\order\OrderController;
 use App\Http\Controllers\api\management\order\OrderDeliveryController;
@@ -133,6 +135,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('segment-template', SegmentTemplateController::class);
         Route::apiResource('invitations', InvitationController::class);
         Route::get('invitations/{invitation}/users', InvitationUserController::class);
+        Route::apiResource('messages', MessageController::class);
+        Route::get('messages/{message}/items', [MessageItemController::class, 'getMessageItemsById']);
     });
 });
 

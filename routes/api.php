@@ -142,4 +142,4 @@ Route::group(['prefix' => 'v1'], function() {
     // Route::get('/specific-trades', SpecificTradeIndexController::class);
 });
 
-Route::post('/line/webhook', LineWebhookController::class)->name('line.webhook');
+Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

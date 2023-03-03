@@ -24,7 +24,7 @@ class LineWebhookController extends Controller
         $bot = new LINEBot($httpClient, ['channelSecret' => config('services.line.message.channel_secret')]);
 
         foreach ($events as $event) {
-            if ($event['source']['type'] === 'follow') {
+            if ($event['type'] === 'follow') {
                 new FollowService($bot, $event['source']['userId']);
             }
             $response = $bot->replyText($event['replyToken'], $event['message']['text']);

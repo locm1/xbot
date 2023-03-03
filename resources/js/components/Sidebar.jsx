@@ -138,7 +138,7 @@ export default (props = {}) => {
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
               <Link to={Paths.DashboardOverview.path}>
-                <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
+                <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap mb-4" />
               </Link>
               {/* <GroupTitle name="User Management" /> */}
               <NavItem title="ダッシュボード" link={Paths.DashboardOverview.path} icon={ClipboardIcon} />

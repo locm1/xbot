@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import Swal from 'sweetalert2';
+import moment from "moment-timezone";
 import withReactContent from 'sweetalert2-react-content';
 import { PencilAltIcon, PaperAirplaneIcon, TrashIcon, DocumentDuplicateIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
-import { message } from "laravel-mix/src/Log";
-
-
-const capitalizeFirstLetter = (string) => (
-  string[0].toUpperCase() + string.slice(1)
-);
-
-const getFirstLetterOfEachWord = (text) => (
-  text.match(/\b\w/g).join('')
-);
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -27,7 +17,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export const TemplateMessageTable = (props) => {
-  const [{messages}, setMessages] = useState(props);
+  const { messages } = props;
   const totalMessages = messages.length;
 
   const deleteTemplateMessages = (ids) => {
@@ -47,12 +37,12 @@ export const TemplateMessageTable = (props) => {
     });
 
     if (result.isConfirmed) {
-      const ids = messages.map(message => (message.id));
-      const maxId = Math.max.apply(null, ids) + 1;
-      const copyMessage = {...messages.find(message => message.id === id)};
-      copyMessage.id = maxId;
-      messages.push(copyMessage);
-      setMessages({messages});
+      // const ids = messages.map(message => (message.id));
+      // const maxId = Math.max.apply(null, ids) + 1;
+      // const copyMessage = {...messages.find(message => message.id === id)};
+      // copyMessage.id = maxId;
+      // messages.push(copyMessage);
+      // //setMessages({messages});
       const confirmMessage = "コピーに成功しました";
 
       await SwalWithBootstrapButtons.fire('コピー成功', confirmMessage, 'success');
@@ -61,7 +51,7 @@ export const TemplateMessageTable = (props) => {
 
   const TableRow = (props) => {
     const history = useHistory();
-    const { title, addDate, id } = props;
+    const { title, created_at, is_undisclosed, id } = props;
     const link = Paths.EditMessage.path.replace(':id', id);
 
     return (
@@ -75,26 +65,29 @@ export const TemplateMessageTable = (props) => {
         </td>
         <td>
           <span className="fw-normal">
-            {addDate}
+            {moment(created_at).format("YYYY-MM-DD H:m:s")}
           </span>
         </td>
         <td>
-          <Link to={link}>
-            <OverlayTrigger key={"edit-" + id} overlay={<Tooltip id="top" className="m-0">編集</Tooltip>}>
-              <PencilAltIcon className="icon icon-xs me-2"/>
-            </OverlayTrigger>
-          </Link>
-          <Link to={Paths.SendSegments.path}>
+          <span className="fw-normal">
+            {is_undisclosed == 0 ? '公開' : '非公開'}
+          </span>
+        </td>
+        <td>
+          <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+            編集
+          </Button>
+          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+            削除
+          </Button>
+          {/* <Link to={Paths.SendSegments.path}>
             <OverlayTrigger key={"use-" + id} overlay={<Tooltip id="top" className="m-0">このテンプレートで配信</Tooltip>}>
               <PaperAirplaneIcon className="icon icon-xs me-2"/>
             </OverlayTrigger>
-          </Link>
-          <OverlayTrigger key={"copy-" + id} overlay={<Tooltip id="top" className="m-0">複製</Tooltip>}>
+          </Link> */}
+          {/* <OverlayTrigger key={"copy-" + id} overlay={<Tooltip id="top" className="m-0">複製</Tooltip>}>
             <DocumentDuplicateIcon role={"button"} onClick={() => duplicateTemplate(id)} className="icon icon-xs me-2" />
-          </OverlayTrigger>
-          <OverlayTrigger key={"delete-" + id} overlay={<Tooltip id="top" className="m-0">削除</Tooltip>}>
-            <TrashIcon role="button" className="icon icon-xs text-danger me-2" />
-          </OverlayTrigger>
+          </OverlayTrigger> */}
         </td>
       </tr>
     );
@@ -108,11 +101,12 @@ export const TemplateMessageTable = (props) => {
             <tr>
               <th className="border-gray-200">タイトル</th>
               <th className="border-gray-200">追加日時</th>
-              <th className="border-gray-200">アクション</th>
+              <th className="border-gray-200">公開ステータス</th>
+              <th className="border-gray-200">編集・削除</th>
             </tr>
           </thead>
           <tbody className="border-0">
-            {messages.map((t) => <TableRow key={`message-${t.id}`} {...t} />)}
+            {messages && messages.map((t) => <TableRow key={`template-message-${t.id}`} {...t} />)}
           </tbody>
         </Table>
         <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">

@@ -18,6 +18,8 @@ use App\Models\EventUser;
 use App\Models\Invitation;
 use App\Models\InvitationUser;
 use App\Models\InviteHistory;
+use App\Models\Message;
+use App\Models\MessageItem;
 use App\Models\Occupation;
 use App\Models\OrderHistory;
 use App\Models\OrderProduct;
@@ -80,5 +82,7 @@ class DatabaseSeeder extends Seeder
         RelatedProduct::factory(300)->create();
         Invitation::factory(100)->create();
         InvitationUser::factory(100)->create();
+        Message::factory(100)->create();
+        MessageItem::factory(200)->create();
     }
 }

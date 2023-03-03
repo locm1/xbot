@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import moment from 'moment-timezone';
-import CountUp from "react-countup";
-import Datetime from "react-datetime";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, InputGroup, Image, Button, Modal, ProgressBar, Tooltip, Dropdown, OverlayTrigger, ButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-
-import { Paths } from "@/paths";
-import messages from "@/data/templateMessages";
-import Logo from "@img/img/line-icon.png"
 import LineIcon from "@/components/line/LineIcon";
 import { KeyboardIcon } from "@/components/icons/Icons";
 import LineHeader from "@/components/line/LineHeader";
@@ -23,7 +16,7 @@ export default (props) => {
 
 
   const ShowText = (props) => {
-      if (props.preview.content) {
+      if (props.preview.text) {
         return (
           <>
           <Col xs={12} md={2} xl={2} className="mb-4 mb-md-0">
@@ -32,7 +25,7 @@ export default (props) => {
           <Col xs={12} md={10} xl={10} className="text-center text-lg-start">
             <div className="line-preview-main-content-comment-wrap">
               <div className="line-preview-comment">
-                <p className="d-flex flex-wrap">{props.preview.content}</p>
+                <p className="d-flex flex-wrap">{props.preview.text}</p>
               </div>
             </div>
           </Col>

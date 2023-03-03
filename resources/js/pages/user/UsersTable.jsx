@@ -48,16 +48,12 @@ export const UsersTable = (props) => {
         <td><span className="fw-normal">{birth_date}</span></td>
         <td><span className="fw-normal">{prefecture}</span></td>
         <td className="text-center">
-          {/* <Link to={link}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
-          </Link> */}
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
           <Button onClick={() => deleteUsers(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
-          {/* <TrashIcon role="button" onClick={() => deleteUsers([id])} className="icon icon-xs text-danger me-2 " /> */}
         </td>
       </tr>
     );

@@ -26,7 +26,7 @@ export default (props) => {
             <Col md={12} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>タイトル</Form.Label>
-                <Form.Control required type="text" name="last_name" value={props.formValue.title} onChange={(e) => props.handleChange(e, 'title')} placeholder="" />
+                <Form.Control required type="text" name="last_name" value={props.message.title} onChange={(e) => props.handleChange(e, 'title')} placeholder="" />
               </Form.Group>
             </Col>
           </Row>

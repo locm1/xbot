@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { TemplateMessageTable } from "@/pages/message/TemplateMessageTable";
-import MESSAGES from "@/data/templateMessages";
+import { getMessages } from "@/pages/message/api/MessageApiMethods";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -19,38 +19,10 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 
 export default () => {
-  const [messages, setMessages] = useState(MESSAGES.map(t => ({ ...t, show: true })));
-  const selectedMessagesIds = messages.filter(u => u.isSelected).map(u => u.id);
-  const [searchValue, setSearchValue] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
-
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
-
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
-  };
-
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
+  const [messages, setMessages] = useState([]);
 
   const deleteTemplateMessages = async (ids) => {
     const messagesToBeDeleted = ids ? ids : selectedMessagesIds;
-    const messagesNr = messagesToBeDeleted.length;
     const textMessage = "本当にこのテンプレートを削除しますか？";
 
     const result = await SwalWithBootstrapButtons.fire({
@@ -70,6 +42,10 @@ export default () => {
       await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
     }
   };
+
+  useEffect(() => {
+    getMessages(setMessages)
+  }, []);
 
   return (
     <>
@@ -94,32 +70,14 @@ export default () => {
               <Form.Control
                 type="text"
                 placeholder="タイトル"
-                value={searchValue}
-                onChange={changeSearchValue}
               />
             </InputGroup>
-          </Col>
-          <Col xs={3} lg={4} className="d-flex justify-content-end">
-            <Dropdown as={ButtonGroup}>
-              <Dropdown.Toggle split as={Button} variant="link" className="text-dark m-0 p-1">
-                <CogIcon className="icon icon-sm" />
-                <span className="visually-hidden">Toggle Dropdown</span>
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-end pb-0">
-                <small className="ps-3 fw-bold text-dark">Show</small>
-                <Dropdown.Item className="d-flex align-items-center fw-bold">
-                  10 <CheckIcon className="icon icon-xxs ms-auto" />
-                </Dropdown.Item>
-                <Dropdown.Item className="fw-bold">20</Dropdown.Item>
-                <Dropdown.Item className="fw-bold rounded-bottom">30</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
           </Col>
         </Row>
       </div>
 
       <TemplateMessageTable
-        messages={messages.filter(t => t.show)}
+        messages={messages}
         deleteTemplateMessages={deleteTemplateMessages}
       />
     </>

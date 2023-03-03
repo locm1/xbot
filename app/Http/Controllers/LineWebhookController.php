@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\api\FollowService;
+use App\Services\api\line\FollowService;
 use Illuminate\Http\Request;
 use App\Services\api\LineBotService as LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;

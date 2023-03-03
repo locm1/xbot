@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\api;
+namespace App\Services\api\line;
 
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot;

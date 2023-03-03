@@ -52,6 +52,7 @@ use App\Http\Controllers\api\management\UserReserveHistoryController;
 use App\Http\Controllers\api\management\user\UserVisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryUserController;
+use App\Http\Controllers\LineWebhookController;
 use App\Http\Controllers\UserWithQuestionneireController;
 use App\Models\QuestionnaireAnswer;
 
@@ -144,3 +145,5 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::group(['prefix' => 'v1'], function() {
     // Route::get('/specific-trades', SpecificTradeIndexController::class);
 });
+
+Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

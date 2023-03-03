@@ -11,10 +11,8 @@ class LineBotService extends LINEBot
   /** @var HTTPClient */
   private $httpClient;
 
-  public function __construct(
-    HTTPClient $httpClient,
-    array $args
-  ) {
+  public function __construct(HTTPClient $httpClient, array $args)
+  {
     parent::__construct($httpClient, $args);
     $this->httpClient = $httpClient;
     $this->channelSecret = $args['channelSecret'];

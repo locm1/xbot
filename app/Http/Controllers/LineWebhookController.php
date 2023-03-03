@@ -23,7 +23,7 @@ class LineWebhookController extends Controller
         $bot = new LINEBot($httpClient, ['channelSecret' => config('services.line.message.channel_secret')]);
 
         foreach ($events as $event) {
-            $response = $bot->replyText($event['replyToken'], 'メッセージ送信完了');
+            $response = $bot->replyText($event['replyToken'], $event['message']['text']);
         }
         return;
     }

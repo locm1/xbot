@@ -2,19 +2,52 @@ import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-
+import { getInvitationUsers, deleteInvitation } from "@/pages/invitation/api/InvitationApiMethods";
 import { Paths } from "@/paths";
-import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
-import { create } from "lodash";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export const InvitationsTable = (props) => {
-  const { invitations } = props;
+  const { invitations, setOpenModal, openModal, setInvitationUsers, setInvitations } = props;
   const totalInvitations = invitations.length;
 
   const TableRow = (props) => {
     const { coupon, privilege_detail, id } = props;
     const link = Paths.EditInvitation.path.replace(':id', id);
+
+    const showInvitationUsers = (id) => {
+      getInvitationUsers(id, setInvitationUsers, setOpenModal, openModal)
+    };
+
+    const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-primary me-3',
+        cancelButton: 'btn btn-gray-100'
+      },
+      buttonsStyling: false
+    }));
+
+    const showConfirmDeleteModal = async (id) => {
+      const textMessage = "本当に招待を削除しますか？";
+  
+      const result = await SwalWithBootstrapButtons.fire({
+        icon: "error",
+        title: "削除確認",
+        text: textMessage,
+        showCancelButton: true,
+        confirmButtonText: "削除",
+        cancelButtonText: "キャンセル"
+      });
+  
+      if (result.isConfirmed) {
+        deleteInvitation(id, deleteComplete, setInvitations, invitations)
+      }
+    };
+
+    const deleteComplete = async () => {
+      const confirmMessage = "選択した項目は削除されました。";
+      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    };
 
     return (
       <tr className="border-bottom">
@@ -32,10 +65,10 @@ export const InvitationsTable = (props) => {
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
-          <Button variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+          <Button onClick={() => showInvitationUsers(id)} variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
             発行者一覧
           </Button>
-          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
         </td>

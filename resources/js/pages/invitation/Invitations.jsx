@@ -5,42 +5,46 @@ import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { InvitationsTable } from "@/pages/invitation/InvitationsTable";
-
-import { getInvitations } from "@/pages/invitation/api/InvitationApiMethods";
+import { getInvitations, getInvitationUsers } from "@/pages/invitation/api/InvitationApiMethods";
+import InvitationUserModal from "@/pages/invitation/InvitationUserModal";
 
 export default () => {
   const [invitations, setInvitations] = useState([]);
+  const [invitationUsers, setInvitationUsers] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const headers = ['取得日時', '利用者', '使用状況'];
 
   useEffect(() => {
     getInvitations(setInvitations);
   }, []);
 
+  const onHide = () => {
+    setOpenModal(!openModal);
+  }
+
   return (
     <>
+      {openModal && (
+        <InvitationUserModal
+          show={true}
+          title="クーポン利用者一覧"
+          onHide={onHide}
+          users={invitationUsers}
+          headers={headers}
+        />
+      )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">招待管理</h1>
         </div>
       </div>
 
-      <div className="table-settings mb-4">
-        <Row className="d-flex justify-content-between align-items-center">
-          <Col xs={9} lg={8} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-400">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="Search orders"
-              />
-            </InputGroup>
-          </Col>
-        </Row>
-      </div>
-
       <InvitationsTable
         invitations={invitations}
+        setOpenModal={setOpenModal}
+        openModal={openModal}
+        setInvitationUsers={setInvitationUsers}
+        setInvitations={setInvitations}
       />
     </>
   );

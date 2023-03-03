@@ -70,8 +70,9 @@ class InvitationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Invitation $invitation)
     {
-        //
+        $this->invitation_service->destroy($invitation);
+        return response()->json([], 204);
     }
 }

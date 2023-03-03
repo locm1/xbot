@@ -13,11 +13,6 @@ class Invitation extends Model
 
     protected $guarded = ['id'];
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
-
     /**
      * Get the user associated with the Invitation
      *
@@ -31,5 +26,10 @@ class Invitation extends Model
     public function coupon()
     {
         return $this->belongsTo(Coupon::class);
+    }
+
+    public function invitationUsers()
+    {
+        return $this->hasMany(InvitationUser::class);
     }
 }

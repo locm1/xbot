@@ -33,9 +33,9 @@ class InvitationService
     }
 
 
-    public function destroy() 
+    public function destroy(Invitation $invitation) 
     {
-        //
+        $invitation->delete();
     }
 
 }

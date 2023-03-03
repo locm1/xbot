@@ -14,6 +14,6 @@ class SearchCouponAction
             $query->where('name', 'like', "%{$request->name}%");
         }
 
-        return $query->orderBy('id', 'desc')->paginate(10);
+        return $query->orderBy('id', 'desc')->get();
     }
 }

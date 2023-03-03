@@ -1,7 +1,7 @@
 export const getCoupons = async (setCoupons) => {
   axios.get('/api/v1/management/coupons')
   .then((response) => {
-    setCoupons(response.data.coupons.data);
+    setCoupons(response.data.coupons);
   })
   .catch(error => {
       console.error(error);
@@ -54,7 +54,7 @@ export const updateCoupon = async (id, coupon, updateComplete) => {
 export const searchCoupons = async (params, setCoupons) => {
   axios.get('/api/v1/management/coupons', params)
   .then((response) => {
-    setCoupons(response.data.coupons.data);
+    setCoupons(response.data.coupons);
   })
   .catch(error => {
       console.error(error);

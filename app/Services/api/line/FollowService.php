@@ -25,7 +25,7 @@ class FollowService
             Log::debug($display_name . $picture_url . $status_message);
         } else {
             error_log('Failed to get profile. HTTP status code: ' . $response->getHTTPStatus() . ', response body: ' . $response->getRawBody());
-            Log::debug($response);
+            Log::debug('Failed to get profile. HTTP status code: ' . $response->getHTTPStatus() . ', response body: ' . $response->getRawBody());
         }
     }
 }

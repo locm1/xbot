@@ -486,7 +486,7 @@ export default () => {
       <Row>
         <Col xs={6} xl={6}>
         <div className="btn-group target-count-wrap" role="group" aria-label="Basic radio toggle button group">
-          <div className="btn btn-primary d-flex pe-none align-items-center">キーワード選択</div>
+          <div className="btn btn-primary d-flex pe-none align-items-center text-white">キーワード選択</div>
             <div className="btn btn-outline-primary pe-none bg-white">該当人数
             <div className="fs-4 people-wrap d-inline"> <span className="people text-primary" id="people">{searchResultUsers.length}</span> </div>人 
           </div>
@@ -495,15 +495,15 @@ export default () => {
         <Col xs={3} xl={3}>
         </Col>
         <Col xs={3} xl={3}>
-          <div className="justify-content-end d-flex">
-            <Form.Select value={segmentTemplateOption} className="h-50" onChange={handleChangeSegmentTemplate}>
+          <div className=" justify-content-between d-flex">
+            <Form.Select value={segmentTemplateOption} className="h-50 w-75" onChange={handleChangeSegmentTemplate}>
               <option value="0">セグメントテンプレート選択</option>
               {segmentTemplates.map(v => (
                 <option value={v.id} key={`template-${v.id}`}>{v.name}</option>
               ))}
             </Form.Select>
-            {segmentTemplateOption == 0 ? <Button variant="danger" className="ms-2" disabled onClick={deleteSegmentTemplate}>削除</Button> 
-                                        : <Button variant="danger" className="ms-2" onClick={deleteSegmentTemplate}>削除</Button>}
+            {segmentTemplateOption == 0 ? <Button variant="danger" className="" disabled onClick={deleteSegmentTemplate}>削除</Button> 
+                                        : <Button variant="danger" className="" onClick={deleteSegmentTemplate}>削除</Button>}
           </div>
           <div className="justify-content-end d-flex mt-2">
             <Button variant="tertiary" className="mt-2 w-100" onClick={showConfirmModal}>

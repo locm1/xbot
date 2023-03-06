@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('first_name_kana', 50)->nullable(true);
             $table->string('last_name_kana', 50)->nullable(true);
             $table->string('nickname', 50)->nullable(false);
+            $table->text('status_message')->nullable(true);
             $table->date('birth_date')->nullable(true);
             $table->tinyInteger('gender')->nullable(true);
             $table->string('zipcode')->nullable(true);
@@ -28,10 +29,9 @@ return new class extends Migration
             $table->string('address')->nullable(true);
             $table->string('building_name')->nullable(true);
             $table->string('tel', 50)->nullable(true);
-            $table->foreignId('occupation_id')->constrained('occupations')->nullable(true);
+            $table->foreignId('occupation_id')->nullable(true)->constrained('occupations');
             $table->text('img_path')->nullable(true);
-            $table->tinyInteger('is_registered')->nullable(false);
-            $table->text('line_id')->nullable(false);
+            $table->string('line_id')->unique()->nullable(false);
             $table->softDeletes();
             $table->timestamps();
         });

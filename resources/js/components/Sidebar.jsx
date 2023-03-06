@@ -69,11 +69,23 @@ export default (props = {}) => {
     );
   };
 
+  const arraysEqual = (arr1, arr2) => {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+    return arr1.every((value, index) => value === arr2[index]);
+  }
+
   const NavItem = (props) => {
     const { title, link, target, icon: NavItemIcon, image, badgeText, badgeBg, badgeColor = "white" } = props;
     const classNames = badgeText ? "d-flex align-items-center justify-content-between" : "";
-    const navItemClassName = link === pathname ? "active" : "";
-
+    const splitLink = link.split('/');
+    const spilitPathname = pathname.split('/');
+    if (spilitPathname[spilitPathname.length - 2] === 'edit' || spilitPathname[spilitPathname.length - 2] === 'detail') {
+      spilitPathname[spilitPathname.length - 2] = 'list';
+      spilitPathname.pop();
+    }
+    const navItemClassName = arraysEqual(splitLink, spilitPathname) ? "active" : "";
     return (
       <Nav.Item className={navItemClassName} onClick={() => setShow(false)}>
         <Nav.Link as={Link} to={link} target={target} className={classNames}>
@@ -138,7 +150,7 @@ export default (props = {}) => {
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
               <Link to={Paths.DashboardOverview.path}>
-                <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
+                <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap mb-4" />
               </Link>
               {/* <GroupTitle name="User Management" /> */}
               <NavItem title="ダッシュボード" link={Paths.DashboardOverview.path} icon={ClipboardIcon} />

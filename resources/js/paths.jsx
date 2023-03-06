@@ -19,7 +19,7 @@ export const Paths = {
     VisitorHistories: { path: `${prefix}/visitor/history` },
     EditVisitorHistory: { path: `${prefix}/visitor/history/edit/:id` },
     Products: { path: `${prefix}/ec/product/list` },
-    ProductCategory: { path: `${prefix}/ec/product/category` },
+    ProductCategory: { path: `${prefix}/ec/product/category/list` },
     EditCategory: { path: `${prefix}/ec/product/category/edit/:id` },
     CreateCategory: { path: `${prefix}/ec/product/category/create` },
     EditProduct: { path: `${prefix}/ec/product/edit/:id` },

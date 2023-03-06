@@ -26,9 +26,10 @@ class MessageService
     }
 
 
-    public function update() 
+    public function update($request, $message) 
     {
-        //
+        $data = $request->only(['title', 'is_undisclosed']);
+        return $message->update($data);
     }
 
 

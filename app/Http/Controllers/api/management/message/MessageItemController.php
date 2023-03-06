@@ -53,22 +53,25 @@ class MessageItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Message $message)
     {
-        //
+        $message_item = $this->message_item_service->update($request, $message);
+        return response()->json(['message_item' => $message_item], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $result = $this->message_item_service->destroy($request);
+        return $result;
+        return response()->json([], 204);
     }
 }

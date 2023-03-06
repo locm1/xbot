@@ -2,37 +2,66 @@ import React, { useState, useEffect } from "react";
 import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger, Form, Button, Image, Card } from 'react-bootstrap';
 import { ChatIcon, XIcon, ChevronDownIcon, ChevronUpIcon, PhotographIcon, TicketIcon, FilmIcon, PencilIcon } from "@heroicons/react/outline";
 import { Link } from 'react-router-dom';
+import ReactPlayer from 'react-player'
 
 export default (props) => {
-  const lists = ['テスト', 'テスト', 'テスト', 'テスト'];
-  const { setFiles, files, getRootProps, getInputProps, setPreviews, handlePreviewChange, index, previews, handleDelete } = props;
+  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete } = props;
+
+  const getDefaultActiveKey = (type) => {
+    switch (type) {
+      case 1:
+        return 'text'
+      case 2:
+        return 'picture'
+      case 3:
+        return 'movie'
+      case 4:
+        return 'card'
+    }
+  }
 
   const DropzoneFile = (props) => {
-    const { preview } = props;
+    const { messageItem } = props;
 
     return (
       <Col xs={6} className="dropzone-preview line-preview-image-wrap">
-        <div className="line-preview-image d-flex">
-          <Image src={preview} className="dropzone-image" />
-          <Button variant="gray-800" className="line-preview-image-button" onClick={() => setFiles([])}>
-            <XIcon className="icon icon-sm line-preview-image-icon" />
-          </Button>  
+        <div className="product-preview-image d-flex">
+          <Image src={messageItem.image_path} className="dropzone-image" />
+          <Button variant="gray-800" className="product-image-button">
+            <XIcon className="icon icon-sm line-preview-image-icon" onClick={() => handlePictureImageDelete(messageItem.id, messageItem.type)} />
+          </Button>
         </div>
       </Col>
     );
   };
 
-  useEffect(() => {
-    setPreviews(
-      previews.map((preview, previewIndex) => (previewIndex == index ? { ...preview, files: files } : preview))
-    )
-  }, [files]);
+  const VideoFile = (props) => {
+    const { messageItem } = props;
+
+    return (
+      <Col xs={6} className="dropzone-preview line-preview-image-wrap">
+        <div className="product-preview-video d-flex">
+          <Form className="rounded d-flex align-items-center justify-content-center mb-4">
+            <Form.Control
+              type="file"
+              name="video"
+              accept="video/*"
+              id="preview-video" 
+            />
+          </Form>
+          <Button variant="gray-800" className="product-image-button">
+            <XIcon className="icon icon-sm line-preview-image-icon" onClick={() => handlePictureImageDelete(messageItem.id, messageItem.type)} />
+          </Button>
+        </div>
+      </Col>
+    );
+  };
 
   return (
     <>
     <div className="message-editor-wrap">
       <div className="message-editor-header">
-        <Tab.Container defaultActiveKey="text">
+        <Tab.Container defaultActiveKey={getDefaultActiveKey(messageItem.type)}>
           <Row>
             <Col lg={10} className="d-flex justify-content-start">
               <Nav>
@@ -79,7 +108,7 @@ export default (props) => {
               </Nav>
             </Col>
             <Col lg={2} className="d-flex justify-content-center">
-              <div className="message-editor-header-item-right" onClick={() => handleDelete(index)}>
+              <div className="message-editor-header-item-right" onClick={() => handleDelete(messageItem.id)}>
                 <XIcon className="icon icon-sm" />
               </div>
             </Col>
@@ -87,59 +116,45 @@ export default (props) => {
               <Tab.Content>
                 <Tab.Pane eventKey="text" className="py-4">
                   <Form.Group className="mb-3">
-                    <Form.Control as="textarea" rows="5" placeholder="テキストを入力" id="preview-text" value={previews[index].text} onChange={(e) => handlePreviewChange(e, 'text', index, files)} />
+                    <Form.Control 
+                      as="textarea"
+                      rows="5" 
+                      placeholder="テキストを入力" 
+                      id="preview-text" 
+                      value={messageItem.text} 
+                      onChange={(e) => handlePreviewChange(e, 'text', messageItem.id)} 
+                    />
                   </Form.Group>
                 </Tab.Pane>
-                <Tab.Pane eventKey="stamp" className="py-4">
-                  <Form.Select defaultValue="1" className="mb-0" id="preview-stamp">
-                    {
-                      lists.map((item, index) => <option key={index} value={index + 1}>{item}</option>)
-                    }
-                  </Form.Select>
-                </Tab.Pane>
                 <Tab.Pane eventKey="picture" className="py-4">
-                  {files.length == 0 ? (
-                    <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
-                      <Form.Control {...getInputProps()} id="preview-picture" />
-                        <div className="dz-default dz-message text-center">
-                          <p className="dz-button mb-0">画像をアップロード</p>
-                        </div>
+                  {messageItem.image_path == null ? (
+                    <Form className="rounded d-flex align-items-center justify-content-center mb-4">
+                      <Form.Control
+                        type="file"
+                        name="file"
+                        id="preview-picture" 
+                        accept="image/*"
+                        onChange={(e) => handlePreviewChange(e, 'file', messageItem.id)} 
+                      />
                     </Form>
                   ) : (
-                    ''
+                    <DropzoneFile messageItem={messageItem} />
                   )} 
-                  <Row className="dropzone-files">
-                    {files.map(file => <DropzoneFile key={file.path} {...file} />)}
-                  </Row>
                 </Tab.Pane>
                 <Tab.Pane eventKey="movie" className="py-4">
-                  {files.length == 0 ? (
-                    <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center mb-4" })}>
-                      <Form.Control {...getInputProps()} id="preview-picture" />
-                        <div className="dz-default dz-message text-center">
-                          <p className="dz-button mb-0">動画をアップロード</p>
-                        </div>
+                  {messageItem.video_path == null ? (
+                    <Form className="rounded d-flex align-items-center justify-content-center mb-4">
+                      <Form.Control
+                        type="file"
+                        name="video"
+                        accept="video/*"
+                        id="preview-video" 
+                        onChange={(e) => handlePreviewChange(e, 'video', messageItem.id)} 
+                      />
                     </Form>
                   ) : (
-                    ''
+                    <VideoFile messageItem={messageItem} />
                   )} 
-                  <Row className="dropzone-files">
-                    {files.map(file => <DropzoneFile key={file.path} {...file} />)}
-                  </Row>
-                </Tab.Pane>
-                <Tab.Pane eventKey="coupon" className="py-4">
-                  <Form.Select defaultValue="1" className="mb-0" id="preview-coupon">
-                    {
-                      lists.map((item, index) => <option key={index} value={index + 1}>{item}</option>)
-                    }
-                  </Form.Select>
-                </Tab.Pane>
-                <Tab.Pane eventKey="message" className="py-4">
-                  <Form.Select defaultValue="1" className="mb-0" id="preview-message">
-                    {
-                      lists.map((item, index) => <option key={index} value={index + 1}>{item}</option>)
-                    }
-                  </Form.Select>
                 </Tab.Pane>
                 <Tab.Pane eventKey="card" className="py-4">
                   <Card>

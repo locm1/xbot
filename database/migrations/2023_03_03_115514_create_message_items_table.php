@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('message_id');
             $table->foreign('message_id')->references('id')->on('messages');
+            $table->tinyInteger('type');
             $table->text('text')->nullable(true);
             $table->string('image_path')->nullable(true);
             $table->string('video_path')->nullable(true);

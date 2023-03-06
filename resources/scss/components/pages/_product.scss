@@ -13,6 +13,17 @@
   cursor: pointer;
 }
 
+.product-preview-video {
+  position: relative;
+}
+
 .product-preview-input {
   display: none;
+}
+
+.preview-video {
+  position: absolute;
+  top: 50px;
+  width: 180px;
+  height: 180px;
 }

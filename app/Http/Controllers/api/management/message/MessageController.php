@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\management\message;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\Services\management\message\MessageService;
+use App\Http\Requests\management\message\UpdateMessageRequest;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -54,13 +55,14 @@ class MessageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  UpdateMessageRequest  $request
+     * @param  Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateMessageRequest $request, Message $message)
     {
-        //
+        $message = $this->message_service->update($request, $message);
+        return response()->json(['message' => $message], 200);
     }
 
     /**

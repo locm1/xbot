@@ -16,7 +16,7 @@ class FollowService
 
     public function createUser()
     {
-        $response = $this->bot->getProfile('<USER_ID>');
+        $response = $this->bot->getProfile($this->user_id);
         if ($response->isSucceeded()) {
             $profile = $response->getJSONDecodedBody();
             $display_name = $profile['displayName'];

@@ -71,7 +71,6 @@ class MessageItemController extends Controller
     public function destroy(Request $request)
     {
         $result = $this->message_item_service->destroy($request);
-        return $result;
         return response()->json([], 204);
     }
 }

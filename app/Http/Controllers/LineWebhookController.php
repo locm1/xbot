@@ -25,7 +25,8 @@ class LineWebhookController extends Controller
 
         foreach ($events as $event) {
             if ($event['type'] === 'follow') {
-                new FollowService($bot, $event['source']['userId']);
+                $follow_service = new FollowService($bot, $event['source']['userId']);
+                $follow_service->createUser();
             }
             $response = $bot->replyText($event['replyToken'], $event['message']['text']);
         }

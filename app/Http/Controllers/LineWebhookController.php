@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\api\line\FollowService;
+use App\Services\api\line\UnfollowService;
 use Illuminate\Http\Request;
 use App\Services\api\LineBotService as LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
@@ -26,7 +27,10 @@ class LineWebhookController extends Controller
         foreach ($events as $event) {
             if ($event['type'] === 'follow') {
                 $follow_service = new FollowService($bot, $event['source']['userId']);
-                $follow_service->createUser();
+                return $follow_service->createUser();
+            } elseif ($event['type'] === 'unfollow') {
+                $unfollow_service = new UnfollowService($bot, $event['source']['userId']);
+                return $unfollow_service->updateUser($event['timestamp']);
             }
             $response = $bot->replyText($event['replyToken'], $event['message']['text']);
         }

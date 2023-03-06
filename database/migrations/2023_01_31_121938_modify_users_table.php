@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->date('block_date')->nullable(true);
+            $table->timestamp('block_date')->nullable(true);
             $table->tinyInteger('is_blocked')->nullable(false);
         });
     }

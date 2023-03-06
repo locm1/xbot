@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -30,6 +31,8 @@ class UserFactory extends Factory
     {
         $random_str = fake()->name() .fake()->emoji() .strval(fake()->randomDigit()) .fake()->randomAscii() .fake()->kanaName();
         $img_path = str_replace('public', '', fake()->optional('90')->file('resources/assets/img/team', 'public/images/test_img'));
+        $timestamp = fake()->optional('90')->unixTime();
+        $date = $timestamp ? date('Y-m-d H:i:s', $timestamp) : null;
         
         return [
             'first_name' => fake()->optional('90')->firstName(),
@@ -45,11 +48,10 @@ class UserFactory extends Factory
             'address' => fake()->optional('90')->streetAddress(),
             'building_name' => fake()->optional('90')->secondaryAddress(),
             'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->optional('90')->phoneNumber()),
-            'occupation_id' => fake()->numberBetween(1, 10),
+            'occupation_id' => fake()->optional('90')->numberBetween(1, 10),
             'img_path' => $img_path,
-            'is_registered' => fake()->numberBetween(0, 1),
             'line_id' => $this->mb_str_shuffle(20),
-            'block_date' => fake()->optional('90')->date(),
+            'block_date' => $date,
             'is_blocked' => fake()->numberBetween(0, 1),
         ];
     }

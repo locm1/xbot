@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UpsertMessageItemAction
 {
-    public function updateFiles($request, $message)
+    public function updateFiles($request, $message, $method)
     {
         $merged_message_items = array();
         $message_items = json_decode($request->message_items);
@@ -30,10 +30,11 @@ class UpsertMessageItemAction
             $video_file_name = isset($videos)
                 ? array_reduce(array_filter($videos, function($video) use($message_item) { return $video['id'] == $message_item->id;}), 'array_merge', array())
                 : $message_item->video_path;
-                
+            
+            $id = ($method == 'update') ? $message_item->id : null;
             
             $merged_message_items[] = [
-                'id' => $message_item->id,
+                'id' => $id,
                 'message_id' => $message->id,
                 'type' => $message_item->type,
                 'text' => $message_item->text,

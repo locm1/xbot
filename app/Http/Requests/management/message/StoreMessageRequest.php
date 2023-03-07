@@ -13,7 +13,7 @@ class StoreMessageRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class StoreMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required',
+            'is_undisclosed' => 'required|boolean'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'title' => 'タイトル',
+            'is_undisclosed' => '公開ステータス',
         ];
     }
 }

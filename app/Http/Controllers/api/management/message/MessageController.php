@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Services\management\message\MessageService;
 use App\Http\Requests\management\message\UpdateMessageRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\management\message\StoreMessageRequest;
 
 class MessageController extends Controller
 {
@@ -23,21 +24,22 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $messages = $this->message_service->index();
+        $messages = $this->message_service->index($request);
         return response()->json(['messages' => $messages], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreMessageRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreMessageRequest $request)
     {
-        //
+        $message = $this->message_service->store($request);
+        return response()->json(['message' => $message], 200);
     }
 
     /**
@@ -68,11 +70,12 @@ class MessageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Message $message)
     {
-        //
+        $this->message_service->destroy($message);
+        return response()->json([], 204);
     }
 }

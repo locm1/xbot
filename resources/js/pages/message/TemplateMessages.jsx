@@ -7,40 +7,33 @@ import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { TemplateMessageTable } from "@/pages/message/TemplateMessageTable";
-import { getMessages } from "@/pages/message/api/MessageApiMethods";
-
-const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
-  customClass: {
-    confirmButton: 'btn btn-primary me-3',
-    cancelButton: 'btn btn-gray'
-  },
-  buttonsStyling: false
-}));
-
+import { getMessages, deleteMessage, searchMessages } from "@/pages/message/api/MessageApiMethods";
 
 export default () => {
   const [messages, setMessages] = useState([]);
+  const [title, setTitle] = useState('');
+  const [timer, setTimer] = useState(null);
 
-  const deleteTemplateMessages = async (ids) => {
-    const messagesToBeDeleted = ids ? ids : selectedMessagesIds;
-    const textMessage = "本当にこのテンプレートを削除しますか？";
+  const handleChange = (e) => {
+    setTitle(e.target.value)
 
-    const result = await SwalWithBootstrapButtons.fire({
-      icon: "error",
-      title: "削除確認",
-      text: textMessage,
-      showCancelButton: true,
-      confirmButtonText: "削除",
-      cancelButtonText: "キャンセル"
-    });
+    const searchParams = {
+      params: { title: title }
+    };
 
-    if (result.isConfirmed) {
-      const newMessages = messages.filter(f => !messagesToBeDeleted.includes(f.id));
-      const confirmMessage = "選択したテンプレートは削除されました。";
+    clearTimeout(timer);
 
-      setMessages(newMessages);
-      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    }
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      searchMessages(searchParams, setMessages);
+    }, 1000)
+
+    setTimer(newTimer)
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleChange(e)
   };
 
   useEffect(() => {
@@ -63,22 +56,27 @@ export default () => {
       <div className="table-settings mb-4">
         <Row className="d-flex justify-content-between align-items-center">
           <Col xs={9} lg={8} className="d-md-flex">
-          <InputGroup className="me-2 me-lg-3 fmxw-300">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="タイトル"
-              />
-            </InputGroup>
+            <Form onSubmit={handleSubmit}>
+              <InputGroup className="me-2 me-lg-3 fmxw-300">
+                <InputGroup.Text>
+                  <SearchIcon className="icon icon-xs" />
+                </InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="タイトル"
+                  value={title}
+                  onChange={(e) => handleChange(e)}
+                />
+              </InputGroup>
+            </Form>
           </Col>
         </Row>
       </div>
 
       <TemplateMessageTable
         messages={messages}
-        deleteTemplateMessages={deleteTemplateMessages}
+        deleteMessage={deleteMessage}
+        setMessages={setMessages}
       />
     </>
   );

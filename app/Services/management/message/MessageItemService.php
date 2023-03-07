@@ -11,7 +11,7 @@ class MessageItemService
 {
     private $upsert_message_item_action;
 
-    public function __construct(UpsertMessageItemAction $upsert_message_item_action) {
+    public function __construct(UpsertMessageItemAction $upsert_message_item_action,) {
         $this->upsert_message_item_action = $upsert_message_item_action;
     }
 
@@ -20,9 +20,9 @@ class MessageItemService
         return $message->messageItems;
     }
 
-    public function update($request, Message $message) 
+    public function update($request, Message $message, $method) 
     {
-        $merged_message_items = $this->upsert_message_item_action->updateFiles($request, $message);
+        $merged_message_items = $this->upsert_message_item_action->updateFiles($request, $message, $method);
         return MessageItem::upsert($merged_message_items, ['id']);
     }
 
@@ -34,6 +34,7 @@ class MessageItemService
             if (isset($message_item->image_path)) {
                 $this->upsert_message_item_action->deleteFile('message', $message_item->image_path);
             }
+
             if (isset($message_item->video_path)) {
                 $this->upsert_message_item_action->deleteFile('video', $message_item->video_path);
             }

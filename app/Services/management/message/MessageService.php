@@ -7,16 +7,26 @@ use App\Services\management\AbstractManagementService;
 
 class MessageService
 {
+    private $search_message_action;
 
-    public function index() 
+    public function __construct(SearchMessageAction $search_message_action)
     {
-        return Message::all();
+        $this->search_message_action = $search_message_action;
+    }
+
+    public function index($request) 
+    {
+        if (!empty($request->title)) {
+            return $this->search_message_action->search($request);
+        }
+        return Message::orderBy('id', 'desc')->get();
     }
 
 
-    public function store() 
+    public function store($request) 
     {
-        //
+        $data = $request->only(['title', 'is_undisclosed']);
+        return Message::create($data);
     }
 
 
@@ -33,9 +43,9 @@ class MessageService
     }
 
 
-    public function destroy() 
+    public function destroy(Message $message) 
     {
-        //
+        return $message->delete();
     }
 
 }

@@ -17,37 +17,30 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export const TemplateMessageTable = (props) => {
-  const { messages } = props;
+  const { messages, deleteMessage, setMessages } = props;
   const totalMessages = messages.length;
 
-  const deleteTemplateMessages = (ids) => {
-    props.deleteTemplateMessages && props.deleteTemplateMessages(ids)
-  }
-
-  const duplicateTemplate = async (id) => {
-    const textMessage = "このテンプレートを複製しますか？";
+  const showConfirmDeleteModal = async (id) => {
+    const textMessage = "本当にを削除しますか？";
 
     const result = await SwalWithBootstrapButtons.fire({
-      icon: "question",
-      title: "複製確認",
+      icon: "error",
+      title: "削除確認",
       text: textMessage,
       showCancelButton: true,
-      confirmButtonText: "OK!",
+      confirmButtonText: "削除",
       cancelButtonText: "キャンセル"
     });
 
     if (result.isConfirmed) {
-      // const ids = messages.map(message => (message.id));
-      // const maxId = Math.max.apply(null, ids) + 1;
-      // const copyMessage = {...messages.find(message => message.id === id)};
-      // copyMessage.id = maxId;
-      // messages.push(copyMessage);
-      // //setMessages({messages});
-      const confirmMessage = "コピーに成功しました";
-
-      await SwalWithBootstrapButtons.fire('コピー成功', confirmMessage, 'success');
+      deleteMessage(id, deleteComplete, setMessages, messages)
     }
-  }
+  };
+
+  const deleteComplete = async () => {
+    const confirmMessage = "選択した項目は削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+  };
 
   const TableRow = (props) => {
     const history = useHistory();
@@ -77,17 +70,9 @@ export const TemplateMessageTable = (props) => {
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
-          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
-          {/* <Link to={Paths.SendSegments.path}>
-            <OverlayTrigger key={"use-" + id} overlay={<Tooltip id="top" className="m-0">このテンプレートで配信</Tooltip>}>
-              <PaperAirplaneIcon className="icon icon-xs me-2"/>
-            </OverlayTrigger>
-          </Link> */}
-          {/* <OverlayTrigger key={"copy-" + id} overlay={<Tooltip id="top" className="m-0">複製</Tooltip>}>
-            <DocumentDuplicateIcon role={"button"} onClick={() => duplicateTemplate(id)} className="icon icon-xs me-2" />
-          </OverlayTrigger> */}
         </td>
       </tr>
     );

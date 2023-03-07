@@ -9,6 +9,20 @@ export const getMessageItems = async (id, setMessageItems) => {
   });
 };
 
+export const storeMessageItems = async (id, formData) => {
+  axios.post(`/api/v1/management/messages/${id}/items`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  })
+  .then((response) => {
+    console.log(response.data.message_item);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 export const updateMessageItems = async (id, formData) => {
   axios.post(`/api/v1/management/messages/${id}/items`, formData, {
     headers: {

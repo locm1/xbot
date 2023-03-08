@@ -41,7 +41,7 @@ import Greeting from '@/pages/greeting/Greeting';
 import RichMenu from '@/pages/richmenu/RichMenu';
 import RichMenus from '@/pages/richmenu/RichMenus';
 import Postage from '@/pages/master/Postage';
-import Permissions from '@/pages/permission/Permissions';
+import Permissions from '@/pages/sidebar/Permissions';
 
 // Account
 import Accounts from '@/pages/account/Accounts';
@@ -77,7 +77,6 @@ import Topbar from '@/components/Topbar';
 
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
-  //console.log(rest);
   const history = useHistory();
   const resize = () => {
     var resize = setInterval(() => {
@@ -125,6 +124,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const [pages, setPages] = useState([
     {role: ''}
   ]);
+
   useEffect(() => {
     axios.get('/api/v1/management/me').then(response => {
       setAdmin(response.data.admin);
@@ -134,6 +134,14 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     })
     getPages(setPages)
   }, [])
+
+  console.log(rest.role_path);
+  //ログインユーザーの権限レベルに応じてページの閲覧可能かどうか判定
+  const pageRole = pages.filter(page => { return page.path == rest.role_path})
+  console.log(pageRole);
+  // if (pageRole[0] &&  admin.role <= pageRole[1].role) {
+    
+  // }
 
   return (
     <Route {...rest} render={props => (

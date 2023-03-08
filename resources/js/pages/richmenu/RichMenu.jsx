@@ -8,15 +8,19 @@ import AccordionComponent from "@/components/AccordionComponent";
 
 export default () => {
   const [formValue, setFormValue] = useState(
-    {title: '', menuBarText: ''}
+    {
+      title: '', menuBarText: '',
+    }
   );
+  const [action, setAction] = useState();
   const [previews, setPreviews] = useState([
     {id: 1, key: '', content: '', files:''}
   ]);
   const [files, setFiles] = useState();
 
-  const handleChange = (e, input) => {
-    setFormValue({...formValue, [input]: e.target.value})
+  console.log(formValue);
+  const handleChange = (e) => {
+    setFormValue({...formValue, [e.target.name]: e.target.value})
   };
 
   const handlePreviewChange = (e, input, previewIndex, files) => {
@@ -57,41 +61,56 @@ export default () => {
         </div>
       </ListGroup.Item>
     );
-  };
+  };  
+  
+  const TypeForm = (props) => {
+    const { typeValue, title } = props;
+    console.log(typeValue);
+    switch (typeValue) {
+      case '1':
+        console.log('case 1');
+        return <Form.Control className="mb-5 mt-2" name={`${title}-link`} defaultValue={formValue[`${title}-link`]} onBlur={handleChange} />
+      case '2':
+        return <Form.Control as="textarea" className="mb-5 mt-2" name={`${title}-link`} defaultValue={formValue[`${title}-link`]} onBlur={handleChange} />
+        break;
+      case '3':
+        return <Form.Select className="mb-5 mt-2" />
+      default :
+        return <div className="mb-6" />
+    }
+  }
 
   const AccordionAction = (props) => {
-    const { richMenu, templateActive, setTemplateActive } = props;
-    
     const actions = [...Array(richMenu.size)].map((v, i) => {
       return {
         id: i + 1,
         eventKey: i + 1,
-        title: String.fromCodePoint(i + 65)
+        title: String.fromCodePoint(i + 65),
       }
     });
 
-    const options = ['選択', 'リンク', 'テキスト', 'エイリアス']
+    const options = ['リンク', 'テキスト', 'エイリアス']
 
     return (
-      <AccordionComponent
-        data={actions}
-        style={{width: '400px'}}
-        isShow={templateActive}
-        setIsShow={setTemplateActive}
-      >
-        <Row>
-          <Col md={4}>
-            <div>タイプ</div>
-          </Col>
-          <Col md={8}>
-            <Form.Select defaultValue="1" className="mb-0" name="">
-              {
-                options.map((option, index) => <option key={index} value={index + 1}>{option}</option>)
-              }
-            </Form.Select>
-          </Col>
-        </Row>
-      </AccordionComponent>
+      <Row> 
+      {/* <Form.Control className="mb-3" name={`A-link`} value={formValue[`A-link`]} onBlur={props.handleChange} /> */}
+        {actions.map(v => (
+          <div className="d-flex border-bottom mb-3">
+            <Col md={4}>
+              {v.title}
+            </Col>
+            <Col md={8}>
+              <Form.Select className="mb-0" value={formValue[v.title + '-type']} name={`${v.title}-type`} onChange={handleChange}>
+              <option>選択する</option>
+                {
+                  options.map((option, index) => <option key={index} value={index + 1}>{option}</option>)
+                }
+              </Form.Select>
+              <TypeForm typeValue={formValue[v.title + '-type']} title={v.title} />
+            </Col>
+          </div>
+        ))}
+      </Row>
     );
   };
 
@@ -157,21 +176,6 @@ export default () => {
     );
   };
 
-  const ActionItem = (props) => {
-    const { richMenu, templateActive } = props;
-
-    return (
-      <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 py-4 border-bottom">
-        <div>
-          <Card.Text className="h6 mb-1">アクション</Card.Text>
-        </div>
-        <div>
-        <AccordionAction richMenu={richMenu} templateActive={templateActive} setTemplateActive={setTemplateActive}></AccordionAction>
-        </div>
-      </ListGroup.Item>
-    );
-  };
-
 	return (
 		<>
     {
@@ -189,6 +193,7 @@ export default () => {
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">リッチメニュー設定</h1>
+          <Button onClick={() => console.log(richMenu)} />
         </div>
       </div>
       <Card border="0" className="shadow mb-4">
@@ -198,7 +203,7 @@ export default () => {
             <Col md={12} className="mb-3">
               <Form.Group id="title">
                 <Form.Label>タイトル</Form.Label>
-                <Form.Control required type="text" name="title" value={formValue.title} onChange={(e) => handleChange(e, 'title')} placeholder="" />
+                <Form.Control required type="text" name="title" value={formValue.title} onChange={handleChange} placeholder="" />
               </Form.Group>
             </Col>
           </Row>
@@ -233,7 +238,10 @@ export default () => {
                   files={files}
                   setFiles={setFiles}
                 />
-                <ActionItem richMenu={richMenu} templateActive={templateActive} />
+                <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 py-4 border-bottom">
+                  <Col md={3} className="h6 mb-1">アクション</Col>
+                  <AccordionAction richMenu={richMenu} templateActive={templateActive} setTemplateActive={setTemplateActive} handleChange={handleChange}></AccordionAction>
+                </ListGroup.Item>
                 <SettingsItem
                   id={3}
                   title="メニューバー設定"
@@ -257,7 +265,7 @@ export default () => {
                           type="text"
                           name="menuBarText"
                           value={formValue.menuBarText}
-                          onChange={(e) => handleChange(e, 'menuBarText')}
+                          onChange={handleChange}
                           placeholder="テキストを入力"
                         />
                       </Form.Group>

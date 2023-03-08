@@ -114,7 +114,7 @@ $line_bg_color: rgb(130, 159, 191);
 }
 
 .line-rich-menu-preview {
-  width: 28vw;
+  width: 340px;
 }
 
 .line-rich-menu-bar-wrap {
@@ -123,7 +123,7 @@ $line_bg_color: rgb(130, 159, 191);
   border-top: 1px solid rgba(0,0,0,0.125);
   position: absolute;
   bottom: 0;
-  width: 28vw;
+  width: 100%;
   border: 1px solid $line_bg_color;
 }
 
@@ -137,7 +137,7 @@ $line_bg_color: rgb(130, 159, 191);
 }
 
 .line-rich-menu-wrap {
-  width: 28vw;
+  width: 100%;
   padding: 25% 1.25rem;
   background-color: white;
   position: absolute;

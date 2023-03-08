@@ -136,7 +136,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('invitations', InvitationController::class);
         Route::get('invitations/{invitation}/users', InvitationUserController::class);
         Route::apiResource('messages', MessageController::class);
-        Route::get('messages/{message}/items', [MessageItemController::class, 'getMessageItemsById']);
+        Route::get('messages/{message}/items', [MessageItemController::class, 'index']);
+        Route::post('messages/{message}/items', [MessageItemController::class, 'store']);
+        Route::put('messages/{message}/items', [MessageItemController::class, 'update']);
+        Route::delete('messages/{message}/items', [MessageItemController::class, 'destroy']);
     });
 });
 

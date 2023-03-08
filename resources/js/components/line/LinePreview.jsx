@@ -5,46 +5,68 @@ import { Link, useHistory } from 'react-router-dom';
 import LineIcon from "@/components/line/LineIcon";
 import { KeyboardIcon } from "@/components/icons/Icons";
 import LineHeader from "@/components/line/LineHeader";
+import ReactPlayer from 'react-player'
 
 import RichMenuTemplate from "@/pages/richmenu/RichMenuTemplate";
 
 export default (props) => {
   const history = useHistory();
   const [messageDetailModal, setMessageDetailModal] = useState(false);
-  const { formValue, files, formId, previews, page, richMenu, templateFrame, templateActive, setTemplateActive } = props;
+  const { formValue, files, previews, page, richMenu, templateFrame, templateActive, setTemplateActive } = props;
   const handleClose = () => setMessageDetailModal(false);
 
 
   const ShowText = (props) => {
-      if (props.preview.text) {
-        return (
-          <>
-          <Col xs={12} md={2} xl={2} className="mb-4 mb-md-0">
-            <LineIcon />
-          </Col>
-          <Col xs={12} md={10} xl={10} className="text-center text-lg-start">
-            <div className="line-preview-main-content-comment-wrap">
-              <div className="line-preview-comment">
-                <p className="d-flex flex-wrap">{props.preview.text}</p>
-              </div>
-            </div>
-          </Col>
-          </>
-        );
-      } else {
-        return '';
-      }
-    } 
-
-  const ShowPicture = (props) => {
-    if (props.preview.files.length > 0) {
+    if (props.preview.text) {
       return (
         <>
         <Col xs={12} md={2} xl={2} className="mb-4 mb-md-0">
           <LineIcon />
         </Col>
         <Col xs={12} md={10} xl={10} className="text-center text-lg-start">
-          {props.preview.files.map(file => <DropzoneFile key={file.path} {...file} />)}
+          <div className="line-preview-main-content-comment-wrap">
+            <div className="line-preview-comment">
+              <p className="d-flex flex-wrap">{props.preview.text}</p>
+            </div>
+          </div>
+        </Col>
+        </>
+      );
+    } else {
+      return '';
+    }
+  }
+
+  const ShowVideo = (props) => {
+    if (props.preview.video_path) {
+      return (
+        <>
+        <Col xs={12} md={2} xl={2} className="mb-4 mb-md-0">
+          <LineIcon />
+        </Col>
+        <Col xs={12} md={10} xl={10} className="text-center text-lg-start">
+          <div className="line-preview-comment-image">
+            <ReactPlayer url={props.preview.video_path} controls width="100%" />
+          </div>
+        </Col>
+        </>
+      );
+    } else {
+      return '';
+    }
+  };
+
+  const ShowPicture = (props) => {
+    if (props.preview.image_path) {
+      return (
+        <>
+        <Col xs={12} md={2} xl={2} className="mb-4 mb-md-0">
+          <LineIcon />
+        </Col>
+        <Col xs={12} md={10} xl={10} className="text-center text-lg-start">
+          <div className="line-preview-comment-image">
+            <Image src={props.preview.image_path} />
+          </div>
         </Col>
         </>
       );
@@ -55,13 +77,16 @@ export default (props) => {
 
 
   const ShowPreview = (props) => {
-    switch (formId) {
-      case 'preview-text':
-        return <ShowText preview={props.preview} />
-      case 'preview-picture':
-        return <ShowPicture preview={props.preview} />
+    const { preview } = props;
+    switch (preview.type) {
+      case 1:
+        return <ShowText preview={preview} />
+      case 2:
+        return <ShowPicture preview={preview} />
+      case 3:
+        return <ShowVideo preview={preview} />
       default:
-        return <ShowText preview={props.preview} />
+        return <ShowText preview={preview} />
     }
   }
 

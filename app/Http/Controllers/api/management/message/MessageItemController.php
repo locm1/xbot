@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\Services\management\message\MessageItemService;
 use Illuminate\Http\Request;
+use App\Http\Requests\management\message\StoreMessageItemRequest;
 
 class MessageItemController extends Controller
 {
@@ -21,7 +22,7 @@ class MessageItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getMessageItemsById(Message $message)
+    public function index(Message $message)
     {
         $message_items = $this->message_item_service->getMessageItemsById($message);
         return response()->json(['message_items' => $message_items], 200);
@@ -33,42 +34,34 @@ class MessageItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Message $message)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $message_item = $this->message_item_service->update($request, $message, 'store');
+        return response()->json(['message_item' => $message_item], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Message $message)
     {
-        //
+        $message_item = $this->message_item_service->update($request, $message, 'update');
+        return response()->json(['message_item' => $message_item], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $this->message_item_service->destroy($request);
+        return response()->json([], 204);
     }
 }

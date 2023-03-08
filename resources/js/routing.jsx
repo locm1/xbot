@@ -124,6 +124,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const [pages, setPages] = useState([
     {role: ''}
   ]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get('/api/v1/management/me').then(response => {
@@ -132,35 +133,44 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
       console.error(error);
       history.push(Paths.Signin.path);
     })
-    getPages(setPages)
+    getPages(setPages, setLoading)
   }, [])
 
   console.log(rest.role_path);
   //ログインユーザーの権限レベルに応じてページの閲覧可能かどうか判定
-  const pageRole = pages.filter(page => { return page.path == rest.role_path})
-  console.log(pageRole);
-  // if (pageRole[0] &&  admin.role <= pageRole[1].role) {
-    
-  // }
+  const pageRole = pages && pages.filter(page => { return page.path == rest.role_path})
 
   return (
-    <Route {...rest} render={props => (
-      <>
-        <Sidebar
-          contracted={contractSidebar}
-          onMouseEnter={toggleMouseOver}
-          onMouseLeave={toggleMouseOver}
-          admin={admin}
-          pages={pages}
-        />
-
-        <main className="content">
-          <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} admin={admin} />
-          <Component {...props} />
-        </main>
-      </>
-    )}
-    />
+    <>
+      {(() => {
+        if (pageRole[0] && admin.role <= pageRole[0].role) {
+          return(
+            <>
+            <Route {...rest} render={props => (
+              <>
+                <Sidebar
+                  contracted={contractSidebar}
+                  onMouseEnter={toggleMouseOver}
+                  onMouseLeave={toggleMouseOver}
+                  admin={admin}
+                  pages={pages}
+                />
+                <main className="content">
+                  <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} admin={admin} />
+                  <Component {...props} />
+                </main>
+              </>
+            )}
+            />
+            </>
+          );
+        } else {
+          return (
+            <Route component={NotFound} />
+          );
+        }
+      })()}
+    </>
   );
 };
 

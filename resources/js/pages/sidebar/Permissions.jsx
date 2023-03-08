@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { Col, Row, Form, Button, ListGroup, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import { getPages, updatePages } from "@/pages/sidebar/api/PermissionApiMethods";
+import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 
 export default () => {
 	const roles = [

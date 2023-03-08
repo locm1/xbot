@@ -127,13 +127,15 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    getPages(setPages)
+
     axios.get('/api/v1/management/me').then(response => {
       setAdmin(response.data.admin);
+      setLoading(false)
     }).catch(error => {
       console.error(error);
       history.push(Paths.Signin.path);
     })
-    getPages(setPages, setLoading)
   }, [])
 
   console.log(rest.role_path);
@@ -166,7 +168,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
           );
         } else {
           return (
-            <Route component={NotFound} />
+            loading ? '' : <Route component={NotFound} />
           );
         }
       })()}

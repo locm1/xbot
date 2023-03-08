@@ -18,6 +18,7 @@ export default (props) => {
   const allNotificationsRead = notifications.reduce((acc, notif) => acc && notif.read, true);
   const bellIconClasses = !allNotificationsRead ? "unread" : "";
   const history = useHistory();
+  const { admin } = props;
 
   const markNotificationsAsRead = () => {
     setTimeout(() => {
@@ -67,7 +68,6 @@ export default (props) => {
       console.log(error);
     })
   };
-  const [adminName, setAdminName] = useState(props.admin.name);
 
 
   return (
@@ -91,7 +91,7 @@ export default (props) => {
               <Dropdown.Toggle as={Nav.Link} className="pt-1 px-0">
                 <div className="media d-flex align-items-center">
                   <div className="media-body ms-2 text-dark align-items-center d-none d-lg-block">
-                    <span className="mb-0 font-small fw-bold text-gray-900">{adminName}</span>
+                    <span className="mb-0 font-small fw-bold text-gray-900">{admin.name}</span>
                   </div>
                 </div>
               </Dropdown.Toggle>

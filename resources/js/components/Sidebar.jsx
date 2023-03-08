@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
@@ -13,11 +13,10 @@ import Logo from "@img/img/logo_admin.png";
 import ReactHero from "@img/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "@img/img/team/profile-picture-3.jpg";
 
-import GroupTitle from "@/components/GroupTitle";
 import { StoreIcon, GiftIcon } from "@/components/icons/Icons";
-import { stringify } from "postcss";
 
-export default (props = {}) => {
+export default (props) => {
+  const { admin, pages } = props;
   const location = useLocation();
   const { pathname } = location;
   const [show, setShow] = useState(false);
@@ -152,54 +151,90 @@ export default (props = {}) => {
               <Link to={Paths.DashboardOverview.path}>
                 <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap mb-4" />
               </Link>
-              {/* <GroupTitle name="User Management" /> */}
-              <NavItem title="ダッシュボード" link={Paths.DashboardOverview.path} icon={ClipboardIcon} />
+              {
+                pages[0] && admin.role <= pages[0].role && (
+                  <NavItem title="ダッシュボード" link={Paths.DashboardOverview.path} icon={ClipboardIcon} />
+                )
+              }
 
-              <CollapsableNavItem eventKey="user/" title="顧客管理" icon={UserIcon}>
-                <NavItem title="ユーザーリスト" link={Paths.Users.path} />
-                <NavItem title="タグ設定" link={Paths.Tags.path} />
-              </CollapsableNavItem>             
+              {
+                pages[1] && admin.role <= pages[1].role && (
+                  <CollapsableNavItem eventKey="user/" title="顧客管理" icon={UserIcon}>
+                    <NavItem title="ユーザーリスト" link={Paths.Users.path} />
+                    <NavItem title="タグ設定" link={Paths.Tags.path} />
+                  </CollapsableNavItem>
+                )
+              }
 
-              <CollapsableNavItem eventKey="message/" title="セグメント配信" icon={UserGroupIcon}>
-                <NavItem title="メッセージ配信" link={Paths.SendSegments.path} />
-                <NavItem title="テンプレート" link={Paths.TemplateMessages.path} />
-                <NavItem title="配信履歴" link={Paths.SendHistories.path} />
-              </CollapsableNavItem>  
+              {
+                pages[2] && admin.role <= pages[2].role && (
+                  <CollapsableNavItem eventKey="message/" title="セグメント配信" icon={UserGroupIcon}>
+                    <NavItem title="メッセージ配信" link={Paths.SendSegments.path} />
+                    <NavItem title="テンプレート" link={Paths.TemplateMessages.path} />
+                    <NavItem title="配信履歴" link={Paths.SendHistories.path} />
+                  </CollapsableNavItem>  
+                )
+              }
 
-              <CollapsableNavItem eventKey="visitor/" title="来店・販促管理" icon={StoreIcon}>
-                <NavItem title="来店履歴" link={Paths.VisitorHistories.path} />
-                <NavItem title="特典設定" badgeBg="danger" link={Paths.Privileges.path} />
-              </CollapsableNavItem>
+              {
+                pages[3] && admin.role <= pages[3].role && (
+                  <CollapsableNavItem eventKey="visitor/" title="来店・販促管理" icon={StoreIcon}>
+                    <NavItem title="来店履歴" link={Paths.VisitorHistories.path} />
+                    <NavItem title="特典設定" badgeBg="danger" link={Paths.Privileges.path} />
+                  </CollapsableNavItem>
+                )
+              }
 
-              <CollapsableNavItem eventKey="ec/" title="EC管理" icon={ShoppingCartIcon}>
-                <NavItem title="商品管理" link={Paths.Products.path} />
-                <NavItem title="カテゴリー設定" link={Paths.ProductCategory.path} />
-                <NavItem title="クーポン作成" link={Paths.Coupons.path} />
-                <NavItem title="注文リスト" link={Paths.Orders.path} />
-                <NavItem title="取置リスト" link={Paths.Reserves.path} />
-                <NavItem title="送料設定" link={Paths.Postage.path} />
-                <NavItem title="プライバシーポリシー" link={Paths.PrivacyPolicy.path} />
-                <NavItem title="利用規約" link={Paths.TermsOfService.path} />
-                <NavItem title="特定商取引法に基づく表記" link={Paths.SpecificTrades.path} />
-              </CollapsableNavItem>
+              {
+                pages[4] && admin.role <= pages[4].role && (
+                  <CollapsableNavItem eventKey="ec/" title="EC管理" icon={ShoppingCartIcon}>
+                    <NavItem title="商品管理" link={Paths.Products.path} />
+                    <NavItem title="カテゴリー設定" link={Paths.ProductCategory.path} />
+                    <NavItem title="クーポン作成" link={Paths.Coupons.path} />
+                    <NavItem title="注文リスト" link={Paths.Orders.path} />
+                    <NavItem title="取置リスト" link={Paths.Reserves.path} />
+                    <NavItem title="送料設定" link={Paths.Postage.path} />
+                    <NavItem title="プライバシーポリシー" link={Paths.PrivacyPolicy.path} />
+                    <NavItem title="利用規約" link={Paths.TermsOfService.path} />
+                    <NavItem title="特定商取引法に基づく表記" link={Paths.SpecificTrades.path} />
+                </CollapsableNavItem>
+                )
+              }
 
-              <CollapsableNavItem eventKey="event/" title="予約管理" icon={CalendarIcon}>
-                <NavItem title="予約枠作成" link={Paths.EventCalendar.path} />
-                <NavItem title="予約リスト" link={Paths.Events.path} />
-              </CollapsableNavItem>
+              {
+                pages[5] && admin.role <= pages[5].role && (
+                  <CollapsableNavItem eventKey="event/" title="予約管理" icon={CalendarIcon}>
+                    <NavItem title="予約枠作成" link={Paths.EventCalendar.path} />
+                    <NavItem title="予約リスト" link={Paths.Events.path} />
+                  </CollapsableNavItem>
+                )
+              }
 
-              <NavItem title="友達紹介管理" link={Paths.Invitations.path} icon={UserAddIcon} />
+              {
+                pages[6] && admin.role <= pages[6].role && (
+                  <NavItem title="友達紹介管理" link={Paths.Invitations.path} icon={UserAddIcon} />
+                )
+              }
 
-              <NavItem title="アンケート管理" icon={PencilAltIcon} link={Paths.CreateQuestionnaire.path} />
+              {
+                pages[7] && admin.role <= pages[7].role && (
+                  <NavItem title="アンケート管理" icon={PencilAltIcon} link={Paths.CreateQuestionnaire.path} />
+                )
+              }
 
-              <CollapsableNavItem eventKey="account/" title="アカウント管理" icon={CogIcon}>
-                <NavItem title="リッチメニュー設定" link={Paths.RichMenu.path} />
-                <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
-                <NavItem title="お友達追加用QR" link={Paths.QrCode.path} />
-                <NavItem title="権限管理" link={Paths.Accounts.path} />
-                <NavItem title="API設定" link={Paths.Api.path} />
-              </CollapsableNavItem>
-
+              {
+                pages[8] && admin.role <= pages[8].role && (
+                  <CollapsableNavItem eventKey="account/" title="アカウント管理" icon={CogIcon}>
+                    <NavItem title="リッチメニュー管理" link={Paths.RichMenus.path} />
+                    <NavItem title="リッチメニュー設定" link={Paths.RichMenus.path} />
+                    <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
+                    <NavItem title="お友達追加用QR" link={Paths.QrCode.path} />
+                    <NavItem title="アカウント管理" link={Paths.Accounts.path} />
+                    <NavItem title="権限設定" link={Paths.Permissions.path} />
+                    <NavItem title="API設定" link={Paths.Api.path} />
+                  </CollapsableNavItem>
+                )
+              }
             </Nav>
           </div>
         </SimpleBar>

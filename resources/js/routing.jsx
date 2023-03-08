@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { Paths } from "@/paths";
-import Cookies from 'js-cookie';
+import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 
 // page
 import SignIn from "@/pages/auth/Signin"
@@ -36,11 +36,12 @@ import SpecificTrades from '@/pages/setting/specific_trades/SpecificTrades';
 import Tags from '@/pages/tag/Tags';
 import QrCode from '@/pages/qrcode/QrCode';
 import NotFound from '@/pages/error/NotFound';
-import Api from '@/pages/api/createApi';
+import Api from '@/pages/api_key/createApi';
 import Greeting from '@/pages/greeting/Greeting';
-import Display from '@/pages/display/DisplayOrderCategory';
 import RichMenu from '@/pages/richmenu/RichMenu';
+import RichMenus from '@/pages/richmenu/RichMenus';
 import Postage from '@/pages/master/Postage';
+import Permissions from '@/pages/permission/Permissions';
 
 // Account
 import Accounts from '@/pages/account/Accounts';
@@ -76,6 +77,7 @@ import Topbar from '@/components/Topbar';
 
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
+  //console.log(rest);
   const history = useHistory();
   const resize = () => {
     var resize = setInterval(() => {
@@ -118,8 +120,11 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   }
 
   const [admin, setAdmin] = useState(
-    {id: 1, login_id: 'admin', name: '管理者用アカウン', role: 1,}
+    {id: 1, login_id: 'admin', name: '管理者用アカウン', role: ''}
   );
+  const [pages, setPages] = useState([
+    {role: ''}
+  ]);
   useEffect(() => {
     axios.get('/api/v1/management/me').then(response => {
       setAdmin(response.data.admin);
@@ -127,6 +132,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
       console.error(error);
       history.push(Paths.Signin.path);
     })
+    getPages(setPages)
   }, [])
 
   return (
@@ -136,6 +142,8 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
           contracted={contractSidebar}
           onMouseEnter={toggleMouseOver}
           onMouseLeave={toggleMouseOver}
+          admin={admin}
+          pages={pages}
         />
 
         <main className="content">
@@ -181,48 +189,50 @@ const Routing = () => {
       <Route exact path='/'>
         {<Redirect to={Paths.DashboardOverview.path} />}
       </Route>
-      <RouteWithSidebar exact path={Paths.DashboardOverview.path} component={DashboardOverview} />
-      <RouteWithSidebar exact path={Paths.CreateQuestionnaire.path} component={CreateQuestionnaire} />
-      <RouteWithSidebar exact path={Paths.Users.path} component={Users} />
-      <RouteWithSidebar exact path={Paths.EditUser.path} component={EditUser} />
-      <RouteWithSidebar exact path={Paths.SendSegments.path} component={SendSegments} />
-      <RouteWithSidebar exact path={Paths.TemplateMessages.path} component={Messages} />
-      <RouteWithSidebar exact path={Paths.CreateMessage.path} component={CreateMessage} />
-      <RouteWithSidebar exact path={Paths.EditMessage.path} component={CreateMessage} />
-      <RouteWithSidebar exact path={Paths.SendHistories.path} component={SendHistories} />
-      <RouteWithSidebar exact path={Paths.SendHistoryDetail.path} component={SendHistoryDetail} />
-      <RouteWithSidebar exact path={Paths.VisitorHistories.path} component={VisitorHistories} />
-      <RouteWithSidebar exact path={Paths.EditVisitorHistory.path} component={EditVisitorHistory} />
-      <RouteWithSidebar exact path={Paths.Privileges.path} component={Privileges} />
-      <RouteWithSidebar exact path={Paths.Products.path} component={Products} />
-      <RouteWithSidebar exact path={Paths.ProductCategory.path} component={ProductCategory} />
-      <RouteWithSidebar exact path={Paths.CreateCategory.path} component={EditCategory} />
-      <RouteWithSidebar exact path={Paths.EditCategory.path} component={EditCategory} />
-      <RouteWithSidebar exact path={Paths.CreateProduct.path} component={EditProduct} />
-      <RouteWithSidebar exact path={Paths.EditProduct.path} component={EditProduct} />
-      <RouteWithSidebar exact path={Paths.OrderDetail.path} component={OrderDetail} />
-      <RouteWithSidebar exact path={Paths.Coupons.path} component={Coupons} />
-      <RouteWithSidebar exact path={Paths.CreateCoupon.path} component={CreateCoupon} />
-      <RouteWithSidebar exact path={Paths.EditCoupon.path} component={CreateCoupon} />
-      <RouteWithSidebar exact path={Paths.Orders.path} component={Orders} />
-      <RouteWithSidebar exact path={Paths.Reserves.path} component={Reserves} />
-      <RouteWithSidebar exact path={Paths.EventCalendar.path} component={EventCalendar} />
-      <RouteWithSidebar exact path={Paths.Events.path} component={Events} />
-      <RouteWithSidebar exact path={Paths.Invitations.path} component={Invitations} />
-      <RouteWithSidebar exact path={Paths.EditInvitation.path} component={EditInvitation} />
-      <RouteWithSidebar exact path={Paths.PrivacyPolicy.path} component={PrivacyPolicy} />
-      <RouteWithSidebar exact path={Paths.TermsOfService.path} component={TermsOfService} />
-      <RouteWithSidebar exact path={Paths.SpecificTrades.path} component={SpecificTrades} />
-      <RouteWithSidebar exact path={Paths.Tags.path} component={Tags} />
-      <RouteWithSidebar exact path={Paths.QrCode.path} component={QrCode} />
-      <RouteWithSidebar exact path={Paths.Api.path} component={Api} />
-      <RouteWithSidebar exact path={Paths.Greeting.path} component={Greeting} />
-      <RouteWithSidebar exact path={Paths.Display.path} component={Display} />
-      <RouteWithSidebar exact path={Paths.RichMenu.path} component={RichMenu} />
-      <RouteWithSidebar exact path={Paths.Postage.path} component={Postage} />
-      <RouteWithSidebar exact path={Paths.Accounts.path} component={Accounts} />
-      <RouteWithSidebar exact path={Paths.EditAccount.path} component={EditAccount} />
-      <RouteWithSidebar exact path={Paths.RegisterAccount.path} component={EditAccount} />
+      <RouteWithSidebar exact role_path="dashboard" path={Paths.DashboardOverview.path} component={DashboardOverview} role={3} />
+      <RouteWithSidebar exact role_path="questionnaire" path={Paths.CreateQuestionnaire.path} component={CreateQuestionnaire} />
+      <RouteWithSidebar exact role_path="user" path={Paths.Users.path} component={Users} />
+      <RouteWithSidebar exact role_path="user" path={Paths.EditUser.path} component={EditUser} />
+      <RouteWithSidebar exact role_path="user" path={Paths.Tags.path} component={Tags} />
+      <RouteWithSidebar exact role_path="message" path={Paths.SendSegments.path} component={SendSegments} />
+      <RouteWithSidebar exact role_path="message" path={Paths.TemplateMessages.path} component={Messages} />
+      <RouteWithSidebar exact role_path="message" path={Paths.CreateMessage.path} component={CreateMessage} />
+      <RouteWithSidebar exact role_path="message" path={Paths.EditMessage.path} component={CreateMessage} />
+      <RouteWithSidebar exact role_path="message" path={Paths.SendHistories.path} component={SendHistories} />
+      <RouteWithSidebar exact role_path="message" path={Paths.SendHistoryDetail.path} component={SendHistoryDetail} />
+      <RouteWithSidebar exact role_path="visitor" path={Paths.VisitorHistories.path} component={VisitorHistories} />
+      <RouteWithSidebar exact role_path="visitor" path={Paths.EditVisitorHistory.path} component={EditVisitorHistory} />
+      <RouteWithSidebar exact role_path="visitor" path={Paths.Privileges.path} component={Privileges} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.Products.path} component={Products} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.ProductCategory.path} component={ProductCategory} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.CreateCategory.path} component={EditCategory} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.EditCategory.path} component={EditCategory} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.CreateProduct.path} component={EditProduct} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.EditProduct.path} component={EditProduct} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.OrderDetail.path} component={OrderDetail} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.Coupons.path} component={Coupons} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.CreateCoupon.path} component={CreateCoupon} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.EditCoupon.path} component={CreateCoupon} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.Orders.path} component={Orders} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.Reserves.path} component={Reserves} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.PrivacyPolicy.path} component={PrivacyPolicy} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.TermsOfService.path} component={TermsOfService} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.SpecificTrades.path} component={SpecificTrades} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.Postage.path} component={Postage} />
+      <RouteWithSidebar exact role_path="event" path={Paths.EventCalendar.path} component={EventCalendar} />
+      <RouteWithSidebar exact role_path="event" path={Paths.Events.path} component={Events} />
+      <RouteWithSidebar exact role_path="invitation" path={Paths.Invitations.path} component={Invitations} />
+      <RouteWithSidebar exact role_path="invitation" path={Paths.EditInvitation.path} component={EditInvitation} />
+      <RouteWithSidebar exact role_path="account" path={Paths.QrCode.path} component={QrCode} />
+      <RouteWithSidebar exact role_path="account" path={Paths.Api.path} component={Api} />
+      <RouteWithSidebar exact role_path="account" path={Paths.Greeting.path} component={Greeting} />
+      <RouteWithSidebar exact role_path="account" path={Paths.CreateRichMenu.path} component={RichMenu} />
+      <RouteWithSidebar exact role_path="account" path={Paths.EditRichMenu.path} component={RichMenu} />
+      <RouteWithSidebar exact role_path="account" path={Paths.RichMenus.path} component={RichMenus} />
+      <RouteWithSidebar exact role_path="account" path={Paths.Accounts.path} component={Accounts} />
+      <RouteWithSidebar exact role_path="account" path={Paths.EditAccount.path} component={EditAccount} />
+      <RouteWithSidebar exact role_path="account" path={Paths.RegisterAccount.path} component={EditAccount} />
+      <RouteWithSidebar exact role_path="account" path={Paths.Permissions.path} component={Permissions} />
         
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />

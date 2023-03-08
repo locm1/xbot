@@ -17,6 +17,8 @@ export default (props) => {
         return 'movie'
       case 4:
         return 'card'
+      default:
+        return 'text'
     }
   }
 

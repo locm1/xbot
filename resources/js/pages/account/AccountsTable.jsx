@@ -55,10 +55,12 @@ export const AccountsTable = (props) => {
           </Badge>
         </td>
         <td className="text-center">
-          <Link to={link}>
-            <PencilAltIcon className="icon icon-xs me-2"/>
-          </Link>
-          <TrashIcon onClick={(e) => showConfirmDeleteModal(e, id)} role="button" className="icon icon-xs text-danger me-2 " />
+          <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+            編集
+          </Button>
+          <Button onClick={(e) => showConfirmDeleteModal(e, id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+            削除
+          </Button>
         </td>
       </tr>
     );

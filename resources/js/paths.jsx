@@ -41,13 +41,14 @@ export const Paths = {
     QrCode: { path: `${prefix}/account/qr-code` },
     Api: { path: `${prefix}/account/api` },
     Greeting: { path: `${prefix}/account/greeting` },
-    Display: { path: `${prefix}/display` },
-    Accounts: { path: `${prefix}/account/xbot/list` },
-    EditAccount: { path: `${prefix}/account/xbot/edit/:id` },
-    RegisterAccount: { path: `${prefix}/account/xbot/register` },
-    RichMenu: { path: `${prefix}/account/richmenu` },
+    Accounts: { path: `${prefix}/account/list` },
+    EditAccount: { path: `${prefix}/account/edit/:id` },
+    RegisterAccount: { path: `${prefix}/account/register` },
+    CreateRichMenu: { path: `${prefix}/account/richmenu/create` },
+    EditRichMenu: { path: `${prefix}/account/richmenu/edit/:id` },
+    RichMenus: { path: `${prefix}/account/richmenu/list` },
     Postage: {path: `${prefix}/ec/postage`},
-
+    Permissions: {path: `${prefix}/account/permissions`},
 
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },

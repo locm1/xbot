@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\management\AdminController;
+use App\Http\Controllers\api\management\ApiKeyController;
 use App\Http\Controllers\api\management\event\EventCalendarController;
 use App\Http\Controllers\api\management\event\EventController;
 use App\Http\Controllers\api\management\user\UserController;
@@ -34,6 +35,7 @@ use App\Http\Controllers\api\management\order\OrderController;
 use App\Http\Controllers\api\management\order\OrderDeliveryController;
 use App\Http\Controllers\api\management\order\OrderProductController;
 use App\Http\Controllers\api\management\order\OrderUserController;
+use App\Http\Controllers\api\management\PageController;
 use App\Http\Controllers\api\management\product\ProductController;
 use App\Http\Controllers\api\management\product\ProductImageController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
@@ -140,6 +142,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('messages/{message}/items', [MessageItemController::class, 'store']);
         Route::put('messages/{message}/items', [MessageItemController::class, 'update']);
         Route::delete('messages/{message}/items', [MessageItemController::class, 'destroy']);
+        Route::post('api-keys', ApiKeyController::class);
+        Route::get('pages', [PageController::class, 'index']);
+        Route::put('pages', [PageController::class, 'update']);
     });
 });
 

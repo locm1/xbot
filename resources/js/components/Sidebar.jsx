@@ -226,7 +226,7 @@ export default (props) => {
                 pages[8] && admin.role <= pages[8].role && (
                   <CollapsableNavItem eventKey="account/" title="アカウント管理" icon={CogIcon}>
                     <NavItem title="リッチメニュー管理" link={Paths.RichMenus.path} />
-                    <NavItem title="あいさつ文設定" link={Paths.Greeting.path} />
+                    <NavItem title="あいさつメッセージ設定" link={Paths.Greeting.path} />
                     <NavItem title="お友達追加用QR" link={Paths.QrCode.path} />
                     <NavItem title="アカウント管理" link={Paths.Accounts.path} />
                     <NavItem title="権限設定" link={Paths.Permissions.path} />

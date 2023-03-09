@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player'
 
 export default (props) => {
-  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete } = props;
+  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems } = props;
 
   const getDefaultActiveKey = (type) => {
     switch (type) {
@@ -17,8 +17,6 @@ export default (props) => {
         return 'movie'
       case 4:
         return 'card'
-      default:
-        return 'text'
     }
   }
 
@@ -57,6 +55,22 @@ export default (props) => {
         </div>
       </Col>
     );
+  };
+
+  const addName = (id, value) => {
+    const currentMessageItem = messageItems.filter(messageItem => (messageItem.id === id))[0]
+
+    let textarea = document.getElementById(`preview-text-${id}`);
+    textarea.value = textarea.value.substr(0, textarea.selectionStart)
+    + value
+    + textarea.value.substr(textarea.selectionStart);
+
+    currentMessageItem.type = 1
+    currentMessageItem.image_path = null
+    currentMessageItem.video_path = null
+    currentMessageItem.text = textarea.value
+    
+    setMessageItems(messageItems.map((messageItem) => (messageItem.id === id ? currentMessageItem : messageItem)));
   };
 
   return (
@@ -109,11 +123,15 @@ export default (props) => {
                 </Nav.Item>
               </Nav>
             </Col>
-            <Col lg={2} className="d-flex justify-content-center">
-              <div className="message-editor-header-item-right" onClick={() => handleDelete(messageItem.id)}>
-                <XIcon className="icon icon-sm" />
-              </div>
-            </Col>
+            {
+              messageItems.length > 1 && (
+                <Col lg={2} className="d-flex justify-content-center">
+                  <div className="message-editor-header-item-right" onClick={() => handleDelete(messageItem.id)}>
+                    <XIcon className="icon icon-sm" />
+                  </div>
+                </Col>
+              )
+            }
             <Col lg={12}>
               <Tab.Content>
                 <Tab.Pane eventKey="text" className="py-4">
@@ -122,11 +140,19 @@ export default (props) => {
                       as="textarea"
                       rows="5" 
                       placeholder="テキストを入力" 
-                      id="preview-text" 
+                      id={`preview-text-${messageItem.id}`} 
                       value={messageItem.text} 
                       onChange={(e) => handlePreviewChange(e, 'text', messageItem.id)} 
                     />
                   </Form.Group>
+                  <div className="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center py-3">
+                    <Button onClick={() => addName(messageItem.id, '%friend_name%')} variant="primary" className="me-2">
+                      友だちの表示名
+                    </Button>
+                    <Button onClick={() => addName(messageItem.id, '%account_name%')} variant="primary" className="me-2">
+                      アカウント名
+                    </Button>
+                  </div>
                 </Tab.Pane>
                 <Tab.Pane eventKey="picture" className="py-4">
                   {messageItem.image_path == null ? (

@@ -137,8 +137,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
       history.push(Paths.Signin.path);
     })
   }, [])
-
-  console.log(rest.role_path);
+  
   //ログインユーザーの権限レベルに応じてページの閲覧可能かどうか判定
   const pageRole = pages && pages.filter(page => { return page.path == rest.role_path})
 

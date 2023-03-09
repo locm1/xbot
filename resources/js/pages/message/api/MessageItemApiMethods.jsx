@@ -1,8 +1,16 @@
 export const getMessageItems = async (id, setMessageItems) => {
   axios.get(`/api/v1/management/messages/${id}/items`)
   .then((response) => {
-    console.log(response.data.message_items);
-    setMessageItems(response.data.message_items);
+    const message_items = response.data.message_items;
+    console.log(message_items);
+
+    if (message_items.length > 0) {
+      setMessageItems(message_items);
+    } else {
+      setMessageItems([
+        {id: 1, type: 1, text: '', image_path: null, video_path: null}
+      ]);
+    }
   })
   .catch(error => {
       console.error(error);

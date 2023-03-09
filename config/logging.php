@@ -117,6 +117,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        # LINE Webhook ログ
+        'line_webhook' => [
+            'driver' => 'single',
+            'path' => storage_path("logs/line_webhook.log"),
+        ],
     ],
 
 ];

@@ -213,7 +213,7 @@ export default () => {
         </Col>
       </Row>
       {
-        messageItems.map((messageItem, index) => 
+        messageItems && messageItems.map((messageItem, index) => 
           <div key={messageItem.id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
             <MessageEditor
               messageItem={messageItem}
@@ -221,6 +221,8 @@ export default () => {
               handlePreviewChange={handlePreviewChange}
               handlePictureImageDelete={handlePictureImageDelete}
               handleDelete={handleDelete}
+              messageItems={messageItems}
+              setMessageItems={setMessageItems}
             />
           </div>
         )

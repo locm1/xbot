@@ -16,6 +16,7 @@ use App\Http\Controllers\api\management\coupon\CouponController;
 use App\Http\Controllers\api\management\coupon\CouponUserController;
 use App\Http\Controllers\api\management\DefaultSegmentController;
 use App\Http\Controllers\api\management\event\EventUserController;
+use App\Http\Controllers\api\management\GreetingMessageController;
 use App\Http\Controllers\api\management\invitation\InvitationController;
 use App\Http\Controllers\api\management\invitation\InvitationUserController;
 use App\Http\Controllers\api\management\TermsOfServiceController;
@@ -145,6 +146,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('api-keys', ApiKeyController::class);
         Route::get('pages', [PageController::class, 'index']);
         Route::put('pages', [PageController::class, 'update']);
+        Route::get('greeting-messages', [GreetingMessageController::class, 'index']);
+        Route::post('greeting-messages', [GreetingMessageController::class, 'store']);
+        Route::put('greeting-messages', [GreetingMessageController::class, 'update']);
+        Route::delete('greeting-messages', [GreetingMessageController::class, 'destroy']);
     });
 });
 

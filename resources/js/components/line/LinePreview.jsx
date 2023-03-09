@@ -17,7 +17,10 @@ export default (props) => {
 
 
   const ShowText = (props) => {
-    if (props.preview.text) {
+    const { preview } = props;
+    //const newText = preview.text.replace('%friend_name%', '<span className="message-replace-content">友だちの表示名</span>').replace('%account_name%', '<span className="message-replace-content">アカウント名</span>')
+    
+    if (preview.text) {
       return (
         <>
         <Col xs={12} md={2} xl={2} className="mb-4 mb-md-0">
@@ -26,7 +29,7 @@ export default (props) => {
         <Col xs={12} md={10} xl={10} className="text-center text-lg-start">
           <div className="line-preview-main-content-comment-wrap">
             <div className="line-preview-comment">
-              <p className="d-flex flex-wrap">{props.preview.text}</p>
+              <p className="d-flex flex-wrap">{preview.text}</p>
             </div>
           </div>
         </Col>

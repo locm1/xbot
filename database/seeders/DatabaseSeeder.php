@@ -15,6 +15,7 @@ use App\Models\ProductCategory;
 use App\Models\ProductContent;
 use App\Models\ProductImage;
 use App\Models\EventUser;
+use App\Models\GreetingMessage;
 use App\Models\Invitation;
 use App\Models\InvitationUser;
 use App\Models\InviteHistory;
@@ -85,5 +86,6 @@ class DatabaseSeeder extends Seeder
         InvitationUser::factory(100)->create();
         Message::factory(100)->create();
         MessageItem::factory(200)->create();
+        GreetingMessage::factory(3)->create();
     }
 }

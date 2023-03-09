@@ -42,6 +42,7 @@ use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortControlle
 use App\Http\Controllers\api\management\QuestionnaireAnswerController;
 use App\Http\Controllers\api\management\RelatedProductController;
 use App\Http\Controllers\api\management\ReserveHistoryController;
+use App\Http\Controllers\api\management\RichMenuController;
 use App\Http\Controllers\api\management\SegmentController;
 use App\Http\Controllers\api\management\SegmentTemplateController;
 use App\Http\Controllers\api\management\TagUserController;
@@ -145,6 +146,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('api-keys', ApiKeyController::class);
         Route::get('pages', [PageController::class, 'index']);
         Route::put('pages', [PageController::class, 'update']);
+        Route::apiResource('rich-menus', RichMenuController::class);
     });
 });
 

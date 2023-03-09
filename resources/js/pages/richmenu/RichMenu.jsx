@@ -5,6 +5,7 @@ import { XIcon } from "@heroicons/react/solid";
 import LinePreview from "@/components/line/LinePreview";
 import ChangeTemplateModal from "@/pages/richmenu/ChangeTemplateModal";
 import AccordionComponent from "@/components/AccordionComponent";
+import Swal from "sweetalert2";
 
 export default () => {
   const [formValue, setFormValue] = useState(
@@ -16,7 +17,8 @@ export default () => {
   const [previews, setPreviews] = useState([
     {id: 1, key: '', content: '', files:''}
   ]);
-  const [files, setFiles] = useState();
+  const [imagePath, setImagePath] = useState();
+  const [image, setImage] = useState();
 
   console.log(formValue);
   const handleChange = (e) => {
@@ -103,7 +105,7 @@ export default () => {
               <Form.Select className="mb-0" value={formValue[v.title + '-type']} name={`${v.title}-type`} onChange={handleChange}>
               <option>選択する</option>
                 {
-                  options.map((option, index) => <option key={index} value={index + 1}>{option}</option>)
+                  options.map((option, index) => <option key={`option-${index}`} value={index + 1}>{option}</option>)
                 }
               </Form.Select>
               <TypeForm typeValue={formValue[v.title + '-type']} title={v.title} />
@@ -120,7 +122,8 @@ export default () => {
 
     const onFileInputChange = (e) => {
       const fileObject = e.target.files[0];
-      setFiles(URL.createObjectURL(fileObject))
+      setFiles(URL.createObjectURL(fileObject));
+      setImage(fileObject);
     }
 
     const DropzoneFile = (props) => {
@@ -144,7 +147,7 @@ export default () => {
           <Card.Text className="h6 mb-1">画像</Card.Text>
         </div>
         <Form className="pb-4">
-          <Form.Control type="file" accept="image/*" onChange={(e) => onFileInputChange(e)} />
+          <Form.Control type="file" accept="image/*" onChange={onFileInputChange} />
         </Form>
         {
           files && (
@@ -156,6 +159,31 @@ export default () => {
       </ListGroup.Item>
     );
   };
+
+  const saveMenu = () => {
+    const formData = new FormData();
+    for (const key in formValue) {
+      formData.append(key, formValue[key]);
+    }
+    formData.append('image', image);
+    axios.post(`/api/v1/management/rich-menus/`, formData)
+    .then((response) => {
+      console.log(response);
+      Swal.fire(
+        '保存完了',
+        `「${formValue.title}」を保存しました`,
+        'success'
+      )
+    })
+    .catch(error => {
+      console.error(error);
+      Swal.fire(
+        'エラー',
+        `テンプレート名「${formValue.title}」を保存できませんでした`,
+        'error'
+      )
+    });
+  }
 
   const MenuBarSetting = (props) => {
     const { title, preview, handleClick, id, value } = props;
@@ -194,6 +222,7 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">リッチメニュー設定</h1>
           <Button onClick={() => console.log(richMenu)} />
+          <Button onClick={() => console.log(imagePath)} />
         </div>
       </div>
       <Card border="0" className="shadow mb-4">
@@ -216,7 +245,7 @@ export default () => {
             <div className='line-rich-menu-preview'>
               <LinePreview 
                 formValue={formValue}
-                files={files}
+                files={imagePath}
                 formId={formId}
                 previews={previews}
                 page='richmenu'
@@ -235,8 +264,8 @@ export default () => {
                   <Button variant="gray-800" className="me-2 mb-3" onClick={() => setTemplateModal(!templateModal)}>選択する</Button>
                 </SettingsItem>
                 <RichMenuImage 
-                  files={files}
-                  setFiles={setFiles}
+                  files={imagePath}
+                  setFiles={setImagePath}
                 />
                 <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 py-4 border-bottom">
                   <Col md={3} className="h6 mb-1">アクション</Col>
@@ -275,6 +304,7 @@ export default () => {
               </ListGroup>
             </div>
           </div>
+          <Button onClick={() => saveMenu()}>保存する</Button>
         </Card.Body>
       </Card>
 		</>

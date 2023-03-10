@@ -6,10 +6,11 @@ import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import LiffProductCard from "@/pages/liff/LiffProductCard";
-import productData from "@/data/products";
+import noImage from "@img/img/noimage.jpg"
 
-export default () => {
-  const [products, setProducts] = useState(productData);
+export default (props) => {
+  const { products } = props;
+
   const mainOptions = {
     perPage: 3,
     gap: '1rem',

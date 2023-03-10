@@ -47,6 +47,7 @@ use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortControlle
 use App\Http\Controllers\api\management\QuestionnaireAnswerController;
 use App\Http\Controllers\api\management\RelatedProductController;
 use App\Http\Controllers\api\management\ReserveHistoryController;
+use App\Http\Controllers\api\management\RichMenuController;
 use App\Http\Controllers\api\management\SegmentController;
 use App\Http\Controllers\api\management\SegmentTemplateController;
 use App\Http\Controllers\api\management\TagUserController;
@@ -155,6 +156,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('greeting-messages', [GreetingMessageController::class, 'update']);
         Route::delete('greeting-messages', [GreetingMessageController::class, 'destroy']);
         Route::get('access-token', LineChannelAccessTokenController::class);
+        Route::apiResource('rich-menus', RichMenuController::class);
     });
 });
 

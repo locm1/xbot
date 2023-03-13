@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\api\liff\product\ProductCategoryController as LiffProductCategoryController;
+use App\Http\Controllers\api\liff\product\ProductController as LiffProductController;
+use App\Http\Controllers\api\liff\product\ProductImageController as LiffProductImageController;
+use App\Http\Controllers\api\LineChannelAccessTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\management\AdminController;
@@ -151,6 +155,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('greeting-messages', [GreetingMessageController::class, 'store']);
         Route::put('greeting-messages', [GreetingMessageController::class, 'update']);
         Route::delete('greeting-messages', [GreetingMessageController::class, 'destroy']);
+        Route::get('access-token', LineChannelAccessTokenController::class);
         Route::apiResource('rich-menus', RichMenuController::class);
     });
 });
@@ -158,7 +163,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // LIFF側で叩くAPI
 Route::group(['prefix' => 'v1'], function() {
-    // Route::get('/specific-trades', SpecificTradeIndexController::class);
+    Route::apiResource('products', LiffProductController::class)->only([
+        'index', 'show'
+    ]);;
+    Route::get('products/{product}/images', [LiffProductImageController::class, 'index']);
+    Route::get('products/{product}/category', LiffProductCategoryController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

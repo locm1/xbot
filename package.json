@@ -17,6 +17,7 @@
         "@fullcalendar/timegrid": "^6.0.0",
         "@heroicons/react": "^1.0.6",
         "@jridgewell/sourcemap-codec": "^1.4.14",
+        "@line/liff": "^2.21.4",
         "@splidejs/react-splide": "^0.7.12",
         "@svg-maps/world": "^1.0.1",
         "@testing-library/jest-dom": "^5.16.5",

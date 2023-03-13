@@ -3,15 +3,10 @@ import { Row, Col, Nav, Breadcrumb, Card, Image } from 'react-bootstrap';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
 import { HomeIcon, UserCircleIcon, CogIcon, MailIcon, ShoppingCartIcon } from '@heroicons/react/solid';
+import noImage from "@img/img/noimage.jpg"
 
-import OrdererInformation from "@/pages/order/detail/OrdererInformation";
-import { ProductWidget } from "@/pages/order/detail/ProductWidget";
-import { DetailWidget } from "@/pages/order/detail/DetailWidget";
-import Cosmetics from '@img/img/products/cosmetics.jpeg';
-import Treatment from '@img/img/products/treatment.jpeg';
-
-export default () => {
-
+export default (props) => {
+  const { productImages } = props;
   const mainOptions = {
     type: 'fade',
     perPage: 1,
@@ -51,30 +46,22 @@ export default () => {
         options={mainOptions}
         ref={mainRef}
       >
-        <SplideSlide>
-          <Image rounded src={Cosmetics} className="slide-img" />
-        </SplideSlide>
-        <SplideSlide>
-          <Image rounded src={Treatment} className="slide-img" />
-        </SplideSlide>
-        <SplideSlide>
-          <Image rounded src={Cosmetics} className="slide-img" />
-        </SplideSlide>
+        {productImages && productImages.map((image, index) => 
+          <SplideSlide>
+            <Image rounded src={image.image_path} className="slide-img" />
+          </SplideSlide>
+        )}
       </Splide>
       <Splide
           options={ thumbsOptions }
           ref={thumbsRef}
           className="thumbnail-slider"
       >
-        <SplideSlide className="thumbnail-slide-img">
-          <Image rounded src={Cosmetics} className="slide-img" />
-        </SplideSlide>
-        <SplideSlide className="thumbnail-slide-img">
-          <Image rounded src={Treatment} className="slide-img" />
-        </SplideSlide>
-        <SplideSlide className="thumbnail-slide-img">
-          <Image rounded src={Cosmetics} className="slide-img" />
-        </SplideSlide>
+        {productImages && productImages.map((image, index) => 
+          <SplideSlide className="thumbnail-slide-img">
+            <Image rounded src={image.image_path} className="slide-img" />
+          </SplideSlide>
+        )}
       </Splide>
     </>
   );

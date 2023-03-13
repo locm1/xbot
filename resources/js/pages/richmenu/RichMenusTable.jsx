@@ -9,25 +9,19 @@ export const RichMenusTable = (props) => {
   const { menus } = props;
 
   const TableRow = (props) => {
-
+    const {name, richMenuId} = props;
+    const deleteStrId = richMenuId.replace("richmenu-", "");
+    const link = Paths.EditRichMenu.path.replace(":id", "") + deleteStrId;
     return (
       <tr className="border-bottom">
         <td>
+          {name}
         </td>
         <td>
-
-        </td>
-        <td>
-
-        </td>
-        <td>
-
-        </td>
-        <td>
-
+          {richMenuId}
         </td>
         <td className="text-center">
-          <Button  variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+          <Button  variant="info" as={Link} to={link} size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
           <Button  variant="danger" size="sm" className="d-inline-flex align-items-center">
@@ -44,16 +38,13 @@ export const RichMenusTable = (props) => {
         <Table hover className="user-table align-items-center">
           <thead>
             <tr>
-              <th className="border-bottom">氏名</th>
-              <th className="border-bottom">電話番号</th>
-              <th className="border-bottom">性別</th>
-              <th className="border-bottom">生年月日</th>
-              <th className="border-bottom">都道府県</th>
-              <th className="border-bottom text-center">編集・削除</th>
+              <th className="border-bottom">タイトル</th>
+              <th className="border-bottom">リッチメニューID</th>
+              <th></th>
             </tr>
           </thead>
           <tbody className="border-0">
-            {menus.map((v, k) => <TableRow key={`menu-${k}`} />)}
+            {menus.map((v, k) => <TableRow key={`menu-${k}`} {...v} />)}
           </tbody>
         </Table>
       </Card.Body>

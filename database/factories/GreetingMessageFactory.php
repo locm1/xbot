@@ -17,7 +17,6 @@ class GreetingMessageFactory extends Factory
      */
     public function definition()
     {
-        Storage::disk('public')->makeDirectory('greeting');
         $type = fake()->numberBetween(1, 2);
 
         if ($type == 2) {

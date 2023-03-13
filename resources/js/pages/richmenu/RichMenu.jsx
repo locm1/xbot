@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { useDropzone } from "react-dropzone";
 import { Col, Row, Form, Button, ListGroup, Card, Modal, Image } from 'react-bootstrap';
 import { XIcon } from "@heroicons/react/solid";
 import LinePreview from "@/components/line/LinePreview";
 import ChangeTemplateModal from "@/pages/richmenu/ChangeTemplateModal";
 import AccordionComponent from "@/components/AccordionComponent";
+import { showRichMenu } from "./RichMenuApiMethods";
 import Swal from "sweetalert2";
 
 export default () => {
+  const { id } = useParams();
+  const richMenuId = 'richmenu-' + id;
+  const pathname = useLocation().pathname;
+  useEffect(() => {
+    if (pathname.includes('/edit')) {
+      // showRichMenu(richMenuId, setCoupon);
+    }
+  }, []);
   const [formValue, setFormValue] = useState(
     {
       title: '', menuBarText: '',
@@ -71,9 +81,9 @@ export default () => {
     switch (typeValue) {
       case '1':
         console.log('case 1');
-        return <Form.Control className="mb-5 mt-2" name={`${title}-link`} defaultValue={formValue[`${title}-link`]} onBlur={handleChange} />
+        return <Form.Control className="mb-5 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
       case '2':
-        return <Form.Control as="textarea" className="mb-5 mt-2" name={`${title}-link`} defaultValue={formValue[`${title}-link`]} onBlur={handleChange} />
+        return <Form.Control as="textarea" className="mb-5 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
         break;
       case '3':
         return <Form.Select className="mb-5 mt-2" />
@@ -95,7 +105,7 @@ export default () => {
 
     return (
       <Row> 
-      {/* <Form.Control className="mb-3" name={`A-link`} value={formValue[`A-link`]} onBlur={props.handleChange} /> */}
+      {/* <Form.Control className="mb-3" name={`A-value`} value={formValue[`A-value`]} onBlur={props.handleChange} /> */}
         {actions.map(v => (
           <div className="d-flex border-bottom mb-3">
             <Col md={4}>
@@ -165,6 +175,7 @@ export default () => {
     for (const key in formValue) {
       formData.append(key, formValue[key]);
     }
+    formData.append('menuType', richMenu.type)
     formData.append('image', image);
     axios.post(`/api/v1/management/rich-menus/`, formData)
     .then((response) => {

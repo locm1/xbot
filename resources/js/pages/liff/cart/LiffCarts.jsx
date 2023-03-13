@@ -5,32 +5,71 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
+import noImage from "@img/img/noimage.jpg"
 import liff from '@line/liff';
+import { LiffMockPlugin } from '@line/liff-mock';
 
-import cartData from "@/data/carts";
+import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
-  const [carts, setCarts] = useState(cartData);
-  const total = carts.reduce((cart, i) => cart + i.price, 0);
+  const [carts, setCarts] = useState([]);
+  const [total, setTotal] = useState(1);
+  const [itemsExistInCart, setItemsExistInCart] = useState(true);
 
-  const deleteCart = (id) => {
+  useEffect(() => {
+    getCarts(setCarts, setItemsExistInCart)
+
+      // liff.getProfile()
+      //   .then((profile) => {
+      //     const name = profile.displayName;
+      //     console.log(profile);
+      //     alert( JSON.stringify(profile) );
+      //   })
+      //   .catch((err) => {
+      //     console.log("error", err);
+      //   });
+
+  }, []);
+
+  useEffect(() => {
+    setTotal(carts.reduce((cart, i) => cart + i.totalAmount, 0))
+  }, [carts]);
+
+  const deleteCartCard = (id) => {
     setCarts(carts.filter((cart) => (cart.id !== id)));
+    deleteCart(id)
+
+    if (carts.length == 0) {
+      setItemsExistInCart(false);
+    }
   }
 
   const CartItem = (props) => {
-    const { img, name, price, id, quantity } = props;
-    const link = Paths.LiffProductDetail.path.replace(':id', id);
+    const { id, product_id, quantity, product } = props;
+    const link = Paths.LiffProductDetail.path.replace(':id', product_id);
     
     const increaseQuantity = (id) => {
       const targetCart = carts.find((cart) => (cart.id === id));
       targetCart.quantity++;
+      targetCart.totalAmount = targetCart.product.price * targetCart.quantity;
       setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
+      updateCart(id, targetCart)
     }
 
     const decreaseQuantity = (id) => {
       const targetCart = carts.find((cart) => (cart.id === id));
       targetCart.quantity--;
+      targetCart.totalAmount = targetCart.product.price * targetCart.quantity;
       setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
+      updateCart(id, targetCart)
+    }
+
+    const getImages = (image) => {
+      if (image) {
+        return image.image_path
+      } else {
+        return noImage;
+      }
     }
 
     return (
@@ -39,13 +78,13 @@ export default () => {
           <Row className="">
             <Col xs="5">
               <div className="liff-cart-img">
-                <Image rounded src={img} className="m-0" />
+                <Image rounded src={getImages(product.product_images[0])} className="m-0" />
               </div>
             </Col>
             <Col xs="7" className="px-0 m-0">
-              <h4 className="fs-6 text-dark mb-0">{name}</h4>
-              <h4 className="liff-product-detail-price mt-2">￥{price.toLocaleString()}<span>税込</span></h4>
-              <p className="mt-3">在庫あり</p>
+              <h4 className="fs-6 text-dark mb-0">{product.name}</h4>
+              <h4 className="liff-product-detail-price mt-2">￥{product.price.toLocaleString()}<span>税込</span></h4>
+              <p className="mt-3">{product.stock_quantity > 0 ? '在庫あり' : '在庫なしのため、商品をカートから削除してください'}</p>
             </Col>
           </Row>
         </Link>
@@ -61,7 +100,7 @@ export default () => {
                   )
                 } else {
                   return (
-                    <InputGroup.Text onClick={() => deleteCart(id)}>
+                    <InputGroup.Text onClick={() => deleteCartCard(id)}>
                       <TrashIcon className="icon icon-xs" />
                     </InputGroup.Text>
                   )
@@ -74,7 +113,7 @@ export default () => {
             </InputGroup>
           </Col>
           <Col xs="7" className="px-0 m-0">
-            <Button variant="primary" size="sm" className="me-1" onClick={() => deleteCart(id)}>削除</Button>
+            <Button variant="primary" size="sm" className="me-1" onClick={() => deleteCartCard(id)}>削除</Button>
           </Col>
         </Row>
       </ListGroup.Item>
@@ -84,7 +123,7 @@ export default () => {
   return (
     <>
       {(() => {
-        if (carts.length > 0) {
+        if (itemsExistInCart) {
           return (
             <>
               <Card border="0" className="shadow">

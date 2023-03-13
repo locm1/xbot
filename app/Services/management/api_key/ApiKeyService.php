@@ -15,19 +15,15 @@ class ApiKeyService
 
     public function store($request) 
     {
-        $api_keys = [
-            'LINE_MESSAGE_CHANNEL_ID' => $request->line_message_channel_id,
-            'LINE_MESSAGE_CHANNEL_SECRET' => $request->line_message_channel_secret,
-            'LINE_MESSAGE_CHANNEL_TOKEN' => $request->line_message_channel_token,
-            'PAY_JP_API_KEY' => $request->pay_jp_api_key,
+        $api_key = [
+            'key' => strtoupper($request->key),
+            'value' => $request->value
         ];
 
         if (file_exists($this->env_path)) {
-            foreach ($api_keys as $key => $value) {
-                $this->save_api_key_action->saveApiKey($this->env_path, $key, $value);
-            }
+            $this->save_api_key_action->saveApiKey($this->env_path, $api_key['key'], $api_key['value']);
         }
-        return $api_keys;
+        return $api_key;
     }
 
 }

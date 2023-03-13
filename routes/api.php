@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\liff\cart\CartController;
 use App\Http\Controllers\api\liff\product\ProductCategoryController as LiffProductCategoryController;
 use App\Http\Controllers\api\liff\product\ProductController as LiffProductController;
 use App\Http\Controllers\api\liff\product\ProductImageController as LiffProductImageController;
@@ -168,6 +169,7 @@ Route::group(['prefix' => 'v1'], function() {
     ]);;
     Route::get('products/{product}/images', [LiffProductImageController::class, 'index']);
     Route::get('products/{product}/category', LiffProductCategoryController::class);
+    Route::apiResource('carts', CartController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

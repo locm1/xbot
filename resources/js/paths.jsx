@@ -73,6 +73,7 @@ export const Paths = {
     LiffProductHistories: { path: "/history/product" },
     LiffProductHistoryDetail: { path: "/history/product/purchase/:id" },
     LiffInvite: { path: "/invite" },
+    LiffInit: { path: "/liff" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

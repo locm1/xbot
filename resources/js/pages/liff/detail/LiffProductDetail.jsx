@@ -6,9 +6,14 @@ import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
+import liff from '@line/liff';
+import { LiffMockPlugin } from '@line/liff-mock';
+import { generateEnv } from '@/components/common/GenerateEnv';
 
 import ProductDetailSlider from "@/pages/liff/detail/ProductDetailSlider";
 import { showProduct, getProductImages, getProductCategory } from "@/pages/liff/api/ProductApiMethods";
+import { storeCart } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
   const { id } = useParams();
@@ -22,12 +27,42 @@ export default () => {
   const [category, setCategory] = useState(
     {name: '', color: ''}
   );
+  const [formValue, setFormValue] = useState({
+    product_id: id, quantity: 1
+  });
   const quantities = [...Array(5).keys()].map(i => ++i)
+
+  const handleChange = (e, input) => {
+    setFormValue({...formValue, [input]: e.target.value})
+  };
+
+  const saveCart = () => {
+    const idToken = Cookies.get('TOKEN');
+    formValue.token = idToken
+    storeCart(formValue);
+  };
+
+  const getLiffIdToken = () => {
+    liff.init({
+      liffId: process.env.MIX_LIFF_ID
+    })
+    .then(() => {
+      const idToken = liff.getIDToken();
+      Cookies.set('TOKEN', idToken, { expires: 1/24 })
+    }); 
+  };
 
   useEffect(() => {
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);
+    const liffId = process.env.MIX_LIFF_ID
+
+    // const { liffId, mock } = generateEnv();
+
+    // if (process.env.NODE_ENV !== 'production') {
+    //   liff.use(new LiffMockPlugin());
+    // }
   }, []);
 
   return (
@@ -45,7 +80,7 @@ export default () => {
             <h4 className="fs-6 text-dark mb-0">数量</h4>
           </div>
           <div className="px-3 pb-3">
-            <Form.Select defaultValue="1" size="sm">
+            <Form.Select defaultValue="1" size="sm" onChange={(e) => handleChange(e, 'quantity')}>
               {
                 quantities.map((quantity, index) => <option key={index} value={quantity}>{quantity}</option>)
               }
@@ -57,7 +92,7 @@ export default () => {
             <InboxIcon className="icon icon-xs me-2" />
             取り置きする
           </Button>
-          <Button variant="tertiary" as={Link} to={Paths.LiffCarts.path} className="mt-2 liff-product-detail-button">
+          <Button variant="tertiary" onClick={saveCart} className="mt-2 liff-product-detail-button">
             <ShoppingCartIcon className="icon icon-xs me-2" />
             カートに入れる
           </Button>

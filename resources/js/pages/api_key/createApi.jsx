@@ -7,7 +7,8 @@ import { storeApiKey } from "@/pages/api_key/api/ApiKeyApiMethods";
 export default () => {
 	const [apiKey, setApiKey] = useState({
 		line_message_channel_id: '', line_message_channel_secret: '',
-		line_message_channel_token: '', pay_jp_api_key: ''
+		line_message_channel_token: '', pay_jp_api_key: '', 
+		mix_liff_id: '', liff_channel_id: ''
 	});
 
 	const handleChange = (e, input) => {
@@ -22,8 +23,9 @@ export default () => {
     )
   } 
 
-	const handleClick = () => {
-    storeApiKey(apiKey, storeComplete)
+	const handleClick = (key, value) => {
+		const formValue = {'key': key, 'value': value}
+    storeApiKey(formValue, storeComplete)
   } 
 
 	return (
@@ -44,6 +46,11 @@ export default () => {
 							onChange={(e) => handleChange(e, 'line_message_channel_id')}
 						/>
 					</Form.Group>
+					<div className="d-flex flex-row-reverse mt-3">
+						<Button onClick={() => handleClick('line_message_channel_id', apiKey.line_message_channel_id)} variant="gray-800" className="me-2">
+							保存する
+						</Button>
+					</div>
 				</Card.Body>
 			</Card>
 			<Card className="shadow mb-4">
@@ -57,6 +64,11 @@ export default () => {
 							onChange={(e) => handleChange(e, 'line_message_channel_secret')}
 						/>
 					</Form.Group>
+					<div className="d-flex flex-row-reverse mt-3">
+						<Button onClick={() => handleClick('line_message_channel_secret', apiKey.line_message_channel_secret)} variant="gray-800" className="me-2">
+							保存する
+						</Button>
+					</div>
 				</Card.Body>
 			</Card>
 			<Card className="shadow mb-4">
@@ -70,6 +82,47 @@ export default () => {
 							onChange={(e) => handleChange(e, 'line_message_channel_token')}
 						/>
 					</Form.Group>
+					<div className="d-flex flex-row-reverse mt-3">
+						<Button onClick={() => handleClick('line_message_channel_token', apiKey.line_message_channel_token)} variant="gray-800" className="me-2">
+							保存する
+						</Button>
+					</div>
+				</Card.Body>
+			</Card>
+			<Card className="shadow mb-4">
+				<Card.Body>
+					<Form.Group id="line-message-channel-token">
+						<Form.Label>LIFF_CHANNEL_ID</Form.Label>
+						<Form.Control 
+							required 
+							type="text" 
+							value={apiKey.liff_channel_id} 
+							onChange={(e) => handleChange(e, 'liff_channel_id')}
+						/>
+					</Form.Group>
+					<div className="d-flex flex-row-reverse mt-3">
+						<Button onClick={() => handleClick('liff_channel_id', apiKey.liff_channel_id)} variant="gray-800" className="me-2">
+							保存する
+						</Button>
+					</div>
+				</Card.Body>
+			</Card>
+			<Card className="shadow mb-4">
+				<Card.Body>
+					<Form.Group id="firstName">
+						<Form.Label>LIFF ID</Form.Label>
+						<Form.Control 
+							required 
+							type="text" 
+							value={apiKey.mix_liff_id} 
+							onChange={(e) => handleChange(e, 'mix_liff_id')}
+						/>
+					</Form.Group>
+					<div className="d-flex flex-row-reverse mt-3">
+						<Button onClick={() => handleClick('mix_liff_id', apiKey.mix_liff_id)} variant="gray-800" className="me-2">
+							保存する
+						</Button>
+					</div>
 				</Card.Body>
 			</Card>
 			<Card className="shadow mb-4">
@@ -83,13 +136,13 @@ export default () => {
 							onChange={(e) => handleChange(e, 'pay_jp_api_key')}
 						/>
 					</Form.Group>
+					<div className="d-flex flex-row-reverse mt-3">
+						<Button onClick={() => handleClick('pay_jp_api_key', apiKey.pay_jp_api_key)} variant="gray-800" className="me-2">
+							保存する
+						</Button>
+					</div>
 				</Card.Body>
 			</Card>
-			<div className="d-flex flex-row-reverse mt-3">
-        <Button onClick={handleClick} variant="gray-800" className="me-2">
-          保存する
-        </Button>
-      </div>
 		</>
 	)
 }

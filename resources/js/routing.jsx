@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-dom";
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
+import liff from '@line/liff';
+import { LiffMockPlugin } from '@line/liff-mock';
 import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
+import { generateEnv } from '@/components/common/GenerateEnv';
 
 // page
 import SignIn from "@/pages/auth/Signin"
@@ -188,6 +192,98 @@ const LiffRoute = ({ component: Component, ...rest }) => {
   );
 }
 
+const getLiffIdToken = () => {
+  liff.init({
+    liffId: process.env.MIX_LIFF_ID
+  })
+  .then(() => {
+    const idToken = liff.getIDToken();
+    Cookies.set('TOKEN', idToken, { expires: 1/24 })
+  }); 
+};
+
+const getLiffLocalStorageKeys = (prefix) => {
+  const keys = []
+  for (var i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+    if (key.indexOf(prefix) === 0) {
+      keys.push(key)
+    }
+  }
+  return keys
+}
+
+const clearExpiredIdToken = (liffId) => {
+  const keyPrefix = `LIFF_STORE:${liffId}:`
+  const key = keyPrefix + 'decodedIDToken'
+  const decodedIDTokenString = localStorage.getItem(key)
+  if (!decodedIDTokenString) {
+    return
+  }
+  const decodedIDToken = JSON.parse(decodedIDTokenString)
+  // 有効期限をチェック
+  if (new Date().getTime() > decodedIDToken.exp * 1000) {
+      const keys = getLiffLocalStorageKeys(keyPrefix)
+      keys.forEach(function(key) {
+        localStorage.removeItem(key)
+      })
+  }
+}
+
+const LiffInitRoute = () => {
+  const search = useLocation().search;
+  const query = new URLSearchParams(search);
+  const path = query.get('path')
+  const id = query.get('id')
+  console.log(path);
+  const liffId = process.env.MIX_LIFF_ID
+  // const { liffId, mock } = generateEnv();
+
+  // if (process.env.NODE_ENV !== 'production') {
+  //   liff.use(new LiffMockPlugin());
+  // }
+  clearExpiredIdToken(liffId)
+
+  liff.init({liffId: process.env.MIX_LIFF_ID})
+    .then(() => {
+      if(liff.isLoggedIn() === false) liff.login()
+    })
+    .catch((err) => {
+      console.log(err.code, err.message);
+    });
+  getLiffIdToken();
+
+  switch (path) {
+    case 'product/detail':
+      return <Redirect to={`/product/detail/${id}`} />;
+
+    case 'product/list':
+      return <Redirect to={`/product/list`} />;
+    
+    case 'product/category':
+      return <Redirect to={`/product/category/${id}`} />;
+
+    case 'cart':
+      return <Redirect to={'cart'} />;
+
+    case 'visitor':
+      return <Redirect to={'visitor'} />;
+
+    case 'event/reservation':
+      return <Redirect to={'event/reservation'} />;
+
+    case 'questionnaire':
+      return <Redirect to={'questionnaire'} />;
+
+    case 'history/product':
+      return <Redirect to={'history/product'} />;
+    
+    case 'invite':
+      return <Redirect to={'invite'} />;
+  }
+}
+
+
 const GuestRoute = ({ component: Component, ...rest }) => {
   const history = useHistory();
   //認証しているかどうか
@@ -254,7 +350,8 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="account" path={Paths.RegisterAccount.path} component={EditAccount} />
       <RouteWithSidebar exact role_path="account" path={Paths.Permissions.path} component={Permissions} />
       <RouteWithSidebar exact role_path="account" path={Paths.LiffApps.path} component={LiffApps} />
-        
+      
+      <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
       <LiffRoute exact path={Paths.LiffProductCategories.path} component={LiffProductCategories} />

@@ -17,7 +17,7 @@ class ApiKeyController extends Controller
 
     public function __invoke(Request $request)
     {
-        $api_keys = $this->api_key_service->store($request);
-        return response()->json(['api_keys' => $api_keys], 200);
+        $api_key = $this->api_key_service->store($request);
+        return response()->json(['api_key' => $api_key], 200);
     }
 }

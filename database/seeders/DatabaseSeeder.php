@@ -37,6 +37,7 @@ use App\Models\UserTag;
 use App\Models\VisitorHistory;
 use Database\Factories\CouponUserFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -47,6 +48,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Storage::disk('public')->makeDirectory('greeting');
+        Storage::disk('public')->makeDirectory('richmenu');
+        Storage::disk('public')->makeDirectory('message');
+        Storage::disk('public')->makeDirectory('products');
+        Storage::disk('public')->makeDirectory('video');
+
         $this->call([
             AdminTableSeeder::class,
             PrefecturesTableSeeder::class,

@@ -16,6 +16,7 @@ import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
 
 export default (props) => {
   const { setTemplateModal, templateModal, show, setRichMenu, active, setActive } = props;
+  const [tmpRichMenu, setTmpRichMenu] = useState();
 
   const richmenu_1 = [
     {id: 1, img: squares6, size: 6, type: 1},
@@ -35,21 +36,27 @@ export default (props) => {
     {id: 12, img: squares_half_1, size: 1, type: 12},
   ];
 
-  const handleModalClose = () => {
+  const handleSaveModalClose = () => {
+    setRichMenu(tmpRichMenu)
+    setTemplateModal(!templateModal)
+  };
+
+  const handleCancelModalClose = () => {
+    setActive();
     setTemplateModal(!templateModal)
   };
 
   const handleClickContent = (menu) => {
     setActive(menu.id)
-    setRichMenu(menu)
+    setTmpRichMenu(menu);
   };
 
 	return (
 		<>
-      <Modal as={Modal.Dialog} centered show={show} onHide={handleModalClose} size="lg">
+      <Modal as={Modal.Dialog} centered show={show} onHide={handleCancelModalClose} size="lg">
         <Modal.Header>
           <Modal.Title className="h6">テンプレートを選択</Modal.Title>
-          <Button variant="close" aria-label="Close" onClick={handleModalClose} />
+          <Button variant="close" aria-label="Close" onClick={handleCancelModalClose} />
         </Modal.Header>
         <Modal.Body>
           <div className="mt-1">
@@ -80,10 +87,10 @@ export default (props) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="link" className="text-gray ms-auto" onClick={handleModalClose}>
+            <Button variant="link" className="text-gray ms-auto" onClick={handleCancelModalClose}>
               キャンセル
           </Button>
-          <Button variant="secondary" onClick={handleModalClose}>
+          <Button variant="secondary" onClick={handleSaveModalClose}>
             選択
           </Button>
         </Modal.Footer>

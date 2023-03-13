@@ -181,6 +181,18 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 };
 
 const LiffRoute = ({ component: Component, ...rest }) => {
+  // const liffId = process.env.MIX_LIFF_ID
+  // clearExpiredIdToken(liffId)
+
+  // liff.init({liffId: process.env.MIX_LIFF_ID})
+  //   .then(() => {
+  //     if(liff.isLoggedIn() === false) liff.login()
+  //   })
+  //   .catch((err) => {
+  //     console.log(err.code, err.message);
+  //   });
+  // getLiffIdToken();
+
   return (
     <Route {...rest} render={props => (
       <>

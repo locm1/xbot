@@ -2,15 +2,18 @@ export const storeCart = async (formValue) => {
   axios.post('/api/v1/carts', formValue)
   .then((response) => {
     console.log(response.data.cart);
-    //location.href = '/cart';
+    location.href = '/cart';
   })
   .catch(error => {
       console.error(error);
   });
 };
 
-export const getCarts = async (setCarts, setItemsExistInCart) => {
-  axios.get('/api/v1/carts')
+export const getCarts = async (idToken, setCarts, setItemsExistInCart) => {
+  const searchParams = {
+    params: { token: idToken }
+  };
+  axios.get('/api/v1/carts', searchParams)
   .then((response) => {
     const carts = response.data.carts;
     if (carts.length > 0) {

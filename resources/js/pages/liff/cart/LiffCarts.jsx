@@ -6,29 +6,24 @@ import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import noImage from "@img/img/noimage.jpg"
+import Cookies from 'js-cookie';
 import liff from '@line/liff';
 import { LiffMockPlugin } from '@line/liff-mock';
-
+import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
   const [carts, setCarts] = useState([]);
   const [total, setTotal] = useState(1);
+  const [user, setUser] = useState({
+    is_registered: 0
+  });
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
 
   useEffect(() => {
-    getCarts(setCarts, setItemsExistInCart)
-
-      // liff.getProfile()
-      //   .then((profile) => {
-      //     const name = profile.displayName;
-      //     console.log(profile);
-      //     alert( JSON.stringify(profile) );
-      //   })
-      //   .catch((err) => {
-      //     console.log("error", err);
-      //   });
-
+    const idToken = Cookies.get('TOKEN');
+    getCarts(idToken, setCarts, setItemsExistInCart)
+    getUser(idToken, setUser)
   }, []);
 
   useEffect(() => {
@@ -145,7 +140,7 @@ export default () => {
                   <InboxIcon className="icon icon-xs me-2" />
                   他の商品を見る
                 </Button>
-                <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="mt-2 liff-product-detail-button">
+                <Button as={Link} to={user.is_registered == 1 ? Paths.LiffCheckout.path : Paths.LiffQuestionnaire.path} variant="tertiary" className="mt-2 liff-product-detail-button">
                   <ShoppingCartIcon className="icon icon-xs me-2" />
                   レジに進む
                 </Button>

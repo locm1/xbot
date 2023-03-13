@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('order_users', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->tinyInteger('is_selected');
         });
     }
 

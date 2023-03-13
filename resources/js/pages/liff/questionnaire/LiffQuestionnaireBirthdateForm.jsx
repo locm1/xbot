@@ -5,7 +5,8 @@ import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
-export default () => {
+export default (props) => {
+  const { formValue, handleChange } = props;
   const months = [...Array(12).keys()].map(i => ++i);
   const days = [...Array(31).keys()].map(i => ++i);
   const date = new Date();
@@ -25,17 +26,17 @@ export default () => {
         <Col xs={12} className="mb-3">
           <Form.Label>生年月日</Form.Label>
           <div className="d-flex">
-            <Form.Select defaultValue="0" className="mb-0">
+            <Form.Select defaultValue="1990" value={formValue.year} onChange={(e) => handleChange(e, 'year')} className="mb-0">
               {getYear()}
             </Form.Select>
             <div className="liff-questionnaire-select-div">年</div>
-            <Form.Select defaultValue="0" className="mb-0 liff-questionnaire-select-month">
+            <Form.Select defaultValue="0" value={formValue.month} onChange={(e) => handleChange(e, 'month')} className="mb-0 liff-questionnaire-select-month">
               {
-                months.map((month, index) => <option key={index} value={month}>{month}</option>)
+                months && months.map((month, index) => <option key={index} value={month}>{month}</option>)
               }
             </Form.Select>
             <div className="liff-questionnaire-select-div">月</div>
-            <Form.Select defaultValue="0" className="mb-0 liff-questionnaire-select-month">
+            <Form.Select defaultValue="0" value={formValue.day} onChange={(e) => handleChange(e, 'day')} className="mb-0 liff-questionnaire-select-month">
               {
                 days.map((day, index) => <option key={index} value={day}>{day}</option>)
               }

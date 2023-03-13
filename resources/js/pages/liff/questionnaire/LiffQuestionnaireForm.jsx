@@ -7,9 +7,61 @@ import { Paths } from "@/paths";
 
 import CheckboxButton from "@/components/CheckboxButton";
 
-export default () => {
-  const questionnaireSelects = ['項目1', '項目2'];
-  const questionnaires = ['項目1', '項目2', '項目3', '項目4'];
+export default (props) => {
+  const { questionnaires } = props;
+
+  const getQuestionnaireItems = (type, questionnaire_items) => {
+    switch (type) {
+      case 1:
+        return (
+          <Form.Control type="text" placeholder="name@example.com" />
+        )
+
+      case 2:
+        return (
+          <Form.Control as="textarea" rows="4" placeholder="Enter your message..." />
+        )
+
+      case 3:
+        return (
+          questionnaire_items.map((questionnaire_item, index) => (
+            <Form.Check
+              key={questionnaire_item.id}
+              defaultChecked={index == 0 ? true : false}
+              type="radio"
+              defaultValue="option1"
+              label={questionnaire_item.name}
+              name="exampleRadios"
+              id={`questionnaire_item-${questionnaire_item.id}`}
+              htmlFor={`questionnaire_item-${questionnaire_item.id}`}
+            />
+          ))
+        )
+
+      case 4:
+        return (
+          questionnaire_items.map((questionnaire_item, index) => (
+            <CheckboxButton
+              key={questionnaire_item.id}
+              name="checxkbox"
+              value="check1"
+              title={questionnaire_item.name}
+              id={`questionnaire_item-${questionnaire_item.id}`}
+              htmlFor={`questionnaire_item-${questionnaire_item.id}`}
+            />
+          ))
+        )
+      
+      case 5:
+        return (
+          <Form.Select defaultValue="0" className="mb-0 w-50">
+            {
+              questionnaire_items.map((questionnaire_item, index) => <option key={index} value={index + 1}>{questionnaire_item.name}</option>)
+            }
+          </Form.Select>
+        )
+    }
+  };
 
   return (
     <>
@@ -19,36 +71,20 @@ export default () => {
         </Card.Header>
         <Card.Body className="py-0">
           <Row className="mt-3">
-            <Col xs={12} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>Q.選択回答式でのアンケート</Form.Label>
-                <div>
-                  {
-                    questionnaireSelects.map((questionnaireSelect, index) => 
-                      <CheckboxButton key={index} id={index + 1} name='questionnaire_select' title={questionnaireSelect} value={index + 1} />
-                    )
-                  }
-                </div>
-              </Form.Group>
-            </Col>
-            <Col xs={12} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>Q.複数回答式でのアンケート</Form.Label>
-                <div>
-                  {
-                    questionnaires.map((questionnaire, index) => 
-                      <CheckboxButton key={index} id={index + 1} name='questionnaire' title={questionnaire} value={index + 1} />
-                    )
-                  }
-                </div>
-              </Form.Group>
-            </Col>
-            <Col xs={12} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>フリー回答式のアンケート</Form.Label>
-                <Form.Control as="textarea" rows="3" placeholder="こちらに自由に回答をお願いします" />
-              </Form.Group>
-            </Col>
+            {
+              questionnaires && questionnaires.map((questionnaire, index) => 
+                <Col xs={12} className="mb-3" key={questionnaire.id}>
+                  <Form.Group id="firstName">
+                    <Form.Label>Q{index + 1}. {questionnaire.title}</Form.Label>
+                    <div>
+                    {
+                      getQuestionnaireItems(questionnaire.type, questionnaire.questionnaire_items)
+                    }
+                    </div>
+                  </Form.Group>
+                </Col>
+              )
+            }
           </Row>
         </Card.Body>
       </Card>

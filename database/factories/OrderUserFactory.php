@@ -33,6 +33,7 @@ class OrderUserFactory extends Factory
             'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->phoneNumber()),
             // 'order_history_id' => fake()->randomElement($order_history_ids),
             'user_id' => fake()->randomElement($user_ids),
+            'is_selected' => fake()->numberBetween(0, 1)
         ];
     }
 }

@@ -11,3 +11,13 @@ export const getUser = async (idToken, setUser) => {
       console.error(error);
   });
 };
+
+export const updateUser = async (id, formValue) => {
+  axios.put(`/api/v1/users/${id}`, formValue)
+  .then((response) => {
+    console.log(response.data.user);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};

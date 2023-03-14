@@ -56,7 +56,7 @@ export const deleteUser = async (id, completeDelete) => {
 
 
 export const getOccupations= async (setOccupations) => {
-  axios.get(`/api/v1/management/occupations`)
+  axios.get(`/api/v1/occupations`)
     .then((res) => {
       if(res.status !== 200) {
         throw new Error("APIが正しく取得されませんでした");

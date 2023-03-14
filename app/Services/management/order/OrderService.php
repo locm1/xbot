@@ -20,7 +20,7 @@ class OrderService
             return $this->search_order_action->search($request);
         }
 
-        return OrderHistory::with(['orderUser', 'user'])->paginate(10);
+        return OrderHistory::with(['OrderDestination', 'user'])->paginate(10);
     }
 
 

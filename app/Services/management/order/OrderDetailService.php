@@ -26,7 +26,7 @@ class OrderDetailService
 
     public function getOrderDeliveryById(OrderHistory $order) 
     {
-        return $order::with('orderUser')->find($order->id);
+        return $order::with('orderDestination')->find($order->id);
     }
 
     public function getOrderUserById(OrderHistory $order) 

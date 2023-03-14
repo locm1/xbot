@@ -25,4 +25,14 @@ class UserService
         $response = $this->verify_service->verifyIdToken($request->token);
         return User::where('line_id', $response['sub'])->first();
     }
+
+    public function update($request, User $user)
+    {
+        $data = $request->only([
+            'first_name', 'last_name', 'first_name_kana', 'last_name_kana', 'zipcode',
+            'prefecture', 'city', 'address', 'building_name', 'tel',
+            'birth_date', 'gender', 'is_registered'
+        ]);
+        return $user->update($data);
+    }
 }

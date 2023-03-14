@@ -16,9 +16,9 @@ class OrderHistory extends Model
         return $this->hasMany(OrderProduct::class);
     }
 
-    public function orderUser()
+    public function orderDestination()
     {
-        return $this->belongsTo(OrderUser::class);
+        return $this->belongsTo(OrderDestination::class);
     }
 
     public function user()

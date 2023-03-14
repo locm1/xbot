@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Coupon;
+use App\Models\OrderDestination;
 use App\Models\OrderProduct;
 use App\Models\OrderUser;
 use App\Models\Product;
@@ -23,13 +24,13 @@ class OrderHistoryFactory extends Factory
     {
         $user_ids  = User::pluck('id')->all();
         // $order_product_ids = OrderProduct::pluck('id')->all();
-        $order_user_ids = OrderUser::pluck('id')->all();
+        $order_destination_ids = OrderDestination::pluck('id')->all();
         $coupon_ids = Coupon::pluck('id')->all();
 
         return [
             'user_id' => fake()->randomElement($user_ids),
             // 'order_product_id' => fake()->randomElement($order_product_ids),
-            'order_user_id' => fake()->randomElement($order_user_ids),
+            'order_destination_id' => fake()->randomElement($order_destination_ids),
             'delivery_time' => fake()->numberBetween(1,8),
             'purchase_amount' => fake()->numberBetween(100, 10000000),
             'status' => fake()->numberBetween(1, 4),

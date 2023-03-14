@@ -8,24 +8,28 @@ import { Paths } from "@/paths";
 import LiffQuestionnaireBirthdateForm from "@/pages/liff/questionnaire/LiffQuestionnaireBirthdateForm";
 import LiffQuestionnaireForm from "@/pages/liff/questionnaire/LiffQuestionnaireForm";
 import { getPrefectures } from "@/pages/liff/api/PrefectureApiMethods";
-import { getQuestionnaires } from "@/pages/liff/api/QuestionnaireApiMethods";
+import { getQuestionnaires, storeQuestionnaireAnswers } from "@/pages/liff/api/QuestionnaireApiMethods";
 import { getAddress } from "@/pages/liff/api/ZipcodeApiMethods";
+import { getUser, updateUser } from "@/pages/liff/api/UserApiMethods";
+import { updateOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
+import { getOccupations } from "@/pages/liff/api/OccupationApiMethods";
 
 export default () => {
   const [questionnaires, setQuestionnaires] = useState([
-    {id: '', title: '', questionnaire_items: [{
+    {id: '', title: '', type: 1, answer: '', questionnaire_items: [{
       name: ''
-    }], type: 1}
+    }]}
   ]);
+  const [user, setUser] = useState({
+    is_registered: 0
+  });
   const [prefectures, setPrefectures] = useState([]);
+  const [isChecks, setIsChecks] = useState([]);
 
-  const occupations = [
-    '会社員', '公務員', '自営業', '会社役員', '自由業', 
-    '専業主婦（夫）', '学生', 'パート・アルバイト', '無職', 
-  ];
+  const [occupations, setOccupations] = useState([]);
   const [formValue, setFormValue] = useState({
     last_name: '', first_name: '', last_name_kana: '', first_name_kana: '',
-    year: 1990, month: '', day: '', gender: '男性', tel: '', occupation: '会社員', zipcode: '',
+    year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
     prefecture: '', city: '', address: '', building_name: '', room_number: ''
   });
 
@@ -47,16 +51,59 @@ export default () => {
     }
   };
 
+  const onSaveUser = () => {
+    formValue.is_registered = 1
+    console.log(formValue);
+    //updateUser(101, formValue)
+    updateUser(user.id, formValue)
+  };
+
+  const onSaveOrderDestination = () => {
+    formValue.is_selected = 1
+    console.log(formValue);
+    updateOrderDestination(user.id, formValue)
+    // updateOrderDestination(101, formValue)
+  };
+
+  const onSaveQuestionnaireAnswers = () => {
+    formValue.is_selected = 1
+    console.log(questionnaires);
+    storeQuestionnaireAnswers(user.id, {questionnaires: questionnaires})
+    // storeQuestionnaireAnswers(101, {questionnaires: questionnaires})
+  };
+
   const handleClick = () => {
-    const idToken = Cookies.get('TOKEN');
     formValue.birth_date = formValue.year + '-' + formValue.month + '-' + formValue.day
     formValue.building_name += ' ' + formValue.room_number
-    console.log(formValue);
+    onSaveUser()
+    onSaveOrderDestination()
+    onSaveQuestionnaireAnswers()
+  };
+
+  const answerSurvey = (e, id, type, questionnaire_item_id) => {
+    const targetQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
+
+    if (type == 4) {
+      const newAnswer = {questionnaire_item_id: questionnaire_item_id, value: e.target.value};
+
+      if (e.target.checked) {
+        targetQuestionnaire.answer = (targetQuestionnaire.answer) ? [...targetQuestionnaire.answer, newAnswer] : [newAnswer];
+      } else {
+        targetQuestionnaire.answer = targetQuestionnaire.answer.filter((answer, index) => (answer.questionnaire_item_id !== questionnaire_item_id));
+      }
+
+    } else {
+      targetQuestionnaire.answer = e.target.value;
+    }
+    setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? targetQuestionnaire : questionnaire)));
   };
 
   useEffect(() => {
+    const idToken = Cookies.get('TOKEN');
+    getUser(idToken, setUser)
     getPrefectures(setPrefectures)
     getQuestionnaires(setQuestionnaires)
+    getOccupations(setOccupations)
   }, []);
   
   return (
@@ -143,10 +190,10 @@ export default () => {
                               defaultValue={gender}
                               label={gender}
                               name="gender"
-                              value={gender}
+                              value={index + 1}
                               id={`gender-${gender}`}
                               htmlFor={`gender-${gender}`}
-                              onChange={() => changeGender(gender)}
+                              onChange={() => changeGender(index + 1)}
                             />
                           )
                         }
@@ -169,9 +216,9 @@ export default () => {
                 <Col xs={12} className="mb-3">
                   <Form.Group id="occupation">
                     <Form.Label>ご職業</Form.Label>
-                    <Form.Select defaultValue="0" value={formValue.occupation} onChange={(e) => handleChange(e, 'occupation')} className="mb-0 w-100">
+                    <Form.Select defaultValue="0" value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id')} className="mb-0 w-100">
                       {
-                        occupations.map((occupation, index) => <option key={index} value={index + 1}>{occupation}</option>)
+                        occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)
                       }
                     </Form.Select>
                   </Form.Group>
@@ -260,7 +307,7 @@ export default () => {
             </Card.Body>
           </Card>
 
-          <LiffQuestionnaireForm questionnaires={questionnaires} />
+          <LiffQuestionnaireForm questionnaires={questionnaires} answerSurvey={answerSurvey} />
 
           <Card border="0" className="shadow mt-4">
             <Card.Header className="border-bottom">

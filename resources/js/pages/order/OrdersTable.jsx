@@ -37,7 +37,7 @@ export const OrdersTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, created_at, user, order_user, purchase_amount, status, shipping_fee, user_id } = props;
+    const { id, created_at, user, order_destination, purchase_amount, status, shipping_fee, user_id } = props;
     const userLink = Paths.EditUser.path.replace(':id', user_id);
     const link = Paths.OrderDetail.path.replace(':id', id);
     const date = new Date(created_at)
@@ -86,7 +86,7 @@ export const OrdersTable = (props) => {
         <td>
           <div className="order-delivery_address">
             <span className="fw-normal">
-              {order_user.prefecture}{order_user.city}{order_user.address} {order_user.building_name}
+              {order_destination.prefecture}{order_destination.city}{order_destination.address} {order_destination.building_name}
             </span>
           </div>
         </td>

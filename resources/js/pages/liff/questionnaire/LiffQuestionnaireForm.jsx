@@ -8,18 +8,31 @@ import { Paths } from "@/paths";
 import CheckboxButton from "@/components/CheckboxButton";
 
 export default (props) => {
-  const { questionnaires } = props;
+  const { questionnaires, answerSurvey } = props;
 
-  const getQuestionnaireItems = (type, questionnaire_items) => {
+  const getQuestionnaireItems = (questionnaire, type, questionnaire_items) => {
     switch (type) {
       case 1:
         return (
-          <Form.Control type="text" placeholder="name@example.com" />
+          <Form.Control
+            value={questionnaire.answer}
+            name={`questionnaire_${questionnaire.id}`}
+            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, questionnaire_items[0].id)}
+            type="text"
+            placeholder="こちらに自由にご回答をお願いいたします。"
+          />
         )
 
       case 2:
         return (
-          <Form.Control as="textarea" rows="4" placeholder="Enter your message..." />
+          <Form.Control
+            as="textarea"
+            rows="4"
+            name={`questionnaire_${questionnaire.id}`}
+            value={questionnaire.answer}
+            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, questionnaire_items[0].id)}
+            placeholder="こちらに自由にご回答をお願いいたします。"
+          />
         )
 
       case 3:
@@ -29,9 +42,11 @@ export default (props) => {
               key={questionnaire_item.id}
               defaultChecked={index == 0 ? true : false}
               type="radio"
-              defaultValue="option1"
+              defaultValue={index}
               label={questionnaire_item.name}
-              name="exampleRadios"
+              value={questionnaire_item.name}
+              onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, questionnaire_item.id)}
+              name={`questionnaire_${questionnaire.id}`}
               id={`questionnaire_item-${questionnaire_item.id}`}
               htmlFor={`questionnaire_item-${questionnaire_item.id}`}
             />
@@ -43,8 +58,9 @@ export default (props) => {
           questionnaire_items.map((questionnaire_item, index) => (
             <CheckboxButton
               key={questionnaire_item.id}
-              name="checxkbox"
-              value="check1"
+              name={`questionnaire_${questionnaire.id}`}
+              value={questionnaire_item.name}
+              change={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, questionnaire_item.id)}
               title={questionnaire_item.name}
               id={`questionnaire_item-${questionnaire_item.id}`}
               htmlFor={`questionnaire_item-${questionnaire_item.id}`}
@@ -54,7 +70,12 @@ export default (props) => {
       
       case 5:
         return (
-          <Form.Select defaultValue="0" className="mb-0 w-50">
+          <Form.Select 
+            defaultValue={questionnaire_items[0].name}
+            value={questionnaire.answer}
+            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, questionnaire_items[0].id)}
+            className="mb-0 w-50"
+          >
             {
               questionnaire_items.map((questionnaire_item, index) => <option key={index} value={index + 1}>{questionnaire_item.name}</option>)
             }
@@ -78,7 +99,7 @@ export default (props) => {
                     <Form.Label>Q{index + 1}. {questionnaire.title}</Form.Label>
                     <div>
                     {
-                      getQuestionnaireItems(questionnaire.type, questionnaire.questionnaire_items)
+                      questionnaire.questionnaire_items && getQuestionnaireItems(questionnaire, questionnaire.type, questionnaire.questionnaire_items)
                     }
                     </div>
                   </Form.Group>

@@ -20,7 +20,7 @@ class QuestionnaireController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function __invoke()
     {
         $questionnaires = $this->questionnaire_service->index();
         return response()->json(['questionnaires' => $questionnaires], 200);

@@ -21,7 +21,7 @@ export const getOrderUser = async (id, setOrderUser) => {
 export const getOrderDelivery = async (id, setOrderDelivery) => {
   axios.get(`/api/v1/management/orders/${id}/delivery`)
   .then((response) => {
-    setOrderDelivery(response.data.order_delivery.order_user);
+    setOrderDelivery(response.data.order_delivery.order_destination);
   })
   .catch(error => {
       console.error(error);

@@ -16,7 +16,7 @@ class GreetingService
     public function __construct(LINEBot $bot, string $user_id) {
         $this->user_id = $user_id;
         $this->bot = $bot;
-        $this->url = 'https://8951-2400-2413-9641-0-7de2-2567-fdaf-1d81.jp.ngrok.io';
+        $this->url = 'https://x-bot.stg-box.jp';
     }
 
     public function sendGreetingMessage()

@@ -16,7 +16,7 @@ class GreetingService
     public function __construct(LINEBot $bot, string $user_id) {
         $this->user_id = $user_id;
         $this->bot = $bot;
-        $this->url = 'https://7c21-2400-2413-9641-0-bddb-b00d-d9a1-4862.jp.ngrok.io';
+        $this->url = 'https://8951-2400-2413-9641-0-7de2-2567-fdaf-1d81.jp.ngrok.io';
     }
 
     public function sendGreetingMessage()
@@ -37,7 +37,7 @@ class GreetingService
                 case 3:
                     $video_url = $this->url .$message->video_path;
                     $video_preview_url = $this->url .'/storage/greeting/drink_cola_zero_petbottle.png';
-                    $message_builder = new VideoMessageBuilder($video_url, $video_preview_url);
+                    $message_builder = new VideoMessageBuilder($video_url, $video_url);
                     break;
             }
             $multi_message_builder->add($message_builder);

@@ -49,7 +49,6 @@ export const Paths = {
     RichMenus: { path: `${prefix}/account/richmenu/list` },
     Postage: {path: `${prefix}/ec/postage`},
     Permissions: {path: `${prefix}/account/permissions`},
-    LiffApps: {path: `${prefix}/account/liff/app/list`},
 
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },

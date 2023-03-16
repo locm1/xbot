@@ -25,6 +25,7 @@ use App\Models\Occupation;
 use App\Models\Order;
 use App\Models\OrderDestination;
 use App\Models\OrderHistory;
+use App\Models\OrderPaymentMethod;
 use App\Models\OrderProduct;
 use App\Models\Questionnaire;
 use App\Models\QuestionnaireAnswer;
@@ -95,5 +96,6 @@ class DatabaseSeeder extends Seeder
         Message::factory(100)->create();
         MessageItem::factory(200)->create();
         GreetingMessage::factory(3)->create();
+        OrderPaymentMethod::factory(100)->create();
     }
 }

@@ -15,7 +15,7 @@ import squares_half_2_1 from "@img/img/richmenu/squares_half_2_1.jpg"
 import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
 
 export default (props) => {
-  const { setTemplateModal, templateModal, show, setRichMenu, active, setActive } = props;
+  const { setTemplateModal, templateModal, show, setRichMenu, setFormValue, formValue, active, setActive } = props;
   const [tmpRichMenu, setTmpRichMenu] = useState();
 
   const richmenu_1 = [
@@ -37,7 +37,9 @@ export default (props) => {
   ];
 
   const handleSaveModalClose = () => {
-    setRichMenu(tmpRichMenu)
+    const value = +tmpRichMenu.id;
+    setRichMenu(tmpRichMenu);
+    setFormValue({...formValue, 'menuType': value})
     setTemplateModal(!templateModal)
   };
 

@@ -3,26 +3,17 @@
 namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
+use App\Services\management\rich_menu_ailias\RichMenuAiliasService;
 use Illuminate\Http\Request;
-use LINE\LINEBot\HTTPClient\CurlHTTPClient;
-use App\Services\api\LineBotService as LINEBot;
-use App\Services\management\rich_menu\RichMenuService;
-use Illuminate\Support\Facades\Log;
-use LINE\LINEBot\RichMenuBuilder;
-use LINE\LINEBot\RichMenuBuilder\RichMenuAreaBoundsBuilder;
-use LINE\LINEBot\RichMenuBuilder\RichMenuAreaBuilder;
-use LINE\LINEBot\RichMenuBuilder\RichMenuSizeBuilder;
-use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
-use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 
-class RichMenuController extends Controller
+class RichMenuAiliasController extends Controller
 {
-    protected $bot;
     protected $service;
 
-    public function __construct() {
-        $this->service = new RichMenuService();
+    public function __construct(RichMenuAiliasService $service) {
+        $this->service = $service;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,7 +32,7 @@ class RichMenuController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->service->store($request);
+        return $this->service->store($request['richMenuAliasId'], $request['richMenuId']);
     }
 
     /**
@@ -50,9 +41,9 @@ class RichMenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($richmenu_id)
+    public function show($id)
     {
-        return $this->service->show($richmenu_id);
+        //
     }
 
     /**
@@ -64,10 +55,7 @@ class RichMenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $new_richmenu_id = $this->service->store($request);
-        $this->service->destroy($id);
-
-        return $new_richmenu_id;
+        //
     }
 
     /**
@@ -78,6 +66,6 @@ class RichMenuController extends Controller
      */
     public function destroy($id)
     {
-        return $this->service->destroy($id);
+        //
     }
 }

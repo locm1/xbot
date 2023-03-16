@@ -180,17 +180,17 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 };
 
 const LiffRoute = ({ component: Component, ...rest }) => {
-  const liffId = process.env.MIX_LIFF_ID
-  clearExpiredIdToken(liffId)
+  // const liffId = process.env.MIX_LIFF_ID
+  // clearExpiredIdToken(liffId)
 
-  liff.init({liffId: process.env.MIX_LIFF_ID})
-    .then(() => {
-      if(liff.isLoggedIn() === false) liff.login()
-    })
-    .catch((err) => {
-      console.log(err.code, err.message);
-    });
-  getLiffIdToken();
+  // liff.init({liffId: process.env.MIX_LIFF_ID})
+  //   .then(() => {
+  //     if(liff.isLoggedIn() === false) liff.login()
+  //   })
+  //   .catch((err) => {
+  //     console.log(err.code, err.message);
+  //   });
+  // getLiffIdToken();
 
   return (
     <Route {...rest} render={props => (
@@ -369,6 +369,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
       <LiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
       <LiffRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
+      <LiffRoute exact path={Paths.LiffCheckoutEditAddress.path} component={LiffCheckoutAddAddress} />
       <LiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
       <LiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
       <LiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import '@splidejs/splide/css';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import LiffQuestionnaireBirthdateForm from "@/pages/liff/questionnaire/LiffQuestionnaireBirthdateForm";
@@ -11,7 +11,7 @@ import { getPrefectures } from "@/pages/liff/api/PrefectureApiMethods";
 import { getQuestionnaires, storeQuestionnaireAnswers } from "@/pages/liff/api/QuestionnaireApiMethods";
 import { getAddress } from "@/pages/liff/api/ZipcodeApiMethods";
 import { getUser, updateUser } from "@/pages/liff/api/UserApiMethods";
-import { updateOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
+import { storeOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
 import { getOccupations } from "@/pages/liff/api/OccupationApiMethods";
 
 export default () => {
@@ -59,10 +59,11 @@ export default () => {
   };
 
   const onSaveOrderDestination = () => {
+    const location = useLocation().pathname;
     formValue.is_selected = 1
     console.log(formValue);
-    updateOrderDestination(user.id, formValue)
-    // updateOrderDestination(101, formValue)
+    storeOrderDestination(user.id, formValue, location)
+    // storeOrderDestination(101, formValue)
   };
 
   const onSaveQuestionnaireAnswers = () => {

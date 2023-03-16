@@ -2,7 +2,7 @@
 
 namespace App\Services\management\order;
 
-use App\Models\OrderHistory;
+use App\Models\Order;
 use App\Services\management\AbstractManagementService;
 
 class OrderService
@@ -20,7 +20,7 @@ class OrderService
             return $this->search_order_action->search($request);
         }
 
-        return OrderHistory::with(['OrderDestination', 'user'])->paginate(10);
+        return Order::with('user')->get();
     }
 
 
@@ -30,16 +30,15 @@ class OrderService
     }
 
 
-    public function show(OrderHistory $order) 
+    public function show(Order $order) 
     {
         return $order->with('coupon')->find($order->id);
     }
 
 
-    public function update($request, OrderHistory $order) 
+    public function update($request, Order $order) 
     {
-        $data = $request->only(['status']);
-        return $order->update($data);
+        return $order->update($request->only(['status']));
     }
 
 

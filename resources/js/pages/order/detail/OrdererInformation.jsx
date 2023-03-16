@@ -22,10 +22,10 @@ export default (props) => {
                 <h6 className="mb-4 fw-bolder border-bottom pb-3">注文者情報</h6>
                 {details.map((detail, index) => 
                   <Row className="bg-transparent border-bottom py-3 px-0">
-                    <Col key={index} xs="auto" xl={4} className="px-3 pb-2">
+                    <Col key={`title-${index}`} xs="auto" xl={4} className="px-3 pb-2">
                       <h4 className="fs-6 text-dark mb-0">{detail.title}</h4>
                     </Col>
-                    <Col key={index} xs="auto" xl={8} className="px-4 pb-2">
+                    <Col key={`value-${index}`} xs="auto" xl={8} className="px-4 pb-2">
                       <span className="fs-6 fw-bolder text-dark">{detail.value}</span>
                     </Col>
                   </Row>

@@ -4,7 +4,7 @@ namespace App\Http\Requests\liff\order_destination;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreOrderDestinationRequest extends FormRequest
+class UpdateOrderDestinationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

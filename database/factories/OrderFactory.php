@@ -2,18 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Coupon;
-use App\Models\OrderDestination;
-use App\Models\OrderProduct;
-use App\Models\OrderUser;
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
+use App\Models\Coupon;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
  */
-class OrderHistoryFactory extends Factory
+class OrderFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -24,13 +20,20 @@ class OrderHistoryFactory extends Factory
     {
         $user_ids  = User::pluck('id')->all();
         // $order_product_ids = OrderProduct::pluck('id')->all();
-        $order_destination_ids = OrderDestination::pluck('id')->all();
         $coupon_ids = Coupon::pluck('id')->all();
 
         return [
             'user_id' => fake()->randomElement($user_ids),
-            // 'order_product_id' => fake()->randomElement($order_product_ids),
-            'order_destination_id' => fake()->randomElement($order_destination_ids),
+            "first_name" => fake()->firstName(),
+            "first_name_kana" => fake()->firstKanaName(),
+            "last_name" => fake()->lastName(),
+            "last_name_kana" => fake()->lastKanaName(),
+            'zipcode' => fake()->postcode(),
+            'prefecture' => fake()->prefecture(),
+            'city' => fake()->city(),
+            'address' => fake()->streetAddress(),
+            'building_name' => fake()->secondaryAddress(),
+            'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->phoneNumber()),
             'delivery_time' => fake()->numberBetween(1,8),
             'purchase_amount' => fake()->numberBetween(100, 10000000),
             'status' => fake()->numberBetween(1, 4),

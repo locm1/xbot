@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\management\order;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Services\management\order\OrderDetailService;
 use Illuminate\Http\Request;
@@ -17,10 +18,10 @@ class OrderProductController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(OrderHistory $order)
+    public function __invoke(Order $order)
     {
         $order_products = $this->order_detail_service->getOrderProductsById($order);
         return response()->json(['order_products' => $order_products], 200);

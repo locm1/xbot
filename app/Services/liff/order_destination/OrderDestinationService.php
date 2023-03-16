@@ -14,6 +14,11 @@ class OrderDestinationService
         $this->format_order_destination_action = $format_order_destination_action;
     }
 
+    public function index(User $user)
+    {
+        return $user->orderDestinations;
+    }
+
     public function store($request, User $user)
     {
         $data = $request->only([
@@ -22,5 +27,19 @@ class OrderDestinationService
         ]);
         $merged_order_destination = $this->format_order_destination_action->mergeUserIdToArray($user, $data);
         return OrderDestination::create($merged_order_destination);
+    }
+
+    public function show(OrderDestination $destination)
+    {
+        return $destination;
+    }
+
+    public function update($request, $destination)
+    {
+        $data = $request->only([
+            'first_name', 'last_name', 'first_name_kana', 'last_name_kana', 'zipcode',
+            'prefecture', 'city', 'address', 'building_name', 'tel', 'is_selected'
+        ]);
+        return $destination->update($data);
     }
 }

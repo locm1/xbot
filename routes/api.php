@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\api\liff\cart\CartController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
+use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
+use App\Http\Controllers\api\liff\order_destination\UpdateOrderDestinationController;
 use App\Http\Controllers\api\liff\product\ProductCategoryController as LiffProductCategoryController;
 use App\Http\Controllers\api\liff\product\ProductController as LiffProductController;
 use App\Http\Controllers\api\liff\product\ProductImageController as LiffProductImageController;
@@ -140,7 +142,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('orders', OrderController::class);
         Route::get('orders/{order}/products', OrderProductController::class);
         Route::get('orders/{order}/user', OrderUserController::class);
-        Route::get('orders/{order}/delivery', OrderDeliveryController::class);
         Route::apiResource('visitor-histories', VisitorHistoryController::class);
         Route::get('visitor-histories/{visitor_history}/user', VisitorHistoryUserController::class);
         Route::apiResource('reserve-histories', ReserveHistoryController::class);
@@ -176,6 +177,8 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('users', LiffUserController::class);
     Route::post('users/{user}/questionnaire-answers', LiffQuestionnaireAnswerController::class);
     Route::apiResource('users/{user}/destinations', LiffOrderDestinationController::class);
+    Route::put('users/{user}/destinations', UpdateOrderDestinationController::class);
+    Route::get('users/{user}/selected-destination', SelectedOrderDestinationController::class);
     Route::get('address', SearchZipcodeController::class);
     Route::get('prefectures', PrefectureController::class);
     Route::get('questionnaires', LiffQuestionnaireController::class);

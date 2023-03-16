@@ -22,6 +22,7 @@ use App\Models\InviteHistory;
 use App\Models\Message;
 use App\Models\MessageItem;
 use App\Models\Occupation;
+use App\Models\Order;
 use App\Models\OrderDestination;
 use App\Models\OrderHistory;
 use App\Models\OrderProduct;
@@ -84,7 +85,7 @@ class DatabaseSeeder extends Seeder
         CouponUser::factory(100)->create();
         VisitorHistory::factory(100)->create();
         OrderDestination::factory(100)->create();
-        OrderHistory::factory(200)->create();
+        Order::factory(200)->create();
         OrderProduct::factory(500)->create();
         InviteHistory::factory(100)->create();
         ReserveHistory::factory(300)->create();

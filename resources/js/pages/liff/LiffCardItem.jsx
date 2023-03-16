@@ -99,8 +99,10 @@ export const PaymentDetailItem = () => {
 }
 
 export const DeliveryAddressItem = (props) => {
-  const { id, index, lastName, firstName, lastNameKana, firstNameKana, zipcode, prefectures, city, address, buildingName, roomNumber, tel } = props;
+  const { id, last_name, first_name, zipcode, prefecture, city, address, building_name, tel } = props;
   const location = useLocation().pathname;
+  const target_split = zipcode && zipcode.substr(0, 3);
+
 
   const getColButton = (location) => {
     if (location == '/checkout') {
@@ -121,10 +123,10 @@ export const DeliveryAddressItem = (props) => {
       <Row className="">
         <Col xs={getColButton(location).colSize} className="px-0">
           <div className="m-1">
-            <h4 className="fs-6 text-dark mb-0">{lastName} {firstName} 様</h4>
+            <h4 className="fs-6 text-dark mb-0">{last_name} {first_name} 様</h4>
             <h4 className="fs-6 text-dark mt-2">
-              〒{zipcode}<br />
-              {prefectures} {city} {address} {buildingName} {roomNumber}
+              〒{target_split}-{zipcode && zipcode.split(target_split)[1]}<br />
+              {prefecture} {city} {address} {building_name}
             </h4>
             <h4 className="fs-6 text-dark mt-1">{tel}</h4>
           </div>

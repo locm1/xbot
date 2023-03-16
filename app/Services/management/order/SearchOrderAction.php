@@ -2,18 +2,14 @@
 
 namespace App\Services\management\order;
 
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
-use App\Models\OrderHistory;
+use App\Models\Order;
 use App\Services\common\SearchUtility;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Model;
 
 class SearchOrderAction
 {
     public function search($request)
     {
-        $query = OrderHistory::query();
+        $query = Order::query();
 
         if ($request->name) {
             $this->searchByName($query, $request->name);
@@ -31,7 +27,7 @@ class SearchOrderAction
             $this->searchByPrefecture($query, $request->prefecture);
         }
 
-        return $query->with(['OrderDestination', 'user'])->paginate(10);
+        return $query->with('user')->get();
     }
 
     private function searchByName($query, $name)

@@ -2,12 +2,13 @@
 
 namespace App\Services\management\order;
 
+use App\Models\Order;
 use App\Models\OrderHistory;
 
 class OrderDetailService
 {
 
-    public function getOrderProductsById(OrderHistory $order) 
+    public function getOrderProductsById(Order $order) 
     {
         $order_products = $order::with('orderProducts.product.productImages')->find($order->id);
         $result_order_products = array();
@@ -24,12 +25,7 @@ class OrderDetailService
         return $result_order_products;
     }
 
-    public function getOrderDeliveryById(OrderHistory $order) 
-    {
-        return $order::with('orderUser')->find($order->id);
-    }
-
-    public function getOrderUserById(OrderHistory $order) 
+    public function getOrderUserById(Order $order) 
     {
         return $order::with('user')->find($order->id);
     }

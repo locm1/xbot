@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order_users', function (Blueprint $table) {
+        Schema::create('order_destinations', function (Blueprint $table) {
             $table->id();
             $table->string('first_name', 255)->nullable(false);
             $table->string('first_name_kana', 255)->nullable(false);

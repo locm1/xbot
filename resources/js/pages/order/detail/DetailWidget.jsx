@@ -12,7 +12,7 @@ export const DetailWidget = (props) => {
         <Form>
           <Row>
             {details.map((detail, index) => 
-              <Col key={index} md={6} className="mb-3">
+              <Col key={`order-detail-${index}`} md={6} className="mb-3">
                 <Form.Group>
                   <Form.Label className="border-bottom pb-2 pt-3">{detail.title}</Form.Label>
                   {(() => {

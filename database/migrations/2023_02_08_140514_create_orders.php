@@ -13,14 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order_histories', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('order_user_id');
-            // $table->unsignedBigInteger('delivery_address_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('order_user_id')->references('id')->on('order_users');
-            // $table->foreign('delivery_address_id')->references('id')->on('delivery_addresses');
+            $table->string('first_name', 255)->nullable(false);
+            $table->string('first_name_kana', 255)->nullable(false);
+            $table->string('last_name', 255)->nullable(false);
+            $table->string('last_name_kana', 255)->nullable(false);
+            $table->string('zipcode', 255)->nullable(false);
+            $table->string('prefecture', 255)->nullable(false);
+            $table->text('city')->nullable(false);
+            $table->text('address')->nullable(false);
+            $table->text('building_name')->nullable(true);
+            $table->string('tel', 255)->nullable(false);
             $table->tinyInteger('delivery_time')->nullable(false);
             $table->integer('purchase_amount')->nullable(false);
             $table->tinyInteger('status')->nullable(false);

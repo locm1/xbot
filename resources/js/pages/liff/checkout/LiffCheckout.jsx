@@ -4,14 +4,20 @@ import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
-import addresses from "@/data/deliveryAddresses";
-
 import LiffCheckoutPayment from "@/pages/liff/checkout/LiffCheckoutPayment";
 import LiffCheckoutOrders from "@/pages/liff/checkout/LiffCheckoutOrders";
 import { DeliveryAddressItem } from "@/pages/liff/LiffCardItem";
+import { getSelectOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
+import { getCarts } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
-  const [deliveryAddresses, setDeliveryAddresses] = useState(addresses);
+  const [deliveryAddress, setDeliveryAddress] = useState({});
+
+  useEffect(() => {
+    //const idToken = Cookies.get('TOKEN');
+    //getUser(idToken, setUser)
+    getSelectOrderDestination(101, setDeliveryAddress)
+  }, []);
 
   return (
     <>
@@ -23,7 +29,7 @@ export default () => {
             </Card.Header>
             <Card.Body className="py-0">
               <ListGroup className="list-group-flush">
-                {<DeliveryAddressItem {...deliveryAddresses[0]} />}
+                {<DeliveryAddressItem {...deliveryAddress} />}
               </ListGroup>
             </Card.Body>
           </Card>

@@ -46,7 +46,6 @@ import RichMenu from '@/pages/richmenu/RichMenu';
 import RichMenus from '@/pages/richmenu/RichMenus';
 import Postage from '@/pages/master/Postage';
 import Permissions from '@/pages/sidebar/Permissions';
-import LiffApps from '@/pages/liff_app/LiffApps';
 
 // Account
 import Accounts from '@/pages/account/Accounts';
@@ -181,6 +180,18 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 };
 
 const LiffRoute = ({ component: Component, ...rest }) => {
+  // const liffId = process.env.MIX_LIFF_ID
+  // clearExpiredIdToken(liffId)
+
+  // liff.init({liffId: process.env.MIX_LIFF_ID})
+  //   .then(() => {
+  //     if(liff.isLoggedIn() === false) liff.login()
+  //   })
+  //   .catch((err) => {
+  //     console.log(err.code, err.message);
+  //   });
+  // getLiffIdToken();
+
   return (
     <Route {...rest} render={props => (
       <>
@@ -349,7 +360,6 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="account" path={Paths.EditAccount.path} component={EditAccount} />
       <RouteWithSidebar exact role_path="account" path={Paths.RegisterAccount.path} component={EditAccount} />
       <RouteWithSidebar exact role_path="account" path={Paths.Permissions.path} component={Permissions} />
-      <RouteWithSidebar exact role_path="account" path={Paths.LiffApps.path} component={LiffApps} />
       
       <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
@@ -359,6 +369,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
       <LiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
       <LiffRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
+      <LiffRoute exact path={Paths.LiffCheckoutEditAddress.path} component={LiffCheckoutAddAddress} />
       <LiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
       <LiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
       <LiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />

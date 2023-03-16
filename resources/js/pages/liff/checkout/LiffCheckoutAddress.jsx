@@ -2,17 +2,39 @@ import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import { getOrderDestinations, updateOrderDestination, updateOrderDestinations } from "@/pages/liff/api/OrderDestinationApiMethods";
 
 import addresses from "@/data/deliveryAddresses";
 
 export default () => {
-  const [deliveryAddresses, setDeliveryAddresses] = useState(addresses);
+  const history = useHistory();
+  const [deliveryAddresses, setDeliveryAddresses] = useState([]);
+  const [selectId, setSelectId] = useState();
+
+  const handleClick = () => {
+    console.log(selectId);
+    const updateAddress = deliveryAddresses.find((deliveryAddress) => deliveryAddress.id === selectId);
+    updateAddress.is_selected = 1
+    console.log(updateAddress);
+    updateOrderDestinations(101, updateAddress.id)
+    updateOrderDestination(101, updateAddress.id, updateAddress, updateComplete)
+  }
+
+  const updateComplete = () => {
+    history.push(Paths.LiffCheckout.path);
+  };
+
+  useEffect(() => {
+    //const idToken = Cookies.get('TOKEN');
+    getOrderDestinations(101, setDeliveryAddresses, setSelectId)
+  }, []);
 
   const DeliveryAddressItem = (props) => {
-    const { id, index, lastName, firstName, lastNameKana, firstNameKana, zipcode, prefectures, city, address, buildingName, roomNumber, tel } = props;
-    const defaultChecked = (index == 0) ? true : false
+    const { id, index, last_name, first_name, zipcode, prefecture, city, address, building_name, tel } = props;
+    const target_split = zipcode && zipcode.substr(0, 3);
+    const link = Paths.LiffCheckoutEditAddress.path.replace(':id', id);
 
     return (
       <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
@@ -20,20 +42,21 @@ export default () => {
           <Col xs="2" className="mt-5">
             <Form.Check
               type="radio"
-              defaultChecked={defaultChecked}
-              defaultValue="option1"
               name="delivery_address"
+              value={id}
+              checked={id === selectId}
               id={id}
               htmlFor={id}
+              onChange={() => setSelectId(id)}
             />
           </Col>
           <Col xs="8" className="px-0">
-            <Link className="fs-6 text-dark delivery-address-item-edit" to={Paths.LiffCheckoutAddress.path}>編集</Link>
+            <Link className="fs-6 text-dark delivery-address-item-edit" to={link}>編集</Link>
             <div className="m-1">
-              <h4 className="fs-6 text-dark mb-0">{lastName} {firstName} 様</h4>
-              <h4 className="fs-6 text-dark mt-1">{zipcode}</h4>
+              <h4 className="fs-6 text-dark mb-0">{last_name} {first_name} 様</h4>
+              <h4 className="fs-6 text-dark mt-1">〒{target_split}-{zipcode && zipcode.split(target_split)[1]}</h4>
               <h4 className="fs-6 text-dark mt-1">
-                {prefectures} {city} {address} {buildingName} {roomNumber}
+                {prefecture} {city} {address} {building_name}
               </h4>
               <h4 className="fs-6 text-dark mt-1">{tel}</h4>
             </div>
@@ -65,7 +88,7 @@ export default () => {
                 </div>
               </Link>
               <div className="align-items-center my-4">
-                <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="w-100 p-3">
+                <Button onClick={handleClick} variant="tertiary" className="w-100 p-3">
                   変更する
                 </Button>
               </div>

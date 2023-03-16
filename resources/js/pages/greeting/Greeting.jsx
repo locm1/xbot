@@ -11,6 +11,7 @@ export default () => {
   const [messages, setMessages] = useState([
     {id: 1, type: 1, text: '', image_path: null, video_path: null}
   ]);
+  const [isQuestionnaireAnswerButton, setIsQuestionnaireAnswerButton] = useState(false);
   const [messageDetailModal, setMessageDetailModal] = useState(false);
   const [updateImages, setUpdateImages] = useState([]);
   const [updateImageIds, setUpdateImageIds] = useState([]);
@@ -124,6 +125,16 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">あいさつメッセージ設定</h1>
         </div>
+      </div>
+      <div className="d-flex mt-3">
+      <Form.Group id="questionnaire">
+        <Form.Check
+        type="switch"
+        label="アンケート回答ボタンをつける"
+        id="questionnaire"
+        htmlFor="questionnaire"
+        />
+      </Form.Group>
       </div>
       <div className="d-flex flex-row-reverse mt-3">
         <Button onClick={onSaveMessage} variant="gray-800" className="me-2">

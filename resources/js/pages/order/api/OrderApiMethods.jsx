@@ -1,7 +1,7 @@
 export const getOrders = async (setOrders) => {
   axios.get('/api/v1/management/orders')
   .then((response) => {
-    setOrders(response.data.orders.data);
+    setOrders(response.data.orders);
   })
   .catch(error => {
       console.error(error);
@@ -9,7 +9,7 @@ export const getOrders = async (setOrders) => {
 };
 
 export const getPrefectures = async (setPrefectures) => {
-  axios.get('/api/v1/management/prefectures')
+  axios.get('/api/v1/prefectures')
   .then((response) => {
     setPrefectures(response.data.prefectures);
   })
@@ -21,7 +21,7 @@ export const getPrefectures = async (setPrefectures) => {
 export const searchOrders = async (params, setOrders) => {
   axios.get('/api/v1/management/orders', params)
   .then((response) => {
-    setOrders(response.data.orders.data);
+    setOrders(response.data.orders);
   })
   .catch(error => {
       console.error(error);

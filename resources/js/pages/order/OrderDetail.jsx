@@ -69,11 +69,9 @@ export default () => {
   });
   const [order, setOrder] = useState({
     id: 1, purchase_amount: '', status: 1, payment_method: 1, shipping_fee: '', coupon: {name: ''}, 
-    created_at: '', status: 1, payment_method: 1, delivery_time: 1,
-  });
-  const [orderDelivery, setOrderDelivery] = useState({
-    id: 1, first_name: '', last_name: '', first_name_kana: '', last_name_kana: '',
-    zipcode: '', prefecture: '', city: '', address: '', building_name: '', tel: ''
+    created_at: '', status: 1, payment_method: 1, delivery_time: 1, first_name: '', last_name: '', 
+    first_name_kana: '', last_name_kana: '', zipcode: '', prefecture: '', city: '', address: '', 
+    building_name: '', tel: ''
   });
   const [purchaseTime, setPurchaseTime] = useState(0);
 
@@ -100,20 +98,19 @@ export default () => {
   ];
 
   const deliveries = [
-    {id: 1, title: '配送先氏名', value: `${orderDelivery.last_name} ${orderDelivery.first_name}`},
-    {id: 2, title: '配送先氏名（フリガナ）', value: `${orderDelivery.last_name_kana} ${orderDelivery.first_name_kana}`},
-    {id: 3, title: '配送先郵便番号', value: orderDelivery.zipcode},
-    {id: 4, title: '配送先住所', value: `${orderDelivery.prefecture}${orderDelivery.city}${orderDelivery.address} ${orderDelivery.building_name}`},
+    {id: 1, title: '配送先氏名', value: `${order.last_name} ${order.first_name}`},
+    {id: 2, title: '配送先氏名（フリガナ）', value: `${order.last_name_kana} ${order.first_name_kana}`},
+    {id: 3, title: '配送先郵便番号', value: order.zipcode},
+    {id: 4, title: '配送先住所', value: `${order.prefecture}${order.city}${order.address} ${order.building_name}`},
     {id: 5, title: '配送時間帯', value: getDeliveryTime(order.delivery_time)},
     {id: 6, title: 'お支払い方法', value: getPaymentMethod(order.payment_method)},
-    {id: 6, title: 'ステータス', value: getStatus(order.status)},
+    {id: 7, title: 'ステータス', value: getStatus(order.status)},
   ];
 
   useEffect(() => {
     showOrder(id, setOrder)
     getOrderProducts(id, setOrderProducts);
     getOrderUser(id, setOrderUser);
-    getOrderDelivery(id, setOrderDelivery);
     getUserPurchase(state, setPurchaseTime)
   }, []);
 

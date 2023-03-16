@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('image_path')->nullable(true);
             $table->string('video_path')->nullable(true);
             $table->float('display_order')->nullable(true);
-            $table->softDeletes();
             $table->timestamps();
         });
     }

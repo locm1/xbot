@@ -25,7 +25,7 @@ class FollowService
             $status_message = $profile['statusMessage'] ?? null;
             User::upsert([
                 'nickname' => $display_name, 'img_path' => $picture_url, 'line_id' => $this->user_id, 
-                'is_blocked' => 0, 'status_message' => $status_message,
+                'is_blocked' => 0, 'status_message' => $status_message, 'is_registered' => 0
             ], ['line_id']);
             Log::debug($this->user_id);
             return $response->getHTTPStatus();

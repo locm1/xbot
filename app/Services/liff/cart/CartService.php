@@ -5,30 +5,34 @@ namespace App\Services\liff\cart;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Services\api\line\verify\VerifyService;
+use App\Services\liff\user\UserService;
 use App\Services\management\product\SearchProductAction;
 
 class CartService
 {
-    private $verify_service;
     private $format_cart_action;
+    private $user_service;
 
-    public function __construct(VerifyService $verify_service, FormatCartAction $format_cart_action)
+    public function __construct(
+        FormatCartAction $format_cart_action,
+        UserService $user_service
+    )
     {
-        $this->verify_service = $verify_service;
         $this->format_cart_action = $format_cart_action;
+        $this->user_service = $user_service;
     }
 
-    public function index() 
+    public function index($request) 
     {
-        return Cart::with('product.productImages')->where('user_id', 101)->get();
+        $user = $this->user_service->getUser($request);
+        return Cart::with('product.productImages')->where('user_id', $user->id)->get();
     }
 
     public function store($request)
     {
-        # IDトークンを検証し、ユーザー情報の取得
-        $response = $this->verify_service->verifyIdToken($request->token);
         $data = $request->only(['product_id', 'quantity']);
-        $merged_cart = $this->format_cart_action->mergeUserIdToArray($response['sub'], $data);
+        $user = $this->user_service->getUser($request);
+        $merged_cart = $this->format_cart_action->mergeUserIdToArray($user->id, $data);
         // # すでにカートの中に同じ商品があれば、+1するだけ
         return Cart::create($merged_cart);
     }

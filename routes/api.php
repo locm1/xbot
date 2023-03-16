@@ -1,9 +1,15 @@
 <?php
 
 use App\Http\Controllers\api\liff\cart\CartController;
+use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
+use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
+use App\Http\Controllers\api\liff\order_destination\UpdateOrderDestinationController;
 use App\Http\Controllers\api\liff\product\ProductCategoryController as LiffProductCategoryController;
 use App\Http\Controllers\api\liff\product\ProductController as LiffProductController;
 use App\Http\Controllers\api\liff\product\ProductImageController as LiffProductImageController;
+use App\Http\Controllers\api\liff\questionnaire\QuestionnaireAnswerController as LiffQuestionnaireAnswerController;
+use App\Http\Controllers\api\liff\questionnaire\QuestionnaireController as LiffQuestionnaireController;
+use App\Http\Controllers\api\liff\user\UserController as LiffUserController;
 use App\Http\Controllers\api\LineChannelAccessTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +70,7 @@ use App\Http\Controllers\api\management\UserReserveHistoryController;
 use App\Http\Controllers\api\management\user\UserVisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryUserController;
+use App\Http\Controllers\api\SearchZipcodeController;
 use App\Http\Controllers\LineWebhookController;
 use App\Http\Controllers\UserWithQuestionneireController;
 use App\Models\QuestionnaireAnswer;
@@ -113,9 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('event-calendars', EventCalendarController::class);
         Route::apiResource('categories', ProductCategoryController::class);
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
-        Route::get('prefectures', PrefectureController::class);
         Route::apiResource('questionnaires', QuestionnaireController::class);
-        Route::apiResource('occupations', OccupationController::class);
         Route::apiResource('questionnaires/{questionnaire}/items', QuestionnaireItemController::class, array("as" => "api"))->only([
             'store', 'update', 'delete'
         ]);
@@ -140,7 +145,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('orders', OrderController::class);
         Route::get('orders/{order}/products', OrderProductController::class);
         Route::get('orders/{order}/user', OrderUserController::class);
-        Route::get('orders/{order}/delivery', OrderDeliveryController::class);
         Route::apiResource('visitor-histories', VisitorHistoryController::class);
         Route::get('visitor-histories/{visitor_history}/user', VisitorHistoryUserController::class);
         Route::apiResource('reserve-histories', ReserveHistoryController::class);
@@ -172,10 +176,19 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('products', LiffProductController::class)->only([
         'index', 'show'
-    ]);;
+    ]);
     Route::get('products/{product}/images', [LiffProductImageController::class, 'index']);
     Route::get('products/{product}/category', LiffProductCategoryController::class);
     Route::apiResource('carts', CartController::class);
+    Route::apiResource('users', LiffUserController::class);
+    Route::post('users/{user}/questionnaire-answers', LiffQuestionnaireAnswerController::class);
+    Route::apiResource('users/{user}/destinations', LiffOrderDestinationController::class);
+    Route::put('users/{user}/destinations', UpdateOrderDestinationController::class);
+    Route::get('users/{user}/selected-destination', SelectedOrderDestinationController::class);
+    Route::get('address', SearchZipcodeController::class);
+    Route::get('prefectures', PrefectureController::class);
+    Route::get('questionnaires', LiffQuestionnaireController::class);
+    Route::apiResource('occupations', OccupationController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

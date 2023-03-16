@@ -49,7 +49,6 @@ export const Paths = {
     RichMenus: { path: `${prefix}/account/richmenu/list` },
     Postage: {path: `${prefix}/ec/postage`},
     Permissions: {path: `${prefix}/account/permissions`},
-    LiffApps: {path: `${prefix}/account/liff/app/list`},
 
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },
@@ -59,6 +58,7 @@ export const Paths = {
     LiffCheckout: { path: "/checkout" },
     LiffCheckoutDestinations: { path: "/checkout/destination" },
     LiffCheckoutAddress: { path: "/checkout/address" },
+    LiffCheckoutEditAddress: { path: "/checkout/address/edit/:id" },
     LiffCheckoutDelivery: { path: "/checkout/delivery" },
     LiffCheckoutPayment: { path: "/checkout/payment" },
     LiffCheckoutPaymentCreditCard: { path: "/checkout/payment/creditcard" },

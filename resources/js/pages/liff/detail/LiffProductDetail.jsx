@@ -56,7 +56,6 @@ export default () => {
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);
-    const liffId = process.env.MIX_LIFF_ID
 
     // const { liffId, mock } = generateEnv();
 

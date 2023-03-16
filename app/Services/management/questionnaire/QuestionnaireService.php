@@ -12,7 +12,7 @@ class QuestionnaireService
 
     public function index(): Collection
     {
-        return Questionnaire::with('questionnaireItems')->orderBy('display_order', 'asc')->get();
+        return Questionnaire::with('questionnaireItems')->where('is_undisclosed', 0)->orderBy('display_order', 'asc')->get();
     }
 
     /**

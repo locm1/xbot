@@ -9,7 +9,7 @@ class UserHistoryService
 
     public function getOrdersById(User $user) 
     {
-        return $user->orderHistories()->with('orderProducts.product')->get();
+        return $user->orders()->with('orderProducts.product')->get();
     }
 
     public function getVisitorHistoriesById(User $user) 

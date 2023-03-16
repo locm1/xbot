@@ -22,9 +22,11 @@ use App\Models\InviteHistory;
 use App\Models\Message;
 use App\Models\MessageItem;
 use App\Models\Occupation;
+use App\Models\Order;
+use App\Models\OrderDestination;
 use App\Models\OrderHistory;
+use App\Models\OrderPaymentMethod;
 use App\Models\OrderProduct;
-use App\Models\OrderUser;
 use App\Models\Questionnaire;
 use App\Models\QuestionnaireAnswer;
 use App\Models\QuestionnaireAnswerItem;
@@ -83,8 +85,8 @@ class DatabaseSeeder extends Seeder
         Coupon::factory(100)->create();
         CouponUser::factory(100)->create();
         VisitorHistory::factory(100)->create();
-        OrderUser::factory(100)->create();
-        OrderHistory::factory(200)->create();
+        OrderDestination::factory(100)->create();
+        Order::factory(200)->create();
         OrderProduct::factory(500)->create();
         InviteHistory::factory(100)->create();
         ReserveHistory::factory(300)->create();
@@ -94,5 +96,6 @@ class DatabaseSeeder extends Seeder
         Message::factory(100)->create();
         MessageItem::factory(200)->create();
         GreetingMessage::factory(3)->create();
+        OrderPaymentMethod::factory(100)->create();
     }
 }

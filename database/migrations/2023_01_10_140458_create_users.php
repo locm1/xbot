@@ -32,6 +32,7 @@ return new class extends Migration
             $table->foreignId('occupation_id')->nullable(true)->constrained('occupations');
             $table->text('img_path')->nullable(true);
             $table->string('line_id')->unique()->nullable(false);
+            $table->tinyInteger('is_registered');
             $table->softDeletes();
             $table->timestamps();
         });

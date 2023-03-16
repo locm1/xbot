@@ -4,21 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class OrderHistory extends Model
+class Order extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $guarded = ['id'];
 
     public function orderProducts()
     {
         return $this->hasMany(OrderProduct::class);
-    }
-
-    public function orderUser()
-    {
-        return $this->belongsTo(OrderUser::class);
     }
 
     public function user()

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,12 +20,12 @@ class OrderProductFactory extends Factory
     public function definition()
     {
         $product_ids = Product::pluck('id')->all();
-        $order_history_ids = OrderHistory::pluck('id')->all();
+        $order_ids = Order::pluck('id')->all();
 
         return [
             'product_id' => fake()->randomElement($product_ids),
             'quantity' => fake()->numberBetween(1, 100000),
-            'order_history_id' => fake()->randomElement($order_history_ids),
+            'order_id' => fake()->randomElement($order_ids),
         ];
     }
 }

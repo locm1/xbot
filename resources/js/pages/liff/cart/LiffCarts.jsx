@@ -3,32 +3,28 @@ import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'reac
 import { PlusIcon, MinusIcon, ShoppingCartIcon, InboxIcon, TrashIcon } from '@heroicons/react/solid';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import noImage from "@img/img/noimage.jpg"
+import Cookies from 'js-cookie';
 import liff from '@line/liff';
 import { LiffMockPlugin } from '@line/liff-mock';
-
+import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
+  const history = useHistory();
   const [carts, setCarts] = useState([]);
   const [total, setTotal] = useState(1);
+  const [user, setUser] = useState({
+    is_registered: 0
+  });
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
 
   useEffect(() => {
-    getCarts(setCarts, setItemsExistInCart)
-
-      // liff.getProfile()
-      //   .then((profile) => {
-      //     const name = profile.displayName;
-      //     console.log(profile);
-      //     alert( JSON.stringify(profile) );
-      //   })
-      //   .catch((err) => {
-      //     console.log("error", err);
-      //   });
-
+    const idToken = Cookies.get('TOKEN');
+    getCarts(idToken, setCarts, setItemsExistInCart)
+    getUser(idToken, setUser)
   }, []);
 
   useEffect(() => {
@@ -41,6 +37,15 @@ export default () => {
 
     if (carts.length == 0) {
       setItemsExistInCart(false);
+    }
+  }
+
+  const chooseCheckoutOrSurvey = () => {
+    if (user.is_registered == 1) {
+      return history.push(Paths.LiffCheckout.path);
+    } else {
+      Cookies.set('current_page', 'cart')
+      return history.push(Paths.LiffQuestionnaire.path);
     }
   }
 
@@ -145,7 +150,7 @@ export default () => {
                   <InboxIcon className="icon icon-xs me-2" />
                   他の商品を見る
                 </Button>
-                <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="mt-2 liff-product-detail-button">
+                <Button onClick={chooseCheckoutOrSurvey} variant="tertiary" className="mt-2 liff-product-detail-button">
                   <ShoppingCartIcon className="icon icon-xs me-2" />
                   レジに進む
                 </Button>

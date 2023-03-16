@@ -53,6 +53,7 @@ class UserFactory extends Factory
             'line_id' => $this->mb_str_shuffle(20),
             'block_date' => $date,
             'is_blocked' => fake()->numberBetween(0, 1),
+            'is_registered' => fake()->numberBetween(0, 1)
         ];
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('order_users', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+        Schema::create('order_payment_methods', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class);
+            $table->tinyInteger('payment_method');
+            $table->string('payjp_customer_id')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('order_payment_methods');
     }
 };

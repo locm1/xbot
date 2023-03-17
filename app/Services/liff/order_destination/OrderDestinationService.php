@@ -4,16 +4,10 @@ namespace App\Services\liff\order_destination;
 
 use App\Models\OrderDestination;
 use App\Models\User;
+use App\Services\common\MergeArrayUtility;
 
 class OrderDestinationService
 {
-    private $format_order_destination_action;
-
-    public function __construct(FormatOrderDestinationAction $format_order_destination_action)
-    {
-        $this->format_order_destination_action = $format_order_destination_action;
-    }
-
     public function index(User $user)
     {
         return $user->orderDestinations;
@@ -25,7 +19,7 @@ class OrderDestinationService
             'first_name', 'last_name', 'first_name_kana', 'last_name_kana', 'zipcode',
             'prefecture', 'city', 'address', 'building_name', 'tel', 'is_selected'
         ]);
-        $merged_order_destination = $this->format_order_destination_action->mergeUserIdToArray($user, $data);
+        $merged_order_destination = MergeArrayUtility::mergeUserIdToArray($user->id, $data);
         return OrderDestination::create($merged_order_destination);
     }
 

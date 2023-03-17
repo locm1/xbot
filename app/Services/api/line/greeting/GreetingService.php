@@ -2,6 +2,7 @@
 namespace App\Services\api\line\greeting;
 
 use App\Models\GreetingMessage;
+use App\Services\management\greeting\GreetingMessageWithQuestionnaireService;
 use LINE\LINEBot;
 use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
 use LINE\LINEBot\MessageBuilder\VideoMessageBuilder;
@@ -21,6 +22,9 @@ class GreetingService
 
     public function sendGreetingMessage()
     {
+        $greeting_messages_with_questionnaire_serivce = new GreetingMessageWithQuestionnaireService();
+        $greeting_messages_with_questionnaires = $greeting_messages_with_questionnaire_serivce->index();
+
         $multi_message_builder = new MultiMessageBuilder();
         $messages = GreetingMessage::all();
 
@@ -42,8 +46,15 @@ class GreetingService
             }
             $multi_message_builder->add($message_builder);
         }
+
+        # アンケート回答ボタンをつけた場合、Flexメッセージ作成
+        if ($greeting_messages_with_questionnaires[0]->is_questionnaire == 1) {
+            $flex_message_builder_action = new FlexMessageBuilderAction($this->bot, $this->user_id, $this->url);
+            $message_builder = $flex_message_builder_action->createFlexMessage($this->url);
+            $multi_message_builder->add($message_builder);
+        }
         
         # プッシュメッセージを送信
-        $response = $this->bot->pushMessage($this->user_id, $multi_message_builder);
+        return $this->bot->pushMessage($this->user_id, $multi_message_builder);
     }
 }

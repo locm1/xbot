@@ -6,18 +6,21 @@ import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/r
 import Swal from "sweetalert2";
 import LinePreview from "@/components/line/LinePreview";
 import { getGreetingMessages, updateGreetingMessages, storeGreetingMessages, deleteGreetingMessages } from "@/pages/greeting/api/GreetingApiMethods";
+import { getGreetingMessageWithQuestionnaires, storeGreetingMessageWithQuestionnaires, updateGreetingMessageWithQuestionnaires } from "@/pages/greeting/api/GreetingWithQuestionnaireApiMethods";
 
 export default () => {
   const [messages, setMessages] = useState([
     {id: 1, type: 1, text: '', image_path: null, video_path: null}
   ]);
   const [isQuestionnaireAnswerButton, setIsQuestionnaireAnswerButton] = useState(false);
+  const [greetingMessageWithQuestionnaire, setQreetingMessageWithQuestionnaire] = useState({});
   const [messageDetailModal, setMessageDetailModal] = useState(false);
   const [updateImages, setUpdateImages] = useState([]);
   const [updateImageIds, setUpdateImageIds] = useState([]);
   const [updateVideos, setUpdateVideos] = useState([]);
   const [updateVideoIds, setUpdateVideoIds] = useState([]);
   const [deleteMessages, setDeleteMessages] = useState([]);
+  const [messageCount, setMessageCount] = useState();
 
   const handlePreviewChange = (e, input, id) => {
     const currentMessage = messages.filter(message => (message.id === id))[0]
@@ -90,6 +93,7 @@ export default () => {
     updateImageIds.forEach((updateImageId) => formData.append("image_ids[]", updateImageId));
     updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
     updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
+    const formValue = {is_questionnaire: isQuestionnaireAnswerButton ? 1 : 0}
 
     // 画像削除stateに値があればAPI発火
     if (deleteMessages.length > 0) {
@@ -101,7 +105,9 @@ export default () => {
 
     if (messages[0].created_at) {
       updateGreetingMessages(formData, completeMessage)
+      updateGreetingMessageWithQuestionnaires(greetingMessageWithQuestionnaire[0].id, formValue)
     } else {
+      storeGreetingMessageWithQuestionnaires(formValue)
       storeGreetingMessages(formData, completeMessage)
     }
   };
@@ -117,7 +123,13 @@ export default () => {
 
   useEffect(() => {
     getGreetingMessages(setMessages)
+    getGreetingMessageWithQuestionnaires(setQreetingMessageWithQuestionnaire, setIsQuestionnaireAnswerButton)
   }, []);
+
+  useEffect(() => {
+    const count = isQuestionnaireAnswerButton ? 4 : 5
+    setMessageCount(count)
+  }, [isQuestionnaireAnswerButton]);
 
 	return (
 		<>
@@ -126,20 +138,17 @@ export default () => {
           <h1 className="page-title">あいさつメッセージ設定</h1>
         </div>
       </div>
-      <div className="d-flex mt-3">
-      <Form.Group id="questionnaire">
-        <Form.Check
-        type="switch"
-        label="アンケート回答ボタンをつける"
-        id="questionnaire"
-        htmlFor="questionnaire"
-        />
-      </Form.Group>
-      </div>
       <div className="d-flex flex-row-reverse mt-3">
-        <Button onClick={onSaveMessage} variant="gray-800" className="me-2">
-          保存する
-        </Button>
+        <Form.Group id="questionnaire">
+          <Form.Check
+          type="switch"
+          label="アンケート回答ボタンをつける"
+          id="questionnaire"
+          htmlFor="questionnaire"
+          checked={isQuestionnaireAnswerButton}
+          onClick={() => setIsQuestionnaireAnswerButton(!isQuestionnaireAnswerButton)}
+          />
+        </Form.Group>
       </div>
         {
           messages && messages.map((message, index) => 
@@ -155,15 +164,18 @@ export default () => {
             </div>
           )
         }
-      {
-        messages.length < 5 && (
-          <div className="d-flex justify-content-flex-end flex-wrap flex-md-nowrap align-items-center">
-            <Button onClick={addEditCard} variant="gray-800" className="mt-2 animate-up-2">
+      <div className="d-flex justify-content-flex-end flex-wrap flex-md-nowrap align-items-center my-4">
+        {
+          messages.length < messageCount && (
+            <Button onClick={addEditCard} variant="gray-800" className="animate-up-2">
               <PlusIcon className="icon icon-xs me-2" /> 追加
             </Button>
-          </div>
-        )
-      }
+          )
+        }
+        <Button onClick={onSaveMessage} variant="gray-800" className="ms-7">
+          保存する
+        </Button>
+      </div>
       <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >
         <div className='mt-2 line-preview-button' onClick={() => setMessageDetailModal(!messageDetailModal)}>
           {

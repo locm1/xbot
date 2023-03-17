@@ -19,7 +19,7 @@ class UserWithQuestionneireController extends Controller
             'users' => 
             User::with('questionnaireAnswers.questionnaireAnswerItems')
                 ->with('visitorHistories')
-                ->with('orderHistories')
+                ->with('orders')
                 ->get()
         ];
     }

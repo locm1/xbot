@@ -10,4 +10,6 @@ class OrderPaymentMethod extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $guarded = ['id'];
 }

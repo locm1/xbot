@@ -4,6 +4,7 @@ use App\Http\Controllers\api\liff\cart\CartController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\UpdateOrderDestinationController;
+use App\Http\Controllers\api\liff\payment_method\PaymentMethodController;
 use App\Http\Controllers\api\liff\product\ProductCategoryController as LiffProductCategoryController;
 use App\Http\Controllers\api\liff\product\ProductController as LiffProductController;
 use App\Http\Controllers\api\liff\product\ProductImageController as LiffProductImageController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\api\management\coupon\CouponUserController;
 use App\Http\Controllers\api\management\DefaultSegmentController;
 use App\Http\Controllers\api\management\event\EventUserController;
 use App\Http\Controllers\api\management\GreetingMessageController;
+use App\Http\Controllers\api\management\GreetingMessagesWithQuestionnaireController;
 use App\Http\Controllers\api\management\invitation\InvitationController;
 use App\Http\Controllers\api\management\invitation\InvitationUserController;
 use App\Http\Controllers\api\management\TermsOfServiceController;
@@ -160,6 +162,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('greeting-messages', [GreetingMessageController::class, 'store']);
         Route::put('greeting-messages', [GreetingMessageController::class, 'update']);
         Route::delete('greeting-messages', [GreetingMessageController::class, 'destroy']);
+        Route::apiResource('greeting-messages/questionnaires', GreetingMessagesWithQuestionnaireController::class);
         Route::get('access-token', LineChannelAccessTokenController::class);
         Route::apiResource('rich-menus', RichMenuController::class);
     });
@@ -179,6 +182,9 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('users/{user}/destinations', LiffOrderDestinationController::class);
     Route::put('users/{user}/destinations', UpdateOrderDestinationController::class);
     Route::get('users/{user}/selected-destination', SelectedOrderDestinationController::class);
+    Route::apiResource('users/{user}/payments', PaymentMethodController::class)->only([
+        'index', 'store', 'update'
+    ]);;
     Route::get('address', SearchZipcodeController::class);
     Route::get('prefectures', PrefectureController::class);
     Route::get('questionnaires', LiffQuestionnaireController::class);

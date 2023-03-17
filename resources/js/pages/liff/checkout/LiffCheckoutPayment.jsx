@@ -7,9 +7,16 @@ import { Paths } from "@/paths";
 
 import addresses from "@/data/deliveryAddresses";
 import { PaymentDetailItem } from "@/pages/liff/LiffCardItem";
+import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 
 export default () => {
-  const [deliveryAddresses, setDeliveryAddresses] = useState(addresses);
+  const [paymentMethod, setPaymentMethod] = useState();
+
+  useEffect(() => {
+    //const idToken = Cookies.get('TOKEN');
+    //getUser(idToken, setUser)
+    showPaymentMethod(101, setPaymentMethod)
+  }, []);
 
   return (
     <>
@@ -19,7 +26,7 @@ export default () => {
         </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            <PaymentDetailItem />
+            <PaymentDetailItem paymentMethod={paymentMethod} />
           </ListGroup>
         </Card.Body>
       </Card>

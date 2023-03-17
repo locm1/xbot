@@ -56,7 +56,8 @@ export const OrderDetailItem = (props) => {
   );
 }
 
-export const PaymentDetailItem = () => {
+export const PaymentDetailItem = (props) => {
+  const { paymentMethod } = props;
   const location = useLocation().pathname;
 
   const getColButton = (location) => {
@@ -77,16 +78,29 @@ export const PaymentDetailItem = () => {
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
         <Col xs={getColButton(location).colSize} className="px-0">
-          <div className="m-1">
-            <h4 className="fs-6 text-dark">クレジットカード</h4>
-            <div className="liff-checkout-payment-title">カード番号：xxxx-xxxx-xxxx-xxxx</div>
-            <div className="liff-checkout-payment-title text-dark">支払い回数：3回払い</div>
-          </div>
+          {
+            paymentMethod ? (
+              <div className="m-1">
+                <h4 className="fs-6 text-dark">
+                  {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "Apple Pay" : "代金引換え"}
+                </h4>
+                <div className="liff-checkout-payment-title">
+                  {
+                    paymentMethod.payment_method == 1 ? 'カード番号：xxxx-xxxx-xxxx-xxxx' : paymentMethod.payment_method == 3 ? '手数料：330円（税込）' : ''
+                  }
+                </div>
+              </div>
+            ) : (
+              <div className="m-1 mt-3">
+                <h4 className="fs-6 text-dark">支払い方法を選択してください</h4>
+              </div>
+            )
+          }
         </Col>
         {
           getColButton(location).isButton &&
           <Col xs="4" className="">
-          <div className="align-items-center mt-4 ms-4">
+          <div className="align-items-center mt-2 ms-4">
             <Button as={Link} to={Paths.LiffCheckoutPayment.path} variant="info" className="w-80">
               変更
             </Button>

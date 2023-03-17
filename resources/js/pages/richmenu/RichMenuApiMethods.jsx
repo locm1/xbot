@@ -80,3 +80,15 @@ export const getRichMenus = async (setRichMenus) => {
         console.error(error);
     });
   };
+
+  export const setDefaultRichMenu = async (id) => {
+    return await axios.post(`/api/v1/management/rich-menu-set-default/${id}`)
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch(error => {
+      console.error(error);
+      return 'failed';
+    });
+  }

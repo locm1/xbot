@@ -6,7 +6,7 @@ import { XIcon } from "@heroicons/react/solid";
 import LinePreview from "@/components/line/LinePreview";
 import ChangeTemplateModal from "@/pages/richmenu/ChangeTemplateModal";
 import AccordionComponent from "@/components/AccordionComponent";
-import { showRichMenu, getImage, storeRichMenu, updateRichMenu } from "./RichMenuApiMethods";
+import { showRichMenu, getImage, storeRichMenu, updateRichMenu, setDefaultRichMenu } from "./RichMenuApiMethods";
 import Swal from "sweetalert2";
 import squares1 from "@img/img/richmenu/squares1.jpg"
 import squares1_1 from "@img/img/richmenu/squares1_1.jpg"
@@ -226,7 +226,7 @@ export default () => {
     );
   };
 
-  const saveMenu = () => {
+  const saveMenu = (shouldSetDefault) => {
     const formData = new FormData();
     for (const key in formValue) {
       formData.append(key, formValue[key]);
@@ -243,16 +243,39 @@ export default () => {
             text: `テンプレート名「${formValue.title}」を保存できませんでした`,
           })
         } else {
-          Swal.fire({
-            icon: 'success',
-            title: '保存完了',
-            text: `「${formValue.title}」を保存しました`,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              let responseRichMenuId = response.replace('richmenu-', '');
-              history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
-            }
-          })
+          if (shouldSetDefault) {
+            setDefaultRichMenu(response).then(response => {
+              if (response === 'failed') {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'エラー',
+                  text: `テンプレート名「${formValue.title}」をデフォルトに設定できませんでした`,
+                })
+              } else {
+                Swal.fire({
+                  icon: 'success',
+                  title: '保存完了',
+                  text: `「${formValue.title}」を保存しました`,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    let responseRichMenuId = response.replace('richmenu-', '');
+                    history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
+                  }
+                })
+              }
+            })
+          } else {
+            Swal.fire({
+              icon: 'success',
+              title: '保存完了',
+              text: `「${formValue.title}」を保存しました`,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                let responseRichMenuId = response.replace('richmenu-', '');
+                history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
+              }
+            })
+          }
         }
       })
     } else {
@@ -403,7 +426,8 @@ export default () => {
               </ListGroup>
             </div>
           </div>
-          <Button onClick={() => saveMenu()}>保存する</Button>
+          <Button onClick={() => saveMenu(false)}>保存する</Button>
+          <Button onClick={() => saveMenu(true)}>保存&デフォルト設定</Button>
         </Card.Body>
       </Card>
 		</>

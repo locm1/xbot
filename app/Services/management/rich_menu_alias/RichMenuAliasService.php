@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\management\rich_menu_ailias;
+namespace App\Services\management\rich_menu_alias;
 
 use App\Services\management\AbstractManagementService;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +13,7 @@ use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use App\Services\api\LineBotService as LINEBot;
 
-class RichMenuAiliasService
+class RichMenuAliasService
 {
     protected $bot;
 
@@ -46,9 +46,9 @@ class RichMenuAiliasService
     }
 
 
-    public function update() 
+    public function update($alias_id, $richmenu_id) 
     {
-        //
+        return $this->bot->updateRichMenuAlias($alias_id, $richmenu_id)->getJSONDecodedBody();
     }
 
 

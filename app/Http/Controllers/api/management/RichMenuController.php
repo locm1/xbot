@@ -22,6 +22,9 @@ class RichMenuController extends Controller
 
     public function __construct() {
         $this->service = new RichMenuService();
+        $httpClient = new CurlHTTPClient(config('services.line.message.channel_token'));
+        $bot = new LINEBot($httpClient, ['channelSecret' => config('services.line.message.channel_secret')]);
+        $this->bot = $bot;
     }
     /**
      * Display a listing of the resource.
@@ -41,7 +44,7 @@ class RichMenuController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->service->store($request);
+        return $this->service->store($request, true);
     }
 
     /**
@@ -64,8 +67,14 @@ class RichMenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $new_richmenu_id = $this->service->store($request);
-        $this->service->destroy($id);
+        $new_richmenu_id = $this->service->store($request, false);
+
+        //もし変更されたリッチメニューがデフォルトだった場合、新しく生成されたリッチメニューをデフォルトに設定
+        if ($this->bot->getDefaultRichMenuId()->getJSONDecodedBody()['richMenuId'] === $id) {
+            $this->bot->setDefaultRichMenuId($new_richmenu_id);
+        }
+        
+        $this->service->destroy($id, false, $new_richmenu_id);
 
         return $new_richmenu_id;
     }
@@ -78,6 +87,6 @@ class RichMenuController extends Controller
      */
     public function destroy($id)
     {
-        return $this->service->destroy($id);
+        return $this->service->destroy($id, true);
     }
 }

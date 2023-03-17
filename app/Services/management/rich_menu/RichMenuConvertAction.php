@@ -23,7 +23,7 @@ class RichMenuConvertAction
                 return 3;
                 break;
             default:
-                return 0;
+                return null;
                 break;
         }
     }
@@ -38,10 +38,10 @@ class RichMenuConvertAction
                 return $this->data['action']['text'];
                 break;
             case 3:
-                return $this->data['action']['data'];
+                return $this->data['action']['richMenuAliasId'];
                 break;
             default:
-                # code...
+                return null;
                 break;
         }
     }

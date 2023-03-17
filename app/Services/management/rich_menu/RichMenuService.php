@@ -12,7 +12,7 @@ use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use App\Services\api\LineBotService as LINEBot;
-use App\Services\management\rich_menu_ailias\RichMenuAiliasService;
+use App\Services\management\rich_menu_alias\RichMenuAliasService;
 
 class RichMenuService
 {
@@ -34,7 +34,7 @@ class RichMenuService
     }
 
 
-    public function store($request) 
+    public function store($request, bool $should_create_alias) 
     {
         $form_value = $request->all();
         $is_default = true;
@@ -54,12 +54,12 @@ class RichMenuService
         $contentType = 'image/png';
         $response = $this->bot->uploadRichMenuImage($richmenu_id, $image_path, $contentType);
 
-        $reduce_richmenu_id = str_replace('richmenu-', '', $richmenu_id);
-        $ailias_service = new RichMenuAiliasService;
-        $response = $ailias_service->store($reduce_richmenu_id, $richmenu_id);
-
-        //デフォルトのリッチメニューに登録する
-        $this->bot->setDefaultRichMenuId($richmenu_id);
+        //リッチメニューエイリアスを作成する
+        if ($should_create_alias) {
+            $reduce_richmenu_id = str_replace('richmenu-', '', $richmenu_id);
+            $ailias_service = new RichMenuAliasService;
+            $response = $ailias_service->store($reduce_richmenu_id, $richmenu_id);
+        }
 
         return $richmenu_id;
     }
@@ -102,9 +102,9 @@ class RichMenuService
                     $form_value['F-value'] = $actions->getValue();
                     break;
                 default:
-                    # code...
                     break;
             }
+            $form_value = array_diff($form_value, array(null));
         }
         return $form_value;
     }
@@ -116,17 +116,26 @@ class RichMenuService
     }
 
 
-    public function destroy($id) 
+    public function destroy(string $id, bool $should_deleate_aliase, string $new_richmenu_id = null) 
     {
-        //リッチメニューエイリアスを削除
         $data = $this->bot->getRichMenuAliasList()->getJSONDecodedBody()['aliases'];
-        foreach ($data as $k => $v) {
-            if ($v['richMenuId'] === $id) {
-                $alias_id = $v['richMenuAliasId'];
+        if ($should_deleate_aliase) {
+            //リッチメニューエイリアスを削除
+            foreach ($data as $k => $v) {
+                if ($v['richMenuId'] === $id) {
+                    $alias_id = $v['richMenuAliasId'];
+                    if ($alias_id) {
+                        $this->bot->deleteRichMenuAlias($alias_id)->getJSONDecodedBody();
+                    }
+                }
             }
-        }
-        if ($alias_id ?? false) {
-            $this->bot->deleteRichMenuAlias($alias_id)->getJSONDecodedBody();
+        } else {
+            //リッチメニューエイリアスを更新
+            foreach ($data as $k => $v) {
+                if ($v['richMenuId'] === $id) {
+                    $this->bot->updateRichMenuAlias($v['richMenuAliasId'], $new_richmenu_id);
+                }
+            }
         }
 
         //リッチメニューを削除

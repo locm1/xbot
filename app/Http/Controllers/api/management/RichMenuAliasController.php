@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
-use App\Services\management\rich_menu_ailias\RichMenuAiliasService;
+use App\Services\management\rich_menu_alias\RichMenuAliasService;
 use Illuminate\Http\Request;
 
-class RichMenuAiliasController extends Controller
+class RichMenuAliasController extends Controller
 {
     protected $service;
 
-    public function __construct(RichMenuAiliasService $service) {
+    public function __construct(RichMenuAliasService $service) {
         $this->service = $service;
     }
 

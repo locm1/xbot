@@ -62,8 +62,8 @@ export default (props) => {
         </Modal.Header>
         <Modal.Body>
           <div className="mt-1">
-            <h6 className="mb-4 border-bottom pb-3">コンテンツ1</h6>
-            <small>リッチメニューのコンテンツを多く表示する場合におすすめです。</small>
+            {/* <h6 className="mb-4 border-bottom pb-3">コンテンツ1</h6>
+            <small>リッチメニューのコンテンツを多く表示する場合におすすめです。</small> */}
             <div className="d-flex flex-wrap richmenu-template">
               {
                 richmenu_1.map((menu1, index) => 
@@ -74,7 +74,7 @@ export default (props) => {
               }
             </div>
           </div>
-          <div className="mt-3">
+          {/* <div className="mt-3">
             <h6 className="mb-4 border-bottom pb-3">コンテンツ2</h6>
             <small>トークルームにバランスよくリッチメニューを表示する場合におすすめです。</small>
             <div className="d-flex flex-wrap richmenu-template">
@@ -86,7 +86,7 @@ export default (props) => {
                 )
               }
             </div>
-          </div>
+          </div> */}
         </Modal.Body>
         <Modal.Footer>
             <Button variant="link" className="text-gray ms-auto" onClick={handleCancelModalClose}>

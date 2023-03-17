@@ -20,8 +20,10 @@ import squares_half_1_1 from "@img/img/richmenu/squares_half_1_1.jpg"
 import squares_half_1_2 from "@img/img/richmenu/squares_half_1_2.jpg"
 import squares_half_2_1 from "@img/img/richmenu/squares_half_2_1.jpg"
 import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
+import { pages } from "./PageURLConsts"
 
 export default () => {
+  const liffId = process.env.MIX_LIFF_ID;
   const { id } =  useParams();
   const richMenuId = 'richmenu-' + id;
   const pathname = useLocation().pathname;  
@@ -44,7 +46,8 @@ export default () => {
   useLayoutEffect(() => {
     axios.get('/api/v1/management/rich-menu-ailias')
     .then((response) => {
-      setAilias(response.data);
+      const responseAlias = response.data.filter(v => v.richMenuId !== richMenuId);
+      setAilias(responseAlias);
     })
     .catch(error => {
         console.error(error);
@@ -114,14 +117,14 @@ export default () => {
     const borderBottomClass = !last ? "border-bottom" : "";
 
     return (
-      <ListGroup.Item className={`d-flex align-items-center justify-content-between px-0 ${className} ${borderBottomClass}`}>
-        <div>
+      <Row className={`${className} ${borderBottomClass} align-items-center pb-3`}>
+        <Col md={4}>
           <Card.Text className="h6 mb-1">{title}</Card.Text>
-        </div>
-        <div>
+        </Col>
+        <Col md={8}>
           {children}
-        </div>
-      </ListGroup.Item>
+        </Col>
+      </Row>
     );
   };  
   
@@ -129,13 +132,20 @@ export default () => {
     const { typeValue, title } = props;
     switch (typeValue) {
       case 1:
-        return <Form.Control className="mb-5 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
+        return (<>
+        <div className="d-flex flex-wrap gap-2 mt-2">
+          {pages.map((v, k) => 
+            <Button key={`page-${k}`} variant="outline-primary" size="sm" className="description" name={`${title}-value`} value={`https://liff.line.me/${liffId}?path=${v.path}`} onClick={handleChange}>{v.name}</Button>
+          )}
+        </div>
+          <Form.Control className="mb-3 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
+        </>)
       case 2:
-        return <Form.Control as="textarea" className="mb-5 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
+        return <Form.Control as="textarea" className="mb-3 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
         break;
       case 3:
         return (
-          <Form.Select className="mb-5 mt-2" name={`${title}-value`} value={formValue[`${title}-value`]} onChange={handleChange}>
+          <Form.Select className="mb-3 mt-2" name={`${title}-value`} value={formValue[`${title}-value`]} onChange={handleChange}>
             <option>リッチメニューを選択する</option>
               {
                 ailias.map((v, k) => <option key={`option-${k}`} value={v.richMenuAliasId}>{v.name}</option>)
@@ -143,7 +153,7 @@ export default () => {
           </Form.Select>
         )
       default :
-        return <div className="mb-6" />
+        return <div className="" />
     }
   }
 
@@ -163,8 +173,8 @@ export default () => {
       <Row className="w-100"> 
       {/* <Form.Control className="mb-3" name={`A-value`} value={formValue[`A-value`]} onBlur={props.handleChange} /> */}
         {actions.map((v, i) => (
-          <div className="d-flex border-bottom mb-3" key={`actions-${i}`}>
-            <Col md={2}>
+          <div className="d-flex mb-3 justify-content-between" key={`actions-${i}`}>
+            <Col md={1}>
               {v.title}
             </Col>
             <Col md={10}>
@@ -209,12 +219,14 @@ export default () => {
     
     return (
       <ListGroup.Item className={`px-0 mt-3 border-bottom`}>
-        <div>
-          <Card.Text className="h6 mb-1">画像</Card.Text>
-        </div>
-        <Form className="pb-4">
-          <Form.Control type="file" accept="image/*" onChange={onFileInputChange} />
-        </Form>
+        <Row>
+          <Col md={4} className="h6 mb-1">画像</Col>
+          <Col md={8}>
+            <Form className="pb-4">
+              <Form.Control type="file" accept="image/*" onChange={onFileInputChange} />
+            </Form>
+          </Col>
+        </Row>
         {
           files && (
             <Row className="dropzone-files">
@@ -306,8 +318,6 @@ export default () => {
     const { title, preview, handleClick, id, value, name } = props;
 
     return (
-      <Row style={{width: '400px'}}>
-        <Col md={12} className="py-2">
           <Form.Check
               defaultChecked={value}
               type="switch"
@@ -317,8 +327,6 @@ export default () => {
               htmlFor={`switch-${id}`}
               onClick={handleClick}
           />
-        </Col>
-      </Row>
     );
   };
 
@@ -346,24 +354,19 @@ export default () => {
           <Button onClick={() => console.log(ailias)} />
         </div>
       </div>
-      <Card border="0" className="shadow mb-4">
+      <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
         <Card.Body>
-          <h5 className="mb-4 border-bottom pb-3">基本設定</h5>
+          <h5 className="mb-4 border-bottom pb-3">コンテンツ設定</h5>
           <Row>
-            <Col md={12} className="mb-3">
+            <Col md={12} className="mb-5">
               <Form.Group id="title">
                 <Form.Label>タイトル</Form.Label>
                 <Form.Control required type="text" name="title" value={formValue.title} onChange={handleChange} placeholder="" />
               </Form.Group>
             </Col>
           </Row>
-        </Card.Body>
-      </Card>
-      <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
-        <Card.Body>
-          <h5 className="mb-4 border-bottom pb-3">コンテンツ設定</h5>
           <div className="d-flex justify-content-between">
-            <div className='line-rich-menu-preview'>
+            <div className='line-rich-menu-preview me-2'>
               <LinePreview 
                 formValue={formValue}
                 files={imagePath}
@@ -382,17 +385,17 @@ export default () => {
                 id={1}
                 title="テンプレート"
                 >
-                  <Button variant="gray-800" className="me-2 mb-3" onClick={() => setTemplateModal(!templateModal)}>選択する</Button>
+                  <Button size="sm" className="" onClick={() => setTemplateModal(!templateModal)}>選択する</Button>
                 </SettingsItem>
                 <RichMenuImage 
                   files={imagePath}
                   setImagePath={setImagePath}
                 />
-                <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 py-4 border-bottom">
+                <ListGroup.Item className="d-flex justify-content-between px-0 py-3 border-bottom">
                   <Col md={3} className="h6 mb-1">アクション</Col>
                   <AccordionAction formValue={formValue} handleChange={handleChange}></AccordionAction>
                 </ListGroup.Item>
-                <SettingsItem
+                {/* <SettingsItem
                   id={3}
                   title="テンプレートの枠線を表示"
                   className='py-4'
@@ -404,13 +407,11 @@ export default () => {
                     name="template-check" 
                     value={templateFrame}
                   />
-                </SettingsItem>
-                <ListGroup.Item className={`px-0 mt-3 border-bottom`}>
-                  <div>
-                    <Card.Text className="h6 mb-1">メニューバーテキスト設定</Card.Text>
-                  </div>
-                  <Row style={{width: '400px'}}>
-                    <Col md={12} className="py-2">
+                </SettingsItem> */}
+                <ListGroup.Item className={`px-0 py-4`}>
+                  <Row className="align-items-center">
+                    <Col md={4} className="h6 align-middle">メニューバーテキスト設定</Col>
+                    <Col md={8} className="">
                       <Form.Group id="menu_bar_text">
                         <Form.Control
                           type="text"
@@ -426,8 +427,10 @@ export default () => {
               </ListGroup>
             </div>
           </div>
-          <Button onClick={() => saveMenu(false)}>保存する</Button>
-          <Button onClick={() => saveMenu(true)}>保存&デフォルト設定</Button>
+          <div className="d-flex justify-content-end gap-2 mt-2">
+            <Button onClick={() => saveMenu(true)}>保存&デフォルト設定</Button>
+            <Button onClick={() => saveMenu(false)}>保存する</Button>
+          </div>
         </Card.Body>
       </Card>
 		</>

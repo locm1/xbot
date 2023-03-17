@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { useDropzone } from "react-dropzone";
 import { Col, Row, Form, Button, ListGroup, Card, Modal, Image } from 'react-bootstrap';
@@ -6,21 +6,65 @@ import { XIcon } from "@heroicons/react/solid";
 import LinePreview from "@/components/line/LinePreview";
 import ChangeTemplateModal from "@/pages/richmenu/ChangeTemplateModal";
 import AccordionComponent from "@/components/AccordionComponent";
-import { showRichMenu } from "./RichMenuApiMethods";
+import { showRichMenu, getImage, storeRichMenu, updateRichMenu, setDefaultRichMenu } from "./RichMenuApiMethods";
 import Swal from "sweetalert2";
+import squares1 from "@img/img/richmenu/squares1.jpg"
+import squares1_1 from "@img/img/richmenu/squares1_1.jpg"
+import squares1_2 from "@img/img/richmenu/squares1_2.jpg"
+import squares1_3 from "@img/img/richmenu/squares1_3.jpg"
+import squares2_2 from "@img/img/richmenu/squares2_2.jpg"
+import squares4 from "@img/img/richmenu/squares4.jpg"
+import squares6 from "@img/img/richmenu/squares6.jpg"
+import squares_half_1 from "@img/img/richmenu/squares_half_1.jpg"
+import squares_half_1_1 from "@img/img/richmenu/squares_half_1_1.jpg"
+import squares_half_1_2 from "@img/img/richmenu/squares_half_1_2.jpg"
+import squares_half_2_1 from "@img/img/richmenu/squares_half_2_1.jpg"
+import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
+import { pages } from "./PageURLConsts"
 
 export default () => {
-  const { id } = useParams();
+  const liffId = process.env.MIX_LIFF_ID;
+  const { id } =  useParams();
   const richMenuId = 'richmenu-' + id;
-  const pathname = useLocation().pathname;
+  const pathname = useLocation().pathname;  
+  const history = useHistory();
+  const richmenu_1 = [
+    {id: 1, img: squares6, size: 6, type: 1},
+    {id: 2, img: squares4, size: 4, type: 2},
+    {id: 3, img: squares1_3, size: 4, type: 3},
+    {id: 4, img: squares1_2, size: 3, type: 4},
+    {id: 5, img: squares1_1, size: 2, type: 5},
+    {id: 6, img: squares2_2, size: 2, type: 6},
+    {id: 7, img: squares1, size: 1, type: 7},
+    {id: 8, img: squares_half_3, size: 3, type: 8},
+    {id: 9, img: squares_half_1_2, size: 2, type: 9},
+    {id: 10, img: squares_half_2_1, size: 2, type: 10},
+    {id: 11, img: squares_half_1_1, size: 2, type: 11},
+    {id: 12, img: squares_half_1, size: 1, type: 12},
+  ];
+  const [ailias, setAilias] = useState([]);
+  useLayoutEffect(() => {
+    axios.get('/api/v1/management/rich-menu-ailias')
+    .then((response) => {
+      const responseAlias = response.data.filter(v => v.richMenuId !== richMenuId);
+      setAilias(responseAlias);
+    })
+    .catch(error => {
+        console.error(error);
+    },);
+  }, [])
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      // showRichMenu(richMenuId, setCoupon);
+      console.log('kitakitkaitaktaiktaiki')
+      showRichMenu(richMenuId, setFormValue).then((response) => {
+        setRichMenu(richmenu_1.filter(v => v.type == response.menuType)[0] ?? {id: 1, img: '', size: 6, type: 1})
+      })
+      getImage(richMenuId, setImage, setImagePath);
     }
   }, []);
   const [formValue, setFormValue] = useState(
     {
-      title: '', menuBarText: '',
+      title: '', menuBarText: '', registAilias: false, menuType: 1,
     }
   );
   const [action, setAction] = useState();
@@ -30,9 +74,17 @@ export default () => {
   const [imagePath, setImagePath] = useState();
   const [image, setImage] = useState();
 
-  console.log(formValue);
   const handleChange = (e) => {
     setFormValue({...formValue, [e.target.name]: e.target.value})
+  };
+
+  const handleChangeAsNumber = (e) => {
+    const value = +e.target.value
+    setFormValue({...formValue, [e.target.name]: value})
+  }
+
+  const handleClick = (e) => {
+    setFormValue({...formValue, [e.target.name]: !formValue[e.target.name]});
   };
 
   const handlePreviewChange = (e, input, previewIndex, files) => {
@@ -58,64 +110,78 @@ export default () => {
   const handleClickTemplate = () => {
     setTemplateFrame(!templateFrame);
   };
+  // const richMenu = richmenu_1.filter(v => v.type === formValue.menuType) ?? {id: 1, img: '', size: 6, type: 1};
 
   const SettingsItem = (props) => {
     const { id, title, children, last = false, className } = props;
     const borderBottomClass = !last ? "border-bottom" : "";
 
     return (
-      <ListGroup.Item className={`d-flex align-items-center justify-content-between px-0 ${className} ${borderBottomClass}`}>
-        <div>
+      <Row className={`${className} ${borderBottomClass} align-items-center pb-3`}>
+        <Col md={4}>
           <Card.Text className="h6 mb-1">{title}</Card.Text>
-        </div>
-        <div>
+        </Col>
+        <Col md={8}>
           {children}
-        </div>
-      </ListGroup.Item>
+        </Col>
+      </Row>
     );
   };  
   
   const TypeForm = (props) => {
     const { typeValue, title } = props;
-    console.log(typeValue);
     switch (typeValue) {
-      case '1':
-        console.log('case 1');
-        return <Form.Control className="mb-5 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
-      case '2':
-        return <Form.Control as="textarea" className="mb-5 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
+      case 1:
+        return (<>
+        <div className="d-flex flex-wrap gap-2 mt-2">
+          {pages.map((v, k) => 
+            <Button key={`page-${k}`} variant="outline-primary" size="sm" className="description" name={`${title}-value`} value={`https://liff.line.me/${liffId}?path=${v.path}`} onClick={handleChange}>{v.name}</Button>
+          )}
+        </div>
+          <Form.Control className="mb-3 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
+        </>)
+      case 2:
+        return <Form.Control as="textarea" className="mb-3 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
         break;
-      case '3':
-        return <Form.Select className="mb-5 mt-2" />
+      case 3:
+        return (
+          <Form.Select className="mb-3 mt-2" name={`${title}-value`} value={formValue[`${title}-value`]} onChange={handleChange}>
+            <option>リッチメニューを選択する</option>
+              {
+                ailias.map((v, k) => <option key={`option-${k}`} value={v.richMenuAliasId}>{v.name}</option>)
+              }
+          </Form.Select>
+        )
       default :
-        return <div className="mb-6" />
+        return <div className="" />
     }
   }
 
   const AccordionAction = (props) => {
+    const {formValue} = props;
     const actions = [...Array(richMenu.size)].map((v, i) => {
       return {
         id: i + 1,
-        eventKey: i + 1,
+        eventKey: `action-${i + 1}`,
         title: String.fromCodePoint(i + 65),
       }
     });
 
-    const options = ['リンク', 'テキスト', 'エイリアス']
+    const options = ['リンク', '送信テキスト', 'リッチメニュー切替']
 
     return (
-      <Row> 
+      <Row className="w-100"> 
       {/* <Form.Control className="mb-3" name={`A-value`} value={formValue[`A-value`]} onBlur={props.handleChange} /> */}
-        {actions.map(v => (
-          <div className="d-flex border-bottom mb-3">
-            <Col md={4}>
+        {actions.map((v, i) => (
+          <div className="d-flex mb-3 justify-content-between" key={`actions-${i}`}>
+            <Col md={1}>
               {v.title}
             </Col>
-            <Col md={8}>
-              <Form.Select className="mb-0" value={formValue[v.title + '-type']} name={`${v.title}-type`} onChange={handleChange}>
-              <option>選択する</option>
+            <Col md={10}>
+              <Form.Select className="mb-0" value={formValue[v.title + '-type']} name={`${v.title}-type`} onChange={handleChangeAsNumber}>
+              <option value={0}>選択する</option>
                 {
-                  options.map((option, index) => <option key={`option-${index}`} value={index + 1}>{option}</option>)
+                  options.map((option, index) => (<option key={`option-${index}`} value={index + 1}>{option}</option>))
                 }
               </Form.Select>
               <TypeForm typeValue={formValue[v.title + '-type']} title={v.title} />
@@ -127,12 +193,12 @@ export default () => {
   };
 
   const RichMenuImage = (props) => {
-    const { files, setFiles } = props;
+    const { files, setImagePath } = props;
     
 
     const onFileInputChange = (e) => {
       const fileObject = e.target.files[0];
-      setFiles(URL.createObjectURL(fileObject));
+      setImagePath(URL.createObjectURL(fileObject));
       setImage(fileObject);
     }
 
@@ -143,7 +209,7 @@ export default () => {
         <Col xs={3} className="dropzone-preview line-preview-image-wrap pb-2">
           <div className="line-preview-image d-flex">
             <Image src={files} className="dropzone-image" />
-            <Button variant="gray-800" className="product-image-button" onClick={() => setFiles()}>
+            <Button variant="gray-800" className="product-image-button" onClick={() => setImagePath()}>
               <XIcon className="icon icon-sm line-preview-image-icon" />
             </Button>
           </div>
@@ -153,16 +219,18 @@ export default () => {
     
     return (
       <ListGroup.Item className={`px-0 mt-3 border-bottom`}>
-        <div>
-          <Card.Text className="h6 mb-1">画像</Card.Text>
-        </div>
-        <Form className="pb-4">
-          <Form.Control type="file" accept="image/*" onChange={onFileInputChange} />
-        </Form>
+        <Row>
+          <Col md={4} className="h6 mb-1">画像</Col>
+          <Col md={8}>
+            <Form className="pb-4">
+              <Form.Control type="file" accept="image/*" onChange={onFileInputChange} />
+            </Form>
+          </Col>
+        </Row>
         {
           files && (
             <Row className="dropzone-files">
-              <DropzoneFile files={files} setFiles={setFiles} />
+              <DropzoneFile files={files} setImagePath={setImagePath} />
             </Row>
           )
         }
@@ -170,48 +238,95 @@ export default () => {
     );
   };
 
-  const saveMenu = () => {
+  const saveMenu = (shouldSetDefault) => {
     const formData = new FormData();
     for (const key in formValue) {
       formData.append(key, formValue[key]);
     }
-    formData.append('menuType', richMenu.type)
+    // formData.append('menuType', richMenu.type)
     formData.append('image', image);
-    axios.post(`/api/v1/management/rich-menus/`, formData)
-    .then((response) => {
-      console.log(response);
-      Swal.fire(
-        '保存完了',
-        `「${formValue.title}」を保存しました`,
-        'success'
-      )
-    })
-    .catch(error => {
-      console.error(error);
-      Swal.fire(
-        'エラー',
-        `テンプレート名「${formValue.title}」を保存できませんでした`,
-        'error'
-      )
-    });
+    console.log(...formData.entries());
+    if (pathname.includes('/edit')) {
+      updateRichMenu(richMenuId, formData).then(response => {
+        if (response === 'failed') {
+          Swal.fire({
+            icon: 'error',
+            title: 'エラー',
+            text: `テンプレート名「${formValue.title}」を保存できませんでした`,
+          })
+        } else {
+          if (shouldSetDefault) {
+            setDefaultRichMenu(response).then(response => {
+              if (response === 'failed') {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'エラー',
+                  text: `テンプレート名「${formValue.title}」をデフォルトに設定できませんでした`,
+                })
+              } else {
+                Swal.fire({
+                  icon: 'success',
+                  title: '保存完了',
+                  text: `「${formValue.title}」を保存しました`,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    let responseRichMenuId = response.replace('richmenu-', '');
+                    history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
+                  }
+                })
+              }
+            })
+          } else {
+            Swal.fire({
+              icon: 'success',
+              title: '保存完了',
+              text: `「${formValue.title}」を保存しました`,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                let responseRichMenuId = response.replace('richmenu-', '');
+                history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
+              }
+            })
+          }
+        }
+      })
+    } else {
+      storeRichMenu(formData).then(response => {
+        if (response === 'failed') {
+          Swal.fire({
+            icon: 'error',
+            title: 'エラー',
+            text: `テンプレート名「${formValue.title}」を保存できませんでした`,
+          })
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: '保存完了',
+            text: `「${formValue.title}」を保存しました`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              let responseRichMenuId = response.replace('richmenu-', '');
+              history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
+            }
+          })
+        }
+      })
+    }
   }
 
   const MenuBarSetting = (props) => {
-    const { title, preview, handleClick, id, value } = props;
+    const { title, preview, handleClick, id, value, name } = props;
 
     return (
-      <Row style={{width: '400px'}}>
-        <Col md={12} className="py-2">
           <Form.Check
               defaultChecked={value}
               type="switch"
               label={title}
+              name={name}
               id={`switch-${id}`}
               htmlFor={`switch-${id}`}
               onClick={handleClick}
           />
-        </Col>
-      </Row>
     );
   };
 
@@ -221,6 +336,8 @@ export default () => {
       templateModal && (
         <ChangeTemplateModal 
         setRichMenu={setRichMenu}
+        setFormValue={setFormValue}
+        formValue={formValue}
         show={templateModal}
         templateModal={templateModal}
         setTemplateModal={setTemplateModal}
@@ -232,28 +349,24 @@ export default () => {
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">リッチメニュー設定</h1>
+          <Button onClick={() => console.log(formValue)} />
           <Button onClick={() => console.log(richMenu)} />
-          <Button onClick={() => console.log(imagePath)} />
+          <Button onClick={() => console.log(ailias)} />
         </div>
       </div>
-      <Card border="0" className="shadow mb-4">
+      <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
         <Card.Body>
-          <h5 className="mb-4 border-bottom pb-3">基本設定</h5>
+          <h5 className="mb-4 border-bottom pb-3">コンテンツ設定</h5>
           <Row>
-            <Col md={12} className="mb-3">
+            <Col md={12} className="mb-5">
               <Form.Group id="title">
                 <Form.Label>タイトル</Form.Label>
                 <Form.Control required type="text" name="title" value={formValue.title} onChange={handleChange} placeholder="" />
               </Form.Group>
             </Col>
           </Row>
-        </Card.Body>
-      </Card>
-      <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
-        <Card.Body>
-          <h5 className="mb-4 border-bottom pb-3">コンテンツ設定</h5>
           <div className="d-flex justify-content-between">
-            <div className='line-rich-menu-preview'>
+            <div className='line-rich-menu-preview me-2'>
               <LinePreview 
                 formValue={formValue}
                 files={imagePath}
@@ -272,34 +385,33 @@ export default () => {
                 id={1}
                 title="テンプレート"
                 >
-                  <Button variant="gray-800" className="me-2 mb-3" onClick={() => setTemplateModal(!templateModal)}>選択する</Button>
+                  <Button size="sm" className="" onClick={() => setTemplateModal(!templateModal)}>選択する</Button>
                 </SettingsItem>
                 <RichMenuImage 
                   files={imagePath}
-                  setFiles={setImagePath}
+                  setImagePath={setImagePath}
                 />
-                <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 py-4 border-bottom">
+                <ListGroup.Item className="d-flex justify-content-between px-0 py-3 border-bottom">
                   <Col md={3} className="h6 mb-1">アクション</Col>
-                  <AccordionAction richMenu={richMenu} templateActive={templateActive} setTemplateActive={setTemplateActive} handleChange={handleChange}></AccordionAction>
+                  <AccordionAction formValue={formValue} handleChange={handleChange}></AccordionAction>
                 </ListGroup.Item>
-                <SettingsItem
+                {/* <SettingsItem
                   id={3}
-                  title="メニューバー設定"
+                  title="テンプレートの枠線を表示"
                   className='py-4'
                 >
                   <MenuBarSetting 
-                    title='テンプレートの枠線を表示'
+                    title=''
                     handleClick={handleClickTemplate}
                     id="template-check" 
+                    name="template-check" 
                     value={templateFrame}
                   />
-                </SettingsItem>
-                <ListGroup.Item className={`px-0 mt-3 border-bottom`}>
-                  <div>
-                    <Card.Text className="h6 mb-1">メニューバーテキスト設定</Card.Text>
-                  </div>
-                  <Row style={{width: '400px'}}>
-                    <Col md={12} className="py-2">
+                </SettingsItem> */}
+                <ListGroup.Item className={`px-0 py-4`}>
+                  <Row className="align-items-center">
+                    <Col md={4} className="h6 align-middle">メニューバーテキスト設定</Col>
+                    <Col md={8} className="">
                       <Form.Group id="menu_bar_text">
                         <Form.Control
                           type="text"
@@ -315,7 +427,10 @@ export default () => {
               </ListGroup>
             </div>
           </div>
-          <Button onClick={() => saveMenu()}>保存する</Button>
+          <div className="d-flex justify-content-end gap-2 mt-2">
+            <Button onClick={() => saveMenu(true)}>保存&デフォルト設定</Button>
+            <Button onClick={() => saveMenu(false)}>保存する</Button>
+          </div>
         </Card.Body>
       </Card>
 		</>

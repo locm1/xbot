@@ -159,7 +159,7 @@ $base_color: #707070;
 }
 
 .rich-menu-content {
-  width: 40vw;
+  width: 50vw;
 }
 
 .management-tag-name {
@@ -217,4 +217,8 @@ $base_color: #707070;
   position: fixed;
   top: 0;
   z-index: 100;
+}
+
+.description {
+  font-size: 0.7rem;
 }

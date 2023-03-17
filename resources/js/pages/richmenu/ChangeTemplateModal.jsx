@@ -15,7 +15,7 @@ import squares_half_2_1 from "@img/img/richmenu/squares_half_2_1.jpg"
 import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
 
 export default (props) => {
-  const { setTemplateModal, templateModal, show, setRichMenu, active, setActive } = props;
+  const { setTemplateModal, templateModal, show, setRichMenu, setFormValue, formValue, active, setActive } = props;
   const [tmpRichMenu, setTmpRichMenu] = useState();
 
   const richmenu_1 = [
@@ -37,7 +37,9 @@ export default (props) => {
   ];
 
   const handleSaveModalClose = () => {
-    setRichMenu(tmpRichMenu)
+    const value = +tmpRichMenu.id;
+    setRichMenu(tmpRichMenu);
+    setFormValue({...formValue, 'menuType': value})
     setTemplateModal(!templateModal)
   };
 
@@ -60,8 +62,8 @@ export default (props) => {
         </Modal.Header>
         <Modal.Body>
           <div className="mt-1">
-            <h6 className="mb-4 border-bottom pb-3">コンテンツ1</h6>
-            <small>リッチメニューのコンテンツを多く表示する場合におすすめです。</small>
+            {/* <h6 className="mb-4 border-bottom pb-3">コンテンツ1</h6>
+            <small>リッチメニューのコンテンツを多く表示する場合におすすめです。</small> */}
             <div className="d-flex flex-wrap richmenu-template">
               {
                 richmenu_1.map((menu1, index) => 
@@ -72,7 +74,7 @@ export default (props) => {
               }
             </div>
           </div>
-          <div className="mt-3">
+          {/* <div className="mt-3">
             <h6 className="mb-4 border-bottom pb-3">コンテンツ2</h6>
             <small>トークルームにバランスよくリッチメニューを表示する場合におすすめです。</small>
             <div className="d-flex flex-wrap richmenu-template">
@@ -84,7 +86,7 @@ export default (props) => {
                 )
               }
             </div>
-          </div>
+          </div> */}
         </Modal.Body>
         <Modal.Footer>
             <Button variant="link" className="text-gray ms-auto" onClick={handleCancelModalClose}>

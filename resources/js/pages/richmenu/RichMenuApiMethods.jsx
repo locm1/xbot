@@ -8,35 +8,55 @@ export const getRichMenus = async (setRichMenus) => {
     });
   };
   
-  export const storeRichMenu = async (RichMenu, storeComplete) => {
-    axios.post('/api/v1/management/rich-menus/', RichMenu)
+  export const storeRichMenu = async (formData) => {
+    return await axios.post(`/api/v1/management/rich-menus/`, formData)
     .then((response) => {
-      storeComplete();
-      location.href = '/manage/RichMenu/list';
+      console.log(response);
+      return response.data;
     })
     .catch(error => {
-        console.error(error);
+      console.error(error);
+      return 'failed';
     });
   };
   
   export const showRichMenu = async (id, setRichMenu) => {
-    axios.get(`/api/v1/management/rich-menus/${id}`)
+    return await axios.get(`/api/v1/management/rich-menus/${id}`)
     .then((response) => {
-      setRichMenu(response.data.RichMenu);
-      console.log(response.data.RichMenu);
+      setRichMenu(response.data);
+      return response.data;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+  };
+
+  export const getImage = async (id, setImage, setImagePath) => {
+    axios.get(`/api/v1/management/rich-menu-image/${id}`, {responseType: 'blob',})
+    .then((response) => {
+	    const file = new File([response.data], "file1.png", { type: "image/png" })
+      setImagePath(URL.createObjectURL(file));
+      setImage(file);
     })
     .catch(error => {
         console.error(error);
     });
   };
   
-  export const updateRichMenu = async (id, RichMenu, updateComplete) => {
-    axios.put(`/api/v1/management/rich-menus/${id}`, RichMenu)
+  export const updateRichMenu = async (id, formData) => {
+    return await axios.post(`/api/v1/management/rich-menus/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-HTTP-Method-Override': 'PUT',
+      }
+    })
     .then((response) => {
-      updateComplete();
+      console.log(response)
+      return response.data;
     })
     .catch(error => {
-        console.error(error);
+      console.error(error);
+      return 'failed';
     });
   };
   
@@ -60,3 +80,15 @@ export const getRichMenus = async (setRichMenus) => {
         console.error(error);
     });
   };
+
+  export const setDefaultRichMenu = async (id) => {
+    return await axios.post(`/api/v1/management/rich-menu-set-default/${id}`)
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch(error => {
+      console.error(error);
+      return 'failed';
+    });
+  }

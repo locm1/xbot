@@ -4,13 +4,10 @@ export const getQuestionnaires = async (setQuestionnaires) => {
   return await axios.get('/api/v1/questionnaires')
   .then((response) => {
     const questionnaires = response.data.questionnaires;
+    console.log(questionnaires);
     setQuestionnaires(
       questionnaires.map(questionnaire => {
-        if (questionnaire.type == 1 || questionnaire.type == 2 || questionnaire.type == 4) {
-          return { ...questionnaire, answer: '' }
-        } else {
-          return { ...questionnaire, answer: questionnaire.questionnaire_items[0] ? questionnaire.questionnaire_items[0].name: '' }
-        }
+        return { ...questionnaire, answer: '' }
       })
     )
   })
@@ -19,7 +16,7 @@ export const getQuestionnaires = async (setQuestionnaires) => {
   });
 };
 
-export const storeQuestionnaireAnswers = async (userId, questionnaires) => {
+export const storeQuestionnaireAnswers = async (userId, questionnaires, setQuestionnaireErrors) => {
   return await axios.post(`/api/v1/users/${userId}/questionnaire-answers`, questionnaires)
   .then((response) => {
     const questionnaire_answers = response.data.questionnaire_answers;
@@ -29,5 +26,6 @@ export const storeQuestionnaireAnswers = async (userId, questionnaires) => {
   })
   .catch(error => {
       console.error(error);
+      setQuestionnaireErrors(error.response.data.errors)
   });
 };

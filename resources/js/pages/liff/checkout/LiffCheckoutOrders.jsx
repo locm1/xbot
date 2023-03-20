@@ -37,9 +37,6 @@ export default () => {
     getCarts(idToken, setCarts, setItemsExistInCart)
     getUser(idToken, setUser)
     getSpecificTimeItem(cookie)
-
-    //const idToken = Cookies.get('TOKEN');
-    //getUser(idToken, setUser)
   }, []);
 
   const getSpecificTimeItem = (specificTime) => {

@@ -3,20 +3,24 @@ import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'reac
 import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
 
 import LiffCheckoutPayment from "@/pages/liff/checkout/LiffCheckoutPayment";
 import LiffCheckoutOrders from "@/pages/liff/checkout/LiffCheckoutOrders";
 import { DeliveryAddressItem } from "@/pages/liff/LiffCardItem";
 import { getSelectOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
 import { getCarts } from "@/pages/liff/api/CartApiMethods";
+import { getUser } from "@/pages/liff/api/UserApiMethods";
 
 export default () => {
   const [deliveryAddress, setDeliveryAddress] = useState({});
+  const [user, setUser] = useState({
+    is_registered: 0
+  });
 
   useEffect(() => {
-    //const idToken = Cookies.get('TOKEN');
-    //getUser(idToken, setUser)
-    getSelectOrderDestination(101, setDeliveryAddress)
+    const idToken = Cookies.get('TOKEN');
+    getUser(idToken, setUser).then(response => getSelectOrderDestination(response.id, setDeliveryAddress))
   }, []);
 
   return (

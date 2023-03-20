@@ -12,7 +12,7 @@ class QuestionnaireService
 
     public function index(): Collection
     {
-        return Questionnaire::with('questionnaireItems')->where('is_undisclosed', 0)->orderBy('display_order', 'asc')->get();
+        return Questionnaire::with('questionnaireItems')->orderBy('display_order', 'asc')->get();
     }
 
     /**
@@ -37,7 +37,7 @@ class QuestionnaireService
      */
     public function update($request, Questionnaire $questionnaire)
     {
-        $data = $request->only(['admin_id', 'title', 'type', 'display_order', 'is_undisclosed']);
+        $data = $request->only(['admin_id', 'title', 'type', 'display_order', 'is_undisclosed', 'is_required']);
         $questionnaire->update($data);
         return $questionnaire;
     }

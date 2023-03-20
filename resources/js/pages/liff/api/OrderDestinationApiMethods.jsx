@@ -49,6 +49,7 @@ export const storeOrderDestination = async (userId, formValue, location) => {
   })
   .catch(error => {
       console.error(error);
+      alert(error);
   });
 };
 

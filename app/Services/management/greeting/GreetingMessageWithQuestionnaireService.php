@@ -9,7 +9,7 @@ class GreetingMessageWithQuestionnaireService
 {
     public function index() 
     {
-        return GreetingMessagesWithQuestionnaire::all();
+        return GreetingMessagesWithQuestionnaire::find(1);
     }
 
     public function store($request) 

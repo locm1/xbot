@@ -16,7 +16,7 @@ import { getOccupations } from "@/pages/liff/api/OccupationApiMethods";
 
 export default () => {
   const [questionnaires, setQuestionnaires] = useState([
-    {id: '', title: '', type: 1, answer: '', questionnaire_items: [{
+    {id: '', title: '', type: 1, answer: '', is_required: 0, questionnaire_items: [{
       name: ''
     }]}
   ]);
@@ -31,6 +31,14 @@ export default () => {
     last_name: '', first_name: '', last_name_kana: '', first_name_kana: '',
     year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
     prefecture: '', city: '', address: '', building_name: '', room_number: ''
+  });
+  const [errors, setErrors] = useState({
+    last_name: '', first_name: '', last_name_kana: '', first_name_kana: '',
+    year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
+    prefecture: '', city: '', address: '', building_name: '', room_number: ''
+  });
+  const [questionnaireErrors, setQuestionnaireErrors] = useState({
+    "questionnaires.0.answer": ''
   });
 
   const genders = ['男性', '女性', 'その他'];
@@ -54,8 +62,8 @@ export default () => {
   const onSaveUser = () => {
     formValue.is_registered = 1
     console.log(formValue);
-    //updateUser(101, formValue)
-    updateUser(user.id, formValue)
+    //updateUser(100, formValue, setErrors)
+    updateUser(user.id, formValue, setErrors)
   };
 
   const onSaveOrderDestination = () => {
@@ -67,10 +75,12 @@ export default () => {
   };
 
   const onSaveQuestionnaireAnswers = () => {
-    formValue.is_selected = 1
-    console.log(questionnaires);
-    storeQuestionnaireAnswers(user.id, {questionnaires: questionnaires})
-    // storeQuestionnaireAnswers(101, {questionnaires: questionnaires})
+    const newQuestionnaires = questionnaires.filter((questionnaire, index) => {
+      return questionnaire.answer
+    });
+    console.log(newQuestionnaires);
+    storeQuestionnaireAnswers(user.id, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
+    //storeQuestionnaireAnswers(100, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
   };
 
   const handleClick = () => {
@@ -121,56 +131,77 @@ export default () => {
             </Card.Header>
             <Card.Body className="py-0">
               <Row className="mt-3">
-                <Col xs={6} className="mb-3">
+                <Col xs={6} className="mb-5">
                   <Form.Group id="last_name">
-                    <Form.Label>氏名（姓）</Form.Label>
+                    <Form.Label>
+                      <span class="questionnaire-required me-2">必須</span>氏名（姓）</Form.Label>
                     <Form.Control 
                       required
                       type="text" 
                       name="last_name" 
                       value={formValue.last_name} 
                       onChange={(e) => handleChange(e, 'last_name')} 
-                      placeholder="山田" 
+                      placeholder="例）山田" 
+                      isInvalid={formValue.last_name !== '' ? false : errors.last_name ? true : false}
                     />
+                    {
+                      errors.last_name && 
+                      <Form.Control.Feedback type="invalid">{errors.last_name[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col xs={6} className="mb-3">
+                <Col xs={6} className="mb-5">
                   <Form.Group id="first_name">
-                    <Form.Label>氏名（名）</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>氏名（名）</Form.Label>
                     <Form.Control 
                       required
                       type="text"
                       name="first_name"
                       value={formValue.first_name} 
                       onChange={(e) => handleChange(e, 'first_name')} 
-                      placeholder="太郎"
+                      placeholder="例）太郎"
+                      isInvalid={formValue.first_name !== '' ? false : errors.first_name ? true : false}
                     />
+                    {
+                      errors.first_name && 
+                      <Form.Control.Feedback type="invalid">{errors.first_name[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col xs={6} className="mb-3">
+                <Col xs={6} className="mb-5">
                   <Form.Group id="last_name_kana">
-                    <Form.Label>フリガナ（姓）</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>フリガナ（姓）</Form.Label>
                     <Form.Control
                       required
                       type="text"
                       name="last_name_kana"
                       value={formValue.last_name_kana} 
                       onChange={(e) => handleChange(e, 'last_name_kana')} 
-                      placeholder="ヤマダ"
+                      placeholder="例）ヤマダ"
+                      isInvalid={formValue.last_name_kana !== '' ? false : errors.last_name_kana ? true : false}
                     />
+                    {
+                      errors.last_name_kana && 
+                      <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col xs={6} className="mb-3">
+                <Col xs={6} className="mb-5">
                   <Form.Group id="first_name_kana">
-                    <Form.Label>フリガナ（名）</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>フリガナ（名）</Form.Label>
                     <Form.Control
                       required
                       type="text"
                       name="first_name_kana"
                       value={formValue.first_name_kana} 
                       onChange={(e) => handleChange(e, 'first_name_kana')} 
-                      placeholder="タロウ" 
+                      placeholder="例）タロウ" 
+                      isInvalid={formValue.first_name_kana !== '' ? false : errors.first_name_kana ? true : false}
                     />
+                    {
+                      errors.first_name_kana && 
+                      <Form.Control.Feedback type="invalid">{errors.first_name_kana[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
               </Row>
@@ -178,9 +209,9 @@ export default () => {
               <LiffQuestionnaireBirthdateForm formValue={formValue} handleChange={handleChange} />
 
               <Row className="">
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="gender">
-                    <Form.Label>性別</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>性別</Form.Label>
                       <div>
                         {
                           genders.map((gender, index) => 
@@ -201,22 +232,27 @@ export default () => {
                       </div>
                   </Form.Group>
                 </Col>
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="tel">
-                    <Form.Label>電話番号</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>電話番号</Form.Label>
                     <Form.Control
                       required
                       type="tel"
                       name="tel"
-                      placeholder="08000000000"
+                      placeholder="例）08000000000"
                       value={formValue.tel} 
                       onChange={(e) => handleChange(e, 'tel')} 
+                      isInvalid={formValue.tel !== '' ? false : errors.tel ? true : false}
                     />
+                    {
+                      errors.tel && 
+                      <Form.Control.Feedback type="invalid">{errors.tel[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="occupation">
-                    <Form.Label>ご職業</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>ご職業</Form.Label>
                     <Form.Select defaultValue="0" value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id')} className="mb-0 w-100">
                       {
                         occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)
@@ -227,24 +263,29 @@ export default () => {
               </Row>
 
               <Row className="">
-                <Col xs={6} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="zipcode">
-                    <Form.Label>郵便番号</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>郵便番号</Form.Label>
                     <Form.Control
                       required
                       type="number"
                       name="zipcode"
-                      placeholder="0001111"
+                      placeholder="例）0001111"
                       value={formValue.zipcode} 
                       onChange={(e) => searchZipCode(e, 'zipcode')} 
+                      isInvalid={formValue.zipcode !== '' ? false : errors.zipcode ? true : false}
                     />
+                    {
+                      errors.zipcode && 
+                      <Form.Control.Feedback type="invalid">{errors.zipcode[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
               </Row>
               <Row className="">
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="prefecture">
-                    <Form.Label>都道府県</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>都道府県</Form.Label>
                     <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="mb-0 w-100">
                       {
                         prefectures && prefectures.map((prefecture, index) => <option key={index} value={prefecture.name}>{prefecture.name}</option>)
@@ -252,9 +293,9 @@ export default () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="city">
-                    <Form.Label>市区町村</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>市区町村</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -262,12 +303,17 @@ export default () => {
                       placeholder="例）札幌市中央区南一条西"
                       value={formValue.city} 
                       onChange={(e) => handleChange(e, 'city')} 
+                      isInvalid={formValue.city !== '' ? false : errors.city ? true : false}
                     />
+                    {
+                      errors.city && 
+                      <Form.Control.Feedback type="invalid">{errors.city[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="address">
-                    <Form.Label>丁目・番地・号</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>丁目・番地・号</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -275,12 +321,17 @@ export default () => {
                       placeholder="例）5-16"
                       value={formValue.address} 
                       onChange={(e) => handleChange(e, 'address')} 
+                      isInvalid={formValue.address !== '' ? false : errors.address ? true : false}
                     />
+                    {
+                      errors.address && 
+                      <Form.Control.Feedback type="invalid">{errors.address[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="building_name">
-                    <Form.Label>建物名/会社名</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>建物名/会社名</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -288,12 +339,17 @@ export default () => {
                       placeholder="例）プレジデント松井ビル100"
                       value={formValue.building_name} 
                       onChange={(e) => handleChange(e, 'building_name')} 
+                      isInvalid={formValue.building_name !== '' ? false : errors.building_name ? true : false}
                     />
+                    {
+                      errors.building_name && 
+                      <Form.Control.Feedback type="invalid">{errors.building_name[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <Form.Group id="room_number">
-                    <Form.Label>部屋番号</Form.Label>
+                    <Form.Label><span class="questionnaire-any me-2">任意</span>部屋番号</Form.Label>
                     <Form.Control
                       required
                       type="number"
@@ -308,7 +364,7 @@ export default () => {
             </Card.Body>
           </Card>
 
-          <LiffQuestionnaireForm questionnaires={questionnaires} answerSurvey={answerSurvey} />
+          <LiffQuestionnaireForm questionnaires={questionnaires} answerSurvey={answerSurvey} questionnaireErrors={questionnaireErrors} />
 
           <Card border="0" className="shadow mt-4">
             <Card.Header className="border-bottom">
@@ -316,7 +372,7 @@ export default () => {
             </Card.Header>
             <Card.Body className="py-0">
               <Row className="mt-3">
-                <Col xs={12} className="mb-3">
+                <Col xs={12} className="mb-5">
                   <p>
                     記載していただいた個人情報は、お客様により良いサービスをご提供する目的で使用し、ご本人の同意がなければ第三者に個人情報を提供することはございません。
                   </p>

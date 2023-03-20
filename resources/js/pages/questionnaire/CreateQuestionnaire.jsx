@@ -26,6 +26,7 @@ export default () => {
   const [alert, setAlert] = useState(false);
   const [message, setMessage] = useState('');
   const [timer, setTimer] = useState(null);
+  const [isCheck, setIsCheck] = useState(false);
 
   const update = (e, id, column) => {
     const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
@@ -56,12 +57,16 @@ export default () => {
     if (Object.keys(newQuestionnaire.questionnaire_items).length == 0 && isIncludes(types, newQuestionnaire.type)) {
       ref.current.addItem()
     }
-
   };
 
-  const handleClick = (id) => {
+  const handleClick = (id, value) => {
     const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
-    newQuestionnaire.is_undisclosed = !newQuestionnaire.is_undisclosed;
+
+    if (value == 'is_undisclosed') {
+      newQuestionnaire.is_undisclosed = !newQuestionnaire.is_undisclosed;
+    } else {
+      newQuestionnaire.is_required = !newQuestionnaire.is_required;
+    }
     setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? newQuestionnaire : questionnaire)));
     clearTimeout(timer);
 
@@ -154,12 +159,20 @@ export default () => {
                       <Button className="mb-3" variant="close" onClick={() => showConfirmDeleteModal(questionnaire.id)} />
                       <Form>
                         <Form.Check
-                          checked={questionnaire.is_undisclosed}
+                          checked={questionnaire.is_undisclosed == 1 ? true : false}
                           type="switch"
                           label="非公開にする"
                           id={`switch-${index}`}
                           htmlFor={`switch-${index}`}
-                          onChange={ () => handleClick(questionnaire.id) }
+                          onChange={ () => handleClick(questionnaire.id, 'is_undisclosed') }
+                        />
+                        <Form.Check
+                          checked={questionnaire.is_required == 1 ? true : false}
+                          type="switch"
+                          label="必須にする"
+                          id={`switch-reqired-${index}`}
+                          htmlFor={`switch-reqired-${index}`}
+                          onChange={ () => handleClick(questionnaire.id, 'is_required') }
                         />
                       </Form>
                       </div>

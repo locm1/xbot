@@ -105,10 +105,14 @@ export default () => {
 
     if (messages[0].created_at) {
       updateGreetingMessages(formData, completeMessage)
-      updateGreetingMessageWithQuestionnaires(greetingMessageWithQuestionnaire[0].id, formValue)
+    } else {
+      storeGreetingMessages(formData, completeMessage)
+    }
+
+    if (greetingMessageWithQuestionnaire) {
+      updateGreetingMessageWithQuestionnaires(greetingMessageWithQuestionnaire.id, formValue)
     } else {
       storeGreetingMessageWithQuestionnaires(formValue)
-      storeGreetingMessages(formData, completeMessage)
     }
   };
 

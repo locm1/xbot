@@ -5,8 +5,10 @@ export const showPaymentMethod = async (userId, setPaymentMethod) => {
 
     if (response.data.order_payment_methods == null) {
       setPaymentMethod({payment_method: 1});
+      return {payment_method: 1};
     } else {
       setPaymentMethod(response.data.order_payment_methods);
+      return response.data.order_payment_methods;
     }
   })
   .catch(error => {

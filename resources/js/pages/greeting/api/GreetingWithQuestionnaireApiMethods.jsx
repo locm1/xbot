@@ -5,7 +5,7 @@ export const getGreetingMessageWithQuestionnaires = async (setQreetingMessageWit
     console.log(greeting_message_with_questionnaires);
     setQreetingMessageWithQuestionnaire(greeting_message_with_questionnaires);
 
-    if (greeting_message_with_questionnaires[0].is_questionnaire == 1) {
+    if (greeting_message_with_questionnaires.is_questionnaire == 1) {
       setIsQuestionnaireAnswerButton(true);
     } else {
       setIsQuestionnaireAnswerButton(false);

@@ -3,6 +3,7 @@ import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-d
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
+import LIFFInspectorPlugin from '@line/liff-inspector'
 import { LiffMockPlugin } from '@line/liff-mock';
 import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 import { generateEnv } from '@/components/common/GenerateEnv';
@@ -254,7 +255,8 @@ const LiffInitRoute = () => {
   //   liff.use(new LiffMockPlugin());
   // }
   clearExpiredIdToken(liffId)
-
+  liff.use(new LIFFInspectorPlugin())
+  
   liff.init({liffId: process.env.MIX_LIFF_ID})
     .then(() => {
       if(liff.isLoggedIn() === false) liff.login()

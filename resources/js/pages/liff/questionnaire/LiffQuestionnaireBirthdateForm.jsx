@@ -24,7 +24,7 @@ export default (props) => {
     <>
       <Row className="">
         <Col xs={12} className="mb-3">
-          <Form.Label>生年月日</Form.Label>
+          <Form.Label><span class="questionnaire-required me-2">必須</span>生年月日</Form.Label>
           <div className="d-flex">
             <Form.Select defaultValue="1990" value={formValue.year} onChange={(e) => handleChange(e, 'year')} className="mb-0">
               {getYear()}

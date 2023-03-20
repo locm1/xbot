@@ -23,9 +23,8 @@ class FlexMessageBuilderAction
 
     public function createFlexMessage()
     {
-        $alt_text = 'アンケート回答ボタンのFlexメッセージ';
         $bubble_container_builder = $this->createContents();
-        $flex_message_builder = new FlexMessageBuilder($alt_text, $bubble_container_builder);
+        $flex_message_builder = new FlexMessageBuilder('アンケート', $bubble_container_builder);
         return $flex_message_builder;
     }
 

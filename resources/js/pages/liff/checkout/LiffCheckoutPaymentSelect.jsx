@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 
@@ -40,9 +41,8 @@ export default () => {
   };
 
   useEffect(() => {
-    //const idToken = Cookies.get('TOKEN');
-    //getUser(idToken, setUser)
-    showPaymentMethod(101, setPaymentMethod)
+    const idToken = Cookies.get('TOKEN');
+    getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
   }, []);
 
   const CashondeliveryCard = () => {

@@ -17,7 +17,7 @@ class GreetingService
     public function __construct(LINEBot $bot, string $user_id) {
         $this->user_id = $user_id;
         $this->bot = $bot;
-        $this->url = 'https://x-bot.stg-box.jp';
+        $this->url = 'https://f7f6-2400-2413-9641-0-b5e5-dded-ae96-171b.jp.ngrok.io';
     }
 
     public function sendGreetingMessage()
@@ -48,7 +48,7 @@ class GreetingService
         }
 
         # アンケート回答ボタンをつけた場合、Flexメッセージ作成
-        if ($greeting_messages_with_questionnaires[0]->is_questionnaire == 1) {
+        if ($greeting_messages_with_questionnaires->is_questionnaire == 1) {
             $flex_message_builder_action = new FlexMessageBuilderAction($this->bot, $this->user_id, $this->url);
             $message_builder = $flex_message_builder_action->createFlexMessage($this->url);
             $multi_message_builder->add($message_builder);

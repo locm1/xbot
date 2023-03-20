@@ -4,8 +4,16 @@ import { Link, useLocation } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 export const CartItem = (props) => {
-  const { img, name, price, id, quantity, history } = props;
+  const { id, product_id, quantity, product, history } = props;
   const link = Paths.LiffProductDetail.path.replace(':id', id);
+
+  const getImages = (image) => {
+    if (image) {
+      return image.image_path
+    } else {
+      return noImage;
+    }
+  }
 
   return (
     <ListGroup.Item className="bg-transparent py-3 px-0">
@@ -13,12 +21,12 @@ export const CartItem = (props) => {
         <Row className="">
           <Col xs="5">
             <div className="liff-cart-img">
-              <Image rounded src={img} className="m-0" />
+              <Image rounded src={getImages(product.product_images[0])}  className="m-0" />
             </div>
           </Col>
           <Col xs="7" className="px-0 m-0">
-            <h4 className="fs-6 text-dark mb-0">{name}</h4>
-            <h4 className="liff-product-detail-price mt-2">￥{price.toLocaleString()}<span>税込</span></h4>
+            <h4 className="fs-6 text-dark mb-0">{product.name}</h4>
+            <h4 className="liff-product-detail-price mt-2">￥{product.price.toLocaleString()}<span>税込</span></h4>
             <div className="">数量：{quantity}個</div>
             {
               history == 'reserve' &&

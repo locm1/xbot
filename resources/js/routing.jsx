@@ -22,6 +22,7 @@ import SendHistories from '@/pages/message/SendHistories';
 import VisitorHistories from '@/pages/visitor/VisitorHistories';
 import EditVisitorHistory from '@/pages/visitor/EditVisitorHistory';
 import Privileges from '@/pages/privilege/Privileges';
+import Environment from '@/pages/product/Environment';
 import Products from '@/pages/product/Products';
 import ProductCategory from '@/pages/product/ProductCategory';
 import EditCategory from '@/pages/product/EditCategory'
@@ -332,6 +333,7 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="visitor" path={Paths.VisitorHistories.path} component={VisitorHistories} />
       <RouteWithSidebar exact role_path="visitor" path={Paths.EditVisitorHistory.path} component={EditVisitorHistory} />
       <RouteWithSidebar exact role_path="visitor" path={Paths.Privileges.path} component={Privileges} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.Environment.path} component={Environment} />
       <RouteWithSidebar exact role_path="ec" path={Paths.Products.path} component={Products} />
       <RouteWithSidebar exact role_path="ec" path={Paths.ProductCategory.path} component={ProductCategory} />
       <RouteWithSidebar exact role_path="ec" path={Paths.CreateCategory.path} component={EditCategory} />
@@ -366,7 +368,7 @@ const Routing = () => {
       <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
-      <LiffRoute exact path={Paths.LiffProductCategories.path} component={LiffProductCategories} />
+      <LiffRoute exact path={Paths.LiffPickupProducs.path} component={LiffProductCategories} />
       <LiffRoute exact path={Paths.LiffCarts.path} component={LiffCarts} />
       <LiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
       <LiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />

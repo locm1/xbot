@@ -40,7 +40,7 @@ export const showOrderDestination = async (userId, id, setDeliveryAddress) => {
 };
 
 export const storeOrderDestination = async (userId, formValue, location) => {
-  return await axios.post(`/api/v1/users/${userId}/destinations`, formValue)
+  await axios.post(`/api/v1/users/${userId}/destinations`, formValue)
   .then((response) => {
     if (location == '/checkout/address') {
       window.location.href = Paths.LiffCheckoutDestinations.path

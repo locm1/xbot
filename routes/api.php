@@ -185,8 +185,8 @@ Route::group(['prefix' => 'v1'], function() {
     ]);
     Route::get('products/{product}/images', [LiffProductImageController::class, 'index']);
     Route::get('products/{product}/category', LiffProductCategoryController::class);
-    Route::apiResource('carts', CartController::class);
     Route::apiResource('users', LiffUserController::class);
+    Route::apiResource('users/{user}/carts', CartController::class);
     Route::post('users/{user}/questionnaire-answers', LiffQuestionnaireAnswerController::class);
     Route::apiResource('users/{user}/destinations', LiffOrderDestinationController::class);
     Route::put('users/{user}/destinations', UpdateOrderDestinationController::class);

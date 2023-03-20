@@ -15,6 +15,7 @@ import { storeOrderDestination } from "@/pages/liff/api/OrderDestinationApiMetho
 import { getOccupations } from "@/pages/liff/api/OccupationApiMethods";
 
 export default () => {
+  const location = useLocation().pathname;
   const [questionnaires, setQuestionnaires] = useState([
     {id: '', title: '', type: 1, answer: '', is_required: 0, questionnaire_items: [{
       name: ''
@@ -67,7 +68,7 @@ export default () => {
   };
 
   const onSaveOrderDestination = () => {
-    const location = useLocation().pathname;
+    console.log(location);
     formValue.is_selected = 1
     console.log(formValue);
     storeOrderDestination(user.id, formValue, location)

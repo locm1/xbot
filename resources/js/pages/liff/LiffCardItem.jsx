@@ -40,7 +40,7 @@ export const CartItem = (props) => {
 }
 
 export const OrderDetailItem = (props) => {
-  const { total, orderTotal } = props;
+  const { total, orderTotal, postage } = props;
 
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
@@ -55,7 +55,7 @@ export const OrderDetailItem = (props) => {
         <Col xs="5" className="">
           <div className="m-1 text-end">
             <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>
-            <h4 className="fs-6 text-dark mb-0 mt-1">￥ 500</h4>
+            <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage}</h4>
             <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {total.toLocaleString()}</h3>
           </div>
         </Col>
@@ -90,11 +90,11 @@ export const PaymentDetailItem = (props) => {
             paymentMethod ? (
               <div className="m-1">
                 <h4 className="fs-6 text-dark">
-                  {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "Apple Pay" : "代金引換え"}
+                  {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "代金引換え" : ""}
                 </h4>
                 <div className="liff-checkout-payment-title">
                   {
-                    paymentMethod.payment_method == 1 ? 'カード番号：xxxx-xxxx-xxxx-xxxx' : paymentMethod.payment_method == 3 ? '手数料：330円（税込）' : ''
+                    paymentMethod.payment_method == 1 ? 'カード番号：xxxx-xxxx-xxxx-xxxx' : paymentMethod.payment_method == 2 ? '手数料：330円（税込）' : ''
                   }
                 </div>
               </div>

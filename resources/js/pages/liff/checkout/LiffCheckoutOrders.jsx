@@ -16,10 +16,11 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const orderTotal = carts.reduce((cart, i) => cart + i.price, 0);
-  const total = orderTotal + 500;
+  const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0)
   const [specificTime, setSpecificTime] = useState(1);
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
+  const [postage, setPostage] = useState(500);
+  const total = orderTotal + postage;
 
   const deliveryTimes = [
     {id: 1, title: '午前中', value: 1},
@@ -34,8 +35,10 @@ export default () => {
   useEffect(() => {
     const cookie = Cookies.get('specific_time')
     const idToken = Cookies.get('TOKEN');
-    getCarts(idToken, setCarts, setItemsExistInCart)
-    getUser(idToken, setUser)
+    // getCarts(idToken, setCarts, setItemsExistInCart)
+    // getUser(idToken, setUser)
+    getCarts(101, setCarts, setItemsExistInCart)
+    //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
     getSpecificTimeItem(cookie)
   }, []);
 
@@ -95,7 +98,7 @@ export default () => {
             {carts.map(cart => <CartItem key={`cart-${cart.id}`} {...cart} />)}
           </ListGroup>
           <ListGroup className="list-group-flush">
-            <OrderDetailItem total={total} orderTotal={orderTotal} />
+            <OrderDetailItem total={total} orderTotal={orderTotal} postage={postage} />
           </ListGroup>
         </Card.Body>
         <div className="align-items-center m-2 mt-4 mb-4">

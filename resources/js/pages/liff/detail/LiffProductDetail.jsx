@@ -13,13 +13,18 @@ import { generateEnv } from '@/components/common/GenerateEnv';
 
 import ProductDetailSlider from "@/pages/liff/detail/ProductDetailSlider";
 import { showProduct, getProductImages, getProductCategory } from "@/pages/liff/api/ProductApiMethods";
-import { storeCart } from "@/pages/liff/api/CartApiMethods";
+import { storeCart, searchCarts, updateCart } from "@/pages/liff/api/CartApiMethods";
+import { getUser } from "@/pages/liff/api/UserApiMethods";
 
 export default () => {
+  const location = useLocation().pathname;
   const { id } = useParams();
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
     price: '', overview: '', is_undisclosed: 0, is_unlimited: 0, is_picked_up: 0,
+  });
+  const [user, setUser] = useState({
+    is_registered: 0
   });
   const [productImages, setProductImages] = useState([
     {image_path: ''}
@@ -30,6 +35,8 @@ export default () => {
   const [formValue, setFormValue] = useState({
     product_id: id, quantity: 1
   });
+  const [carts, setCarts] = useState([]);
+  const [itemsExistInCart, setItemsExistInCart] = useState(false);
   const quantities = [...Array(5).keys()].map(i => ++i)
 
   const handleChange = (e, input) => {
@@ -37,25 +44,27 @@ export default () => {
   };
 
   const saveCart = () => {
-    const idToken = Cookies.get('TOKEN');
-    formValue.token = idToken
-    storeCart(formValue);
-  };
-
-  const getLiffIdToken = () => {
-    liff.init({
-      liffId: process.env.MIX_LIFF_ID
-    })
-    .then(() => {
-      const idToken = liff.getIDToken();
-      Cookies.set('TOKEN', idToken, { expires: 1/24 })
-    }); 
+    // const idToken = Cookies.get('TOKEN');
+    // formValue.token = idToken
+    // storeCart(101, formValue);
+    console.log(itemsExistInCart);
+    if (itemsExistInCart) {
+      console.log(formValue);
+      updateCart(101, carts[0].id, formValue, location)
+    } else {
+      storeCart(101, formValue);
+    }
   };
 
   useEffect(() => {
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);
+    const searchParams = {
+      params: {product_id: id}
+    };
+    //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
+    searchCarts(101, searchParams, setCarts, setItemsExistInCart)
 
     // const { liffId, mock } = generateEnv();
 

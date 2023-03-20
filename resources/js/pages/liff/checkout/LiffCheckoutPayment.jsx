@@ -18,7 +18,8 @@ export default () => {
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
-    getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
+    //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
+    showPaymentMethod(101, setPaymentMethod)
   }, []);
 
   return (

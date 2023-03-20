@@ -20,10 +20,9 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const payments = ['クレジットカード', 'Apple Pay', '代金引き換え'];
+  const payments = ['クレジットカード', '代金引き換え'];
 
   const onClick = () => {
-
     if ('id' in paymentMethod) {
       console.log(paymentMethod);
       updatePaymentMethod(101, paymentMethod.id, paymentMethod, onSaveComplete)
@@ -42,7 +41,8 @@ export default () => {
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
-    getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
+    //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
+    showPaymentMethod(101, setPaymentMethod)
   }, []);
 
   const CashondeliveryCard = () => {
@@ -110,7 +110,7 @@ export default () => {
               onChange={() => handleChange(value, 'payment_method')}
             />
           </Col>
-          {value == 3 && paymentMethod.payment_method == 3 && <CashondeliveryCard />}
+          {value == 2 && paymentMethod.payment_method == 2 && <CashondeliveryCard />}
         </Row>
       </ListGroup.Item>
       {

@@ -20,7 +20,8 @@ export default () => {
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
-    getUser(idToken, setUser).then(response => getSelectOrderDestination(response.id, setDeliveryAddress))
+    //getUser(idToken, setUser).then(response => getSelectOrderDestination(response.id, setDeliveryAddress))
+    getSelectOrderDestination(101, setDeliveryAddress)
   }, []);
 
   return (

@@ -21,6 +21,7 @@ import squares_half_1_2 from "@img/img/richmenu/squares_half_1_2.jpg"
 import squares_half_2_1 from "@img/img/richmenu/squares_half_2_1.jpg"
 import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
 import { pages } from "./PageURLConsts"
+import { Paths } from "@/paths";
 
 export default () => {
   const liffId = process.env.MIX_LIFF_ID;
@@ -347,12 +348,11 @@ export default () => {
       )
     }
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-        <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">リッチメニュー設定</h1>
-          <Button onClick={() => console.log(formValue)} />
+          {/* <Button onClick={() => console.log(formValue)} />
           <Button onClick={() => console.log(richMenu)} />
-          <Button onClick={() => console.log(ailias)} />
-        </div>
+          <Button onClick={() => console.log(ailias)} /> */}
+          <Button href={Paths.RichMenus.path} className="mt-2 animate-up-2">一覧へ戻る</Button>
       </div>
       <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
         <Card.Body>

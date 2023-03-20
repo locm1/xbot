@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export const getRichMenus = async (setRichMenus) => {
     axios.get('/api/v1/management/rich-menus')
     .then((response) => {
@@ -70,14 +72,15 @@ export const getRichMenus = async (setRichMenus) => {
     });
   };
   
-  export const deleteRichMenu = async (id, deleteComplete, setRichMenus, RichMenus) => {
+  export const deleteRichMenu = async (id, setRichMenus, name) => {
     axios.delete(`/api/v1/management/rich-menus/${id}`)
     .then((response) => {
-      deleteComplete();
-      setRichMenus(RichMenus.filter((RichMenu) => (RichMenu.id !== id)));
+      setRichMenus(richMenus => richMenus.filter((richMenu) => (richMenu.richMenuId !== id)));
+      Swal.fire('削除成功', `「${name}」を削除しました`, 'success');
     })
     .catch(error => {
-        console.error(error);
+      console.error(error);
+      Swal.fire('削除失敗', `「${name}」の削除に失敗しました`, 'error');
     });
   };
 

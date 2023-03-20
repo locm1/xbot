@@ -27,8 +27,10 @@ class RichMenuService
     public function index() 
     {
         $response = $this->bot->getRichMenuList()->getJSONDecodedBody();
+        $default_richmenu_id = $this->bot->getDefaultRichMenuId()->getJSONDecodedBody()['richMenuId'];
         foreach ($response['richmenus'] as $richmenu) {
-            $form_value[] = ['richMenuId' => $richmenu['richMenuId'], 'name' => $richmenu['name']];
+            $is_default = $default_richmenu_id === $richmenu['richMenuId'] ? 1 : 0;
+            $form_value[] = ['richMenuId' => $richmenu['richMenuId'], 'name' => $richmenu['name'], 'isDefault' => $is_default];
         }
         return $form_value;
     }

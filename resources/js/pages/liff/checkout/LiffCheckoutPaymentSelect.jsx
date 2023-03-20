@@ -6,6 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
+import { getCards } from "@/pages/liff/api/CardApiMethods";
 import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 
 export default () => {
@@ -14,8 +15,7 @@ export default () => {
     payment_method: 1
   });
   const [creditCards, setCreditCards] = useState([
-    {id: 1, brand: 'JCB', cardNumber: 'xxxx-xxxx-xxxx-1234', name: 'SEIYA FUKUSHI', paymentNumber: 1, expirationDate: '04/28'},
-    {id: 2, brand: 'MasterCard', cardNumber: 'xxxx-xxxx-xxxx-5678', name: 'SEIYA FUKUSHI', paymentNumber: 3, expirationDate: '06/26'},
+    {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
   ]);
   const [user, setUser] = useState({
     is_registered: 0
@@ -42,7 +42,7 @@ export default () => {
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
     //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
-    showPaymentMethod(101, setPaymentMethod)
+    showPaymentMethod(101, setPaymentMethod).then(response => getCards(101, response.payjp_customer_id, setCreditCards))
   }, []);
 
   const CashondeliveryCard = () => {
@@ -63,7 +63,7 @@ export default () => {
   }
 
   const PaymentCreditCard = (props) => {
-    const { id, brand, cardNumber, name, paymentNumber, expirationDate, index } = props;
+    const { id, brand, card_number, name, exp_month, exp_year, index } = props;
     const defaultChecked = (index == 0) ? true : false
 
     return (
@@ -81,9 +81,9 @@ export default () => {
           </Col>
           <Col xs="8" className="px-0">
             <div className="m-1">
-              <h4 className="fs-6 text-dark mb-1">{brand} {cardNumber}</h4>
+              <h4 className="fs-6 text-dark mb-1">{brand} {card_number}</h4>
               <div><small>{name}</small></div>
-              <div><small>有効期限：{expirationDate}</small></div>
+              <div><small>有効期限：{String(exp_month).padStart(2, '0')}/{exp_year}</small></div>
             </div>
           </Col>
         </Row>
@@ -117,7 +117,7 @@ export default () => {
         value == 1 && paymentMethod.payment_method == 1 && 
         <>
         {
-          creditCards.map((creditCard, index) => 
+          paymentMethod.payjp_customer_id && creditCards.map((creditCard, index) => 
             <PaymentCreditCard key={index} index={index} {...creditCard} />
           )
         }

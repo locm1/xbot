@@ -74,6 +74,8 @@ use App\Http\Controllers\api\management\UserReserveHistoryController;
 use App\Http\Controllers\api\management\user\UserVisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryUserController;
+use App\Http\Controllers\api\payjp\CardController;
+use App\Http\Controllers\api\payjp\CustomerController;
 use App\Http\Controllers\api\SearchZipcodeController;
 use App\Http\Controllers\LineWebhookController;
 use App\Http\Controllers\UserWithQuestionneireController;
@@ -193,7 +195,9 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('users/{user}/selected-destination', SelectedOrderDestinationController::class);
     Route::apiResource('users/{user}/payments', PaymentMethodController::class)->only([
         'index', 'store', 'update'
-    ]);;
+    ]);
+    Route::apiResource('users/{user}/customers', CustomerController::class);
+    Route::apiResource('users/{user}/cards', CardController::class);
     Route::get('address', SearchZipcodeController::class);
     Route::get('prefectures', PrefectureController::class);
     Route::get('questionnaires', LiffQuestionnaireController::class);

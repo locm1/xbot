@@ -24,7 +24,7 @@ class PaymentMethodService
 
     public function update($request, OrderPaymentMethod $payment)
     {
-        $data = $request->only(['payment_method']);
+        $data = $request->only(['payment_method', 'payjp_customer_id']);
         return $payment->update($data);
     }
 }

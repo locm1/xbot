@@ -1,21 +1,43 @@
 import React, { useState, useRef } from "react";
-import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
+import { BadgeCheckIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { first } from "lodash";
+import { deleteRichMenu } from "./RichMenuApiMethods";
+import Swal from "sweetalert2";
 
 export const RichMenusTable = (props) => {
-  const { menus } = props;
+  const { menus, setMenus } = props;
+
+  const showSwalDelete = (richMenuId, name) => {
+    Swal.fire({
+      icon: 'warning',
+      title: '削除確認',
+      text: `「${name}」を削除しますか？`,
+      confirmButtonColor: '#d33',
+      confirmButtonText: '削除する',
+      showCancelButton: true,
+      cancelButtonText:
+        'キャンセル',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteRichMenu(richMenuId, setMenus, name);
+      }
+    })
+  }
 
   const TableRow = (props) => {
-    const {name, richMenuId} = props;
+    const {name, richMenuId, isDefault} = props;
     const deleteStrId = richMenuId.replace("richmenu-", "");
     const link = Paths.EditRichMenu.path.replace(":id", "") + deleteStrId;
     return (
       <tr className="border-bottom">
         <td>
-          {name}
+          <p className="mb-0">
+            {name}
+            &nbsp; {isDefault ? <BadgeCheckIcon className="icon-sm" /> : ''}
+          </p>
         </td>
         <td>
           {richMenuId}
@@ -24,7 +46,7 @@ export const RichMenusTable = (props) => {
           <Button  variant="info" as={Link} to={link} size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
-          <Button  variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button  variant="danger" size="sm" className="d-inline-flex align-items-center" onClick={() => showSwalDelete(richMenuId, name)}>
             削除
           </Button>
         </td>

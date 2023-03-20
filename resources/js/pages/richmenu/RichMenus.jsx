@@ -11,6 +11,7 @@ export default () => {
   useLayoutEffect(() => {
     axios.get('/api/v1/management/rich-menus')
     .then((response) => {
+      response.data.sort((a, b) => a.name.localeCompare(b.name));
       setMenus(response.data);
     })
     .catch(error => {
@@ -19,16 +20,16 @@ export default () => {
   }, [])
 	return (
 		<>      
-    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap">
-      <div className="d-flex mb-4 mb-md-0">
+    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-2 list-wrap">
+      <div className="">
         <h1 className="page-title">リッチメニュー管理</h1>
-        <Button onClick={() => console.log(menus)} />
       </div>
       <Button as={Link} to={Paths.CreateRichMenu.path}>新規作成</Button>
     </div>
 
     <RichMenusTable
       menus={menus}
+      setMenus={setMenus}
     />
 	  </>
 	)

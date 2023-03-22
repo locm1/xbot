@@ -3,44 +3,15 @@ import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'reac
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 
+import { getSpecificTrades } from "@/pages/liff/api/SettingApiMethods";
+
 export default () => {
-  const [SpecificTrades, setSpecificTrades] = useState([]);
-  const requiredPrices = [
-    '・消費税（商品代金欄に税込価格を表示）', 
-    '・送料一律500円、5000円以上購入で送料無料'
-  ];
-  const orderMethods = [
-    '①リッチメニュー「商品購入・取置き」を押下',
-    '②カテゴリーメニューのいずれかを押下',
-    '③商品カード内の「詳細を見る」を押下',
-    '④詳細ページ内設置の「カートに追加」を押下',
-    '⑤カートページ内設置の「購入する」を押下',
-    '⑥注文者情報、配送先の入力及び配送時間帯指定を選択',
-    '⑦クレジットカード情報を入力し「注文を確定する」を押下',
-    '⑧注文完了',
-    '⑨リッチメニュー「購入履歴」から注文商品を確認',
-  ];
-  const paymentMethods = [
-    '・各種クレジットカード決済',
-    '「VISA」「Master Card」',
-    '「Diners Club」「JCB」',
-    '「AMERICAN EXPRESS」',
-    '「Discover」',
-  ];
-  const others = [
-    'お客様都合での返品は承っておりません。',
-    '不良品の場合は商品到着後7日以内にお電話にてご連絡ください。送料は当社負担で良品と交換させていただきます。'
-  ];
+  const [specificTrades, setSpecificTrades] = useState([
+    {title: '', content: ''}
+  ]);
 
   useEffect(() => {
-    axios.get(`/api/v1/specific-trades`)
-    .then((data) => {
-      setSpecificTrades(data.data.specific_trades);
-      console.log(data.data.specific_trades);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    getSpecificTrades(setSpecificTrades)
   }, []);
 
   const SpecificTradesItem = (props) => {
@@ -72,8 +43,8 @@ export default () => {
             <Card.Body className="py-0">
               <ListGroup className="list-group-flush">
                 {
-                  SpecificTrades.map((SpecificTrade, index) =>
-                  <SpecificTradesItem key={index} title={SpecificTrade.title} content={SpecificTrade.content} />
+                  specificTrades.map((specificTrade, index) =>
+                  <SpecificTradesItem key={index} title={specificTrade.title} content={specificTrade.content} />
                 )}
               </ListGroup>
             </Card.Body>

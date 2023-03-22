@@ -2,10 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, Image, Button, Card, ListGroup } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { Paths } from "@/paths";
+import noImage from "@img/img/noimage.jpg"
 
 export const CartItem = (props) => {
   const { id, product_id, quantity, product, history } = props;
-  const link = Paths.LiffProductDetail.path.replace(':id', id);
+  const link = Paths.LiffProductDetail.path.replace(':id', product_id);
 
   const getImages = (image) => {
     if (image) {
@@ -65,7 +66,7 @@ export const OrderDetailItem = (props) => {
 }
 
 export const PaymentDetailItem = (props) => {
-  const { paymentMethod } = props;
+  const { paymentMethod, customer } = props;
   const location = useLocation().pathname;
 
   const getColButton = (location) => {
@@ -94,7 +95,7 @@ export const PaymentDetailItem = (props) => {
                 </h4>
                 <div className="liff-checkout-payment-title">
                   {
-                    paymentMethod.payment_method == 1 ? 'カード番号：xxxx-xxxx-xxxx-xxxx' : paymentMethod.payment_method == 2 ? '手数料：330円（税込）' : ''
+                    paymentMethod.payment_method == 1 ? `カード番号：${customer.default_card.card_number}` : paymentMethod.payment_method == 2 ? '手数料：330円（税込）' : ''
                   }
                 </div>
               </div>

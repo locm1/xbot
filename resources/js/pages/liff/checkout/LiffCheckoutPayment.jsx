@@ -9,9 +9,10 @@ import Cookies from 'js-cookie';
 import { PaymentDetailItem } from "@/pages/liff/LiffCardItem";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
+import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 
-export default () => {
-  const [paymentMethod, setPaymentMethod] = useState();
+export default (props) => {
+  const { paymentMethod, customer} = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
@@ -19,7 +20,6 @@ export default () => {
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
     //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
-    showPaymentMethod(101, setPaymentMethod)
   }, []);
 
   return (
@@ -30,7 +30,7 @@ export default () => {
         </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            <PaymentDetailItem paymentMethod={paymentMethod} />
+            <PaymentDetailItem paymentMethod={paymentMethod} customer={customer} />
           </ListGroup>
         </Card.Body>
       </Card>

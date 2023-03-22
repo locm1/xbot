@@ -5,11 +5,14 @@ use App\Http\Controllers\api\liff\order_destination\OrderDestinationController a
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\UpdateOrderDestinationController;
 use App\Http\Controllers\api\liff\payment_method\PaymentMethodController;
+use App\Http\Controllers\api\liff\privacy_policy\PrivacyPolicyController as LiffPrivacyPolicyController;
 use App\Http\Controllers\api\liff\product\ProductCategoryController as LiffProductCategoryController;
 use App\Http\Controllers\api\liff\product\ProductController as LiffProductController;
 use App\Http\Controllers\api\liff\product\ProductImageController as LiffProductImageController;
 use App\Http\Controllers\api\liff\questionnaire\QuestionnaireAnswerController as LiffQuestionnaireAnswerController;
 use App\Http\Controllers\api\liff\questionnaire\QuestionnaireController as LiffQuestionnaireController;
+use App\Http\Controllers\api\liff\specific_trades\SpecificTradeController as LiffSpecificTradeController;
+use App\Http\Controllers\api\liff\terms_of_service\TermsOfServiceController as LiffTermsOfServiceController;
 use App\Http\Controllers\api\liff\user\UserController as LiffUserController;
 use App\Http\Controllers\api\LineChannelAccessTokenController;
 use Illuminate\Http\Request;
@@ -196,12 +199,17 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('users/{user}/payments', PaymentMethodController::class)->only([
         'index', 'store', 'update'
     ]);
-    Route::apiResource('users/{user}/customers', CustomerController::class);
+    Route::get('users/{user}/customers/{customer_id}', [CustomerController::class, 'show']);
+    Route::post('users/{user}/customers', [CustomerController::class, 'store']);
+    Route::put('users/{user}/customers', [CustomerController::class, 'update']);
     Route::apiResource('users/{user}/cards', CardController::class);
     Route::get('address', SearchZipcodeController::class);
     Route::get('prefectures', PrefectureController::class);
     Route::get('questionnaires', LiffQuestionnaireController::class);
     Route::apiResource('occupations', OccupationController::class);
+    Route::get('privacy-policy', LiffPrivacyPolicyController::class);
+    Route::get('terms-of-service', LiffTermsOfServiceController::class);
+    Route::get('specific-trades', LiffSpecificTradeController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

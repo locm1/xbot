@@ -7,6 +7,7 @@ import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCards } from "@/pages/liff/api/CardApiMethods";
+import { updateCustomer, getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 
 export default () => {
@@ -14,17 +15,29 @@ export default () => {
   const [paymentMethod, setPaymentMethod] = useState({
     payment_method: 1
   });
+  const [customer, setCustomer] = useState({
+    id: '', default_card: {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
+  });
   const [creditCards, setCreditCards] = useState([
     {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
   ]);
   const [user, setUser] = useState({
     is_registered: 0
   });
+  const [selectCardId, setSelectCardId] = useState();
   const payments = ['クレジットカード', '代金引き換え'];
 
   const onClick = () => {
     if ('id' in paymentMethod) {
       console.log(paymentMethod);
+
+      if (paymentMethod.payment_method == 1) {
+        const formvalue = {
+          payjp_customer_id: paymentMethod.payjp_customer_id, card_id: selectCardId
+        }
+        updateCustomer(101, formvalue)
+      }
+      
       updatePaymentMethod(101, paymentMethod.id, paymentMethod, onSaveComplete)
     } else {
       storePaymentMethod(101, paymentMethod, onSaveComplete)
@@ -42,7 +55,15 @@ export default () => {
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
     //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
-    showPaymentMethod(101, setPaymentMethod).then(response => getCards(101, response.payjp_customer_id, setCreditCards))
+
+    showPaymentMethod(101, setPaymentMethod).then(
+      response => {
+        getCustomer(101, response.payjp_customer_id, setCustomer).then(
+          response => setSelectCardId(response.default_card.id)
+        )
+        getCards(101, response.payjp_customer_id, setCreditCards)
+      }
+    )
   }, []);
 
   const CashondeliveryCard = () => {
@@ -72,11 +93,11 @@ export default () => {
           <Col xs="2" className="mt-5">
             <Form.Check
               type="radio"
-              defaultChecked={defaultChecked}
               value={id}
-              name="credit_card"
-              id='credit_card'
-              htmlFor='credit_card'
+              checked={id === selectCardId}
+              id={`card-${index}`}
+              htmlFor={`card-${index}`}
+              onChange={() => setSelectCardId(id)}
             />
           </Col>
           <Col xs="8" className="px-0">

@@ -11,14 +11,13 @@ import { CartItem, OrderDetailItem } from "@/pages/liff/LiffCardItem";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
-export default () => {
-  const [carts, setCarts] = useState([]);
+export default (props) => {
+  const { carts, createOrder } = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
   const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0)
   const [specificTime, setSpecificTime] = useState(1);
-  const [itemsExistInCart, setItemsExistInCart] = useState(true);
   const [postage, setPostage] = useState(500);
   const total = orderTotal + postage;
 
@@ -35,9 +34,7 @@ export default () => {
   useEffect(() => {
     const cookie = Cookies.get('specific_time')
     const idToken = Cookies.get('TOKEN');
-    // getCarts(idToken, setCarts, setItemsExistInCart)
     // getUser(idToken, setUser)
-    getCarts(101, setCarts, setItemsExistInCart)
     //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
     getSpecificTimeItem(cookie)
   }, []);
@@ -102,7 +99,7 @@ export default () => {
           </ListGroup>
         </Card.Body>
         <div className="align-items-center m-2 mt-4 mb-4">
-          <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="w-100 p-3">
+          <Button onClick={createOrder} variant="tertiary" className="w-100 p-3">
             注文を確定する
           </Button>
         </div>

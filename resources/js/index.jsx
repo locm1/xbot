@@ -33,12 +33,19 @@ import "react-datetime/css/react-datetime.css";
 import { create } from "lodash";
 
 
+import { LoadingProvider } from "./components/LoadingContext";
+import { LoadingScreen } from "./components/LoadingScreen";
+
+
 function App() {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Routing />
-    </BrowserRouter>
+    <LoadingProvider>
+      <LoadingScreen />
+      <BrowserRouter>
+        <ScrollToTop />
+        <Routing />
+      </BrowserRouter>
+    </LoadingProvider>
   );
 }
 

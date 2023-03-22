@@ -8,7 +8,7 @@ export const getAddress = async (zipcode, setFormValue, formValue) => {
     console.log(response.data.address.results);
     setFormValue({
       ...formValue,
-      prefecture: address.address1, city: address.address2 + ' ' + address.address3, zipcode: zipcode
+      prefecture: address.address1, city: address.address2, address: address.address3, zipcode: zipcode
     });
   })
   .catch(error => {

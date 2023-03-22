@@ -18,6 +18,7 @@ export const Paths = {
     Privileges: { path: `${prefix}/visitor/privilege` },
     VisitorHistories: { path: `${prefix}/visitor/history` },
     EditVisitorHistory: { path: `${prefix}/visitor/history/edit/:id` },
+    Environment: { path: `${prefix}/ec/environment` },
     Products: { path: `${prefix}/ec/product/list` },
     ProductCategory: { path: `${prefix}/ec/product/category/list` },
     EditCategory: { path: `${prefix}/ec/product/category/edit/:id` },
@@ -53,6 +54,7 @@ export const Paths = {
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },
     LiffProducts: { path: "/product/list" },
+    LiffPickupProducs: { path: "/product/pickup/list" },
     LiffProductCategories: { path: "/product/category/:id" },
     LiffCarts: { path: "/cart" },
     LiffCheckout: { path: "/checkout" },

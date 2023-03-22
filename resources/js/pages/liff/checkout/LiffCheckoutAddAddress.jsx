@@ -89,7 +89,7 @@ export default () => {
             <Row className="mt-3">
               <Col xs={6} className="mb-3">
                 <Form.Group id="last_name">
-                  <Form.Label>氏名（姓）</Form.Label>
+                  <Form.Label><span class="questionnaire-required me-2">必須</span>氏名（姓）</Form.Label>
                   <Form.Control 
                     required
                     type="text" 
@@ -102,7 +102,7 @@ export default () => {
               </Col>
               <Col xs={6} className="mb-3">
                 <Form.Group id="first_name">
-                  <Form.Label>氏名（名）</Form.Label>
+                  <Form.Label><span class="questionnaire-required me-2">必須</span>氏名（名）</Form.Label>
                   <Form.Control 
                     required
                     type="text"
@@ -115,7 +115,7 @@ export default () => {
               </Col>
               <Col xs={6} className="mb-3">
                 <Form.Group id="last_name_kana">
-                  <Form.Label>フリガナ（姓）</Form.Label>
+                  <Form.Label><span class="questionnaire-required me-2">必須</span>フリガナ（姓）</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -128,7 +128,7 @@ export default () => {
               </Col>
               <Col xs={6} className="mb-3">
                 <Form.Group id="first_name_kana">
-                  <Form.Label>フリガナ（名）</Form.Label>
+                  <Form.Label><span class="questionnaire-required me-2">必須</span>フリガナ（名）</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -143,7 +143,7 @@ export default () => {
             <Row className="">
               <Col xs={6} className="mb-3">
                 <Form.Group id="zipcode">
-                  <Form.Label>郵便番号</Form.Label>
+                  <Form.Label><span class="questionnaire-required me-2">必須</span>郵便番号</Form.Label>
                   <Form.Control
                     required
                     type="number"
@@ -158,7 +158,7 @@ export default () => {
             <Row className="">
                 <Col xs={12} className="mb-3">
                   <Form.Group id="prefecture">
-                    <Form.Label>都道府県</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>都道府県</Form.Label>
                     <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="mb-0 w-100">
                       {
                         prefectures && prefectures.map((prefecture, index) => <option key={index} value={prefecture.name}>{prefecture.name}</option>)
@@ -168,7 +168,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="city">
-                    <Form.Label>市区町村</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>市区町村</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -181,7 +181,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="address">
-                    <Form.Label>丁目・番地・号</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>丁目・番地・号</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -194,7 +194,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="building_name">
-                    <Form.Label>建物名/会社名</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>建物名/会社名</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -207,7 +207,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="room_number">
-                    <Form.Label>部屋番号</Form.Label>
+                    <Form.Label><span class="questionnaire-any me-2">任意</span>部屋番号</Form.Label>
                     <Form.Control
                       required
                       type="number"
@@ -220,7 +220,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="tel">
-                    <Form.Label>電話番号</Form.Label>
+                    <Form.Label><span class="questionnaire-required me-2">必須</span>電話番号</Form.Label>
                     <Form.Control
                       required
                       type="tel"

@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->hasMany(OrderDestination::class);
     }
 
+    public function orderPaymentMethod()
+    {
+        return $this->hasOne(OrderPaymentMethod::class);
+    }
+
     public function visitorHistories()
     {
         return $this->hasMany(VisitorHistory::class);

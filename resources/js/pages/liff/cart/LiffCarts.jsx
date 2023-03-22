@@ -3,7 +3,7 @@ import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'reac
 import { PlusIcon, MinusIcon, ShoppingCartIcon, InboxIcon, TrashIcon } from '@heroicons/react/solid';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Paths } from "@/paths";
 import noImage from "@img/img/noimage.jpg"
 import Cookies from 'js-cookie';
@@ -13,27 +13,31 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
+  const location = useLocation().pathname;
   const history = useHistory();
   const [carts, setCarts] = useState([]);
   const [total, setTotal] = useState(1);
+  const [totalCount, setTotalCount] = useState(1);
   const [user, setUser] = useState({
     is_registered: 0
   });
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
 
   useEffect(() => {
-    const idToken = Cookies.get('TOKEN');
-    getCarts(idToken, setCarts, setItemsExistInCart)
-    getUser(idToken, setUser)
+    // const idToken = Cookies.get('TOKEN');
+    // getUser(idToken, setUser)
+    getCarts(101, setCarts, setItemsExistInCart)
+    //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
   }, []);
 
   useEffect(() => {
     setTotal(carts.reduce((cart, i) => cart + i.totalAmount, 0))
+    setTotalCount(carts.reduce((cart, i) => cart + i.quantity, 0))
   }, [carts]);
 
   const deleteCartCard = (id) => {
     setCarts(carts.filter((cart) => (cart.id !== id)));
-    deleteCart(id)
+    deleteCart(101, id)
 
     if (carts.length == 0) {
       setItemsExistInCart(false);
@@ -58,7 +62,7 @@ export default () => {
       targetCart.quantity++;
       targetCart.totalAmount = targetCart.product.price * targetCart.quantity;
       setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
-      updateCart(id, targetCart)
+      updateCart(101, id, targetCart, location)
     }
 
     const decreaseQuantity = (id) => {
@@ -66,7 +70,7 @@ export default () => {
       targetCart.quantity--;
       targetCart.totalAmount = targetCart.product.price * targetCart.quantity;
       setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
-      updateCart(id, targetCart)
+      updateCart(101, id, targetCart, location)
     }
 
     const getImages = (image) => {
@@ -133,7 +137,7 @@ export default () => {
             <>
               <Card border="0" className="shadow">
                 <Card.Header className="border-bottom">
-                  <h2 className="fs-5 fw-bold mb-0">カートに入っている商品：{carts.length}点</h2>
+                  <h2 className="fs-5 fw-bold mb-0">カートに入っている商品：{totalCount}点</h2>
                 </Card.Header>
                 <Card.Body className="py-0">
                   <ListGroup className="list-group-flush">

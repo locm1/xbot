@@ -30,7 +30,7 @@ class OrderPaymentMethodFactory extends Factory
 
         return [
             'user_id' => fake()->randomElement($user_ids),
-            'payment_method' => fake()->numberBetween(1, 5),
+            'payment_method' => fake()->numberBetween(1, 3),
             'payjp_customer_id' => $this->mb_str_shuffle(20),
         ];
     }

@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Services\liff\cart;
+namespace App\Services\common;
 
-use App\Models\User;
+use DateTime;
 
-class FormatCartAction
+class MergeArrayUtility
 {
     /**
      * 取得したユーザーIDをマージ
      *
      * @return array
      **/
-    public function mergeUserIdToArray($user_id, $data): array
+    public static function mergeUserIdToArray($user_id, $data): array
     {
         $user_id = ['user_id' => $user_id];
         return array_merge($data, $user_id);
     }
-
 }

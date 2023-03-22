@@ -29,7 +29,7 @@ export default (props) => {
       <div className="d-flex align-items-center">
         <h2 className="fs-6 fw-bold mb-0">ピックアップ商品一覧</h2>
         <div className="ms-auto">
-          <Card.Link href={`/product/category/1`} className="d-inline-flex align-items-center fw-normal liff-product-view-all">
+          <Card.Link href={Paths.LiffPickupProducs.path} className="d-inline-flex align-items-center fw-normal liff-product-view-all">
             すべてを見る
           </Card.Link>
         </div>

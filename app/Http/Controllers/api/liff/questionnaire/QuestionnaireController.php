@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api\liff\questionnaire;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\management\questionnaire\QuestionnaireService;
+use App\Services\liff\questionnaire\QuestionnaireService;
 
 class QuestionnaireController extends Controller
 {

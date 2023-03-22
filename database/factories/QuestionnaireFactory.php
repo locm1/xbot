@@ -25,6 +25,7 @@ class QuestionnaireFactory extends Factory
             'type' => fake()->numberBetween(1, 5),
             'display_order' => fake()->unique()->numberBetween(1,100),
             'is_undisclosed' => fake()->numberBetween(0, 1),
+            'is_required' => fake()->numberBetween(0, 1),
         ];
     }
 }

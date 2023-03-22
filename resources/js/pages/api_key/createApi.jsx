@@ -7,8 +7,8 @@ import { storeApiKey } from "@/pages/api_key/api/ApiKeyApiMethods";
 export default () => {
 	const [apiKey, setApiKey] = useState({
 		line_message_channel_id: '', line_message_channel_secret: '',
-		line_message_channel_token: '', pay_jp_api_key: '', 
-		mix_liff_id: '', liff_channel_id: ''
+		line_message_channel_token: '', mix_liff_id: '', liff_channel_id: '',
+		mix_payjp_public_key: '', payjp_secret_key: '',
 	});
 
 	const handleChange = (e, input) => {
@@ -128,16 +128,34 @@ export default () => {
 			<Card className="shadow mb-4">
 				<Card.Body>
 					<Form.Group id="firstName">
-						<Form.Label>Pay.jp APIキー</Form.Label>
+						<Form.Label>Pay.jp 秘密鍵</Form.Label>
 						<Form.Control 
 							required 
 							type="text" 
-							value={apiKey.pay_jp_api_key} 
-							onChange={(e) => handleChange(e, 'pay_jp_api_key')}
+							value={apiKey.payjp_secret_key} 
+							onChange={(e) => handleChange(e, 'payjp_secret_key')}
 						/>
 					</Form.Group>
 					<div className="d-flex flex-row-reverse mt-3">
-						<Button onClick={() => handleClick('pay_jp_api_key', apiKey.pay_jp_api_key)} variant="gray-800" className="me-2">
+						<Button onClick={() => handleClick('payjp_secret_key', apiKey.payjp_secret_key)} variant="gray-800" className="me-2">
+							保存する
+						</Button>
+					</div>
+				</Card.Body>
+			</Card>
+			<Card className="shadow mb-4">
+				<Card.Body>
+					<Form.Group id="firstName">
+						<Form.Label>Pay.jp 公開鍵</Form.Label>
+						<Form.Control 
+							required 
+							type="text" 
+							value={apiKey.mix_payjp_public_key} 
+							onChange={(e) => handleChange(e, 'mix_payjp_public_key')}
+						/>
+					</Form.Group>
+					<div className="d-flex flex-row-reverse mt-3">
+						<Button onClick={() => handleClick('mix_payjp_public_key', apiKey.mix_payjp_public_key)} variant="gray-800" className="me-2">
 							保存する
 						</Button>
 					</div>

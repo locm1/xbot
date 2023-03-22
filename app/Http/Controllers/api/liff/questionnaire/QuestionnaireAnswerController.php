@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\liff\questionnaire;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\liff\questionnaire\StoreQuestionnaireAnswerRequest;
 use App\Models\User;
 use App\Services\liff\questionnaire\QuestionnaireAnswerService;
 use Illuminate\Http\Request;
@@ -18,10 +19,10 @@ class QuestionnaireAnswerController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreQuestionnaireAnswerRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, User $user)
+    public function __invoke(StoreQuestionnaireAnswerRequest $request, User $user)
     {
         $questionnaire_answers = $this->questionnaire_answer_service->store($request, $user);
         return response()->json(['questionnaire_answers' => $questionnaire_answers], 200);

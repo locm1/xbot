@@ -2,15 +2,31 @@ import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 
+import { getUser } from "@/pages/liff/api/UserApiMethods";
+import { showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
+import { storeCustomer } from "@/pages/liff/api/CustomerApiMethods";
+import { storeCard } from "@/pages/liff/api/CardApiMethods";
+
 export default () => {
+  const history = useHistory();
+  const [paymentMethod, setPaymentMethod] = useState();
+  const [user, setUser] = useState({
+    is_registered: 0
+  });
 
   useEffect(() => {
+    showCreditCardForm()
+    //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
+    showPaymentMethod(101, setPaymentMethod)
+  }, []);
+
+  const showCreditCardForm = () => {
     const payJp = document.getElementById('pay-jp');
     const scriptUrl = document.createElement('script');
-    const key = "pk_test_0383a1b8f91e8a6e3ea0e2a9";
+    const key = process.env.MIX_PAYJP_PUBLIC_KEY
     const submitText = "トークンを作成する";
     const partial = true;
     scriptUrl.type = 'text/javascript';
@@ -20,7 +36,33 @@ export default () => {
     scriptUrl.setAttribute("data-submit-text", submitText);
     scriptUrl.setAttribute("data-partial", partial);
     payJp.appendChild(scriptUrl);
-  }, []);
+  };
+
+  const createCard = () => {
+    if (paymentMethod.payjp_customer_id) {
+      createCreditCard();
+    } else {
+      createCustomer();
+    }
+  };
+
+  const createCustomer = () => {
+    const payjpToken = document.getElementsByName('payjp-token');
+    const formValue = {payjp_token: payjpToken[0].value};
+    storeCustomer(101, formValue, paymentMethod, updatePaymentMethod, onSaveComplete)
+  };
+
+  const createCreditCard = () => {
+    const payjpToken = document.getElementsByName('payjp-token');
+    const formValue = {
+      payjp_token: payjpToken[0].value, payjp_customer_id: paymentMethod.payjp_customer_id
+    };
+    storeCard(101, formValue, onSaveComplete)
+  };
+
+  const onSaveComplete = () => {
+    history.push(Paths.LiffCheckoutPayment.path);
+  };
 
   return (
     <>
@@ -46,7 +88,7 @@ export default () => {
             </div>
             <div id="pay-jp" className="m-3"></div>
             <div className="align-items-center mt-4 mb-5">
-              <Button variant="tertiary" as={Link} to={Paths.LiffCheckoutPayment.path} className="w-100 p-3">
+              <Button variant="tertiary" onClick={createCard} className="w-100 p-3">
                 カードを追加する
               </Button>
             </div>

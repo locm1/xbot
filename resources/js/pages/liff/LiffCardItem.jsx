@@ -4,8 +4,16 @@ import { Link, useLocation } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 export const CartItem = (props) => {
-  const { img, name, price, id, quantity, history } = props;
+  const { id, product_id, quantity, product, history } = props;
   const link = Paths.LiffProductDetail.path.replace(':id', id);
+
+  const getImages = (image) => {
+    if (image) {
+      return image.image_path
+    } else {
+      return noImage;
+    }
+  }
 
   return (
     <ListGroup.Item className="bg-transparent py-3 px-0">
@@ -13,12 +21,12 @@ export const CartItem = (props) => {
         <Row className="">
           <Col xs="5">
             <div className="liff-cart-img">
-              <Image rounded src={img} className="m-0" />
+              <Image rounded src={getImages(product.product_images[0])}  className="m-0" />
             </div>
           </Col>
           <Col xs="7" className="px-0 m-0">
-            <h4 className="fs-6 text-dark mb-0">{name}</h4>
-            <h4 className="liff-product-detail-price mt-2">￥{price.toLocaleString()}<span>税込</span></h4>
+            <h4 className="fs-6 text-dark mb-0">{product.name}</h4>
+            <h4 className="liff-product-detail-price mt-2">￥{product.price.toLocaleString()}<span>税込</span></h4>
             <div className="">数量：{quantity}個</div>
             {
               history == 'reserve' &&
@@ -32,7 +40,7 @@ export const CartItem = (props) => {
 }
 
 export const OrderDetailItem = (props) => {
-  const { total, orderTotal } = props;
+  const { total, orderTotal, postage } = props;
 
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
@@ -47,7 +55,7 @@ export const OrderDetailItem = (props) => {
         <Col xs="5" className="">
           <div className="m-1 text-end">
             <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>
-            <h4 className="fs-6 text-dark mb-0 mt-1">￥ 500</h4>
+            <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage}</h4>
             <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {total.toLocaleString()}</h3>
           </div>
         </Col>
@@ -56,7 +64,8 @@ export const OrderDetailItem = (props) => {
   );
 }
 
-export const PaymentDetailItem = () => {
+export const PaymentDetailItem = (props) => {
+  const { paymentMethod } = props;
   const location = useLocation().pathname;
 
   const getColButton = (location) => {
@@ -77,16 +86,29 @@ export const PaymentDetailItem = () => {
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
         <Col xs={getColButton(location).colSize} className="px-0">
-          <div className="m-1">
-            <h4 className="fs-6 text-dark">クレジットカード</h4>
-            <div className="liff-checkout-payment-title">カード番号：xxxx-xxxx-xxxx-xxxx</div>
-            <div className="liff-checkout-payment-title text-dark">支払い回数：3回払い</div>
-          </div>
+          {
+            paymentMethod ? (
+              <div className="m-1">
+                <h4 className="fs-6 text-dark">
+                  {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "代金引換え" : ""}
+                </h4>
+                <div className="liff-checkout-payment-title">
+                  {
+                    paymentMethod.payment_method == 1 ? 'カード番号：xxxx-xxxx-xxxx-xxxx' : paymentMethod.payment_method == 2 ? '手数料：330円（税込）' : ''
+                  }
+                </div>
+              </div>
+            ) : (
+              <div className="m-1 mt-3">
+                <h4 className="fs-6 text-dark">支払い方法を選択してください</h4>
+              </div>
+            )
+          }
         </Col>
         {
           getColButton(location).isButton &&
           <Col xs="4" className="">
-          <div className="align-items-center mt-4 ms-4">
+          <div className="align-items-center mt-2 ms-4">
             <Button as={Link} to={Paths.LiffCheckoutPayment.path} variant="info" className="w-80">
               変更
             </Button>

@@ -3,6 +3,7 @@ export const getQuestionnaires = async (setQuestionnaires) => {
   .then((response) => {
     const questionnaires = response.data.questionnaires;
     setQuestionnaires(questionnaires);
+    console.log(questionnaires);
     return questionnaires;
   })
   .catch(error => {

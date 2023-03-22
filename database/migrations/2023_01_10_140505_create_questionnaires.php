@@ -21,6 +21,7 @@ return new class extends Migration
             $table->tinyInteger('type')->nullable(false);
             $table->float('display_order')->nullable(false);
             $table->tinyInteger('is_undisclosed');
+            $table->tinyInteger('is_required');
             $table->softDeletes();
             $table->timestamps();
         });

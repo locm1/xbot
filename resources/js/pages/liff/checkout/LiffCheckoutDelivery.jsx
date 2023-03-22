@@ -2,14 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form, FormGroup } from 'react-bootstrap';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
 
 import addresses from "@/data/deliveryAddresses";
 
 export default () => {
-  const [deliveryAddresses, setDeliveryAddresses] = useState(addresses);
-  const [delivery, setDelivery] = useState(1);
+  const history = useHistory();
+  const deliveries = ['指定なし', '日時指定'];
+  const [selectValue, setSelectValue] = useState(1);
+  const [deliveryTime, setDeliveryTime] = useState(1);
 
   const deliveryTimes = [
     {id: 1, title: '午前中', value: 1},
@@ -21,30 +24,53 @@ export default () => {
     {id: 7, title: '20:00 〜 21:00', value: 7},
   ];
 
-  const handleChange = (e) => {
-    setDelivery(e.target.value);
+  const handleClick = () => {
+    Cookies.set('specific_time', selectValue, { expires: 1 })
+    if (selectValue == 2) {
+      Cookies.set('delivery_time', deliveryTime, { expires: 1 })
+    }
+    history.push(Paths.LiffCheckout.path);
   }
 
   const DeliveryCard = (props) => {
-    const { value, label, defaultChecked } = props;
+    const { title, value } = props;
 
     return (
+      <>
       <ListGroup.Item className="bg-transparent border-bottom py-3 px-0 checkout-card-check-wrap">
         <Row className="">
           <Col xs="12" className="">
             <Form.Check
-                type="radio"
-                defaultChecked={defaultChecked}
-                value={value}
-                name="delivery"
-                label={label}
-                id={`delivery_address_${value}`}
-                htmlFor={`delivery_address_${value}`}
-                onChange={(e) => handleChange(e)}
-              />
+              type="radio"
+              checked={value === selectValue}
+              value={value}
+              label={title}
+              name="delivery"
+              id={`delivery-${value}`}
+              htmlFor={`delivery-${value}`}
+              onChange={() => setSelectValue(value)}
+            />
           </Col>
         </Row>
       </ListGroup.Item>
+      {value == 2 && selectValue == 2 && (
+        <Row className="mt-3">
+          <Col xs={12} className="mb-3">
+            <Form.Group id="firstName">
+              <Form.Label>配送時間帯</Form.Label>
+              <Form.Select defaultValue={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} className="mb-0 w-100">
+                {
+                  deliveryTimes.map((deliveryTime, index) => <option key={index} value={deliveryTime.value}>{deliveryTime.title}</option>)
+                }
+              </Form.Select>
+            </Form.Group>
+            <h4 className="liff-checkout-payment-title text-dark mt-3">
+              ※送料については、<Card.Link href={Paths.LiffSpecificTrades.path} target="_blank" className="liff-specific-trades-link">特定商法取引法に基づく表記</Card.Link>をご覧ください。
+            </h4>
+          </Col>
+        </Row>
+      )}
+      </>
     )
   }
 
@@ -68,10 +94,13 @@ export default () => {
           </Card.Header>
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
-              <DeliveryCard value={1} label="指定なし" defaultChecked={true} setDelivery={setDelivery} />
-              <DeliveryCard value={2} label="日時指定" defaultChecked={false} setDelivery={setDelivery} />
+              {
+                deliveries.map((delivery, index) => 
+                  <DeliveryCard key={`delivery-${index + 1}`} title={delivery} value={index + 1} />
+                )
+              }
             </ListGroup> 
-            {
+            {/* {
               delivery == '2' && 
               <Row className="mt-3">
                 <Col xs={12} className="mb-3">
@@ -88,10 +117,10 @@ export default () => {
                   </h4>
                 </Col>
               </Row>
-            }
+            } */}
             <div className="align-items-center my-4">
-              <Button variant="tertiary" as={Link} to={Paths.LiffCheckout.path} className="w-100 p-3">
-                追加する
+              <Button variant="tertiary" onClick={handleClick} className="w-100 p-3">
+                変更する
               </Button>
             </div>
           </Card.Body>

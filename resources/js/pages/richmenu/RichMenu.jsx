@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { useDropzone } from "react-dropzone";
 import { Col, Row, Form, Button, ListGroup, Card, Modal, Image } from 'react-bootstrap';
@@ -22,8 +22,10 @@ import squares_half_2_1 from "@img/img/richmenu/squares_half_2_1.jpg"
 import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
 import { pages } from "./PageURLConsts"
 import { Paths } from "@/paths";
+import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const liffId = process.env.MIX_LIFF_ID;
   const { id } =  useParams();
   const richMenuId = 'richmenu-' + id;
@@ -56,9 +58,10 @@ export default () => {
   }, [])
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      console.log('kitakitkaitaktaiktaiki')
+      setIsLoading(true);
       showRichMenu(richMenuId, setFormValue).then((response) => {
         setRichMenu(richmenu_1.filter(v => v.type == response.menuType)[0] ?? {id: 1, img: '', size: 6, type: 1})
+        setIsLoading(false);
       })
       getImage(richMenuId, setImage, setImagePath);
     }

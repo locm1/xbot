@@ -1,21 +1,26 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import Swal from "sweetalert2";
-import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
+import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown, Image } from 'react-bootstrap';
 import { SearchIcon } from "@heroicons/react/solid";
 import { Link, useHistory } from 'react-router-dom';
 import { RichMenusTable } from "./RichMenusTable";
 import { Paths } from "@/paths";
+import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const [menus, setMenus] = useState([]);
   useLayoutEffect(() => {
+    setIsLoading(true);
     axios.get('/api/v1/management/rich-menus')
     .then((response) => {
       response.data.sort((a, b) => a.name.localeCompare(b.name));
       setMenus(response.data);
+      setIsLoading(false);
     })
     .catch(error => {
         console.error(error);
+        setIsLoading(false);
     },);
   }, [])
 	return (

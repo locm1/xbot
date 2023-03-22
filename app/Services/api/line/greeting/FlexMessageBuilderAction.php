@@ -13,12 +13,10 @@ class FlexMessageBuilderAction
 {
     private $user_id;
     private $bot;
-    private $url;
 
-    public function __construct(LINEBot $bot, string $user_id, string $url) {
+    public function __construct(LINEBot $bot, string $user_id) {
         $this->user_id = $user_id;
         $this->bot = $bot;
-        $this->url = $url;
     }
 
     public function createFlexMessage()
@@ -30,9 +28,9 @@ class FlexMessageBuilderAction
 
     private function createContents()
     {
-        $box_conponent_builder = $this->createBox();
+        $box_component_builder = $this->createBox();
         $bubble_container_builder = new BubbleContainerBuilder();
-        $bubble_container_builder->setBody($box_conponent_builder);
+        $bubble_container_builder->setBody($box_component_builder);
         return $bubble_container_builder;
     }
 
@@ -41,10 +39,10 @@ class FlexMessageBuilderAction
         $component_builders = array();
         $layout = ComponentLayout::VERTICAL;
         $component_builders[] = $this->createButton();
-        $box_conponent_builder = new BoxComponentBuilder($layout, $component_builders);
-        $box_conponent_builder->setBackgroundColor('#d5908c');
-        $box_conponent_builder->setPaddingAll('0px');
-        return $box_conponent_builder;
+        $box_component_builder = new BoxComponentBuilder($layout, $component_builders);
+        $box_component_builder->setBackgroundColor('#d5908c');
+        $box_component_builder->setPaddingAll('0px');
+        return $box_component_builder;
     }
 
     private function createButton()
@@ -58,7 +56,7 @@ class FlexMessageBuilderAction
     private function createAction()
     {
         $label = 'アンケートに回答';
-        $url = $this->url .'/questionnaire';
+        $url = "https://liff.line.me/" . config('api_key.MIX_LIFF_ID') . '/liff?path=questionnaire';
         $uri_template_action_builder = new UriTemplateActionBuilder($label, $url);
         return $uri_template_action_builder;
     }

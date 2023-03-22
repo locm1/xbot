@@ -3,7 +3,6 @@ import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-d
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
-import LIFFInspectorPlugin from '@line/liff-inspector'
 import { LiffMockPlugin } from '@line/liff-mock';
 import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 import { generateEnv } from '@/components/common/GenerateEnv';

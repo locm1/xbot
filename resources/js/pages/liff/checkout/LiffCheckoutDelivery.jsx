@@ -15,19 +15,20 @@ export default () => {
   const [deliveryTime, setDeliveryTime] = useState(1);
 
   const deliveryTimes = [
-    {id: 1, title: '午前中', value: 1},
-    {id: 2, title: '12:00 〜 14:00', value: 2},
-    {id: 3, title: '14:00 〜 16:00', value: 3},
-    {id: 4, title: '16:00 〜 18:00', value: 4},
-    {id: 5, title: '18:00 〜 20:00', value: 5},
-    {id: 6, title: '19:00 〜 21:00', value: 6},
-    {id: 7, title: '20:00 〜 21:00', value: 7},
+    {id: 1, title: '午前中', value: 2},
+    {id: 2, title: '12:00 〜 14:00', value: 3},
+    {id: 3, title: '14:00 〜 16:00', value: 4},
+    {id: 4, title: '16:00 〜 18:00', value: 5},
+    {id: 5, title: '18:00 〜 20:00', value: 6},
+    {id: 6, title: '19:00 〜 21:00', value: 7},
+    {id: 7, title: '20:00 〜 21:00', value: 8},
   ];
 
   const handleClick = () => {
-    Cookies.set('specific_time', selectValue, { expires: 1 })
     if (selectValue == 2) {
       Cookies.set('delivery_time', deliveryTime, { expires: 1 })
+    } else {
+      Cookies.set('delivery_time', selectValue, { expires: 1 })
     }
     history.push(Paths.LiffCheckout.path);
   }
@@ -100,24 +101,6 @@ export default () => {
                 )
               }
             </ListGroup> 
-            {/* {
-              delivery == '2' && 
-              <Row className="mt-3">
-                <Col xs={12} className="mb-3">
-                  <Form.Group id="firstName">
-                    <Form.Label>配送時間帯</Form.Label>
-                    <Form.Select defaultValue="0" className="mb-0 w-100">
-                      {
-                        deliveryTimes.map((deliveryTime, index) => <option key={index} value={deliveryTime.value}>{deliveryTime.title}</option>)
-                      }
-                    </Form.Select>
-                  </Form.Group>
-                  <h4 className="liff-checkout-payment-title text-dark mt-3">
-                    ※送料については、<Card.Link href={Paths.LiffSpecificTrades.path} target="_blank" className="liff-specific-trades-link">特定商法取引法に基づく表記</Card.Link>をご覧ください。
-                  </h4>
-                </Col>
-              </Row>
-            } */}
             <div className="align-items-center my-4">
               <Button variant="tertiary" onClick={handleClick} className="w-100 p-3">
                 変更する

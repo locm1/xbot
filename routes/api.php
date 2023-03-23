@@ -30,6 +30,7 @@ use App\Http\Controllers\api\management\category\ProductCategorySortController;
 use App\Http\Controllers\api\management\coupon\CouponController;
 use App\Http\Controllers\api\management\coupon\CouponUserController;
 use App\Http\Controllers\api\management\DefaultSegmentController;
+use App\Http\Controllers\api\management\EcommerceConfigurationController;
 use App\Http\Controllers\api\management\event\EventUserController;
 use App\Http\Controllers\api\management\GreetingMessageController;
 use App\Http\Controllers\api\management\GreetingMessagesWithQuestionnaireController;
@@ -179,6 +180,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('rich-menu-ailias', RichMenuAliasController::class);
         Route::get('rich-menu-all-deleate', RichMenuAllDeleateController::class);
         Route::post('rich-menu-set-default/{id}', RichMenuSetDefaultController::class);
+        Route::apiResource('ecommerce-configurations', EcommerceConfigurationController::class);
     });
 });
 

@@ -25,16 +25,28 @@ export default () => {
   const [customer, setCustomer] = useState({
     id: '', default_card: {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
   });
+  const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0)
+  const [postage, setPostage] = useState(500);
+  const total = orderTotal + postage;
+
+  const deleteProperty = (keys) => {
+    const cloneObject = Object.assign(deliveryAddress)
+    keys.map(key => { delete cloneObject[key]})
+    return cloneObject
+  }
 
   const createOrder = () => {
-    console.log(paymentMethod);
+    const keys = ['id', 'is_selected', 'updated_at', 'user_id', 'created_at', 'deleted_at'];
+    const delivery_time = Cookies.get('delivery_time')
+    const newDeliveryAddress = deleteProperty(keys)
     
     const order = {
-      user_id: 101, first_name: deliveryAddress.first_name, first_name_kana: deliveryAddress.first_name_kana, 
-      last_name: deliveryAddress.last_name, last_name_kana: deliveryAddress.last_name_kana, zipcode: deliveryAddress.zipcode, 
-      prefecture: deliveryAddress.prefecture, city: deliveryAddress.city, address: deliveryAddress.address, 
-      building_name: deliveryAddress.building_name, tel: deliveryAddress.tel, 
+      user_id: 101, delivery_time: delivery_time, purchase_amount: total, status: 1, 
+      payment_method: paymentMethod.payment_method, shipping_fee: postage, coupon_id: 1, tax: 1,
     }
+    Object.assign(order, newDeliveryAddress)
+    console.log(order);
+    console.log(total * 0.08);
   }
 
   useEffect(() => {
@@ -61,7 +73,13 @@ export default () => {
             </Card.Body>
           </Card>
           <LiffCheckoutPayment paymentMethod={paymentMethod} customer={customer} />
-          <LiffCheckoutOrders carts={carts} createOrder={createOrder} />
+          <LiffCheckoutOrders 
+            carts={carts} 
+            createOrder={createOrder} 
+            orderTotal={orderTotal}
+            total={total}
+            postage={postage}
+          />
         </div>
       </main>
     </>

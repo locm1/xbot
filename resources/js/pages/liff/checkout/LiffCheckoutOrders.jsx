@@ -12,46 +12,39 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
 export default (props) => {
-  const { carts, createOrder } = props;
+  const { carts, createOrder, orderTotal, total, postage } = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0)
   const [specificTime, setSpecificTime] = useState(1);
-  const [postage, setPostage] = useState(500);
-  const total = orderTotal + postage;
 
   const deliveryTimes = [
-    {id: 1, title: '午前中', value: 1},
-    {id: 2, title: '12:00 〜 14:00', value: 2},
-    {id: 3, title: '14:00 〜 16:00', value: 3},
-    {id: 4, title: '16:00 〜 18:00', value: 4},
-    {id: 5, title: '18:00 〜 20:00', value: 5},
-    {id: 6, title: '19:00 〜 21:00', value: 6},
-    {id: 7, title: '20:00 〜 21:00', value: 7},
+    {id: 1, title: '午前中', value: 2},
+    {id: 2, title: '12:00 〜 14:00', value: 3},
+    {id: 3, title: '14:00 〜 16:00', value: 4},
+    {id: 4, title: '16:00 〜 18:00', value: 5},
+    {id: 5, title: '18:00 〜 20:00', value: 6},
+    {id: 6, title: '19:00 〜 21:00', value: 7},
+    {id: 7, title: '20:00 〜 21:00', value: 8},
   ];
 
   useEffect(() => {
-    const cookie = Cookies.get('specific_time')
+    const delivery_time = Cookies.get('delivery_time')
     const idToken = Cookies.get('TOKEN');
     // getUser(idToken, setUser)
     //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
-    getSpecificTimeItem(cookie)
+    getDeliveryTimeItem(parseInt(delivery_time, 10))
   }, []);
 
-  const getSpecificTimeItem = (specificTime) => {
-    switch (parseInt(specificTime, 10)) {
-      case 1:
-        setSpecificTime('日時指定なし')
-        break
-      case 2:
-        const time = Cookies.get('delivery_time')
-        const currentDeliveryTime = deliveryTimes.find((deliveryTime) => deliveryTime.id === parseInt(time, 10))
-        setSpecificTime(`お届け日時指定 ${currentDeliveryTime.title}`)
-        break
-      default:
-        setSpecificTime('選択してください')
-        break
+  const getDeliveryTimeItem = (delivery_time) => {
+    console.log(delivery_time);
+    if (delivery_time == 1) {
+      setSpecificTime('日時指定なし')
+    } else if (2 <= delivery_time && delivery_time < 9) {
+      const currentDeliveryTime = deliveryTimes.find((deliveryTime) => deliveryTime.value === delivery_time)
+      setSpecificTime(`お届け日時指定 ${currentDeliveryTime.title}`)
+    } else {
+      setSpecificTime('選択してください')
     }
   }
 

@@ -10,7 +10,7 @@ export const storeCart = async (userId, formValue) => {
 };
 
 export const getCarts = async (userId, setCarts, setItemsExistInCart) => {
-  axios.get(`/api/v1/users/${userId}/carts`)
+  return await axios.get(`/api/v1/users/${userId}/carts`)
   .then((response) => {
     const carts = response.data.carts;
     if (carts.length > 0) {
@@ -20,6 +20,7 @@ export const getCarts = async (userId, setCarts, setItemsExistInCart) => {
     }
     setCarts(carts.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })))
     console.log(carts.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })));
+    return carts.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity }));
   })
   .catch(error => {
       console.error(error);

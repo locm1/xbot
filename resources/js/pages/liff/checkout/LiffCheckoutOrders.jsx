@@ -12,7 +12,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
 export default (props) => {
-  const { carts, createOrder, orderTotal, total, postage } = props;
+  const { carts, createOrder, orderTotal, total, postage, ecommerceConfiguration, paymentMethod } = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
@@ -88,7 +88,13 @@ export default (props) => {
             {carts.map(cart => <CartItem key={`cart-${cart.id}`} {...cart} />)}
           </ListGroup>
           <ListGroup className="list-group-flush">
-            <OrderDetailItem total={total} orderTotal={orderTotal} postage={postage} />
+            <OrderDetailItem
+              total={total}
+              orderTotal={orderTotal}
+              postage={postage}
+              paymentMethod={paymentMethod}
+              ecommerceConfiguration={ecommerceConfiguration}
+            />
           </ListGroup>
         </Card.Body>
         <div className="align-items-center m-2 mt-4 mb-4">

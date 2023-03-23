@@ -13,6 +13,7 @@ import { getCarts } from "@/pages/liff/api/CartApiMethods";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
+import { getEcommerceConfigurationAndPostage } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
   const [carts, setCarts] = useState([]);
@@ -21,13 +22,18 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const [paymentMethod, setPaymentMethod] = useState();
+  const [paymentMethod, setPaymentMethod] = useState({
+    payment_method: 1
+  });
   const [customer, setCustomer] = useState({
     id: '', default_card: {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
   });
-  const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0)
+  const [ecommerceConfiguration, setEcommerceConfiguration] = useState({
+    cash_on_delivery_fee: '', is_enabled: 1, 
+  });
+  const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0);
   const [postage, setPostage] = useState(500);
-  const total = orderTotal + postage;
+  const total = (paymentMethod.payment_method == 1) ? orderTotal + postage : orderTotal + postage + ecommerceConfiguration.cash_on_delivery_fee;
 
   const deleteProperty = (keys) => {
     const cloneObject = Object.assign(deliveryAddress)
@@ -51,7 +57,9 @@ export default () => {
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
-    getCarts(101, setCarts, setItemsExistInCart)
+    getCarts(101, setCarts, setItemsExistInCart).then(
+      response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
+    )
     //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
     //getUser(idToken, setUser).then(response => getSelectOrderDestination(response.id, setDeliveryAddress))
     getSelectOrderDestination(101, setDeliveryAddress)
@@ -72,13 +80,15 @@ export default () => {
               </ListGroup>
             </Card.Body>
           </Card>
-          <LiffCheckoutPayment paymentMethod={paymentMethod} customer={customer} />
+          <LiffCheckoutPayment paymentMethod={paymentMethod} customer={customer} ecommerceConfiguration={ecommerceConfiguration} />
           <LiffCheckoutOrders 
             carts={carts} 
             createOrder={createOrder} 
             orderTotal={orderTotal}
             total={total}
             postage={postage}
+            ecommerceConfiguration={ecommerceConfiguration}
+            paymentMethod={paymentMethod}
           />
         </div>
       </main>

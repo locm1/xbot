@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\liff\cart\CartController;
+use App\Http\Controllers\api\liff\ec_configuration\EcommerceConfigurationController as LiffEcommerceConfigurationController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\UpdateOrderDestinationController;
@@ -212,6 +213,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('privacy-policy', LiffPrivacyPolicyController::class);
     Route::get('terms-of-service', LiffTermsOfServiceController::class);
     Route::get('specific-trades', LiffSpecificTradeController::class);
+    Route::get('ecommerce-configurations', LiffEcommerceConfigurationController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

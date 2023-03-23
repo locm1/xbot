@@ -49,7 +49,7 @@ class GreetingService
 
         # アンケート回答ボタンをつけた場合、Flexメッセージ作成
         if ($greeting_messages_with_questionnaires->is_questionnaire ?? false == 1) {
-            $flex_message_builder_action = new FlexMessageBuilderAction($this->bot, $this->user_id, $this->url);
+            $flex_message_builder_action = new FlexMessageBuilderAction();
             $message_builder = $flex_message_builder_action->createFlexMessage();
             $multi_message_builder->add($message_builder);
         }

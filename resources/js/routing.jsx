@@ -276,22 +276,22 @@ const LiffInitRoute = () => {
       return <Redirect to={`/product/category/${id}`} />;
 
     case 'cart':
-      return <Redirect to={'cart'} />;
+      return <Redirect to={'/cart'} />;
 
     case 'visitor':
-      return <Redirect to={'visitor'} />;
+      return <Redirect to={'/visitor'} />;
 
     case 'event/reservation':
-      return <Redirect to={'event/reservation'} />;
+      return <Redirect to={'/event/reservation'} />;
 
     case 'questionnaire':
-      return <Redirect to={'questionnaire'} />;
+      return <Redirect to={'/questionnaire'} />;
 
     case 'history/product':
-      return <Redirect to={'history/product'} />;
+      return <Redirect to={'/history/product'} />;
     
     case 'invite':
-      return <Redirect to={'invite'} />;
+      return <Redirect to={'/invite'} />;
   }
 }
 

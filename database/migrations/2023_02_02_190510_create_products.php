@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreign('product_category_id')->references('id')->on('product_categories');
             $table->string('name')->nullable(false);
             $table->integer('stock_quantity')->nullable(false);
-            $table->double('tax_rate')->nullable(false);
             $table->integer('price')->nullable(false);
             $table->text('overview')->nullable(false);
             $table->tinyInteger('is_undisclosed');

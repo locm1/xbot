@@ -24,10 +24,10 @@ export default () => {
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
 
   useEffect(() => {
-    // const idToken = Cookies.get('TOKEN');
+    const idToken = Cookies.get('TOKEN');
     // getUser(idToken, setUser)
-    getCarts(101, setCarts, setItemsExistInCart)
-    //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
+    //getCarts(101, setCarts, setItemsExistInCart)
+    getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
   }, []);
 
   useEffect(() => {
@@ -37,7 +37,8 @@ export default () => {
 
   const deleteCartCard = (id) => {
     setCarts(carts.filter((cart) => (cart.id !== id)));
-    deleteCart(101, id)
+    //deleteCart(101, id)
+    deleteCart(user.id, id)
 
     if (carts.length == 0) {
       setItemsExistInCart(false);
@@ -62,7 +63,8 @@ export default () => {
       targetCart.quantity++;
       targetCart.totalAmount = targetCart.product.price * targetCart.quantity;
       setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
-      updateCart(101, id, targetCart, location)
+      // updateCart(101, id, targetCart, location)
+      updateCart(user.id, id, targetCart, location)
     }
 
     const decreaseQuantity = (id) => {
@@ -70,7 +72,8 @@ export default () => {
       targetCart.quantity--;
       targetCart.totalAmount = targetCart.product.price * targetCart.quantity;
       setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
-      updateCart(101, id, targetCart, location)
+      // updateCart(101, id, targetCart, location)
+      updateCart(user.id, id, targetCart, location)
     }
 
     const getImages = (image) => {

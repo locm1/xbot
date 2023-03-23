@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
+import Cookies from 'js-cookie';
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { getPrefectures } from "@/pages/liff/api/PrefectureApiMethods";
@@ -58,12 +59,15 @@ export default () => {
   };
 
   useEffect(() => {
-    // const idToken = Cookies.get('TOKEN');
+    const idToken = Cookies.get('TOKEN');
     // getUser(idToken, setUser)
     getPrefectures(setPrefectures)
 
     if (pathname.includes('/edit')) {
-      showOrderDestination(101, id, setFormValue)
+      getUser(idToken, setUser).then(response => {
+        showOrderDestination(response.id, id, setFormValue)
+      })
+      //showOrderDestination(101, id, setFormValue)
     }
   }, []);
 

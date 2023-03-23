@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
 
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
@@ -18,9 +19,10 @@ export default () => {
   });
 
   useEffect(() => {
+    const idToken = Cookies.get('TOKEN');
     showCreditCardForm()
-    //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
-    showPaymentMethod(101, setPaymentMethod)
+    getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
+    //showPaymentMethod(101, setPaymentMethod)
   }, []);
 
   const showCreditCardForm = () => {
@@ -49,7 +51,8 @@ export default () => {
   const createCustomer = () => {
     const payjpToken = document.getElementsByName('payjp-token');
     const formValue = {payjp_token: payjpToken[0].value};
-    storeCustomer(101, formValue, paymentMethod, updatePaymentMethod, onSaveComplete)
+    storeCustomer(user.id, formValue, paymentMethod, updatePaymentMethod, onSaveComplete)
+    //storeCustomer(101, formValue, paymentMethod, updatePaymentMethod, onSaveComplete)
   };
 
   const createCreditCard = () => {
@@ -57,7 +60,8 @@ export default () => {
     const formValue = {
       payjp_token: payjpToken[0].value, payjp_customer_id: paymentMethod.payjp_customer_id
     };
-    storeCard(101, formValue, onSaveComplete)
+    storeCard(user.id, formValue, onSaveComplete)
+    //storeCard(101, formValue, onSaveComplete)
   };
 
   const onSaveComplete = () => {

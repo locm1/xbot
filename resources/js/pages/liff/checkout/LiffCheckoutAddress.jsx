@@ -4,6 +4,9 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
+
+import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getOrderDestinations, updateOrderDestination, updateOrderDestinations } from "@/pages/liff/api/OrderDestinationApiMethods";
 
 import addresses from "@/data/deliveryAddresses";
@@ -12,14 +15,19 @@ export default () => {
   const history = useHistory();
   const [deliveryAddresses, setDeliveryAddresses] = useState([]);
   const [selectId, setSelectId] = useState();
+  const [user, setUser] = useState({
+    is_registered: 0
+  });
 
   const handleClick = () => {
     console.log(selectId);
     const updateAddress = deliveryAddresses.find((deliveryAddress) => deliveryAddress.id === selectId);
     updateAddress.is_selected = 1
     console.log(updateAddress);
-    updateOrderDestinations(101, updateAddress.id)
-    updateOrderDestination(101, updateAddress.id, updateAddress, updateComplete)
+    updateOrderDestinations(user.id, updateAddress.id)
+    updateOrderDestination(user.id, updateAddress.id, updateAddress, updateComplete)
+    // updateOrderDestinations(101, updateAddress.id)
+    // updateOrderDestination(101, updateAddress.id, updateAddress, updateComplete)
   }
 
   const updateComplete = () => {
@@ -27,8 +35,11 @@ export default () => {
   };
 
   useEffect(() => {
-    //const idToken = Cookies.get('TOKEN');
-    getOrderDestinations(101, setDeliveryAddresses, setSelectId)
+    const idToken = Cookies.get('TOKEN');
+    getUser(idToken, setUser).then(response => {
+      getOrderDestinations(response.id, setDeliveryAddresses, setSelectId)
+    })
+    //getOrderDestinations(101, setDeliveryAddresses, setSelectId)
   }, []);
 
   const DeliveryAddressItem = (props) => {

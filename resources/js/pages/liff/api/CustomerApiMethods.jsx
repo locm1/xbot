@@ -1,8 +1,9 @@
-export const getCustomer = async (userId, payjp_customer_id, setCustomer) => {
+export const getCustomer = async (userId, payjp_customer_id, setCustomer, setIsLoading) => {
   return await axios.get(`/api/v1/users/${userId}/customers/${payjp_customer_id}`)
   .then((response) => {
     console.log(response.data.customer);
     setCustomer(response.data.customer);
+    setIsLoading(false);
     return response.data.customer;
   })
   .catch(error => {

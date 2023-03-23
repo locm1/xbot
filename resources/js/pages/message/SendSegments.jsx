@@ -12,14 +12,14 @@ import { Paths } from "@/paths";
 import segments from "@/data/segments";
 import SegmentList from "@/pages/message/segment/Segments";
 import SegmentCard from "@/pages/message/segment/SegmentCard";
-import MessageDetail from "@/pages/message/MessageDetail";
+import MessageDetail from "./MessageDetail";
 import { SegmentCardCreateModal } from "@/pages/message/segment/SegmentCardCreateModal";
 import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import { UsersTable } from "@/pages/user/UsersTable";
 import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
 import {SendSegmentUserCard} from "./segment/SendSegmentUserCard"
 import { calculateAge } from "../../components/common/CalculateAge";
-
+import { getMessages, deleteMessage, searchMessages } from "@/pages/message/api/MessageApiMethods";
 
 // const questionnaires = [
 //   {
@@ -61,6 +61,9 @@ export default () => {
   const [searchTerms, setSearchTerms] = useState({});
   const [segmentTemplates, setSegmentTemplates] = useState([]);
   const [segmentTemplateOption, setSegmentTemplateOption] = useState("0");
+  const [templates, setTemplates] = useState([]);
+  const [timing, setTiming] = useState(0);
+  const [sendDate, setSendDate] = useState();
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
@@ -165,6 +168,7 @@ export default () => {
 
 
   useEffect(() => {
+    getMessages(setTemplates);
     axios.get('/api/v1/management/default-segments')
     .then((response) => {
       const segments = response.data.segments;
@@ -474,13 +478,13 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          {/* <Button onClick={() => {console.log(questionnaires)}} />
-          <Button onClick={() => {console.log(definedQuestion)}} />
+          {/* <Button onClick={() => {console.log(questionnaires)}} /> */}
+          <Button onClick={() => {console.log(templates)}} />
           <Button onClick={() => {console.log(users)}} />
-          <Button onClick={() => {console.log(searchResultUsers)}} />
-          <Button onClick={() => {console.log(searchTerms)}} />
-          <Button onClick={() => {console.log(segmentTemplates)}} />
-          <Button onClick={() => {console.log(segmentTemplateOption)}} /> */}
+          {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
+          {/* <Button onClick={() => {console.log(searchTerms)}} /> */}
+          {/* <Button onClick={() => {console.log(segmentTemplates)}} /> */}
+          {/* <Button onClick={() => {console.log(segmentTemplateOption)}} /> */}
         </div>
       </div>
       <Row>
@@ -529,9 +533,16 @@ export default () => {
         </Col>
       </Row>
         <SendSegmentUserCard
-        users={searchResultUsers}
+          users={searchResultUsers}
+          setUsers={setSearchResultUsers}
         />
-      <MessageDetail />
+      <MessageDetail
+        templates={templates}
+        timing={timing}
+        setTiming={setTiming}
+        sendDate={sendDate}
+        setSendDate={setSendDate}
+      />
 
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
         <Button href={Paths.Users.path} variant="gray-800" className="mt-2 animate-up-2 w-50 me-3">

@@ -13,6 +13,7 @@ import { getCarts } from "@/pages/liff/api/CartApiMethods";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
+import { getEcommerceConfigurationAndPostage } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
   const [carts, setCarts] = useState([]);
@@ -21,25 +22,44 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const [paymentMethod, setPaymentMethod] = useState();
+  const [paymentMethod, setPaymentMethod] = useState({
+    payment_method: 1
+  });
   const [customer, setCustomer] = useState({
     id: '', default_card: {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
   });
+  const [ecommerceConfiguration, setEcommerceConfiguration] = useState({
+    cash_on_delivery_fee: '', is_enabled: 1, 
+  });
+  const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0);
+  const [postage, setPostage] = useState(500);
+  const total = (paymentMethod.payment_method == 1) ? orderTotal + postage : orderTotal + postage + ecommerceConfiguration.cash_on_delivery_fee;
+
+  const deleteProperty = (keys) => {
+    const cloneObject = Object.assign(deliveryAddress)
+    keys.map(key => { delete cloneObject[key]})
+    return cloneObject
+  }
 
   const createOrder = () => {
-    console.log(paymentMethod);
+    const keys = ['id', 'is_selected', 'updated_at', 'user_id', 'created_at', 'deleted_at'];
+    const delivery_time = Cookies.get('delivery_time')
+    const newDeliveryAddress = deleteProperty(keys)
     
     const order = {
-      user_id: 101, first_name: deliveryAddress.first_name, first_name_kana: deliveryAddress.first_name_kana, 
-      last_name: deliveryAddress.last_name, last_name_kana: deliveryAddress.last_name_kana, zipcode: deliveryAddress.zipcode, 
-      prefecture: deliveryAddress.prefecture, city: deliveryAddress.city, address: deliveryAddress.address, 
-      building_name: deliveryAddress.building_name, tel: deliveryAddress.tel, 
+      user_id: 101, delivery_time: delivery_time, purchase_amount: total, status: 1, 
+      payment_method: paymentMethod.payment_method, shipping_fee: postage, coupon_id: 1, tax: 1,
     }
+    Object.assign(order, newDeliveryAddress)
+    console.log(order);
+    console.log(total * 0.08);
   }
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
-    getCarts(101, setCarts, setItemsExistInCart)
+    getCarts(101, setCarts, setItemsExistInCart).then(
+      response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
+    )
     //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
     //getUser(idToken, setUser).then(response => getSelectOrderDestination(response.id, setDeliveryAddress))
     getSelectOrderDestination(101, setDeliveryAddress)
@@ -60,8 +80,16 @@ export default () => {
               </ListGroup>
             </Card.Body>
           </Card>
-          <LiffCheckoutPayment paymentMethod={paymentMethod} customer={customer} />
-          <LiffCheckoutOrders carts={carts} createOrder={createOrder} />
+          <LiffCheckoutPayment paymentMethod={paymentMethod} customer={customer} ecommerceConfiguration={ecommerceConfiguration} />
+          <LiffCheckoutOrders 
+            carts={carts} 
+            createOrder={createOrder} 
+            orderTotal={orderTotal}
+            total={total}
+            postage={postage}
+            ecommerceConfiguration={ecommerceConfiguration}
+            paymentMethod={paymentMethod}
+          />
         </div>
       </main>
     </>

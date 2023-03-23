@@ -9,6 +9,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCards } from "@/pages/liff/api/CardApiMethods";
 import { updateCustomer, getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
+import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
   const history = useHistory();
@@ -24,8 +25,10 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
+  const [payments, setPayments] = useState([]);
+  //const payments = ['クレジットカード', '代金引き換え'];
   const [selectCardId, setSelectCardId] = useState();
-  const payments = ['クレジットカード', '代金引き換え'];
+  const [ecommerceConfiguration, setEcommerceConfiguration] = useState();
 
   const onClick = () => {
     if ('id' in paymentMethod) {
@@ -64,6 +67,7 @@ export default () => {
         getCards(101, response.payjp_customer_id, setCreditCards)
       }
     )
+    getEcommerceConfiguration(setEcommerceConfiguration, setPayments)
   }, []);
 
   const CashondeliveryCard = () => {

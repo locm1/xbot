@@ -12,15 +12,10 @@ import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 
 export default (props) => {
-  const { paymentMethod, customer} = props;
+  const { paymentMethod, customer, ecommerceConfiguration } = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
-
-  useEffect(() => {
-    const idToken = Cookies.get('TOKEN');
-    //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
-  }, []);
 
   return (
     <>
@@ -30,7 +25,7 @@ export default (props) => {
         </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            <PaymentDetailItem paymentMethod={paymentMethod} customer={customer} />
+            <PaymentDetailItem paymentMethod={paymentMethod} customer={customer} ecommerceConfiguration={ecommerceConfiguration} />
           </ListGroup>
         </Card.Body>
       </Card>

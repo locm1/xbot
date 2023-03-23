@@ -41,7 +41,7 @@ export const CartItem = (props) => {
 }
 
 export const OrderDetailItem = (props) => {
-  const { total, orderTotal, postage } = props;
+  const { total, orderTotal, postage, paymentMethod, ecommerceConfiguration } = props;
 
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
@@ -50,13 +50,23 @@ export const OrderDetailItem = (props) => {
           <div className="m-1">
             <h4 className="fs-6 text-dark mb-0">商品合計</h4>
             <h4 className="fs-6 text-dark mb-0 mt-1">送料</h4>
+            { 
+              paymentMethod.payment_method == 2 && (
+                <h4 className="fs-6 text-dark mb-0 mt-1">代金引換手数料</h4>
+              )
+            }
             <h3 className="text-dark mb-0 mt-2 liff-pay-total-title">お支払い金額（税込）</h3>
           </div>
         </Col>
         <Col xs="5" className="">
           <div className="m-1 text-end">
             <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>
-            <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage}</h4>
+            <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h4>
+            { 
+              paymentMethod.payment_method == 2 && (
+                <h4 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h4>
+              )
+            }
             <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {total.toLocaleString()}</h3>
           </div>
         </Col>
@@ -66,7 +76,7 @@ export const OrderDetailItem = (props) => {
 }
 
 export const PaymentDetailItem = (props) => {
-  const { paymentMethod, customer } = props;
+  const { paymentMethod, customer, ecommerceConfiguration } = props;
   const location = useLocation().pathname;
 
   const getColButton = (location) => {
@@ -83,6 +93,16 @@ export const PaymentDetailItem = (props) => {
     }
   }
 
+  const getPaymentMethod = (payment_method) => {
+    if (payment_method == 1) {
+      return `カード番号：${customer.default_card.card_number}`
+    } else if (payment_method == 2) {
+      return `手数料：${ecommerceConfiguration.cash_on_delivery_fee}円（税込）`
+    } else {
+      return ''
+    }
+  }
+
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
@@ -94,9 +114,7 @@ export const PaymentDetailItem = (props) => {
                   {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "代金引換え" : ""}
                 </h4>
                 <div className="liff-checkout-payment-title">
-                  {
-                    paymentMethod.payment_method == 1 ? `カード番号：${customer.default_card.card_number}` : paymentMethod.payment_method == 2 ? '手数料：330円（税込）' : ''
-                  }
+                  {getPaymentMethod(paymentMethod.payment_method)}
                 </div>
               </div>
             ) : (

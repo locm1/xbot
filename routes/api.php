@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\liff\cart\CartController;
+use App\Http\Controllers\api\liff\ec_configuration\EcommerceConfigurationController as LiffEcommerceConfigurationController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\UpdateOrderDestinationController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\api\management\category\ProductCategorySortController;
 use App\Http\Controllers\api\management\coupon\CouponController;
 use App\Http\Controllers\api\management\coupon\CouponUserController;
 use App\Http\Controllers\api\management\DefaultSegmentController;
+use App\Http\Controllers\api\management\EcommerceConfigurationController;
 use App\Http\Controllers\api\management\event\EventUserController;
 use App\Http\Controllers\api\management\GreetingMessageController;
 use App\Http\Controllers\api\management\GreetingMessagesWithQuestionnaireController;
@@ -179,6 +181,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('rich-menu-ailias', RichMenuAliasController::class);
         Route::get('rich-menu-all-deleate', RichMenuAllDeleateController::class);
         Route::post('rich-menu-set-default/{id}', RichMenuSetDefaultController::class);
+        Route::apiResource('ecommerce-configurations', EcommerceConfigurationController::class);
     });
 });
 
@@ -210,6 +213,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('privacy-policy', LiffPrivacyPolicyController::class);
     Route::get('terms-of-service', LiffTermsOfServiceController::class);
     Route::get('specific-trades', LiffSpecificTradeController::class);
+    Route::get('ecommerce-configurations', LiffEcommerceConfigurationController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

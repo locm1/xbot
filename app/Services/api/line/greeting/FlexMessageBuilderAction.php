@@ -11,53 +11,46 @@ use LINE\LINEBot\MessageBuilder\FlexMessageBuilder;
 
 class FlexMessageBuilderAction 
 {
-    private $user_id;
-    private $bot;
-
-    public function __construct(LINEBot $bot, string $user_id) {
-        $this->user_id = $user_id;
-        $this->bot = $bot;
-    }
-
     public function createFlexMessage()
     {
-        $bubble_container_builder = $this->createContents();
+        $action_builder = $this->createAction();
+        $button_component_builder = $this->createButton($action_builder);
+        $box_component_builder = $this->createBox($button_component_builder);
+        $bubble_container_builder = $this->createContents($box_component_builder);
         $flex_message_builder = new FlexMessageBuilder('アンケート', $bubble_container_builder);
         return $flex_message_builder;
     }
 
-    private function createContents()
+    private function createAction()
     {
-        $box_component_builder = $this->createBox();
-        $bubble_container_builder = new BubbleContainerBuilder();
-        $bubble_container_builder->setBody($box_component_builder);
-        return $bubble_container_builder;
+        $label = 'アンケートに回答';
+        $url = 'https://liff.line.me/' . config('api_key.MIX_LIFF_ID') . '/liff?path=questionnaire';
+        $uri_template_action_builder = new UriTemplateActionBuilder($label, $url);
+        return $uri_template_action_builder;
     }
 
-    private function createBox()
+    private function createButton($action_builder)
+    {
+        $button_component_builder = new ButtonComponentBuilder($action_builder);
+        $button_component_builder->setColor('#ffffff');
+        return $button_component_builder;
+    }
+
+    private function createBox($component_builder)
     {
         $component_builders = array();
         $layout = ComponentLayout::VERTICAL;
-        $component_builders[] = $this->createButton();
+        $component_builders[] = $component_builder;
         $box_component_builder = new BoxComponentBuilder($layout, $component_builders);
         $box_component_builder->setBackgroundColor('#d5908c');
         $box_component_builder->setPaddingAll('0px');
         return $box_component_builder;
     }
 
-    private function createButton()
+    private function createContents($box_component_builder)
     {
-        $action_builder = $this->createAction();
-        $button_component_builder = new ButtonComponentBuilder($action_builder);
-        $button_component_builder->setColor('#ffffff');
-        return $button_component_builder;
-    }
-
-    private function createAction()
-    {
-        $label = 'アンケートに回答';
-        $url = "https://liff.line.me/" . config('api_key.MIX_LIFF_ID') . '/liff?path=questionnaire';
-        $uri_template_action_builder = new UriTemplateActionBuilder($label, $url);
-        return $uri_template_action_builder;
+        $bubble_container_builder = new BubbleContainerBuilder();
+        $bubble_container_builder->setBody($box_component_builder);
+        return $bubble_container_builder;
     }
 }

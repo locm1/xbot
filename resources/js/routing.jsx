@@ -255,7 +255,6 @@ const LiffInitRoute = () => {
   //   liff.use(new LiffMockPlugin());
   // }
   clearExpiredIdToken(liffId)
-  // liff.use(new LIFFInspectorPlugin())
   
   liff.init({liffId: process.env.MIX_LIFF_ID})
     .then(() => {

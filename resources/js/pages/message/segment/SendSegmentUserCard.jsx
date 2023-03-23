@@ -6,11 +6,19 @@ import { Paths } from "@/paths";
 import { first } from "lodash";
 
 export const SendSegmentUserCard = (props) => {
-  const { users = [], allSelected } = props;
+  const { users = [], allSelected, setUsers } = props;
   const [bulkOption, setBulkOption] = useState(0);
 
   const deleteUsers = (id) => {
     props.deleteUsers && props.deleteUsers(id)
+  }
+
+  const allSelectClick = () => {   
+    let i = 0; 
+    users.forEach(user => user.isSelected == true && i++);
+    users.length === i ? 
+      setUsers(users.map(user => ({...user, isSelected: false}))) :
+      setUsers(users.map(user => ({...user, isSelected: true})))
   }
 
   const TableRow = (props) => {
@@ -19,11 +27,16 @@ export const SendSegmentUserCard = (props) => {
     const name = last_name + ' ' + first_name;
     const sexVariant = gender === 1 ? "info" : gender === 2 ? "danger" : "primary";
     const link = Paths.EditUser.path.replace(':id', id);
+    const handleCheckboxChange = (event) => {
+      setUsers(
+        users.map(user => user.id == id ? {...user, isSelected: event.target.checked} : user)
+      );
+    };
 
     return (
       <tr className="border-bottom">
         <td>
-          <Form.Check className=" text-center" />
+          <Form.Check className="text-center" checked={isSelected} onChange={handleCheckboxChange} />
         </td>
         <td>
           <Link to={link}>
@@ -60,7 +73,9 @@ export const SendSegmentUserCard = (props) => {
         <Table hover className="user-table align-items-center">
           <thead>
             <tr>
-              <th className="border-bottom sticky-top bg-white w-0"><Button variant="secondary" size="sm">全選択</Button></th>
+              <th className="border-bottom sticky-top bg-white w-0">
+                <Button variant="secondary" size="sm" onClick={allSelectClick}>全選択</Button>
+              </th>
               <th className="border-bottom sticky-top bg-white">氏名</th>
               <th className="border-bottom sticky-top bg-white">電話番号</th>
               <th className="border-bottom sticky-top bg-white">性別</th>

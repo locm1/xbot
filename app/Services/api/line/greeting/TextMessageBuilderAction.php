@@ -9,19 +9,21 @@ class TextMessageBuilderAction
     private $user_id;
     private $bot;
 
-    public function __construct(LINEBot $bot, string $user_id) {
+    public function __construct(LINEBot $bot, string $user_id = null) {
         $this->user_id = $user_id;
         $this->bot = $bot;
     }
 
-    public function createTextMessage($text)
+    public function createTextMessage($text): TextMessageBuilder
     {
-        $profile = $this->bot->getProfile($this->user_id);
-        $bot_info = $this->bot->getBotInfo();
-        $user_name = $this->getDisplayName($profile);
-        $bot_name = $this->getDisplayName($bot_info);
-        $replace_text = $this->replaceText($user_name, $bot_name, $text);
-        $message_builder = new TextMessageBuilder($replace_text);
+        if ($this->user_id) { 
+            $profile = $this->bot->getProfile($this->user_id);
+            $bot_info = $this->bot->getBotInfo();
+            $user_name = $this->getDisplayName($profile);
+            $bot_name = $this->getDisplayName($bot_info);
+            $replace_text = $this->replaceText($user_name, $bot_name, $text);
+        }
+        $message_builder = new TextMessageBuilder($replace_text ?? $text);
         return $message_builder;
     }
 

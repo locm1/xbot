@@ -2,8 +2,11 @@
 
 namespace App\Console;
 
+use App\Models\SendMessageJob;
+use App\Services\management\send_multicast_message\SendMulticastMessageService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +18,20 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        
+        $schedule->call(function () {
+            if (SendMessageJob::exists()) {
+                $service = new SendMulticastMessageService;
+                $jobs = SendMessageJob::where('reservation_datetime', '<=', now())->with('sendMessageJobUser')->get();
+                foreach ($jobs as $k => $job) {
+                    Log::info($service->send($job->message_id, $job->sendMessageJobUser->pluck('line_id')->all())->getJSONDecodedBody());
+                    SendMessageJob::find($job->id)->delete();
+                }
+            } 
+            // else {
+            //     Log::debug('no jobs');
+            // }
+        })->everyMinute();
     }
 
     /**

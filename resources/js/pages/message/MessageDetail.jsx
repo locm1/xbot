@@ -10,7 +10,7 @@ import { Paths } from "@/paths";
 import LinePreview from "@/components/line/LinePreview";
 
 export default (props) => {
-  const {templates, timing, setTiming, sendDate, setSendDate} = props;
+  const {templates, timing, setTiming, sendDate, setSendDate, selectTemplate, setSelectTemplate} = props;
   const [birthday, setBirthday] = useState("");
   const [messageDetailModal, setMessageDetailModal] = useState(false);
   const handleClose = () => setMessageDetailModal(false);
@@ -22,6 +22,7 @@ export default (props) => {
   }  
   const flatpickerOptions = {
     locale: 'ja',
+    enableTime: true,
   }
 
   return (
@@ -39,7 +40,7 @@ export default (props) => {
             <Col md={5} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>メッセージを選択</Form.Label>
-                <Form.Select defaultValue="0" className="mb-0">
+                <Form.Select value={selectTemplate} className="mb-0" onChange={e => setSelectTemplate(e.target.value)}>
                 <option>選択してください</option>
                   {
                     templates.map((message, index) => <option key={index} value={message.id}>{message.title}</option>)
@@ -53,6 +54,7 @@ export default (props) => {
                 <div className="message-detail-wrap">
                   <div className="message-detail">
                     <Form.Check
+                      checked={timing === 0}
                       value={0}
                       type="radio"
                       label="即時配信"
@@ -64,6 +66,7 @@ export default (props) => {
                   </div>
                   <div className="message-detail">
                     <Form.Check
+                      checked={timing === 1}
                       value={1}
                       type="radio"
                       label="予約配信"
@@ -83,16 +86,16 @@ export default (props) => {
                         </InputGroup.Text>
                         <Flatpickr
                           options={ flatpickerOptions }
+                          onChange={(_, __, instance) => setSendDate(instance.element.value)}
+                          value={sendDate}
                           render={(props, ref) => {
                             return (
                               <>
                                 <Form.Control
                                   disabled={timing == 1 ? false : true}
-                                  data-time_24hr
                                   required
                                   type="text"
-                                  placeholder="YYYY-MM-DD"
-                                  onChange={(_, __, instance) => setSendDate(instance.element)}
+                                  placeholder="YYYY-MM-DD h:i"
                                   value={sendDate}
                                   name='sendDate'
                                   ref={ref}

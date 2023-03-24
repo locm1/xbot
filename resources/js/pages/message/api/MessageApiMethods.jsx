@@ -1,3 +1,21 @@
+import Swal from "sweetalert2"
+
+const completeMessage = (message) => {
+  Swal.fire(
+    `${message}完了`,
+    `メッセージの${message}に成功しました`,
+    'success'
+  )
+} 
+
+const failedMessage = (message) => {
+  Swal.fire(
+    `${message}失敗`,
+    `メッセージの${message}に失敗しました`,
+    'error'
+  )
+} 
+
 export const getMessages = async (setMessages) => {
   axios.get('/api/v1/management/messages')
   .then((response) => {
@@ -62,6 +80,17 @@ export const deleteMessage = async (id, deleteComplete, setMessages, messages) =
     setMessages(messages.filter((message) => (message.id !== id)));
   })
   .catch(error => {
+      console.error(error);
+  });
+};
+
+export const sendMulticastMessage = async (data) => {
+  axios.post('/api/v1/management/send-multicast-message', data)
+  .then((response) => {
+    response.data ? completeMessage(data.timing == 0 ? '配信' : '予約') : failedMessage(data.timing == 0 ? '配信' : '予約')
+  })
+  .catch(error => {
+      failedMessage(data.timing == 0 ? '配信' : '予約')
       console.error(error);
   });
 };

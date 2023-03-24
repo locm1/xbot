@@ -19,24 +19,24 @@ class SendMulticastMessageService
         $httpClient = new CurlHTTPClient(config('services.line.message.channel_token'));
         $this->bot = new LINEBot($httpClient, ['channelSecret' => config('services.line.message.channel_secret')]);
     }
-    public function send($template_id, $user_ids): Response
+    public function send($template_id, $user_line_ids): Response
     {
         $messages = Message::find($template_id)->messageItems()->get();
         $create_message = new CreateMessageByTypeService($this->bot, $messages);
         $multi_message_builder = new MultiMessageBuilder();
-        $response = $this->bot->multicast($user_ids, $create_message($multi_message_builder));
+        $response = $this->bot->multicast($user_line_ids, $create_message($multi_message_builder));
         return $response;
     }
 
-    public function reserve($request) 
+    public function reserve($template_id, $user_line_ids, $send_datetime) 
     {
         $message_data = [
-            'message_id' => $request->templateId,
-            'reservation_datetime' => $request->sendDate,
+            'message_id' => $template_id,
+            'reservation_datetime' => $send_datetime,
         ];
         $SendMessageJob = SendMessageJob::create($message_data);
         $line_ids = [];
-        foreach ($request->userIds as $k => $v) {
+        foreach ($user_line_ids as $k => $v) {
             $line_ids[] = [
                 'line_id' => $v,
                 'send_message_job_id' => $SendMessageJob->id,
@@ -44,6 +44,6 @@ class SendMulticastMessageService
         }
         SendMessageJobUser::upsert($line_ids, 'id');
 
-        return $SendMessageJob->id;
+        return $SendMessageJob->id ? true : false;
     }
 }

@@ -27,9 +27,10 @@ class Kernel extends ConsoleKernel
                     Log::info($service->send($job->message_id, $job->sendMessageJobUser->pluck('line_id')->all())->getJSONDecodedBody());
                     SendMessageJob::find($job->id)->delete();
                 }
-            } else {
-                Log::debug('no jobs');
-            }
+            } 
+            // else {
+            //     Log::debug('no jobs');
+            // }
         })->everyMinute();
     }
 

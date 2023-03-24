@@ -19,39 +19,7 @@ import { UsersTable } from "@/pages/user/UsersTable";
 import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
 import {SendSegmentUserCard} from "./segment/SendSegmentUserCard"
 import { calculateAge } from "../../components/common/CalculateAge";
-import { getMessages, deleteMessage, searchMessages } from "@/pages/message/api/MessageApiMethods";
-
-// const questionnaires = [
-//   {
-//     type: 1,
-//     questionTitle: 'questionTitle1',
-//     questionnaireItems: [
-//       {name: 'name1', value: '0'},
-//       {name: 'name2', value: '1'},
-//       {name: 'name3', value: '0'},
-//     ]sda
-//   },
-//   {
-//     type: 2,
-//     questionTitle: 'questionTitle2',
-//     questionnaireItems: [
-//       {name: 'name1', value: '10'},
-//       {name: 'name2', value: '30'},
-//     ]
-//   },
-//   {
-//     type: 3,
-//     questionTitle: 'questionTitle3',
-//     questionnaireItems: [
-//       {name: 'name1', value: '2023-1-1'},
-//       {name: 'name2', value: '2023-3-1'},
-//     ]
-//   },
-// ]
-
-
-
-
+import { getMessages, deleteMessage, searchMessages, sendMulticastMessage } from "@/pages/message/api/MessageApiMethods";
 
 export default () => {
   const [definedQuestion, setDefinedQuestion] = useState([]);
@@ -64,9 +32,42 @@ export default () => {
   const [templates, setTemplates] = useState([]);
   const [timing, setTiming] = useState(0);
   const [sendDate, setSendDate] = useState();
+  const [selectTemplate, setSelectTemplate] = useState();
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
+
+  const handleSendButtonClick = () => {
+    const userLineIds = searchResultUsers.map(v => v.isSelected == true ? v.line_id : undefined).filter(v => v);
+    const data = {
+      "userLineIds": userLineIds,
+      "templateId": selectTemplate,
+      "timing": timing,
+      "sendDate": sendDate,
+      "searchTerms": searchTerms
+    }
+    const errorMessages = validation(data);
+    if (errorMessages.length > 0) {
+      let formatErrMsg = '';
+      errorMessages.forEach(v => formatErrMsg += v + '<br>');
+      Swal.fire(
+        `エラー`,
+        formatErrMsg,
+        'error'
+      )
+    } else {
+      sendMulticastMessage(data);
+    }
+  }
+
+  const validation = (data) => {
+    let error = [];
+    data.userLineIds.length === 0 && error.push('ユーザーが選択されていません');
+    data.templateId == undefined && error.push('メッセージテンプレートが選択されていません');
+    data.timing == undefined && error.push('配信タイミングが選択されていません');
+    if (data.timing == 1) data.sendDate == undefined && error.push('配信日時が選択されていません');
+    return error;
+  }
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -481,10 +482,10 @@ export default () => {
           {/* <Button onClick={() => {console.log(questionnaires)}} /> */}
           {/* <Button onClick={() => {console.log(templates)}} /> */}
           {/* <Button onClick={() => {console.log(users)}} /> */}
-          <Button onClick={() => {console.log(searchResultUsers)}} />
-          {/* <Button onClick={() => {console.log(searchTerms)}} /> */}
-          {/* <Button onClick={() => {console.log(segmentTemplates)}} /> */}
-          {/* <Button onClick={() => {console.log(segmentTemplateOption)}} /> */}
+          {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
+          <Button onClick={() => {console.log(sendDate)}} />
+          {/* <Button onClick={() => {console.log(segmentTemplates)}} />
+          <Button onClick={() => {console.log(segmentTemplateOption)}} /> */}
         </div>
       </div>
       <Row>
@@ -542,13 +543,15 @@ export default () => {
         setTiming={setTiming}
         sendDate={sendDate}
         setSendDate={setSendDate}
+        selectTemplate={selectTemplate}
+        setSelectTemplate={setSelectTemplate}
       />
 
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.Users.path} variant="gray-800" className="mt-2 animate-up-2 w-50 me-3">
+        <Button variant="primary" className="mt-2 w-50 me-3">
           ユーザーID抽出
         </Button>
-        <Button href={Paths.Users.path} variant="gray-800" className="mt-2 animate-up-2 w-50 ms-3">
+        <Button variant="primary" className="mt-2 w-50 ms-3" onClick={handleSendButtonClick}>
           配信する
         </Button>
       </div>

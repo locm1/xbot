@@ -22,8 +22,8 @@ class SendMulticastMessage extends Controller
     public function __invoke(Request $request)
     {
         $service = new SendMulticastMessageService;
-        if ($request->timing == 1) return $service->reserve($request);
-        $response = $service->send($request->templateId, $request->userIds);
-        return $response->getJSONDecodedBody();
+        if ($request->timing == 1) return $service->reserve($request->templateId, $request->userLineIds, $request->sendDate);
+        $response = $service->send($request->templateId, $request->userLineIds);
+        return $response->isSucceeded();
     }
 }

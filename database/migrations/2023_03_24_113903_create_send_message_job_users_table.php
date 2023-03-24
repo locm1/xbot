@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Message;
+use App\Models\SendMessageJob;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +14,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('send_message_jobs', function (Blueprint $table) {
+        Schema::create('send_message_job_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Message::class);
-            $table->dateTime('reservation_datetime');
+            $table->string('line_id');
+            $table->foreignIdFor(SendMessageJob::class)->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('send_message_jobs');
+        Schema::dropIfExists('send_message_job_users');
     }
 };

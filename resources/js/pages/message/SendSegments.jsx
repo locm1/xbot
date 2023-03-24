@@ -483,7 +483,7 @@ export default () => {
           {/* <Button onClick={() => {console.log(templates)}} /> */}
           {/* <Button onClick={() => {console.log(users)}} /> */}
           {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
-          <Button onClick={() => {console.log(sendDate)}} />
+          {/* <Button onClick={() => {console.log(sendDate)}} /> */}
           {/* <Button onClick={() => {console.log(segmentTemplates)}} />
           <Button onClick={() => {console.log(segmentTemplateOption)}} /> */}
         </div>

@@ -11,7 +11,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCards } from "@/pages/liff/api/CardApiMethods";
 import { updateCustomer, getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
-import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
+import { getEcommerceConfigurationAndPayment } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
@@ -73,7 +73,7 @@ export default () => {
         }
       )
     })
-    getEcommerceConfiguration(setEcommerceConfiguration, setPayments)
+    getEcommerceConfigurationAndPayment(setEcommerceConfiguration, setPayments)
     // showPaymentMethod(101, setPaymentMethod).then(
     //   response => {
     //     getCards(101, response.payjp_customer_id, setCreditCards)

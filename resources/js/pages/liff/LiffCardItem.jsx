@@ -3,9 +3,10 @@ import { Row, Col, Image, Button, Card, ListGroup } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { Paths } from "@/paths";
 import noImage from "@img/img/noimage.jpg"
+import moment from "moment-timezone";
 
 export const CartItem = (props) => {
-  const { id, product_id, quantity, product, history } = props;
+  const { id, product_id, quantity, product, history, deadline } = props;
   const link = Paths.LiffProductDetail.path.replace(':id', product_id);
 
   const getImages = (image) => {
@@ -31,7 +32,7 @@ export const CartItem = (props) => {
             <div className="">数量：{quantity}個</div>
             {
               history == 'reserve' &&
-              <div className="">期間：2023年02月17日まで</div>
+              <div className="">期間：{moment(deadline).format("YYYY年MM月DD日")}まで</div>
             }
           </Col>
         </Row>
@@ -76,7 +77,7 @@ export const OrderDetailItem = (props) => {
 }
 
 export const PaymentDetailItem = (props) => {
-  const { paymentMethod, customer, ecommerceConfiguration } = props;
+  const { paymentMethod, customer, ecommerceConfiguration, page, card } = props;
   const location = useLocation().pathname;
 
   const getColButton = (location) => {
@@ -95,7 +96,8 @@ export const PaymentDetailItem = (props) => {
 
   const getPaymentMethod = (payment_method) => {
     if (payment_method == 1) {
-      return `カード番号：${customer.default_card.card_number}`
+      const newCard = (page == 'purchase-history') ? card.card_number : customer.default_card.card_number
+      return `カード番号：${newCard}`
     } else if (payment_method == 2) {
       return `手数料：${ecommerceConfiguration.cash_on_delivery_fee}円（税込）`
     } else {

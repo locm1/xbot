@@ -28,6 +28,7 @@ class UpdateEcommerceConfigurationRequest extends FormRequest
             'postage' => 'required|numeric',
             'target_amount' => 'required|numeric',
             'tel' => 'required|numeric|digits_between:8,11',
+            'email' => 'required|email:filter,dns'
         ];
     }
 
@@ -39,6 +40,7 @@ class UpdateEcommerceConfigurationRequest extends FormRequest
             'target_amount' => '対象金額',
             'cash_on_delivery_fee' => '代引き手数料',
             'tel' => '電話番号',
+            'email' => 'メールアドレス'
         ];
     }
 

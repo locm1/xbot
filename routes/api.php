@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\api\liff\cart\CartController;
 use App\Http\Controllers\api\liff\ec_configuration\EcommerceConfigurationController as LiffEcommerceConfigurationController;
+use App\Http\Controllers\api\liff\order\OrderController as LiffOrderController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\UpdateOrderDestinationController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\api\liff\privacy_policy\PrivacyPolicyController as Liff
 use App\Http\Controllers\api\liff\product\ProductCategoryController as LiffProductCategoryController;
 use App\Http\Controllers\api\liff\product\ProductController as LiffProductController;
 use App\Http\Controllers\api\liff\product\ProductImageController as LiffProductImageController;
+use App\Http\Controllers\api\liff\product_reservation\ProductReservationController;
 use App\Http\Controllers\api\liff\questionnaire\QuestionnaireAnswerController as LiffQuestionnaireAnswerController;
 use App\Http\Controllers\api\liff\questionnaire\QuestionnaireController as LiffQuestionnaireController;
 use App\Http\Controllers\api\liff\specific_trades\SpecificTradeController as LiffSpecificTradeController;
@@ -206,6 +208,8 @@ Route::group(['prefix' => 'v1'], function() {
     Route::post('users/{user}/customers', [CustomerController::class, 'store']);
     Route::put('users/{user}/customers', [CustomerController::class, 'update']);
     Route::apiResource('users/{user}/cards', CardController::class);
+    Route::apiResource('users/{user}/orders', LiffOrderController::class);
+    Route::apiResource('users/{user}/product/reservations', ProductReservationController::class);
     Route::get('address', SearchZipcodeController::class);
     Route::get('prefectures', PrefectureController::class);
     Route::get('questionnaires', LiffQuestionnaireController::class);

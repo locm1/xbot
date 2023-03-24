@@ -3,17 +3,23 @@ import { Row, Col, Form, ListGroup, Card, InputGroup, Image, Button } from 'reac
 import { SearchIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
-import AccordionComponent from "@/components/AccordionComponent";
-
-import Carts from "@/data/carts";
+import Cookies from 'js-cookie';
+import AccordionComponent from "@/pages/liff/history/LiffReserveHistoryAccordion";
 import { CartItem } from "@/pages/liff/LiffCardItem";
 import QrCode from "@img/img/add_friend_qr.png"
+
+import { getProductReservations, searchProductReservations } from "@/pages/liff/api/ProductReservationApiMethods";
+import { getUser } from "@/pages/liff/api/UserApiMethods";
 
 export default () => {
   const date = new Date();
   const endYear = date.getFullYear();
   const startYear = endYear - 5;
-  const [reserves, setReserves] = useState(Carts);
+  const [productReservations, setProductReservations] = useState([]);
+  const [time, setTime] = useState('');
+  const [user, setUser] = useState({
+    is_registered: 0
+  });
 
   const getPurchaseTimes = () => {
     const purchaseTimes = [];
@@ -23,6 +29,26 @@ export default () => {
     }
     return purchaseTimes.reverse();
   }
+
+  const handleChange = (e) => {
+    setTime(e.target.value)
+
+    const searchParams = {
+      params: {time: e.target.value}
+    };
+    console.log(searchParams);
+    searchProductReservations(101, searchParams, setProductReservations);
+  };
+
+  useEffect(() => {
+    //setIsLoading(true);
+    const idToken = Cookies.get('TOKEN');
+    //getProductReservations(101, setProductReservations)
+
+    getUser(idToken, setUser).then(response => {
+      getProductReservations(response.id, setProductReservations)
+    })
+  }, []);
 
   const ReserveCard = (props) => {
     const { id, reserve } = props;
@@ -34,13 +60,9 @@ export default () => {
             <CartItem {...reserve} history="reserve" />
           </ListGroup>
           <AccordionComponent
-            data={[
-              {
-                id: 1,
-                eventKey: "panel-1",
-                title: "QRコードを表示",
-              },
-            ]}
+            id={1}
+            eventKey="panel-1"
+            title="QRコードを表示"
           >
             <Image src={QrCode} className="m-0" />
           </AccordionComponent>
@@ -54,32 +76,24 @@ export default () => {
     <Card border="0" className="shadow p-0">
       <Card.Body className="pb-3 rounded-bottompt-3">
         <Row>
-          <Col xs={12}>
-            <InputGroup className="me-3 me-lg-3">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="すべての取り置き履歴を検索"
-                value=""
-              />
-            </InputGroup>
-          </Col>
-          <Col xs={12} className="mt-2">
-            <Form.Select defaultValue="1" className="mb-0 w-100">
-              <option value={1}>過去1ヶ月</option>
-              <option value={2}>過去半年</option>
-              {getPurchaseTimes()}
-            </Form.Select>
+          <Col xs={12} className="my-1">
+            <Form.Group id="order-date">
+              <Form.Label>取り置き日でフィルタリング</Form.Label>
+              <Form.Select defaultValue="1" className="mb-0 w-100" value={time} onChange={(e) => handleChange(e)}>
+                <option value="">取り置き時期を選択してください</option>
+                <option value={1}>過去1ヶ月</option>
+                <option value={2}>過去半年</option>
+                {getPurchaseTimes()}
+              </Form.Select>
+            </Form.Group>
           </Col>
         </Row>
       </Card.Body>
     </Card>
     <div className="d-flex align-items-center content">
-      <p className="mb-3 mt-3">件数：{reserves.length}件</p>
+      <p className="mb-3 mt-3">件数：{productReservations.length}件</p>
     </div>
-    {reserves.map(reserve => <ReserveCard key={`reserve-${reserve.id}`} reserve={reserve} />)}
+    {productReservations.map(productReservation => <ReserveCard key={`product-reserve-${productReservation.id}`} reserve={productReservation} />)}
     </>
   );
 };

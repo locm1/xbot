@@ -42,10 +42,11 @@ export default () => {
     console.log(formValue);
     formValue.is_selected = 0
     if (pathname.includes('/edit')) {
-      updateOrderDestination(101, id, formValue, updateComplete)
+      updateOrderDestination(user.id, id, formValue, updateComplete)
+      //updateOrderDestination(101, id, formValue, updateComplete)
     } else {
-      //storeOrderDestination(user.id, formValue)
-      storeOrderDestination(101, formValue, location)
+      storeOrderDestination(user.id, formValue, location)
+      //storeOrderDestination(101, formValue, location)
     }
   };
 
@@ -60,7 +61,6 @@ export default () => {
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
-    // getUser(idToken, setUser)
     getPrefectures(setPrefectures)
 
     if (pathname.includes('/edit')) {
@@ -101,6 +101,7 @@ export default () => {
                     value={formValue.last_name} 
                     onChange={(e) => handleChange(e, 'last_name')} 
                     placeholder="山田" 
+                    autoComplete="family-name"
                   />
                 </Form.Group>
               </Col>
@@ -114,6 +115,7 @@ export default () => {
                     value={formValue.first_name} 
                     onChange={(e) => handleChange(e, 'first_name')} 
                     placeholder="太郎"
+                    autoComplete="given-name"
                   />
                 </Form.Group>
               </Col>
@@ -127,6 +129,7 @@ export default () => {
                     value={formValue.last_name_kana} 
                     onChange={(e) => handleChange(e, 'last_name_kana')} 
                     placeholder="ヤマダ"
+                    autoComplete="family-name"
                   />
                 </Form.Group>
               </Col>
@@ -140,6 +143,7 @@ export default () => {
                     value={formValue.first_name_kana} 
                     onChange={(e) => handleChange(e, 'first_name_kana')} 
                     placeholder="タロウ" 
+                    autoComplete="given-name"
                   />
                 </Form.Group>
               </Col>
@@ -155,6 +159,7 @@ export default () => {
                     placeholder="0001111"
                     value={formValue.zipcode} 
                     onChange={(e) => searchZipCode(e, 'zipcode')} 
+                    autoComplete="postal-code"
                   />
                 </Form.Group>
               </Col>
@@ -180,6 +185,7 @@ export default () => {
                       placeholder="例）札幌市中央区南一条西"
                       value={formValue.city} 
                       onChange={(e) => handleChange(e, 'city')} 
+                      autoComplete="address-level2"
                     />
                   </Form.Group>
                 </Col>
@@ -193,6 +199,7 @@ export default () => {
                       placeholder="例）5-16"
                       value={formValue.address} 
                       onChange={(e) => handleChange(e, 'address')} 
+                      autoComplete="address-level3"
                     />
                   </Form.Group>
                 </Col>
@@ -206,6 +213,7 @@ export default () => {
                       placeholder="例）プレジデント松井ビル100"
                       value={formValue.building_name} 
                       onChange={(e) => handleChange(e, 'building_name')} 
+                      autoComplete="address-level4"
                     />
                   </Form.Group>
                 </Col>
@@ -219,6 +227,7 @@ export default () => {
                       placeholder="例）3"
                       value={formValue.room_number} 
                       onChange={(e) => handleChange(e, 'room_number')} 
+                      autoComplete="address-level4"
                     />
                   </Form.Group>
                 </Col>
@@ -232,6 +241,7 @@ export default () => {
                       placeholder="08000000000"
                       value={formValue.tel} 
                       onChange={(e) => handleChange(e, 'tel')} 
+                      autoComplete="tel"
                     />
                   </Form.Group>
                 </Col>

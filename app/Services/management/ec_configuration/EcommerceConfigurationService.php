@@ -17,8 +17,8 @@ class EcommerceConfigurationService
     public function store($request) 
     {
         $data = ($request->is_enabled == 1)
-            ? $request->only(['cash_on_delivery_fee', 'is_enabled', 'postage', 'target_amount', 'tel'])
-            : $request->only(['is_enabled', 'postage', 'target_amount', 'tel']);
+            ? $request->only(['cash_on_delivery_fee', 'is_enabled', 'postage', 'target_amount', 'tel', 'email'])
+            : $request->only(['is_enabled', 'postage', 'target_amount', 'tel', 'email']);
         
         return EcommerceConfiguration::create($data);
     }
@@ -27,8 +27,8 @@ class EcommerceConfigurationService
     public function update($request, EcommerceConfiguration $ecommerce_configuration) 
     {
         $data = ($request->is_enabled == 1)
-            ? $request->only(['cash_on_delivery_fee', 'is_enabled', 'postage', 'target_amount', 'tel'])
-            : $request->only(['is_enabled', 'postage', 'target_amount', 'tel']);
+            ? $request->only(['cash_on_delivery_fee', 'is_enabled', 'postage', 'target_amount', 'tel', 'email'])
+            : $request->only(['is_enabled', 'postage', 'target_amount', 'tel', 'email']);
 
         return $ecommerce_configuration->update($data);
     }

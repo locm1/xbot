@@ -14,11 +14,13 @@ class GreetingService
     protected $user_id;
     protected $bot;
     private $url;
+    private $reply_token;
 
-    public function __construct(LINEBot $bot, string $user_id) {
+    public function __construct(LINEBot $bot, string $user_id, string $reply_token) {
         $this->user_id = $user_id;
         $this->bot = $bot;
         $this->url = secure_url('');
+        $this->reply_token = $reply_token;
     }
 
     public function sendGreetingMessage()
@@ -39,7 +41,7 @@ class GreetingService
             $multi_message_builder->add($message_builder);
         }
         
-        # プッシュメッセージを送信
-        return $this->bot->pushMessage($this->user_id, $multi_message_builder)->getJSONDecodedBody();
+        # リプライメッセージを送信
+        return $this->bot->replyMessage($this->reply_token, $multi_message_builder)->getJSONDecodedBody();
     }
 }

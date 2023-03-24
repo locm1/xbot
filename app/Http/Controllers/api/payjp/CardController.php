@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api\payjp;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\api\payjp\customer\CardService;
+use App\Services\api\payjp\card\CardService;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -25,6 +25,17 @@ class CardController extends Controller
     {
         $cards = $this->card_service->index($request);
         return response()->json(['cards' => $cards], 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Request $request, User $user, $card)
+    {
+        $card = $this->card_service->show($request, $card);
+        return response()->json(['card' => $card], 200);
     }
 
     /**

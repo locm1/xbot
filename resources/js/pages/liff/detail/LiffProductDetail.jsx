@@ -8,13 +8,12 @@ import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
-import { LiffMockPlugin } from '@line/liff-mock';
-import { generateEnv } from '@/components/common/GenerateEnv';
 
 import ProductDetailSlider from "@/pages/liff/detail/ProductDetailSlider";
 import { showProduct, getProductImages, getProductCategory } from "@/pages/liff/api/ProductApiMethods";
 import { storeCart, searchCarts, updateCart } from "@/pages/liff/api/CartApiMethods";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
+import { storeProductReservation } from "@/pages/liff/api/ProductReservationApiMethods";
 
 export default () => {
   const location = useLocation().pathname;
@@ -55,6 +54,12 @@ export default () => {
     }
   };
 
+  const saveReservation = () => {
+    console.log(formValue);
+    // storeProductReservation(101, formValue)
+    storeProductReservation(user.id, formValue)
+  };
+
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
     showProduct(id, setProduct)
@@ -64,7 +69,6 @@ export default () => {
       params: {product_id: id}
     };
     getUser(idToken, setUser).then(response => {
-      getCarts(response.id, setCarts, setItemsExistInCart)
       searchCarts(response.id, searchParams, setCarts, setItemsExistInCart)
     })
   }, []);
@@ -92,7 +96,7 @@ export default () => {
           </div>
         </div>
         <div className="d-flex justify-content-between flex-wrap align-items-center py-4">
-          <Button variant="gray-800" className="mt-2 liff-product-detail-button">
+          <Button onClick={saveReservation} variant="gray-800" className="mt-2 liff-product-detail-button">
             <InboxIcon className="icon icon-xs me-2" />
             取り置きする
           </Button>

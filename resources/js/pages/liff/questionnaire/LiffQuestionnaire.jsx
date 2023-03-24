@@ -183,6 +183,7 @@ export default () => {
                       onChange={(e) => handleChange(e, 'last_name')} 
                       placeholder="例）山田" 
                       isInvalid={formValue.last_name !== '' ? false : errors.last_name ? true : false}
+                      autoComplete="family-name"
                     />
                     {
                       errors.last_name && 
@@ -201,6 +202,7 @@ export default () => {
                       onChange={(e) => handleChange(e, 'first_name')} 
                       placeholder="例）太郎"
                       isInvalid={formValue.first_name !== '' ? false : errors.first_name ? true : false}
+                      autoComplete="given-name"
                     />
                     {
                       errors.first_name && 
@@ -219,6 +221,7 @@ export default () => {
                       onChange={(e) => handleChange(e, 'last_name_kana')} 
                       placeholder="例）ヤマダ"
                       isInvalid={formValue.last_name_kana !== '' ? false : errors.last_name_kana ? true : false}
+                      autoComplete="family-name"
                     />
                     {
                       errors.last_name_kana && 
@@ -237,6 +240,7 @@ export default () => {
                       onChange={(e) => handleChange(e, 'first_name_kana')} 
                       placeholder="例）タロウ" 
                       isInvalid={formValue.first_name_kana !== '' ? false : errors.first_name_kana ? true : false}
+                      autoComplete="given-name"
                     />
                     {
                       errors.first_name_kana && 
@@ -283,6 +287,7 @@ export default () => {
                       value={formValue.tel} 
                       onChange={(e) => handleChange(e, 'tel')} 
                       isInvalid={formValue.tel !== '' ? false : errors.tel ? true : false}
+                      autoComplete="tel"
                     />
                     {
                       errors.tel && 
@@ -314,6 +319,7 @@ export default () => {
                       value={formValue.zipcode} 
                       onChange={(e) => searchZipCode(e, 'zipcode')} 
                       isInvalid={formValue.zipcode !== '' ? false : errors.zipcode ? true : false}
+                      autoComplete="postal-code"
                     />
                     {
                       errors.zipcode && 
@@ -344,6 +350,7 @@ export default () => {
                       value={formValue.city} 
                       onChange={(e) => handleChange(e, 'city')} 
                       isInvalid={formValue.city !== '' ? false : errors.city ? true : false}
+                      autoComplete="address-level2"
                     />
                     {
                       errors.city && 
@@ -362,6 +369,7 @@ export default () => {
                       value={formValue.address} 
                       onChange={(e) => handleChange(e, 'address')} 
                       isInvalid={formValue.address !== '' ? false : errors.address ? true : false}
+                      autoComplete="address-level3"
                     />
                     {
                       errors.address && 
@@ -380,6 +388,7 @@ export default () => {
                       value={formValue.building_name} 
                       onChange={(e) => handleChange(e, 'building_name')} 
                       isInvalid={formValue.building_name !== '' ? false : errors.building_name ? true : false}
+                      autoComplete="address-level4"
                     />
                     {
                       errors.building_name && 
@@ -397,6 +406,7 @@ export default () => {
                       placeholder="例）3"
                       value={formValue.room_number} 
                       onChange={(e) => handleChange(e, 'room_number')} 
+                      autoComplete="address-level4"
                     />
                   </Form.Group>
                 </Col>

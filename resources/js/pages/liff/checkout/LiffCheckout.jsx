@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import '@splidejs/splide/css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import { LoadingContext } from "@/components/LoadingContext";
@@ -15,8 +15,10 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { getEcommerceConfigurationAndPostage } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
+import { storeOrder } from "@/pages/liff/api/OrderApiMethods";
 
 export default () => {
+  const history = useHistory();
   const { setIsLoading } = useContext(LoadingContext);
   const [carts, setCarts] = useState([]);
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
@@ -44,35 +46,53 @@ export default () => {
   }
 
   const createOrder = () => {
+    setIsLoading(true);
     const keys = ['id', 'is_selected', 'updated_at', 'user_id', 'created_at', 'deleted_at'];
     const delivery_time = Cookies.get('delivery_time')
     const newDeliveryAddress = deleteProperty(keys)
     
     const order = {
       user_id: 101, delivery_time: delivery_time, purchase_amount: total, status: 1, 
-      payment_method: paymentMethod.payment_method, shipping_fee: postage, coupon_id: 1, tax: 1,
+      payment_method: paymentMethod.payment_method, shipping_fee: postage
     }
+    const products = carts.map(cart => {return {product_id: cart.product_id, quantity:cart.quantity}})
     Object.assign(order, newDeliveryAddress)
+    if (paymentMethod.payment_method == 1) {
+      order.payjp_url = `https://pay.jp/d/customers/${paymentMethod.payjp_customer_id}`
+      order.payjp_card_id = customer.default_card.id
+    }
+    const charge = {
+      payjp_customer_id: paymentMethod.payjp_customer_id, purchase_amount: order.purchase_amount
+    }
+    const formValue = {
+      order: order, order_products: products, charge: charge
+    }
     console.log(order);
+    console.log(products);
+    storeOrder(user.id, formValue, storeComplete, setIsLoading)
+    // storeOrder(101, formValue, storeComplete, setIsLoading)
+  }
+
+  const storeComplete = () => {
+    history.push(Paths.LiffOrderComplete.path);
   }
 
   useEffect(() => {
     setIsLoading(true);
     const idToken = Cookies.get('TOKEN');
-    getCarts(101, setCarts, setItemsExistInCart).then(
-      response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
-    )
+    // getCarts(101, setCarts, setItemsExistInCart).then(
+    //   response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
+    // )
+    // getSelectOrderDestination(101, setDeliveryAddress)
+    // showPaymentMethod(101, setPaymentMethod).then(payment_response => getCustomer(101, payment_response.payjp_customer_id, setCustomer, setIsLoading))
+    
     getUser(idToken, setUser).then(response => {
-      getCarts(101, setCarts, setItemsExistInCart).then(
+      getCarts(response.id, setCarts, setItemsExistInCart).then(
         response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
       )
       getSelectOrderDestination(response.id, setDeliveryAddress)
       showPaymentMethod(response.id, setPaymentMethod).then(payment_response => getCustomer(response.id, payment_response.payjp_customer_id, setCustomer, setIsLoading))
-
     })
-    //getUser(idToken, setUser).then(response => getSelectOrderDestination(response.id, setDeliveryAddress))
-    //getSelectOrderDestination(101, setDeliveryAddress)
-    //showPaymentMethod(101, setPaymentMethod).then(response => getCustomer(101, response.payjp_customer_id, setCustomer, setIsLoading))
   }, []);
 
   return (

@@ -8,6 +8,7 @@ export const getCustomer = async (userId, payjp_customer_id, setCustomer, setIsL
   })
   .catch(error => {
       console.error(error);
+      setIsLoading(false);
   });
 };
 

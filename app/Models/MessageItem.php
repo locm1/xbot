@@ -12,4 +12,9 @@ class MessageItem extends Model
     use SoftDeletes;
 
     protected $guarded = ['id'];
+
+    public function messageItems()
+    {
+        return $this->belongsTo(Message::class);
+    }
 }

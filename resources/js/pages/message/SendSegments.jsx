@@ -479,8 +479,8 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
           {/* <Button onClick={() => {console.log(questionnaires)}} /> */}
-          <Button onClick={() => {console.log(templates)}} />
-          <Button onClick={() => {console.log(users)}} />
+          {/* <Button onClick={() => {console.log(templates)}} /> */}
+          {/* <Button onClick={() => {console.log(users)}} /> */}
           {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
           {/* <Button onClick={() => {console.log(searchTerms)}} /> */}
           {/* <Button onClick={() => {console.log(segmentTemplates)}} /> */}
@@ -501,7 +501,7 @@ export default () => {
         <Col xs={3} xl={3}>
           <div className=" justify-content-between d-flex">
             <Form.Select value={segmentTemplateOption} className="h-50 w-75" onChange={handleChangeSegmentTemplate}>
-              <option value="0">セグメントテンプレート選択</option>
+              <option value="0">テンプレート選択</option>
               {segmentTemplates.map(v => (
                 <option value={v.id} key={`template-${v.id}`}>{v.name}</option>
               ))}
@@ -510,7 +510,7 @@ export default () => {
                                         : <Button variant="danger" className="" onClick={deleteSegmentTemplate}>削除</Button>}
           </div>
           <div className="justify-content-end d-flex mt-2">
-            <Button variant="tertiary" className="mt-2 w-100" onClick={showConfirmModal}>
+            <Button variant="primary" className="mt-2 w-100" onClick={showConfirmModal}>
               セグメント条件を保存する
             </Button>
           </div>

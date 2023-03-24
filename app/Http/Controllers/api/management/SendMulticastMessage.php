@@ -25,6 +25,7 @@ class SendMulticastMessage extends Controller
         $messages = Message::find($request->templateId)->messageItems()->get();
         $create_message = new CreateMessageByTypeService($bot, $messages);
         $multi_message_builder = new MultiMessageBuilder();
-        $bot->multicast($request->user_ids, $create_message($multi_message_builder));
+        $response = $bot->multicast($request->userIds, $create_message($multi_message_builder));
+        return $response->getJSONDecodedBody();
     }
 }

@@ -69,6 +69,7 @@ use App\Http\Controllers\api\management\RichMenuImageController;
 use App\Http\Controllers\api\management\RichMenuSetDefaultController;
 use App\Http\Controllers\api\management\SegmentController;
 use App\Http\Controllers\api\management\SegmentTemplateController;
+use App\Http\Controllers\api\management\SendMulticastMessage;
 use App\Http\Controllers\api\management\TagUserController;
 use App\Http\Controllers\api\management\UserTagController;
 use App\Http\Controllers\api\management\UserInviteHistoryController;
@@ -182,6 +183,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('rich-menu-all-deleate', RichMenuAllDeleateController::class);
         Route::post('rich-menu-set-default/{id}', RichMenuSetDefaultController::class);
         Route::apiResource('ecommerce-configurations', EcommerceConfigurationController::class);
+        Route::post('send-multicast-message', SendMulticastMessage::class);
     });
 });
 

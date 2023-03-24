@@ -8,6 +8,7 @@
 // Color system
 
 // Shades of grey
+$bg-color: #F1F1F1 !default;
 $white   : #ffffff !default;
 $gray-50:  #F9FAFB !default;
 $gray-100: #F2F4F6 !default;
@@ -69,7 +70,8 @@ $colors: ("blue": $blue,
 // scss-docs-end colors-map
 
 // Color scheme
-$primary        : #262B40 !default;
+// $primary        : #262B40 !default;
+$primary        : #DC87A3 !default;
 $secondary      : #61DAFB !default;
 $secondary-alt  : #acebfd !default;
 $tertiary       : #1B998B !default;
@@ -77,7 +79,7 @@ $tertiary       : #1B998B !default;
 $success: $green !default;
 $info   : $blue !default;
 $warning: $orange !default;
-$danger : $red !default;
+$danger : #D05A82 !default;
 $gray   : $gray-900 !default;
 $light  : $gray-400 !default;
 $lighten: $gray-300 !default;
@@ -152,7 +154,7 @@ $theme-color-interval: 8% !default;
 
 // The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
 // See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
-$min-contrast-ratio: 3 !default;
+$min-contrast-ratio: 1 !default;
 
 // Customize the light and dark text colors for use in our color contrast function.
 $color-contrast-dark : $dark !default;
@@ -323,7 +325,7 @@ $negative-spacers: if($enable-negative-margins, negativify-map($spacers), null) 
 //
 // Settings for the `<body>` element.
 
-$body-bg        : $gray-100 !default;
+$body-bg        : $bg-color !default;
 $body-color     : $gray-700 !default;
 $body-text-align: null !default;
 

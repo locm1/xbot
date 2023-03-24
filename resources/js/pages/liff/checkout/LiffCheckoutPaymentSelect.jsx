@@ -1,10 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
+import { LoadingContext } from "@/components/LoadingContext";
+
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCards } from "@/pages/liff/api/CardApiMethods";
 import { updateCustomer, getCustomer } from "@/pages/liff/api/CustomerApiMethods";
@@ -12,6 +14,7 @@ import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pa
 import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState({
     payment_method: 1
@@ -31,6 +34,7 @@ export default () => {
   const [ecommerceConfiguration, setEcommerceConfiguration] = useState();
 
   const onClick = () => {
+    setIsLoading(true);
     if ('id' in paymentMethod) {
       console.log(paymentMethod);
 
@@ -52,22 +56,32 @@ export default () => {
   };
 
   const onSaveComplete = () => {
+    setIsLoading(false);
     history.push(Paths.LiffCheckout.path);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const idToken = Cookies.get('TOKEN');
-    //getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
-
-    showPaymentMethod(101, setPaymentMethod).then(
-      response => {
-        getCustomer(101, response.payjp_customer_id, setCustomer).then(
-          response => setSelectCardId(response.default_card.id)
-        )
-        getCards(101, response.payjp_customer_id, setCreditCards)
-      }
-    )
+    getUser(idToken, setUser).then(response => {
+      showPaymentMethod(response.id, setPaymentMethod).then(
+        response => {
+          getCards(101, response.payjp_customer_id, setCreditCards)
+          getCustomer(101, response.payjp_customer_id, setCustomer, setIsLoading).then(
+            response => setSelectCardId(response.default_card.id)
+          )
+        }
+      )
+    })
     getEcommerceConfiguration(setEcommerceConfiguration, setPayments)
+    // showPaymentMethod(101, setPaymentMethod).then(
+    //   response => {
+    //     getCards(101, response.payjp_customer_id, setCreditCards)
+    //     getCustomer(101, response.payjp_customer_id, setCustomer, setIsLoading).then(
+    //       response => setSelectCardId(response.default_card.id)
+    //     )
+    //   }
+    // )
   }, []);
 
   const CashondeliveryCard = () => {

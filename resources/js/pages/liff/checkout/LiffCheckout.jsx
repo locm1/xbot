@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
+import { LoadingContext } from "@/components/LoadingContext";
 
 import LiffCheckoutPayment from "@/pages/liff/checkout/LiffCheckoutPayment";
 import LiffCheckoutOrders from "@/pages/liff/checkout/LiffCheckoutOrders";
@@ -16,6 +17,7 @@ import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { getEcommerceConfigurationAndPostage } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const [carts, setCarts] = useState([]);
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
   const [deliveryAddress, setDeliveryAddress] = useState({});
@@ -52,18 +54,25 @@ export default () => {
     }
     Object.assign(order, newDeliveryAddress)
     console.log(order);
-    console.log(total * 0.08);
   }
 
   useEffect(() => {
+    setIsLoading(true);
     const idToken = Cookies.get('TOKEN');
     getCarts(101, setCarts, setItemsExistInCart).then(
       response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
     )
-    //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
+    getUser(idToken, setUser).then(response => {
+      getCarts(101, setCarts, setItemsExistInCart).then(
+        response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
+      )
+      getSelectOrderDestination(response.id, setDeliveryAddress)
+      showPaymentMethod(response.id, setPaymentMethod).then(payment_response => getCustomer(response.id, payment_response.payjp_customer_id, setCustomer, setIsLoading))
+
+    })
     //getUser(idToken, setUser).then(response => getSelectOrderDestination(response.id, setDeliveryAddress))
-    getSelectOrderDestination(101, setDeliveryAddress)
-    showPaymentMethod(101, setPaymentMethod).then(response => getCustomer(101, response.payjp_customer_id, setCustomer))
+    //getSelectOrderDestination(101, setDeliveryAddress)
+    //showPaymentMethod(101, setPaymentMethod).then(response => getCustomer(101, response.payjp_customer_id, setCustomer, setIsLoading))
   }, []);
 
   return (

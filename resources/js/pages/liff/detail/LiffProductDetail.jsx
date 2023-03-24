@@ -44,33 +44,29 @@ export default () => {
   };
 
   const saveCart = () => {
-    // const idToken = Cookies.get('TOKEN');
-    // formValue.token = idToken
-    // storeCart(101, formValue);
     console.log(itemsExistInCart);
     if (itemsExistInCart) {
       console.log(formValue);
-      updateCart(101, carts[0].id, formValue, location)
+      updateCart(user.id, carts[0].id, formValue, location)
+      //updateCart(101, carts[0].id, formValue, location)
     } else {
-      storeCart(101, formValue);
+      //storeCart(101, formValue);
+      storeCart(user.id, formValue);
     }
   };
 
   useEffect(() => {
+    const idToken = Cookies.get('TOKEN');
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);
     const searchParams = {
       params: {product_id: id}
     };
-    //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
-    searchCarts(101, searchParams, setCarts, setItemsExistInCart)
-
-    // const { liffId, mock } = generateEnv();
-
-    // if (process.env.NODE_ENV !== 'production') {
-    //   liff.use(new LiffMockPlugin());
-    // }
+    getUser(idToken, setUser).then(response => {
+      getCarts(response.id, setCarts, setItemsExistInCart)
+      searchCarts(response.id, searchParams, setCarts, setItemsExistInCart)
+    })
   }, []);
 
   return (

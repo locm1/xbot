@@ -25,7 +25,7 @@ export default () => {
   const [updateProductImageIds, setUpdateProductImageIds] = useState([]);
 
   const [product, setProduct] = useState({
-    product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
+    product_category_id: 1, name: '', stock_quantity: '',
     price: '', overview: '', is_undisclosed: 0, is_unlimited: 0, is_picked_up: 0,
   });
   const [categories, setCategories] = useState([]);
@@ -275,15 +275,6 @@ export default () => {
                           <Form.Group id="name">
                             <Form.Label>商品名</Form.Label>
                             <Form.Control required type="text" name="name" value={product.name} onChange={(e) => handleChange(e, 'name')} placeholder="シャンプー" />
-                          </Form.Group>
-                        </Col>
-                        <Col md={6} className="mb-3">
-                          <Form.Group id="name">
-                            <Form.Label>税率</Form.Label>
-                            <InputGroup>
-                              <Form.Control required type="number" name="tax_rate" value={product.tax_rate} onChange={(e) => handleChange(e, 'tax_rate')} placeholder="10" />
-                              <InputGroup.Text>％</InputGroup.Text>
-                            </InputGroup>
                           </Form.Group>
                         </Col>
                         <Col md={6} className="mb-3">

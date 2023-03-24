@@ -4,8 +4,16 @@ export const getEcommerceConfiguration = async (setFormValue, setIsDisbled) => {
   axios.get(`/api/v1/management/ecommerce-configurations`)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;
-    setFormValue(ecommerce_configuration);
-    setIsDisbled(ecommerce_configuration.is_enabled == 1 ? false : true)
+
+    if (ecommerce_configuration) {
+      setFormValue(ecommerce_configuration);
+      setIsDisbled(ecommerce_configuration.is_enabled == 1 ? false : true)
+    } else {
+      setFormValue({
+        target_amount: '', postage: '', cash_on_delivery_fee: '', tel: '', is_enabled: false
+      });
+      setIsDisbled(true)
+    }
   })
   .catch(error => {
       console.error(error);

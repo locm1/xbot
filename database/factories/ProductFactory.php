@@ -22,7 +22,6 @@ class ProductFactory extends Factory
             'name' => fake()->randomElement($products),
             'product_category_id' => fake()->numberBetween(1, 10),
             'stock_quantity' => fake()->randomNumber(3),
-            'tax_rate' => 10,
             'price' => fake()->randomNumber(5),
             'overview' => fake()->sentences(2, true),
             'is_undisclosed' => 0,

@@ -66,6 +66,7 @@
         "@fullcalendar/core": "^6.0.1",
         "@yaireo/tagify": "^4.17.7",
         "react-color": "^2.19.3",
+        "react-csv": "^2.2.2",
         "react-flatpickr": "^3.10.13",
         "react-js-pagination": "^3.0.3"
     }

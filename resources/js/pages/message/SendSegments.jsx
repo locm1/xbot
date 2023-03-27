@@ -20,6 +20,7 @@ import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMe
 import {SendSegmentUserCard} from "./segment/SendSegmentUserCard"
 import { calculateAge } from "../../components/common/CalculateAge";
 import { getMessages, deleteMessage, searchMessages, sendMulticastMessage } from "@/pages/message/api/MessageApiMethods";
+import { CSVLink } from "react-csv";
 
 export default () => {
   const [definedQuestion, setDefinedQuestion] = useState([]);
@@ -36,6 +37,16 @@ export default () => {
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = ("0" + (now.getMonth() + 1)).slice(-2);
+  const day = ("0" + now.getDate()).slice(-2);
+  const hour = ("0" + now.getHours()).slice(-2);
+  const minute = ("0" + now.getMinutes()).slice(-2);
+  const dateTime = year + month + day + hour + minute;
+
+  const csvDLUsers = searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v);
 
   const handleSendButtonClick = () => {
     const userLineIds = searchResultUsers.map(v => v.isSelected == true ? v.line_id : undefined).filter(v => v);
@@ -548,9 +559,14 @@ export default () => {
       />
 
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button variant="primary" className="mt-2 w-50 me-3">
+        <CSVLink filename={`data-${dateTime}.csv`} 
+        data={searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v)}
+        className={`btn btn-primary mt-2 w-50 me-3 ${csvDLUsers.length > 0 ? '' : 'disabled'}`}>
           ユーザーID抽出
-        </Button>
+        </CSVLink>
+        {/* <Button variant="primary" className="mt-2 w-50 me-3">
+          ユーザーID抽出
+        </Button> */}
         <Button variant="primary" className="mt-2 w-50 ms-3" onClick={handleSendButtonClick}>
           配信する
         </Button>

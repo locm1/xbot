@@ -63,7 +63,8 @@ class DatabaseSeeder extends Seeder
             DefaultSegmentSeeder::class,
             DefaultSegmentItemSeeder::class,
             TermsOfServicesTableSeeder::class,
-            PagesTableSeeder::class
+            PagesTableSeeder::class,
+            UserSeeder::class
         ]);
         Admin::factory(10)->create();
         Occupation::factory(10)->create();

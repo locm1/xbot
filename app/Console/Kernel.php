@@ -22,9 +22,10 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             if (SendMessageJob::exists()) {
                 $service = new SendMulticastMessageService;
-                $jobs = SendMessageJob::where('reservation_datetime', '<=', now())->with('sendMessageJobUser')->get();
+                $jobs = SendMessageJob::where('reservation_at', '<=', now())->with('sendMessage.sendMessageUsers.user')->get();
                 foreach ($jobs as $k => $job) {
-                    Log::info($service->send($job->message_id, $job->sendMessageJobUser->pluck('line_id')->all())->getJSONDecodedBody());
+                    Log::info($service->send($job->sendMessage->message_id, $job->sendMessage->sendMessageUsers->pluck('user.line_id')->all())->getJSONDecodedBody());
+                    $job->update(['status', 1]);
                     SendMessageJob::find($job->id)->delete();
                 }
             } 

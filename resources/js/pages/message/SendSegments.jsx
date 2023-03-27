@@ -49,8 +49,10 @@ export default () => {
   const csvDLUsers = searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v);
 
   const handleSendButtonClick = () => {
+    const userIds = searchResultUsers.map(v => v.isSelected == true ? v.id : undefined).filter(v => v);
     const userLineIds = searchResultUsers.map(v => v.isSelected == true ? v.line_id : undefined).filter(v => v);
     const data = {
+      "userIds": userIds,
       "userLineIds": userLineIds,
       "templateId": selectTemplate,
       "timing": timing,
@@ -490,7 +492,7 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          {/* <Button onClick={() => {console.log(questionnaires)}} /> */}
+          <Button onClick={() => {console.log(users)}} />
           {/* <Button onClick={() => {console.log(templates)}} /> */}
           {/* <Button onClick={() => {console.log(users)}} /> */}
           {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
@@ -568,7 +570,7 @@ export default () => {
           ユーザーID抽出
         </Button> */}
         <Button variant="primary" className="mt-2 w-50 ms-3" onClick={handleSendButtonClick}>
-          配信する
+          {timing == 0 ? '配信する' : '予約する'}
         </Button>
       </div>
     </>

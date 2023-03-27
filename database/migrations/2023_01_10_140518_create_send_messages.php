@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Message;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,12 +14,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('send_users', function (Blueprint $table) {
+        Schema::create('send_messages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('send_history_id');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('send_history_id')->references('id')->on('send_histories');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignIdFor(Message::class);
+            $table->tinyInteger('status')->nullable(false);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('send_users');
+        Schema::dropIfExists('send_histories');
     }
 };

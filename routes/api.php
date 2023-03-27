@@ -186,6 +186,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('rich-menu-set-default/{id}', RichMenuSetDefaultController::class);
         Route::apiResource('ecommerce-configurations', EcommerceConfigurationController::class);
         Route::post('send-multicast-message', SendMulticastMessage::class);
+        // Route::apiResource('send-message-jobs');
     });
 });
 

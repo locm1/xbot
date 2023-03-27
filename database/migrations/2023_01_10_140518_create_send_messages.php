@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Message::class);
             $table->tinyInteger('status')->nullable(false);
+            $table->json('search_json');
             $table->softDeletes();
             $table->timestamps();
         });

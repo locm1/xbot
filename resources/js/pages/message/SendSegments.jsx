@@ -57,7 +57,7 @@ export default () => {
       "templateId": selectTemplate,
       "timing": timing,
       "sendDate": sendDate,
-      "searchTerms": searchTerms
+      "searchTerms": searchTerms,
     }
     const errorMessages = validation(data);
     if (errorMessages.length > 0) {

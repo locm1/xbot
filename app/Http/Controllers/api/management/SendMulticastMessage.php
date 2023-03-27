@@ -22,7 +22,7 @@ class SendMulticastMessage extends Controller
     public function __invoke(Request $request) :bool
     {
         $service = new SendMulticastMessageService;
-        $send_message_id = $service->insert($request->templateId, $request->userIds, $request->timing);
+        $send_message_id = $service->insert($request->templateId, $request->userIds, $request->timing, $request->searchTerms);
         if ($request->timing == 1) return $service->reserve($request->sendDate, $send_message_id);
         $response = $service->send($request->templateId, $request->userLineIds);
         return $response->isSucceeded();

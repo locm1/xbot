@@ -14,4 +14,9 @@ class SendMessage extends Model
     {
         return $this->hasMany(SendMessageUser::class);
     }
+
+    public function message()
+    {
+        return $this->belongsTo(Message::class);
+    }
 }

@@ -3,36 +3,16 @@ import { CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/r
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { SendHistoriesTable } from "@/pages/message/SendHistoriesTable";
-import sendHistories from "@/data/sendHistories";
+import { getSendMessages } from "./api/SendMessageApiMethods";
+import { useLayoutEffect } from "react";
 
 export default () => {
-  const [histories, setHistories] = useState(sendHistories.map(t => ({ ...t, show: true })));
+  const [sendMessages, setSendMessages] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [statusValue, setStatusValue] = useState("all");
-
-  const changeSearchValue = (e) => {
-    const newSearchValue = e.target.value;
-    const newTransactions = transactions.map(t => {
-      const subscription = t.subscription.toLowerCase();
-      const shouldShow = subscription.includes(newSearchValue)
-        || `${t.price}`.includes(newSearchValue)
-        || t.status.includes(newSearchValue)
-        || `${t.invoiceNumber}`.includes(newSearchValue);
-
-      return ({ ...t, show: shouldShow });
-    });
-
-    setSearchValue(newSearchValue);
-    setTransactions(newTransactions);
-  };
-
-  const changeStatusValue = (e) => {
-    const newStatusValue = e.target.value;
-    const newTransactions = transactions.map(u => ({ ...u, show: u.status === newStatusValue || newStatusValue === "all" }));
-
-    setStatusValue(newStatusValue);
-    setTransactions(newTransactions);
-  };
+  useLayoutEffect(() => {
+    getSendMessages(setSendMessages);
+  }, [])
 
   return (
     <>
@@ -43,7 +23,7 @@ export default () => {
       </div>
 
       <SendHistoriesTable
-        sendHistories={histories.filter(t => t.show)}
+        sendHistories={sendMessages}
       />
     </>
   );

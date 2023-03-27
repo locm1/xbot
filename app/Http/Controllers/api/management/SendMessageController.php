@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
+use App\Models\SendMessage;
 use App\Services\management\send_message\SendMessageService;
 use Illuminate\Http\Request;
 
@@ -51,9 +52,9 @@ class SendMessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(SendMessage $id)
     {
-        //
+        return $this->service->show();
     }
 
     /**

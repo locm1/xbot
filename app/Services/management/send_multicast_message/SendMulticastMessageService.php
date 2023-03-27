@@ -22,11 +22,12 @@ class SendMulticastMessageService
         $this->bot = new LINEBot($httpClient, ['channelSecret' => config('services.line.message.channel_secret')]);
     }
     
-    public function insert($template_id, $user_ids, int $status)
+    public function insert($template_id, $user_ids, int $status, $search_json)
     {
         $send_message_data = [
             'message_id' => $template_id,
             'status' => $status,
+            'search_json' => json_encode($search_json),
         ];
         $SendMessage = SendMessage::create($send_message_data);
         $save_user_ids = [];

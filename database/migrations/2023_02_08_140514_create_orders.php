@@ -32,9 +32,8 @@ return new class extends Migration
             $table->tinyInteger('status')->nullable(false);
             $table->tinyInteger('payment_method')->nullable(false);
             $table->integer('shipping_fee')->nullable(false);
-            $table->unsignedBigInteger('coupon_id');
-            $table->foreign('coupon_id')->references('id')->on('coupons')->nullable();
-            $table->integer('tax')->nullable(false);
+            $table->unsignedBigInteger('coupon_id')->nullable(true);
+            $table->foreign('coupon_id')->references('id')->on('coupons');
             $table->string('payjp_url')->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -23,7 +23,7 @@ class SearchReserveHistoryAction
             $this->searchByStatus($query, $request->status);
         }
 
-        return $query->with(['product.productImages', 'user'])->paginate(10);
+        return $query->with(['product.productImages', 'user'])->get();
     }
 
     private function searchByStatus($query, $status)

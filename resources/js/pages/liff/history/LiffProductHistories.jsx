@@ -5,11 +5,23 @@ import '@splidejs/splide/css';
 import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Cookies from 'js-cookie';
 
 import LiffPurchaseHistories from "@/pages/liff/history/LiffPurchaseHistories";
 import LiffReserveHistories from "@/pages/liff/history/LiffReserveHistories";
 
+import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
+
 export default () => {
+  const [ecommerceConfiguration, setEcommerceConfiguration] = useState({
+    cash_on_delivery_fee: '', is_enabled: 1, tel: ''
+  });
+
+  useEffect(() => {
+    //setIsLoading(true);
+    //getOrders(101, setOrders)
+    getEcommerceConfiguration(setEcommerceConfiguration)
+  }, []);
 
   return (
     <>
@@ -51,7 +63,7 @@ export default () => {
           <p>キャンセルする場合は、お手数ですが下記ボタンからご連絡ください。</p>
           <p>注文番号をお伝えいただくとスムーズです。</p>
           <div className="d-flex justify-content-between flex-wrap align-items-center mt-2 mb-2">
-            <Button as={Link} to="tel:011-838-8392" variant="gray-800" className="mt-2 w-100">
+            <Button href={`tel:${ecommerceConfiguration.tel}`} variant="gray-800" className="mt-2 w-100">
               電話する
             </Button>
           </div>

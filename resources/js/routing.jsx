@@ -74,6 +74,8 @@ import LiffQuestionnaireComplete from '@/pages/liff/questionnaire/LiffQuestionna
 import LiffProductHistories from '@/pages/liff/history/LiffProductHistories';
 import LiffProductHistoryDetail from '@/pages/liff/history/LiffProductHistoryDetail';
 import LiffInvite from '@/pages/liff/invite/LiffInvite';
+import OrderComplete from '@/pages/liff/order/OrderComplete';
+import LiffProductReservationComplete from '@/pages/liff/product_reservation/ProductReservationComplete';
 
 // components
 import Footer from '@/components/Footer';
@@ -292,6 +294,9 @@ const LiffInitRoute = () => {
     
     case 'invite':
       return <Redirect to={'/invite'} />;
+
+    case 'checkout':
+      return <Redirect to={'/checkout'} />;
   }
 }
 
@@ -365,6 +370,7 @@ const Routing = () => {
       
       <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
+      <LiffRoute exact path={Paths.LiffProductReservationComplete.path} component={LiffProductReservationComplete} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
       <LiffRoute exact path={Paths.LiffPickupProducs.path} component={LiffProductCategories} />
       <LiffRoute exact path={Paths.LiffCarts.path} component={LiffCarts} />
@@ -375,6 +381,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
       <LiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
       <LiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
+      <LiffRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
       <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
       <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />

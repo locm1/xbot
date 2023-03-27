@@ -40,7 +40,6 @@ class OrderFactory extends Factory
             'payment_method' => fake()->numberBetween(1, 5),
             'shipping_fee' => fake()->numberBetween(0, 1000),
             'coupon_id' => fake()->randomElement($coupon_ids),
-            'tax' => fake()->numberBetween(1, 50),
         ];
     }
 }

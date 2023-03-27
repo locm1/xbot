@@ -53,6 +53,7 @@ export const Paths = {
 
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },
+    LiffProductReservationComplete: { path: "/product/reservation/complete" },
     LiffProducts: { path: "/product/list" },
     LiffPickupProducs: { path: "/product/pickup/list" },
     LiffProductCategories: { path: "/product/category/:id" },
@@ -64,6 +65,7 @@ export const Paths = {
     LiffCheckoutDelivery: { path: "/checkout/delivery" },
     LiffCheckoutPayment: { path: "/checkout/payment" },
     LiffCheckoutPaymentCreditCard: { path: "/checkout/payment/creditcard" },
+    LiffOrderComplete: { path: "/order/complete" },
     LiffPrivacyPolicy: { path: "/privacy-policy" },
     LiffTermsOfService: { path: "/terms-of-service" },
     LiffSpecificTrades: { path: "/specific-trades" },

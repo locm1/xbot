@@ -1,7 +1,7 @@
 export const getReserveHistories = async (setReserveHistories) => {
   axios.get('/api/v1/management/reserve-histories')
   .then((response) => {
-    setReserveHistories(response.data.reserve_histories.data);
+    setReserveHistories(response.data.reserve_histories);
   })
   .catch(error => {
       console.error(error);
@@ -36,7 +36,7 @@ export const deleteReserveHistory = async (id, completeDelete) => {
 export const searchReserveHistories = async (params, setReserveHistories) => {
   axios.get('/api/v1/management/reserve-histories', params)
   .then((response) => {
-    setReserveHistories(response.data.reserve_histories.data);
+    setReserveHistories(response.data.reserve_histories);
   })
   .catch(error => {
       console.error(error);

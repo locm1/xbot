@@ -70,6 +70,11 @@ class User extends Authenticatable
         return $this->belongsToMany(UserTag::class, 'tag_user');
     }
 
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class);

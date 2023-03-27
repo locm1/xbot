@@ -16,7 +16,18 @@ export const getEcommerceConfigurationAndPostage = async (carts, setPostage, set
   });
 };
 
-export const getEcommerceConfiguration = async (setEcommerceConfiguration, setPayments) => {
+export const getEcommerceConfiguration = async (setEcommerceConfiguration) => {
+  axios.get(`/api/v1/ecommerce-configurations`)
+  .then((response) => {
+    const ecommerce_configuration = response.data.ecommerce_configuration;
+    setEcommerceConfiguration(ecommerce_configuration)
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getEcommerceConfigurationAndPayment = async (setEcommerceConfiguration, setPayments) => {
   axios.get(`/api/v1/ecommerce-configurations`)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;

@@ -7,7 +7,8 @@ import { storeEcommerceConfiguration, getEcommerceConfiguration, updateEcommerce
 export default () => {
   const [isDisabled, setIsDisbled] = useState(true);
   const [formValue, setFormValue] = useState({
-    target_amount: '', postage: '', cash_on_delivery_fee: '', tel: '', is_enabled: false
+    target_amount: '', postage: '', cash_on_delivery_fee: '', 
+    tel: '', email: '', is_enabled: false
   })
 
   const handleChange = (e, input) => {
@@ -111,6 +112,19 @@ export default () => {
                       value={formValue.tel}
                       onChange={(e) => handleChange(e, 'tel')}
                       placeholder="例）08000000000"
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={12} className="mb-3">
+                  <Form.Group id="tel">
+                    <Form.Label>メールアドレス</Form.Label>
+                    <Form.Control
+                      required
+                      type="email"
+                      name="email"
+                      value={formValue.email}
+                      onChange={(e) => handleChange(e, 'email')}
+                      placeholder="例）sample@sample.com"
                     />
                   </Form.Group>
                 </Col>

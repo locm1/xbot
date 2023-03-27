@@ -20,7 +20,7 @@ class ReserveHistoryService
             return $this->search_reserve_history_action->search($request);
         }
 
-        return ReserveHistory::with(['product.productImages', 'user'])->paginate(10);
+        return ReserveHistory::with(['product.productImages', 'user'])->all();
     }
 
 

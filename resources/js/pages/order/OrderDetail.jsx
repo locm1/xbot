@@ -48,11 +48,9 @@ export default () => {
   const getPaymentMethod = (payment_method) => {
     switch (payment_method) {
       case 1:
-        return '代引き引き換え'
-      case 2:
-        return 'Apple Pay'
-      case 3:
         return 'クレジットカード'
+      case 2:
+        return '代金引き換え'
       default:
         return 'クレジットカード'
     }
@@ -94,7 +92,7 @@ export default () => {
     {id: 2, title: '注文日時', value: order.created_at},
     {id: 3, title: '購入金額', value: `${order.purchase_amount.toLocaleString()}円`},
     {id: 4, title: '送料', value: `${order.shipping_fee.toLocaleString()}円`},
-    {id: 5, title: '利用クーポン', value: order.coupon.name},
+    {id: 5, title: '利用クーポン', value: (order.coupon) ? order.coupon.name : null},
   ];
 
   const deliveries = [

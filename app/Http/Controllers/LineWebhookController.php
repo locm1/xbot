@@ -32,7 +32,7 @@ class LineWebhookController extends Controller
                 $follow_service = new FollowService($bot, $event['source']['userId']);
                 $follow_service->createUser();
 
-                $greeting_service = new GreetingService($bot, $event['source']['userId']);
+                $greeting_service = new GreetingService($bot, $event['source']['userId'], $event['replyToken']);
                 return $greeting_service->sendGreetingMessage();
                 
             } elseif ($event['type'] === 'unfollow') {

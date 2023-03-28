@@ -21,6 +21,17 @@ export const EventModal = (props) => {
     locale: 'ja',
     onChange: (selectedDates, dateStr, instance) => setEnd(dateStr)
   }
+  const rangeOptions = {
+    locale: 'ja',
+    mode: "range",
+    onChange: (selectedDates, dateStr, instance) => {
+      setRangeStart(formatDate(selectedDates[0]));
+      setRangeEnd(formatDate(selectedDates[1]));
+    }
+  }
+  const formatDate = (date) => {
+    return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+  }
   const [title, setTitle] = useState(props.title);
   const [start, setStart] = useState(props.start);
   const [end, setEnd] = useState(props.end);
@@ -28,12 +39,17 @@ export const EventModal = (props) => {
   const [is_unlimited, setUnlimited] = useState(props.is_unlimited);
   const [location, setLocation] = useState(props.location);
   const [backgroundColor, setBackgroundColor] = useState(props.backgroundColor);
-
+  const [rangeStart, setRangeStart] = useState(moment(start).format("YYYY-MM-DD"));
+  const [rangeEnd, setRangeEnd] = useState();
   const [errors, setErrors] = useState(null);
 
-  const { show = false, edit = false, id } = props;
-  const startDate = start ? moment(start).format("YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
-  const endDate = end ? moment(end).format("YYYY-MM-DD HH:mm") : moment(start).format("YYYY-MM-DD HH:mm");
+  const { show = false, edit = false, id, setChange } = props;
+  // const startDate = start ? moment(start).format("YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
+  // const endDate = end ? moment(end).format("YYYY-MM-DD HH:mm") : moment(start).format("YYYY-MM-DD HH:mm");
+  const startTime = start ? moment(start).format("HH:mm") : moment().format("HH:mm");
+  const endTime = end ? moment(end).format("HH:mm") : moment(start).format("HH:mm");
+  const start_date = moment(start).format("YYYY-MM-DD");
+  const end_date = moment(end).format("YYYY-MM-DD");
 
   const onTitleChange = (e) => setTitle(e.target.value);
   const onStartChange = (e) => setStart(e.target.value);
@@ -41,27 +57,28 @@ export const EventModal = (props) => {
   const onLocationChange = (e) => setLocation(e.target.value);
 
   const onConfirm = () => {
-    const sameDay = startDate === endDate;
-    const start_date = moment(start).format("YYYY-MM-DD HH:mm:ss");
-    const end_date = moment(end).format("YYYY-MM-DD HH:mm:ss");
-    const finalStart = sameDay ? moment(startDate).toDate() : moment(startDate).startOf('day').toDate();
-    const finalEnd = sameDay ? null : moment(endDate).endOf('day').toDate();
-    const payload = { id, title, sameDay, start: start_date, end: end_date, is_unlimited: is_unlimited, location: location, remaining: remaining, color: backgroundColor };
-    const updateData = {title: title, start_date: start_date, end_date: end_date, remaining: remaining, is_unlimited: is_unlimited, location: location, color: backgroundColor }
-
+    const payload = { id, title, start: start_date, end: end_date, is_unlimited: is_unlimited, location: location, remaining: remaining, color: backgroundColor };
+    const updateData = {
+      title: title, start_date: rangeStart, end_date: rangeEnd, remaining: remaining, 
+      is_unlimited: is_unlimited, location: location, color: backgroundColor,
+      start_time: startTime, end_time: endTime,
+    }
+    console.log(updateData);
     if (edit) {
       UpdateEvent(id, updateData);
-      return props.onUpdate && props.onUpdate(payload);
+      // return props.onUpdate && props.onUpdate(payload);
     } else {
       CreateEvent(updateData, setErrors).then(response => {
         if (response.result === 'failed') {
           setErrors(response.errors);
         } else {  
           payload.id = response.res.data.event.id;
-          return props.onAdd && props.onAdd(payload);
+          // return props.onAdd && props.onAdd(payload);
         }
       });
     }
+    setChange(prev => !prev);
+    onHide();
   }
   const onDelete = () => {
     edit && props.onDelete && props.onDelete(id);
@@ -88,6 +105,7 @@ export const EventModal = (props) => {
 
   return (
     <Modal as={Modal.Dialog} centered show={show} onHide={onHide} enforceFocus={false}>
+      <Button onClick={() => console.log(rangeStart)} />
       <Form className="modal-content">
         <Modal.Body>
           <Errors />
@@ -106,7 +124,7 @@ export const EventModal = (props) => {
                 <Form.Label>開始</Form.Label>
                 <Flatpickr
                   options={ startOptions }
-                  value={start}
+                  value={startTime}
                   render={(props, ref) => {
                     return (
                       <InputGroup>
@@ -116,6 +134,7 @@ export const EventModal = (props) => {
                       <Form.Control
                         data-enable-time
                         data-time_24hr
+                        data-no-calendar
                         required
                         type="text"
                         placeholder="YYYY-MM-DD"
@@ -132,7 +151,7 @@ export const EventModal = (props) => {
                 <Form.Label>終了</Form.Label>
                 <Flatpickr
                   options={ endOptions }
-                  value={end}
+                  value={endTime}
                   render={(props, ref) => {
                     return (
                       <InputGroup>
@@ -142,6 +161,7 @@ export const EventModal = (props) => {
                       <Form.Control
                         data-enable-time
                         data-time_24hr
+                        data-no-calendar
                         required
                         type="text"
                         placeholder="YYYY-MM-DD"
@@ -177,7 +197,32 @@ export const EventModal = (props) => {
                   </div>
               </Form.Group>
             </Col>
-            <Col xs={12} lg={6}>
+            {!edit && 
+            <Col xs={12} lg={12}>
+              <Form.Group id="dateRange">
+                <Form.Label>範囲指定</Form.Label>
+                <Flatpickr
+                  options={ rangeOptions }
+                  render={(props, ref) => {
+                    return (
+                      <InputGroup>
+                      <InputGroup.Text>
+                        <CalendarIcon className="icon icon-xs" />
+                      </InputGroup.Text>
+                      <Form.Control
+                        defaultValue={rangeStart}
+                        required
+                        type="text"
+                        placeholder="YYYY-MM-DD"
+                        ref={ref}
+                      />
+                    </InputGroup>
+                    );
+                  }}
+                />
+              </Form.Group>
+            </Col>}
+            <Col xs={12} lg={6} className="mt-2">
               <Form.Label>色選択</Form.Label>
               <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} onChange={handleBackgroundColorChange}  />
               <div className="category-color" style={{backgroundColor: backgroundColor}}>{backgroundColor}</div>

@@ -4,6 +4,7 @@ namespace App\Services\management\event_calendar;
 
 use App\Models\Event;
 use App\Services\management\AbstractManagementService;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class EventCalendarService 
@@ -23,8 +24,29 @@ class EventCalendarService
 
     public function store($request) 
     {
-        $data = $request->only(['title', 'start_date', 'end_date', 'location', 'remaining', 'is_unlimited']);
-        return Event::create($data);
+        // $data = $request->only(['title', 'start_date', 'end_date', 'start_time', 'end_time', 'location', 'remaining', 'is_unlimited', 'color']);
+        $date1 = new DateTime($request->start_date);
+        if ($request->end_date ?? false) {
+            $date2 = new DateTime($request->end_date);
+            $interval = $date1->diff($date2);
+            $day_count = $interval->days;
+        } else {
+            $day_count = 0;
+        }
+        $data = [];
+        for($i = 0; $i <= $day_count; $i++) {
+            $date = date('Y-m-d', strtotime($date1->format('Y-m-d') . "+$i day"));
+            $data[] = [
+                'title' => $request->title, 
+                'start_date' => $date . ' ' . $request->start_time,
+                'end_date' => $date. ' ' . $request->end_time ?? $request->start_time,
+                'location' => $request->location,
+                'remaining' => $request->remaining,
+                'is_unlimited' => $request->is_unlimited,
+                'color' => $request->color,
+            ];
+        }
+        return Event::upsert($data, 'id');
     }
 
 

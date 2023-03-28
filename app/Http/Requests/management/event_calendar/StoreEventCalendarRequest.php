@@ -28,7 +28,7 @@ class StoreEventCalendarRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:50'],
             'start_date' => ['required', 'date'],
-            'end_date' => ['required', 'date', 'after:start_date'],
+            'end_date' => ['date'],
             'location' => ['required', 'max:50'],
             'remaining' => ['required', 'int'],
             'is_unlimited' => ['required', 'int'],
@@ -47,8 +47,8 @@ class StoreEventCalendarRequest extends FormRequest
             'title.string' => '題名の値が不正です',
             'title.max' => '題名は50文字までです',
             'start_date.required' => '開始日付は必須です',
-            'end_date.required' => '終了日付は必須です',
-            'end_date.after' => '終了日付が開始日付よりも前になっています',
+            // 'end_date.required' => '終了日付は必須です',
+            // 'end_date.after' => '終了日付が開始日付よりも前になっています',
             'location.required' => '場所は必須です',
             'remaining.required' => '残数は必須です',
             'is_unlimited.required' => '値が不正です',
@@ -58,6 +58,6 @@ class StoreEventCalendarRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         $response['errors']  = $validator->errors()->toArray();
-        throw new HttpResponseException( response()->json( $response, 422 ));
+        throw new HttpResponseException(response()->json( $response, 422 ));
     }
 }

@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('title', 50)->nullable(false);
-            $table->dateTime('start_date')->nullable(false);
-            $table->dateTime('end_date')->nullable(false);
+            $table->dateTime('start_date')->nullable(true);
+            $table->dateTime('end_date')->nullable(true);
             $table->string('location', 255)->nullable(false);
             $table->integer('remaining')->nullable(false);
             $table->tinyInteger('is_unlimited')->default(0)->nullable(false);

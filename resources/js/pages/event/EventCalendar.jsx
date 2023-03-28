@@ -30,11 +30,12 @@ export default () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [modalProps, setModalProps] = useState(defaultModalProps);
+  const [change, setChange] = useState(false);
   const calendarRef = useRef();
 
   const currentDate = moment().format("YYYY-MM-DD");
   
-  useEffect(() => GetAllEvents(events, setEvents), []);
+  useEffect(() => GetAllEvents(events, setEvents), [change]);
 
   const onDateClick = (props) => {
     // const id = events.length + 1;
@@ -136,6 +137,7 @@ export default () => {
           onUpdate={onEventUpdate}
           onDelete={onEventDelete}
           onHide={handleClose}
+          setChange={setChange}
         />
       ) : null}
 
@@ -145,6 +147,7 @@ export default () => {
           show={showAddModal}
           onAdd={onEventAdd}
           onHide={handleClose}
+          setChange={setChange}
         />
       ) : null}
 
@@ -157,11 +160,13 @@ export default () => {
       <Card className="border-0 shadow">
         <Card.Body>
           <FullCalendar
+            eventDisplay="block"
             editable
             selectable
             ref={calendarRef}
             events={events}
-            displayEventTime={false}
+            displayEventTime={true}
+            displayEventEnd={true}
             themeSystem="bootstrap"
             plugins={[dayGridPlugin, timeGridPlugin, bootstrapPlugin, interactionPlugin]}
             initialView="dayGridMonth"

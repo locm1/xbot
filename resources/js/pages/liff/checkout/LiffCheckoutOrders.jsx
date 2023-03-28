@@ -12,7 +12,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
 export default (props) => {
-  const { carts, createOrder, orderTotal, total, postage, ecommerceConfiguration, paymentMethod } = props;
+  const { carts, createOrder, orderTotal, total, postage, ecommerceConfiguration, paymentMethod, discountedTotalAmount } = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
@@ -94,6 +94,7 @@ export default (props) => {
               postage={postage}
               paymentMethod={paymentMethod}
               ecommerceConfiguration={ecommerceConfiguration}
+              discountedTotalAmount={discountedTotalAmount}
             />
           </ListGroup>
         </Card.Body>

@@ -10,7 +10,7 @@ import LiffCheckoutPayment from "@/pages/liff/checkout/LiffCheckoutPayment";
 import LiffCheckoutOrders from "@/pages/liff/checkout/LiffCheckoutOrders";
 import { DeliveryAddressItem } from "@/pages/liff/LiffCardItem";
 import { getSelectOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
-import { getCarts } from "@/pages/liff/api/CartApiMethods";
+import { getCarts, getCartsAndRelatedProducts } from "@/pages/liff/api/CartApiMethods";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
@@ -21,6 +21,9 @@ export default () => {
   const history = useHistory();
   const { setIsLoading } = useContext(LoadingContext);
   const [carts, setCarts] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([
+    {discount_price: ''}
+  ]);
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
   const [deliveryAddress, setDeliveryAddress] = useState({});
   const [user, setUser] = useState({
@@ -37,7 +40,8 @@ export default () => {
   });
   const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0);
   const [postage, setPostage] = useState(500);
-  const total = (paymentMethod.payment_method == 1) ? orderTotal + postage : orderTotal + postage + ecommerceConfiguration.cash_on_delivery_fee;
+  const discountedTotalAmount = relatedProducts.reduce((relatedProduct, i) => relatedProduct + i.discount_price, 0)
+  const total = (paymentMethod.payment_method == 1) ? orderTotal + postage - discountedTotalAmount : orderTotal + postage + ecommerceConfiguration.cash_on_delivery_fee - discountedTotalAmount;
 
   const deleteProperty = (keys) => {
     const cloneObject = Object.assign(deliveryAddress)
@@ -53,7 +57,8 @@ export default () => {
     
     const order = {
       user_id: 101, delivery_time: delivery_time, purchase_amount: total, status: 1, 
-      payment_method: paymentMethod.payment_method, shipping_fee: postage
+      payment_method: paymentMethod.payment_method, shipping_fee: postage,
+      discount_price: discountedTotalAmount
     }
     const products = carts.map(cart => {return {product_id: cart.product_id, quantity:cart.quantity}})
     Object.assign(order, newDeliveryAddress)
@@ -67,8 +72,7 @@ export default () => {
     const formValue = {
       order: order, order_products: products, charge: charge
     }
-    console.log(order);
-    console.log(products);
+    //console.log(formValue);
     storeOrder(user.id, formValue, storeComplete, setIsLoading)
     // storeOrder(101, formValue, storeComplete, setIsLoading)
   }
@@ -87,7 +91,7 @@ export default () => {
     // showPaymentMethod(101, setPaymentMethod).then(payment_response => getCustomer(101, payment_response.payjp_customer_id, setCustomer, setIsLoading))
     
     getUser(idToken, setUser).then(response => {
-      getCarts(response.id, setCarts, setItemsExistInCart).then(
+      getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts).then(
         response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
       )
       getSelectOrderDestination(response.id, setDeliveryAddress)
@@ -118,6 +122,7 @@ export default () => {
             postage={postage}
             ecommerceConfiguration={ecommerceConfiguration}
             paymentMethod={paymentMethod}
+            discountedTotalAmount={discountedTotalAmount}
           />
         </div>
       </main>

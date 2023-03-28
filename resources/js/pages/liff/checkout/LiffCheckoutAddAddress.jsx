@@ -24,6 +24,11 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
+  const [errors, setErrors] = useState({
+    last_name: '', first_name: '', last_name_kana: '', first_name_kana: '',
+    year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
+    prefecture: '', city: '', address: '', building_name: '', room_number: ''
+  });
 
   const handleChange = (e, input) => {
     setFormValue({...formValue, [input]: e.target.value})
@@ -38,14 +43,17 @@ export default () => {
   };
 
   const handleClick = () => {
-    formValue.building_name += ' ' + formValue.room_number
+    if (formValue.building_name && formValue.room_number) {
+      formValue.building_name += ' ' + formValue.room_number
+    }
+    
     console.log(formValue);
     formValue.is_selected = 0
     if (pathname.includes('/edit')) {
-      updateOrderDestination(user.id, id, formValue, updateComplete)
+      updateOrderDestination(user.id, id, formValue, updateComplete, setErrors)
       //updateOrderDestination(101, id, formValue, updateComplete)
     } else {
-      storeOrderDestination(user.id, formValue, location)
+      storeOrderDestination(user.id, formValue, location, setErrors)
       //storeOrderDestination(101, formValue, location)
     }
   };
@@ -68,6 +76,8 @@ export default () => {
         showOrderDestination(response.id, id, setFormValue)
       })
       //showOrderDestination(101, id, setFormValue)
+    } else {
+      getUser(idToken, setUser)
     }
   }, []);
 
@@ -93,7 +103,7 @@ export default () => {
             <Row className="mt-3">
               <Col xs={6} className="mb-3">
                 <Form.Group id="last_name">
-                  <Form.Label><span class="questionnaire-required me-2">必須</span>氏名（姓）</Form.Label>
+                  <Form.Label><span className="questionnaire-required me-2">必須</span>氏名（姓）</Form.Label>
                   <Form.Control 
                     required
                     type="text" 
@@ -102,12 +112,17 @@ export default () => {
                     onChange={(e) => handleChange(e, 'last_name')} 
                     placeholder="山田" 
                     autoComplete="family-name"
+                    isInvalid={formValue.last_name !== '' ? false : errors.last_name ? true : false}
                   />
+                  {
+                    errors.last_name && 
+                    <Form.Control.Feedback type="invalid">{errors.last_name[0]}</Form.Control.Feedback>
+                  }
                 </Form.Group>
               </Col>
               <Col xs={6} className="mb-3">
                 <Form.Group id="first_name">
-                  <Form.Label><span class="questionnaire-required me-2">必須</span>氏名（名）</Form.Label>
+                  <Form.Label><span className="questionnaire-required me-2">必須</span>氏名（名）</Form.Label>
                   <Form.Control 
                     required
                     type="text"
@@ -116,12 +131,17 @@ export default () => {
                     onChange={(e) => handleChange(e, 'first_name')} 
                     placeholder="太郎"
                     autoComplete="given-name"
+                    isInvalid={formValue.first_name !== '' ? false : errors.first_name ? true : false}
                   />
+                  {
+                    errors.first_name && 
+                    <Form.Control.Feedback type="invalid">{errors.first_name[0]}</Form.Control.Feedback>
+                  }
                 </Form.Group>
               </Col>
               <Col xs={6} className="mb-3">
                 <Form.Group id="last_name_kana">
-                  <Form.Label><span class="questionnaire-required me-2">必須</span>フリガナ（姓）</Form.Label>
+                  <Form.Label><span className="questionnaire-required me-2">必須</span>フリガナ（姓）</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -130,12 +150,17 @@ export default () => {
                     onChange={(e) => handleChange(e, 'last_name_kana')} 
                     placeholder="ヤマダ"
                     autoComplete="family-name"
+                    isInvalid={formValue.last_name_kana !== '' ? false : errors.last_name_kana ? true : false}
                   />
+                  {
+                    errors.last_name_kana && 
+                    <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
+                  }
                 </Form.Group>
               </Col>
               <Col xs={6} className="mb-3">
                 <Form.Group id="first_name_kana">
-                  <Form.Label><span class="questionnaire-required me-2">必須</span>フリガナ（名）</Form.Label>
+                  <Form.Label><span className="questionnaire-required me-2">必須</span>フリガナ（名）</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -144,14 +169,19 @@ export default () => {
                     onChange={(e) => handleChange(e, 'first_name_kana')} 
                     placeholder="タロウ" 
                     autoComplete="given-name"
+                    isInvalid={formValue.first_name_kana !== '' ? false : errors.first_name_kana ? true : false}
                   />
+                  {
+                    errors.first_name_kana && 
+                    <Form.Control.Feedback type="invalid">{errors.first_name_kana[0]}</Form.Control.Feedback>
+                  }
                 </Form.Group>
               </Col>
             </Row>
             <Row className="">
               <Col xs={6} className="mb-3">
                 <Form.Group id="zipcode">
-                  <Form.Label><span class="questionnaire-required me-2">必須</span>郵便番号</Form.Label>
+                  <Form.Label><span className="questionnaire-required me-2">必須</span>郵便番号</Form.Label>
                   <Form.Control
                     required
                     type="number"
@@ -160,14 +190,19 @@ export default () => {
                     value={formValue.zipcode} 
                     onChange={(e) => searchZipCode(e, 'zipcode')} 
                     autoComplete="postal-code"
+                    isInvalid={formValue.zipcode !== '' ? false : errors.zipcode ? true : false}
                   />
+                  {
+                    errors.zipcode && 
+                    <Form.Control.Feedback type="invalid">{errors.zipcode[0]}</Form.Control.Feedback>
+                  }
                 </Form.Group>
               </Col>
             </Row>
             <Row className="">
                 <Col xs={12} className="mb-3">
                   <Form.Group id="prefecture">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>都道府県</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>都道府県</Form.Label>
                     <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="mb-0 w-100">
                       {
                         prefectures && prefectures.map((prefecture, index) => <option key={index} value={prefecture.name}>{prefecture.name}</option>)
@@ -177,7 +212,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="city">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>市区町村</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>市区町村</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -186,12 +221,17 @@ export default () => {
                       value={formValue.city} 
                       onChange={(e) => handleChange(e, 'city')} 
                       autoComplete="address-level2"
+                      isInvalid={formValue.city !== '' ? false : errors.city ? true : false}
                     />
+                    {
+                      errors.city && 
+                      <Form.Control.Feedback type="invalid">{errors.city[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="address">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>丁目・番地・号</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>丁目・番地・号</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -200,12 +240,17 @@ export default () => {
                       value={formValue.address} 
                       onChange={(e) => handleChange(e, 'address')} 
                       autoComplete="address-level3"
+                      isInvalid={formValue.address !== '' ? false : errors.address ? true : false}
                     />
+                    {
+                      errors.address && 
+                      <Form.Control.Feedback type="invalid">{errors.address[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="building_name">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>建物名/会社名</Form.Label>
+                    <Form.Label><span className="questionnaire-any me-2">任意</span>建物名/会社名</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -219,7 +264,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="room_number">
-                    <Form.Label><span class="questionnaire-any me-2">任意</span>部屋番号</Form.Label>
+                    <Form.Label><span className="questionnaire-any me-2">任意</span>部屋番号</Form.Label>
                     <Form.Control
                       required
                       type="number"
@@ -233,7 +278,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-3">
                   <Form.Group id="tel">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>電話番号</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>電話番号</Form.Label>
                     <Form.Control
                       required
                       type="tel"
@@ -242,7 +287,12 @@ export default () => {
                       value={formValue.tel} 
                       onChange={(e) => handleChange(e, 'tel')} 
                       autoComplete="tel"
+                      isInvalid={formValue.tel !== '' ? false : errors.tel ? true : false}
                     />
+                    {
+                      errors.tel && 
+                      <Form.Control.Feedback type="invalid">{errors.tel[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
               </Row>

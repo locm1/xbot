@@ -30,16 +30,20 @@ export const showOrderDestination = async (userId, id, setDeliveryAddress) => {
   return await axios.get(`/api/v1/users/${userId}/destinations/${id}`)
   .then((response) => {
     const order_destination = response.data.order_destination;
-    const building_name_split = order_destination.building_name.split(' ');
-    setDeliveryAddress({...order_destination, building_name: building_name_split[0], room_number: building_name_split[1]});
-    console.log({...order_destination, building_name: building_name_split[0], room_number: building_name_split[1]});
+    if (order_destination.building_name) {
+      const building_name_split = order_destination.building_name.split(' ');
+      setDeliveryAddress({...order_destination, building_name: building_name_split[0], room_number: building_name_split[1]});
+    } else {
+      setDeliveryAddress({...order_destination, room_number: ''});
+    }
+    console.log(order_destination);
   })
   .catch(error => {
       console.error(error);
   });
 };
 
-export const storeOrderDestination = async (userId, formValue, location) => {
+export const storeOrderDestination = async (userId, formValue, location, setErrors) => {
   await axios.post(`/api/v1/users/${userId}/destinations`, formValue)
   .then((response) => {
     if (location == '/checkout/address') {
@@ -50,10 +54,11 @@ export const storeOrderDestination = async (userId, formValue, location) => {
   .catch(error => {
       console.error(error);
       alert(error);
+      setErrors(error.response.data.errors)
   });
 };
 
-export const updateOrderDestination = async (userId, id, formValue, updateComplete) => {
+export const updateOrderDestination = async (userId, id, formValue, updateComplete, setErrors) => {
   return await axios.put(`/api/v1/users/${userId}/destinations/${id}`, formValue)
   .then((response) => {
     console.log(response.data.order_destination);
@@ -61,6 +66,7 @@ export const updateOrderDestination = async (userId, id, formValue, updateComple
   })
   .catch(error => {
       console.error(error);
+      setErrors(error.response.data.errors)
   });
 };
 

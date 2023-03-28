@@ -13,14 +13,44 @@ export const getCarts = async (userId, setCarts, setItemsExistInCart) => {
   return await axios.get(`/api/v1/users/${userId}/carts`)
   .then((response) => {
     const carts = response.data.carts;
-    if (carts.length > 0) {
+    if (carts.cart_items.length > 0) {
       setItemsExistInCart(true);
     } else {
       setItemsExistInCart(false);
     }
-    setCarts(carts.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })))
-    console.log(carts.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })));
-    return carts.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity }));
+    setCarts(carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })))
+    console.log(carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })));
+    return carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity }));
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getCartsAndRelatedProducts = async (userId, setCarts, setItemsExistInCart, setRelatedProducts) => {
+  return await axios.get(`/api/v1/users/${userId}/carts`)
+  .then((response) => {
+    const carts = response.data.carts;
+    if (carts.cart_items.length > 0) {
+      setItemsExistInCart(true);
+    } else {
+      setItemsExistInCart(false);
+    }
+    setCarts(carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })))
+    //console.log(carts.related_products);
+    //console.log(carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })));
+
+    // セット割商品リストからカートにある商品IDで検索をかけ、ヒットした金額の合計値を出す
+    let relatedProducts = [];
+    carts.cart_items.forEach(cart => {
+      const related_product = carts.related_products.find((related_product) => related_product.related_product_id === cart.product_id)
+      
+      if (typeof related_product !== "undefined") {
+        relatedProducts.push(related_product)
+      }
+    })
+    setRelatedProducts(relatedProducts)
+    return carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity }));
   })
   .catch(error => {
       console.error(error);
@@ -33,7 +63,7 @@ export const searchCarts = async (userId, params, setCarts, setItemsExistInCart)
     const carts = response.data.carts;
     setCarts(carts)
     console.log(carts);
-    if (carts.length > 0) {
+    if (carts.cart_items.length > 0) {
       setItemsExistInCart(true);
     } else {
       setItemsExistInCart(false);

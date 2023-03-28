@@ -32,7 +32,6 @@ class UpdateOrderDestinationRequest extends FormRequest
             'prefecture' => 'required',
             'city' => 'required',
             'address' => 'required',
-            'building_name' => 'required',
             'tel' => 'required|numeric|digits_between:8,11',
             'is_selected' => 'required|numeric|boolean',
         ];
@@ -51,7 +50,6 @@ class UpdateOrderDestinationRequest extends FormRequest
             'prefecture' => '都道府県',
             'city' => '市区町村',
             'address' => '丁目・番地・号',
-            'building_name' => '建物名/会社名',
             'tel' => '電話番号',
             'is_selected' => '登録ステータス',
         ];

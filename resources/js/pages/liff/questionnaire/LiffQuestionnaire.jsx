@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import '@splidejs/splide/css';
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Redirect, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import LiffQuestionnaireBirthdateForm from "@/pages/liff/questionnaire/LiffQuestionnaireBirthdateForm";
 import LiffQuestionnaireForm from "@/pages/liff/questionnaire/LiffQuestionnaireForm";
+import LiffAlreadyQuestionnaire from "@/pages/liff/questionnaire/LiffAlreadyQuestionnaire";
 import { getPrefectures } from "@/pages/liff/api/PrefectureApiMethods";
 import { getQuestionnaires, storeQuestionnaireAnswers } from "@/pages/liff/api/QuestionnaireApiMethods";
 import { getAddress } from "@/pages/liff/api/ZipcodeApiMethods";
@@ -16,6 +17,7 @@ import { storeOrderDestination } from "@/pages/liff/api/OrderDestinationApiMetho
 import { getOccupations } from "@/pages/liff/api/OccupationApiMethods";
 
 export default () => {
+  const history = useHistory();
   const location = useLocation().pathname;
   const [questionnaires, setQuestionnaires] = useState([
     {id: '', title: '', type: 1, answer: '', is_required: 0, questionnaire_items: [{
@@ -151,7 +153,11 @@ export default () => {
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
-    getUser(idToken, setUser)
+    getUser(idToken, setUser).then(response => {
+      if (response.is_registered == 1) {
+        history.push(Paths.LiffAlreadyQuestionnaire.path);
+      }
+    })
     getPrefectures(setPrefectures)
     getQuestionnaires(setQuestionnaires)
     getOccupations(setOccupations)
@@ -174,7 +180,7 @@ export default () => {
                 <Col xs={6} className="mb-5">
                   <Form.Group id="last_name">
                     <Form.Label>
-                      <span class="questionnaire-required me-2">必須</span>氏名（姓）</Form.Label>
+                      <span className="questionnaire-required me-2">必須</span>氏名（姓）</Form.Label>
                     <Form.Control 
                       required
                       type="text" 
@@ -193,7 +199,7 @@ export default () => {
                 </Col>
                 <Col xs={6} className="mb-5">
                   <Form.Group id="first_name">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>氏名（名）</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>氏名（名）</Form.Label>
                     <Form.Control 
                       required
                       type="text"
@@ -212,7 +218,7 @@ export default () => {
                 </Col>
                 <Col xs={6} className="mb-5">
                   <Form.Group id="last_name_kana">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>フリガナ（姓）</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>フリガナ（姓）</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -231,7 +237,7 @@ export default () => {
                 </Col>
                 <Col xs={6} className="mb-5">
                   <Form.Group id="first_name_kana">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>フリガナ（名）</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>フリガナ（名）</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -255,7 +261,7 @@ export default () => {
               <Row className="">
                 <Col xs={12} className="mb-5">
                   <Form.Group id="gender">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>性別</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>性別</Form.Label>
                       <div>
                         {
                           genders.map((gender, index) => 
@@ -278,7 +284,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-5">
                   <Form.Group id="tel">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>電話番号</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>電話番号</Form.Label>
                     <Form.Control
                       required
                       type="tel"
@@ -297,7 +303,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-5">
                   <Form.Group id="occupation">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>ご職業</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>ご職業</Form.Label>
                     <Form.Select defaultValue="0" value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id')} className="mb-0 w-100">
                       {
                         occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)
@@ -310,7 +316,7 @@ export default () => {
               <Row className="">
                 <Col xs={12} className="mb-5">
                   <Form.Group id="zipcode">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>郵便番号</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>郵便番号</Form.Label>
                     <Form.Control
                       required
                       type="number"
@@ -331,7 +337,7 @@ export default () => {
               <Row className="">
                 <Col xs={12} className="mb-5">
                   <Form.Group id="prefecture">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>都道府県</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>都道府県</Form.Label>
                     <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="mb-0 w-100">
                       {
                         prefectures && prefectures.map((prefecture, index) => <option key={index} value={prefecture.name}>{prefecture.name}</option>)
@@ -341,7 +347,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-5">
                   <Form.Group id="city">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>市区町村</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>市区町村</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -360,7 +366,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-5">
                   <Form.Group id="address">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>丁目・番地・号</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>丁目・番地・号</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -379,7 +385,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-5">
                   <Form.Group id="building_name">
-                    <Form.Label><span class="questionnaire-required me-2">必須</span>建物名/会社名</Form.Label>
+                    <Form.Label><span className="questionnaire-any me-2">任意</span>建物名/会社名</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -398,7 +404,7 @@ export default () => {
                 </Col>
                 <Col xs={12} className="mb-5">
                   <Form.Group id="room_number">
-                    <Form.Label><span class="questionnaire-any me-2">任意</span>部屋番号</Form.Label>
+                    <Form.Label><span className="questionnaire-any me-2">任意</span>部屋番号</Form.Label>
                     <Form.Control
                       required
                       type="number"

@@ -22,7 +22,7 @@ class EventCalendarService
     }
 
 
-    public function store($request) 
+    public function upsert($request, $id = null) 
     {
         // $data = $request->only(['title', 'start_date', 'end_date', 'start_time', 'end_time', 'location', 'remaining', 'is_unlimited', 'color']);
         $date1 = new DateTime($request->start_date);
@@ -37,6 +37,7 @@ class EventCalendarService
         for($i = 0; $i <= $day_count; $i++) {
             $date = date('Y-m-d', strtotime($date1->format('Y-m-d') . "+$i day"));
             $data[] = [
+                'id' => $id,
                 'title' => $request->title, 
                 'start_date' => $date . ' ' . $request->start_time,
                 'end_date' => $date. ' ' . $request->end_time ?? $request->start_time,
@@ -46,7 +47,8 @@ class EventCalendarService
                 'color' => $request->color,
             ];
         }
-        return Event::upsert($data, 'id');
+        Event::upsert($data, 'id');
+        return $data;
     }
 
 

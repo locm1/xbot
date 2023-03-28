@@ -66,6 +66,7 @@ export const EventModal = (props) => {
     console.log(updateData);
     if (edit) {
       UpdateEvent(id, updateData);
+      onHide();
       // return props.onUpdate && props.onUpdate(payload);
     } else {
       CreateEvent(updateData, setErrors).then(response => {
@@ -73,12 +74,12 @@ export const EventModal = (props) => {
           setErrors(response.errors);
         } else {  
           payload.id = response.res.data.event.id;
+          onHide();
           // return props.onAdd && props.onAdd(payload);
         }
       });
     }
     setChange(prev => !prev);
-    onHide();
   }
   const onDelete = () => {
     edit && props.onDelete && props.onDelete(id);

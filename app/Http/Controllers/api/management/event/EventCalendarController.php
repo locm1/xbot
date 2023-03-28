@@ -37,7 +37,7 @@ class EventCalendarController extends Controller
      */
     public function store(StoreEventCalendarRequest $request)
     {
-        $create_data = $this->event_calendar_service->store($request);
+        $create_data = $this->event_calendar_service->upsert($request);
         return response()->json(['event' => $create_data], 200);
     }
 
@@ -48,9 +48,9 @@ class EventCalendarController extends Controller
      * @param Event $event_calendar
      * @return JsonResource
      */
-    public function update(UpdateEventCalendarRequest $request, Event $event_calendar): JsonResponse
+    public function update(UpdateEventCalendarRequest $request, $id): JsonResponse
     {
-        $update_data = $this->event_calendar_service->update($request, $event_calendar);
+        $update_data = $this->event_calendar_service->upsert($request, $id);
         return response()->json(['event' => $update_data], 200);
     }
 

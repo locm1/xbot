@@ -14,11 +14,13 @@ export const SendHistoriesTable = (props) => {
   const getStatus = (status) => {
     if (status == 1) {
       return <Badge bg="success" className="me-1 is-delivered">配信済</Badge>;
+    } else if (status == 0) {
+      return <Badge bg="success" className="me-1 is-delivered">予約済</Badge>;
     }
   }
 
   const TableRow = (props) => {
-    const { status, templateName, sendDate, targetCount, sendCount, id } = props;
+    const { status, templateName, sendDate, targetCount, id } = props;
     const history = useHistory();
 
     const handleRowClick = (id) => {
@@ -38,9 +40,6 @@ export const SendHistoriesTable = (props) => {
         <td>
           <span className="fw-normal">{targetCount}</span>
         </td>
-        <td>
-          <span className="fw-normal">{sendCount}</span>
-        </td>
       </tr>
     );
   };
@@ -54,8 +53,7 @@ export const SendHistoriesTable = (props) => {
               <th className="border-gray-200">ステータス</th>
               <th className="border-gray-200">テンプレート名</th>
               <th className="border-gray-200">配信日時</th>
-              <th className="border-gray-200">該当人数</th>
-              <th className="border-gray-200">配信数</th>
+              <th className="border-gray-200">配信人数</th>
             </tr>
           </thead>
           <tbody className="border-0">

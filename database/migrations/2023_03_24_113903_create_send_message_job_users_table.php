@@ -14,13 +14,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('send_message_job_users', function (Blueprint $table) {
-            $table->id();
-            $table->string('line_id');
-            $table->foreignIdFor(SendMessageJob::class)->cascadeOnDelete();
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        // Schema::create('send_message_job_users', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('line_id');
+        //     $table->foreignIdFor(SendMessageJob::class)->cascadeOnDelete();
+        //     $table->softDeletes();
+        //     $table->timestamps();
+        // });
     }
 
     /**

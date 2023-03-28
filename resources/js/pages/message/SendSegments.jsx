@@ -20,6 +20,7 @@ import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMe
 import {SendSegmentUserCard} from "./segment/SendSegmentUserCard"
 import { calculateAge } from "../../components/common/CalculateAge";
 import { getMessages, deleteMessage, searchMessages, sendMulticastMessage } from "@/pages/message/api/MessageApiMethods";
+import { CSVLink } from "react-csv";
 
 export default () => {
   const [definedQuestion, setDefinedQuestion] = useState([]);
@@ -37,14 +38,26 @@ export default () => {
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
 
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = ("0" + (now.getMonth() + 1)).slice(-2);
+  const day = ("0" + now.getDate()).slice(-2);
+  const hour = ("0" + now.getHours()).slice(-2);
+  const minute = ("0" + now.getMinutes()).slice(-2);
+  const dateTime = year + month + day + hour + minute;
+
+  const csvDLUsers = searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v);
+
   const handleSendButtonClick = () => {
+    const userIds = searchResultUsers.map(v => v.isSelected == true ? v.id : undefined).filter(v => v);
     const userLineIds = searchResultUsers.map(v => v.isSelected == true ? v.line_id : undefined).filter(v => v);
     const data = {
+      "userIds": userIds,
       "userLineIds": userLineIds,
       "templateId": selectTemplate,
       "timing": timing,
       "sendDate": sendDate,
-      "searchTerms": searchTerms
+      "searchTerms": searchTerms,
     }
     const errorMessages = validation(data);
     if (errorMessages.length > 0) {
@@ -479,7 +492,7 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          {/* <Button onClick={() => {console.log(questionnaires)}} /> */}
+          <Button onClick={() => {console.log(users)}} />
           {/* <Button onClick={() => {console.log(templates)}} /> */}
           {/* <Button onClick={() => {console.log(users)}} /> */}
           {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
@@ -548,11 +561,16 @@ export default () => {
       />
 
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button variant="primary" className="mt-2 w-50 me-3">
+        <CSVLink filename={`data-${dateTime}.csv`} 
+        data={searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v)}
+        className={`btn btn-primary mt-2 w-50 me-3 ${csvDLUsers.length > 0 ? '' : 'disabled'}`}>
           ユーザーID抽出
-        </Button>
+        </CSVLink>
+        {/* <Button variant="primary" className="mt-2 w-50 me-3">
+          ユーザーID抽出
+        </Button> */}
         <Button variant="primary" className="mt-2 w-50 ms-3" onClick={handleSendButtonClick}>
-          配信する
+          {timing == 0 ? '配信する' : '予約する'}
         </Button>
       </div>
     </>

@@ -7,7 +7,7 @@ import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 
 import { getUser } from "@/pages/liff/api/UserApiMethods";
-import { showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
+import { showPaymentMethod, updatePaymentMethod, storePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { storeCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { storeCard } from "@/pages/liff/api/CardApiMethods";
 
@@ -48,10 +48,24 @@ export default () => {
     }
   };
 
+  const createPaymentMethod = (paymentMethod) => {
+    if ('id' in paymentMethod) {
+      updatePaymentMethod(user.id, paymentMethod.id, paymentMethod, onSaveComplete)
+    } else {
+      storePaymentMethod(user.id, paymentMethod, onSaveComplete)
+    }
+  }
+
   const createCustomer = () => {
     const payjpToken = document.getElementsByName('payjp-token');
     const formValue = {payjp_token: payjpToken[0].value};
-    storeCustomer(user.id, formValue, paymentMethod, updatePaymentMethod, onSaveComplete)
+    //storeCustomer(user.id, formValue, paymentMethod)
+    storeCustomer(user.id, formValue, paymentMethod).then(
+      response => {
+        paymentMethod.payjp_customer_id = response
+        createPaymentMethod(paymentMethod)
+      }
+    )
     //storeCustomer(101, formValue, paymentMethod, updatePaymentMethod, onSaveComplete)
   };
 

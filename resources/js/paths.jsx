@@ -72,6 +72,7 @@ export const Paths = {
     LiffVisitor: { path: "/visitor" },
     LiffAboutVisitorPrivileges: { path: "/visitor/privilege" },
     LiffEventReservations: { path: "/event/reservation" },
+    LiffAlreadyQuestionnaire: { path: "/questionnaire/already/answered" },
     LiffQuestionnaire: { path: "/questionnaire" },
     LiffQuestionnaireComplete: { path: "/questionnaire/complete" },
     LiffProductHistories: { path: "/history/product" },

@@ -123,9 +123,13 @@
   font-size: 18px;
 }
 
-.liff-pay-total {
+.liff-pay-discount {
   font-weight: bold;
   color: #d83473;
+}
+
+.liff-pay-total {
+  @extend .liff-pay-discount;
   font-size: 18px;
 }
 

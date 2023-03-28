@@ -9,8 +9,6 @@ import Cookies from 'js-cookie';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getOrderDestinations, updateOrderDestination, updateOrderDestinations } from "@/pages/liff/api/OrderDestinationApiMethods";
 
-import addresses from "@/data/deliveryAddresses";
-
 export default () => {
   const history = useHistory();
   const [deliveryAddresses, setDeliveryAddresses] = useState([]);

@@ -42,7 +42,7 @@ export const CartItem = (props) => {
 }
 
 export const OrderDetailItem = (props) => {
-  const { total, orderTotal, postage, paymentMethod, ecommerceConfiguration } = props;
+  const { total, orderTotal, postage, paymentMethod, ecommerceConfiguration, discountedTotalAmount } = props;
 
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
@@ -56,6 +56,11 @@ export const OrderDetailItem = (props) => {
                 <h4 className="fs-6 text-dark mb-0 mt-1">代金引換手数料</h4>
               )
             }
+            { 
+              discountedTotalAmount && (
+                <h4 className="fs-6 text-dark mb-0 mt-1">セット商品割引</h4>
+              )
+            }
             <h3 className="text-dark mb-0 mt-2 liff-pay-total-title">お支払い金額（税込）</h3>
           </div>
         </Col>
@@ -66,6 +71,11 @@ export const OrderDetailItem = (props) => {
             { 
               paymentMethod.payment_method == 2 && (
                 <h4 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h4>
+              )
+            }
+            { 
+              discountedTotalAmount && (
+                <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h4>
               )
             }
             <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {total.toLocaleString()}</h3>

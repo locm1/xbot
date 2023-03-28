@@ -28,6 +28,7 @@ export const searchOrders = async (userId, params, setOrders) => {
 export const storeOrder = async (userId, formValue, storeComplete, setIsLoading) => {
   axios.post(`/api/v1/users/${userId}/orders`, formValue)
   .then((response) => {
+    console.log(response.data.order);
     storeComplete();
     setIsLoading(false);
     //成功したらメール通知する処理

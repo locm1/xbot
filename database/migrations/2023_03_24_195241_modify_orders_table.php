@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->string('payjp_card_id')->nullable();
+            $table->integer('discount_price')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('payjp_card_id');
+            $table->dropColumn('discount_price');
         });
     }
 };

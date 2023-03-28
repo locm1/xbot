@@ -9,15 +9,44 @@ use App\Services\api\line\verify\VerifyService;
 use App\Services\common\MergeArrayUtility;
 use App\Services\liff\user\UserService;
 use App\Services\management\product\SearchProductAction;
+use Illuminate\Support\Facades\Log;
 
 class CartService
 {
     public function index($request, User $user) 
     {
-        if (isset($request->product_id)) {
-            return Cart::with('product.productImages')->where('user_id', $user->id)->where('product_id', $request->product_id)->get();
+        $related_products = array();
+        $result_carts = array();
+        
+        $carts_by_user_id = Cart::where('user_id', $user->id);
+        $carts = (isset($request->product_id)) ? $carts_by_user_id->where('product_id', $request->product_id) : $carts_by_user_id;
+
+        $related_product_carts = $carts->with(['product.relatedProducts', 'product.productImages'])->get();
+        foreach ($related_product_carts as $cart) {
+            $related_products[] = $cart->product->relatedProducts->toArray();
+            $result_carts[] = [
+                'id' => $cart->id,
+                'user_id' => $cart->user_id,
+                'product_id' => $cart->product_id,
+                'quantity' => $cart->quantity,
+                'deleted_at' => $cart->deleted_at,
+                'created_at' => $cart->created_at,
+                'updated_at' => $cart->updated_at,
+                'product' => [
+                    'id' => $cart->product->id,
+                    'price' => $cart->product->price,
+                    'product_category_id' => $cart->product->product_category_id,
+                    'name' => $cart->product->name,
+                    'stock_quantity' => $cart->product->stock_quantity,
+                    'product_images' => $cart->product->productImages,
+                ]
+            ];
         }
-        return Cart::with('product.productImages')->where('user_id', $user->id)->get();
+
+        return [
+            'cart_items' => $result_carts,
+            'related_products' => array_reduce($related_products, 'array_merge', [])
+        ];
     }
 
     public function store($request, User $user)

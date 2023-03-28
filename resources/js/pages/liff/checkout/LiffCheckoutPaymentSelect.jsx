@@ -42,12 +42,15 @@ export default () => {
         const formvalue = {
           payjp_customer_id: paymentMethod.payjp_customer_id, card_id: selectCardId
         }
-        updateCustomer(101, formvalue)
+        //updateCustomer(101, formvalue)
+        updateCustomer(user.id, formvalue)
       }
-      
-      updatePaymentMethod(101, paymentMethod.id, paymentMethod, onSaveComplete)
+
+      updatePaymentMethod(user.id, paymentMethod.id, paymentMethod, onSaveComplete)
+      //updatePaymentMethod(101, paymentMethod.id, paymentMethod, onSaveComplete)
     } else {
-      storePaymentMethod(101, paymentMethod, onSaveComplete)
+      storePaymentMethod(user.id, paymentMethod, onSaveComplete)
+      //storePaymentMethod(101, paymentMethod, onSaveComplete)
     }
   }
 
@@ -66,15 +69,15 @@ export default () => {
     getUser(idToken, setUser).then(response => {
       showPaymentMethod(response.id, setPaymentMethod).then(
         response => {
-          getCards(101, response.payjp_customer_id, setCreditCards)
-          getCustomer(101, response.payjp_customer_id, setCustomer, setIsLoading).then(
+          getCards(response.id, response.payjp_customer_id, setCreditCards)
+          getCustomer(response.id, response.payjp_customer_id, setCustomer, setIsLoading).then(
             response => setSelectCardId(response.default_card.id)
           )
         }
       )
     })
     getEcommerceConfigurationAndPayment(setEcommerceConfiguration, setPayments)
-    // showPaymentMethod(101, setPaymentMethod).then(
+    // showPaymentMethod(response.id, setPaymentMethod).then(
     //   response => {
     //     getCards(101, response.payjp_customer_id, setCreditCards)
     //     getCustomer(101, response.payjp_customer_id, setCustomer, setIsLoading).then(

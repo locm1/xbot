@@ -46,6 +46,13 @@ class SendMulticastMessageService
         $messages = Message::find($template_id)->messageItems()->get();
         $create_message = new CreateMessageByTypeService($this->bot, $messages);
         $multi_message_builder = new MultiMessageBuilder();
+        if (count($user_line_ids) > 500) {
+            $user_id_chunks = array_chunk($user_line_ids, 500);
+            foreach ($user_id_chunks as $user_ids_chunk) {
+                $response = $this->bot->multicast($user_ids_chunk, $create_message($multi_message_builder));
+            }
+            return $response;
+        }
         $response = $this->bot->multicast($user_line_ids, $create_message($multi_message_builder));
         return $response;
     }

@@ -1,5 +1,5 @@
 export const getMessageItems = async (id, setMessageItems) => {
-  axios.get(`/api/v1/management/messages/${id}/items`)
+  return await axios.get(`/api/v1/management/messages/${id}/items`)
   .then((response) => {
     const message_items = response.data.message_items;
     console.log(message_items);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ReactDOMServer from "react-dom/server";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -21,8 +21,10 @@ import {SendSegmentUserCard} from "./segment/SendSegmentUserCard"
 import { calculateAge } from "../../components/common/CalculateAge";
 import { getMessages, deleteMessage, searchMessages, sendMulticastMessage } from "@/pages/message/api/MessageApiMethods";
 import { CSVLink } from "react-csv";
+import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const [definedQuestion, setDefinedQuestion] = useState([]);
   const [questionnaires, setQuestionnaires] = useState([]);
   const [users, setUsers] = useState([]);
@@ -49,28 +51,40 @@ export default () => {
   const csvDLUsers = searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v);
 
   const handleSendButtonClick = () => {
-    const userIds = searchResultUsers.map(v => v.isSelected == true ? v.id : undefined).filter(v => v);
-    const userLineIds = searchResultUsers.map(v => v.isSelected == true ? v.line_id : undefined).filter(v => v);
-    const data = {
-      "userIds": userIds,
-      "userLineIds": userLineIds,
-      "templateId": selectTemplate,
-      "timing": timing,
-      "sendDate": sendDate,
-      "searchTerms": searchTerms,
-    }
-    const errorMessages = validation(data);
-    if (errorMessages.length > 0) {
-      let formatErrMsg = '';
-      errorMessages.forEach(v => formatErrMsg += v + '<br>');
-      Swal.fire(
-        `エラー`,
-        formatErrMsg,
-        'error'
-      )
-    } else {
-      sendMulticastMessage(data);
-    }
+    Swal.fire({
+      icon: 'question',
+      title: '本当に配信してもよろしいですか？',
+      confirmButtonText: '配信する',
+      showCancelButton: true,
+      cancelButtonText: 'キャンセル'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        const userIds = searchResultUsers.map(v => v.isSelected == true ? v.id : undefined).filter(v => v);
+        const userLineIds = searchResultUsers.map(v => v.isSelected == true ? v.line_id : undefined).filter(v => v);
+        const data = {
+          "userIds": userIds,
+          "userLineIds": userLineIds,
+          "templateId": selectTemplate,
+          "timing": timing,
+          "sendDate": sendDate,
+          "searchTerms": searchTerms,
+        }
+        const errorMessages = validation(data);
+        if (errorMessages.length > 0) {
+          let formatErrMsg = '';
+          errorMessages.forEach(v => formatErrMsg += v + '<br>');
+          Swal.fire(
+            `エラー`,
+            formatErrMsg,
+            'error'
+          )
+        } else {
+          setIsLoading(true);
+          sendMulticastMessage(data).then(() => setIsLoading(false));
+        }
+      }
+    })
   }
 
   const validation = (data) => {
@@ -492,7 +506,7 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          <Button onClick={() => {console.log(users)}} />
+          <Button onClick={() => {console.log(selectTemplate)}} />
           {/* <Button onClick={() => {console.log(templates)}} /> */}
           {/* <Button onClick={() => {console.log(users)}} /> */}
           {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}

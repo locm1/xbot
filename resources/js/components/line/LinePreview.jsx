@@ -159,17 +159,19 @@ export default (props) => {
     <div className={page ? 'line-rich-menu-preview' : 'line-preview'}>
       <LineHeader />
       <div className="line-preview-main">
-        <div className="line-preview-main-content">
-          {
-            previews.map((preview, index) => 
-              <div className="line-preview-main-content-item-wrap" key={index}>
-                <Row>
-                  <ShowPreview preview={preview} />
-                </Row>
-              </div>
-            )
-          }
-        </div>
+        { previews &&
+          <div className="line-preview-main-content">
+            {
+              previews.map((preview, index) => 
+                <div className="line-preview-main-content-item-wrap" key={index}>
+                  <Row>
+                    <ShowPreview preview={preview} />
+                  </Row>
+                </div>
+              )
+            }
+          </div>
+        }
         {
           page && (
             <>

@@ -8,12 +8,14 @@ import { LoadingContext } from "@/components/LoadingContext";
 
 import LiffCheckoutPayment from "@/pages/liff/checkout/LiffCheckoutPayment";
 import LiffCheckoutOrders from "@/pages/liff/checkout/LiffCheckoutOrders";
+import LIffCheckoutCoupon from "@/pages/liff/checkout/LIffCheckoutCoupon";
 import { DeliveryAddressItem } from "@/pages/liff/LiffCardItem";
 import { getSelectOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
 import { getCarts, getCartsAndRelatedProducts } from "@/pages/liff/api/CartApiMethods";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
+import { showCard } from "@/pages/liff/api/CardApiMethods";
 import { getEcommerceConfigurationAndPostage } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 import { storeOrder } from "@/pages/liff/api/OrderApiMethods";
 
@@ -30,18 +32,19 @@ export default () => {
     is_registered: 0
   });
   const [paymentMethod, setPaymentMethod] = useState({
-    payment_method: 1
+    payment_method: 1, payjp_default_card_id: ''
   });
   const [customer, setCustomer] = useState({
     id: '', default_card: {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
   });
+  const [card, setCard] = useState({brand: '', card_number: '', exp_month: '', exp_year: '', name: ''});
   const [ecommerceConfiguration, setEcommerceConfiguration] = useState({
     cash_on_delivery_fee: '', is_enabled: 1, 
   });
   const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0);
   const [postage, setPostage] = useState(500);
   const discountedTotalAmount = relatedProducts.reduce((relatedProduct, i) => relatedProduct + i.discount_price, 0)
-  const total = (paymentMethod.payment_method == 1) ? orderTotal + postage - discountedTotalAmount : orderTotal + postage + ecommerceConfiguration.cash_on_delivery_fee - discountedTotalAmount;
+  const total = (paymentMethod && paymentMethod.payment_method == 1) ? orderTotal + postage - discountedTotalAmount : orderTotal + postage + ecommerceConfiguration.cash_on_delivery_fee - discountedTotalAmount;
 
   const deleteProperty = (keys) => {
     const cloneObject = Object.assign(deliveryAddress)
@@ -84,18 +87,21 @@ export default () => {
   useEffect(() => {
     setIsLoading(true);
     const idToken = Cookies.get('TOKEN');
-    // getCarts(101, setCarts, setItemsExistInCart).then(
+    // getCartsAndRelatedProducts(102, setCarts, setItemsExistInCart, setRelatedProducts).then(
     //   response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
     // )
-    // getSelectOrderDestination(101, setDeliveryAddress)
-    // showPaymentMethod(101, setPaymentMethod).then(payment_response => getCustomer(101, payment_response.payjp_customer_id, setCustomer, setIsLoading))
+    // getSelectOrderDestination(102, setDeliveryAddress)
+    // showPaymentMethod(102, setPaymentMethod).then(payment_response => getCustomer(102, payment_response.payjp_customer_id, setCustomer, setIsLoading))
     
     getUser(idToken, setUser).then(response => {
       getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts).then(
         response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
       )
       getSelectOrderDestination(response.id, setDeliveryAddress)
-      showPaymentMethod(response.id, setPaymentMethod).then(payment_response => getCustomer(response.id, payment_response.payjp_customer_id, setCustomer, setIsLoading))
+      showPaymentMethod(response.id, setIsLoading).then(payment_response => {
+        setPaymentMethod(payment_response)
+        payment_response.payjp_default_card_id && showCard(response.id, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard)
+      })
     })
   }, []);
 
@@ -113,7 +119,8 @@ export default () => {
               </ListGroup>
             </Card.Body>
           </Card>
-          <LiffCheckoutPayment paymentMethod={paymentMethod} customer={customer} ecommerceConfiguration={ecommerceConfiguration} />
+          <LIffCheckoutCoupon />
+          <LiffCheckoutPayment paymentMethod={paymentMethod} ecommerceConfiguration={ecommerceConfiguration} card={card} />
           <LiffCheckoutOrders 
             carts={carts} 
             createOrder={createOrder} 

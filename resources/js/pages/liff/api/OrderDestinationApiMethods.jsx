@@ -17,8 +17,8 @@ export const getOrderDestinations = async (userId, setDeliveryAddresses, setSele
   .then((response) => {
     const order_destinations = response.data.order_destinations;
     setDeliveryAddresses(order_destinations);
-    console.log(order_destinations);
     const selectAddress = order_destinations.find((order_destination) => order_destination.is_selected == 1);
+    console.log(selectAddress);
     setSelectId(selectAddress.id)
   })
   .catch(error => {

@@ -21,7 +21,7 @@ class CartService
         $carts_by_user_id = Cart::where('user_id', $user->id);
         $carts = (isset($request->product_id)) ? $carts_by_user_id->where('product_id', $request->product_id) : $carts_by_user_id;
 
-        $related_product_carts = $carts->with(['product.relatedProducts', 'product.productImages'])->get();
+        $related_product_carts = $carts->with(['product.relatedProducts.relatedProduct.productImages', 'product.relatedProducts.relatedProduct.productSale', 'product.productImages', 'product.productSale'])->get();
         foreach ($related_product_carts as $cart) {
             $related_products[] = $cart->product->relatedProducts->toArray();
             $result_carts[] = [
@@ -39,6 +39,7 @@ class CartService
                     'name' => $cart->product->name,
                     'stock_quantity' => $cart->product->stock_quantity,
                     'product_images' => $cart->product->productImages,
+                    'product_sale' => $cart->product->productSale,
                 ]
             ];
         }

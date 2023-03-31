@@ -73,12 +73,43 @@
 }
 
 .liff-product-card-title {
-  font-size: 12px;
+  font-size: 14px;
+  width: 100%;
   text-align: left;
-  width: 140px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  //-webkit-line-clamp: 2;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.liff-product-sale {
+  color: white;
+  background-color: #d83473;
+  font-size: 8px;
+  padding: 3px;
+  text-align: center;
+}
+
+.liff-product-detail-sale {
+  @extend .liff-product-sale;
+  font-size: 12px;
+  padding: 6px;
+  width: 60px;
+}
+
+.liff-product-sale-title {
+  color: #d83473;
+  font-size: 8px;
+  //margin-left: 5px;
+}
+
+.liff-product-before-price {
+  font-size: 10px;
+}
+
+.liff-product-detail-before-price {
+  font-size: 12px;
 }
 
 .liff-product-card-price {

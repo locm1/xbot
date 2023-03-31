@@ -1,15 +1,10 @@
-export const showPaymentMethod = async (userId, setPaymentMethod) => {
+export const showPaymentMethod = async (userId, setIsLoading) => {
   return await axios.get(`/api/v1/users/${userId}/payments`)
   .then((response) => {
-    console.log(response.data.order_payment_methods);
-
-    if (response.data.order_payment_methods == null) {
-      setPaymentMethod({payment_method: 1});
-      return {payment_method: 1};
-    } else {
-      setPaymentMethod(response.data.order_payment_methods);
-      return response.data.order_payment_methods;
-    }
+    const order_payment_method = response.data.order_payment_methods
+    console.log(order_payment_method);
+    setIsLoading(false)
+    return order_payment_method;
   })
   .catch(error => {
       console.error(error);

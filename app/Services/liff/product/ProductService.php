@@ -9,7 +9,7 @@ class ProductService
 {
     public function index() 
     {
-        return Product::with('productImages')->where('is_undisclosed', 0)->get();
+        return Product::with(['productImages', 'productSale'])->where('is_undisclosed', 0)->get();
     }
 
     public function getCategoryByProduct(Product $product)

@@ -12,7 +12,7 @@ import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 
 export default (props) => {
-  const { paymentMethod, customer, ecommerceConfiguration } = props;
+  const { paymentMethod, ecommerceConfiguration, card } = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
@@ -25,7 +25,7 @@ export default (props) => {
         </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            <PaymentDetailItem paymentMethod={paymentMethod} customer={customer} ecommerceConfiguration={ecommerceConfiguration} />
+            <PaymentDetailItem paymentMethod={paymentMethod} ecommerceConfiguration={ecommerceConfiguration} card={card} />
           </ListGroup>
         </Card.Body>
       </Card>

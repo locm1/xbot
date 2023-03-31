@@ -2,9 +2,12 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import moment from "moment-timezone";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, TrashIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tab, Nav } from 'react-bootstrap';
+import { Col, Row, Form, Card, Image, Breadcrumb, Button, ListGroup, InputGroup, Tab, Nav } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import Select from 'react-select'
+import "flatpickr/dist/flatpickr.css";
+import Flatpickr from "react-flatpickr";
+import 'flatpickr/dist/l10n/ja.js';
 
 import { 
   showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts, 
@@ -13,6 +16,14 @@ import {
 import { getCategories, } from "@/pages/product/api/ProductCategoryApiMethods";
 
 export default () => {
+  const startOptions = {
+    locale: 'ja',
+    onChange: (selectedDates, dateStr, instance) => handleSaleChange(dateStr, 'start_date')
+  }
+  const endOptions = {
+    locale: 'ja',
+    onChange: (selectedDates, dateStr, instance) => handleSaleChange(dateStr, 'end_date')
+  }
   const { id } = useParams();
   const history = useHistory();
   const pathname = useLocation().pathname;
@@ -26,8 +37,14 @@ export default () => {
 
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '',
-    price: '', overview: '', is_undisclosed: 0, is_unlimited: 0, is_picked_up: 0,
+    price: 0, overview: '', is_undisclosed: 0, 
+    is_unlimited: 0, is_picked_up: 0
   });
+  const [productSale, setProductSale] = useState({
+    discount_rate: 0, start_date: '', end_date: ''
+  });
+  const discount_rate_decimal = productSale.discount_rate / 100.0
+  const sale_price = product.price - (product.price * discount_rate_decimal)
   const [categories, setCategories] = useState([]);
 
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -40,6 +57,11 @@ export default () => {
 
   const handleChange = (e, input) => {
     setProduct({...product, [input]: e.target.value})
+  };
+
+  const handleSaleChange = (e, input) => {
+    const value = (input == 'start_date' || input == 'end_date') ? e : e.target.value;
+    setProductSale({...productSale, [input]: value})
   };
 
   const onDrop = (acceptedFiles) => {
@@ -164,9 +186,10 @@ export default () => {
   }
 
   const onSaveProduct = () => {
+    Object.assign(product, productSale);
+    
     if (pathname.includes('/edit')) {
       updateProduct(id, product);
-
       // 画像削除stateに値があればAPI発火
       if (deleteProductImages.length > 0) {
         const params = {
@@ -213,7 +236,7 @@ export default () => {
 
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      showProduct(id, setProduct, setPrivate, setIsPickedUp);
+      showProduct(id, setProduct, setPrivate, setIsPickedUp, setProductSale);
       getProductImages(id, setProductImages);
       getRelatedProducts(id, setRelatedProducts);
     } else {
@@ -271,22 +294,23 @@ export default () => {
                   </div>
                     <Col xs={12} xl={12}>
                       <Row>
-                        <Col md={12} className="mb-3">
+                        <Col md={12} className="mb-4">
                           <Form.Group id="name">
                             <Form.Label>商品名</Form.Label>
                             <Form.Control required type="text" name="name" value={product.name} onChange={(e) => handleChange(e, 'name')} placeholder="シャンプー" />
                           </Form.Group>
                         </Col>
-                        <Col md={6} className="mb-3">
-                          <Form.Group id="price">
-                            <Form.Label>販売価格（税込）</Form.Label>
-                            <InputGroup>
-                              <Form.Control required type="number" name="price" value={product.price} onChange={(e) => handleChange(e, 'price')} placeholder="3000" />
-                              <InputGroup.Text>円</InputGroup.Text>
-                            </InputGroup>
+                        <Col md={4} className="mb-4">
+                          <Form.Group id="category">
+                            <Form.Label>カテゴリー</Form.Label>
+                            <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => {handleChange(e, 'product_category_id')}}>
+                              {
+                                categories.map((category, index) => <option key={`category-${index}`} value={category.id}>{category.name}</option>)
+                              }
+                            </Form.Select>
                           </Form.Group>
                         </Col>
-                        <Col md={6} className="mb-3">
+                        <Col md={2} className="mb-4">
                           <Form.Label>在庫数</Form.Label>
                           <InputGroup className="me-2 me-lg-3">
                             <InputGroup.Text className="d-flex">
@@ -304,17 +328,92 @@ export default () => {
                             />
                           </InputGroup>
                         </Col>
-                        <Col md={6} className="mb-3">
-                          <Form.Group id="category">
-                            <Form.Label>カテゴリー</Form.Label>
-                            <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => {handleChange(e, 'product_category_id')}}>
-                              {
-                                categories.map((category, index) => <option key={`category-${index}`} value={category.id}>{category.name}</option>)
-                              }
-                            </Form.Select>
+                      </Row>
+                      <Row>
+                        <Col md={2} className="mb-4">
+                          <Form.Group id="price">
+                            <Form.Label>販売価格（税込）</Form.Label>
+                            <InputGroup>
+                              <Form.Control required type="number" name="price" value={product.price} onChange={(e) => handleChange(e, 'price')} placeholder="3000" />
+                              <InputGroup.Text>円</InputGroup.Text>
+                            </InputGroup>
                           </Form.Group>
                         </Col>
-                        <Col md={12} className="mb-3">
+                        <Col md={2} className="mb-4">
+                          <Form.Group id="discountRate">
+                            <Form.Label>セール割引率（%）</Form.Label>
+                            <InputGroup>
+                              <Form.Control required type="number" name="discount_rate" value={productSale.discount_rate} onChange={(e) => handleSaleChange(e, 'discount_rate')} placeholder="10" />
+                              <InputGroup.Text>%</InputGroup.Text>
+                            </InputGroup>
+                          </Form.Group>
+                        </Col>
+                        <Col md={3} className="mb-4">
+                          <ListGroup className="list-group-flush mt-3">
+                            <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 mt-4">
+                              <div>
+                                <Card.Text className="h6">セール金額：￥{isNaN(sale_price) ? product.price.toLocaleString() : sale_price.toLocaleString()}</Card.Text>
+                              </div>
+                            </ListGroup.Item>
+                          </ListGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={2} className="mb-4">
+                          <Form.Group id="startDate">
+                            <Form.Label>開始日時</Form.Label>
+                            <Flatpickr
+                              options={ startOptions }
+                              value={productSale.start_date}
+                              render={(props, ref) => {
+                                return (
+                                  <InputGroup>
+                                  <InputGroup.Text>
+                                    <CalendarIcon className="icon icon-xs" />
+                                  </InputGroup.Text>
+                                  <Form.Control
+                                    data-enable-time
+                                    data-time_24hr
+                                    required
+                                    type="text"
+                                    placeholder="YYYY-MM-DD"
+                                    ref={ref}
+                                  />
+                                </InputGroup>
+                                );
+                              }}
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col md={2} className="mb-4">
+                          <Form.Group id="endDate">
+                            <Form.Label>終了日時</Form.Label>
+                            <Flatpickr
+                              options={ endOptions }
+                              value={productSale.end_date}
+                              render={(props, ref) => {
+                                return (
+                                  <InputGroup>
+                                  <InputGroup.Text>
+                                    <CalendarIcon className="icon icon-xs" />
+                                  </InputGroup.Text>
+                                  <Form.Control
+                                    data-enable-time
+                                    data-time_24hr
+                                    required
+                                    type="text"
+                                    placeholder="YYYY-MM-DD"
+                                    ref={ref}
+                                    />
+                                  </InputGroup>
+                                );
+                              }}
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={12} className="mb-4">
                           <Form.Group id="overview">
                             <Form.Label>商品概要</Form.Label>
                             <Form.Control as="textarea" rows="3" value={product.overview} onChange={(e) => handleChange(e, 'overview')} placeholder="商品の概要を入力してください" />

@@ -4,6 +4,7 @@ export const getProducts = async (setProducts) => {
   axios.get('/api/v1/products')
   .then((response) => {
     setProducts(response.data.products);
+    console.log(response.data.products);
   })
   .catch(error => {
       console.error(error);

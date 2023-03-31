@@ -6,6 +6,7 @@ import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
+import moment from "moment-timezone";
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
 
@@ -14,6 +15,7 @@ import { showProduct, getProductImages, getProductCategory } from "@/pages/liff/
 import { storeCart, searchCarts, updateCart } from "@/pages/liff/api/CartApiMethods";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { storeProductReservation } from "@/pages/liff/api/ProductReservationApiMethods";
+import { isSalePeriod } from "@/components/common/IsSalePeriod";
 
 export default () => {
   const location = useLocation().pathname;
@@ -21,6 +23,9 @@ export default () => {
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '', tax_rate: 10, 
     price: '', overview: '', is_undisclosed: 0, is_unlimited: 0, is_picked_up: 0,
+    product_sale: {
+      discount_rate: 0, start_date: '', end_date: ''
+    }
   });
   const [user, setUser] = useState({
     is_registered: 0
@@ -37,6 +42,8 @@ export default () => {
   const [carts, setCarts] = useState([]);
   const [itemsExistInCart, setItemsExistInCart] = useState(false);
   const quantities = [...Array(5).keys()].map(i => ++i)
+  const discount_rate_decimal = product.product_sale.discount_rate / 100.0
+  const sale_price = product.price - (product.price * discount_rate_decimal)
 
   const handleChange = (e, input) => {
     setFormValue({...formValue, [input]: e.target.value})
@@ -82,7 +89,22 @@ export default () => {
           {category.name}
         </div>
         <h3 className="fs-5 mb-0 liff-product-detail-name">{product.name}</h3>
-        <h4 className="liff-product-detail-price mt-2">￥{product.price.toLocaleString()}<span>税込</span></h4>
+        {
+          isSalePeriod(product.product_sale.start_date, product.product_sale.end_date) ? (
+            <>
+            <div className="d-flex flex-wrap">
+              <div className="liff-product-detail-sale mt-2 mb-2">{product.product_sale.discount_rate}%OFF</div>
+              <span className="text-decoration-line-through text-black-50 liff-product-detail-before-price m-2 mt-3">￥{product.price.toLocaleString()}</span>
+            </div>
+            <h4 className="fw-bold liff-product-detail-price text-danger mb-0">
+              ￥{isNaN(sale_price) ? price.toLocaleString() : Math.floor(sale_price).toLocaleString()}
+              <span>税込</span>
+            </h4>
+            </>
+          ) : (
+            <h4 className="liff-product-detail-price mt-2">￥{product.price.toLocaleString()}<span>税込</span></h4> 
+          )
+        }
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center list-wrap border-bottom border-top py-3 px-0 mt-4">
           <div className="px-3 pb-3">
             <h4 className="fs-6 text-dark mb-0">数量</h4>
@@ -96,11 +118,11 @@ export default () => {
           </div>
         </div>
         <div className="d-flex justify-content-between flex-wrap align-items-center py-4">
-          <Button onClick={saveReservation} variant="gray-800" className="mt-2 liff-product-detail-button">
+          {/* <Button onClick={saveReservation} variant="gray-800" className="mt-2 liff-product-detail-button">
             <InboxIcon className="icon icon-xs me-2" />
             取り置きする
-          </Button>
-          <Button variant="tertiary" onClick={saveCart} className="mt-2 liff-product-detail-button">
+          </Button> */}
+          <Button variant="tertiary" onClick={saveCart} className="mt-2 liff-product-detail-button w-100">
             <ShoppingCartIcon className="icon icon-xs me-2" />
             カートに入れる
           </Button>

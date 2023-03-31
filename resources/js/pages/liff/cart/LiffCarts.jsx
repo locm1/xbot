@@ -9,34 +9,68 @@ import noImage from "@img/img/noimage.jpg"
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
 import { LiffMockPlugin } from '@line/liff-mock';
+import LiffCartSlideCard from "@/pages/liff/cart/LiffCartSlideCard";
+import { isSalePeriod } from "@/components/common/IsSalePeriod";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
-import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
+import { getCarts, updateCart, deleteCart, storeRelatedProdcutInCart } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
   const location = useLocation().pathname;
   const history = useHistory();
   const [carts, setCarts] = useState([]);
-  const [total, setTotal] = useState(1);
+  const [orderTotal, setOrderTotal] = useState(1);
   const [totalCount, setTotalCount] = useState(1);
   const [user, setUser] = useState({
     is_registered: 0
   });
+  const [relatedProducts, setRelatedProducts] = useState([
+    {discount_price: '', related_product: {
+      name: '', price: '', product_images: [], product_sale: {
+        discount_rate: '', start_date: '', end_date: ''
+      }
+    }}
+  ]);
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
+  const [discountedTotalAmount, setDiscountedTotalAmount] = useState(0);
+  const total = orderTotal - discountedTotalAmount;
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');
     // getUser(idToken, setUser)
     //getCarts(101, setCarts, setItemsExistInCart)
-    getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
+    //getCarts(102, setCarts, setItemsExistInCart, setRelatedProducts)
+    getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart, setRelatedProducts))
   }, []);
 
   useEffect(() => {
-    setTotal(carts.reduce((cart, i) => cart + i.totalAmount, 0))
+    setOrderTotal(carts.reduce((cart, i) => cart + i.totalAmount, 0))
     setTotalCount(carts.reduce((cart, i) => cart + i.quantity, 0))
+
+    // セット割商品リストからカートにある商品IDで検索をかけ、ヒットした金額の合計値を出す
+    let resultRelatedProducts = [];
+    carts.forEach(cart => {
+      const related_product = relatedProducts.find((related_product) => related_product.related_product_id === cart.product_id)
+
+      if (typeof related_product !== "undefined") {
+        resultRelatedProducts.push(related_product)
+      }
+    })
+    setDiscountedTotalAmount(resultRelatedProducts.reduce((relatedProduct, i) => relatedProduct + i.discount_price, 0))
   }, [carts]);
+
+  const addCart = (e, id) => {
+    const currentRelatedProduct = relatedProducts.find((relatedProduct) => (relatedProduct.related_product_id === id))
+    e.preventDefault();
+    const formValue = {
+      product_id: id, quantity: 1, user_id: 101, product: currentRelatedProduct.related_product
+    }
+    storeRelatedProdcutInCart(user.id, formValue, setCarts, carts)
+    //storeRelatedProdcutInCart(101, formValue, setCarts, carts)
+  }
 
   const deleteCartCard = (id) => {
     setCarts(carts.filter((cart) => (cart.id !== id)));
+    setRelatedProducts(relatedProducts.filter((relatedProduct) => (relatedProduct.related_product_id !== id)));
     //deleteCart(101, id)
     deleteCart(user.id, id)
 
@@ -55,24 +89,18 @@ export default () => {
   }
 
   const CartItem = (props) => {
-    const { id, product_id, quantity, product } = props;
+    const { id, product_id, quantity, product, isSalePeriod } = props;
     const link = Paths.LiffProductDetail.path.replace(':id', product_id);
-    
-    const increaseQuantity = (id) => {
-      const targetCart = carts.find((cart) => (cart.id === id));
-      targetCart.quantity++;
-      targetCart.totalAmount = targetCart.product.price * targetCart.quantity;
-      setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
-      // updateCart(101, id, targetCart, location)
-      updateCart(user.id, id, targetCart, location)
-    }
+    const discount_rate_decimal = product.product_sale.discount_rate / 100.0
+    const sale_price = product.price - (product.price * discount_rate_decimal)
 
-    const decreaseQuantity = (id) => {
+    const calculateQuantity = (id, change) => {
+      const isSalePeriodResult = isSalePeriod(product.product_sale.start_date, product.product_sale.end_date)
       const targetCart = carts.find((cart) => (cart.id === id));
-      targetCart.quantity--;
-      targetCart.totalAmount = targetCart.product.price * targetCart.quantity;
+      change == 'increase' ? targetCart.quantity += 1 : targetCart.quantity -= 1
+      targetCart.totalAmount = isSalePeriodResult ? Math.floor(sale_price) * targetCart.quantity : targetCart.product.price * targetCart.quantity;
       setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
-      // updateCart(101, id, targetCart, location)
+      //updateCart(102, id, targetCart, location)
       updateCart(user.id, id, targetCart, location)
     }
 
@@ -95,7 +123,16 @@ export default () => {
             </Col>
             <Col xs="7" className="px-0 m-0">
               <h4 className="fs-6 text-dark mb-0">{product.name}</h4>
-              <h4 className="liff-product-detail-price mt-2">￥{product.price.toLocaleString()}<span>税込</span></h4>
+              <h4 className="liff-product-detail-price mt-2">
+                {
+                  isSalePeriod(product.product_sale.start_date, product.product_sale.end_date) ? (
+                    `￥${Math.floor(sale_price).toLocaleString()}`
+                  ) : (
+                    `￥${product.price.toLocaleString()}`
+                  )
+                }
+                <span>税込</span>
+              </h4>
               <p className="mt-3">{product.stock_quantity > 0 ? '在庫あり' : '在庫なしのため、商品をカートから削除してください'}</p>
             </Col>
           </Row>
@@ -106,7 +143,7 @@ export default () => {
               {(() => {
                 if (quantity >= 2) {
                   return (
-                    <InputGroup.Text onClick={() => decreaseQuantity(id)}>
+                    <InputGroup.Text onClick={() => calculateQuantity(id, 'decrease')}>
                       <MinusIcon className="icon icon-xs" />
                     </InputGroup.Text>
                   )
@@ -119,7 +156,7 @@ export default () => {
                 }
               })()}
               <span className="form-control">{quantity}</span>
-              <InputGroup.Text onClick={() => increaseQuantity(id)}>
+              <InputGroup.Text onClick={() => calculateQuantity(id, 'increase')}>
                 <PlusIcon className="icon icon-xs" />
               </InputGroup.Text>
             </InputGroup>
@@ -144,13 +181,34 @@ export default () => {
                 </Card.Header>
                 <Card.Body className="py-0">
                   <ListGroup className="list-group-flush">
-                    {carts.map(cart => <CartItem key={`cart-${cart.id}`} {...cart} />)}
+                    {carts.map(cart => <CartItem key={`cart-${cart.id}`} {...cart} isSalePeriod={isSalePeriod} />)}
                   </ListGroup>
                 </Card.Body>
               </Card>
-              <div className="d-flex justify-content-between flex-wrap align-items-center p-4 pt-3 pb-0">
-                <h4 className="fs-6 mb-0">商品合計</h4>
-                <h3 className="liff-product-detail-price mt-2">￥{total.toLocaleString()}</h3>
+              <LiffCartSlideCard relatedProducts={relatedProducts} addCart={addCart} />
+              <div className="p-4 pt-3 pb-0">
+                <ListGroup.Item className="bg-transparent p-3 px-0">
+                  <Row className="">
+                    <Col xs="7" className="px-0">
+                      <div className="m-1">
+                        <h4 className="fs-6 text-dark mb-0">商品合計</h4>
+                        <h4 className="fs-6 text-dark mb-0 mt-2">セット商品割引</h4>
+                        <h3 className="text-dark mb-0 mt-2 liff-pay-total-title">お支払い金額（税込）</h3>
+                      </div>
+                    </Col>
+                    <Col xs="5" className="">
+                      <div className="m-1 text-end">
+                        <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>
+                        { 
+                          discountedTotalAmount && (
+                            <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h4>
+                          )
+                        }
+                        <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {total.toLocaleString()}</h3>
+                      </div>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
               </div>
               <div className="d-flex justify-content-between flex-wrap align-items-center p-3 mb-4">
                 <Button as={Link} to={Paths.LiffProducts.path} variant="gray-800" className="mt-2 liff-product-detail-button">

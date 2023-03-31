@@ -32,6 +32,9 @@ class StoreProductRequest extends FormRequest
             'is_picked_up' => 'required|boolean',
             'is_undisclosed' => 'required|boolean',
             'is_unlimited' => 'required|boolean',
+            'discount_rate' => 'required|numeric|between:1,100',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
         ];
     }
 
@@ -46,6 +49,9 @@ class StoreProductRequest extends FormRequest
             'is_picked_up' => 'ピックアップ商品',
             'is_undisclosed' => '公開ステータス',
             'is_unlimited' => '在庫数無制限',
+            'discount_rate' => 'セール割引率',
+            'start_date' => '開始日時',
+            'end_date' => '終了日時',
         ];
     }
 }

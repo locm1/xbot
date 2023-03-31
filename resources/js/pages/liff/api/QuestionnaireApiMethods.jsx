@@ -17,7 +17,7 @@ export const getQuestionnaires = async (setQuestionnaires) => {
 };
 
 export const storeQuestionnaireAnswers = async (userId, questionnaires, setQuestionnaireErrors) => {
-  return await axios.post(`/api/v1/users/${userId}/questionnaire-answers`, questionnaires)
+  return await axios.post(`/api/v1/users/${userId}/user-deliveryaddress-questionnaireanswers`, questionnaires)
   .then((response) => {
     const questionnaire_answers = response.data.questionnaire_answers;
     console.log(questionnaire_answers);

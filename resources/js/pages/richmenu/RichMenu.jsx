@@ -352,9 +352,9 @@ export default () => {
     }
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
           <h1 className="page-title">リッチメニュー設定</h1>
-          {/* <Button onClick={() => console.log(formValue)} />
+          <Button onClick={() => console.log(formValue)} />
           <Button onClick={() => console.log(richMenu)} />
-          <Button onClick={() => console.log(ailias)} /> */}
+          <Button onClick={() => console.log(ailias)} />
           <Button href={Paths.RichMenus.path} className="mt-2 animate-up-2">一覧へ戻る</Button>
       </div>
       <Card border="0" className="shadow mb-4 rich-menu-content-wrap">

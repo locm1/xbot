@@ -22,9 +22,9 @@ class MessageItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Message $message)
+    public function index($message_id)
     {
-        $message_items = $this->message_item_service->getMessageItemsById($message);
+        $message_items = $this->message_item_service->getMessageItemsById($message_id);
         return response()->json(['message_items' => $message_items], 200);
     }
 

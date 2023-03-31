@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player'
 
 export default (props) => {
-  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems } = props;
+  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems, handleAddCarouselProductButtonClick, handleAddCarouselImageButtonClick } = props;
 
   const getDefaultActiveKey = (type) => {
     switch (type) {
@@ -16,7 +16,9 @@ export default (props) => {
       case 3:
         return 'movie'
       case 4:
-        return 'card'
+        return 'carousel-image'
+      case 5:
+        return 'carousel-product'
     }
   }
 
@@ -28,7 +30,7 @@ export default (props) => {
         <div className="product-preview-image d-flex">
           <Image src={messageItem.image_path} className="dropzone-image" />
           <Button variant="gray-800" className="product-image-button">
-            <XIcon className="icon icon-sm line-preview-image-icon" onClick={() => handlePictureImageDelete(messageItem.id, messageItem.type)} />
+            <XIcon className="icon icon-sm line-preview-image-icon" onClick={() => handlePictureImageDelete(messageItem.display_id, messageItem.type)} />
           </Button>
         </div>
       </Col>
@@ -50,7 +52,7 @@ export default (props) => {
             />
           </Form>
           <Button variant="gray-800" className="product-image-button">
-            <XIcon className="icon icon-sm line-preview-image-icon" onClick={() => handlePictureImageDelete(messageItem.id, messageItem.type)} />
+            <XIcon className="icon icon-sm line-preview-image-icon" onClick={() => handlePictureImageDelete(messageItem.display_id, messageItem.type)} />
           </Button>
         </div>
       </Col>
@@ -58,7 +60,7 @@ export default (props) => {
   };
 
   const addName = (id, value) => {
-    const currentMessageItem = messageItems.filter(messageItem => (messageItem.id === id))[0]
+    const currentMessageItem = messageItems.filter(messageItem => (messageItem.display_id === display_id))[0]
 
     let textarea = document.getElementById(`preview-text-${id}`);
     textarea.value = textarea.value.substr(0, textarea.selectionStart)
@@ -70,8 +72,36 @@ export default (props) => {
     currentMessageItem.video_path = null
     currentMessageItem.text = textarea.value
     
-    setMessageItems(messageItems.map((messageItem) => (messageItem.id === id ? currentMessageItem : messageItem)));
+    setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
   };
+
+  const handleDeleteCarouselImageClick = (display_id) => {
+    const newCarouselImages = messageItem.carousel_images.map(v => v.display_id == display_id ? {...v, is_deleted: true} : {...v});
+    const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_images: newCarouselImages} : {...v});
+    console.log(newMessageItems);
+    setMessageItems(newMessageItems);
+  }
+
+  const handleDeleteCarouselProductClick = (display_id) => {
+    const newCarouselProducts = messageItem.carousel_products.map(v => v.display_id == display_id ? {...v, is_deleted: true} : {...v});
+    const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_products: newCarouselProducts} : {...v});
+    console.log(newMessageItems);
+    setMessageItems(newMessageItems);
+  }
+
+  const handleCarouselImageChange = (e, display_id) => {
+    const newCarouselImages = messageItem.carousel_images.map(v => v.display_id == display_id ? {...v, [e.target.name]: e.target.value} : {...v});
+    const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_images: newCarouselImages} : {...v});
+    console.log(newMessageItems);
+    setMessageItems(newMessageItems);
+  }
+
+  const handleCarouselProductChange = (e, display_id) => {
+    const newCarouselProduct = messageItem.carousel_products.map(v => v.display_id == display_id ? {...v, [e.target.name]: e.target.value} : {...v});
+    const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_products: newCarouselProduct} : {...v});
+    console.log(newMessageItems);
+    setMessageItems(newMessageItems);
+  }
 
   return (
     <>
@@ -112,10 +142,20 @@ export default (props) => {
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="card" className="mb-sm-3 mb-md-0 message-editor-header-item">
+                  <Nav.Link eventKey="carousel-image" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="example"
-                      overlay={<Tooltip id="top" className="m-0">リッチーカード</Tooltip>}
+                      overlay={<Tooltip id="top" className="m-0">画像カルーセル</Tooltip>}
+                    >
+                      <PencilIcon className="icon icon-sm" />
+                    </OverlayTrigger>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="carousel-product" className="mb-sm-3 mb-md-0 message-editor-header-item">
+                    <OverlayTrigger 
+                      key="example"
+                      overlay={<Tooltip id="top" className="m-0">商品カルーセル</Tooltip>}
                     >
                       <PencilIcon className="icon icon-sm" />
                     </OverlayTrigger>
@@ -126,7 +166,7 @@ export default (props) => {
             {
               messageItems.length > 1 && (
                 <Col lg={2} className="d-flex justify-content-center">
-                  <div className="message-editor-header-item-right" onClick={() => handleDelete(messageItem.id)}>
+                  <div className="message-editor-header-item-right" onClick={() => handleDelete(messageItem.display_id)}>
                     <XIcon className="icon icon-sm" />
                   </div>
                 </Col>
@@ -140,16 +180,16 @@ export default (props) => {
                       as="textarea"
                       rows="5" 
                       placeholder="テキストを入力" 
-                      id={`preview-text-${messageItem.id}`} 
+                      id={`preview-text-${messageItem.display_id}`} 
                       value={messageItem.text} 
-                      onChange={(e) => handlePreviewChange(e, 'text', messageItem.id)} 
+                      onChange={(e) => handlePreviewChange(e, 'text', messageItem.display_id)} 
                     />
                   </Form.Group>
                   <div className="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center py-3">
-                    <Button onClick={() => addName(messageItem.id, '%friend_name%')} variant="primary" className="me-2">
+                    <Button onClick={() => addName(messageItem.display_id, '%friend_name%')} variant="primary" className="me-2">
                       友だちの表示名
                     </Button>
-                    <Button onClick={() => addName(messageItem.id, '%account_name%')} variant="primary" className="me-2">
+                    <Button onClick={() => addName(messageItem.display_id, '%account_name%')} variant="primary" className="me-2">
                       アカウント名
                     </Button>
                   </div>
@@ -162,7 +202,7 @@ export default (props) => {
                         name="file"
                         id="preview-picture" 
                         accept="image/*"
-                        onChange={(e) => handlePreviewChange(e, 'file', messageItem.id)} 
+                        onChange={(e) => handlePreviewChange(e, 'file', messageItem.display_id)} 
                       />
                     </Form>
                   ) : (
@@ -177,19 +217,104 @@ export default (props) => {
                         name="video"
                         accept="video/*"
                         id="preview-video" 
-                        onChange={(e) => handlePreviewChange(e, 'video', messageItem.id)} 
+                        onChange={(e) => handlePreviewChange(e, 'video', messageItem.display_id)} 
                       />
                     </Form>
                   ) : (
                     <VideoFile messageItem={messageItem} />
                   )} 
                 </Tab.Pane>
-                <Tab.Pane eventKey="card" className="py-4">
-                  <Card>
-                    <Card.Body>
-                      <Link to="#" className="">リッチカードを選択</Link>
-                    </Card.Body>
-                  </Card>
+                <Tab.Pane eventKey="carousel-image" className="py-4">
+                  {messageItem.carousel_images.map((v, k) => {
+                    if (v.is_deleted === false) { return (
+                      <Card key={`carousel_image${k}`} className="mb-4">
+                        {messageItem.carousel_images.filter(v => v.is_deleted === false).length > 0 &&
+                          <Col xs={12} className="d-flex justify-content-end">
+                            <div className="message-editor-header-item-right me-4 mt-2 position-absolute" onClick={() => handleDeleteCarouselImageClick(v.display_id)}>
+                              <XIcon className="icon icon-sm" />
+                            </div>
+                          </Col>
+                        }
+                        <Card.Body>
+                          <Row>
+                            <Col xs={6}>
+                              <Form.Label>画像</Form.Label>
+                              <Form.Control
+                                type="file"
+                                name="file"
+                                id="carousel-image-picture" 
+                                accept="image/*"
+                                onChange={(e) => handlePreviewChange(e, 'file', messageItem.display_id)} 
+                              />
+                            </Col>
+                            <Col xs={6}>
+                              <Form.Label>ラベル</Form.Label>
+                              <Form.Control name="label" value={v.label} onChange={(e) => handleCarouselImageChange(e, v.display_id)} />
+                            </Col>
+                            <Col xs={12}>
+                              <Form.Label className="mt-2">URL</Form.Label>
+                              <Form.Control name="uri" value={v.uri} onChange={(e) => handleCarouselImageChange(e, v.display_id)} />
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    )}
+                  })}
+                  <div className="d-flex justify-content-center mt-3">
+                    <Button onClick={() => handleAddCarouselImageButtonClick(messageItem.display_id)}>カルーセルを追加</Button>
+                  </div>
+                </Tab.Pane>
+                <Tab.Pane eventKey="carousel-product" className="py-4">
+                {messageItem.carousel_products.map((v, k) => 
+                  {
+                    if (v.is_deleted === false) {
+                      return (
+                        <Card key={`carousel_product${k}`} className="mb-4">
+                        {messageItem.carousel_products.filter(v => v.is_deleted === false).length > 1 &&
+                          <Col xs={12} className="d-flex justify-content-end">
+                            <div className="message-editor-header-item-right me-4 mt-2 position-absolute" onClick={() => handleDeleteCarouselProductClick(v.display_id)}>
+                              <XIcon className="icon icon-sm" />
+                            </div>
+                          </Col>
+                        }
+                          <Card.Body>
+                            <Row>
+                              <Col xs={6}>
+                                <Form.Label>画像</Form.Label>
+                                <Form.Control
+                                  type="file"
+                                  name="file"
+                                  id="carousel-image-picture" 
+                                  accept="image/*"
+                                  onChange={(e) => handlePreviewChange(e, 'file', messageItem.display_id)} 
+                                />
+                              </Col>
+                              <Col xs={6}>
+                                <Form.Label>タイトル</Form.Label>
+                                <Form.Control name="title" value={v.title} onChange={(e) => handleCarouselProductChange(e, v.display_id)} />
+                              </Col>
+                              <Col xs={12}>
+                                <Form.Label className="mt-2">テキスト</Form.Label>
+                                <Form.Control name="text" value={v.text} onChange={(e) => handleCarouselProductChange(e, v.display_id)} as="textarea" />
+                              </Col>
+                              <Col xs={6}>
+                                <Form.Label className="mt-2">ボタン名</Form.Label>
+                                <Form.Control name="label" value={v.label} onChange={(e) => handleCarouselProductChange(e, v.display_id)} />
+                              </Col>
+                              <Col xs={6}>
+                                <Form.Label className="mt-2">URL</Form.Label>
+                                <Form.Control name="uri" value={v.uri} onChange={(e) => handleCarouselProductChange(e, v.display_id)} />
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      )
+                    }
+                  }
+                )}
+                  <div className="d-flex justify-content-center mt-3">
+                    <Button onClick={() => handleAddCarouselProductButtonClick(messageItem.display_id)}>カルーセルを追加</Button>
+                  </div>
                 </Tab.Pane>
               </Tab.Content>
             </Col>

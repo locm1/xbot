@@ -17,4 +17,14 @@ class MessageItem extends Model
     {
         return $this->belongsTo(Message::class);
     }
+
+    public function CarouselImages()
+    {
+        return $this->hasMany(MessageItemCarouselImage::class);
+    }
+
+    public function CarouselProducts()
+    {
+        return $this->hasMany(MessageItemCarouselProduct::class);
+    }
 }

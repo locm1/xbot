@@ -2,13 +2,26 @@ export const getMessageItems = async (id, setMessageItems) => {
   return await axios.get(`/api/v1/management/messages/${id}/items`)
   .then((response) => {
     const message_items = response.data.message_items;
-    console.log(message_items);
 
     if (message_items.length > 0) {
-      setMessageItems(message_items);
+      let messageItems = message_items.map((v, k) => ({...v, display_id: k + 1}));
+      messageItems.forEach(item => {
+        if (!item.carousel_images.length) {
+          item.carousel_images = [{id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false}];
+        }
+        if (!item.carousel_products.length) {
+          item.carousel_products = [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}];
+        }
+      });
+      console.log(messageItems);
+      setMessageItems(messageItems);
     } else {
       setMessageItems([
-        {id: 1, type: 1, text: '', image_path: null, video_path: null}
+        {
+          display_id: 1, id: null, type: 1, text: '', image_path: null, video_path: null, 
+          carousel_images: [{id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false}],
+          carousel_products: [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]
+        }
       ]);
     }
   })

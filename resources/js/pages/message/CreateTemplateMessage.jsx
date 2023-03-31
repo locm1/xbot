@@ -20,7 +20,11 @@ export default () => {
     id: 1, title: '', is_undisclosed: 0
   });
   const [messageItems, setMessageItems] = useState([
-    {id: 1, type: 1, text: '', image_path: null, video_path: null}
+    {
+      display_id: 1, id: null, type: 1, text: '', image_path: null, video_path: null, 
+      carousel_images: [{id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false}],
+      carousel_products: [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]
+    }
   ]);
   const [updateImages, setUpdateImages] = useState([]);
   const [updateImageIds, setUpdateImageIds] = useState([]);
@@ -35,27 +39,27 @@ export default () => {
 
   const [messageDetailModal, setMessageDetailModal] = useState(false);
 
-  const handlePreviewChange = (e, input, id) => {
-    const currentMessageItem = messageItems.filter(messageItem => (messageItem.id === id))[0]
+  const handlePreviewChange = (e, input, display_id) => {
+    const currentMessageItem = messageItems.filter(messageItem => (messageItem.display_id === display_id))[0]
 
     if (input == 'text') {
       currentMessageItem.type = 1
       currentMessageItem.image_path = null
       currentMessageItem.video_path = null
       currentMessageItem.text = e.target.value
-      setMessageItems(messageItems.map((messageItem) => (messageItem.id === id ? currentMessageItem : messageItem)));
+      setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
     } else if (input == 'file') {
       currentMessageItem.type = 2
       currentMessageItem.text = ''
       currentMessageItem.video_path = null
       currentMessageItem.image_file = e.target.files[0]
       setUpdateImages([...updateImages, e.target.files[0]])
-      setUpdateImageIds([...updateImageIds, currentMessageItem.id])
+      setUpdateImageIds([...updateImageIds, currentMessageItem.display_id])
       
       const reader = new FileReader()
       reader.onload = (e) => {
         currentMessageItem.image_path = e.target.result
-        setMessageItems(messageItems.map((messageItem) => (messageItem.id === id ? currentMessageItem : messageItem)));
+        setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
       }
       reader.readAsDataURL(e.target.files[0])
     } else if (input == 'video') {
@@ -64,15 +68,25 @@ export default () => {
       currentMessageItem.image_path = null
       currentMessageItem.video_file = e.target.files[0]
       setUpdateVideos([...updateVideos, e.target.files[0]])
-      setUpdateVideoIds([...updateVideoIds, currentMessageItem.id])
+      setUpdateVideoIds([...updateVideoIds, currentMessageItem.display_id])
 
       currentMessageItem.video_path = URL.createObjectURL(e.target.files[0])
-      setMessageItems(messageItems.map((messageItem) => (messageItem.id === id ? currentMessageItem : messageItem)));
+      setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
+    } else if (input == 'carousel-image') {
+      currentMessageItem.type = 4
+      currentMessageItem.text = ''
+      currentMessageItem.image_path = null
+      currentMessageItem.video_file = e.target.files[0]
+      setUpdateVideos([...updateVideos, e.target.files[0]])
+      setUpdateVideoIds([...updateVideoIds, currentMessageItem.display_id])
+
+      currentMessageItem.video_path = URL.createObjectURL(e.target.files[0])
+      setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
     }
   }
 
-  const handlePictureImageDelete = (id, type) => {
-    const currentMessageItem = messageItems.filter(messageItem => (messageItem.id === id))[0]
+  const handlePictureImageDelete = (display_id, type) => {
+    const currentMessageItem = messageItems.filter(messageItem => (messageItem.display_id === display_id))[0]
 
     if (type == 2) {
       currentMessageItem.current_image_path = currentMessageItem.image_path
@@ -81,20 +95,22 @@ export default () => {
       currentMessageItem.current_video_path = currentMessageItem.video_path
       currentMessageItem.video_path = null
     }
-    setMessageItems(messageItems.map((messageItem) => (messageItem.id === id ? currentMessageItem : messageItem)));
+    setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
   }
 
-  const handleDelete = (id) => {
-    const currentMessageItem = messageItems.filter(messageItem => (messageItem.id === id))[0]
+  const handleDelete = (display_id) => {
+    const currentMessageItem = messageItems.filter(messageItem => (messageItem.display_id === display_id))[0]
     setMessageItems(
-      messageItems.filter((messageItem) => (messageItem.id !== id))
+      messageItems.filter((messageItem) => (messageItem.display_id !== display_id))
     )
     setDeleteMessageItems([...deleteMessageItems, currentMessageItem])
   };
 
   const addEditCard = () => {
     const lastMessageItem = messageItems.slice(-1)[0]
-    setMessageItems([...messageItems, {id: lastMessageItem.id + 1, type: 1, text: '', image_path: null, video_path: null}])
+    setMessageItems([...messageItems, {display_id: lastMessageItem.display_id + 1, id: null, type: 1, text: '', image_path: null, video_path: null,
+    carousel_images: [{id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false}],
+    carousel_products: [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]}])
   };
 
   const onSaveMessage = () => {
@@ -170,8 +186,21 @@ export default () => {
       `メッセージテンプレート情報の${message}に成功しました`,
       'success'
     )
-    setTimeout(() => location.reload(), 1000)
+    // setTimeout(() => location.reload(), 1000)
   } 
+
+  const handleAddCarouselProductButtonClick = (display_id) => {
+    const lastCarouselProductId = messageItems.map(v => v.display_id == display_id && v.carousel_products[v.carousel_products.length - 1].display_id)[messageItems.length - 1];
+    console.log(lastCarouselProductId);
+    const newMessageItems = messageItems.map(v => (v.display_id == display_id ? {...v, carousel_products: [...v.carousel_products, {id: null, display_id: lastCarouselProductId + 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]} : {...v}));
+    setMessageItems(newMessageItems);
+  }
+
+  const handleAddCarouselImageButtonClick = (display_id) => {
+    const lastCarouselImageId = messageItems.map(v => v.display_id == display_id && v.carousel_images[v.carousel_images.length - 1].display_id)[messageItems.length - 1];
+    const newMessageItems = messageItems.map(v => (v.display_id == display_id ? {...v, carousel_images: [...v.carousel_images, {id: null, display_id: lastCarouselImageId + 1, image_path: null, label: '', uri: '', is_deleted: false}]} : {...v}));
+    setMessageItems(newMessageItems);
+  }
 
   useEffect(() => {
     if (pathname.includes('/edit')) {
@@ -181,7 +210,7 @@ export default () => {
   }, []);
 
   return (
-    <>
+    <div className="fullscreenmaxwidth">
     <Button onClick={() => console.log(messageItems)} />
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
@@ -215,7 +244,7 @@ export default () => {
       </Row>
       {
         messageItems && messageItems.map((messageItem, index) => 
-          <div key={messageItem.id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
+          <div key={messageItem.display_id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
             <MessageEditor
               messageItem={messageItem}
               handleChange={handleChange}
@@ -224,6 +253,8 @@ export default () => {
               handleDelete={handleDelete}
               messageItems={messageItems}
               setMessageItems={setMessageItems}
+              handleAddCarouselProductButtonClick={handleAddCarouselProductButtonClick}
+              handleAddCarouselImageButtonClick={handleAddCarouselImageButtonClick}
             />
           </div>
         )
@@ -244,6 +275,6 @@ export default () => {
           <LinePreview previews={messageItems} />
         </div>
       </div>
-    </>
+    </div>
   );
 };

@@ -15,15 +15,16 @@ class MessageItemService
         $this->upsert_message_item_action = $upsert_message_item_action;
     }
 
-    public function getMessageItemsById(Message $message) 
+    public function getMessageItemsById($message_id) 
     {
-        return $message->messageItems;
+        return Message::with(['messageItems.CarouselImages', 'messageItems.CarouselProducts'])->find($message_id)->messageItems;
+        // return $message->messageItems->messageItemCarouselImage;
     }
 
     public function update($request, Message $message, $method) 
     {
-        $merged_message_items = $this->upsert_message_item_action->updateFiles($request, $message, $method);
-        return MessageItem::upsert($merged_message_items, ['id']);
+        return $this->upsert_message_item_action->updateFiles($request, $message, $method);
+        // return MessageItem::upsert($merged_message_items, ['id']);
     }
 
     public function destroy($request) 

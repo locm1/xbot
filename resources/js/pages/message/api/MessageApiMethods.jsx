@@ -85,7 +85,7 @@ export const deleteMessage = async (id, deleteComplete, setMessages, messages) =
 };
 
 export const sendMulticastMessage = async (data) => {
-  axios.post('/api/v1/management/send-multicast-message', data)
+  return axios.post('/api/v1/management/send-multicast-message', data)
   .then((response) => {
     response.data ? completeMessage(data.timing == 0 ? '配信' : '予約') : failedMessage(data.timing == 0 ? '配信' : '予約')
   })

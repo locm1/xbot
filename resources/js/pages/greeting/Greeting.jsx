@@ -122,7 +122,7 @@ export default () => {
       `あいさつメッセージの${message}に成功しました`,
       'success'
     )
-    setTimeout(() => location.reload(), 1000)
+    // setTimeout(() => location.reload(), 1000)
   } 
 
   useEffect(() => {

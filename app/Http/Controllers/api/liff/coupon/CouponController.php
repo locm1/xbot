@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\liff\coupon;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\liff\coupon\StoreCouponRequest;
 use App\Models\User;
 use App\Services\liff\coupon\CouponService;
 use Illuminate\Http\Request;
@@ -21,21 +22,22 @@ class CouponController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, User $user)
+    public function index(User $user)
     {
-        $coupons = $this->coupon_service->index($request, $user);
+        $coupons = $this->coupon_service->index($user);
         return response()->json(['coupons' => $coupons], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreCouponRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCouponRequest $request, User $user)
     {
-        //
+        $coupon = $this->coupon_service->store($request, $user);
+        return response()->json(['coupon' => $coupon], 200);
     }
 
     /**

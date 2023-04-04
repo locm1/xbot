@@ -62,12 +62,22 @@ class User extends Authenticatable
      */
     public function coupons()
     {
-        return $this->belongsToMany(Coupons::class);
+        return $this->belongsToMany(Coupons::class, 'coupon_user');
     }
 
     public function userTags()
     {
         return $this->belongsToMany(UserTag::class, 'tag_user');
+    }
+
+    /**
+     * The roles that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function couponOwnerships()
+    {
+        return $this->belongsToMany(Coupon::class, 'coupon_ownership');
     }
 
     public function carts()

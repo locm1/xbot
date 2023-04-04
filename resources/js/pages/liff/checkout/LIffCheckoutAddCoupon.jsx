@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
-import { ChevronLeftIcon, SearchIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 
@@ -10,15 +10,17 @@ import { CouponDetailItem } from "@/pages/liff/LiffCardItem";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
-import { searchCoupons } from "@/pages/liff/api/CouponApiMethods";
+import { getCouponOwnerships, storeCouponOwnership } from "@/pages/liff/api/CouponApiMethods";
 
 export default (props) => {
-  const { paymentMethod, ecommerceConfiguration, card } = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const [couponCode, setCouponCode] = useState();
-  const [coupons, setCoupons] = useState({});
+  const history = useHistory();
+  const [couponCode, setCouponCode] = useState('');
+  const [coupons, setCoupons] = useState([]);
+  const [selectId, setSelectId] = useState();
+  const [error, setError] = useState('');
 
   const handleClick = () => {
     const searchParams = {
@@ -26,8 +28,58 @@ export default (props) => {
         code: couponCode
       }
     };
-    searchCoupons(88, searchParams, setCoupons);
+    storeCouponOwnership(102, {code: couponCode}, coupons, setCoupons, setError)
+    //searchCoupons(88, searchParams, setCoupons);
   };
+
+  const handleEnterClick = (e) => {
+    if (e.key == 'Enter') {
+      handleClick()
+    }
+  };
+
+  const saveCoupon = () => {
+    const selectCoupon = coupons.find(coupon => coupon.id === selectId)
+    console.log(selectCoupon);
+    history.push(Paths.LiffCheckout.path, {coupon: selectCoupon})
+  };
+
+  useEffect(() => {
+    const idToken = Cookies.get('TOKEN');
+    // getUser(idToken, setUser)
+    //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
+    getCouponOwnerships(102, setCoupons)
+  }, []);
+
+  const CouponCard = (props) => {
+    const { id, name, discount_price } = props;
+
+    return (
+      <>
+      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+      <Row className="">
+          <Col xs="2" className="mt-4">
+            <Form.Check
+              type="radio"
+              name="coupon_owner"
+              value={id}
+              checked={id === selectId}
+              id={id}
+              htmlFor={id}
+              onChange={() => setSelectId(id)}
+            />
+          </Col>
+          <Col xs="8" className="px-0">
+            <div className="m-1">
+              <h4 className="fs-5 text-dark mb-0">{name}</h4>
+              <h4 className="fs-6 text-dark mt-1">{discount_price}%割引</h4>
+            </div>
+          </Col>
+        </Row>
+      </ListGroup.Item>
+      </>
+    );
+  }
 
   return (
     <>
@@ -57,10 +109,16 @@ export default (props) => {
                     </InputGroup.Text>
                     <Form.Control
                       type="text"
+                      name="coupon_code"
                       placeholder="クーポンコードを入力する"
                       value={couponCode}
+                      isInvalid={couponCode !== '' && error !== ''}
                       onChange={(e) => setCouponCode(e.target.value)}
+                      onKeyPress={(e) => handleEnterClick(e)}
                     />
+                    {
+                      <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+                    }
                   </InputGroup>
                 </Col>
                 {
@@ -76,15 +134,19 @@ export default (props) => {
                 }
               </Row>
             </div>
-            {/* <ListGroup className="list-group-flush">
+            <div>
+              <h5 className="fs-5 liff-product-detail-name mb-0">利用可能なクーポン</h5>
+              <small className="mt-1">1件のご注文で1回限り有効です</small>
+            </div>
+            <ListGroup className="list-group-flush">
               {
-                payments.map((payment, index) => 
-                  <PaymentCard key={`payment-${index + 1}`} title={payment} value={index + 1} />
+                coupons && coupons.map((coupon, index) => 
+                  <CouponCard key={`coupon-${index + 1}`} {...coupon} />
                 )
               }
-            </ListGroup>  */}
+            </ListGroup> 
             <div className="align-items-center my-4">
-              <Button variant="tertiary" className="w-100 p-3">
+              <Button onClick={saveCoupon} variant="tertiary" className="w-100 p-3">
                 変更する
               </Button>
             </div>

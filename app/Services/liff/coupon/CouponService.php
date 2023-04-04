@@ -4,6 +4,7 @@ namespace App\Services\liff\coupon;
 
 use App\Models\Cart;
 use App\Models\Coupon;
+use App\Models\CouponOwnership;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
@@ -15,8 +16,15 @@ use Illuminate\Support\Facades\Log;
 
 class CouponService
 {
-    public function index($request, User $user)
+    public function index(User $user)
     {
-        return $user->coupons;
+        return $user->couponOwnerships;
+    }
+
+    public function store($request, User $user)
+    {
+        $coupon = Coupon::where('code', $request->code)->first();
+        $user->couponOwnerships()->attach($coupon->id);
+        return $coupon;
     }
 }

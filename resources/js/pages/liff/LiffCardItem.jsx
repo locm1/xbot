@@ -54,7 +54,12 @@ export const CartItem = (props) => {
 }
 
 export const OrderDetailItem = (props) => {
-  const { total, orderTotal, postage, paymentMethod, ecommerceConfiguration, discountedTotalAmount } = props;
+  const { 
+    total, orderTotal, postage, paymentMethod, 
+    ecommerceConfiguration, discountedTotalAmount, coupon 
+  } = props;
+  const discount_rate_decimal = coupon.discount_price / 100.0
+  const discount_amount = orderTotal * discount_rate_decimal
 
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
@@ -62,14 +67,15 @@ export const OrderDetailItem = (props) => {
         <Col xs="7" className="px-0">
           <div className="m-1">
             <h4 className="fs-6 text-dark mb-0">商品合計</h4>
-            {postage && <h4 className="fs-6 text-dark mb-0 mt-1">送料</h4>}
+            {postage !== 0 && <h4 className="fs-6 text-dark mb-0 mt-1">送料</h4>}
             { 
               paymentMethod && paymentMethod.payment_method == 2 && (
                 <h4 className="fs-6 text-dark mb-0 mt-1">代金引換手数料</h4>
               )
             }
+            {coupon.id && <h4 className="fs-6 text-dark mb-0 mt-1">クーポン割引</h4>}
             { 
-              discountedTotalAmount && (
+              discountedTotalAmount !== 0 && (
                 <h4 className="fs-6 text-dark mb-0 mt-1">セット商品割引</h4>
               )
             }
@@ -79,18 +85,22 @@ export const OrderDetailItem = (props) => {
         <Col xs="5" className="">
           <div className="m-1 text-end">
             {orderTotal && <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>}
-            {postage && <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h4>}
+            {postage !== 0 && <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h4>}
             { 
-              paymentMethod && paymentMethod.payment_method == 2 && (
-                <h4 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h4>
-              )
+              paymentMethod && paymentMethod.payment_method == 2 && 
+              <h4 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h4>
+            }
+            {
+              coupon.id && 
+              <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">
+                - ￥ {isNaN(discount_amount) ? 0 : Math.floor(discount_amount).toLocaleString()}
+              </h4>
             }
             { 
-              discountedTotalAmount && (
-                <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h4>
-              )
+              discountedTotalAmount !== 0 && 
+              <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h4>
             }
-            <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {total.toLocaleString()}</h3>
+            <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {Math.floor(total).toLocaleString()}</h3>
           </div>
         </Col>
       </Row>
@@ -99,7 +109,7 @@ export const OrderDetailItem = (props) => {
 }
 
 export const CouponDetailItem = (props) => {
-  const { paymentMethod, ecommerceConfiguration, page, card } = props;
+  const { coupon } = props;
   const location = useLocation().pathname;
 
   const getColButton = (location) => {
@@ -120,8 +130,19 @@ export const CouponDetailItem = (props) => {
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
         <Col xs={getColButton(location).colSize} className="px-0">
-          <div className="m-1 mt-3">
-            <h4 className="fs-6 text-dark">クーポンを追加する</h4>
+          <div className="m-1">
+            {
+              coupon.id ? (
+                <>
+                  <h4 className="fs-6 text-dark">{coupon.name}</h4>
+                  <div className="liff-checkout-payment-title">
+                    {coupon.discount_price}%の割引
+                  </div>
+                </>
+              ) : (
+                <h4 className="fs-6 text-dark">クーポンを追加する</h4>
+              )
+            }
           </div>
         </Col>
         {

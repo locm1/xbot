@@ -30,6 +30,10 @@ export default () => {
   const [updateImageIds, setUpdateImageIds] = useState([]);
   const [updateVideos, setUpdateVideos] = useState([]);
   const [updateVideoIds, setUpdateVideoIds] = useState([]);
+  const [updateCarouselImageImages, setUpdateCarouselImageImages] = useState([]);
+  const [updateCarouselImageImageIds, setUpdateCarouselImageImageIds] = useState([]);
+  const [updateCarouselProductImages, setUpdateCarouselProductImages] = useState([]);
+  const [updateCarouselProductImageIds, setUpdateCarouselProductImageIds] = useState([]);
   const [deleteMessageItems, setDeleteMessageItems] = useState([]);
   const [isUndisclosed, setIsUndisclosed] = useState(false);
 
@@ -39,7 +43,7 @@ export default () => {
 
   const [messageDetailModal, setMessageDetailModal] = useState(false);
 
-  const handlePreviewChange = (e, input, display_id) => {
+  const handlePreviewChange = (e, input, display_id, carousel_display_id = null) => {
     const currentMessageItem = messageItems.filter(messageItem => (messageItem.display_id === display_id))[0]
 
     if (input == 'text') {
@@ -73,22 +77,24 @@ export default () => {
       currentMessageItem.video_path = URL.createObjectURL(e.target.files[0])
       setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
     } else if (input == 'carousel-image') {
-      currentMessageItem.type = 4
-      currentMessageItem.text = ''
-      currentMessageItem.image_path = null
-      currentMessageItem.video_file = e.target.files[0]
-      setUpdateVideos([...updateVideos, e.target.files[0]])
-      setUpdateVideoIds([...updateVideoIds, currentMessageItem.display_id])
-
-      currentMessageItem.video_path = URL.createObjectURL(e.target.files[0])
-      setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
+      setUpdateCarouselImageImages([...updateImages, e.target.files[0]])
+      setUpdateCarouselImageImageIds([...updateImageIds, display_id + '-' + carousel_display_id])
+      const image_path = URL.createObjectURL(e.target.files[0])
+      const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? {...messageItem, carousel_images: (messageItem.carousel_images.map(v => v.display_id == carousel_display_id ? {...v, image_path: image_path} : {...v}))} : {...messageItem})));
+      setMessageItems(data);
+    } else if (input == 'carousel-product') {
+      setUpdateCarouselProductImages([...updateImages, e.target.files[0]])
+      setUpdateCarouselProductImageIds([...updateImageIds, display_id + '-' + carousel_display_id])
+      const image_path = URL.createObjectURL(e.target.files[0])
+      const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? {...messageItem, carousel_products: (messageItem.carousel_products.map(v => v.display_id == carousel_display_id ? {...v, image_path: image_path} : {...v}))} : {...messageItem})));
+      setMessageItems(data);
     }
   }
 
   const handlePictureImageDelete = (display_id, type) => {
     const currentMessageItem = messageItems.filter(messageItem => (messageItem.display_id === display_id))[0]
 
-    if (type == 2) {
+    if (type == 2 || type == 4) {
       currentMessageItem.current_image_path = currentMessageItem.image_path
       currentMessageItem.image_path = null
     } else if (type == 3) {
@@ -122,6 +128,10 @@ export default () => {
       formData.append("message_items", JSON.stringify(messageItems));
       updateImages.forEach((updateImage) => formData.append("images[]", updateImage));
       updateImageIds.forEach((updateImageId) => formData.append("image_ids[]", updateImageId));
+      updateCarouselImageImages.forEach((updateImage) => formData.append("carousel_image_images[]", updateImage));
+      updateCarouselImageImageIds.forEach((updateImageId) => formData.append("carousel_image_image_ids[]", updateImageId));
+      updateCarouselProductImages.forEach((updateImage) => formData.append("carousel_product_images[]", updateImage));
+      updateCarouselProductImageIds.forEach((updateImageId) => formData.append("carousel_product_image_ids[]", updateImageId));
       updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
       updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
       updateMessageItems(id, formData)
@@ -190,14 +200,23 @@ export default () => {
   } 
 
   const handleAddCarouselProductButtonClick = (display_id) => {
-    const lastCarouselProductId = messageItems.map(v => v.display_id == display_id && v.carousel_products[v.carousel_products.length - 1].display_id)[messageItems.length - 1];
-    console.log(lastCarouselProductId);
+    let lastCarouselProductId;
+    messageItems.forEach(v => {
+      if (v.display_id == display_id) {
+        lastCarouselProductId = v.carousel_products[v.carousel_products.length - 1].display_id
+      }
+    });
     const newMessageItems = messageItems.map(v => (v.display_id == display_id ? {...v, carousel_products: [...v.carousel_products, {id: null, display_id: lastCarouselProductId + 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]} : {...v}));
     setMessageItems(newMessageItems);
   }
 
   const handleAddCarouselImageButtonClick = (display_id) => {
-    const lastCarouselImageId = messageItems.map(v => v.display_id == display_id && v.carousel_images[v.carousel_images.length - 1].display_id)[messageItems.length - 1];
+    let lastCarouselImageId;
+    messageItems.forEach(v => {
+      if (v.display_id == display_id) {
+        lastCarouselImageId = v.carousel_images[v.carousel_images.length - 1].display_id
+      }
+    });
     const newMessageItems = messageItems.map(v => (v.display_id == display_id ? {...v, carousel_images: [...v.carousel_images, {id: null, display_id: lastCarouselImageId + 1, image_path: null, label: '', uri: '', is_deleted: false}]} : {...v}));
     setMessageItems(newMessageItems);
   }

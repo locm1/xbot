@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player'
 
 export default (props) => {
-  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems, handleAddCarouselProductButtonClick, handleAddCarouselImageButtonClick } = props;
+  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems,
+     handleAddCarouselProductButtonClick, handleAddCarouselImageButtonClick } = props;
 
   const getDefaultActiveKey = (type) => {
     switch (type) {
@@ -29,9 +30,9 @@ export default (props) => {
       <Col xs={6} className="dropzone-preview line-preview-image-wrap">
         <div className="product-preview-image d-flex">
           <Image src={messageItem.image_path} className="dropzone-image" />
-          <Button variant="gray-800" className="product-image-button">
+          {/* <Button variant="gray-800" className="product-image-button">
             <XIcon className="icon icon-sm line-preview-image-icon" onClick={() => handlePictureImageDelete(messageItem.display_id, messageItem.type)} />
-          </Button>
+          </Button> */}
         </div>
       </Col>
     );
@@ -91,28 +92,32 @@ export default (props) => {
 
   const handleCarouselImageChange = (e, display_id) => {
     const newCarouselImages = messageItem.carousel_images.map(v => v.display_id == display_id ? {...v, [e.target.name]: e.target.value} : {...v});
-    const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_images: newCarouselImages} : {...v});
+    const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_images: newCarouselImages, type: 4} : {...v});
     console.log(newMessageItems);
     setMessageItems(newMessageItems);
   }
 
   const handleCarouselProductChange = (e, display_id) => {
     const newCarouselProduct = messageItem.carousel_products.map(v => v.display_id == display_id ? {...v, [e.target.name]: e.target.value} : {...v});
-    const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_products: newCarouselProduct} : {...v});
+    const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_products: newCarouselProduct, type: 5} : {...v});
     console.log(newMessageItems);
     setMessageItems(newMessageItems);
+  }
+
+  const handleTabClick = (type) => {
+    setMessageItems(prev => prev.map(v => v.display_id == messageItem.display_id ? {...v, type: type} : {...v}))
   }
 
   return (
     <>
     <div className="message-editor-wrap">
       <div className="message-editor-header">
-        <Tab.Container defaultActiveKey={getDefaultActiveKey(messageItem.type)}>
+        <Tab.Container activeKey={getDefaultActiveKey(messageItem.type)}>
           <Row>
             <Col lg={10} className="d-flex justify-content-start">
               <Nav>
-                <Nav.Item>
-                  <Nav.Link eventKey="text" className="mb-sm-3 mb-md-0 message-editor-header-item">
+                <Nav.Item onClick={() => handleTabClick(1)}>
+                  <Nav.Link eventKey="text"  className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="text"
                       overlay={<Tooltip id="top" className="m-0">テキスト</Tooltip>}
@@ -121,7 +126,7 @@ export default (props) => {
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item onClick={() => handleTabClick(2)}>
                   <Nav.Link eventKey="picture" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="example"
@@ -131,7 +136,7 @@ export default (props) => {
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item onClick={() => handleTabClick(3)}>
                   <Nav.Link eventKey="movie" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="example"
@@ -141,7 +146,7 @@ export default (props) => {
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item onClick={() => handleTabClick(4)}>
                   <Nav.Link eventKey="carousel-image" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="example"
@@ -151,7 +156,7 @@ export default (props) => {
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item onClick={() => handleTabClick(5)}>
                   <Nav.Link eventKey="carousel-product" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="example"
@@ -226,7 +231,7 @@ export default (props) => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="carousel-image" className="py-4">
                   {messageItem.carousel_images.map((v, k) => {
-                    if (v.is_deleted === false) { return (
+                    if (v.is_deleted !== true) { return (
                       <Card key={`carousel_image${k}`} className="mb-4">
                         {messageItem.carousel_images.filter(v => v.is_deleted === false).length > 0 &&
                           <Col xs={12} className="d-flex justify-content-end">
@@ -244,12 +249,15 @@ export default (props) => {
                                 name="file"
                                 id="carousel-image-picture" 
                                 accept="image/*"
-                                onChange={(e) => handlePreviewChange(e, 'file', messageItem.display_id)} 
+                                onChange={(e) => handlePreviewChange(e, 'carousel-image', messageItem.display_id, v.display_id)} 
                               />
                             </Col>
                             <Col xs={6}>
                               <Form.Label>ラベル</Form.Label>
                               <Form.Control name="label" value={v.label} onChange={(e) => handleCarouselImageChange(e, v.display_id)} />
+                            </Col>
+                            <Col xs={12} className="mt-3">
+                              <DropzoneFile messageItem={v} />
                             </Col>
                             <Col xs={12}>
                               <Form.Label className="mt-2">URL</Form.Label>
@@ -284,14 +292,17 @@ export default (props) => {
                                 <Form.Control
                                   type="file"
                                   name="file"
-                                  id="carousel-image-picture" 
+                                  id="carousel-product-picture" 
                                   accept="image/*"
-                                  onChange={(e) => handlePreviewChange(e, 'file', messageItem.display_id)} 
+                                  onChange={(e) => handlePreviewChange(e, 'carousel-product', messageItem.display_id, v.display_id)} 
                                 />
                               </Col>
                               <Col xs={6}>
                                 <Form.Label>タイトル</Form.Label>
                                 <Form.Control name="title" value={v.title} onChange={(e) => handleCarouselProductChange(e, v.display_id)} />
+                              </Col>
+                              <Col xs={12} className="mt-3">
+                                <DropzoneFile messageItem={v} />
                               </Col>
                               <Col xs={12}>
                                 <Form.Label className="mt-2">テキスト</Form.Label>

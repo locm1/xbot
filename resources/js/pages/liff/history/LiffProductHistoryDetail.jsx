@@ -47,9 +47,19 @@ export default () => {
     last_name: order.last_name, first_name: order.first_name, zipcode: order.zipcode, prefecture: order.prefecture, 
     city: order.city, address: order.address, building_name: order.building_name, tel: order.tel
   }
-  const discount_rate_decimal = coupon.discount_price / 100.0
-  const discount_amount = order.order_total * discount_rate_decimal
-  const total = (paymentMethod.payment_method == 1) ? order.order_total + order.shipping_fee - discountedTotalAmount - discount_amount : order.order_total + order.shipping_fee + ecommerceConfiguration.cash_on_delivery_fee - discountedTotalAmount - discount_amount;
+
+  const getTotal = (amount) => {
+    if (coupon) {
+      const discount_rate_decimal = coupon.discount_price / 100.0
+      const discount_amount = order.order_total * discount_rate_decimal
+      return amount - discount_amount;  
+    } 
+
+    return amount;
+  }
+
+  const amount = (paymentMethod.payment_method == 1) ? order.order_total + order.shipping_fee - discountedTotalAmount : order.order_total + order.shipping_fee + ecommerceConfiguration.cash_on_delivery_fee - discountedTotalAmount
+  const total = getTotal(amount)
 
   const getStatus = (status) => {
     switch (status) {
@@ -75,6 +85,7 @@ export default () => {
         showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount)
       })
     })
+
     //getOrders(101, setOrders)
   }, []);
 

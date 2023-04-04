@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import '@splidejs/splide/css';
+import Swal from "sweetalert2";
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
@@ -81,12 +82,25 @@ export default () => {
     const formValue = {
       order: order, order_products: products, charge: charge
     }
-    storeOrder(user.id, formValue, storeComplete, setIsLoading)
+    storeOrder(user.id, formValue, storeComplete, setIsLoading, failedStore)
+    .then(response => {
+      failedStore(response.message)
+    });
     // storeOrder(101, formValue, storeComplete, setIsLoading)
   }
 
   const storeComplete = () => {
     history.push(Paths.LiffOrderComplete.path);
+  }
+
+  const failedStore = (message) => {
+    Swal.fire(
+      `エラー`,
+      message,
+      'error'
+    ).then((result) => {
+      result.isConfirmed && history.push(Paths.LiffCarts.path);
+    })
   }
 
   useEffect(() => {

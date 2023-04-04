@@ -2,6 +2,7 @@
 
 namespace App\Services\liff\order;
 
+use App\Mail\OrderMail;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderProduct;
@@ -9,9 +10,11 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\liff\order\SearchOrderAction;
 use App\Services\api\payjp\charge\ChargeService;
+use App\Services\liff\mail\OrderMailService;
 use App\Services\liff\product\ProductService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
@@ -19,18 +22,21 @@ class OrderService
     private $charge_service;
     private $search_order_action;
     private $product_service;
+    private $order_mail_service;
 
     public function __construct(
         FormatOrderAction $format_order_action, 
         ChargeService $charge_service,
         SearchOrderAction $search_order_action,
-        ProductService $product_service
+        ProductService $product_service,
+        OrderMailService $order_mail_service
     )
     {
         $this->format_order_action = $format_order_action;
         $this->charge_service = $charge_service;
         $this->search_order_action = $search_order_action;
         $this->product_service = $product_service;
+        $this->order_mail_service = $order_mail_service;
     }
 
     public function index($request, User $user)
@@ -64,6 +70,9 @@ class OrderService
 
             # カートに保存された商品在庫数の変更
             $this->product_service->update($merged_order_products);
+
+            # 注文メール送信
+            $this->order_mail_service->sendOrderMail($order, $merged_order_products);
 
             DB::commit();
         } catch (\Exception $e) {

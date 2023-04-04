@@ -35,6 +35,9 @@ export const ProductsTable = (props) => {
     return (
       <tr className={`border-bottom product-table-tr ${is_undisclosed == 1 ? "bg-gray-200" : ""}`}>
         <td>
+          <span className="fw-normal">{id}</span>
+        </td>
+        <td>
           <div className="d-flex align-items-center">
             <Image src={getImages(product_images[0])} className="me-3 product-image"/>
             <div className="fw-bold product-name">
@@ -82,6 +85,7 @@ export const ProductsTable = (props) => {
         <Table hover>
           <thead>
             <tr>
+              <th className="border-gray-200">商品ID</th>
               <th className="border-gray-200">商品名</th>
               <th className="border-gray-200">カテゴリー</th>
               <th className="border-gray-200">販売価格</th>

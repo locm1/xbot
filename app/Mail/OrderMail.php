@@ -18,9 +18,16 @@ class OrderMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+
+    public $email;
+    public $order;
+    public $order_products;
+
+    public function __construct($email, $order, $order_products)
     {
-        //
+        $this->email = $email;
+        $this->order = $order;
+        $this->order_products = $order_products;
     }
 
     /**
@@ -31,7 +38,9 @@ class OrderMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'さんが注文しました！',
+            subject: '新しい注文がありました',
+            from: 'fukushi1998@gmail.com',
+            to: $this->email,
         );
     }
 
@@ -43,7 +52,7 @@ class OrderMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            text: 'email.order_mail',
         );
     }
 

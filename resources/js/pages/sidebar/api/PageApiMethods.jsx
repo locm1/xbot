@@ -2,7 +2,6 @@ export const getPages = async (setPages) => {
   axios.get('/api/v1/management/pages')
   .then((response) => {
     setPages(response.data.pages)
-    console.log(response.data.pages);
   })
   .catch(error => {
       console.error(error);

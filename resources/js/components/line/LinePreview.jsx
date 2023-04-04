@@ -59,6 +59,45 @@ export default (props) => {
     }
   };
 
+
+  const ShowCarouselImage = (props) => {
+    return (
+      <div className="overflow-x-scroll d-flex">
+        <div className="d-flex">
+          {(props.preview.carousel_images.map(v => 
+              <div className="for-img me-3">
+                <Image src={v.image_path} width="330" height="330" className="rounded" />
+                <div className="line-label">
+                  {v.label}
+                </div>  
+              </div>
+            ))}
+        </div>
+      </div>
+    )
+  };
+
+  const ShowCarouselProduct = (props) => {
+    return (
+      <div className="overflow-x-scroll d-flex">
+        <div className="d-flex">
+          {(props.preview.carousel_products.map(v => 
+              <div className="product-card me-3 rounded">
+                <Image src={v.image_path} width="300" height="195" className="" />
+                <div className="product-labels">
+                  <div className="product-label-title">{v.title}</div>
+                  <div className="product-label-label">{v.text}</div>
+                </div>  
+                <div className="product-buttons">
+                  <div className="product-button">{v.label}</div>
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
+    )
+  };
+
   const ShowPicture = (props) => {
     if (props.preview.image_path) {
       return (
@@ -88,6 +127,10 @@ export default (props) => {
         return <ShowPicture preview={preview} />
       case 3:
         return <ShowVideo preview={preview} />
+      case 4:
+        return <ShowCarouselImage preview={preview} />
+      case 5:
+        return <ShowCarouselProduct preview={preview} />
       default:
         return <ShowText preview={preview} />
     }

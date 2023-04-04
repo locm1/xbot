@@ -37,7 +37,8 @@ export default () => {
       params: {time: e.target.value}
     };
     console.log(searchParams);
-    searchOrders(101, searchParams, setOrders);
+    searchOrders(user.id, searchParams, setOrders);
+    // searchOrders(101, searchParams, setOrders);
   };
 
   useEffect(() => {

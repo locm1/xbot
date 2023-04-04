@@ -27,6 +27,7 @@ use App\Models\OrderDestination;
 use App\Models\OrderHistory;
 use App\Models\OrderPaymentMethod;
 use App\Models\OrderProduct;
+use App\Models\ProductSale;
 use App\Models\Questionnaire;
 use App\Models\QuestionnaireAnswer;
 use App\Models\QuestionnaireAnswerItem;
@@ -74,7 +75,9 @@ class DatabaseSeeder extends Seeder
         PrivilegeItem::factory(20)->create();
         UserTag::factory(5)->create();
         ProductCategory::factory(10)->create();
-        Product::factory(50)->create();
+        Product::factory(50)->create()->each(function($product) {
+            ProductSale::factory()->create(['product_id' => $product->id]);
+        });
         ProductImage::factory(200)->create();
         ProductContent::factory(70)->create();
         EventUser::factory(50)->create();

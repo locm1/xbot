@@ -16,10 +16,11 @@ export default (props) => {
       </div>
       <div className="d-flex flex-wrap justify-content-evenly">
         {products && products.map((product, index) => 
-          <div key={index} className="flex-grow-2 liff-product-card-list-wrap">
+          <div key={`liff-product-card-${index}`} className="flex-grow-2 liff-product-card-list-wrap">
             <LiffProductCard {...product} key={index} />
           </div>
         )}
+        {products && products.length % 2 !== 0 && (<div className="flex-grow-2 liff-product-card-list-wrap"></div>)}
       </div>
     </div>
   );

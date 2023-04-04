@@ -8,11 +8,15 @@ import Cookies from 'js-cookie';
 
 import cartData from "@/data/carts";
 import { CartItem, OrderDetailItem } from "@/pages/liff/LiffCardItem";
+import { isSalePeriod } from "@/components/common/IsSalePeriod";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart } from "@/pages/liff/api/CartApiMethods";
 
 export default (props) => {
-  const { carts, createOrder, orderTotal, total, postage, ecommerceConfiguration, paymentMethod, discountedTotalAmount } = props;
+  const { 
+    carts, createOrder, orderTotal, total, postage, ecommerceConfiguration, 
+    paymentMethod, discountedTotalAmount, coupon 
+  } = props;
   const [user, setUser] = useState({
     is_registered: 0
   });
@@ -37,7 +41,6 @@ export default (props) => {
   }, []);
 
   const getDeliveryTimeItem = (delivery_time) => {
-    console.log(delivery_time);
     if (delivery_time == 1) {
       setSpecificTime('日時指定なし')
     } else if (2 <= delivery_time && delivery_time < 9) {
@@ -95,6 +98,7 @@ export default (props) => {
               paymentMethod={paymentMethod}
               ecommerceConfiguration={ecommerceConfiguration}
               discountedTotalAmount={discountedTotalAmount}
+              coupon={coupon}
             />
           </ListGroup>
         </Card.Body>

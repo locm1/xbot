@@ -37,4 +37,9 @@ class Product extends Model
     {
         return $this->hasMany(RelatedProduct::class);
     }
+
+    public function productSale()
+    {
+        return $this->hasOne(ProductSale::class);
+    }
 }

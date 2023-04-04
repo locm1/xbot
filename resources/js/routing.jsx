@@ -6,6 +6,7 @@ import liff from '@line/liff';
 import { LiffMockPlugin } from '@line/liff-mock';
 import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 import { generateEnv } from '@/components/common/GenerateEnv';
+import { getLiffIdToken, clearExpiredIdToken } from '@/components/common/LiffInit';
 
 // page
 import SignIn from "@/pages/auth/Signin"
@@ -63,6 +64,7 @@ import LiffCheckoutAddAddress from '@/pages/liff/checkout/LiffCheckoutAddAddress
 import LiffCheckoutDelivery from '@/pages/liff/checkout/LiffCheckoutDelivery';
 import LiffCheckoutPaymentSelect from '@/pages/liff/checkout/LiffCheckoutPaymentSelect';
 import LiffCheckoutPaymentCreditCard from '@/pages/liff/checkout/LiffCheckoutPaymentCreditCard';
+import LIffCheckoutAddCoupon from '@/pages/liff/checkout/LIffCheckoutAddCoupon';
 import LiffPrivacyPolicy from '@/pages/liff/LiffPrivacyPolicy';
 import LiffTermsOfService from '@/pages/liff/LiffTermsOfService';
 import LiffSpecificTrades from '@/pages/liff/LiffSpecificTrades';
@@ -207,44 +209,6 @@ const LiffRoute = ({ component: Component, ...rest }) => {
   );
 }
 
-const getLiffIdToken = () => {
-  liff.init({
-    liffId: process.env.MIX_LIFF_ID
-  })
-  .then(() => {
-    const idToken = liff.getIDToken();
-    Cookies.set('TOKEN', idToken, { expires: 1/24 })
-  }); 
-};
-
-const getLiffLocalStorageKeys = (prefix) => {
-  const keys = []
-  for (var i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i)
-    if (key.indexOf(prefix) === 0) {
-      keys.push(key)
-    }
-  }
-  return keys
-}
-
-const clearExpiredIdToken = (liffId) => {
-  const keyPrefix = `LIFF_STORE:${liffId}:`
-  const key = keyPrefix + 'decodedIDToken'
-  const decodedIDTokenString = localStorage.getItem(key)
-  if (!decodedIDTokenString) {
-    return
-  }
-  const decodedIDToken = JSON.parse(decodedIDTokenString)
-  // 有効期限をチェック
-  if (new Date().getTime() > decodedIDToken.exp * 1000) {
-      const keys = getLiffLocalStorageKeys(keyPrefix)
-      keys.forEach(function(key) {
-        localStorage.removeItem(key)
-      })
-  }
-}
-
 const LiffInitRoute = () => {
   const search = useLocation().search;
   const query = new URLSearchParams(search);
@@ -382,6 +346,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
       <LiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
       <LiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
+      <LiffRoute exact path={Paths.LIffCheckoutAddCoupon.path} component={LIffCheckoutAddCoupon} />
       <LiffRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
       <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />

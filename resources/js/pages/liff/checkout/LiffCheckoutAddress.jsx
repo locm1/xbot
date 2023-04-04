@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
@@ -22,10 +22,8 @@ export default () => {
     const updateAddress = deliveryAddresses.find((deliveryAddress) => deliveryAddress.id === selectId);
     updateAddress.is_selected = 1
     console.log(updateAddress);
-    updateOrderDestinations(user.id, updateAddress.id)
-    updateOrderDestination(user.id, updateAddress.id, updateAddress, updateComplete)
-    // updateOrderDestinations(101, updateAddress.id)
-    // updateOrderDestination(101, updateAddress.id, updateAddress, updateComplete)
+    updateOrderDestinations(user.id).then(response => updateOrderDestination(user.id, updateAddress.id, updateAddress, updateComplete))
+    //updateOrderDestination(user.id, updateAddress.id, updateAddress, updateComplete)
   }
 
   const updateComplete = () => {
@@ -79,6 +77,16 @@ export default () => {
     <>
       <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
+        <div className="">
+          <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
+            <div className="">
+              <span className="link-arrow">
+                <ChevronLeftIcon className="icon icon-sm" />
+              </span>
+            </div>
+            <h2 className="fs-6 fw-bold mb-0 ms-2">戻る</h2>
+          </Link>
+        </div>
         <div className="liff-product-list">
           <Card border="0" className="shadow">
             <Card.Header className="border-bottom">

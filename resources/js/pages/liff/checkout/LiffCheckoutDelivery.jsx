@@ -6,13 +6,11 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 
-import addresses from "@/data/deliveryAddresses";
-
 export default () => {
   const history = useHistory();
   const deliveries = ['指定なし', '日時指定'];
-  const [selectValue, setSelectValue] = useState(1);
   const [deliveryTime, setDeliveryTime] = useState(1);
+  const [selectDeliveryTime, setSelectDeliveryTime] = useState(1)
 
   const deliveryTimes = [
     {id: 1, title: '午前中', value: 2},
@@ -25,12 +23,28 @@ export default () => {
   ];
 
   const handleClick = () => {
-    if (selectValue == 2) {
+    if (selectDeliveryTime == 2) {
       Cookies.set('delivery_time', deliveryTime, { expires: 1 })
     } else {
-      Cookies.set('delivery_time', selectValue, { expires: 1 })
+      Cookies.set('delivery_time', selectDeliveryTime, { expires: 1 })
     }
     history.push(Paths.LiffCheckout.path);
+  }
+
+  useEffect(() => {
+    const delivery_time = Cookies.get('delivery_time')
+    getDeliveryTimeItem(delivery_time)
+  }, []);
+
+  const getDeliveryTimeItem = (delivery_time) => {
+    if (delivery_time == 1) {
+      setSelectDeliveryTime(1)
+    } else if (2 <= delivery_time && delivery_time < 9) {
+      setSelectDeliveryTime(2)
+      setDeliveryTime(delivery_time)
+    } else {
+      setSelectDeliveryTime(1)
+    }
   }
 
   const DeliveryCard = (props) => {
@@ -43,18 +57,18 @@ export default () => {
           <Col xs="12" className="">
             <Form.Check
               type="radio"
-              checked={value === selectValue}
+              checked={value === selectDeliveryTime}
               value={value}
               label={title}
               name="delivery"
               id={`delivery-${value}`}
               htmlFor={`delivery-${value}`}
-              onChange={() => setSelectValue(value)}
+              onChange={() => setSelectDeliveryTime(value)}
             />
           </Col>
         </Row>
       </ListGroup.Item>
-      {value == 2 && selectValue == 2 && (
+      {value == 2 && selectDeliveryTime == 2 && (
         <Row className="mt-3">
           <Col xs={12} className="mb-3">
             <Form.Group id="firstName">

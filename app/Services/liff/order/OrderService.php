@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\liff\order\SearchOrderAction;
 use App\Services\api\payjp\charge\ChargeService;
+use App\Services\liff\product\ProductService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -17,16 +18,19 @@ class OrderService
     private $format_order_action;
     private $charge_service;
     private $search_order_action;
+    private $product_service;
 
     public function __construct(
         FormatOrderAction $format_order_action, 
         ChargeService $charge_service,
-        SearchOrderAction $search_order_action
+        SearchOrderAction $search_order_action,
+        ProductService $product_service
     )
     {
         $this->format_order_action = $format_order_action;
         $this->charge_service = $charge_service;
         $this->search_order_action = $search_order_action;
+        $this->product_service = $product_service;
     }
 
     public function index($request, User $user)
@@ -34,7 +38,7 @@ class OrderService
         if ($request->time) {
             return $this->search_order_action->search($request->time, $user);
         }
-        return Order::with('orderProducts.product.productImages')->where('user_id', $user->id)->get();
+        return Order::where('user_id', $user->id)->with(['orderProducts.product.productImages', 'orderProducts.product.productSale', 'coupon'])->get();
     }
 
     public function store($request, User $user)
@@ -58,6 +62,9 @@ class OrderService
             # ユーザーに紐づくカート情報の削除
             $user->carts()->delete();
 
+            # カートに保存された商品在庫数の変更
+            $this->product_service->update($merged_order_products);
+
             DB::commit();
         } catch (\Exception $e) {
             if ($order['payment_method'] == 1) {
@@ -74,6 +81,6 @@ class OrderService
 
     public function show(Order $order)
     {
-        return Order::with('orderProducts.product.productImages')->find($order->id);
+        return Order::with(['orderProducts.product.productImages', 'orderProducts.product.productSale', 'coupon'])->find($order->id);
     }
 }

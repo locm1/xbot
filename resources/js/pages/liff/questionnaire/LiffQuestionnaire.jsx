@@ -63,35 +63,22 @@ export default () => {
     }
   };
 
-  const onSaveUser = () => {
-    formValue.is_registered = 1
-    console.log(formValue);
-    //updateUser(100, formValue, setErrors)
-    updateUser(user.id, formValue, setErrors)
-  };
-
-  const onSaveOrderDestination = () => {
-    console.log(location);
-    formValue.is_selected = 1
-    console.log(formValue);
-    storeOrderDestination(user.id, formValue, location)
-    // storeOrderDestination(101, formValue)
-  };
-
   const onSaveQuestionnaireAnswers = () => {
+    formValue.is_selected = 1
     const newQuestionnaires = questionnaires.filter((questionnaire, index) => {
       return questionnaire.answer
     });
     console.log(newQuestionnaires);
-    storeQuestionnaireAnswers(user.id, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
+    Object.assign(formValue, {questionnaires: newQuestionnaires});
+    storeQuestionnaireAnswers(user.id, formValue, setQuestionnaireErrors)
     //storeQuestionnaireAnswers(100, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
   };
 
   const handleClick = () => {
     formValue.birth_date = formValue.year + '-' + formValue.month + '-' + formValue.day
     formValue.building_name += ' ' + formValue.room_number
-    onSaveUser()
-    onSaveOrderDestination()
+    formValue.is_registered = 1
+    console.log(formValue);
     onSaveQuestionnaireAnswers()
   };
 
@@ -112,44 +99,6 @@ export default () => {
     }
     setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? targetQuestionnaire : questionnaire)));
   };
-
-  const getLiffIdToken = () => {
-    liff.init({
-      liffId: process.env.MIX_LIFF_ID
-    })
-    .then(() => {
-      const idToken = liff.getIDToken();
-      Cookies.set('TOKEN', idToken, { expires: 1/24 })
-    }); 
-  };
-  
-  const getLiffLocalStorageKeys = (prefix) => {
-    const keys = []
-    for (var i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i)
-      if (key.indexOf(prefix) === 0) {
-        keys.push(key)
-      }
-    }
-    return keys
-  }
-  
-  const clearExpiredIdToken = (liffId) => {
-    const keyPrefix = `LIFF_STORE:${liffId}:`
-    const key = keyPrefix + 'decodedIDToken'
-    const decodedIDTokenString = localStorage.getItem(key)
-    if (!decodedIDTokenString) {
-      return
-    }
-    const decodedIDToken = JSON.parse(decodedIDTokenString)
-    // 有効期限をチェック
-    if (new Date().getTime() > decodedIDToken.exp * 1000) {
-        const keys = getLiffLocalStorageKeys(keyPrefix)
-        keys.forEach(function(key) {
-          localStorage.removeItem(key)
-        })
-    }
-  }
 
   useEffect(() => {
     const idToken = Cookies.get('TOKEN');

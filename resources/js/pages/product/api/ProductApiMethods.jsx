@@ -54,12 +54,13 @@ export const storeProduct = async (formValue, storeProductImages, storeImages) =
 };
 
 
-export const showProduct = async (id, setProduct, setPrivate, setIsPickedUp) => {
+export const showProduct = async (id, setProduct, setPrivate, setIsPickedUp, setProductSale) => {
   axios.get(`/api/v1/management/products/${id}`)
   .then((response) => {
     const product = response.data.product;
     console.log(product);
     setProduct(product)
+    setProductSale(product.product_sale)
     setPrivate(product.is_undisclosed == 1 ? true : false)
     setIsPickedUp(product.is_picked_up == 1 ? true : false)
   })

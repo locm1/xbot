@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\liff\cart\CartController;
+use App\Http\Controllers\api\liff\coupon\CouponController as LiffCouponController;
 use App\Http\Controllers\api\liff\ec_configuration\EcommerceConfigurationController as LiffEcommerceConfigurationController;
 use App\Http\Controllers\api\liff\order\OrderController as LiffOrderController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
@@ -200,8 +201,9 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('products/{product}/images', [LiffProductImageController::class, 'index']);
     Route::get('products/{product}/category', LiffProductCategoryController::class);
     Route::apiResource('users', LiffUserController::class);
+    Route::apiResource('users/{user}/coupons', LiffCouponController::class);
     Route::apiResource('users/{user}/carts', CartController::class);
-    Route::post('users/{user}/questionnaire-answers', LiffQuestionnaireAnswerController::class);
+    Route::post('users/{user}/user-deliveryaddress-questionnaireanswers', LiffQuestionnaireAnswerController::class);
     Route::apiResource('users/{user}/destinations', LiffOrderDestinationController::class);
     Route::put('users/{user}/destinations', UpdateOrderDestinationController::class);
     Route::get('users/{user}/selected-destination', SelectedOrderDestinationController::class);

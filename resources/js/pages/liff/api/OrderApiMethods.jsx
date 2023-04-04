@@ -39,13 +39,15 @@ export const storeOrder = async (userId, formValue, storeComplete, setIsLoading)
   });
 };
 
-export const showOrder = async (userId, id, setOrder) => {
+export const showOrder = async (userId, id, setOrder, setCoupon, setDiscountedTotalAmount) => {
   return await axios.get(`/api/v1/users/${userId}/orders/${id}`)
   .then((response) => {
     const order = response.data.order
     const order_products = order.order_products.map(order_product => ({ ...order_product, totalAmount: order_product.product.price * order_product.quantity }));
     const orderTotal = order_products.reduce((cart, i) => cart + i.totalAmount, 0);
     setOrder({...order, order_total: orderTotal})
+    setDiscountedTotalAmount(order.discount_price)
+    setCoupon(order.coupon)
     console.log({...order, order_total: orderTotal});
     return {...order, order_total: orderTotal};
     //setIsLoading(false);

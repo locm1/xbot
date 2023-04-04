@@ -29,23 +29,16 @@ export default () => {
     is_registered: 0
   });
   const [payments, setPayments] = useState([]);
-  //const payments = ['クレジットカード', '代金引き換え'];
   const [selectCardId, setSelectCardId] = useState();
   const [ecommerceConfiguration, setEcommerceConfiguration] = useState();
 
   const onClick = () => {
+    console.log(paymentMethod.payment_method);
     setIsLoading(true);
     if ('id' in paymentMethod) {
-      console.log(paymentMethod);
-
       if (paymentMethod.payment_method == 1) {
-        const formvalue = {
-          payjp_customer_id: paymentMethod.payjp_customer_id, card_id: selectCardId
-        }
-        //updateCustomer(101, formvalue)
-        updateCustomer(user.id, formvalue)
+        paymentMethod.payjp_default_card_id = selectCardId
       }
-
       updatePaymentMethod(user.id, paymentMethod.id, paymentMethod, onSaveComplete)
       //updatePaymentMethod(101, paymentMethod.id, paymentMethod, onSaveComplete)
     } else {
@@ -67,12 +60,14 @@ export default () => {
     setIsLoading(true);
     const idToken = Cookies.get('TOKEN');
     getUser(idToken, setUser).then(response => {
-      showPaymentMethod(response.id, setPaymentMethod).then(
+      showPaymentMethod(response.id, setIsLoading).then(
         response => {
-          getCards(response.id, response.payjp_customer_id, setCreditCards)
-          getCustomer(response.id, response.payjp_customer_id, setCustomer, setIsLoading).then(
-            response => setSelectCardId(response.default_card.id)
-          )
+          setPaymentMethod(response == null ? {payment_method: 1} : response)
+          setSelectCardId(response.payjp_default_card_id)
+          response.payjp_customer_id && getCards(response.id, response.payjp_customer_id, setCreditCards)
+          // getCustomer(response.id, response.payjp_customer_id, setCustomer, setIsLoading).then(
+          //   response => setSelectCardId(response.default_card.id)
+          // )
         }
       )
     })

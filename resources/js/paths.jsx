@@ -65,6 +65,7 @@ export const Paths = {
     LiffCheckoutDelivery: { path: "/checkout/delivery" },
     LiffCheckoutPayment: { path: "/checkout/payment" },
     LiffCheckoutPaymentCreditCard: { path: "/checkout/payment/creditcard" },
+    LIffCheckoutAddCoupon: { path: "/checkout/coupon" },
     LiffOrderComplete: { path: "/order/complete" },
     LiffPrivacyPolicy: { path: "/privacy-policy" },
     LiffTermsOfService: { path: "/terms-of-service" },

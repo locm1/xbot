@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
+import { LoadingContext } from "@/components/LoadingContext";
 
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod, updatePaymentMethod, storePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
@@ -12,6 +13,7 @@ import { storeCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { storeCard } from "@/pages/liff/api/CardApiMethods";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState();
   const [user, setUser] = useState({
@@ -19,9 +21,12 @@ export default () => {
   });
 
   useEffect(() => {
+    setIsLoading(true)
     const idToken = Cookies.get('TOKEN');
     showCreditCardForm()
-    getUser(idToken, setUser).then(response => showPaymentMethod(response.id, setPaymentMethod))
+    getUser(idToken, setUser).then(
+      response => showPaymentMethod(response.id, setIsLoading).then(response => setPaymentMethod(response))
+    )
     //showPaymentMethod(101, setPaymentMethod)
   }, []);
 

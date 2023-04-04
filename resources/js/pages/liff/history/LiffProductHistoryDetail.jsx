@@ -30,21 +30,26 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const [paymentMethod, setPaymentMethod] = useState({
-    payment_method: 1
+  const [coupon, setCoupon] = useState({
+    discount_price: 0
   });
-  const [customer, setCustomer] = useState({
-    id: '', default_card: {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
+  const [paymentMethod, setPaymentMethod] = useState({
+    payment_method: 1, payjp_default_card_id: ''
   });
   const [ecommerceConfiguration, setEcommerceConfiguration] = useState({
     cash_on_delivery_fee: '', is_enabled: 1, 
   });
+  const [discountedTotalAmount, setDiscountedTotalAmount] = useState([
+    {discount_price: ''}
+  ]);
   const [card, setCard] = useState({brand: '', card_number: '', exp_month: '', exp_year: '', name: ''});
   const deliveryAddress = {
     last_name: order.last_name, first_name: order.first_name, zipcode: order.zipcode, prefecture: order.prefecture, 
     city: order.city, address: order.address, building_name: order.building_name, tel: order.tel
   }
-  const total = (paymentMethod.payment_method == 1) ? order.order_total + order.shipping_fee : order.order_total + order.shipping_fee + ecommerceConfiguration.cash_on_delivery_fee;
+  const discount_rate_decimal = coupon.discount_price / 100.0
+  const discount_amount = order.order_total * discount_rate_decimal
+  const total = (paymentMethod.payment_method == 1) ? order.order_total + order.shipping_fee - discountedTotalAmount - discount_amount : order.order_total + order.shipping_fee + ecommerceConfiguration.cash_on_delivery_fee - discountedTotalAmount - discount_amount;
 
   const getStatus = (status) => {
     switch (status) {
@@ -64,12 +69,11 @@ export default () => {
     const idToken = Cookies.get('TOKEN');
     getEcommerceConfiguration(setEcommerceConfiguration)
     getUser(idToken, setUser).then(response => {
-      showPaymentMethod(response.id, setPaymentMethod).then(
-        payment_response => {
-          showOrder(response.id, id, setOrder).then(response => showCard(101, payment_response.payjp_customer_id, response.payjp_card_id, setCard))  
-          getCustomer(response.id, payment_response.payjp_customer_id, setCustomer, setIsLoading)
-        }
-      )
+      showPaymentMethod(response.id, setIsLoading).then(payment_response => {
+        setPaymentMethod(payment_response)
+        payment_response.payjp_default_card_id && showCard(response.id, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard)
+        showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount)
+      })
     })
     //getOrders(101, setOrders)
   }, []);
@@ -103,6 +107,8 @@ export default () => {
               postage={order.shipping_fee}
               paymentMethod={paymentMethod}
               ecommerceConfiguration={ecommerceConfiguration}
+              coupon={coupon}
+              discountedTotalAmount={discountedTotalAmount}
             />
           </ListGroup>
           <div className="align-items-center my-4">
@@ -138,7 +144,6 @@ export default () => {
             <ListGroup className="list-group-flush">
               <PaymentDetailItem
                 paymentMethod={paymentMethod}
-                customer={customer}
                 ecommerceConfiguration={ecommerceConfiguration}
                 page="purchase-history"
                 card={card}

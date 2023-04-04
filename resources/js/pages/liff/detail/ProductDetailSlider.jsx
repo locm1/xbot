@@ -48,7 +48,7 @@ export default (props) => {
       >
         {productImages && productImages.map((image, index) => 
           <SplideSlide>
-            <Image rounded src={image.image_path} className="slide-img" />
+            <Image src={image.image_path} className="slide-img" />
           </SplideSlide>
         )}
       </Splide>
@@ -59,7 +59,7 @@ export default (props) => {
       >
         {productImages && productImages.map((image, index) => 
           <SplideSlide className="thumbnail-slide-img">
-            <Image rounded src={image.image_path} className="slide-img" />
+            <Image src={image.image_path} className="slide-img" />
           </SplideSlide>
         )}
       </Splide>

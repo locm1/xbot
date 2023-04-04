@@ -25,6 +25,7 @@ class OrderProductFactory extends Factory
         return [
             'product_id' => fake()->randomElement($product_ids),
             'quantity' => fake()->numberBetween(1, 100000),
+            'price' => fake()->numberBetween(100, 1000000),
             'order_id' => fake()->randomElement($order_ids),
         ];
     }

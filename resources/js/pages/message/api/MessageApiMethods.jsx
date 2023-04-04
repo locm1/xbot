@@ -88,6 +88,7 @@ export const sendMulticastMessage = async (data) => {
   return axios.post('/api/v1/management/send-multicast-message', data)
   .then((response) => {
     response.data ? completeMessage(data.timing == 0 ? '配信' : '予約') : failedMessage(data.timing == 0 ? '配信' : '予約')
+    console.log(response);
   })
   .catch(error => {
       failedMessage(data.timing == 0 ? '配信' : '予約')

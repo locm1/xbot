@@ -43,7 +43,7 @@ class SendMulticastMessageService
 
     public function send($template_id, $user_line_ids): Response
     {
-        $messages = Message::find($template_id)->messageItems()->get();
+        $messages = Message::with(['messageItems.CarouselImages', 'messageItems.CarouselProducts'])->find($template_id)->messageItems;
         $create_message = new CreateMessageByTypeService($this->bot, $messages);
         $multi_message_builder = new MultiMessageBuilder();
         if (count($user_line_ids) > 500) {

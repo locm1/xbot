@@ -10,7 +10,13 @@ use LINE\LINEBot\MessageBuilder;
 use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
 use LINE\LINEBot\MessageBuilder\VideoMessageBuilder;
 use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselColumnTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 
 class CreateMessageByTypeService 
 {
@@ -28,6 +34,8 @@ class CreateMessageByTypeService
     {
         $url = secure_url('');
         foreach ($this->messages as $message) {
+            $column_builder = null;
+            $action_builder = null;
             switch ($message->type) {
                 case 1:
                     $text_message_builder_action = new TextMessageBuilderAction($this->bot, $this->user_id);
@@ -40,6 +48,25 @@ class CreateMessageByTypeService
                 case 3:
                     $video_url = $url .$message->video_path;
                     $message_builder = new VideoMessageBuilder($video_url, $video_url);
+                    break;
+                case 4:
+                    $carousel_images = $message->carouselImages;
+                    foreach ($carousel_images as $k => $v) {
+                        $action_builder = new UriTemplateActionBuilder($v->label, $v->uri);
+                        $column_builder[] = new ImageCarouselColumnTemplateBuilder("https://satonoca-web.com/wp-content/uploads/2020/09/1.414-1-300-212.png", $action_builder);
+                    }
+                    $carousel_builder = new ImageCarouselTemplateBuilder($column_builder);
+                    $message_builder = new TemplateMessageBuilder('新着メッセージがあります', $carousel_builder);
+                    break;
+                case 5:
+                    $carousel_products = $message->carouselProducts;
+                    foreach ($carousel_products as $k => $v) {
+                        $action_builder = null;
+                        $action_builder[] = new UriTemplateActionBuilder($v->label, $v->uri);
+                        $column_builder[] = new CarouselColumnTemplateBuilder($v->title, $v->text, "https://satonoca-web.com/wp-content/uploads/2020/09/1.414-1-300-212.png", $action_builder);
+                    }
+                    $carousel_builder = new CarouselTemplateBuilder($column_builder);
+                    $message_builder = new TemplateMessageBuilder('新着メッセージがあります', $carousel_builder);
                     break;
             }
             $multi_message_builder->add($message_builder);

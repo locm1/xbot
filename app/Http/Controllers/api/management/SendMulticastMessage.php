@@ -19,12 +19,12 @@ class SendMulticastMessage extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request) :bool
+    public function __invoke(Request $request)
     {
         $service = new SendMulticastMessageService;
         $send_message_id = $service->insert($request->templateId, $request->userIds, $request->timing, $request->searchTerms);
         if ($request->timing == 1) return $service->reserve($request->sendDate, $send_message_id);
         $response = $service->send($request->templateId, $request->userLineIds);
-        return $response->isSucceeded();
+        return $response->getJSONDecodedBody();
     }
 }

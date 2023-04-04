@@ -88,9 +88,7 @@ export default (props) => {
                   <div className="product-label-title">{v.title}</div>
                   <div className="product-label-label">{v.text}</div>
                 </div>  
-                <div className="product-buttons">
                   <div className="product-button">{v.label}</div>
-                </div>
               </div>
             ))}
         </div>

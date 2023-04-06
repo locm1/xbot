@@ -1,3 +1,7 @@
+import Swal from "sweetalert2";
+import { Paths } from "@/paths";
+import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
+
 export const getOrders = async (userId, setOrders) => {
   axios.get(`/api/v1/users/${userId}/orders`)
   .then((response) => {
@@ -26,7 +30,7 @@ export const searchOrders = async (userId, params, setOrders) => {
 
 
 export const storeOrder = async (userId, formValue, storeComplete, setIsLoading) => {
-  axios.post(`/api/v1/users/${userId}/orders`, formValue)
+  return await axios.post(`/api/v1/users/${userId}/orders`, formValue)
   .then((response) => {
     console.log(response.data.order);
     storeComplete();
@@ -34,8 +38,15 @@ export const storeOrder = async (userId, formValue, storeComplete, setIsLoading)
     //成功したらメール通知する処理
   })
   .catch(error => {
-      console.error(error);
-      setIsLoading(false);
+    console.error(error);
+    console.log(error.response.data.message);
+    setIsLoading(false);
+
+    const message = (error.response.data.status == 'failed') ? error.response.data.message : '購入処理が失敗しました。もう一度お試しください。';
+    return {
+      status: error.response.data.status,
+      message: message
+    }
   });
 };
 

@@ -58,8 +58,16 @@ export const OrderDetailItem = (props) => {
     total, orderTotal, postage, paymentMethod, 
     ecommerceConfiguration, discountedTotalAmount, coupon 
   } = props;
-  const discount_rate_decimal = coupon.discount_price / 100.0
-  const discount_amount = orderTotal * discount_rate_decimal
+
+  const getDiscountAmount = () => {
+    if (coupon.id) {
+      const discount_rate_decimal = coupon.discount_price / 100.0
+      const discount_amount = orderTotal * discount_rate_decimal
+      return discount_amount
+    } else {
+      return 0;
+    }
+  }
 
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
@@ -73,7 +81,7 @@ export const OrderDetailItem = (props) => {
                 <h4 className="fs-6 text-dark mb-0 mt-1">代金引換手数料</h4>
               )
             }
-            {coupon.id && <h4 className="fs-6 text-dark mb-0 mt-1">クーポン割引</h4>}
+            {coupon && <h4 className="fs-6 text-dark mb-0 mt-1">クーポン割引</h4>}
             { 
               discountedTotalAmount !== 0 && (
                 <h4 className="fs-6 text-dark mb-0 mt-1">セット商品割引</h4>
@@ -91,9 +99,9 @@ export const OrderDetailItem = (props) => {
               <h4 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h4>
             }
             {
-              coupon.id && 
+              coupon && 
               <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">
-                - ￥ {isNaN(discount_amount) ? 0 : Math.floor(discount_amount).toLocaleString()}
+                - ￥ {isNaN(getDiscountAmount()) ? 0 : Math.floor(getDiscountAmount()).toLocaleString()}
               </h4>
             }
             { 
@@ -179,7 +187,6 @@ export const PaymentDetailItem = (props) => {
   }
 
   const getPaymentMethod = (payment_method) => {
-    console.log(card);
     if (payment_method.payment_method == 1) {
       return `カード番号：${card.card_number}`
     } else if (payment_method.payment_method == 2) {

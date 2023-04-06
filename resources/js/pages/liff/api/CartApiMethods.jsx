@@ -1,13 +1,20 @@
 import { isSalePeriod } from "@/components/common/IsSalePeriod";
+import Swal from "sweetalert2";
+import { Paths } from "@/paths";
 
-export const storeCart = async (userId, formValue) => {
+export const storeCart = async (userId, formValue, id) => {
   axios.post(`/api/v1/users/${userId}/carts`, formValue)
   .then((response) => {
     console.log(response.data.cart);
     location.href = '/cart';
   })
   .catch(error => {
-      console.error(error);
+    const link = Paths.LiffProductDetail.path.replace(':id', id)
+    const message = '商品をカートに追加できませんでした。もう一度お試しください。';
+    console.error(error);
+    Swal.fire(`エラー`, message, 'error').then((result) => {
+      location.href = link
+    })
   });
 };
 

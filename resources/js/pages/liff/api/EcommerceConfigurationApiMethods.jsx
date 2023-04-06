@@ -1,13 +1,12 @@
-export const getEcommerceConfigurationAndPostage = async (carts, setPostage, setEcommerceConfiguration) => {
+export const getEcommerceConfigurationAndPostage = async (carts, targetPostage, setPostage, setEcommerceConfiguration) => {
   axios.get(`/api/v1/ecommerce-configurations`)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;
 
     const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0)
-    const postage = (orderTotal <= ecommerce_configuration.target_amount)
+    const postage = (orderTotal >= ecommerce_configuration.target_amount)
       ? ecommerce_configuration.postage
-      : 0;
-    console.log(ecommerce_configuration);
+      : targetPostage.postage;
     setPostage(postage)
     setEcommerceConfiguration(ecommerce_configuration)
   })

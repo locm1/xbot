@@ -32,7 +32,9 @@ export const searchOrders = async (params, setOrders) => {
 export const showOrder = async (id, setOrder) => {
   axios.get(`/api/v1/management/orders/${id}`)
   .then((response) => {
-    setOrder(response.data.order);
+    const order = response.data.order
+    setOrder(order)
+    console.log(response.data.order);
   })
   .catch(error => {
       console.error(error);

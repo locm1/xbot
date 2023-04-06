@@ -20,7 +20,6 @@ export default () => {
     formValue.is_enabled = is_enabled
     console.log(formValue);
     if (Object.keys(formValue).indexOf('id') !== -1) {
-      console.log('update');
       updateEcommerceConfiguration(formValue.id, formValue)
     } else {
       storeEcommerceConfiguration(formValue);
@@ -57,7 +56,7 @@ export default () => {
                         value={formValue.target_amount}
                         onChange={(e) => handleChange(e, 'target_amount')}
                       />
-                      <InputGroup.Text>以下</InputGroup.Text>
+                      <InputGroup.Text>以上</InputGroup.Text>
                     </InputGroup>
                   </Form.Group>
                 </Col>

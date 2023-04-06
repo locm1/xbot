@@ -18,6 +18,7 @@ use App\Http\Controllers\api\liff\questionnaire\QuestionnaireController as LiffQ
 use App\Http\Controllers\api\liff\specific_trades\SpecificTradeController as LiffSpecificTradeController;
 use App\Http\Controllers\api\liff\terms_of_service\TermsOfServiceController as LiffTermsOfServiceController;
 use App\Http\Controllers\api\liff\user\UserController as LiffUserController;
+use App\Http\Controllers\api\liff\postage\PostageController as LiffPostageController;
 use App\Http\Controllers\api\LineChannelAccessTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -216,6 +217,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('users/{user}/cards', CardController::class);
     Route::apiResource('users/{user}/orders', LiffOrderController::class);
     Route::apiResource('users/{user}/product/reservations', ProductReservationController::class);
+    Route::get('postages', LiffPostageController::class);
     Route::get('address', SearchZipcodeController::class);
     Route::get('prefectures', PrefectureController::class);
     Route::get('questionnaires', LiffQuestionnaireController::class);

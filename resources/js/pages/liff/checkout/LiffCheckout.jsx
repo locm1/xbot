@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import '@splidejs/splide/css';
+import Swal from "sweetalert2";
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
@@ -10,6 +11,7 @@ import LiffCheckoutPayment from "@/pages/liff/checkout/LiffCheckoutPayment";
 import LiffCheckoutOrders from "@/pages/liff/checkout/LiffCheckoutOrders";
 import LIffCheckoutCoupon from "@/pages/liff/checkout/LIffCheckoutCoupon";
 import { DeliveryAddressItem } from "@/pages/liff/LiffCardItem";
+import { searchPostage } from "@/pages/liff/api/PostageApiMethods";
 import { getSelectOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
 import { getCarts, getCartsAndRelatedProducts } from "@/pages/liff/api/CartApiMethods";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
@@ -82,6 +84,9 @@ export default () => {
       order: order, order_products: products, charge: charge
     }
     storeOrder(user.id, formValue, storeComplete, setIsLoading)
+    .then(response => {
+      failedStore(response.message)
+    });
     // storeOrder(101, formValue, storeComplete, setIsLoading)
   }
 
@@ -89,26 +94,40 @@ export default () => {
     history.push(Paths.LiffOrderComplete.path);
   }
 
+  const failedStore = (message) => {
+    Swal.fire(
+      `エラー`,
+      message,
+      'error'
+    ).then((result) => {
+      result.isConfirmed && history.push(Paths.LiffCarts.path);
+    })
+  }
+
   useEffect(() => {
     setIsLoading(true);
     location.state && setCoupon(location.state.coupon);
     const idToken = Cookies.get('TOKEN');
-    // getCartsAndRelatedProducts(102, setCarts, setItemsExistInCart, setRelatedProducts).then(
-    //   response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
-    // )
-    // getSelectOrderDestination(102, setDeliveryAddress)
-    // showPaymentMethod(102, setPaymentMethod).then(payment_response => getCustomer(102, payment_response.payjp_customer_id, setCustomer, setIsLoading))
     
     getUser(idToken, setUser).then(response => {
-      getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts).then(
-        response => getEcommerceConfigurationAndPostage(response, setPostage, setEcommerceConfiguration)
-      )
-      getSelectOrderDestination(response.id, setDeliveryAddress)
+      getSelectOrderDestination(response.id, setDeliveryAddress).then(destination_response => {
+        const searchParams = {
+          params: {name: destination_response.prefecture}
+        };
+        searchPostage(searchParams).then(postage => {
+          console.log(postage[0]);
+          getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts).then(
+            response => getEcommerceConfigurationAndPostage(response, postage[0], setPostage, setEcommerceConfiguration)
+          )
+        })
+      });
       showPaymentMethod(response.id, setIsLoading).then(payment_response => {
         setPaymentMethod(payment_response)
         payment_response.payjp_default_card_id && showCard(response.id, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard)
       })
     })
+
+
   }, []);
 
   return (

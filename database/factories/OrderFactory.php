@@ -37,9 +37,10 @@ class OrderFactory extends Factory
             'delivery_time' => fake()->numberBetween(1,8),
             'purchase_amount' => fake()->numberBetween(100, 10000000),
             'status' => fake()->numberBetween(1, 4),
-            'payment_method' => fake()->numberBetween(1, 5),
+            'payment_method' => fake()->numberBetween(1, 2),
             'shipping_fee' => fake()->numberBetween(0, 1000),
-            'coupon_id' => fake()->randomElement($coupon_ids),
+            'coupon_id' => fake()->optional('60')->randomElement($coupon_ids),
+            'discount_price' => fake()->numberBetween(0, 1000),
         ];
     }
 }

@@ -6,6 +6,7 @@ export const getSelectOrderDestination = async (userId, setDeliveryAddress) => {
   .then((response) => {
     setDeliveryAddress(response.data.order_destination);
     console.log(response.data.order_destination);
+    return response.data.order_destination;
   })
   .catch(error => {
       console.error(error);
@@ -53,7 +54,6 @@ export const storeOrderDestination = async (userId, formValue, location, setErro
   })
   .catch(error => {
       console.error(error);
-      alert(error);
       setErrors(error.response.data.errors)
   });
 };

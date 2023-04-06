@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\management\postage\StorePostageRequest;
 use App\Http\Requests\management\postage\UpdatePostageRequest;
 use App\Services\management\postage\PostageService;
+use Illuminate\Http\Request;
 
 class PostageController extends Controller
 {
@@ -14,10 +15,11 @@ class PostageController extends Controller
     public function __construct(PostageService $postage_service) {
         $this->postage_service = $postage_service;
     }
+    
 
-    public function index()
+    public function index(Request $request)
     {
-        $postages = $this->postage_service->index();
+        $postages = $this->postage_service->index($request);
         return response()->json(['postages' => $postages], 200);
     }
 

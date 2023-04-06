@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Row, Col, Form, Button, Card, Image } from 'react-bootstrap';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
+import Swal from "sweetalert2";
 import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
@@ -57,7 +58,7 @@ export default () => {
       //updateCart(101, carts[0].id, formValue, location)
     } else {
       //storeCart(101, formValue);
-      storeCart(user.id, formValue);
+      storeCart(user.id, formValue, id)
     }
   };
 

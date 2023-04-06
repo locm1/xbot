@@ -8,7 +8,6 @@ export const getProducts = async (setProducts) => {
   })
   .catch(error => {
       console.error(error);
-      alert(error);
   });
 };
 

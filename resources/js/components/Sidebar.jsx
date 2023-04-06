@@ -231,6 +231,7 @@ export default (props) => {
                     <NavItem title="お友達追加用QR" link={Paths.QrCode.path} />
                     <NavItem title="アカウント管理" link={Paths.Accounts.path} />
                     <NavItem title="権限設定" link={Paths.Permissions.path} />
+                    <NavItem title="流入経路管理" link={Paths.InflowRoute.path} />
                     <NavItem title="API設定" link={Paths.Api.path} />
                   </CollapsableNavItem>
                 )

@@ -50,6 +50,7 @@ export const Paths = {
     RichMenus: { path: `${prefix}/account/richmenu/list` },
     Postage: {path: `${prefix}/ec/postage`},
     Permissions: {path: `${prefix}/account/permissions`},
+    InflowRoute: {path: `${prefix}/account/inflow-route`},
 
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },

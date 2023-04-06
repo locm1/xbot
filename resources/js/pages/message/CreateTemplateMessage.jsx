@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
-import { Col, Row, Modal, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
+import { Col, Row, Modal, Button, Dropdown, Breadcrumb, Form } from 'react-bootstrap';
 import Swal from "sweetalert2";
 import withReactContent from 'sweetalert2-react-content';
 
@@ -36,6 +36,7 @@ export default () => {
   const [updateCarouselProductImageIds, setUpdateCarouselProductImageIds] = useState([]);
   const [deleteMessageItems, setDeleteMessageItems] = useState([]);
   const [isUndisclosed, setIsUndisclosed] = useState(false);
+  const [validated, setValidated] = useState(false);
 
   const handleChange = (e, input) => {
     setMessage({...message, [input]: e.target.value})
@@ -83,9 +84,22 @@ export default () => {
       const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? {...messageItem, carousel_images: (messageItem.carousel_images.map(v => v.display_id == carousel_display_id ? {...v, image_path: image_path} : {...v}))} : {...messageItem})));
       setMessageItems(data);
     } else if (input == 'carousel-product') {
-      setUpdateCarouselProductImages([...updateImages, e.target.files[0]])
+      const selectedImage = e.target.files[0];
+      const maxSize = 10 * 1024 * 1024;
+      if (selectedImage.size > maxSize) {
+        e.target.value = null;
+        e.preventDefault();
+        e.stopPropagation();
+        Swal.fire(
+          `エラー`,
+          `画像サイズが上限を超えています`,
+          'error'
+        )
+        return;
+      }
+      setUpdateCarouselProductImages([...updateImages, selectedImage])
       setUpdateCarouselProductImageIds([...updateImageIds, display_id + '-' + carousel_display_id])
-      const image_path = URL.createObjectURL(e.target.files[0])
+      const image_path = URL.createObjectURL(selectedImage)
       const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? {...messageItem, carousel_products: (messageItem.carousel_products.map(v => v.display_id == carousel_display_id ? {...v, image_path: image_path} : {...v}))} : {...messageItem})));
       setMessageItems(data);
     }
@@ -119,7 +133,14 @@ export default () => {
     carousel_products: [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]}])
   };
 
-  const onSaveMessage = () => {
+  const onSaveMessage = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+      return ;
+    }
     if (pathname.includes('/edit')) {
       message.is_undisclosed = isUndisclosed ? 1 : 0
       updateMessage(id, message, completeMessage)
@@ -236,8 +257,9 @@ export default () => {
           <h1 className="page-title">{pathname.includes('/edit') ? 'メッセージ編集' : 'メッセージ作成'}</h1>
         </div>
       </div>
+      <Form noValidate validated={validated} onSubmit={onSaveMessage}>
       <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button onClick={onSaveMessage} variant="primary" className="me-2">
+        <Button type="submit" variant="primary" className="me-2">
           {pathname.includes('/edit') ? '更新する' : '保存する'}
         </Button>
         <Button onClick={duplicateTemplate} variant="primary" className="me-2 animate-up-2">
@@ -278,6 +300,7 @@ export default () => {
           </div>
         )
       }
+      </Form>
       <div className="d-flex justify-content-flex-end flex-wrap flex-md-nowrap align-items-center py-3">
         <Button onClick={addEditCard} variant="gray-800" className="mt-2 animate-up-2">
           <PlusIcon className="icon icon-xs me-2" /> 追加

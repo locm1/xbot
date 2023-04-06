@@ -17,8 +17,8 @@ export const ProductWidget = (props) => {
         <Row className="align-items-center">
           {product_image && (
             <Col xs="2" className="pe-0">
-              <div className="order-product-img">
-                <Image rounded src={product_image[0].image_path} className="m-0" />
+              <div>
+                <Image rounded src={product_image[0].image_path} className="m-0 order-product-img" />
               </div>
             </Col>
           )}

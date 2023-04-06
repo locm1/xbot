@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invitations', function (Blueprint $table) {
+        Schema::create('invite_incentives', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('coupon_id');
-            $table->string('privilege_detail');
-            $table->foreign('coupon_id')->references('id')->on('coupons');
+            $table->string('name');
+            $table->tinyInteger('inviter_timing');
+            $table->string('inviter_title');
+            $table->string('inviter_content');
+            $table->tinyInteger('invitee_timing');
+            $table->string('invitee_title');
+            $table->string('invitee_content');
             $table->timestamps();
             $table->softDeletes();
         });

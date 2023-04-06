@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Col, Row, Form, Button, Badge , Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import Swal from "sweetalert2";
-import { showInvitation, updateInvitation } from "@/pages/invitation/api/InvitationApiMethods";
+import { showInvitation, updateInvitation } from "@/pages/invitation/api/InviteIncentiveApiMethods";
 import { getCoupons } from "@/pages/coupon/api/CouponApiMethods";
 
 export default () => {

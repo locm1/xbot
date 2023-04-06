@@ -34,7 +34,6 @@ export default (props) => {
 
   useEffect(() => {
     const delivery_time = Cookies.get('delivery_time')
-    const idToken = Cookies.get('TOKEN');
     // getUser(idToken, setUser)
     //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
     getDeliveryTimeItem(parseInt(delivery_time, 10))

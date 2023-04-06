@@ -5,6 +5,7 @@ import '@splidejs/splide/css';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
+import liff from '@line/liff';
 import { LoadingContext } from "@/components/LoadingContext";
 
 import { getUser } from "@/pages/liff/api/UserApiMethods";
@@ -58,7 +59,7 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     getUser(idToken, setUser).then(response => {
       showPaymentMethod(response.id, setIsLoading).then(
         response => {

@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
+import liff from '@line/liff';
 import { LoadingContext } from "@/components/LoadingContext";
 
 import LiffCheckoutPayment from "@/pages/liff/checkout/LiffCheckoutPayment";
@@ -107,7 +108,7 @@ export default () => {
   useEffect(() => {
     setIsLoading(true);
     location.state && setCoupon(location.state.coupon);
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     
     getUser(idToken, setUser).then(response => {
       getSelectOrderDestination(response.id, setDeliveryAddress).then(destination_response => {

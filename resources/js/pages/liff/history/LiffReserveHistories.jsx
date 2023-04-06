@@ -4,6 +4,7 @@ import { SearchIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
+import liff from '@line/liff';
 import AccordionComponent from "@/pages/liff/history/LiffReserveHistoryAccordion";
 import { CartItem } from "@/pages/liff/LiffCardItem";
 import QrCode from "@img/img/add_friend_qr.png"
@@ -42,7 +43,7 @@ export default () => {
 
   useEffect(() => {
     //setIsLoading(true);
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     //getProductReservations(101, setProductReservations)
 
     getUser(idToken, setUser).then(response => {

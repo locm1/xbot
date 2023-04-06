@@ -6,7 +6,6 @@ import liff from '@line/liff';
 import { LiffMockPlugin } from '@line/liff-mock';
 import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 import { generateEnv } from '@/components/common/GenerateEnv';
-import { getLiffIdToken, clearExpiredIdToken } from '@/components/common/LiffInit';
 
 // page
 import SignIn from "@/pages/auth/Signin"
@@ -34,7 +33,7 @@ import Orders from '@/pages/order/Orders';
 import Reserves from '@/pages/reserve/Reserves';
 import EventCalendar from '@/pages/event/EventCalendar';
 import Events from '@/pages/event/Events';
-import Invitations from '@/pages/invitation/Invitations';
+import InviteIncentives from '@/pages/invitation/InviteIncentives';
 import EditInvitation from '@/pages/invitation/EditInvitation';
 import PrivacyPolicy from '@/pages/setting/PrivacyPolicy';
 import TermsOfService from '@/pages/setting/TermsOfService';
@@ -187,18 +186,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 };
 
 const LiffRoute = ({ component: Component, ...rest }) => {
-  // const liffId = process.env.MIX_LIFF_ID
-  // clearExpiredIdToken(liffId)
-
-  // liff.init({liffId: process.env.MIX_LIFF_ID})
-  //   .then(() => {
-  //     if(liff.isLoggedIn() === false) liff.login()
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.code, err.message);
-  //   });
-  // getLiffIdToken();
-
   return (
     <Route {...rest} render={props => (
       <>
@@ -214,56 +201,18 @@ const LiffInitRoute = () => {
   const search = useLocation().search;
   const query = new URLSearchParams(search);
   const path = query.get('path')
-  const id = query.get('id')
-  console.log(path);
-  const liffId = process.env.MIX_LIFF_ID
-  // const { liffId, mock } = generateEnv();
+  const [redirect, setRedirect] = useState('');
 
-  // if (process.env.NODE_ENV !== 'production') {
-  //   liff.use(new LiffMockPlugin());
-  // }
-  clearExpiredIdToken(liffId)
-  
   liff.init({liffId: process.env.MIX_LIFF_ID})
     .then(() => {
       if(liff.isLoggedIn() === false) liff.login()
+      setRedirect(path);
     })
     .catch((err) => {
       console.log(err.code, err.message);
     });
-  getLiffIdToken();
 
-  switch (path) {
-    case 'product/detail':
-      return <Redirect to={`/product/detail/${id}`} />;
-
-    case 'product/list':
-      return <Redirect to={`/product/list`} />;
-    
-    case 'product/category':
-      return <Redirect to={`/product/category/${id}`} />;
-
-    case 'cart':
-      return <Redirect to={'/cart'} />;
-
-    case 'visitor':
-      return <Redirect to={'/visitor'} />;
-
-    case 'event/reservation':
-      return <Redirect to={'/event/reservation'} />;
-
-    case 'questionnaire':
-      return <Redirect to={'/questionnaire'} />;
-
-    case 'history/product':
-      return <Redirect to={'/history/product'} />;
-    
-    case 'invite':
-      return <Redirect to={'/invite'} />;
-
-    case 'checkout':
-      return <Redirect to={'/checkout'} />;
-  }
+    return redirect && <Redirect to={`/${redirect}`} />
 }
 
 
@@ -321,7 +270,7 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="ec" path={Paths.Postage.path} component={Postage} />
       <RouteWithSidebar exact role_path="event" path={Paths.EventCalendar.path} component={EventCalendar} />
       <RouteWithSidebar exact role_path="event" path={Paths.Events.path} component={Events} />
-      <RouteWithSidebar exact role_path="invitation" path={Paths.Invitations.path} component={Invitations} />
+      <RouteWithSidebar exact role_path="invitation" path={Paths.InviteIncentives.path} component={InviteIncentives} />
       <RouteWithSidebar exact role_path="invitation" path={Paths.EditInvitation.path} component={EditInvitation} />
       <RouteWithSidebar exact role_path="account" path={Paths.QrCode.path} component={QrCode} />
       <RouteWithSidebar exact role_path="account" path={Paths.Api.path} component={Api} />

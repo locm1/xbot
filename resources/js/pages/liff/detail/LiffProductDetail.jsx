@@ -69,7 +69,7 @@ export default () => {
   };
 
   useEffect(() => {
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);

@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import { LoadingContext } from "@/components/LoadingContext";
-
+import liff from '@line/liff';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod, updatePaymentMethod, storePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { storeCustomer } from "@/pages/liff/api/CustomerApiMethods";
@@ -22,7 +22,7 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true)
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     showCreditCardForm()
     getUser(idToken, setUser).then(
       response => showPaymentMethod(response.id, setIsLoading).then(response => setPaymentMethod(response))

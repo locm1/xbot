@@ -7,9 +7,8 @@ import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import moment from "moment-timezone";
+import liff from '@line/liff';
 import { LoadingContext } from "@/components/LoadingContext";
-
-import Purchases from "@/data/purchases";
 import { CartItem, OrderDetailItem, PaymentDetailItem, DeliveryAddressItem } from "@/pages/liff/LiffCardItem";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showCard } from "@/pages/liff/api/CardApiMethods";
@@ -76,7 +75,7 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     getEcommerceConfiguration(setEcommerceConfiguration)
     getUser(idToken, setUser).then(response => {
       showPaymentMethod(response.id, setIsLoading).then(payment_response => {

@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invitation_users', function (Blueprint $table) {
+        Schema::create('invite_incentive_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('invitation_id');
+            $table->unsignedBigInteger('invite_incentive_id');
             $table->unsignedBigInteger('user_id');
             $table->tinyInteger('usage_status');
-            $table->foreign('invitation_id')->references('id')->on('invitations');
+            $table->foreign('invite_incentive_id')->references('id')->on('invite_incentives');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();

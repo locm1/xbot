@@ -1,5 +1,4 @@
 import liff from '@line/liff';
-import { getLiffIdToken, clearExpiredIdToken } from '@/components/common/LiffInit';
 
 export const getUser = async (idToken, setUser) => {
   const searchParams = {
@@ -13,17 +12,6 @@ export const getUser = async (idToken, setUser) => {
   })
   .catch(error => {
     console.error(error)
-    const liffId = process.env.MIX_LIFF_ID
-    clearExpiredIdToken(liffId)
-    
-    liff.init({liffId: process.env.MIX_LIFF_ID})
-      .then(() => {
-        if(liff.isLoggedIn() === false) liff.login()
-      })
-      .catch((err) => {
-        console.log(err.code, err.message);
-      });
-    getLiffIdToken();
   });
 };
 

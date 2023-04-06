@@ -35,10 +35,7 @@ export default () => {
   const total = orderTotal - discountedTotalAmount;
 
   useEffect(() => {
-    const idToken = Cookies.get('TOKEN');
-    // getUser(idToken, setUser)
-    //getCarts(101, setCarts, setItemsExistInCart)
-    //getCarts(102, setCarts, setItemsExistInCart, setRelatedProducts)
+    const idToken = liff.getIDToken();
     getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart, setRelatedProducts))
   }, []);
 

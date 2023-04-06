@@ -5,6 +5,7 @@ import '@splidejs/splide/css';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
+import liff from '@line/liff';
 
 import { CouponDetailItem } from "@/pages/liff/LiffCardItem";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
@@ -28,7 +29,8 @@ export default (props) => {
         code: couponCode
       }
     };
-    storeCouponOwnership(102, {code: couponCode}, coupons, setCoupons, setError)
+    storeCouponOwnership(user.id, {code: couponCode}, coupons, setCoupons, setError)
+    //storeCouponOwnership(102, {code: couponCode}, coupons, setCoupons, setError)
     //searchCoupons(88, searchParams, setCoupons);
   };
 
@@ -45,10 +47,10 @@ export default (props) => {
   };
 
   useEffect(() => {
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     // getUser(idToken, setUser)
-    //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
-    getCouponOwnerships(102, setCoupons)
+    getUser(idToken, setUser).then(response => getCouponOwnerships(response.id, setCoupons))
+    //getCouponOwnerships(102, setCoupons)
   }, []);
 
   const CouponCard = (props) => {

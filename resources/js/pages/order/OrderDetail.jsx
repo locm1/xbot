@@ -1,16 +1,65 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Nav, Breadcrumb, Card } from 'react-bootstrap';
-
+import { Row, Col, Nav, Breadcrumb, Card, ListGroup, Image, Table } from 'react-bootstrap';
+import moment from "moment-timezone";
 import OrdererInformation from "@/pages/order/detail/OrdererInformation";
 import { ProductWidget } from "@/pages/order/detail/ProductWidget";
 import { DetailWidget } from "@/pages/order/detail/DetailWidget";
-
+import { invoiceItems } from "@/data/tables";
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { showOrder } from "@/pages/order/api/OrderApiMethods";
 import { getOrderProducts, getOrderUser, getOrderDelivery } from "@/pages/order/api/OrderDetailApiMethods";
 import { getUserPurchase } from "@/pages/user/api/UserApiMethods";
 
 export default () => {
+  const subtotal = invoiceItems.reduce((acc, curr) => acc += parseFloat(curr.price) * curr.quantity, 0);
+  const totalDiscount = 20 / 100 * subtotal;
+  const vat = 10 / 100 * (subtotal - totalDiscount);
+
+  const [orderProducts, setOrderProducts] = useState([
+    {id: 1, name: '', quantity: '', price: '', product_id: 1, product_image: [
+      {image_path: ''}
+    ]}
+  ]);
+  const [orderUser, setOrderUser] = useState({
+    id: 1, first_name: '', last_name: '', first_name_kana: '', last_name_kana: '', img_path: '',
+    zipcode: '', prefecture: '', city: '', address: '', building_name: '', tel: ''
+  });
+  const [order, setOrder] = useState({
+    id: 1, purchase_amount: '', status: 1, shipping_fee: '', coupon: {name: ''}, 
+    created_at: '', status: 1, payment_method: 1, delivery_time: 1, first_name: '', last_name: '', 
+    first_name_kana: '', last_name_kana: '', zipcode: '', prefecture: '', city: '', address: '', 
+    building_name: '', tel: '', discount_price: ''
+  });
+  const [purchaseTime, setPurchaseTime] = useState(0);
+  const [orderTotal, setOrderTotal] = useState(0);
+
+  const { id } = useParams();
+  const { state } = useLocation();
+
+  const getTotal = (amount) => {
+    if (order.coupon) {
+      const discount_rate_decimal = order.coupon.discount_price / 100.0
+      const discount_amount = orderTotal * discount_rate_decimal
+      return amount - discount_amount;  
+    } 
+
+    return amount;
+  }
+
+  const TableRow = (props) => {
+    const { item, description, price, quantity } = props;
+    const itemTotal = parseFloat(price) * quantity;
+
+    return (
+      <tr className="border-bottom">
+        <th className="h6 text-left fw-bold">{item}</th>
+        <td>{description}</td>
+        <td>${price}</td>
+        <td>{quantity}</td>
+        <td>${itemTotal.toFixed(2)}</td>
+      </tr>
+    );
+  };
   const getStatus = (status) => {
     switch (status) {
       case 1:
@@ -56,25 +105,8 @@ export default () => {
     }
   }
 
-  const [orderProducts, setOrderProducts] = useState([
-    {id: 1, name: '', quantity: '', product_id: 1, product_image: [
-      {image_path: ''}
-    ]}
-  ]);
-  const [orderUser, setOrderUser] = useState({
-    id: 1, first_name: '', last_name: '', first_name_kana: '', last_name_kana: '', img_path: '',
-    zipcode: '', prefecture: '', city: '', address: '', building_name: '', tel: ''
-  });
-  const [order, setOrder] = useState({
-    id: 1, purchase_amount: '', status: 1, payment_method: 1, shipping_fee: '', coupon: {name: ''}, 
-    created_at: '', status: 1, payment_method: 1, delivery_time: 1, first_name: '', last_name: '', 
-    first_name_kana: '', last_name_kana: '', zipcode: '', prefecture: '', city: '', address: '', 
-    building_name: '', tel: ''
-  });
-  const [purchaseTime, setPurchaseTime] = useState(0);
-
-  const { id } = useParams();
-  const { state } = useLocation();
+  //const amount = (order.payment_method == 1) ? orderTotal + order.shipping_fee - order.discount_price : orderTotal + order.shipping_fee + ecommerceConfiguration.cash_on_delivery_fee - order.discount_price
+  // //const total = getTotal(amount)
 
   const ordererInformations = {
     name: `${orderUser.last_name} ${orderUser.first_name}`,
@@ -107,7 +139,7 @@ export default () => {
 
   useEffect(() => {
     showOrder(id, setOrder)
-    getOrderProducts(id, setOrderProducts);
+    getOrderProducts(id, setOrderProducts, setOrderTotal);
     getOrderUser(id, setOrderUser);
     getUserPurchase(state, setPurchaseTime)
   }, []);
@@ -119,7 +151,7 @@ export default () => {
           <h1 className="page-title">注文情報</h1>
         </div>
       </div>
-      <Row className="mt-5">
+      {/* <Row className="mt-5">
         <Col xs={12} xl={8}>
           <DetailWidget details={orders} title='注文情報' />
           <Col className="mt-5">
@@ -131,6 +163,66 @@ export default () => {
         </Col>
         <Col xs={12} xl={4}>
           <OrdererInformation {...ordererInformations} details={details} img_path={orderUser.img_path} />
+        </Col>
+      </Row> */}
+
+      <Row className="">
+        <Col xs={12} xl={12}>
+          <Card border="0" className="shadow p-5">
+            <div className="d-sm-flex justify-content-between border-bottom border-light pb-4">
+              <div>
+                <h4>
+                  <span className="fw-bold">ご購入日</span>
+                  <span className="ps-4">{moment(order.created_at).format("YYYY年MM月DD日 H:m:s")}</span>
+                </h4>
+                <div className="d-flex align-items-center">
+                  <div className="">注文番号：{id}</div>
+                  <div className="me-1 ms-1">｜</div>
+                  <div className="">ステータス：{getStatus(order.status)}</div>
+                </div>
+              </div>
+            </div>
+
+            <Row>
+              <ProductWidget orderProducts={orderProducts} />
+            </Row>
+
+            <Row>
+              <Col xs={12}>
+                <div className="d-flex justify-content-end text-end mb-4 py-4">
+                  <div className="mt-2">
+                    <Table className="table-clear">
+                      <tbody>
+                        <tr>
+                          <td className="left pe-6">
+                            <div>小計</div>
+                          </td>
+                          <td className="right">${subtotal.toFixed(2)}</td>
+                        </tr>
+                        {
+                          (order.coupon) && (
+                            <tr>
+                              <td className="left pe-6">
+                                <div>クーポン利用</div>
+                              </td>
+                              <td className="right">${totalDiscount.toFixed(2)}</td>
+                            </tr>
+                          )
+                        }
+                        order.coupon.name : null
+                        <tr>
+                          <td className="left pe-6">
+                            <div>VAT (10%)</div>
+                          </td>
+                          <td className="right">${vat.toFixed(2)}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Card>
         </Col>
       </Row>
     </>

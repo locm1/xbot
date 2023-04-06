@@ -33,15 +33,13 @@ export default () => {
   const [occupations, setOccupations] = useState([]);
   const [formValue, setFormValue] = useState({
     last_name: '', first_name: '', last_name_kana: '', first_name_kana: '',
-    year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
+    year: 1990, month: 1, day: 1, gender: 1, tel: '', occupation_id: 1, zipcode: '',
     prefecture: '', city: '', address: '', building_name: '', room_number: ''
   });
   const [errors, setErrors] = useState({
     last_name: '', first_name: '', last_name_kana: '', first_name_kana: '',
     year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
-    prefecture: '', city: '', address: '', building_name: '', room_number: ''
-  });
-  const [questionnaireErrors, setQuestionnaireErrors] = useState({
+    prefecture: '', city: '', address: '', building_name: '', room_number: '',
     "questionnaires.0.answer": ''
   });
 
@@ -63,23 +61,21 @@ export default () => {
     }
   };
 
-  const onSaveQuestionnaireAnswers = () => {
-    formValue.is_selected = 1
-    const newQuestionnaires = questionnaires.filter((questionnaire, index) => {
-      return questionnaire.answer
-    });
-    console.log(newQuestionnaires);
-    Object.assign(formValue, {questionnaires: newQuestionnaires});
-    storeQuestionnaireAnswers(user.id, formValue, setQuestionnaireErrors)
-    //storeQuestionnaireAnswers(100, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
-  };
-
   const handleClick = () => {
     formValue.birth_date = formValue.year + '-' + formValue.month + '-' + formValue.day
     formValue.building_name += ' ' + formValue.room_number
     formValue.is_registered = 1
+    formValue.is_selected = 1
+    // const newQuestionnaires = questionnaires.filter((questionnaire, index) => {
+    //   return questionnaire.answer
+    // });
+    Object.assign(formValue, {questionnaires: questionnaires});
     console.log(formValue);
-    onSaveQuestionnaireAnswers()
+    storeQuestionnaireAnswers(user.id, formValue, setErrors)
+    //storeQuestionnaireAnswers(102, formValue, setErrors)
+    //storeQuestionnaireAnswers(user.id, formValue, setErrors)
+    //storeQuestionnaireAnswers(100, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
+
   };
 
   const answerSurvey = (e, id, type, questionnaire_item_id) => {
@@ -126,82 +122,79 @@ export default () => {
             </Card.Header>
             <Card.Body className="py-0">
               <Row className="mt-3">
-                <Col xs={6} className="mb-5">
-                  <Form.Group id="last_name">
-                    <Form.Label>
-                      <span className="questionnaire-required me-2">必須</span>氏名（姓）</Form.Label>
-                    <Form.Control 
-                      required
-                      type="text" 
-                      name="last_name" 
-                      value={formValue.last_name} 
-                      onChange={(e) => handleChange(e, 'last_name')} 
-                      placeholder="例）山田" 
-                      isInvalid={formValue.last_name !== '' ? false : errors.last_name ? true : false}
-                      autoComplete="family-name"
-                    />
-                    {
-                      errors.last_name && 
-                      <Form.Control.Feedback type="invalid">{errors.last_name[0]}</Form.Control.Feedback>
-                    }
-                  </Form.Group>
+                <Col xs={12} className="mb-5">
+                  <Form.Label><span className="questionnaire-required me-2">必須</span>氏名</Form.Label>
+                  <div className="d-flex">
+                    <Form.Group id="last_name" className="pe-3">
+                      <Form.Control 
+                        required
+                        type="text" 
+                        name="last_name" 
+                        value={formValue.last_name} 
+                        onChange={(e) => handleChange(e, 'last_name')} 
+                        placeholder="例）山田" 
+                        isInvalid={formValue.last_name !== '' ? false : errors.last_name ? true : false}
+                        autoComplete="family-name"
+                      />
+                      {
+                        errors.last_name && 
+                        <Form.Control.Feedback type="invalid">{errors.last_name[0]}</Form.Control.Feedback>
+                      }
+                    </Form.Group>
+                    <Form.Group id="first_name" className="ps-3">
+                      <Form.Control 
+                        required
+                        type="text"
+                        name="first_name"
+                        value={formValue.first_name} 
+                        onChange={(e) => handleChange(e, 'first_name')} 
+                        placeholder="例）太郎"
+                        isInvalid={formValue.first_name !== '' ? false : errors.first_name ? true : false}
+                        autoComplete="given-name"
+                      />
+                      {
+                        errors.first_name && 
+                        <Form.Control.Feedback type="invalid">{errors.first_name[0]}</Form.Control.Feedback>
+                      }
+                    </Form.Group>
+                  </div>
                 </Col>
-                <Col xs={6} className="mb-5">
-                  <Form.Group id="first_name">
-                    <Form.Label><span className="questionnaire-required me-2">必須</span>氏名（名）</Form.Label>
-                    <Form.Control 
-                      required
-                      type="text"
-                      name="first_name"
-                      value={formValue.first_name} 
-                      onChange={(e) => handleChange(e, 'first_name')} 
-                      placeholder="例）太郎"
-                      isInvalid={formValue.first_name !== '' ? false : errors.first_name ? true : false}
-                      autoComplete="given-name"
-                    />
-                    {
-                      errors.first_name && 
-                      <Form.Control.Feedback type="invalid">{errors.first_name[0]}</Form.Control.Feedback>
-                    }
-                  </Form.Group>
-                </Col>
-                <Col xs={6} className="mb-5">
-                  <Form.Group id="last_name_kana">
-                    <Form.Label><span className="questionnaire-required me-2">必須</span>フリガナ（姓）</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      name="last_name_kana"
-                      value={formValue.last_name_kana} 
-                      onChange={(e) => handleChange(e, 'last_name_kana')} 
-                      placeholder="例）ヤマダ"
-                      isInvalid={formValue.last_name_kana !== '' ? false : errors.last_name_kana ? true : false}
-                      autoComplete="family-name"
-                    />
-                    {
-                      errors.last_name_kana && 
-                      <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
-                    }
-                  </Form.Group>
-                </Col>
-                <Col xs={6} className="mb-5">
-                  <Form.Group id="first_name_kana">
-                    <Form.Label><span className="questionnaire-required me-2">必須</span>フリガナ（名）</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      name="first_name_kana"
-                      value={formValue.first_name_kana} 
-                      onChange={(e) => handleChange(e, 'first_name_kana')} 
-                      placeholder="例）タロウ" 
-                      isInvalid={formValue.first_name_kana !== '' ? false : errors.first_name_kana ? true : false}
-                      autoComplete="given-name"
-                    />
-                    {
-                      errors.first_name_kana && 
-                      <Form.Control.Feedback type="invalid">{errors.first_name_kana[0]}</Form.Control.Feedback>
-                    }
-                  </Form.Group>
+                <Col xs={12} className="mb-5">
+                  <Form.Label><span className="questionnaire-required me-2">必須</span>フリガナ</Form.Label>
+                  <div className="d-flex">
+                    <Form.Group id="last_name_kana" className="pe-3">
+                      <Form.Control
+                        required
+                        type="text"
+                        name="last_name_kana"
+                        value={formValue.last_name_kana} 
+                        onChange={(e) => handleChange(e, 'last_name_kana')} 
+                        placeholder="例）ヤマダ"
+                        isInvalid={formValue.last_name_kana !== '' ? false : errors.last_name_kana ? true : false}
+                        autoComplete="family-name"
+                      />
+                      {
+                        errors.last_name_kana && 
+                        <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
+                      }
+                    </Form.Group>
+                    <Form.Group id="first_name_kana" className="ps-3">
+                      <Form.Control
+                        required
+                        type="text"
+                        name="first_name_kana"
+                        value={formValue.first_name_kana} 
+                        onChange={(e) => handleChange(e, 'first_name_kana')} 
+                        placeholder="例）タロウ"
+                        isInvalid={formValue.first_name_kana !== '' ? false : errors.first_name_kana ? true : false}
+                        autoComplete="given-name"
+                      />
+                      {
+                        errors.last_name_kana && 
+                        <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
+                      }
+                    </Form.Group>
+                  </div>
                 </Col>
               </Row>
 
@@ -369,7 +362,7 @@ export default () => {
             </Card.Body>
           </Card>
 
-          <LiffQuestionnaireForm questionnaires={questionnaires} answerSurvey={answerSurvey} questionnaireErrors={questionnaireErrors} />
+          <LiffQuestionnaireForm questionnaires={questionnaires} answerSurvey={answerSurvey} questionnaireErrors={errors} />
 
           <Card border="0" className="shadow mt-4">
             <Card.Header className="border-bottom">

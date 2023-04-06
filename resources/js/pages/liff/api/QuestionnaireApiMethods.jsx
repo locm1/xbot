@@ -22,7 +22,7 @@ export const storeQuestionnaireAnswers = async (userId, questionnaires, setQuest
     const questionnaire_answers = response.data.questionnaire_answers;
     console.log(questionnaire_answers);
     const currentPage = Cookies.get('current_page')
-    location.href = (currentPage == 'cart') ? '/checkout' : '/questionnaire/complete'
+    //location.href = (currentPage == 'cart') ? '/checkout' : '/questionnaire/complete'
   })
   .catch(error => {
       console.error(error);

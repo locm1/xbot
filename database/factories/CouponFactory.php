@@ -19,7 +19,7 @@ class CouponFactory extends Factory
         return [
             'name' => 'クーポン' . fake()->firstKanaName(),
             'upper_limit' => fake()->numberBetween(0, 1000),
-            'discount_price' => fake()->numberBetween(1, 1000000),
+            'discount_price' => fake()->numberBetween(1, 80),
             'code' => fake()->unique()->hexColor()
         ];
     }

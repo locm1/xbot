@@ -17,6 +17,7 @@ class OrderDetailService
             $result_order_products[] = [
                 'id' => $order_product->id,
                 'product_id' => $order_product->product_id,
+                'price' => $order_product->price,
                 'quantity' => $order_product->quantity,
                 'name' => $order_product->product->name,
                 'product_image' => $order_product->product->productImages

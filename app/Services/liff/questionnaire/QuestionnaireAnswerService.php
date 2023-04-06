@@ -33,18 +33,18 @@ class QuestionnaireAnswerService
     {
         $merged_questionnaire_answers = $this->format_questionnaire_answer_action->mergeUserIdToArray($user, $request->questionnaires);
         # トランザクションの実行
-        DB::transaction(function() use($merged_questionnaire_answers, $request, $user) {
-            $questionnaire_answer_ids = $this->getQuestionnaireAnswerIds($merged_questionnaire_answers);
+        // DB::transaction(function() use($merged_questionnaire_answers, $request, $user) {
+        //     $questionnaire_answer_ids = $this->getQuestionnaireAnswerIds($merged_questionnaire_answers);
 
-            $merged_questionnaire_answer_items = $this->format_questionnaire_answer_action->mergeQuestionnaireAnswerIdToArray($questionnaire_answer_ids, $merged_questionnaire_answers);
-            QuestionnaireAnswerItem::upsert($merged_questionnaire_answer_items, ['id']);
+        //     $merged_questionnaire_answer_items = $this->format_questionnaire_answer_action->mergeQuestionnaireAnswerIdToArray($questionnaire_answer_ids, $merged_questionnaire_answers);
+        //     QuestionnaireAnswerItem::upsert($merged_questionnaire_answer_items, ['id']);
 
-            #ユーザー情報の更新
-            $this->user_service->update($request, $user);
+        //     #ユーザー情報の更新
+        //     $this->user_service->update($request, $user);
 
-            # 配送先の追加
-            $this->order_destination_service->store($request, $user);
-        });
+        //     # 配送先の追加
+        //     $this->order_destination_service->store($request, $user);
+        // });
 
         return $merged_questionnaire_answers;
     }

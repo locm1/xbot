@@ -187,7 +187,6 @@ export const PaymentDetailItem = (props) => {
   }
 
   const getPaymentMethod = (payment_method) => {
-    console.log(card);
     if (payment_method.payment_method == 1) {
       return `カード番号：${card.card_number}`
     } else if (payment_method.payment_method == 2) {

@@ -37,7 +37,7 @@ class InflowRouteSeeder extends Seeder
 
     private function getRandomAlphanumeric()
     {
-        $str = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPUQRSTUVWXYZ';
+        $str = '1234567890abcdefghijklmnopqrstuvwxyz';
         return substr(str_shuffle($str), 0, 15);
     }
 }

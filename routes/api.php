@@ -39,6 +39,7 @@ use App\Http\Controllers\api\management\EcommerceConfigurationController;
 use App\Http\Controllers\api\management\event\EventUserController;
 use App\Http\Controllers\api\management\GreetingMessageController;
 use App\Http\Controllers\api\management\GreetingMessagesWithQuestionnaireController;
+use App\Http\Controllers\api\management\InflowRouteController;
 use App\Http\Controllers\api\management\invitation\InvitationController;
 use App\Http\Controllers\api\management\invitation\InvitationUserController;
 use App\Http\Controllers\api\management\TermsOfServiceController;
@@ -190,6 +191,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('ecommerce-configurations', EcommerceConfigurationController::class);
         Route::post('send-multicast-message', SendMulticastMessage::class);
         Route::apiResource('send-message', SendMessageController::class);
+        Route::apiResource('inflow-routes', InflowRouteController::class);
     });
 });
 

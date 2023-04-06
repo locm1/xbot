@@ -4,7 +4,6 @@ import { Col, Row, Card, Form, Image, ListGroup, Dropdown, Breadcrumb } from 're
 import { ProfileCardWidget } from "@/components/Widgets";
 import Profile1 from "@img/img/team/profile-picture-1.jpg";
 import ProfileCover from "@img/img/profile-cover.jpg";
-import { DetailWidget } from "@/pages/order/detail/DetailWidget";
 
 export default (props) => {
   const { name, nameKana, details, img_path } = props;

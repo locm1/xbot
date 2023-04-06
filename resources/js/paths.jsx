@@ -33,7 +33,7 @@ export const Paths = {
     Reserves: { path: `${prefix}/ec/reserve/list` },
     EventCalendar: { path: `${prefix}/event/calendar` },
     Events: { path: `${prefix}/event/list` },
-    Invitations: { path: `${prefix}/invitation/list` },
+    InviteIncentives: { path: `${prefix}/invitation/list` },
     EditInvitation: { path: `${prefix}/invitation/edit/:id` },
     PrivacyPolicy: { path: `${prefix}/ec/privacy-policy` },
     TermsOfService: { path: `${prefix}/ec/terms-of-service` },

@@ -97,7 +97,7 @@ export default () => {
   };
 
   useEffect(() => {
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     getUser(idToken, setUser).then(response => {
       if (response.is_registered == 1) {
         history.push(Paths.LiffAlreadyQuestionnaire.path);

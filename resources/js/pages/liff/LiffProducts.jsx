@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import '@splidejs/splide/css';
+import liff from '@line/liff';
+import { useLocation } from "react-router-dom";
 
 import LiffProductCategorySlideCardList from "@/pages/liff/LiffProductCategorySlideCardList";
 import LiffProductList from "@/pages/liff/LiffProductList";

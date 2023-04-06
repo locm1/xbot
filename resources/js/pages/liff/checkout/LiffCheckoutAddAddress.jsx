@@ -3,6 +3,7 @@ import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'reac
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import Cookies from 'js-cookie';
+import liff from '@line/liff';
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { getPrefectures } from "@/pages/liff/api/PrefectureApiMethods";
@@ -68,7 +69,7 @@ export default () => {
   };
 
   useEffect(() => {
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     getPrefectures(setPrefectures)
 
     if (pathname.includes('/edit')) {

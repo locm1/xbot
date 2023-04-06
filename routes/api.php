@@ -41,6 +41,7 @@ use App\Http\Controllers\api\management\GreetingMessageController;
 use App\Http\Controllers\api\management\GreetingMessagesWithQuestionnaireController;
 use App\Http\Controllers\api\management\invitation\InvitationController;
 use App\Http\Controllers\api\management\invitation\InvitationUserController;
+use App\Http\Controllers\api\management\invitation\InviteIncentiveController;
 use App\Http\Controllers\api\management\TermsOfServiceController;
 use App\Http\Controllers\api\management\SpecificTradeController;
 use App\Http\Controllers\api\management\TagController;
@@ -166,7 +167,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('visitor-histories/{visitor_history}/user', VisitorHistoryUserController::class);
         Route::apiResource('reserve-histories', ReserveHistoryController::class);
         Route::apiResource('segment-template', SegmentTemplateController::class);
-        Route::apiResource('invitations', InvitationController::class);
+        Route::apiResource('invite-incentives', InviteIncentiveController::class);
         Route::get('invitations/{invitation}/users', InvitationUserController::class);
         Route::apiResource('messages', MessageController::class);
         Route::get('messages/{message}/items', [MessageItemController::class, 'index']);

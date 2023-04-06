@@ -3,6 +3,7 @@ import { Row, Col, Form, ListGroup, Card, InputGroup, Image, Button } from 'reac
 import { SearchIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
+import liff from '@line/liff';
 import Cookies from 'js-cookie';
 import moment from "moment-timezone";
 import { CartItem } from "@/pages/liff/LiffCardItem";
@@ -43,7 +44,7 @@ export default () => {
 
   useEffect(() => {
     //setIsLoading(true);
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     //getOrders(101, setOrders)
 
     getUser(idToken, setUser).then(response => {

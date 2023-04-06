@@ -4,6 +4,7 @@ import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import liff from '@line/liff';
 import Cookies from 'js-cookie';
 
 import { getUser } from "@/pages/liff/api/UserApiMethods";
@@ -31,7 +32,7 @@ export default () => {
   };
 
   useEffect(() => {
-    const idToken = Cookies.get('TOKEN');
+    const idToken = liff.getIDToken();
     getUser(idToken, setUser).then(response => {
       getOrderDestinations(response.id, setDeliveryAddresses, setSelectId)
     })

@@ -213,7 +213,7 @@ export default (props) => {
 
               {
                 pages[6] && admin.role <= pages[6].role && (
-                  <NavItem title="友達紹介管理" link={Paths.Invitations.path} icon={UserAddIcon} />
+                  <NavItem title="友達紹介管理" link={Paths.InviteIncentives.path} icon={UserAddIcon} />
                 )
               }
 

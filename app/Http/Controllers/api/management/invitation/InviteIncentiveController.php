@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers\api\management\invitation;
+
+use App\Http\Controllers\Controller;
+use App\Services\management\invitation\InviteIncentiveService;
+use App\Http\Requests\management\invitation\UpdateInvitationRequest;
+use App\Models\InviteIncentive;
+use Illuminate\Http\Request;
+
+class InviteIncentiveController extends Controller
+{
+
+    private $invite_incentive_service;
+
+    public function __construct(InviteIncentiveService $invite_incentive_service) {
+        $this->invite_incentive_service = $invite_incentive_service;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $invite_incentives = $this->invite_incentive_service->index();
+        return response()->json(['invite_incentives' => $invite_incentives], 200);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  InviteIncentive  $invite_incentive
+     * @return \Illuminate\Http\Response
+     */
+    public function show(InviteIncentive $invite_incentive)
+    {
+        $invitation = $this->invite_incentive_service->show($invite_incentive);
+        return response()->json(['invitation' => $invitation], 200);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UpdateInvitationRequest  $request
+     * @param  InviteIncentive  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateInvitationRequest $request, InviteIncentive $invite_incentive)
+    {
+        $invitation = $this->invite_incentive_service->update($request, $invite_incentive);
+        return response()->json(['invitation' => $invitation], 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(InviteIncentive $invite_incentive)
+    {
+        $this->invite_incentive_service->destroy($invite_incentive);
+        return response()->json([], 204);
+    }
+}

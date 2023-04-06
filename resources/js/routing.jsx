@@ -34,7 +34,7 @@ import Reserves from '@/pages/reserve/Reserves';
 import EventCalendar from '@/pages/event/EventCalendar';
 import Events from '@/pages/event/Events';
 import InviteIncentives from '@/pages/invitation/InviteIncentives';
-import EditInvitation from '@/pages/invitation/EditInvitation';
+import EditInviteIncentive from '@/pages/invitation/EditInviteIncentive';
 import PrivacyPolicy from '@/pages/setting/PrivacyPolicy';
 import TermsOfService from '@/pages/setting/TermsOfService';
 import SpecificTrades from '@/pages/setting/specific_trades/SpecificTrades';
@@ -271,7 +271,7 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="event" path={Paths.EventCalendar.path} component={EventCalendar} />
       <RouteWithSidebar exact role_path="event" path={Paths.Events.path} component={Events} />
       <RouteWithSidebar exact role_path="invitation" path={Paths.InviteIncentives.path} component={InviteIncentives} />
-      <RouteWithSidebar exact role_path="invitation" path={Paths.EditInvitation.path} component={EditInvitation} />
+      <RouteWithSidebar exact role_path="invitation" path={Paths.EditInviteIncentive.path} component={EditInviteIncentive} />
       <RouteWithSidebar exact role_path="account" path={Paths.QrCode.path} component={QrCode} />
       <RouteWithSidebar exact role_path="account" path={Paths.Api.path} component={Api} />
       <RouteWithSidebar exact role_path="account" path={Paths.Greeting.path} component={Greeting} />

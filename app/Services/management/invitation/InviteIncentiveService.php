@@ -35,7 +35,17 @@ class InviteIncentiveService
 
     public function update($request, InviteIncentive $invite_incentive) 
     {
-        $data = $request->only(['coupon_id', 'privilege_detail']);
+        # デフォルトに設定
+        if ($request->is_default == 1) {
+            DefaultInviteIncentive::where('id', 1)->update([
+                'invite_incentive_id' => $invite_incentive->id
+            ]);
+        }
+
+        $data = $request->only([
+            'name', 'inviter_timing', 'inviter_format' , 'inviter_title' , 'inviter_content', 
+            'invitee_timing' , 'invitee_format' , 'invitee_title' , 'invitee_content'
+        ]);
         return $invite_incentive->update($data);
     }
 

@@ -34,7 +34,7 @@ export const Paths = {
     EventCalendar: { path: `${prefix}/event/calendar` },
     Events: { path: `${prefix}/event/list` },
     InviteIncentives: { path: `${prefix}/invitation/list` },
-    EditInvitation: { path: `${prefix}/invitation/edit/:id` },
+    EditInviteIncentive: { path: `${prefix}/invitation/edit/:id` },
     PrivacyPolicy: { path: `${prefix}/ec/privacy-policy` },
     TermsOfService: { path: `${prefix}/ec/terms-of-service` },
     SpecificTrades: { path: `${prefix}/ec/specific-trades` },

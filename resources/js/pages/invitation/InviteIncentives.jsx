@@ -6,14 +6,10 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 
 import { InviteIncentivesTable } from "@/pages/invitation/InviteIncentivesTable";
 import { getInviteIncentives, getInvitationUsers } from "@/pages/invitation/api/InviteIncentiveApiMethods";
-import InvitationUserModal from "@/pages/invitation/InvitationUserModal";
 
 export default () => {
   const [inviteIncentives, setInviteIncentives] = useState([]);
   const [defaultInviteIncentive, setDefaultInviteIncentive] = useState([]);
-  const [invitationUsers, setInvitationUsers] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
-  const headers = ['取得日時', '利用者', '使用状況'];
 
   useEffect(() => {
     getInviteIncentives(setInviteIncentives, setDefaultInviteIncentive);
@@ -30,6 +26,7 @@ export default () => {
       <InviteIncentivesTable
         inviteIncentives={inviteIncentives}
         defaultInviteIncentive={defaultInviteIncentive}
+        setInviteIncentives={setInviteIncentives}
       />
     </>
   );

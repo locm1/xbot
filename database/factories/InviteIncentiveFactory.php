@@ -20,9 +20,11 @@ class InviteIncentiveFactory extends Factory
         return [
             'name' => 'クーポン' . fake()->firstKanaName(),
             'inviter_timing' => fake()->numberBetween(1, 4),
+            'inviter_format' => 1,
             'inviter_title' => fake()->realText(20, 5),
             'inviter_content' => fake()->realText(30, 5),
             'invitee_timing' => fake()->numberBetween(1, 4),
+            'invitee_format' => 1,
             'invitee_title' => fake()->realText(20, 5),
             'invitee_content' => fake()->realText(30, 5),
         ];

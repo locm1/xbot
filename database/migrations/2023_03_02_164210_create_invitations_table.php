@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->tinyInteger('inviter_timing');
+            $table->tinyInteger('inviter_format');
             $table->string('inviter_title');
             $table->string('inviter_content');
             $table->tinyInteger('invitee_timing');
+            $table->tinyInteger('invitee_format');
             $table->string('invitee_title');
             $table->string('invitee_content');
             $table->timestamps();

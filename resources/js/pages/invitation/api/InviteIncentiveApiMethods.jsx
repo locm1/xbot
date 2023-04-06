@@ -1,8 +1,8 @@
-export const getInviteIncentives = async (setInvitations, setDefaultInviteIncentive) => {
+export const getInviteIncentives = async (setInviteIncentives, setDefaultInviteIncentive) => {
   axios.get('/api/v1/management/invite-incentives')
   .then((response) => {
     const inviteIncentives = response.data.invite_incentives;
-    setInvitations(inviteIncentives.invite_incentives);
+    setInviteIncentives(inviteIncentives.invite_incentives);
     setDefaultInviteIncentive(inviteIncentives.default_invite_incentive)
 
   })
@@ -11,18 +11,18 @@ export const getInviteIncentives = async (setInvitations, setDefaultInviteIncent
   });
 };
 
-export const showInvitation = async (id, setInvitation) => {
-  axios.get(`/api/v1/management/invitations/${id}`)
+export const showInviteIncentive = async (id, setInviteIncentive) => {
+  axios.get(`/api/v1/management/invite-incentives/${id}`)
   .then((response) => {
-    setInvitation(response.data.invitation);
+    setInviteIncentive(response.data.invite_incentive);
   })
   .catch(error => {
       console.error(error);
   });
 };
 
-export const updateInvitation = async (id, invitation, updateComplete) => {
-  axios.put(`/api/v1/management/invitations/${id}`, invitation)
+export const updateInviteIncentive = async (id, inviteIncentive, updateComplete) => {
+  axios.put(`/api/v1/management/invite-incentives/${id}`, inviteIncentive)
   .then((response) => {
     updateComplete();
   })
@@ -31,11 +31,11 @@ export const updateInvitation = async (id, invitation, updateComplete) => {
   });
 };
 
-export const deleteInvitation = async (id, deleteComplete, setInvitations, invitations) => {
-  axios.delete(`/api/v1/management/invitations/${id}`)
+export const deleteInviteIncentive = async (id, deleteComplete, setInviteIncentives, inviteIncentives) => {
+  axios.delete(`/api/v1/management/invite-incentives/${id}`)
   .then((response) => {
     deleteComplete();
-    setInvitations(invitations.filter((invitation) => (invitation.id !== id)));
+    setInviteIncentives(inviteIncentives.filter((inviteIncentive) => (inviteIncentive.id !== id)));
   })
   .catch(error => {
       console.error(error);

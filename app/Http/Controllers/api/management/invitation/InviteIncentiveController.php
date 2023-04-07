@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\api\management\invitation;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\management\invitation\StoreInviteIncentiveRequest;
 use App\Services\management\invitation\InviteIncentiveService;
 use App\Http\Requests\management\invitation\UpdateInviteIncentiveRequest;
 use App\Models\InviteIncentive;
-use Illuminate\Http\Request;
 
 class InviteIncentiveController extends Controller
 {
@@ -31,12 +31,13 @@ class InviteIncentiveController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreInviteIncentiveRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreInviteIncentiveRequest $request)
     {
-        //
+        $invitation = $this->invite_incentive_service->store($request);
+        return response()->json(['invite_incentive' => $invitation], 200);
     }
 
     /**
@@ -55,7 +56,7 @@ class InviteIncentiveController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdateInviteIncentiveRequest  $request
-     * @param  InviteIncentive  $id
+     * @param  InviteIncentive  $invite_incentive
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateInviteIncentiveRequest $request, InviteIncentive $invite_incentive)

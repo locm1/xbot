@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Col, Row, Form, Button, Badge , Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import Swal from "sweetalert2";
-import { showInviteIncentive, updateInviteIncentive } from "@/pages/invitation/api/InviteIncentiveApiMethods";
-import { getCoupons } from "@/pages/coupon/api/CouponApiMethods";
+import { showInviteIncentive, updateInviteIncentive, storeInviteIncentive } from "@/pages/invitation/api/InviteIncentiveApiMethods";
 
 export default () => {
   const { id } = useParams();
+  const pathname = useLocation().pathname;
   const [inviteIncentive, setInviteIncentive] = useState({
     name: '', invitee_content: '', invitee_timing: 1, invitee_format: 1, invitee_title: '',
     inviter_content: '', inviter_timing: 1, inviter_format: 1, inviter_title: ''
@@ -19,17 +19,20 @@ export default () => {
     return setInviteIncentive({...inviteIncentive, [name]: value})
   };
 
-  const updateComplete = () => {
+  const storeComplete = (message) => {
     Swal.fire(
-      '更新完了',
-      '招待情報の更新に成功しました',
-      'success'
+      `${message}完了`, `招待情報の${message}に成功しました`, 'success'
     )
   } 
 
   const handleClick = () => {
     inviteIncentive.is_default = isDefault ? 1 : 0 
-    updateInviteIncentive(id, inviteIncentive, updateComplete)
+    if (pathname.includes('/edit')) {
+      updateInviteIncentive(id, inviteIncentive, storeComplete)
+    } else {
+      console.log(inviteIncentive);
+      storeInviteIncentive(inviteIncentive, storeComplete)
+    }
   };
 
   const getFormat = (format) => {
@@ -40,14 +43,16 @@ export default () => {
   }
 
   useEffect(() => {
-    showInviteIncentive(id, setInviteIncentive)
+    if (pathname.includes('/edit')) {
+      showInviteIncentive(id, setInviteIncentive)
+    }
   }, []);
 
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">招待編集</h1>
+          <h1 className="page-title">{pathname.includes('/edit') ? 'インセンティブ編集' : 'インセンティブ登録'}</h1>
         </div>
       </div>
       <Card border="0" className="shadow mb-4">
@@ -147,7 +152,7 @@ export default () => {
             className="d-inline-flex align-items-center"
             onClick={handleClick}
           >
-            更新する
+            {pathname.includes('/edit') ? '更新する' : '保存する'}
           </Button>
         </div>
       </Card.Body>

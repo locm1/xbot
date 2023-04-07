@@ -24,6 +24,7 @@ return new class extends Migration
             $table->tinyInteger('invitee_format');
             $table->string('invitee_title');
             $table->string('invitee_content');
+            $table->string('version_key');
             $table->timestamps();
             $table->softDeletes();
         });

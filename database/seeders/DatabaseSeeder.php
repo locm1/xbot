@@ -19,9 +19,11 @@ use App\Models\EventUser;
 use App\Models\GreetingMessage;
 use App\Models\Invitation;
 use App\Models\InvitationUser;
+use App\Models\InviteeIncentiveUser;
 use App\Models\InviteHistory;
 use App\Models\InviteIncentive;
 use App\Models\InviteIncentiveUser;
+use App\Models\InviterIncentiveUser;
 use App\Models\Message;
 use App\Models\MessageItem;
 use App\Models\Occupation;
@@ -42,6 +44,7 @@ use App\Models\User;
 use App\Models\UserTag;
 use App\Models\VisitorHistory;
 use Database\Factories\CouponUserFactory;
+use Database\Factories\InviterIncentiveUserFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -100,7 +103,9 @@ class DatabaseSeeder extends Seeder
         ReserveHistory::factory(300)->create();
         RelatedProduct::factory(300)->create();
         InviteIncentive::factory(100)->create();
-        InviteIncentiveUser::factory(100)->create();
+        InviterIncentiveUser::factory(100)->create()->each(function($inviter_incentive_user) {
+            InviteeIncentiveUser::factory()->create(['inviter_incentive_user_id' => $inviter_incentive_user->id]);
+        });
         DefaultInviteIncentive::factory(1)->create();
         Message::factory(100)->create();
         MessageItem::factory(200)->create();

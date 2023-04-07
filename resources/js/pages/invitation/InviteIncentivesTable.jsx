@@ -15,6 +15,8 @@ export const InviteIncentivesTable = (props) => {
   const TableRow = (props) => {
     const { name, id, inviter_timing, invitee_timing, defaultInviteIncentive } = props;
     const link = Paths.EditInviteIncentive.path.replace(':id', id);
+    const inviterIncentiveLink = Paths.InviterIncentives.path.replace(':id', id);
+    const inviteeIncentiveLink = Paths.InviteeIncentives.path.replace(':id', id);
 
     const getTiming = (timing) => {
       switch (timing) {
@@ -78,10 +80,10 @@ export const InviteIncentivesTable = (props) => {
           </span>
         </td>
         <td>
-          <Button variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+          <Button as={Link} to={inviterIncentiveLink} target="_blank" variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
             スピーカー一覧
           </Button>
-          <Button variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+          <Button as={Link} to={inviteeIncentiveLink} variant="tertiary" target="_blank" size="sm" className="d-inline-flex align-items-center me-3">
             招待者一覧
           </Button>
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">

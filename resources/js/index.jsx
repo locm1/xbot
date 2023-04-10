@@ -35,8 +35,6 @@ import { create } from "lodash";
 
 import { LoadingProvider } from "./components/LoadingContext";
 import { LoadingScreen } from "./components/LoadingScreen";
-import dotenv from 'dotenv';
-dotenv.config();
 
 
 function App() {

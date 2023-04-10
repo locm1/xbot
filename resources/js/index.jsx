@@ -23,7 +23,6 @@ import { BrowserRouter } from "react-router-dom";
 import Routing from "@/routing";
 import ScrollToTop from "@/components/ScrollToTop";
 
-// core styles
 import "./../scss/volt.scss";
 
 //vendor styles

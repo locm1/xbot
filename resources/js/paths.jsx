@@ -83,6 +83,7 @@ export const Paths = {
     LiffProductHistories: { path: "/history/product" },
     LiffProductHistoryDetail: { path: "/history/product/purchase/:id" },
     LiffInvite: { path: "/invite" },
+    LiffFriendAdd: { path: "/friends/add/:userId/:versionKey/:date" },
     LiffInit: { path: "/liff" },
 
 

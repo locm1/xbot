@@ -81,6 +81,7 @@ import LiffProductHistoryDetail from '@/pages/liff/history/LiffProductHistoryDet
 import LiffInvite from '@/pages/liff/invite/LiffInvite';
 import OrderComplete from '@/pages/liff/order/OrderComplete';
 import LiffProductReservationComplete from '@/pages/liff/product_reservation/ProductReservationComplete';
+import LiffFriendAdd from '@/pages/liff/friend/LiffFriendAdd';
 
 // components
 import Footer from '@/components/Footer';
@@ -316,6 +317,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffProductHistories.path} component={LiffProductHistories} />
       <LiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
+      <LiffRoute exact path={Paths.LiffFriendAdd.path} component={LiffFriendAdd} />
 
       <Route component={NotFound} />
     </Switch>

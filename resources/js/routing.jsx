@@ -201,6 +201,17 @@ const LiffRoute = ({ component: Component, ...rest }) => {
   );
 }
 
+const NoFooterRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route {...rest} render={props => (
+      <>
+        <Component {...props} />
+      </>
+    )}
+    />
+  );
+}
+
 const LiffInitRoute = () => {
   const search = useLocation().search;
   const query = new URLSearchParams(search);
@@ -325,7 +336,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffProductHistories.path} component={LiffProductHistories} />
       <LiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
-      <LiffRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
+      <NoFooterRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
 
       <Route component={NotFound} />
     </Switch>

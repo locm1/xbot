@@ -40,6 +40,7 @@ use App\Http\Controllers\api\management\event\EventUserController;
 use App\Http\Controllers\api\management\GreetingMessageController;
 use App\Http\Controllers\api\management\GreetingMessagesWithQuestionnaireController;
 use App\Http\Controllers\api\management\InflowRouteController;
+use App\Http\Controllers\api\management\InflowRouteUserController;
 use App\Http\Controllers\api\management\invitation\InvitationController;
 use App\Http\Controllers\api\management\invitation\InvitationUserController;
 use App\Http\Controllers\api\management\invitation\InviteIncentiveController;
@@ -229,6 +230,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('terms-of-service', LiffTermsOfServiceController::class);
     Route::get('specific-trades', LiffSpecificTradeController::class);
     Route::get('ecommerce-configurations', LiffEcommerceConfigurationController::class);
+    Route::apiResource('inflow-route-users', InflowRouteUserController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

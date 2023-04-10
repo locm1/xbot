@@ -79,6 +79,7 @@ import LiffProductHistoryDetail from '@/pages/liff/history/LiffProductHistoryDet
 import LiffInvite from '@/pages/liff/invite/LiffInvite';
 import OrderComplete from '@/pages/liff/order/OrderComplete';
 import LiffProductReservationComplete from '@/pages/liff/product_reservation/ProductReservationComplete';
+import LiffInflowRoute from '@/pages/liff/inflow_route/InflowRoute';
 
 // components
 import Footer from '@/components/Footer';
@@ -203,7 +204,7 @@ const LiffInitRoute = () => {
   const path = query.get('path')
   const [redirect, setRedirect] = useState('');
 
-  liff.init({liffId: process.env.MIX_LIFF_ID})
+  liff.init({liffId: process.env.MIX_LIFF_ID, withLoginOnExternalBrowser: true})
     .then(() => {
       if(liff.isLoggedIn() === false) liff.login()
       setRedirect(path);
@@ -311,6 +312,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffProductHistories.path} component={LiffProductHistories} />
       <LiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
+      <LiffRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
 
       <Route component={NotFound} />
     </Switch>

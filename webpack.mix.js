@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+require('mix-env-file');
 const path = require('path');
 
 mix.js('resources/js/index.jsx', 'public/js')
@@ -17,3 +18,7 @@ mix.webpackConfig({
     }
   }
 });
+
+// Then pass your file to this plugin
+// If this is not set, this plugin won't do anything and the default .env variables will remain
+mix.env(process.env.ENV_FILE);

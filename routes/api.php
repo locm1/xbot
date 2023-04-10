@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\liff\cart\CartController;
 use App\Http\Controllers\api\liff\coupon\CouponController as LiffCouponController;
 use App\Http\Controllers\api\liff\ec_configuration\EcommerceConfigurationController as LiffEcommerceConfigurationController;
+use App\Http\Controllers\api\liff\GetLiffIdController;
 use App\Http\Controllers\api\liff\order\OrderController as LiffOrderController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
@@ -235,6 +236,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('specific-trades', LiffSpecificTradeController::class);
     Route::get('ecommerce-configurations', LiffEcommerceConfigurationController::class);
     Route::apiResource('inflow-route-users', InflowRouteUserController::class);
+    Route::get('get-liff-id', GetLiffIdController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

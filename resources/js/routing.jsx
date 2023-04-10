@@ -87,6 +87,7 @@ import LiffInflowRoute from '@/pages/liff/inflow_route/InflowRoute';
 import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
+import axios from 'axios';
 
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
@@ -205,16 +206,22 @@ const LiffInitRoute = () => {
   const query = new URLSearchParams(search);
   const path = query.get('path')
   const [redirect, setRedirect] = useState('');
-  console.log(process.env.MIX_LIFF_ID);
-
-  liff.init({liffId: process.env.MIX_LIFF_ID, withLoginOnExternalBrowser: true})
-    .then(() => {
-      if(liff.isLoggedIn() === false) liff.login()
-      setRedirect(path);
+  axios.get('/api/v1/get-liff-id')
+    .then((response) => {
+      console.log(response);
+      liff.init({liffId: response.data})
+        .then(() => {
+          if(liff.isLoggedIn() === false) liff.login()
+          setRedirect(path);
+        })
+        .catch((err) => {
+          console.log(err.code, err.message);
+        });
     })
-    .catch((err) => {
-      console.log(err.code, err.message);
-    });
+    .catch((error) => {
+      console.error(error);
+    })
+
 
     return redirect && <Redirect to={`/${redirect}`} />
 }

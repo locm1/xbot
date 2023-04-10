@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\api\management\invitation;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\management\invitation\StoreInviteIncentiveRequest;
 use App\Services\management\invitation\InviteIncentiveService;
-use App\Http\Requests\management\invitation\UpdateInvitationRequest;
+use App\Http\Requests\management\invitation\UpdateInviteIncentiveRequest;
 use App\Models\InviteIncentive;
-use Illuminate\Http\Request;
 
 class InviteIncentiveController extends Controller
 {
@@ -31,12 +31,13 @@ class InviteIncentiveController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreInviteIncentiveRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreInviteIncentiveRequest $request)
     {
-        //
+        $invitation = $this->invite_incentive_service->store($request);
+        return response()->json(['invite_incentive' => $invitation], 200);
     }
 
     /**
@@ -48,20 +49,20 @@ class InviteIncentiveController extends Controller
     public function show(InviteIncentive $invite_incentive)
     {
         $invitation = $this->invite_incentive_service->show($invite_incentive);
-        return response()->json(['invitation' => $invitation], 200);
+        return response()->json(['invite_incentive' => $invitation], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateInvitationRequest  $request
-     * @param  InviteIncentive  $id
+     * @param  UpdateInviteIncentiveRequest  $request
+     * @param  InviteIncentive  $invite_incentive
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateInvitationRequest $request, InviteIncentive $invite_incentive)
+    public function update(UpdateInviteIncentiveRequest $request, InviteIncentive $invite_incentive)
     {
         $invitation = $this->invite_incentive_service->update($request, $invite_incentive);
-        return response()->json(['invitation' => $invitation], 200);
+        return response()->json(['invite_incentive' => $invitation], 200);
     }
 
     /**

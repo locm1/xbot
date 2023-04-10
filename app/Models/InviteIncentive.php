@@ -24,8 +24,8 @@ class InviteIncentive extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
 
-    public function inviteIncentiveUsers()
+    public function inviterIncentiveUsers()
     {
-        return $this->hasMany(InviteIncentiveUser::class);
+        return $this->hasMany(InviterIncentiveUser::class);
     }
 }

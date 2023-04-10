@@ -3,18 +3,20 @@ import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIco
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { BadgeCheckIcon } from "@heroicons/react/solid";
-import { getInvitationUsers, deleteInvitation } from "@/pages/invitation/api/InviteIncentiveApiMethods";
+import { deleteInviteIncentive } from "@/pages/invitation/api/InviteIncentiveApiMethods";
 import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 export const InviteIncentivesTable = (props) => {
-  const { inviteIncentives, defaultInviteIncentive } = props;
+  const { inviteIncentives, defaultInviteIncentive, setInviteIncentives } = props;
   const totalInviteIncentives = inviteIncentives.length;
 
   const TableRow = (props) => {
-    const { name, id, inviter_timing, invitee_timing } = props;
-    const link = Paths.EditInvitation.path.replace(':id', id);
+    const { name, id, inviter_timing, invitee_timing, defaultInviteIncentive } = props;
+    const link = Paths.EditInviteIncentive.path.replace(':id', id);
+    const inviterIncentiveLink = Paths.InviterIncentives.path.replace(':id', id);
+    const inviteeIncentiveLink = Paths.InviteeIncentives.path.replace(':id', id);
 
     const getTiming = (timing) => {
       switch (timing) {
@@ -50,7 +52,7 @@ export const InviteIncentivesTable = (props) => {
       });
   
       if (result.isConfirmed) {
-        deleteInvitation(id, deleteComplete, setInvitations, invitations)
+        deleteInviteIncentive(id, deleteComplete, setInviteIncentives, inviteIncentives)
       }
     };
 
@@ -64,6 +66,7 @@ export const InviteIncentivesTable = (props) => {
         <td>
           <span className="fw-normal">
             {name}
+            &nbsp; {defaultInviteIncentive.invite_incentive_id == id && <BadgeCheckIcon className="icon-sm" />}
           </span>
         </td>
         <td>
@@ -77,16 +80,16 @@ export const InviteIncentivesTable = (props) => {
           </span>
         </td>
         <td>
-          <Button variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+          <Button as={Link} to={inviterIncentiveLink} target="_blank" variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
             スピーカー一覧
           </Button>
-          <Button variant="tertiary" size="sm" className="d-inline-flex align-items-center me-3">
+          <Button as={Link} to={inviteeIncentiveLink} variant="tertiary" target="_blank" size="sm" className="d-inline-flex align-items-center me-3">
             招待者一覧
           </Button>
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
-          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
         </td>
@@ -107,7 +110,7 @@ export const InviteIncentivesTable = (props) => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {inviteIncentives.map(t => <TableRow key={`invite-incentives-${t.id}`} {...t} />)}
+            {inviteIncentives.map(t => <TableRow key={`invite-incentives-${t.id}`} {...t} defaultInviteIncentive={defaultInviteIncentive} />)}
           </tbody>
         </Table>
         <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">

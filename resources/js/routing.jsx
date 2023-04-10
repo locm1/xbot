@@ -205,6 +205,7 @@ const LiffInitRoute = () => {
   const query = new URLSearchParams(search);
   const path = query.get('path')
   const [redirect, setRedirect] = useState('');
+  console.log(process.env.MIX_LIFF_ID);
 
   liff.init({liffId: process.env.MIX_LIFF_ID, withLoginOnExternalBrowser: true})
     .then(() => {

@@ -82,11 +82,13 @@ import LiffInvite from '@/pages/liff/invite/LiffInvite';
 import OrderComplete from '@/pages/liff/order/OrderComplete';
 import LiffProductReservationComplete from '@/pages/liff/product_reservation/ProductReservationComplete';
 import LiffFriendAdd from '@/pages/liff/friend/LiffFriendAdd';
+import LiffInflowRoute from '@/pages/liff/inflow_route/InflowRoute';
 
 // components
 import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
+import axios from 'axios';
 
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
@@ -200,20 +202,38 @@ const LiffRoute = ({ component: Component, ...rest }) => {
   );
 }
 
+const NoFooterRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route {...rest} render={props => (
+      <>
+        <Component {...props} />
+      </>
+    )}
+    />
+  );
+}
+
 const LiffInitRoute = () => {
   const search = useLocation().search;
   const query = new URLSearchParams(search);
   const path = query.get('path')
   const [redirect, setRedirect] = useState('');
-
-  liff.init({liffId: process.env.MIX_LIFF_ID})
-    .then(() => {
-      if(liff.isLoggedIn() === false) liff.login()
-      setRedirect(path);
+  axios.get('/api/v1/get-liff-id')
+    .then((response) => {
+      console.log(response);
+      liff.init({liffId: response.data})
+        .then(() => {
+          if(liff.isLoggedIn() === false) liff.login()
+          setRedirect(path);
+        })
+        .catch((err) => {
+          console.log(err.code, err.message);
+        });
     })
-    .catch((err) => {
-      console.log(err.code, err.message);
-    });
+    .catch((error) => {
+      console.error(error);
+    })
+
 
     return redirect && <Redirect to={`/${redirect}`} />
 }
@@ -317,7 +337,8 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffProductHistories.path} component={LiffProductHistories} />
       <LiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
-      <LiffRoute exact path={Paths.LiffFriendAdd.path} component={LiffFriendAdd} />
+      <NoFooterRoute exact path={Paths.LiffFriendAdd.path} component={LiffFriendAdd} />
+      <NoFooterRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
 
       <Route component={NotFound} />
     </Switch>

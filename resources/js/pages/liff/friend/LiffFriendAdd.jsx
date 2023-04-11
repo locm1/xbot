@@ -1,28 +1,54 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
-import { PlusIcon, MinusIcon, ShoppingCartIcon, InboxIcon, TrashIcon } from '@heroicons/react/solid';
-import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
 import { Link, useHistory, Redirect, useLocation, useParams } from 'react-router-dom';
-import { Paths } from "@/paths";
-import noImage from "@img/img/noimage.jpg"
-import Cookies from 'js-cookie';
 import liff from '@line/liff';
-import { LiffMockPlugin } from '@line/liff-mock';
-import LiffCartSlideCard from "@/pages/liff/cart/LiffCartSlideCard";
-import { isSalePeriod } from "@/components/common/IsSalePeriod";
 
 export default () => {
   const { userId, versionKey, date } = useParams();
 
-  // liff.idげっとしたら、踏んだやつのLINE IDとってこれる
-  //　5分以内
+  const searchInviteeUsers = async (searchParams) => {
+    return await axios.get(`/api/v1/invitee-users`, searchParams)
+    .then((response) => {
+      const invitee_users = response.data.invitee_users;
+      console.log(invitee_users);
+      return invitee_users;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+  };
+
+  const storeInviteeUser = async (formValue) => {
+    return await axios.post(`/api/v1/invitee-users`, formValue)
+    .then((response) => {
+      console.log(response.data.invitee_user);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+  };
 
   useEffect(() => {
-    location.href = "https://www.google.com/";
+    const idToken = liff.getIDToken();
+    const formValue = {
+      token: idToken, inviter_user_id: userId,
+      version_key: versionKey, invited_at: date
+    }
+    const searchParams = {
+      params: {token: idToken}
+    };
+
+    //招待者テーブルから検索をかけ、存在しなかったら追加
+    searchInviteeUsers(searchParams).then(response => {
+      if (!response.length) {
+        storeInviteeUser(formValue).then(response => location.href = "https://lin.ee/nGVYloK")
+      } else {
+        location.href = "https://lin.ee/nGVYloK"
+      }
+    })
   }, []);
 
   return (
-    <div></div>
+    <></>
   );
 };

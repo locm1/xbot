@@ -4,6 +4,8 @@ use App\Http\Controllers\api\liff\cart\CartController;
 use App\Http\Controllers\api\liff\coupon\CouponController as LiffCouponController;
 use App\Http\Controllers\api\liff\ec_configuration\EcommerceConfigurationController as LiffEcommerceConfigurationController;
 use App\Http\Controllers\api\liff\invite\InviteController;
+use App\Http\Controllers\api\liff\GetLiffIdController;
+use App\Http\Controllers\api\liff\invite\InviteeUserController;
 use App\Http\Controllers\api\liff\order\OrderController as LiffOrderController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
@@ -41,6 +43,7 @@ use App\Http\Controllers\api\management\event\EventUserController;
 use App\Http\Controllers\api\management\GreetingMessageController;
 use App\Http\Controllers\api\management\GreetingMessagesWithQuestionnaireController;
 use App\Http\Controllers\api\management\InflowRouteController;
+use App\Http\Controllers\api\management\InflowRouteUserController;
 use App\Http\Controllers\api\management\invitation\InvitationController;
 use App\Http\Controllers\api\management\invitation\InvitationUserController;
 use App\Http\Controllers\api\management\invitation\InviteeIncentiveUserController;
@@ -235,6 +238,9 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('terms-of-service', LiffTermsOfServiceController::class);
     Route::get('specific-trades', LiffSpecificTradeController::class);
     Route::get('ecommerce-configurations', LiffEcommerceConfigurationController::class);
+    Route::apiResource('inflow-route-users', InflowRouteUserController::class);
+    Route::get('get-liff-id', GetLiffIdController::class);
+    Route::apiResource('invitee-users', InviteeUserController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

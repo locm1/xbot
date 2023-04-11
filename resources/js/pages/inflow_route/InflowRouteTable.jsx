@@ -41,7 +41,7 @@ export const InflowRouteTable = (props) => {
 //   }
 
   const TableRow = (props) => {
-    const {id, name, uri} = props;
+    const {id, name, uri, count} = props;
     return (
       <tr className="border-bottom">
         <td>
@@ -59,6 +59,9 @@ export const InflowRouteTable = (props) => {
         </td>
         <td>
           {uri}
+        </td>
+        <td>
+          {count}
         </td>
         <td className="text-center">
           {/* <Button  variant="info" as={Link} to={link} size="sm" className="d-inline-flex align-items-center me-3"> */}
@@ -82,6 +85,7 @@ export const InflowRouteTable = (props) => {
               <th className="border-bottom">管理名称</th>
               <th className="border-bottom">生成QRコード</th>
               <th className="border-bottom">URL</th>
+              <th className="border-bottom">カウント</th>
               <th></th>
             </tr>
           </thead>

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('invitee_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('inviter_user_id');
-            $table->string('line_id')->unique();
+            $table->string('line_id');
             $table->string('version_key');
             $table->foreign('inviter_user_id')->references('id')->on('users');
             $table->timestamp('invited_at')->nullable();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\api\line\FollowService;
 use App\Services\api\line\greeting\GreetingService;
+use App\Services\api\line\invite\InviteService;
 use App\Services\api\line\UnfollowService;
 use Illuminate\Http\Request;
 use App\Services\api\LineBotService as LINEBot;
@@ -30,10 +31,14 @@ class LineWebhookController extends Controller
         foreach ($events as $event) {
             if ($event['type'] === 'follow') {
                 $follow_service = new FollowService($bot, $event['source']['userId']);
-                $follow_service->createUser();
+                $User = $follow_service->createUser();
+                $update_count = $follow_service->checkInflowRoute($User);
+                list($inviter_incentive_user, $invitee_incentive_user) = $follow_service->checkInviteeUser($User);
 
                 $greeting_service = new GreetingService($bot, $event['source']['userId'], $event['replyToken']);
-                return $greeting_service->sendGreetingMessage();
+                $invite_service = new InviteService($bot, $User);
+                $greeting_service->sendGreetingMessage();
+                return $invite_service->sendInviteMessage($inviter_incentive_user, $invitee_incentive_user);
                 
             } elseif ($event['type'] === 'unfollow') {
                 $unfollow_service = new UnfollowService($bot, $event['source']['userId']);

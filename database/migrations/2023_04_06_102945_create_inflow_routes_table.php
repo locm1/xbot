@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('key')->unique();
-            $table->integer('count');
             $table->softDeletes();
             $table->timestamps();
         });

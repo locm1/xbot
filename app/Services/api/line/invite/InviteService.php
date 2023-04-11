@@ -5,6 +5,7 @@ use App\Models\DefaultInviteIncentive;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class InviteService 
 {
@@ -36,6 +37,22 @@ class InviteService
             ],
             'url' => $url
         ];
+    }
+
+    public function sendInviteMessage($inviter_incentive_user, $invitee_incentive_user)
+    {
+        // if ($inviter_incentive_user->is_issued == 1) {
+        //     $text_message = "友達登録ありがとうございます。\n紹介専用クーポンが発行されました。\nメニューの「紹介」からクーポンをご確認いただけます。";
+        //     // $message_builder = new TextMessageBuilder($text_message);
+        //     // $this->bot->replyMessage($reply_token, $message_builder)->getJSONDecodedBody();
+        // }
+
+        if ($invitee_incentive_user->is_issued == 1) {
+            $text_message = "友達登録ありがとうございます。\n招待専用クーポンが発行されました。\nメニューの「紹介」からクーポンをご確認いただけます。";
+            Log::debug($text_message);
+            $message_builder = new TextMessageBuilder($text_message);
+            return $this->bot->pushMessage($this->user->line_id, $message_builder)->getJSONDecodedBody();
+        }
     }
 
     private function encryptData($data)

@@ -19,17 +19,14 @@ class InflowRouteSeeder extends Seeder
             [
                 "name" => "test1",
                 "key" => $this->getRandomAlphanumeric(),
-                "count" => 2,
             ],
             [
                 "name" => "test2",
                 "key" => $this->getRandomAlphanumeric(),
-                "count" => 0,
             ],
             [
                 "name" => "test3",
                 "key" => $this->getRandomAlphanumeric(),
-                "count" => 1,
             ],
         ];
         DB::table('inflow_routes')->insert($inflow_route);

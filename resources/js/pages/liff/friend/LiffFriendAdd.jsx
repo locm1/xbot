@@ -39,13 +39,7 @@ export default () => {
     };
 
     //招待者テーブルから検索をかけ、存在しなかったら追加
-    searchInviteeUsers(searchParams).then(response => {
-      if (!response.length) {
-        storeInviteeUser(formValue).then(response => location.href = "https://lin.ee/nGVYloK")
-      } else {
-        location.href = "https://lin.ee/nGVYloK"
-      }
-    })
+    storeInviteeUser(formValue).then(response => location.href = "https://lin.ee/nGVYloK")
   }, []);
 
   return (

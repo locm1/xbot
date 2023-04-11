@@ -2,9 +2,11 @@
 
 namespace App\Services\management\invite_history;
 
+use App\Models\InviteHistory;
+use App\Models\User;
 use App\Services\management\AbstractManagementService;
 
-class InviteHistoryService extends AbstractManagementService 
+class InviteHistoryService
 {
 
     public function index() 
@@ -13,27 +15,12 @@ class InviteHistoryService extends AbstractManagementService
     }
 
 
-    public function store() 
+    public function store(User $user, String $inviter_user_id) 
     {
-        //
-    }
-
-
-    public function show() 
-    {
-        //
-    }
-
-
-    public function update() 
-    {
-        //
-    }
-
-
-    public function destroy() 
-    {
-        //
+        $data = [
+            'inviter_user_id' => $inviter_user_id, 'invitee_user_id' => $user->id
+        ];
+        return InviteHistory::create($data);
     }
 
 }

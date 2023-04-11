@@ -9,6 +9,8 @@ class InviteHistory extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function inviterUsers()
     {
         return $this->belongsTo(User::class, 'inviter_user_id', 'id');

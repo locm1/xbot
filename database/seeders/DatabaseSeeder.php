@@ -117,6 +117,13 @@ class DatabaseSeeder extends Seeder
         } else if ($environment  === 'stg') {
             $this->call([
                 AdminTableSeeder::class,
+                PrefecturesTableSeeder::class,
+                PrivacyPoliciesTableSeeder::class,
+                DefaultSegmentSeeder::class,
+                DefaultSegmentItemSeeder::class,
+                TermsOfServicesTableSeeder::class,
+                PagesTableSeeder::class,
+                OccupationSeeder::class,
             ]);
         }
     }

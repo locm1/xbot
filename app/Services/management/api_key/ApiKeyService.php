@@ -17,6 +17,7 @@ class ApiKeyService
     public function index()
     {
         $api_keys = config('api_key');
+        return $api_keys;
         $data = [];
         foreach ($api_keys as $k => $v) {
             $data += [strtolower($k) => $v ? true : false];
@@ -34,7 +35,7 @@ class ApiKeyService
         if (file_exists($this->env_path)) {
             $this->save_api_key_action->saveApiKey($this->env_path, $api_key['key'], $api_key['value']);
         }
-        // Artisan::call('config:cache');
+        Artisan::call('config:cache');
         return $api_key;
     }
 

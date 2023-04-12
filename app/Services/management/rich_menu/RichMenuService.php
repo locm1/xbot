@@ -20,7 +20,7 @@ class RichMenuService
 
     public function __construct() {
         $httpClient = new CurlHTTPClient(config('services.line.message.channel_token'));
-        $bot = new LINEBot($httpClient, ['channelSecret' => config('services.line.message.channel_secret')]);
+        $bot = new LINEBot($httpClient, ['channelSecret' => 'tekitou']);
         $this->bot = $bot;
     }
 
@@ -51,6 +51,7 @@ class RichMenuService
         $create_richmenu_response = $this->bot->createRichMenu($richMenuBuilder);
 
         //リッチメニューの画像をアップロードする
+        Log::debug($create_richmenu_response->getJSONDecodedBody());
         $richmenu_id = $create_richmenu_response->getJSONDecodedBody()['richMenuId'];
         $image_path = $request->file('image')->path();
         $contentType = 'image/png';

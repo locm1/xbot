@@ -6,6 +6,7 @@ import liff from '@line/liff';
 import { LiffMockPlugin } from '@line/liff-mock';
 import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 import { generateEnv } from '@/components/common/GenerateEnv';
+import { getUser } from "@/pages/liff/api/UserApiMethods";
 
 // page
 import SignIn from "@/pages/auth/Signin"
@@ -71,6 +72,7 @@ import LiffPrivacyPolicy from '@/pages/liff/LiffPrivacyPolicy';
 import LiffTermsOfService from '@/pages/liff/LiffTermsOfService';
 import LiffSpecificTrades from '@/pages/liff/LiffSpecificTrades';
 import LiffVisitor from '@/pages/liff/visitor/LiffVisitor';
+import LiffVisitorConfirm from '@/pages/liff/visitor/LiffVisitorConfirm';
 import LiffAboutVisitorPrivileges from '@/pages/liff/visitor/LiffAboutVisitorPrivileges';
 import LiffEventReservations from '@/pages/liff/event/LiffEventReservations';
 import LiffAlreadyQuestionnaire from '@/pages/liff/questionnaire/LiffAlreadyQuestionnaire';
@@ -89,7 +91,7 @@ import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
 import axios from 'axios';
-
+import { Button, Card } from 'react-bootstrap';
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const history = useHistory();
@@ -201,6 +203,77 @@ const LiffRoute = ({ component: Component, ...rest }) => {
     />
   );
 }
+
+const RegisteredLiffRoute = ({ component: Component, ...rest }) => {
+  const idToken = liff.getIDToken();
+  const [user, setUser] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    getUser(idToken, setUser).finally(() => {
+      setIsLoading(false);
+    });
+  }, []);
+  
+  if (isLoading) {
+    // getUserの処理が完了するまでローディング画面を表示
+    return <LoadingPage />;
+  }
+
+  if (user.is_registered == 0) {
+    // userがnullの場合はアンケート画面を出力
+    return <ToQuestionnairePage />;
+  }
+
+  return (
+    <Route {...rest} render={props => (
+      <>
+        <Component {...props} />
+        <Footer />
+      </>
+    )}
+    />
+  );
+}
+
+const LoadingPage = () => {
+  return (
+    <div className="loading-page">
+      <p>Loading...</p>
+    </div>
+  );
+}
+
+const ToQuestionnairePage = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [liffId, setLiffId] = useState('');
+  axios.get('/api/v1/get-liff-id')
+    .then((response) => {
+      setLiffId(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+
+  if (isLoading) {
+    // getUserの処理が完了するまでローディング画面を表示
+    return <LoadingPage />;
+  }
+  return (
+    <>
+      <Card className='m-3 p-3'>
+        <div className='text-center mb-3'>アンケートにお答え頂くと利用できます</div>
+        <Button className='' href={`https://liff.line.me/${liffId}?path=questionnaire`}>
+          回答する
+        </Button>
+      </Card>
+      <Footer />
+    </>
+  )
+}
+
 
 const NoFooterRoute = ({ component: Component, ...rest }) => {
   return (
@@ -328,7 +401,8 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
       <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
-      <LiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} />
+      <RegisteredLiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} />
+      <LiffRoute exact path={Paths.LiffVisitorConfirm.path} component={LiffVisitorConfirm} />
       <LiffRoute exact path={Paths.LiffAboutVisitorPrivileges.path} component={LiffAboutVisitorPrivileges} />
       <LiffRoute exact path={Paths.LiffEventReservations.path} component={LiffEventReservations} />
       <LiffRoute exact path={Paths.LiffAlreadyQuestionnaire.path} component={LiffAlreadyQuestionnaire} />

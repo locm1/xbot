@@ -1,7 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
+import QRCode from "qrcode.react";
+import liff from '@line/liff';
+import { getUser } from "@/pages/liff/api/UserApiMethods";
 
 import Logo from "@img/img/logo_admin.png";
 import QrCode from "@img/img/add_friend_qr.png";
@@ -11,9 +14,50 @@ export default () => {
     {id: 1, name: 'トリートメントサンプル'},
     {id: 2, name: 'ドレッシング'},
   ]
+  const [uri, setUri] = useState('');
+  const [user, setUser] = useState({
+    "id": 9999999,
+    "first_name": "",
+    "last_name": "",
+    "first_name_kana": "",
+    "last_name_kana": "",
+    "nickname": "",
+    "status_message": "",
+    "birth_date": "",
+    "gender": "",
+    "zipcode": "",
+    "prefecture": "",
+    "city": "",
+    "address": "",
+    "building_name": "",
+    "tel": "",
+    "occupation_id": "",
+    "img_path": "",
+    "line_id": "",
+    "is_registered": 0,
+    "deleted_at": "",
+    "created_at": "",
+    "updated_at": "",
+    "block_date": "",
+    "is_blocked": 0
+  })
+  const [liffId, setLiffId] = useState('');
+  useLayoutEffect(() => {
+    const idToken = liff.getIDToken();
+    axios.get('/api/v1/get-liff-id')
+      .then((liff) => {
+        getUser(idToken, setUser).then((response) => {
+          const location = window.location.href
+          setUri(`${location}/confirm/${response.id}`)
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }, []);
   const LiffVisitorCard = (props) => {
     return (
-      <Card border="0" className="shadow liff-visitor-card">
+      <Card border="0" className=" liff-visitor-card">
         <Card.Body className="py-0">
           <Row className="">
             <Col xs="12" className="mt-3 mb-3 liff-visitor-card-item">
@@ -21,7 +65,7 @@ export default () => {
                 <Image src={Logo} className="navbar-logo-wrap" />
               </div>
               <div className="text-center text-md-center mb-4 mt-md-0 border-bottom">
-                <h2 className="mb-3 ms-3 liff-visitor-name">フクシテスト<span>様</span></h2>
+                <h2 className="mb-3 ms-3 liff-visitor-name">{user.last_name + user.first_name}<span>様</span></h2>
               </div>
               <div className="text-center text-md-center mb-4 mt-md-0">
                 <h4 className="fs-5 text-white">来店回数</h4>
@@ -37,7 +81,7 @@ export default () => {
   const LiffVisitorQrCard = (props) => {
 
     return (
-      <Card border="0" className="shadow my-4">
+      <Card border="0" className=" my-4">
         <Card.Header className="border-bottom">
           <h5 className="liff-product-detail-name mb-0">来店QRコード</h5>
         </Card.Header>
@@ -46,7 +90,13 @@ export default () => {
             <Col xs="12" className="mt-3 mb-3">
               <p>来店されましたら、QRコードをスタッフにお見せください。</p>
               <div className="text-center text-md-center mt-md-0">
-                <Image src={QrCode} className="liff-visitor-qrcode" />
+              <QRCode
+                id={`qr`}
+                value={uri}
+                size={150}
+                level={"L"}
+                includeMargin={false}
+              />
               </div>
             </Col>
           </Row>
@@ -74,7 +124,7 @@ export default () => {
     }
 
     return (
-      <Card border="0" className="shadow mt-4">
+      <Card border="0" className=" mt-4">
         <Card.Header className="border-bottom">
           <h5 className="liff-product-detail-name mb-0">特典</h5>
         </Card.Header>

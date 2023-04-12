@@ -8,16 +8,21 @@ use Illuminate\Http\Request;
 
 class ApiKeyController extends Controller
 {
-    private $api_key_service;
+    private $service;
 
-    public function __construct(ApiKeyService $api_key_service)
+    public function __construct(ApiKeyService $service)
     {
-        $this->api_key_service = $api_key_service;
+        $this->service = $service;
     }
 
-    public function __invoke(Request $request)
+    public function index()
     {
-        $api_key = $this->api_key_service->store($request);
+        return $this->service->index();
+    }
+
+    public function store(Request $request)
+    {
+        $api_key = $this->service->store($request);
         return response()->json(['api_key' => $api_key], 200);
     }
 }

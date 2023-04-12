@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
                 "occupation_id" => null,
                 "img_path" => "https://sprofile.line-scdn.net/0hYn1UuJjhBkEcLBBfCON4Pmx8BSs_XV9TY0pOIS8qX3UhHEUXZUtMJ3opXHVyFBQQZEocJy8rCiUQP3EnAnr6dRscWHYmHUYfME5Iog",
                 "line_id" => "U8e464a551171be43ead486ec63cc6ef3",
-                "is_registered" => 0,
+                "is_registered" => 1,
                 "deleted_at" => null,
                 "block_date" => "2023-03-23 13:33:52",
                 "is_blocked" => 0,

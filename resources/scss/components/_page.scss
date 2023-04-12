@@ -368,3 +368,12 @@ $base_color: #707070;
   width: 80%;
   height: 80%;
 }
+
+.loading-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  font-weight: bold;
+}

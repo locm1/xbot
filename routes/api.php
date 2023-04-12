@@ -24,6 +24,7 @@ use App\Http\Controllers\api\liff\specific_trades\SpecificTradeController as Lif
 use App\Http\Controllers\api\liff\terms_of_service\TermsOfServiceController as LiffTermsOfServiceController;
 use App\Http\Controllers\api\liff\user\UserController as LiffUserController;
 use App\Http\Controllers\api\liff\postage\PostageController as LiffPostageController;
+use App\Http\Controllers\api\liff\visitor_confirm\VisitorConfirmController;
 use App\Http\Controllers\api\LineChannelAccessTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -185,7 +186,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('messages/{message}/items', [MessageItemController::class, 'store']);
         Route::put('messages/{message}/items', [MessageItemController::class, 'update']);
         Route::delete('messages/{message}/items', [MessageItemController::class, 'destroy']);
-        Route::post('api-keys', ApiKeyController::class);
+        Route::apiResource('api-keys', ApiKeyController::class);
         Route::get('pages', [PageController::class, 'index']);
         Route::put('pages', [PageController::class, 'update']);
         Route::get('greeting-messages', [GreetingMessageController::class, 'index']);
@@ -243,6 +244,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('ecommerce-configurations', LiffEcommerceConfigurationController::class);
     Route::apiResource('inflow-route-users', InflowRouteUserController::class);
     Route::get('get-liff-id', GetLiffIdController::class);
+    Route::post('visitor-confirm', VisitorConfirmController::class);
     Route::apiResource('invitee-users', InviteeUserController::class);
     Route::apiResource('events', LiffEventController::class);
     Route::post('events/{event}/reservations', [EventReservationController::class, 'store']);

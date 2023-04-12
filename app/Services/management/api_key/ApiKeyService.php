@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\management\api_key;
+use Illuminate\Support\Facades\Artisan; //エイリアスに登録して無い場合
 
 class ApiKeyService
 {
@@ -13,6 +14,16 @@ class ApiKeyService
         $this->save_api_key_action = $save_api_key_action;
     }
 
+    public function index()
+    {
+        $api_keys = config('api_key');
+        $data = [];
+        foreach ($api_keys as $k => $v) {
+            $data += [strtolower($k) => $v ? true : false];
+        }
+        return $data;
+    }
+
     public function store($request) 
     {
         $api_key = [
@@ -23,6 +34,7 @@ class ApiKeyService
         if (file_exists($this->env_path)) {
             $this->save_api_key_action->saveApiKey($this->env_path, $api_key['key'], $api_key['value']);
         }
+        // Artisan::call('config:cache');
         return $api_key;
     }
 

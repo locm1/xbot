@@ -20,7 +20,7 @@ class UserService
      * @param  String $line_id
      * @return User
      */
-    public function getUser($request): User
+    public function getUser($request): ?User
     {
         $response = $this->verify_service->verifyIdToken($request->token);
         return User::where('line_id', $response['sub'])->first();

@@ -66,7 +66,7 @@ class FollowService
         $term = [$five_minute_before, $now];
         $invitee_user_result = InviteeUser::where('line_id', $this->line_id)->whereBetween('created_at', $term);
 
-        # 対象のLINE IDがテーブルに存在する場合
+        # 対象のLINE IDがテーブルに存在する場合 かつ、Usersに登録されていない時
         if ($invitee_user_result->exists()) {
             return DB::transaction(function () use ($invitee_user_result, $user) {
                 $invitee_user = $invitee_user_result->first();

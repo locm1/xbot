@@ -42,7 +42,7 @@ class User extends Authenticatable
 
     public function events()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Event::class);
     }
 
     public function questionnaireAnswers()

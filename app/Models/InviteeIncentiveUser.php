@@ -11,6 +11,8 @@ class InviteeIncentiveUser extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $guarded = ['id'];
+
     public function inviteIncentive()
     {
         return $this->belongsTo(InviteIncentive::class);

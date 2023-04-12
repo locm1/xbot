@@ -70,7 +70,7 @@ class RichMenuController extends Controller
         $new_richmenu_id = $this->service->store($request, false);
 
         //もし変更されたリッチメニューがデフォルトだった場合、新しく生成されたリッチメニューをデフォルトに設定
-        if ($this->bot->getDefaultRichMenuId()->getJSONDecodedBody()['richMenuId'] === $id) {
+        if ($this->bot->getDefaultRichMenuId()->getJSONDecodedBody()['richMenuId'] ?? null === $id) {
             $this->bot->setDefaultRichMenuId($new_richmenu_id);
         }
         

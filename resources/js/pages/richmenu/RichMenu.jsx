@@ -26,7 +26,7 @@ import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
-  const liffId = process.env.MIX_LIFF_ID;
+  const [liffId, setLiffId] = useState();
   const { id } =  useParams();
   const richMenuId = 'richmenu-' + id;
   const pathname = useLocation().pathname;  
@@ -51,6 +51,13 @@ export default () => {
     .then((response) => {
       const responseAlias = response.data.filter(v => v.richMenuId !== richMenuId);
       setAilias(responseAlias);
+    })
+    .catch(error => {
+        console.error(error);
+    },);
+    axios.get('/api/v1/get-liff-id')
+    .then((response) => {
+      setLiffId(response.data);
     })
     .catch(error => {
         console.error(error);

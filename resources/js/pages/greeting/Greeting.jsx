@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Col, Row, Form, Button, Breadcrumb, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import MessageEditor from "@/pages/message/MessageEditor";
+import MessageEditor from "./MessageEditor";
 import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import Swal from "sweetalert2";
 import LinePreview from "@/components/line/LinePreview";

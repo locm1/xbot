@@ -151,7 +151,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
         Route::apiResource('questionnaires', QuestionnaireController::class);
         Route::apiResource('questionnaires/{questionnaire}/items', QuestionnaireItemController::class, array("as" => "api"))->only([
-            'store', 'update', 'delete'
+            'store', 'update', 'destroy'
         ]);
         Route::put('questionnaires/{questionnaire}/sort', QuestionnaireSortController::class);
         Route::apiResource('products', ProductController::class);

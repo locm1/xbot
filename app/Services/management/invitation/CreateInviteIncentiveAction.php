@@ -16,9 +16,15 @@ class CreateInviteIncentiveAction
         return DB::transaction(function () use ($data, $version_key, $request) {
             $invite_incentive = InviteIncentive::create(array_merge($data, ['version_key' => $version_key]));
 
+            $default_invite_incentive = DefaultInviteIncentive::where('id', 1);
+            # デフォルトインセンティブが存在しない場合作成
+            if (!$default_invite_incentive->exists()) {
+                DefaultInviteIncentive::create(['invite_incentive_id' => $invite_incentive->id]);
+            }
+
             # デフォルトに設定
             if ($request->is_default == 1) {
-                DefaultInviteIncentive::where('id', 1)->update([
+                $default_invite_incentive->update([
                     'invite_incentive_id' => $invite_incentive->id
                 ]);
             }

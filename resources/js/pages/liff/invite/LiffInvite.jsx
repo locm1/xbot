@@ -16,8 +16,9 @@ export default () => {
   const [link, setLink] = useState();
 
   useEffect(() => {
-    const idToken = liff.getIDToken();
-    getUser(idToken, setUser).then(response => getInviteMessage(response.id, setMessages, setLink))
+    //const idToken = liff.getIDToken();
+    getInviteMessage(102, setMessages, setLink)
+    // getUser(idToken, setUser).then(response => getInviteMessage(response.id, setMessages, setLink))
   }, []);
 
   const sendMessage = () => {
@@ -74,9 +75,15 @@ export default () => {
                   LINEでコードを送る
                 </Button>
             </div>
+            <div className="c-box mb-5">
+              <div className="coupon-title">
+                獲得済の紹介者クーポンはこちら！
+              </div>
+              <CouponCard />
+            </div>
             <div className="c-box mb-0">
               <div className="coupon-title">
-                獲得済クーポンはこちら！
+                獲得済の招待者クーポンはこちら！
               </div>
               <CouponCard />
             </div>

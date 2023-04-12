@@ -124,6 +124,7 @@ class DatabaseSeeder extends Seeder
                 TermsOfServicesTableSeeder::class,
                 PagesTableSeeder::class,
                 OccupationSeeder::class,
+                GreetingMessagesWithQuestionnaireSeeder::class
             ]);
         }
     }

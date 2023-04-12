@@ -15,6 +15,6 @@ class GetLiffIdController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return config('MIX_LIFF_ID');
+        return config('api_key')['MIX_LIFF_ID'];
     }
 }

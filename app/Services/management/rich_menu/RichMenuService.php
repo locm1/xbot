@@ -32,7 +32,7 @@ class RichMenuService
             $is_default = $default_richmenu_id === $richmenu['richMenuId'] ? 1 : 0;
             $form_value[] = ['richMenuId' => $richmenu['richMenuId'], 'name' => $richmenu['name'], 'isDefault' => $is_default];
         }
-        return $form_value;
+        return $form_value ?? null;
     }
 
 

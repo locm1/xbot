@@ -316,6 +316,7 @@ export default () => {
             text: `「${formValue.title}」を保存しました`,
           }).then((result) => {
             if (result.isConfirmed) {
+              console.log(response);
               let responseRichMenuId = response.replace('richmenu-', '');
               history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
             }

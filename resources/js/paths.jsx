@@ -75,6 +75,7 @@ export const Paths = {
     LiffTermsOfService: { path: "/terms-of-service" },
     LiffSpecificTrades: { path: "/specific-trades" },
     LiffVisitor: { path: "/visitor" },
+    LiffVisitorConfirm: { path: "/visitor/confirm/:userId" },
     LiffAboutVisitorPrivileges: { path: "/visitor/privilege" },
     LiffEventReservations: { path: "/event/reservation" },
     LiffAlreadyQuestionnaire: { path: "/questionnaire/already/answered" },

@@ -8,4 +8,5 @@ return [
     'LIFF_CHANNEL_ID' => env('LIFF_CHANNEL_ID'),
     'MIX_PAYJP_PUBLIC_KEY' => env('MIX_PAYJP_PUBLIC_KEY'),
     'PAYJP_SECRET_KEY' => env('PAYJP_SECRET_KEY'),
+    'COMMON_PASSWORD' => env('COMMON_PASSWORD'),
 ];

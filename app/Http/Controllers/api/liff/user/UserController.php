@@ -10,11 +10,11 @@ use App\Http\Requests\liff\user\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    private $user_service;
+    private $service;
 
-    public function __construct(UserService $user_service)
+    public function __construct(UserService $service)
     {
-        $this->user_service = $user_service;
+        $this->service = $service;
     }
 
     /**
@@ -25,13 +25,13 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $user = $this->user_service->getUser($request);
-        return response()->json(['user' => $user], 200);
+        $User = $this->service->getUser($request);
+        return response()->json(['user' => $User], 200);
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user = $this->user_service->update($request, $user);
+        $user = $this->service->update($request, $user);
         return response()->json(['user' => $user], 200);
     }
 }

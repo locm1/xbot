@@ -11,6 +11,8 @@ class DefaultInviteIncentive extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $guarded = ['id'];
+
     /**
      * Get the user associated with the DefaultInviteIncentive
      *

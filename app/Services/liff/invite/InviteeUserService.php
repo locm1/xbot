@@ -12,7 +12,7 @@ class InviteeUserService
     private $verify_service;
 
     public function __construct(VerifyService $verify_service) {
-        $this->passphrase = config('passphrase.ENCRYPT_PASSPHRASE');
+        $this->passphrase = config('api_key.COMMON_PASSWORD');
         $this->verify_service = $verify_service;
     }
 

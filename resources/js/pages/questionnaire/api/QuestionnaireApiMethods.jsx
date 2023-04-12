@@ -14,7 +14,12 @@ export const getQuestionnaires = async (setQuestionnaires) => {
 export const storeQuestionnaire = async (formValue, questionnaires, setQuestionnaires) => {
   await axios.post(`/api/v1/management/questionnaires`, formValue)
   .then((response) => {
-    setQuestionnaires([...questionnaires, response.data.questionnaire]);
+    setQuestionnaires([...questionnaires, {
+      ...response.data.questionnaire, questionnaire_items: []
+    }]);
+    console.log([...questionnaires, {
+      ...response.data.questionnaire, questionnaire_items: []
+    }]);
   })
   .catch(error => {
       console.error(error);

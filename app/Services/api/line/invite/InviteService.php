@@ -16,7 +16,7 @@ class InviteService
     public function __construct(LINEBot $bot, User $user) {
         $this->bot = $bot;
         $this->user = $user;
-        $this->passphrase = config('passphrase.ENCRYPT_PASSPHRASE');
+        $this->passphrase = config('api_key.COMMON_PASSWORD');
     }
 
     public function createTextMessage()

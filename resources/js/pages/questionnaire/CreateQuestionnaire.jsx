@@ -89,6 +89,7 @@ export default () => {
       type: 1,
       display_order: displayOrder,
       is_undisclosed: 0,
+      is_required: 0,
       questionnaire_titles: []
     }
     storeQuestionnaire(newQuestionnaire, questionnaires, setQuestionnaires)
@@ -122,7 +123,6 @@ export default () => {
   const completeDelete = async () => {
     const confirmMessage = "選択したアンケートは削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    location.reload();
   };
 
   const onDragEnd = (result) => {

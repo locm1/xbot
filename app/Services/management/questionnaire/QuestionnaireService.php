@@ -23,7 +23,7 @@ class QuestionnaireService
 
     public function store($reqest): Questionnaire
     {
-        $data = $reqest->only(['title', 'type', 'display_order', 'is_undisclosed']);
+        $data = $reqest->only(['title', 'type', 'display_order', 'is_undisclosed', 'is_required']);
         $merged_data = array_merge($data, ['admin_id' => Auth::id()]);
         return Questionnaire::create($merged_data);
     }

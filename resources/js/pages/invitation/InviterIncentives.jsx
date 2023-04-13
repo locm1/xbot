@@ -14,7 +14,7 @@ export default () => {
   const totalInviterIncentiveUsers = inviterIncentiveUsers.length;
 
   const TableRow = (props) => {
-    const { user_id, user, issued_at, usage_status, invite_incentive } = props;
+    const { user_id, user, issued_at, usage_status, invite_incentive, usage_date } = props;
     const link = Paths.EditUser.path.replace(':id', user_id);
 
     const getUsageStatus = () => {
@@ -57,6 +57,11 @@ export default () => {
         </td>
         <td>
           <span className="fw-normal">
+          {moment(usage_date).format("YYYY-MM-DD HH:mm:ss")}
+          </span>
+        </td>
+        <td>
+          <span className="fw-normal">
           {invite_incentive.name}
           </span>
         </td>
@@ -84,6 +89,7 @@ export default () => {
               <th className="border-gray-200">利用者</th>
               <th className="border-gray-200">取得日時</th>
               <th className="border-gray-200">使用状況</th>
+              <th className="border-gray-200">使用日</th>
               <th className="border-gray-200">対象インセンティブ</th>
             </tr>
           </thead>

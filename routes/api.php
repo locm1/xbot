@@ -7,7 +7,9 @@ use App\Http\Controllers\api\liff\event\EventController as LiffEventController;
 use App\Http\Controllers\api\liff\event\EventReservationController;
 use App\Http\Controllers\api\liff\invite\InviteController;
 use App\Http\Controllers\api\liff\GetLiffIdController;
+use App\Http\Controllers\api\liff\invite\InviteeIncentiveUserController as LiffInviteeIncentiveUserController;
 use App\Http\Controllers\api\liff\invite\InviteeUserController;
+use App\Http\Controllers\api\liff\invite\InviterIncentiveUserController as LiffInviterIncentiveUserController;
 use App\Http\Controllers\api\liff\order\OrderController as LiffOrderController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
@@ -232,6 +234,8 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('users/{user}/orders', LiffOrderController::class);
     Route::apiResource('users/{user}/product/reservations', ProductReservationController::class);
     Route::get('users/{user}/event/reservations', [EventReservationController::class, 'index']);
+    Route::apiResource('users/{user}/inviter-incentives', LiffInviterIncentiveUserController::class);
+    Route::apiResource('users/{user}/invitee-incentives', LiffInviteeIncentiveUserController::class);
     Route::get('users/{user}/invites', InviteController::class);
     Route::get('postages', LiffPostageController::class);
     Route::get('address', SearchZipcodeController::class);

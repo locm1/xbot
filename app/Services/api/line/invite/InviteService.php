@@ -41,15 +41,11 @@ class InviteService
 
     public function sendInviteMessage($inviter_incentive_user, $invitee_incentive_user)
     {
-        // if ($inviter_incentive_user->is_issued == 1) {
-        //     $text_message = "友達登録ありがとうございます。\n紹介専用クーポンが発行されました。\nメニューの「紹介」からクーポンをご確認いただけます。";
-        //     // $message_builder = new TextMessageBuilder($text_message);
-        //     // $this->bot->replyMessage($reply_token, $message_builder)->getJSONDecodedBody();
-        // }
+        $timing = [1 => '友達登録', 2 => '利用者', 3 => '初来店', 4 => '初購入'];
+        $invite_incentive = $invitee_incentive_user->inviteIncentrive;
+        $text_message =  $timing[$invite_incentive->invitee_timing] ."ありがとうございます。\n招待専用クーポンが発行されました。\nメニューの「紹介」からクーポンをご確認いただけます。";
 
         if ($invitee_incentive_user->is_issued == 1) {
-            $text_message = "友達登録ありがとうございます。\n招待専用クーポンが発行されました。\nメニューの「紹介」からクーポンをご確認いただけます。";
-            Log::debug($text_message);
             $message_builder = new TextMessageBuilder($text_message);
             return $this->bot->pushMessage($this->user->line_id, $message_builder)->getJSONDecodedBody();
         }

@@ -110,6 +110,16 @@ class User extends Authenticatable
         return $this->hasMany(InviteHistory::class, 'inviter_user_id');
     }
 
+    public function inviterIncentives()
+    {
+        return $this->hasOne(InviterIncentiveUser::class);
+    }
+
+    public function inviteeIncentives()
+    {
+        return $this->hasOne(InviteeIncentiveUser::class);
+    }
+
     public function inviteeHistories()
     {
         return $this->hasOne(InviteHistory::class, 'invitee_user_id');

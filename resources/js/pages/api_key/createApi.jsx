@@ -64,6 +64,12 @@ export default () => {
       </div>
 			<Card className="shadow mb-4">
 				<Card.Body>
+					messaging APIのWebhook URLには末尾 /api/line/webhook/urwhdwwrlx を付与してください。<br />
+					(例: https://example.com/api/line/webhook/urwhdwwrlx)
+				</Card.Body>
+			</Card>
+			<Card className="shadow mb-4">
+				<Card.Body>
 					<Form.Group id="line-message-channel-id">
 						<Form.Label>LINE_MESSAGE_CHANNEL_ID</Form.Label>
             &nbsp; {apiKeyCheck.line_message_channel_id ? <BadgeCheckIcon className="icon-sm text-success" /> : <ExclamationCircleIcon className="icon-sm text-danger" />}

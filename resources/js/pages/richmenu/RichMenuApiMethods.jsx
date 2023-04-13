@@ -11,7 +11,11 @@ export const getRichMenus = async (setRichMenus) => {
   };
   
   export const storeRichMenu = async (formData) => {
-    return await axios.post(`/api/v1/management/rich-menus/`, formData)
+    return await axios.post(`/api/v1/management/rich-menus`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    })
     .then((response) => {
       console.log(response);
       return response.data;

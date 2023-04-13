@@ -20,7 +20,7 @@ export const getCouponUsers = async (id, setUsers) => {
 };
 
 export const storeCoupon = async (coupon, storeComplete) => {
-  axios.post('/api/v1/management/coupons/', coupon)
+  axios.post('/api/v1/management/coupons', coupon)
   .then((response) => {
     storeComplete();
     location.href = '/manage/coupon/list';

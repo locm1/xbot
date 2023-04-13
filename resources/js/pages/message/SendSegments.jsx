@@ -137,7 +137,7 @@ export default () => {
       })
 
       if (result.isConfirmed) {
-        await axios.post(`/api/v1/management/segment-template/`, {'name': result.value.templateName, 'search_terms_json': searchTerms})
+        await axios.post(`/api/v1/management/segment-template`, {'name': result.value.templateName, 'search_terms_json': searchTerms})
         .then((response) => {
           Swal.fire(
             '保存完了',

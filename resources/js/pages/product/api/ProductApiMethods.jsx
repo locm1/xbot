@@ -25,7 +25,7 @@ export const searchProducts = async (params, setProducts) => {
 };
 
 export const storeProduct = async (formValue, storeProductImages, storeImages) => {
-  axios.post(`/api/v1/management/products/`, formValue)
+  axios.post(`/api/v1/management/products`, formValue)
   .then((response) => {
     const product = response.data.product;
     console.log(product);

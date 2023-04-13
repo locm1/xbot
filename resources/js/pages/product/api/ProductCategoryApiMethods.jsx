@@ -25,7 +25,7 @@ export const searchCategories = async (params, setCategories) => {
 };
 
 export const storeCategory = async (formValue, history) => {
-  axios.post(`/api/v1/management/categories/`, formValue)
+  axios.post(`/api/v1/management/categories`, formValue)
   .then((response) => {
     const category = response.data.category;
     history.push(Paths.ProductCategory.path);

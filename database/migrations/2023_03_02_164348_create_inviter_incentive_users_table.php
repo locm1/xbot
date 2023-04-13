@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreign('invite_incentive_id')->references('id')->on('invite_incentives');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamp('issued_at')->nullable();
+            $table->timestamp('usage_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

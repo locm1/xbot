@@ -27,7 +27,7 @@ class InviterIncentiveUserService
             'invite_incentive_id' => $invite_incentive->id, 
             'user_id' => $invitee_user->inviter_user_id,
             'is_issued' => $invite_incentive->inviter_timing == 1 ? 1 : 0, 
-            'usage_status' => 0, 
+            'usage_status' => 1, 
             'issued_at' => $invitee_user->issued_at
         ];
         return InviterIncentiveUser::create($data);

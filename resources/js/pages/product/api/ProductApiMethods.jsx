@@ -24,7 +24,7 @@ export const searchProducts = async (params, setProducts) => {
   });
 };
 
-export const storeProduct = async (formValue, storeProductImages, storeImages) => {
+export const storeProduct = async (formValue, storeProductImages, storeImages, history) => {
   axios.post(`/api/v1/management/products`, formValue)
   .then((response) => {
     const product = response.data.product;
@@ -34,7 +34,11 @@ export const storeProduct = async (formValue, storeProductImages, storeImages) =
       '保存完了',
       '商品情報の保存に成功しました',
       'success'
-    )
+    ).then(result => {
+      if (result.isConfirmed) {
+        history.push(Paths.EditProduct.path.replace(':id', product.id))
+      }
+    })
 
     // 画像保存stateに値があればAPI発火
     if (storeProductImages.length > 0) {
@@ -42,10 +46,6 @@ export const storeProduct = async (formValue, storeProductImages, storeImages) =
       storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
       storeImages(product.id, formData)
     }
-
-    setTimeout(() => {
-      location.reload();
-    }, 1000);
 
   })
   .catch(error => {

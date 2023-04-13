@@ -402,6 +402,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
       <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
       <RegisteredLiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} />
+      {/* <LiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} /> */}
       <LiffRoute exact path={Paths.LiffVisitorConfirm.path} component={LiffVisitorConfirm} />
       <LiffRoute exact path={Paths.LiffAboutVisitorPrivileges.path} component={LiffAboutVisitorPrivileges} />
       <LiffRoute exact path={Paths.LiffEventReservations.path} component={LiffEventReservations} />

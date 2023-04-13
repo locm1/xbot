@@ -10,10 +10,15 @@ import Logo from "@img/img/logo_admin.png";
 import QrCode from "@img/img/add_friend_qr.png";
 
 export default () => {
-  const privileges = [
-    {id: 1, name: 'トリートメントサンプル'},
-    {id: 2, name: 'ドレッシング'},
-  ]
+  const [privileges, setPrivileges] = useState([
+    {
+      "id": 1,
+      "visits_times": 0,
+      "items": [
+        {id: 1, name: ''},
+      ]
+    },
+  ]);
   const [uri, setUri] = useState('');
   const [user, setUser] = useState({
     "id": 9999999,
@@ -50,6 +55,13 @@ export default () => {
           const location = window.location.href
           setUri(`${location}/confirm/${response.id}`)
         });
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+    axios.get('/api/v1/privileges')
+      .then(response => {
+        setPrivileges(response.data.sort((a, b) => a.visits_times - b.visits_times));
       })
       .catch((error) => {
         console.error(error);
@@ -105,17 +117,18 @@ export default () => {
     );
   }
 
-  const LiffVisitorPrivilegeCard = () => {
+  const LiffVisitorPrivilegeCard = (props) => {
+    const { items, id, visits_times } = props;
     const LiffVisitorPrivilegeItem = (props) => {
-      const { name, id } = props;
+      const { name, id, number } = props;
   
       return (
-        <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+        <ListGroup.Item className="bg-transparent border-bottom px-0">
           <Row className="align-items-center">
-            <Col xs="auto">
-              <h4 className="fs-6 text-dark mb-0">{id}</h4>
+            <Col xs="2">
+              <h4 className="fs-6 text-dark mb-0">{number}.</h4>
             </Col>
-            <Col xs="auto" className="px-0">
+            <Col xs="10" className="px-0">
               <h4 className="fs-6 text-dark mb-0">{name}プレゼント</h4>
             </Col>
           </Row>
@@ -124,13 +137,13 @@ export default () => {
     }
 
     return (
-      <Card border="0" className=" mt-4">
+      <Card border="0" className="mb-4">
         <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name mb-0">特典</h5>
+          <h5 className="liff-product-detail-name mb-0">来店{visits_times}回目</h5>
         </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            {privileges.map(privilege => <LiffVisitorPrivilegeItem key={`privilege-${privilege.id}`} {...privilege} />)}
+            {items.map((item, k) => <LiffVisitorPrivilegeItem key={`item-${item.id}`} number={k + 1} {...item} />)}
           </ListGroup>
         </Card.Body>
       </Card>
@@ -144,12 +157,13 @@ export default () => {
         <div className="mb-2">
           <LiffVisitorCard />
           <LiffVisitorQrCard />
-          <LiffVisitorPrivilegeCard />
-          <div className="d-flex justify-content-end me-2">
+          <h2 className="ps-3">特典一覧</h2>
+          {privileges.map(v => <LiffVisitorPrivilegeCard key={`privilege-${v.id}`}  {...v} />)}
+          {/* <div className="d-flex justify-content-end me-2">
             <Link to={Paths.LiffAboutVisitorPrivileges.path} className="text-decoration-underline py-3">
               来店特典一覧確認
             </Link>
-          </div>
+          </div> */}
         </div>
       </main>
     </>

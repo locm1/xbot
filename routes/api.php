@@ -26,6 +26,7 @@ use App\Http\Controllers\api\liff\specific_trades\SpecificTradeController as Lif
 use App\Http\Controllers\api\liff\terms_of_service\TermsOfServiceController as LiffTermsOfServiceController;
 use App\Http\Controllers\api\liff\user\UserController as LiffUserController;
 use App\Http\Controllers\api\liff\postage\PostageController as LiffPostageController;
+use App\Http\Controllers\api\liff\privileges\PrivilegeController as LiffPrivilegeController;
 use App\Http\Controllers\api\liff\visitor_confirm\VisitorConfirmController;
 use App\Http\Controllers\api\LineChannelAccessTokenController;
 use Illuminate\Http\Request;
@@ -252,6 +253,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('invitee-users', InviteeUserController::class);
     Route::apiResource('events', LiffEventController::class);
     Route::post('events/{event}/reservations', [EventReservationController::class, 'store']);
+    Route::get('privileges', LiffPrivilegeController::class);
 });
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

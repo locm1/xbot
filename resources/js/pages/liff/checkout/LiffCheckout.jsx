@@ -69,7 +69,8 @@ export default () => {
       payment_method: paymentMethod.payment_method, shipping_fee: postage,
       discount_price: discountedTotalAmount
     }
-    const products = carts.map(cart => {return {product_id: cart.product_id, quantity:cart.quantity}})
+    console.log(carts);
+    const products = carts.map(cart => {return {product_id: cart.product_id, quantity:cart.quantity, price: cart.product.price}})
     Object.assign(order, newDeliveryAddress)
     if (paymentMethod.payment_method == 1) {
       order.payjp_url = `https://pay.jp/d/customers/${paymentMethod.payjp_customer_id}`

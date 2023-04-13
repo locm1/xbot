@@ -19,6 +19,7 @@ import { storeProductReservation } from "@/pages/liff/api/ProductReservationApiM
 import { isSalePeriod } from "@/components/common/IsSalePeriod";
 
 export default () => {
+  const history = useHistory();
   const location = useLocation().pathname;
   const { id } = useParams();
   const [product, setProduct] = useState({
@@ -54,12 +55,16 @@ export default () => {
     console.log(itemsExistInCart);
     if (itemsExistInCart) {
       console.log(formValue);
-      updateCart(user.id, carts[0].id, formValue, location)
+      updateCart(user.id, carts[0].id, formValue, location, showCart)
       //updateCart(101, carts[0].id, formValue, location)
     } else {
       //storeCart(101, formValue);
-      storeCart(user.id, formValue, id)
+      storeCart(user.id, formValue, id, showCart)
     }
+  };
+
+  const showCart = () => {
+    history.push(Paths.LiffCarts.path);
   };
 
   const saveReservation = () => {

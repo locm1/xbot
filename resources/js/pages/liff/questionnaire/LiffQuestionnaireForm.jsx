@@ -28,7 +28,7 @@ export default (props) => {
           <Form.Control
             value={questionnaire.answer}
             name={`questionnaire_${questionnaire.id}`}
-            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, questionnaire_items[0].id)}
+            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, null)}
             type="text"
             placeholder="こちらに自由にご回答をお願いいたします。"
             isInvalid={questionnaire.answer !== '' ? false : questionnaireErrors[`questionnaires.${index}.answer`] !== '' ? true : false}

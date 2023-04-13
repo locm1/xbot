@@ -2,14 +2,22 @@
 
 namespace App\Services\liff\questionnaire;
 
+use App\Models\InviteeIncentiveUser;
+use App\Models\InviteeUser;
+use App\Models\InviterIncentiveUser;
 use App\Models\OrderDestination;
 use App\Models\QuestionnaireAnswer;
 use App\Models\QuestionnaireAnswerItem;
 use App\Models\User;
+use App\Services\api\line\invite\InviteService;
+use App\Services\common\CreateLineBotUtility;
+use App\Services\liff\invite\IssueInviteIncentiveService;
 use App\Services\liff\order_destination\OrderDestinationService;
 use Illuminate\Support\Facades\DB;
 use App\Services\liff\questionnaire\FormatQuestionnaireAnswerAction;
 use App\Services\liff\user\UserService;
+use App\Services\management\invitation\InviteeIncentiveUserService;
+use App\Services\management\invitation\InviterIncentiveUserService;
 use Illuminate\Support\Facades\Log;
 
 class QuestionnaireAnswerService
@@ -46,9 +54,12 @@ class QuestionnaireAnswerService
             $this->order_destination_service->store($request, $user);
 
             # スピーカーのインセンティブ発行
-            
+            $issue_invite_incentive_service = new IssueInviteIncentiveService($user, 2);
+            $inviter_invite_incentive = $issue_invite_incentive_service->issueInviterIncentive();
+            Log::debug($inviter_invite_incentive);
 
             # 招待者のインセンティブ発行
+            $issue_invite_incentive_service->issueInviteeIncentive();
         });
 
         return $merged_questionnaire_answers;

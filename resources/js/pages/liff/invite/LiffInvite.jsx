@@ -81,7 +81,7 @@ export default () => {
     const {id, invite_incentive, invite } = props;
 
     return (
-      <Card border="0" className="shadow p-0" onClick={() => confirmUpdate(id, invite)}>
+      <Card border="0" className="shadow p-0 mb-3" onClick={() => confirmUpdate(id, invite)}>
         <Card.Body className="pb-3 p-2 pt-3 coupon-main">
           <svg xmlns="http://www.w3.org/2000/svg" className="cp-img" id="cp-img1" width="60.152" height="60.152" viewBox="0 0 60.152 60.152">
             <path id="交差_1" data-name="交差 1" d="M78.674,120.73,136,63.407h2.829L78.674,123.559Zm0-9.9L126.1,63.407h2.829L78.674,113.659Zm0-9.9L116.2,63.407h2.828L78.674,103.76Zm0-9.9L106.3,63.407h2.829L78.674,93.861Zm0-9.9L96.4,63.407h2.828L78.674,83.961Zm0-9.9L86.5,63.407h2.829L78.674,74.062Zm0-7.826h.755l-.755.755Z" transform="translate(-78.674 -63.407)" fill="#fff" opacity="0.4"></path>

@@ -17,7 +17,8 @@ class FormatOrderAction
             $merged_order_products[] = [
                 'order_id' => $order->id,
                 'product_id' => $order_product['product_id'],
-                'quantity' => $order_product['quantity']
+                'quantity' => $order_product['quantity'],
+                'price' => $order_product['price'],
             ];
         }
         return $merged_order_products;

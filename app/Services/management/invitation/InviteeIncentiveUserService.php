@@ -19,16 +19,14 @@ class InviteeIncentiveUserService
             ->get();
     }
 
-    public function store(InviteIncentive $invite_incentive, String $user_id, String $inviter_incentive_user_id, $issued_at)
+    public function store(array $data)
     {
-        $data = [
-            'invite_incentive_id' => $invite_incentive->id, 
-            'user_id' => $user_id,
-            'inviter_incentive_user_id' => $inviter_incentive_user_id,
-            'is_issued' => $invite_incentive->invitee_timing == 1 ? 1 : 0, 
-            'usage_status' => 1, 
-            'issued_at' => $issued_at
-        ];
         return InviteeIncentiveUser::create($data);
+    }
+
+    public function update($invitee_incentive_user)
+    {
+        $data = ['is_issued' => 1, 'issued_at' => date('Y-m-d H:i:s')];
+        $invitee_incentive_user->update($data);
     }
 }

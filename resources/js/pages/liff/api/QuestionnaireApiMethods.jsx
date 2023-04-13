@@ -16,16 +16,17 @@ export const getQuestionnaires = async (setQuestionnaires) => {
   });
 };
 
-export const storeQuestionnaireAnswers = async (userId, questionnaires, setQuestionnaireErrors) => {
+export const storeQuestionnaireAnswers = async (userId, questionnaires, setQuestionnaireErrors, setIsLoading, onSave) => {
   return await axios.post(`/api/v1/users/${userId}/user-deliveryaddress-questionnaireanswers`, questionnaires)
   .then((response) => {
+    setIsLoading(false)
     const questionnaire_answers = response.data.questionnaire_answers;
     console.log(questionnaire_answers);
-    const currentPage = Cookies.get('current_page')
-    //location.href = (currentPage == 'cart') ? '/checkout' : '/questionnaire/complete'
+    onSave();
   })
   .catch(error => {
-      console.error(error);
-      setQuestionnaireErrors(error.response.data.errors)
+    setIsLoading(false)
+    console.error(error);
+    setQuestionnaireErrors(error.response.data.errors)
   });
 };

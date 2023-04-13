@@ -80,10 +80,25 @@ class FollowService
                 $invitee_incentive_user_service = new InviteeIncentiveUserService();
 
                 # 紹介者テーブルのインサート
-                $inviter_incentive_user = $inviter_incentive_user_service->store($invite_incentive, $invitee_user);
+                $inviter_incentive_data = [
+                    'invite_incentive_id' => $invite_incentive->id, 
+                    'user_id' => $invitee_user->inviter_user_id,
+                    'is_issued' => $invite_incentive->inviter_timing == 1 ? 1 : 0, 
+                    'usage_status' => 1, 
+                    'issued_at' => $invitee_user->invited_at
+                ];
+                $inviter_incentive_user = $inviter_incentive_user_service->store($inviter_incentive_data);
 
                 # 招待者テーブルのインサート
-                $invitee_incentive_user = $invitee_incentive_user_service->store($invite_incentive, $user->id, $inviter_incentive_user->id, $invitee_user->issued_at);
+                $invitee_incentive_data = [
+                    'invite_incentive_id' => $invite_incentive->id, 
+                    'user_id' => $user->id,
+                    'inviter_incentive_user_id' => $inviter_incentive_user->id,
+                    'is_issued' => $invite_incentive->invitee_timing == 1 ? 1 : 0, 
+                    'usage_status' => 1, 
+                    'issued_at' => $invitee_user->invited_at
+                ];
+                $invitee_incentive_user = $invitee_incentive_user_service->store($invitee_incentive_data);
 
                 # 招待履歴のインサート
                 $invite_history_service->store($user, $invitee_user->inviter_user_id);

@@ -2,11 +2,11 @@ import { isSalePeriod } from "@/components/common/IsSalePeriod";
 import Swal from "sweetalert2";
 import { Paths } from "@/paths";
 
-export const storeCart = async (userId, formValue, id) => {
+export const storeCart = async (userId, formValue, id, showCart) => {
   axios.post(`/api/v1/users/${userId}/carts`, formValue)
   .then((response) => {
     console.log(response.data.cart);
-    location.href = '/cart';
+    showCart();
   })
   .catch(error => {
     const link = Paths.LiffProductDetail.path.replace(':id', id)
@@ -123,12 +123,12 @@ export const searchCarts = async (userId, params, setCarts, setItemsExistInCart)
   });
 };
 
-export const updateCart = async (userId, id, cart, location) => {
+export const updateCart = async (userId, id, cart, location, showCart) => {
   axios.put(`/api/v1/users/${userId}/carts/${id}`, cart)
   .then((response) => {
     console.log(response.data.cart);
     if (location.includes('/product/detail')) {
-      window.location.href = '/cart';
+      showCart();
     }
   })
   .catch(error => {

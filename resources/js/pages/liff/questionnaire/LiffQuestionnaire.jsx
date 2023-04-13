@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import '@splidejs/splide/css';
 import Cookies from 'js-cookie';
@@ -15,8 +15,10 @@ import { getAddress } from "@/pages/liff/api/ZipcodeApiMethods";
 import { getUser, updateUser } from "@/pages/liff/api/UserApiMethods";
 import { storeOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
 import { getOccupations } from "@/pages/liff/api/OccupationApiMethods";
+import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const location = useLocation().pathname;
   const [questionnaires, setQuestionnaires] = useState([
@@ -62,6 +64,7 @@ export default () => {
   };
 
   const handleClick = () => {
+    setIsLoading(true);
     formValue.birth_date = formValue.year + '-' + formValue.month + '-' + formValue.day
     formValue.building_name += ' ' + formValue.room_number
     formValue.is_registered = 1
@@ -71,11 +74,17 @@ export default () => {
     // });
     Object.assign(formValue, {questionnaires: questionnaires});
     console.log(formValue);
-    storeQuestionnaireAnswers(user.id, formValue, setErrors)
+    storeQuestionnaireAnswers(user.id, formValue, setErrors, setIsLoading, onSave)
     //storeQuestionnaireAnswers(102, formValue, setErrors)
     //storeQuestionnaireAnswers(user.id, formValue, setErrors)
     //storeQuestionnaireAnswers(100, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
 
+  };
+
+  const onSave = () => {
+    const currentPage = Cookies.get('current_page')
+    const path = (currentPage == 'cart') ? '/checkout' : '/questionnaire/complete'
+    history.push(path);
   };
 
   const answerSurvey = (e, id, type, questionnaire_item_id) => {

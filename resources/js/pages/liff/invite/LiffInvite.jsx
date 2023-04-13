@@ -32,11 +32,15 @@ export default () => {
   const [link, setLink] = useState();
 
   useEffect(() => {
-    //const idToken = liff.getIDToken();
-    getInviteMessage(2, setMessages, setLink)
-    getInviteeIncentives(2, setInviteeIncentives)
-    getInviterIncentives(2, setInviterIncentives)
-    //getUser(idToken, setUser).then(response => getInviteMessage(response.id, setMessages, setLink))
+    const idToken = liff.getIDToken();
+    // getInviteMessage(2, setMessages, setLink)
+    // getInviteeIncentives(2, setInviteeIncentives)
+    // getInviterIncentives(2, setInviterIncentives)
+    getUser(idToken, setUser).then(response => {
+      getInviteMessage(response.id, setMessages, setLink)
+      getInviteeIncentives(response.id, setInviteeIncentives)
+      getInviterIncentives(response.id, setInviterIncentives)
+    })
   }, []);
 
   const sendMessage = () => {
@@ -65,9 +69,11 @@ export default () => {
   const updateIncentive = (id, invite) => {
     const formValue = { usage_status: 2 }
     if (invite == 'inviter') {
-      updateInviterIncentives(2, id, formValue, inviterIncentives, setInviterIncentives)
+      updateInviterIncentives(user.id, id, formValue, inviterIncentives, setInviterIncentives)
+      //updateInviterIncentives(2, id, formValue, inviterIncentives, setInviterIncentives)
     } else {
-      updateInviteeIncentives(2, id, formValue, inviteeIncentives, setInviteeIncentives)
+      updateInviteeIncentives(user.id, id, formValue, inviteeIncentives, setInviteeIncentives)
+      //updateInviteeIncentives(2, id, formValue, inviteeIncentives, setInviteeIncentives)
     }
   }
 

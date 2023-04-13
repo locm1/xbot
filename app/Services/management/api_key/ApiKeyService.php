@@ -17,11 +17,11 @@ class ApiKeyService
     public function index()
     {
         $api_keys = config('api_key');
-        return $api_keys;
         $data = [];
         foreach ($api_keys as $k => $v) {
             $data += [strtolower($k) => $v ? true : false];
         }
+        $data += $api_keys;
         return $data;
     }
 

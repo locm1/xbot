@@ -177,7 +177,7 @@ export default () => {
   const handleRelatedPrice = (e, id) => {
     const newRelatedProducts = relatedProducts.map(v => {
       if (v.id === id) {
-        return {id: v.id, name: v.name, price: e.target.value}
+        return {id: v.id, name: v.name, discountPrice: +e.target.value}
       } else {
         return {...v}
       }
@@ -211,7 +211,7 @@ export default () => {
       }
 
     } else {
-      storeProduct(product, storeProductImages, storeImages)
+      storeProduct(product, storeProductImages, storeImages, history)
     }
   }
 
@@ -261,8 +261,8 @@ export default () => {
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="related_products" className="mb-sm-3 mb-md-0">
-              セット割商品
+            <Nav.Link eventKey="related_products" className={`mb-sm-3 mb-md-0 ${pathname.includes('/edit') ? "" : "bg-gray-400"}`} disabled={pathname.includes('/edit') ? false : true}>
+              セット割商品{pathname.includes('/edit') ? "" : "(商品保存後設定できます)"}
             </Nav.Link>
           </Nav.Item>
         </Nav>
@@ -359,7 +359,7 @@ export default () => {
                         </Col>
                       </Row>
                       <Row>
-                        <Col md={2} className="mb-4">
+                        <Col md={4} className="mb-4">
                           <Form.Group id="startDate">
                             <Form.Label>開始日時</Form.Label>
                             <Flatpickr
@@ -385,7 +385,7 @@ export default () => {
                             />
                           </Form.Group>
                         </Col>
-                        <Col md={2} className="mb-4">
+                        <Col md={4} className="mb-4">
                           <Form.Group id="endDate">
                             <Form.Label>終了日時</Form.Label>
                             <Flatpickr

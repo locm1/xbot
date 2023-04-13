@@ -41,10 +41,10 @@ class RelatedProductService
     {
         $filtered_request = array_filter($request->all(), fn($v) => $v['id'] != 0);
         $save_data = array_map(fn($v) => [
-            'id' => $v['table_id'], 
+            'id' => $v['table_id'] ?? null, 
             'product_id' => $product_id, 
             'related_product_id' => $v['id'],
-             'discount_price' => $v['discountPrice']
+            'discount_price' => $v['discountPrice']
         ], $filtered_request);
         RelatedProduct::upsert($save_data, 'id', ['related_product_id', 'discount_price']);
         return $save_data;

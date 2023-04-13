@@ -44,7 +44,6 @@ class RichMenuController extends Controller
      */
     public function store(Request $request)
     {
-        return 1;
         return $this->service->store($request, true);
     }
 

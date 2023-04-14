@@ -77,17 +77,17 @@ class OrderService
             # 注文メール送信
             $this->order_mail_service->sendOrderMail($order, $merged_order_products);
 
-            DB::commit();
-
             # ユーザーが初購入の場合、インセンティブ発行
             if (Order::where('user_id', $user->id)->count() == 1) {
-                # スピーカーのインセンティブ発行
                 $issue_invite_incentive_service = new IssueInviteIncentiveService($user, 4);
-                $inviter_invite_incentive = $issue_invite_incentive_service->issueInviterIncentive();
 
                 # 招待者のインセンティブ発行
                 $issue_invite_incentive_service->issueInviteeIncentive();
+                # スピーカーのインセンティブ発行
+                $inviter_invite_incentive = $issue_invite_incentive_service->issueInviterIncentive();
             }
+
+            DB::commit();
 
         } catch (\Exception $e) {
             if ($order['payment_method'] == 1) {

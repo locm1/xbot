@@ -27,11 +27,10 @@ class IssueInviteIncentiveService
 
     public function issueInviterIncentive(): array
     {
-        $inviter_incentive_user = InviterIncentiveUser::where('user_id', $this->user->id);
+        $invitee_incentive_user = InviteeIncentiveUser::where('user_id', $this->user->id);
         $invite_incentive = DefaultInviteIncentive::find(1)->inviteIncentive;
 
-        if ($inviter_incentive_user->exists() && $invite_incentive->inviter_timing == $this->timing) {
-            # 発行済みにアップデート
+        if ($invitee_incentive_user->exists() && $invite_incentive->inviter_timing == $this->timing) {
             $inviter_incentive_user_service = new InviterIncentiveUserService();
             # 紹介者テーブルのインサート
             $data = [

@@ -59,20 +59,16 @@ class FollowService
         return $update_count;
     }
 
-    public function checkInviteeUser(User $user)
+    public function checkInviteeUser(User $User)
     {
         $five_minute_before = date("Y-m-d H:i:s",strtotime("-5 minute"));
         $now = date('Y-m-d H:i:s');
         $term = [$five_minute_before, $now];
-        $invitee_user_result = InviteeUser::where('line_id', $this->line_id)->whereBetween('created_at', $term);
+        $invitee_user = InviteeUser::where('line_id', $this->line_id)->whereBetween('created_at', $term)->first();
 
-        # 対象のLINE IDがテーブルに存在する場合 かつ、Usersに登録されていない時
-        if ($invitee_user_result->exists()) {
-            return DB::transaction(function () use ($invitee_user_result, $user) {
-                $invitee_user = $invitee_user_result->first();
-                // $invite_incentive = InviteIncentive::where('version_key', $invitee_user->version_key)
-                //     ->orderBy(DB::raw('abs(datediff(?, created_at))'),"ASC")
-                //     ->setBindings([$invitee_user->invited_at])->get()[0];
+        # 対象のLINE IDがInviteeUserテーブルに存在する場合 かつ、Usersに登録されていない時
+        if ($invitee_user) {
+            return DB::transaction(function () use ($invitee_user, $User) {
                 $invite_incentive = InviteIncentive::where('version_key', $invitee_user->version_key)->latest('id')->first();
 
                 $invite_history_service = new InviteHistoryService();
@@ -92,7 +88,7 @@ class FollowService
                 # 招待者テーブルのインサート
                 $invitee_incentive_data = [
                     'invite_incentive_id' => $invite_incentive->id, 
-                    'user_id' => $user->id,
+                    'user_id' => $User->id,
                     'inviter_incentive_user_id' => $inviter_incentive_user->id,
                     'is_issued' => $invite_incentive->invitee_timing == 1 ? 1 : 0, 
                     'usage_status' => 1, 
@@ -101,7 +97,7 @@ class FollowService
                 $invitee_incentive_user = $invitee_incentive_user_service->store($invitee_incentive_data);
 
                 # 招待履歴のインサート
-                $invite_history_service->store($user, $invitee_user->inviter_user_id);
+                $invite_history_service->store($User, $invitee_user->inviter_user_id);
                 return array($inviter_incentive_user, $invitee_incentive_user);
             });
         }

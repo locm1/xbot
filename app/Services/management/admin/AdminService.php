@@ -6,17 +6,19 @@ use App\Models\Admin;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\management\AbstractManagementService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class AdminService extends AbstractManagementService
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function index(): Collection
+    public function index(): LengthAwarePaginator
     {
-        return Admin::all();
+        return Admin::paginate(10);
     }
 
     /**

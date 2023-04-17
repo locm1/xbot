@@ -70,26 +70,6 @@ export const RichMenusTable = (props) => {
           </tbody>
         </Table>
       </Card.Body>
-      <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                前
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                次
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal small mt-4 mt-lg-0">
-            Showing <b>{menus.length}</b> out of <b>25</b> entries
-          </small>
-        </Card.Footer>
     </Card>
   );
 };

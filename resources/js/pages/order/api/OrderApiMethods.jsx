@@ -1,7 +1,16 @@
-export const getOrders = async (setOrders) => {
-  axios.get('/api/v1/management/orders')
+export const getOrders = async (params, setOrders, setLinks, setPaginate) => {
+  axios.get('/api/v1/management/orders', params)
   .then((response) => {
-    setOrders(response.data.orders);
+    const orders = response.data.orders;
+    setOrders(orders.data);
+    setLinks([...Array(orders.last_page)].map((_, i) => i + 1))
+    setPaginate({
+      current_page: orders.current_page, 
+      per_page: orders.per_page,
+      from: orders.from,
+      to: orders.to,
+      total: orders.total,
+    })
   })
   .catch(error => {
       console.error(error);
@@ -12,16 +21,6 @@ export const getPrefectures = async (setPrefectures) => {
   axios.get('/api/v1/prefectures')
   .then((response) => {
     setPrefectures(response.data.prefectures);
-  })
-  .catch(error => {
-      console.error(error);
-  });
-};
-
-export const searchOrders = async (params, setOrders) => {
-  axios.get('/api/v1/management/orders', params)
-  .then((response) => {
-    setOrders(response.data.orders);
   })
   .catch(error => {
       console.error(error);

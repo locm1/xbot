@@ -187,6 +187,7 @@ export default () => {
 
   const onSaveProduct = () => {
     Object.assign(product, productSale);
+    console.log(product);
     
     if (pathname.includes('/edit')) {
       updateProduct(id, product);

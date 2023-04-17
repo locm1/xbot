@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { BadgeCheckIcon } from "@heroicons/react/solid";
 import { deleteInviteIncentive } from "@/pages/invitation/api/InviteIncentiveApiMethods";
 import { Paths } from "@/paths";
 import Swal from "sweetalert2";
+import Pagination from "@/components/Pagination";
 import withReactContent from "sweetalert2-react-content";
 
 export const InviteIncentivesTable = (props) => {
-  const { inviteIncentives, defaultInviteIncentive, setInviteIncentives } = props;
-  const totalInviteIncentives = inviteIncentives.length;
+  const { 
+    inviteIncentives, setInviteIncentives, links, getInviteIncentives, setLinks, paginate, setPaginate, searchParams
+  } = props;
 
   const TableRow = (props) => {
     const { name, id, inviter_timing, invitee_timing, defaultInviteIncentive } = props;
@@ -110,29 +112,18 @@ export const InviteIncentivesTable = (props) => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {inviteIncentives.map(t => <TableRow key={`invite-incentives-${t.id}`} {...t} defaultInviteIncentive={defaultInviteIncentive} />)}
+            {inviteIncentives.invite_incentives.map(t => <TableRow key={`invite-incentives-${t.id}`} {...t} defaultInviteIncentive={inviteIncentives.default_invite_incentive} />)}
           </tbody>
         </Table>
-        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                Previous
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                Next
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal mt-4 mt-lg-0">
-            Showing <b>{totalInviteIncentives}</b> out of <b>25</b> entries
-          </small>
-        </Card.Footer>
+        <Pagination 
+          links={links}
+          paginate={paginate}
+          getListBypage={getInviteIncentives} 
+          setList={setInviteIncentives}
+          setLinks={setLinks}
+          setPaginate={setPaginate}
+          searchValue={searchParams}
+        />
       </Card.Body>
     </Card>
   );

@@ -7,10 +7,14 @@ import { Link } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { TemplateMessageTable } from "@/pages/message/TemplateMessageTable";
-import { getMessages, deleteMessage, searchMessages } from "@/pages/message/api/MessageApiMethods";
+import { getMessages, deleteMessage } from "@/pages/message/api/MessageApiMethods";
 
 export default () => {
   const [messages, setMessages] = useState([]);
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+  })
+  const [links, setLinks] = useState([]);
   const [title, setTitle] = useState('');
   const [timer, setTimer] = useState(null);
 
@@ -18,14 +22,14 @@ export default () => {
     setTitle(e.target.value)
 
     const searchParams = {
-      params: { title: title }
+      params: { title: title, page: 1 }
     };
 
     clearTimeout(timer);
 
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {
-      searchMessages(searchParams, setMessages);
+      getMessages(searchParams, setMessages, setLinks, setPaginate)
     }, 1000)
 
     setTimer(newTimer)
@@ -37,7 +41,10 @@ export default () => {
   };
 
   useEffect(() => {
-    getMessages(setMessages)
+    const searchParams = {
+      params: {title: null, page: 1}
+    };
+    getMessages(searchParams, setMessages, setLinks, setPaginate)
   }, []);
 
   return (
@@ -77,6 +84,12 @@ export default () => {
         messages={messages}
         deleteMessage={deleteMessage}
         setMessages={setMessages}
+        getMessages={getMessages}
+        links={links}
+        paginate={paginate}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        title={title}
       />
     </>
   );

@@ -1,32 +1,38 @@
-export const getVisitorHistories = async (setVisitorHistories, setLinks, setCurrentPage) => {
-  axios.get('/api/v1/management/visitor-histories')
+export const getVisitorHistories = async (params, setVisitorHistories, setLinks, setPaginate) => {
+  axios.get('/api/v1/management/visitor-histories', params)
   .then((response) => {
     const visitorHistories = response.data.visitor_histories;
     setVisitorHistories(visitorHistories.data);
-    const links = visitorHistories.links;
-    links.shift();
-    links.pop();
-    setLinks(links)
-    setCurrentPage(visitorHistories.current_page);
+    setLinks([...Array(visitorHistories.last_page)].map((_, i) => i + 1))
+    setPaginate({
+      current_page: visitorHistories.current_page, 
+      per_page: visitorHistories.per_page,
+      from: visitorHistories.from,
+      to: visitorHistories.to,
+      total: visitorHistories.total,
+    })
   })
   .catch(error => {
       console.error(error);
   });
 };
 
-export const getVisitorHistoriesByPage = async (page, setVisitorHistories, setLinks, setCurrentPage) => {
-  axios.get('/api/v1/management/visitor-histories', {
-    params: {page: page}
-  })
+export const searchVisitorHistories = async (params, setVisitorHistories, setLinks, setPaginate) => {
+  axios.get('/api/v1/management/visitor-histories', params)
   .then((response) => {
     const visitorHistories = response.data.visitor_histories;
-    console.log(visitorHistories);
     setVisitorHistories(visitorHistories.data);
     const links = visitorHistories.links;
     links.shift();
     links.pop();
     setLinks(links)
-    setCurrentPage(visitorHistories.current_page);
+    setPaginate({
+      current_page: visitorHistories.current_page, 
+      per_page: visitorHistories.per_page,
+      from: visitorHistories.from,
+      to: visitorHistories.to,
+      total: visitorHistories.total,
+    })
   })
   .catch(error => {
       console.error(error);
@@ -70,17 +76,6 @@ export const deleteVisitorHistory= async (id, completeDelete) => {
   axios.delete(`/api/v1/management/visitor-histories/${id}`)
   .then((response) => {
     completeDelete();
-  })
-  .catch(error => {
-      console.error(error);
-  });
-};
-
-
-export const searchVisitorHistories = async (params, setVisitorHistories) => {
-  axios.get('/api/v1/management/visitor-histories', params)
-  .then((response) => {
-    setVisitorHistories(response.data.visitor_histories.data);
   })
   .catch(error => {
       console.error(error);

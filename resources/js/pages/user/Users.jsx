@@ -6,7 +6,7 @@ import { SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { UsersTable } from "@/pages/user/UsersTable";
-import { getUsers, searchUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
+import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -24,38 +24,26 @@ export default () => {
   const [demographic, setDemographic] = useState({
     man: '', women: '', others: ''
   })
-  const [statusFilter, setStatusFilter] = useState("all");
-  const selectedUsersIds = users.filter(u => u.isSelected).map(u => u.id);
-  const totalUsers = users.length;
-  const allSelected = selectedUsersIds.length === totalUsers;
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+  })
+  const [links, setLinks] = useState([]);
+  const [timer, setTimer] = useState(null);
 
   const handleChange = (e, input) => {
     setSearchValue({...searchValue, [input]: e.target.value})
 
     const searchParams = {
-      params: {...searchValue, [input]: e.target.value}
+      params: {...searchValue, [input]: e.target.value, page: 1}
     };
-    searchUsers(searchParams, setUsers);
-  };
+    clearTimeout(timer);
 
-  const changeStatusFilter = (e) => {
-    const newStatusFilter = e.target.value;
-    const newUsers = users.map(u => ({ ...u, show: u.status === newStatusFilter || newStatusFilter === "all" }));
-    setStatusFilter(newStatusFilter);
-    setUsers(newUsers);
-  };
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      getUsers(searchParams, setUsers, setLinks, setPaginate)
+    }, 1000)
 
-  const selectAllUsers = () => {
-    const newUsers = selectedUsersIds.length === totalUsers ?
-      users.map(u => ({ ...u, isSelected: false })) :
-      users.map(u => ({ ...u, isSelected: true }));
-
-    setUsers(newUsers);
-  };
-
-  const selectUser = (id) => {
-    const newUsers = users.map(u => u.id === id ? ({ ...u, isSelected: !u.isSelected }) : u);
-    setUsers(newUsers);
+    setTimer(newTimer)
   };
 
   const deleteUsers = async (id) => {
@@ -82,7 +70,10 @@ export default () => {
   };
 
   useEffect(() => {
-    getUsers(setUsers)
+    const searchParams = {
+      params: {name: null, tel: null, page: 1}
+    };
+    getUsers(searchParams, setUsers, setLinks, setPaginate)
     getDemographic(setDemographic)
   }, []);
 
@@ -131,11 +122,15 @@ export default () => {
       </div>
 
       <UsersTable
-        users={users.filter(u => u.show)}
-        allSelected={allSelected}
-        selectUser={selectUser}
+        users={users}
+        setUsers={setUsers}
         deleteUsers={deleteUsers}
-        selectAllUsers={selectAllUsers}
+        getUsers={getUsers}
+        links={links}
+        paginate={paginate}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        searchValue={searchValue}
       />
     </>
   );

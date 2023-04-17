@@ -19,7 +19,7 @@ class MessageService
         if (!empty($request->title)) {
             return $this->search_message_action->search($request);
         }
-        return Message::orderBy('id', 'desc')->get();
+        return Message::orderBy('id', 'desc')->paginate(10);
     }
 
 

@@ -3,8 +3,9 @@ import Swal from 'sweetalert2';
 import moment from "moment-timezone";
 import withReactContent from 'sweetalert2-react-content';
 import { PencilAltIcon, PaperAirplaneIcon, TrashIcon, DocumentDuplicateIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import Pagination from "@/components/Pagination";
 
 import { Paths } from "@/paths";
 
@@ -17,8 +18,8 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export const TemplateMessageTable = (props) => {
-  const { messages, deleteMessage, setMessages } = props;
-  const totalMessages = messages.length;
+  const { messages, deleteMessage, setMessages, links, setLinks, paginate, setPaginate, getMessages, title } = props;
+  const searchValue = {title: title}
 
   const showConfirmDeleteModal = async (id) => {
     const textMessage = "本当にを削除しますか？";
@@ -94,26 +95,15 @@ export const TemplateMessageTable = (props) => {
             {messages && messages.map((t) => <TableRow key={`template-message-${t.id}`} {...t} />)}
           </tbody>
         </Table>
-        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                Previous
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                Next
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal mt-4 mt-lg-0">
-            Showing <b>{totalMessages}</b> out of <b>25</b> entries
-          </small>
-        </Card.Footer>
+        <Pagination 
+          links={links}
+          paginate={paginate}
+          getListBypage={getMessages} 
+          setList={setMessages}
+          setLinks={setLinks}
+          setPaginate={setPaginate}
+          searchValue={searchValue}
+        />
       </Card.Body>
     </Card>
   );

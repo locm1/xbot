@@ -20,11 +20,11 @@ class UserService
 
     public function index($request)
     {
-        if (isset($request)) {
+        if (isset($request->name) || isset($request->tel)) {
             return $this->search_user_action->search($request);
         }
 
-        return User::get()->paginate(10);
+        return User::paginate(10);
     }
 
     /**

@@ -5,11 +5,12 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import Pagination from "@/components/Pagination";
-import ReactPaginate from 'react-paginate'
 
 export const VisitorHistoriesTable = (props) => {
-  const { visitorHistories, deleteVisitorHistoryConfirmModal, links, currentPage, getVisitorHistoriesByPage, setLinks, setCurrentPage, setVisitorHistories } = props;
-  const totalvisitorHistories = visitorHistories.length;
+  const { 
+    visitorHistories, deleteVisitorHistoryConfirmModal, links, getVisitorHistories, 
+    setLinks, setVisitorHistories, paginate, setPaginate, searchValue
+  } = props;
   const history = useHistory();
 
   const TableRow = (props) => {
@@ -91,11 +92,12 @@ export const VisitorHistoriesTable = (props) => {
         </Table>
         <Pagination 
           links={links}
-          currentPage={currentPage}
-          getListBypage={getVisitorHistoriesByPage} 
+          paginate={paginate}
+          getListBypage={getVisitorHistories} 
           setList={setVisitorHistories}
           setLinks={setLinks}
-          setCurrentPage={setCurrentPage}
+          setPaginate={setPaginate}
+          searchValue={searchValue}
         />
       </Card.Body>
     </Card>

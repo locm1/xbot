@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import Pagination from "@/components/Pagination";
 
 export const CouponsTable = (props) => {
-  const { coupons, setCoupons, deleteCoupon, openModal, setOpenModal, setId } = props;
-  const TotalCoupons = coupons.length;
+  const { 
+    coupons, setCoupons, deleteCoupon, openModal, setOpenModal, setId,
+    links, getCoupons, setLinks, paginate, setPaginate, name
+  } = props;
+  const searchValue = {name: name}
 
   const TableRow = (props) => {
     const { id, name, upper_limit, discount_price, code } = props;
@@ -105,26 +108,15 @@ export const CouponsTable = (props) => {
             {coupons && coupons.map(t => <TableRow key={`coupons-${t.id}`} {...t} />)}
           </tbody>
         </Table>
-        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                Previous
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                Next
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal mt-4 mt-lg-0">
-            <b>{TotalCoupons}</b> 件中 1〜{TotalCoupons} 件表示
-          </small>
-        </Card.Footer>
+        <Pagination 
+          links={links}
+          paginate={paginate}
+          getListBypage={getCoupons} 
+          setList={setCoupons}
+          setLinks={setLinks}
+          setPaginate={setPaginate}
+          searchValue={searchValue}
+        />
       </Card.Body>
     </Card>
   );

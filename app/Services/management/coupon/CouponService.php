@@ -19,7 +19,7 @@ class CouponService
         if ($request) {
             return $this->search_coupon_action->search($request);
         }
-        return Coupon::orderBy('id', 'desc')->get();
+        return Coupon::orderBy('id', 'desc')->paginate(10);
     }
 
     public function store($request) 

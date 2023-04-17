@@ -21,7 +21,7 @@ class InflowRouteController extends Controller
      */
     public function index()
     {
-        return $this->service->index();
+        return response()->json(['inflow_routes' => $this->service->index()], 200);
     }
 
     /**

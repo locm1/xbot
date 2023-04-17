@@ -193,7 +193,7 @@ export default (props) => {
                     <NavItem title="カテゴリー設定" link={Paths.ProductCategory.path} />
                     <NavItem title="クーポン作成" link={Paths.Coupons.path} />
                     <NavItem title="注文リスト" link={Paths.Orders.path} />
-                    <NavItem title="取置リスト" link={Paths.Reserves.path} />
+                    {/* <NavItem title="取置リスト" link={Paths.Reserves.path} /> */}
                     <NavItem title="送料設定" link={Paths.Postage.path} />
                     <NavItem title="プライバシーポリシー" link={Paths.PrivacyPolicy.path} />
                     <NavItem title="利用規約" link={Paths.TermsOfService.path} />

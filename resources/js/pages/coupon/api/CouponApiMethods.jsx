@@ -1,7 +1,16 @@
-export const getCoupons = async (setCoupons) => {
-  axios.get('/api/v1/management/coupons')
+export const getCoupons = async (params, setCoupons, setLinks, setPaginate) => {
+  axios.get('/api/v1/management/coupons', params)
   .then((response) => {
-    setCoupons(response.data.coupons);
+    const coupons = response.data.coupons;
+    setCoupons(coupons.data);
+    setLinks([...Array(coupons.last_page)].map((_, i) => i + 1))
+    setPaginate({
+      current_page: coupons.current_page, 
+      per_page: coupons.per_page,
+      from: coupons.from,
+      to: coupons.to,
+      total: coupons.total,
+    })
   })
   .catch(error => {
       console.error(error);
@@ -45,16 +54,6 @@ export const updateCoupon = async (id, coupon, updateComplete) => {
   axios.put(`/api/v1/management/coupons/${id}`, coupon)
   .then((response) => {
     updateComplete();
-  })
-  .catch(error => {
-      console.error(error);
-  });
-};
-
-export const searchCoupons = async (params, setCoupons) => {
-  axios.get('/api/v1/management/coupons', params)
-  .then((response) => {
-    setCoupons(response.data.coupons);
   })
   .catch(error => {
       console.error(error);

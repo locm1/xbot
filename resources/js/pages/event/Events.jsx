@@ -4,14 +4,27 @@ import { ArchiveIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CloudU
 
 import EventWidget from "@/pages/event/EventWidget";
 import eventGuidances from "@/data/eventGuidances";
-
+import Pagination from "@/components/Pagination";
 import { GetEvents } from "@/pages/event/EventApiMethods"
 
 export default () => {
   const [events, setEvents] = useState([
     {id: 1, title: '', location: '', start_date: '', end_date: '', users: []}
   ]);
-  useEffect(() => GetEvents(setEvents), []);
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+  })
+  const [links, setLinks] = useState([]);
+  const searchParams = {
+    params: {}
+  }
+
+  useEffect(() => {
+    const searchParams = {
+      params: {page: 1}
+    };
+    GetEvents(searchParams, setEvents, setLinks, setPaginate)
+  }, []);
 
   return (
     <>
@@ -23,21 +36,15 @@ export default () => {
       <div className="task-wrapper border bg-white border-light shadow-sm py-1 rounded">
       <EventWidget events={events} />
 
-        <Row className="d-flex align-items-center p-4">
-          <Col xs={7} className="mt-1">
-            Showing 1 - {eventGuidances.length} of 289
-          </Col>
-          <Col xs={5}>
-            <ButtonGroup className="float-end">
-              <Button variant="light">
-                <ChevronLeftIcon className="icon icon-xs" />
-              </Button>
-              <Button variant="primary">
-                <ChevronRightIcon className="icon icon-xs" />
-              </Button>
-            </ButtonGroup>
-          </Col>
-        </Row>
+      <Pagination 
+        links={links}
+        paginate={paginate}
+        getListBypage={GetEvents} 
+        setList={setEvents}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        searchParams={searchParams}
+      />
       </div>
     </>
   );

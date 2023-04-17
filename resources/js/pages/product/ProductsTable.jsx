@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Modal, ProgressBar, Pagination, Badge } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Modal, ProgressBar, Badge } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
-
+import Pagination from "@/components/Pagination";
 import noImage from "@img/img/noimage.jpg"
 
 
 export const ProductsTable = (props) => {
-  const { products } = props;
-  const totalProducts = products.length;
+  const { products, setProducts, links, getProducts, setLinks, paginate, setPaginate, searchValue } = props;
 
   const getImages = (image) => {
     if (image) {
@@ -99,6 +98,15 @@ export const ProductsTable = (props) => {
           </tbody>
         </Table>
       </Card.Body>
+      <Pagination 
+        links={links}
+        paginate={paginate}
+        getListBypage={getProducts} 
+        setList={setProducts}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        searchValue={searchValue}
+      />
     </Card>
   );
 };

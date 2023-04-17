@@ -27,7 +27,6 @@ class StoreProductRequest extends FormRequest
             'name' => 'required',
             'overview' => 'required',
             'price' => 'required|numeric',
-            'stock_quantity' => 'required|numeric',
             'product_category_id' => 'required|numeric|exists:product_categories,id',
             'is_picked_up' => 'required|boolean',
             'is_undisclosed' => 'required|boolean',
@@ -53,5 +52,21 @@ class StoreProductRequest extends FormRequest
             'start_date' => '開始日時',
             'end_date' => '終了日時',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        # パスワード変更用バリデーション
+        $is_unlimited = $this->is_unlimited;
+
+        $validate_rules = [
+            'stock_quantity' => ['required', 'numeric'],
+        ];
+        foreach ($validate_rules as $key => $value) {
+            # 在庫数が無制限にチェックしていない場合にバリデーション
+            $validator->sometimes($key, $value, function() use($is_unlimited) {
+                return $is_unlimited == 0;
+            });
+        }
     }
 }

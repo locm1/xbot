@@ -8,24 +8,34 @@ import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
 import { VisitorHistoriesTable } from "@/pages/visitor/VisitorHistoriesTable";
 
-import { getVisitorHistories, deleteVisitorHistory, searchVisitorHistories, getVisitorHistoriesByPage } from "@/pages/visitor/api/VisitorHistoryApiMethods";
+import { getVisitorHistories, deleteVisitorHistory, searchVisitorHistories } from "@/pages/visitor/api/VisitorHistoryApiMethods";
 
 export default () => {
   const [visitorHistories, setVisitorHistories] = useState([]);
   const [links, setLinks] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [timer, setTimer] = useState(null);
   const [searchValue, setSearchValue] = useState({
     name: '', start_created_at: '', end_created_at: ''
   });
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+  })
 
   const handleChange = (e, input) => {
     const value = (input == 'start_created_at' || input == 'end_created_at') ? e : e.target.value;
 
     setSearchValue({...searchValue, [input]: value})
     const searchParams = {
-      params: {...searchValue, [input]: value}
+      params: {...searchValue, [input]: value, page: 1}
     };
-    searchVisitorHistories(searchParams, setVisitorHistories);
+    clearTimeout(timer);
+
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate);
+    }, 1000)
+
+    setTimer(newTimer)
   };
 
   const startOptions = {
@@ -70,7 +80,10 @@ export default () => {
   };
 
   useEffect(() => {
-    getVisitorHistories(setVisitorHistories, setLinks, setCurrentPage);
+    const searchParams = {
+      params: {name: null, start_created_at: null, end_created_at: null, page: 1}
+    };
+    getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate);
   }, []);
 
   return (
@@ -139,11 +152,12 @@ export default () => {
         visitorHistories={visitorHistories}
         deleteVisitorHistoryConfirmModal={deleteVisitorHistoryConfirmModal}
         links={links}
-        currentPage={currentPage}
-        getVisitorHistoriesByPage={getVisitorHistoriesByPage}
+        paginate={paginate}
+        setPaginate={setPaginate}
+        getVisitorHistories={getVisitorHistories}
         setLinks={setLinks}
-        setCurrentPage={setCurrentPage}
         setVisitorHistories={setVisitorHistories}
+        searchValue={searchValue}
       />
     </>
   );

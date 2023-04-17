@@ -1,14 +1,15 @@
 import React, { useState, useRef } from "react";
 import { BadgeCheckIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { first } from "lodash";
 import Swal from "sweetalert2";
 import QRCode from "qrcode.react";
+import Pagination from "@/components/Pagination";
 
 export const InflowRouteTable = (props) => {
-  const { inflows, setInflows } = props;
+  const { inflows, setInflows, links, getInflowRoutes, setLinks, paginate, setPaginate } = props;
 
   const downloadQR = (id) => {
     const canvas = document.getElementById(id);
@@ -94,26 +95,14 @@ export const InflowRouteTable = (props) => {
           </tbody>
         </Table>
       </Card.Body>
-      <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                前
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                次
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal small mt-4 mt-lg-0">
-            Showing <b>{inflows.length}</b> out of <b>25</b> entries
-          </small>
-        </Card.Footer>
+      <Pagination 
+        links={links}
+        paginate={paginate}
+        getListBypage={getInflowRoutes} 
+        setList={setInflows}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+      />
     </Card>
   );
 };

@@ -9,23 +9,33 @@ import { Paths } from "@/paths";
 import { CouponsTable } from "@/pages/coupon/CouponsTable";
 import ParticipantsModal from "@/components/ParticipantsModal";
 
-import { getCoupons, searchCoupons, deleteCoupon, getCouponUsers } from "@/pages/coupon/api/CouponApiMethods";
+import { getCoupons, deleteCoupon, getCouponUsers } from "@/pages/coupon/api/CouponApiMethods";
 
 export default () => {
   const [coupons, setCoupons] = useState([]);
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+  })
+  const [links, setLinks] = useState([]);
   const [name, setName] = useState('');
   const [id, setId] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [timer, setTimer] = useState(null);
 
   const handleChange = (e) => {
     setName(e.target.value)
 
     const searchParams = {
-      params: {
-        name: name
-      }
+      params: { name: name, page: 1 }
     };
-    searchCoupons(searchParams, setCoupons);
+    clearTimeout(timer);
+
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      getCoupons(searchParams, setCoupons, setLinks, setPaginate);
+    }, 1000)
+
+    setTimer(newTimer)
   };
 
   const onHide = () => {
@@ -33,7 +43,10 @@ export default () => {
   }
 
   useEffect(() => {
-    getCoupons(setCoupons);
+    const searchParams = {
+      params: { name: null, page: 1 }
+    };
+    getCoupons(searchParams, setCoupons, setLinks, setPaginate);
   }, []);
 
   return (
@@ -85,6 +98,12 @@ export default () => {
         setOpenModal={setOpenModal}
         openModal={openModal}
         setId={setId}
+        getCoupons={getCoupons}
+        links={links}
+        paginate={paginate}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        name={name}
       />
     </>
   );

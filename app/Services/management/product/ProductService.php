@@ -17,10 +17,10 @@ class ProductService
 
     public function index($request) 
     {
-        if ($request) {
+        if (isset($request->name) || isset($request->category)) {
             return $this->search_product_action->search($request);
         }
-        return Product::with(['productImages', 'productCategory'])->get();
+        return Product::with(['productImages', 'productCategory'])->paginate(10);
     }
 
 
@@ -31,9 +31,11 @@ class ProductService
             'price', 'overview', 'is_undisclosed', 'is_unlimited', 'is_picked_up'
         ]);
         $product_sale_data = $request->only(['discount_rate', 'start_date', 'end_date']);
+        $stock_quantity = ($request->is_unlimited == 1) ? 999999 : $request->stock_quantity;
+        $merged_data = array_merge($data, ['stock_quantity' => $stock_quantity]);
 
-        return DB::transaction(function () use ($data, $product_sale_data) {
-            $product = Product::create($data);
+        return DB::transaction(function () use ($merged_data, $product_sale_data) {
+            $product = Product::create($merged_data);
             $product->productSale()->create($product_sale_data);
             return $product;
         });
@@ -55,13 +57,15 @@ class ProductService
     public function update($request, $product) 
     {
         $product_update_data = $request->only([
-            'name', 'product_category_id', 'stock_quantity', 'tax_rate', 
+            'name', 'product_category_id', 'tax_rate', 
             'price', 'overview', 'is_undisclosed', 'is_unlimited', 'is_picked_up'
         ]);
         $product_sale_update_data = $request->only(['product_id', 'discount_rate', 'start_date', 'end_date']);
+        $stock_quantity = ($request->is_unlimited == 1) ? 999999 : $request->stock_quantity;
+        $merged_product_update_data = array_merge($product_update_data, ['stock_quantity' => $stock_quantity]);
 
-        return DB::transaction(function () use ($product, $product_update_data, $product_sale_update_data) {
-            $product->update($product_update_data);
+        return DB::transaction(function () use ($product, $merged_product_update_data, $product_sale_update_data) {
+            $product->update($merged_product_update_data);
             $product->productSale()->update($product_sale_update_data);
             return $product;
         });

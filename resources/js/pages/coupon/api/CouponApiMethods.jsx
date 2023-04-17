@@ -28,14 +28,15 @@ export const getCouponUsers = async (id, setUsers) => {
   });
 };
 
-export const storeCoupon = async (coupon, storeComplete) => {
+export const storeCoupon = async (coupon, storeComplete, setError) => {
   axios.post('/api/v1/management/coupons', coupon)
   .then((response) => {
     storeComplete();
     location.href = '/manage/coupon/list';
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 
@@ -50,13 +51,14 @@ export const showCoupon = async (id, setCoupon) => {
   });
 };
 
-export const updateCoupon = async (id, coupon, updateComplete) => {
+export const updateCoupon = async (id, coupon, updateComplete, setError) => {
   axios.put(`/api/v1/management/coupons/${id}`, coupon)
   .then((response) => {
     updateComplete();
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 

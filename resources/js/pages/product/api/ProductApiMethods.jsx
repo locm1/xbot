@@ -23,7 +23,7 @@ export const getProducts = async (params, setProducts, setLinks, setPaginate) =>
   });
 };
 
-export const storeProduct = async (formValue, storeProductImages, storeImages, history) => {
+export const storeProduct = async (formValue, storeProductImages, storeImages, history, setError) => {
   axios.post(`/api/v1/management/products`, formValue)
   .then((response) => {
     const product = response.data.product;
@@ -48,7 +48,8 @@ export const storeProduct = async (formValue, storeProductImages, storeImages, h
 
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 
@@ -68,7 +69,7 @@ export const showProduct = async (id, setProduct, setPrivate, setIsPickedUp, set
   });
 };
 
-export const updateProduct = (id, formValue) => {
+export const updateProduct = (id, formValue, setError) => {
   axios.put(`/api/v1/management/products/${id}`, formValue)
   .then((response) => {
     Swal.fire(
@@ -78,7 +79,8 @@ export const updateProduct = (id, formValue) => {
     )
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 

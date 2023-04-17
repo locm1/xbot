@@ -151,6 +151,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
       setLoading(false)
     }).catch(error => {
       console.error(error);
+      setLoading(false)
       history.push(Paths.Signin.path);
     })
   }, [])

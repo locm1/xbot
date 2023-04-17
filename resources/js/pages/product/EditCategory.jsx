@@ -11,6 +11,9 @@ export default () => {
   const [category, setCategory] = useState({
     name: '', content: ''
   });
+  const [error, setError] = useState({
+    name: '', content: '', color: '',
+  });
   const { id } = useParams();
   const pathname = useLocation().pathname;
   const [backgroundColor, setBackgroundColor] = useState();
@@ -30,9 +33,9 @@ export default () => {
     category.color = backgroundColor
 
     if (pathname.includes('/edit')) {
-      updateCategory(id, category)
+      updateCategory(id, category, setError)
     } else {
-      storeCategory(category, history)
+      storeCategory(category, history, setError)
     }
   };
 
@@ -67,24 +70,53 @@ export default () => {
               </Form.Group>
               </div>
               <Row>
-                <Col md={12} className="mb-3">
+                <Col md={12} className="mb-4">
                   <Form.Group id="name">
                     <Form.Label>カテゴリー名</Form.Label>
-                    <Form.Control required type="text" name="name" value={category.name} onChange={(e) => handleChange(e, 'name')} placeholder="カテゴリー名" />
+                    <Form.Control
+                      required
+                      type="text"
+                      name="name"
+                      value={category.name}
+                      onChange={(e) => handleChange(e, 'name')}
+                      placeholder="飲料水"
+                      isInvalid={category.name !== '' ? false : error.name ? true : false}
+                    />
+                    {
+                      error.name && 
+                      <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col md={12} className="mb-3">
+                <Col md={12} className="mb-4">
                   <Form.Group id="overview">
                     <Form.Label>カテゴリー概要</Form.Label>
-                    <Form.Control as="textarea" rows="3" value={category.content} onChange={(e) => handleChange(e, 'content')} />
+                    <Form.Control
+                      as="textarea"
+                      rows="3"
+                      value={category.content}
+                      onChange={(e) => handleChange(e, 'content')} 
+                      isInvalid={category.content !== '' ? false : error.content ? true : false}
+                    />
+                    {
+                      error.content && 
+                      <Form.Control.Feedback type="invalid">{error.content[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col md={12} className="mb-3">
+                <Col md={12} className="mb-4">
                   <Form.Group id="overview">
                     <Form.Label>カテゴリー色選択</Form.Label>
-                    <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} onChange={handleBackgroundColorChange} />
+                    <CirclePicker
+                      colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']}
+                      onChange={handleBackgroundColorChange}
+                    />
                   </Form.Group>
                   <div className="category-color" style={{backgroundColor: backgroundColor}}>{backgroundColor}</div>
+                  {
+                    error.color && 
+                    <Form.Control.Feedback type="invalid">{error.color[0]}</Form.Control.Feedback>
+                  }
                 </Col>
               </Row>
               <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">

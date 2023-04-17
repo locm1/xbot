@@ -25,7 +25,7 @@ export const searchCategories = async (params, setCategories) => {
   });
 };
 
-export const storeCategory = async (formValue, history) => {
+export const storeCategory = async (formValue, history, setError) => {
   axios.post(`/api/v1/management/categories`, formValue)
   .then((response) => {
     const category = response.data.category;
@@ -40,6 +40,7 @@ export const storeCategory = async (formValue, history) => {
     })
   })
   .catch(error => {
+    setError(error.response.data.errors)
       console.error(error);
   });
 };
@@ -58,7 +59,7 @@ export const showCategory = async (id, setCategory, setBackgroundColor, setPriva
   });
 };
 
-export const updateCategory = async (id, formValue) => {
+export const updateCategory = async (id, formValue, setError) => {
   axios.put(`/api/v1/management/categories/${id}`, formValue)
   .then((response) => {
     const category = response.data.category;
@@ -70,6 +71,7 @@ export const updateCategory = async (id, formValue) => {
     )
   })
   .catch(error => {
+    setError(error.response.data.errors)
       console.error(error);
   });
 };

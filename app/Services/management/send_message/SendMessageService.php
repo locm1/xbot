@@ -10,9 +10,9 @@ class SendMessageService
 
     public function index() 
     {
-        $SendMessage = SendMessage::with(['sendMessageUsers', 'message'])->get();
+        $send_messages = SendMessage::with(['sendMessageUsers', 'message'])->paginate(10);
         $data = [];
-        foreach ($SendMessage as $k => $v) {
+        foreach ($send_messages as $k => $v) {
             $data[] = [
                 'id' => $v->id,
                 'status' => $v->status,
@@ -21,7 +21,14 @@ class SendMessageService
                 'targetCount' => $v->sendMessageUsers->count(),
             ];
         }
-        return $data;
+        return [
+            'current_page' => $send_messages->currentPage(),
+            'data' => $data,
+            'per_page' => $send_messages->perPage(),
+            'from' => $send_messages->firstItem(),
+            'to' => $send_messages->lastItem(),
+            'total' => $send_messages->total(),
+        ];
     }
 
 

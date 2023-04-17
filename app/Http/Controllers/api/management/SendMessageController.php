@@ -22,7 +22,7 @@ class SendMessageController extends Controller
      */
     public function index()
     {
-        return $this->service->index();
+        return response()->json(['send_messages' => $this->service->index()], 200);
     }
 
     /**

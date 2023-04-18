@@ -27,7 +27,7 @@ class SearchOrderAction
             $this->searchByPrefecture($query, $request->prefecture);
         }
 
-        return $query->with('user')->get();
+        return $query->with('user')->paginate(10);
     }
 
     private function searchByName($query, $name)

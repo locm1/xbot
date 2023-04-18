@@ -25,6 +25,6 @@ class UserDemographicController extends Controller
     public function __invoke()
     {
         $user_demographic = $this->user_demographic_service->getUserDemographic();
-        return response()->json(['genders' => $user_demographic], 200);
+        return response()->json(['demographic' => $user_demographic], 200);
     }
 }

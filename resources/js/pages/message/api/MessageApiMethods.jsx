@@ -16,22 +16,19 @@ const failedMessage = (message) => {
   )
 } 
 
-export const getMessages = async (setMessages) => {
-  axios.get('/api/v1/management/messages')
-  .then((response) => {
-    console.log(response.data.messages);
-    setMessages(response.data.messages);
-  })
-  .catch(error => {
-      console.error(error);
-  });
-};
-
-export const searchMessages = async (params, setMessages) => {
+export const getMessages = async (params, setMessages, setLinks, setPaginate) => {
   axios.get('/api/v1/management/messages', params)
   .then((response) => {
-    setMessages(response.data.messages);
-    console.log(response.data.messages);
+    const messages = response.data.messages;
+    setMessages(messages.data);
+    setLinks([...Array(messages.last_page)].map((_, i) => i + 1))
+    setPaginate({
+      current_page: messages.current_page, 
+      per_page: messages.per_page,
+      from: messages.from,
+      to: messages.to,
+      total: messages.total,
+    })
   })
   .catch(error => {
       console.error(error);

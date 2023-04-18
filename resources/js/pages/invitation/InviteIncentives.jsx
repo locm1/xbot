@@ -9,11 +9,22 @@ import { InviteIncentivesTable } from "@/pages/invitation/InviteIncentivesTable"
 import { getInviteIncentives, getInvitationUsers } from "@/pages/invitation/api/InviteIncentiveApiMethods";
 
 export default () => {
-  const [inviteIncentives, setInviteIncentives] = useState([]);
-  const [defaultInviteIncentive, setDefaultInviteIncentive] = useState([]);
+  const [inviteIncentives, setInviteIncentives] = useState({
+    invite_incentives: [], default_invite_incentive: {}
+  });
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+  })
+  const searchParams = {
+    params: {}
+  };
+  const [links, setLinks] = useState([]);
 
   useEffect(() => {
-    getInviteIncentives(setInviteIncentives, setDefaultInviteIncentive);
+    const searchParams = {
+      params: {page: 1}
+    };
+    getInviteIncentives(searchParams, setInviteIncentives, setLinks, setPaginate);
   }, []);
 
   return (
@@ -31,8 +42,13 @@ export default () => {
 
       <InviteIncentivesTable
         inviteIncentives={inviteIncentives}
-        defaultInviteIncentive={defaultInviteIncentive}
         setInviteIncentives={setInviteIncentives}
+        getInviteIncentives={getInviteIncentives}
+        links={links}
+        paginate={paginate}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        searchParams={searchParams}
       />
     </>
   );

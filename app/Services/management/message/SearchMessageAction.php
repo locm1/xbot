@@ -17,6 +17,6 @@ class SearchMessageAction
             $query->where('title', 'like', "%{$request->title}%");
         }
 
-        return $query->orderBy('id', 'desc')->get();
+        return $query->orderBy('id', 'desc')->paginate(10);
     }
 }

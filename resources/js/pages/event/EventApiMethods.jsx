@@ -47,15 +47,24 @@ export const DeleteEvent = async(id) => {
   });
 }
 
-export const GetEvents = (setEvents) => {
-  axios.get(`/api/v1/management/events`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        setEvents(res.data.events.data);
-      }
-    });
+export const GetEvents = (params, setEvents, setLinks, setPaginate) => {
+  axios.get(`/api/v1/management/events`, params)
+  .then((res) => {
+    if(res.status !== 200) {
+      throw new Error("APIが正しく取得されませんでした");
+    } else {
+      const events = res.data.events;
+      setEvents(events.data);
+      setLinks([...Array(events.last_page)].map((_, i) => i + 1))
+      setPaginate({
+        current_page: events.current_page, 
+        per_page: events.per_page,
+        from: events.from,
+        to: events.to,
+        total: events.total,
+      })
+    }
+  });
 }
 
 export const GetEventUsers = (id, setUsers) => {

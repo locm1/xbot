@@ -16,10 +16,20 @@ const failedMessage = (message) => {
   )
 } 
 
-export const getSendMessages = async (setSendMessages) => {
-  axios.get('/api/v1/management/send-message')
+export const getSendMessages = async (params, setSendMessages, setLinks, setPaginate) => {
+  axios.get('/api/v1/management/send-message', params)
   .then((response) => {
     setSendMessages(response.data);
+    const messages = response.data.send_messages;
+    setSendMessages(messages.data);
+    setLinks([...Array(messages.last_page)].map((_, i) => i + 1))
+    setPaginate({
+      current_page: messages.current_page, 
+      per_page: messages.per_page,
+      from: messages.from,
+      to: messages.to,
+      total: messages.total,
+    })
   })
   .catch(error => {
       console.error(error);

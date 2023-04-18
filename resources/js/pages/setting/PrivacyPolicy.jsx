@@ -45,7 +45,6 @@ export default () => {
           <Row>
             <Col xs={12} sm={6} xl={12}>
               <Form.Group className="mb-3">
-                <Form.Label>プライバシーポリシー</Form.Label>
                 <Form.Control as="textarea" rows="30" name="privacy_policy" value={content} onChange={(e) => changeContent(e)} />
               </Form.Group>
               <div className="mt-3">

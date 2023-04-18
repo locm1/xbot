@@ -7,24 +7,36 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 import { OrdersTable } from "@/pages/order/OrdersTable";
 import { ChangeStatusModal } from "@/pages/order/ChangeStatusModal";
 
-import { getOrders, updateOrder, searchOrders, getPrefectures } from "@/pages/order/api/OrderApiMethods";
+import { getOrders, updateOrder, getPrefectures } from "@/pages/order/api/OrderApiMethods";
 
 export default () => {
   const [orders, setOrders] = useState([]);
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1, total: 1 
+  })
+  const [links, setLinks] = useState([]);
   const [prefectures, setPrefectures] = useState([]);
   const [orderId, setOrderId] = useState();
   const [searchValue, setSearchValue] = useState({
     name: '', status: 0, id: '', prefecture: ''
   });
   const [modalOpen, setModalOpen] = useState(false);
+  const [timer, setTimer] = useState(null);
 
   const handleChange = (e, input) => {
     setSearchValue({...searchValue, [input]: e.target.value})
 
     const searchParams = {
-      params: {...searchValue, [input]: e.target.value}
+      params: {...searchValue, [input]: e.target.value, page: 1}
     };
-    searchOrders(searchParams, setOrders);
+    clearTimeout(timer);
+
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      getOrders(searchParams, setOrders, setLinks, setPaginate);
+    }, 1000)
+
+    setTimer(newTimer)
   };
 
   const changeStatusModal = (id) => {
@@ -33,7 +45,10 @@ export default () => {
   }
 
   useEffect(() => {
-    getOrders(setOrders);
+    const searchParams = {
+      params: {name: null, status: null, id: null, prefecture: null, page: 1}
+    };
+    getOrders(searchParams, setOrders, setLinks, setPaginate);
     getPrefectures(setPrefectures)
   }, []);
 
@@ -115,7 +130,14 @@ export default () => {
 
       <OrdersTable
         orders={orders}
+        setOrders={setOrders}
         changeStatusModal={changeStatusModal}
+        getOrders={getOrders}
+        links={links}
+        paginate={paginate}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        searchValue={searchValue}
       />
     </>
   );

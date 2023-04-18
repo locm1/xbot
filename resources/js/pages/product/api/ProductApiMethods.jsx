@@ -4,27 +4,26 @@ import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-export const getProducts = async (setProducts) => {
-  axios.get('/api/v1/management/products')
-  .then((response) => {
-    setProducts(response.data.products);
-  })
-  .catch(error => {
-      console.error(error);
-  });
-};
-
-export const searchProducts = async (params, setProducts) => {
+export const getProducts = async (params, setProducts, setLinks, setPaginate) => {
   axios.get('/api/v1/management/products', params)
   .then((response) => {
-    setProducts(response.data.products);
+    const products = response.data.products;
+    setProducts(products.data);
+    setLinks([...Array(products.last_page)].map((_, i) => i + 1))
+    setPaginate({
+      current_page: products.current_page, 
+      per_page: products.per_page,
+      from: products.from,
+      to: products.to,
+      total: products.total,
+    })
   })
   .catch(error => {
       console.error(error);
   });
 };
 
-export const storeProduct = async (formValue, storeProductImages, storeImages, history) => {
+export const storeProduct = async (formValue, storeProductImages, storeImages, history, setError) => {
   axios.post(`/api/v1/management/products`, formValue)
   .then((response) => {
     const product = response.data.product;
@@ -49,7 +48,8 @@ export const storeProduct = async (formValue, storeProductImages, storeImages, h
 
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 
@@ -69,17 +69,18 @@ export const showProduct = async (id, setProduct, setPrivate, setIsPickedUp, set
   });
 };
 
-export const updateProduct = (id, formValue) => {
+export const updateProduct = (id, formValue, setError) => {
   axios.put(`/api/v1/management/products/${id}`, formValue)
   .then((response) => {
     Swal.fire(
-      '保存完了',
-      'ユーザー情報の保存に成功しました',
+      '更新完了',
+      '商品情報の更新に成功しました',
       'success'
     )
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 

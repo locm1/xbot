@@ -3,22 +3,25 @@ import { Nav, Card, Pagination } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate'
 
 export default (props) => {
-  const { links, currentPage, getListBypage, setList, setLinks, setCurrentPage } = props
+  const { links, getListBypage, setList, setLinks, paginate, setPaginate, searchValue } = props
 
   // ページクリック時のイベント
   const handlePaginate = (selectedPage) => {
-    getListBypage(selectedPage.selected + 1, setList, setLinks, setCurrentPage)
+    const searchParams = {
+      params: {...searchValue, page: selectedPage.selected + 1}
+    };
+    getListBypage(searchParams, setList, setLinks, setPaginate)
   }
 
   return (
     <>
     <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
       <small className="fw-normal mt-4 mt-lg-0">
-        10 件中 1〜10 件表示
+        <span className="text-danger fs-3 fw-bolder">{paginate.total}</span> 件中 {paginate.from}〜{paginate.to} 件表示
       </small>
       <Nav>
         <ReactPaginate
-          forcePage={currentPage - 1}
+          forcePage={paginate.current_page - 1}
           pageCount={links.length}
           onPageChange={handlePaginate}
           marginPagesDisplayed={4}

@@ -17,10 +17,10 @@ class ProductService
 
     public function index($request) 
     {
-        if ($request) {
+        if (isset($request->name) || isset($request->category)) {
             return $this->search_product_action->search($request);
         }
-        return Product::with(['productImages', 'productCategory'])->get();
+        return Product::with(['productImages', 'productCategory'])->paginate(10);
     }
 
 

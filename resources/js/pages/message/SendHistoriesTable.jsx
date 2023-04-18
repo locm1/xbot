@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, Badge, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, Badge, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-import { pageVisits, pageTraffic, pageRanking } from "@/data/tables";
+import Pagination from "@/components/Pagination";
 
 
 export const SendHistoriesTable = (props) => {
-  const { sendHistories } = props;
+  const { 
+    sendHistories, setSendMessages, getSendMessages, links,
+    paginate, setLinks, setPaginate
+  } = props;
   const totalSendHistories = sendHistories.length;
 
   const getStatus = (status) => {
@@ -60,26 +63,14 @@ export const SendHistoriesTable = (props) => {
             {sendHistories.map(t => <TableRow key={`sendHistories-${t.id}`} {...t} />)}
           </tbody>
         </Table>
-        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                Previous
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                Next
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal mt-4 mt-lg-0">
-            Showing <b>{totalSendHistories}</b> out of <b>25</b> entries
-          </small>
-        </Card.Footer>
+        <Pagination 
+          links={links}
+          paginate={paginate}
+          getListBypage={getSendMessages} 
+          setList={setSendMessages}
+          setLinks={setLinks}
+          setPaginate={setPaginate}
+        />
       </Card.Body>
     </Card>
   );

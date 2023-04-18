@@ -174,6 +174,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::group(['prefix' => 'report'], function() {
             Route::get('/users', [ReportController::class, 'getUserByDate']);
             Route::get('/user/analysis', [ReportController::class, 'getUserByMonth']);
+            Route::get('/order/analysis', [ReportController::class, 'getTopSellingProductsFromLastMonth']);
         });
         Route::apiResource('coupons', CouponController::class);
         Route::get('coupons/{coupon}/users', CouponUserController::class);

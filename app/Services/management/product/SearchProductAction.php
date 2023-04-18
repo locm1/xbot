@@ -14,11 +14,11 @@ class SearchProductAction
             $this->searchByName($query, $request->name);
         }
 
-        if (isset($request->category)) {
+        if (isset($request->category) && $request->category > 0) {
             $this->searchByCategory($query, $request->category);
         }
 
-        return $query->with(['productImages', 'productCategory'])->get();
+        return $query->with(['productImages', 'productCategory'])->paginate(10);
     }
 
     private function searchByName($query, $name)

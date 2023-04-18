@@ -5,26 +5,23 @@ import { SearchIcon } from "@heroicons/react/solid";
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { LoadingContext } from "@/components/LoadingContext";
-import { InflowRouteTable } from "./InflowRouteTable";
+import { InflowRouteTable } from "@/pages/inflow_route/InflowRouteTable";
+import { getInflowRoutes } from "@/pages/inflow_route/api/InflowRouteApiMethods";
 import axios from "axios";
 
 export default () => {
     const [newInflows, setNewInflows] = useState("");
     const [inflows, setInflows] = useState([]);
+    const [paginate, setPaginate] = useState({ 
+      current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+    })
+    const [links, setLinks] = useState([]);
+
     useLayoutEffect(() => {
-      axios.get('/api/v1/management/inflow-routes')
-      .then((response) => {
-        const newData = response.data.map(v => ({
-          id: v.id,
-          name: v.name,
-          uri: "https://liff.line.me/1660723896-RmovvEYY?path=inflow-route/" + v.key,
-          count: v.count
-        }))
-        setInflows(newData);
-      })
-      .catch(error => {
-          console.error(error);
-      },);
+      const searchParams = {
+        params: {page: 1}
+      };
+      getInflowRoutes(searchParams, setInflows, setLinks, setPaginate)
     }, [])
 
     const handleChange = (e) => {
@@ -61,8 +58,14 @@ export default () => {
     </div>
 
     <InflowRouteTable
-     inflows={inflows}
+      inflows={inflows}
+      setInflows={setInflows}
+      getInflowRoutes={getInflowRoutes}
+      links={links}
+      paginate={paginate}
+      setLinks={setLinks}
+      setPaginate={setPaginate}
     />
-	  </>
+    </>
 	)
 }

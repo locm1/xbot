@@ -1,16 +1,16 @@
 import React, { useState, useRef } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, Pagination, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import { Paths } from "@/paths";
-
-const getFirstLetterOfEachWord = (text) => (
-  text.match(/\b\w/g).join('')
-);
+import { Paths } from "@/paths"
+import Pagination from "@/components/Pagination";import { getAccounts } from "./api/AdminApiMethods";
+;
 
 
 export const AccountsTable = (props) => {
-  const { accounts, showConfirmDeleteModal } = props;
+  const { 
+    accounts, setAccounts, showConfirmDeleteModal, links, getUsers, setLinks, paginate, setPaginate
+  } = props;
 
   const getRoleClass = (role) => {
     switch (role) {
@@ -82,26 +82,14 @@ export const AccountsTable = (props) => {
             {accounts.map(u => <TableRow key={`account-${u.id}`} {...u} />)}
           </tbody>
         </Table>
-        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                前
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                次
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal small mt-4 mt-lg-0">
-            Showing <b>{accounts.length}</b> out of <b>25</b> entries
-          </small>
-        </Card.Footer>
+        <Pagination 
+          links={links}
+          paginate={paginate}
+          getListBypage={getAccounts} 
+          setList={setAccounts}
+          setLinks={setLinks}
+          setPaginate={setPaginate}
+      />
       </Card.Body>
     </Card>
   );

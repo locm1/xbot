@@ -1,9 +1,19 @@
-export const getInviteIncentives = async (setInviteIncentives, setDefaultInviteIncentive) => {
-  axios.get('/api/v1/management/invite-incentives')
+export const getInviteIncentives = async (params, setInviteIncentives, setLinks, setPaginate) => {
+  axios.get('/api/v1/management/invite-incentives', params)
   .then((response) => {
     const inviteIncentives = response.data.invite_incentives;
-    setInviteIncentives(inviteIncentives.invite_incentives);
-    setDefaultInviteIncentive(inviteIncentives.default_invite_incentive)
+    setInviteIncentives({
+      invite_incentives: inviteIncentives.invite_incentives.data,
+      default_invite_incentive: inviteIncentives.default_invite_incentive
+    });
+    setLinks([...Array(inviteIncentives.invite_incentives.last_page)].map((_, i) => i + 1))
+    setPaginate({
+      current_page: inviteIncentives.invite_incentives.current_page, 
+      per_page: inviteIncentives.invite_incentives.per_page,
+      from: inviteIncentives.invite_incentives.from,
+      to: inviteIncentives.invite_incentives.to,
+      total: inviteIncentives.invite_incentives.total,
+    })
 
   })
   .catch(error => {

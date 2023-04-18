@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Services\management\product\ProductService;
 use App\Http\Requests\management\product\StoreProductRequest;
+use App\Http\Requests\management\product\UpdateProductRequest;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -54,11 +55,11 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateProductRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
         return $this->product_service->update($request, $product);
     }

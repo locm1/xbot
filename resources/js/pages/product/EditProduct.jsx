@@ -40,6 +40,10 @@ export default () => {
     price: 0, overview: '', is_undisclosed: 0, 
     is_unlimited: 0, is_picked_up: 0
   });
+  const [error, setError] = useState({
+    name: '', stock_quantity: '', price: '', overview: '',
+    discount_rate: '', start_date: '', end_date: ''
+  });
   const [productSale, setProductSale] = useState({
     discount_rate: 0, start_date: '', end_date: ''
   });
@@ -187,9 +191,10 @@ export default () => {
 
   const onSaveProduct = () => {
     Object.assign(product, productSale);
+    console.log(product);
     
     if (pathname.includes('/edit')) {
-      updateProduct(id, product);
+      updateProduct(id, product, setError);
       // 画像削除stateに値があればAPI発火
       if (deleteProductImages.length > 0) {
         const params = {
@@ -211,7 +216,7 @@ export default () => {
       }
 
     } else {
-      storeProduct(product, storeProductImages, storeImages, history)
+      storeProduct(product, storeProductImages, storeImages, history, setError)
     }
   }
 
@@ -230,7 +235,7 @@ export default () => {
   }
 
   const updateIsUnlimited = (disableInputForm) => {
-    setProduct({...product, ['is_unlimited']: disableInputForm ? 1 : 0})
+    setProduct({...product, ['is_unlimited']: disableInputForm ? 1 : 0, stock_quantity: 99999})
     setDisable(disableInputForm)
   }
 
@@ -296,13 +301,25 @@ export default () => {
                       <Row>
                         <Col md={12} className="mb-4">
                           <Form.Group id="name">
-                            <Form.Label>商品名</Form.Label>
-                            <Form.Control required type="text" name="name" value={product.name} onChange={(e) => handleChange(e, 'name')} placeholder="シャンプー" />
+                            <Form.Label><span className="questionnaire-required me-2">必須</span>商品名</Form.Label>
+                            <Form.Control 
+                              required 
+                              type="text" 
+                              name="name" 
+                              value={product.name} 
+                              onChange={(e) => handleChange(e, 'name')} 
+                              placeholder="シャンプー" 
+                              isInvalid={product.name !== '' ? false : error.name ? true : false}
+                            />
+                            {
+                              error.name && 
+                              <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                            }
                           </Form.Group>
                         </Col>
-                        <Col md={4} className="mb-4">
+                        <Col md={6} className="mb-4">
                           <Form.Group id="category">
-                            <Form.Label>カテゴリー</Form.Label>
+                            <Form.Label><span className="questionnaire-required me-2">必須</span>カテゴリー</Form.Label>
                             <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => {handleChange(e, 'product_category_id')}}>
                               {
                                 categories.map((category, index) => <option key={`category-${index}`} value={category.id}>{category.name}</option>)
@@ -310,8 +327,8 @@ export default () => {
                             </Form.Select>
                           </Form.Group>
                         </Col>
-                        <Col md={2} className="mb-4">
-                          <Form.Label>在庫数</Form.Label>
+                        <Col md={6} className="mb-4">
+                          <Form.Label><span className="questionnaire-required me-2">必須</span>在庫数</Form.Label>
                           <InputGroup className="me-2 me-lg-3">
                             <InputGroup.Text className="d-flex">
                               <Form.Check id="checkbox1" htmlFor="checkbox1" onClick={() => updateIsUnlimited(!disableInputForm)} />
@@ -325,30 +342,59 @@ export default () => {
                               name="stock_quantity"
                               value={product.stock_quantity}
                               onChange={(e) => handleChange(e, 'stock_quantity')}
+                              isInvalid={product.stock_quantity !== '' ? false : error.stock_quantity ? true : false}
                             />
+                            {
+                              error.stock_quantity && 
+                              <Form.Control.Feedback type="invalid">{error.stock_quantity[0]}</Form.Control.Feedback>
+                            }
                           </InputGroup>
                         </Col>
                       </Row>
                       <Row>
-                        <Col md={2} className="mb-4">
+                        <Col md={4} className="mb-4">
                           <Form.Group id="price">
-                            <Form.Label>販売価格（税込）</Form.Label>
+                            <Form.Label><span className="questionnaire-required me-2">必須</span>販売価格（税込）</Form.Label>
                             <InputGroup>
-                              <Form.Control required type="number" name="price" value={product.price} onChange={(e) => handleChange(e, 'price')} placeholder="3000" />
+                              <Form.Control
+                                required 
+                                type="number" 
+                                name="price" 
+                                value={product.price} 
+                                onChange={(e) => handleChange(e, 'price')} 
+                                placeholder="3000" 
+                                isInvalid={product.price !== '' ? false : error.price ? true : false}
+                              />
                               <InputGroup.Text>円</InputGroup.Text>
                             </InputGroup>
+                            {
+                              error.price && 
+                              <Form.Control.Feedback type="invalid">{error.price[0]}</Form.Control.Feedback>
+                            }
                           </Form.Group>
                         </Col>
-                        <Col md={2} className="mb-4">
+                        <Col md={4} className="mb-4">
                           <Form.Group id="discountRate">
-                            <Form.Label>セール割引率（%）</Form.Label>
+                            <Form.Label><span className="questionnaire-required me-2">必須</span>セール割引率（%）</Form.Label>
                             <InputGroup>
-                              <Form.Control required type="number" name="discount_rate" value={productSale.discount_rate} onChange={(e) => handleSaleChange(e, 'discount_rate')} placeholder="10" />
+                              <Form.Control
+                                required 
+                                type="number" 
+                                name="discount_rate" 
+                                value={productSale.discount_rate} 
+                                onChange={(e) => handleSaleChange(e, 'discount_rate')} 
+                                placeholder="10"
+                                isInvalid={productSale.discount_rate !== '' ? false : error.discount_rate ? true : false} 
+                              />
                               <InputGroup.Text>%</InputGroup.Text>
                             </InputGroup>
+                            {
+                              error.discount_rate && 
+                              <Form.Control.Feedback type="invalid">{error.discount_rate[0]}</Form.Control.Feedback>
+                            }
                           </Form.Group>
                         </Col>
-                        <Col md={3} className="mb-4">
+                        <Col md={4} className="mb-4">
                           <ListGroup className="list-group-flush mt-3">
                             <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 mt-4">
                               <div>
@@ -359,9 +405,9 @@ export default () => {
                         </Col>
                       </Row>
                       <Row>
-                        <Col md={4} className="mb-4">
+                        <Col md={6} className="mb-4">
                           <Form.Group id="startDate">
-                            <Form.Label>開始日時</Form.Label>
+                            <Form.Label><span className="questionnaire-required me-2">必須</span>開始日時</Form.Label>
                             <Flatpickr
                               options={ startOptions }
                               value={productSale.start_date}
@@ -378,16 +424,21 @@ export default () => {
                                     type="text"
                                     placeholder="YYYY-MM-DD"
                                     ref={ref}
+                                    isInvalid={productSale.start_date !== '' ? false : error.start_date ? true : false} 
                                   />
                                 </InputGroup>
                                 );
                               }}
                             />
+                            {
+                              error.start_date && 
+                              <Form.Control.Feedback type="invalid">{error.start_date[0]}</Form.Control.Feedback>
+                            }
                           </Form.Group>
                         </Col>
-                        <Col md={4} className="mb-4">
+                        <Col md={6} className="mb-4">
                           <Form.Group id="endDate">
-                            <Form.Label>終了日時</Form.Label>
+                            <Form.Label><span className="questionnaire-required me-2">必須</span>終了日時</Form.Label>
                             <Flatpickr
                               options={ endOptions }
                               value={productSale.end_date}
@@ -404,19 +455,35 @@ export default () => {
                                     type="text"
                                     placeholder="YYYY-MM-DD"
                                     ref={ref}
+                                    isInvalid={productSale.end_date !== '' ? false : error.end_date ? true : false} 
                                     />
                                   </InputGroup>
                                 );
                               }}
                             />
+                            {
+                              error.end_date && 
+                              <Form.Control.Feedback type="invalid">{error.end_date[0]}</Form.Control.Feedback>
+                            }
                           </Form.Group>
                         </Col>
                       </Row>
                       <Row>
                         <Col md={12} className="mb-4">
                           <Form.Group id="overview">
-                            <Form.Label>商品概要</Form.Label>
-                            <Form.Control as="textarea" rows="3" value={product.overview} onChange={(e) => handleChange(e, 'overview')} placeholder="商品の概要を入力してください" />
+                            <Form.Label><span className="questionnaire-required me-2">必須</span>商品概要</Form.Label>
+                            <Form.Control 
+                              as="textarea" 
+                              rows="3" 
+                              value={product.overview} 
+                              onChange={(e) => handleChange(e, 'overview')} 
+                              placeholder="商品の概要を入力してください" 
+                              isInvalid={product.overview !== '' ? false : error.overview ? true : false} 
+                            />
+                            {
+                              error.overview && 
+                              <Form.Control.Feedback type="invalid">{error.overview[0]}</Form.Control.Feedback>
+                            }
                           </Form.Group>
                         </Col>
                       </Row>

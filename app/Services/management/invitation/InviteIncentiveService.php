@@ -20,7 +20,7 @@ class InviteIncentiveService
 
     public function index() 
     {
-        $invite_incentives = InviteIncentive::all();
+        $invite_incentives = InviteIncentive::paginate(10);
         $default_invite_incentive = DefaultInviteIncentive::find(1);
         return [
             'invite_incentives' => $invite_incentives,

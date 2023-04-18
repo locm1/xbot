@@ -6,27 +6,42 @@ import { Link } from 'react-router-dom';
 import { ProductsTable } from "@/pages/product/ProductsTable";
 import { Paths } from "@/paths";
 
-import { getProducts, searchProducts } from "@/pages/product/api/ProductApiMethods";
+import { getProducts } from "@/pages/product/api/ProductApiMethods";
 import { getCategories } from "@/pages/product/api/ProductCategoryApiMethods";
 
 export default () => {
   const [products, setProducts] = useState([]);
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+  })
+  const [timer, setTimer] = useState(null);
+  const [links, setLinks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchValue, setSearchValue] = useState({
-    name: '', category: 1
+    name: '', category: 0
   });
 
   const handleChange = (e, input) => {
     setSearchValue({...searchValue, [input]: e.target.value})
 
     const searchParams = {
-      params: {...searchValue, [input]: e.target.value}
+      params: {...searchValue, [input]: e.target.value, page: 1}
     };
-    searchProducts(searchParams, setProducts);
+    clearTimeout(timer);
+
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      getProducts(searchParams, setProducts, setLinks, setPaginate)
+    }, 1000)
+
+    setTimer(newTimer)
   };
 
   useEffect(() => {
-    getProducts(setProducts)
+    const searchParams = {
+      params: {name: null, category: null, page: 1}
+    };
+    getProducts(searchParams, setProducts, setLinks, setPaginate)
     getCategories(setCategories)
   }, []);
 
@@ -69,6 +84,13 @@ export default () => {
 
       <ProductsTable
         products={products}
+        setProducts={setProducts}
+        getProducts={getProducts}
+        links={links}
+        paginate={paginate}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        searchValue={searchValue}
       />
     </>
   );

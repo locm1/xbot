@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export const getPostages = async (setPostages, setIsUpdate) => {
   axios.get('/api/v1/management/postages')
   .then((response) => {
@@ -38,6 +40,7 @@ export const storePostage = async (postages) => {
   await axios.post(`/api/v1/management/postages`, {postages: postages})
   .then((response) => {
     console.log(response.data.postages);
+    Swal.fire('保存成功', `送料の保存に成功しました。`, 'success');
   })
   .catch(error => {
       console.error(error);
@@ -49,8 +52,7 @@ export const updatePostage = async (postages) => {
   await axios.put(`/api/v1/management/postages`, {postages: postages})
   .then((response) => {
     console.log(response.data.postages);
-    console.log('更新成功');
-    alert('更新しました')
+    Swal.fire('更新成功', `送料の更新に成功しました。`, 'success');
   })
   .catch(error => {
       console.error(error);

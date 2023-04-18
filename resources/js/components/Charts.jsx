@@ -463,7 +463,7 @@ export const BarChart = (props) => {
 
   const chartSeries = data.map(d => ({
     name: d.label,
-    data: d.values.map(v => v.value),
+    data: d.values.map(v => v.count),
   }));
 
   const chartOptions = {

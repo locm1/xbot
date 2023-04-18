@@ -4,30 +4,58 @@ import { CloudUploadIcon, CollectionIcon, FireIcon, PlusIcon, ShieldExclamationI
 import { Col, Row, Button, Dropdown } from 'react-bootstrap';
 
 import { CustomersWidget, RevenueWidget, UsersWidget, WeeklyReportWidget, LineGraphChartWidget, TeamMembersWidget, ProgressTrackWidget, EventsWidget, RankingWidget, VisitsMapWidget, SalesValueWidget, AcquisitionWidget, TimelineWidget } from "@/components/Widgets";
-import { PieChart } from "@/components/Charts";
 import { PageVisitsTable } from "@/components/Tables";
-import { trafficShares, trafficVolumes, pieChartTest } from "@/data/charts";
-
-import { getReportUsers, getReportAnalysis } from "@/pages/dashboard/api/DashboardApiMethods";
+import { getReportUsers, getReportAnalysis, getDemographic, getReportAnalysisByOrderProducts } from "@/pages/dashboard/api/DashboardApiMethods";
+import PieChart from "@/pages/dashboard/PieChart";
+import PrefectureWidget from "@/pages/dashboard/PrefectureWidget";
+import BarChartWidget from "@/pages/dashboard/BarChartWidget";
+import OrderProductsWidget from "@/pages/dashboard/OrderProductsWidget";
+import moment from "moment-timezone";
 
 export default () => {
   const [friendCount, setFriendCount] = useState();
   const [blockCount, setBlockCount] = useState();
   const [analyses, setAnalyses] = useState([]);
+  const [genders, setGenders] = useState([]); 
+  const [birthMonths, setBirthMonths] = useState([]); 
+  const [prefectures, setPrefectures] = useState([]);
+  const [products, setProducts] = useState([{
+    product_images: [{image_path: ''}]
+  }]);
+  const genderLabels = ['男性', '女性', 'その他', '無記入'];
+  const colors = ['#0073a8', '#c82c55', '#00a968', '#f39800'];
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = ('00' + (date.getMonth() + 1)).slice(-2)
+  const day = ('00' + (date.getDate())).slice(-2)
+
+  const getLastDayOfMonth = (date) => {
+    const lastDate = new Date(date);
+    lastDate.setDate(1);
+    lastDate.setMonth(lastDate.getMonth() + 1);
+    lastDate.setDate(0);
+    return moment(lastDate.toLocaleDateString()).format("YYYY-MM-DD")
+  };
+
+  const getFirstDayOfMonth = (date) => {
+    const lastDate = new Date(date);
+    lastDate.setDate(1);
+    return moment(lastDate.toLocaleDateString()).format("YYYY-MM-DD")
+  };
 
   const params = {
     params: {
-      begin_date: '2023-01-29',
-      end_date: '2023-01-31',
+      begin_date: getFirstDayOfMonth(`${year}-${month}-${day}`),
+      end_date: getLastDayOfMonth(`${year}-${month}-${day}`),
     }
   }
-
-  const period = `${params.params.begin_date} - ${params.params.end_date}`
+  const period = `${moment(params.params.begin_date).format("MM月DD日")} - ${moment(params.params.end_date).format("MM月DD日")}`
 
   useEffect(() => {
     getReportUsers(setFriendCount, setBlockCount, params);
     getReportAnalysis(setAnalyses);
-    console.log(pieChartTest);
+    getDemographic(setGenders, setBirthMonths, setPrefectures)
+    getReportAnalysisByOrderProducts(setProducts)
   }, []);
 
   return (
@@ -75,82 +103,37 @@ export default () => {
       </Row>
 
       <Row>
-        <Col xs={12} sm={12} xl={4} className="mb-4">
-          <UsersWidget
-            category="友達総数"
-            title={friendCount}
-            period={period}
-            percentage={20}
-          />
-        </Col>
-
-        <Col xs={12} sm={6} xl={4} className="mb-4">
-          <CustomersWidget
-            category="ブロック数"
-            title={blockCount}
-            period={period}
-            percentage={18.2}
-          />
-        </Col>
-
-        <Col xs={12} sm={6} xl={4} className="mb-4">
-          {/* <RevenueWidget
-            category="Revenue"
-            title="$43,594"
-            period={period}
-            percentage={-5.4}
-          /> */}
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xs={12} xxl={4} className="mb-4">
-          {/* <WeeklyReportWidget
-            headerTitle="Weekly Sales"
-            headerSubtitle="28 Daily Avg."
-            reportTitle="$456,678"
-            reportSubtitle="Total Themesberg Sales"
-          /> */}
-        </Col>
-
-        {/* <Col xs={12} md={6} xxl={4} className="mb-4">
-          <TopAuthorsWidget title="Top Author Earnings" />
-        </Col>
-
-        <Col xs={12} md={6} xxl={4} className="mb-4">
-          <TimelineWidget title="Notifications" />
-        </Col> */}
-      </Row>
-
-      <Row>
-        <Col xs={12} xl={7} xxl={8} className="mb-4">
+        <Col xs={12} sm={12} xl={8} className="mb-4">
           <Row>
-            <Col xs={12} className="mb-4">
-              <PageVisitsTable />
+            <Col xs={12} sm={6} xl={6} className="mb-4">
+              <UsersWidget
+                category={`友達総数（${year}）`}
+                title={friendCount}
+                period={period}
+                percentage={20}
+              />
             </Col>
-
-            <Col xs={12} xxl={6} className="mb-4">
-              <TeamMembersWidget />
+            <Col xs={12} sm={6} xl={6} className="mb-4">
+              <CustomersWidget
+                category={`ブロック数（${year}）`}
+                title={blockCount}
+                period={period}
+                percentage={18.2}
+              />
             </Col>
-
-            <Col xs={12} xxl={6} className="mb-4">
-              <ProgressTrackWidget />
+            <Col xs={12} xxl={12} className="mb-4">
+              <PieChart title="性別" labels={genderLabels} series={genders} colors={colors} />
+            </Col>
+            <Col xs={12} xxl={12} className="mb-4">
+              <BarChartWidget title="誕生月別" data={birthMonths} />
+            </Col>
+            <Col xs={12} xxl={12} className="mb-4">
+              <OrderProductsWidget title="1ヶ月間での上位20件の売れ筋商品" products={products} />
             </Col>
           </Row>
         </Col>
-
-        <Col xs={12} xl={5} xxl={4} className="mb-4">
-          <Col xs={12} className="px-0 mb-4">
-            <RankingWidget />
-          </Col>
-
-          <Col xs={12} className="px-0 mb-4">
-            <AcquisitionWidget />
-          </Col>
-
-          <Col xs={12} className="px-0">
-            <VisitsMapWidget />
-          </Col>
+        <Col xs={12} sm={12} xl={4} className="mb-4">
+          <PrefectureWidget prefectures={prefectures} />
         </Col>
       </Row>
     </>

@@ -16,7 +16,7 @@ export default (props) => {
             <div className="position-absolute questionnaire-radio-button"></div>
             <div>{index + 1}</div>
             <div className="ps-3">
-              <Form.Control required type="text" value={item.name} onChange={(e) => editItem(e, item.id)} className="text-dark mb-1 w-100" placeholder="選択肢" autoFocus />  
+              <Form.Control required type="text" value={item.name} onChange={(e) => editItem(e, item.id)} className="text-dark mb-1 w-100" placeholder="選択肢" />  
             </div>
           </div>
         </div>

@@ -25,6 +25,11 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $dates = [
+        'birth_date'
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',

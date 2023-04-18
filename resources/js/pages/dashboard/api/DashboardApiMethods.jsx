@@ -12,6 +12,24 @@ export const getReportUsers = async (setFriendCount, setBlockCount, params) => {
   });
 };
 
+export const getDemographic = async (setGenders, setBirthMonths, setPrefectures) => {
+  axios.get('/api/v1/management/demographic')
+  .then((response) => {
+    const demographic = response.data.demographic;
+    setGenders(Object.values(demographic.genders))
+    setBirthMonths([{
+      id: 1,
+      label: "誕生月別人数",
+      color: "#f0bc74",
+      values: demographic.birth_months
+    }])
+    setPrefectures(demographic.prefectures)
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 export const getReportAnalysis = async (setAnalyses) => {
   axios.get('/api/v1/management/report/user/analysis')
   .then((response) => {
@@ -31,6 +49,18 @@ export const getReportAnalysis = async (setAnalyses) => {
       },
     ];
     setAnalyses(userAnalysis);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getReportAnalysisByOrderProducts = async (setProducts) => {
+  axios.get('/api/v1/management/report/order/analysis')
+  .then((response) => {
+    const order_products = Object.values(response.data.order_products);
+    setProducts(_.sortBy(order_products, 'count').reverse())
+    console.log(_.sortBy(order_products, 'count').reverse());
   })
   .catch(error => {
       console.error(error);

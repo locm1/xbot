@@ -8,6 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { AccountsTable } from "@/pages/account/AccountsTable";
+import { getAccounts } from "@/pages/account/api/AdminApiMethods";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -19,15 +20,17 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 export default () => {
   const [accounts, setAccounts] = useState([]);
+  const [paginate, setPaginate] = useState({ 
+    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+  })
+  const [links, setLinks] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
-    axios.get('/api/v1/management/admins').then((response) => {
-        setAccounts(response.data.admins)
-    })
-    .catch(error => {
-      console.log(error);
-    })
+    const searchParams = {
+      params: {page: 1}
+    };
+    getAccounts(searchParams, setAccounts, setLinks, setPaginate)
   }, []);
 
   const showConfirmDeleteModal = async (e, id) => {
@@ -77,7 +80,13 @@ export default () => {
 
       <AccountsTable
         accounts={accounts}
+        setAccounts={setAccounts}
         showConfirmDeleteModal={showConfirmDeleteModal}
+        getAccounts={getAccounts}
+        links={links}
+        paginate={paginate}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
       />
     </>
   );

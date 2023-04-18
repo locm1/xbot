@@ -19,7 +19,7 @@ import { UsersTable } from "@/pages/user/UsersTable";
 import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
 import {SendSegmentUserCard} from "./segment/SendSegmentUserCard"
 import { calculateAge } from "../../components/common/CalculateAge";
-import { getMessages, deleteMessage, searchMessages, sendMulticastMessage } from "@/pages/message/api/MessageApiMethods";
+import { getAllMessages, sendMulticastMessage } from "@/pages/message/api/MessageApiMethods";
 import { CSVLink } from "react-csv";
 import { LoadingContext } from "@/components/LoadingContext";
 
@@ -196,7 +196,10 @@ export default () => {
 
 
   useEffect(() => {
-    getMessages(setTemplates);
+    const params = {
+      params: {count: 'all'}
+    };
+    getAllMessages(params, setTemplates);
     axios.get('/api/v1/management/default-segments')
     .then((response) => {
       const segments = response.data.segments;

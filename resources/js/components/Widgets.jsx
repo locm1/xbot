@@ -74,16 +74,14 @@ export const CardWidget = (props) => {
 };
 
 export const ProfileCardWidget = (props) => {
-  const { first_name, last_name, img_path, occupation, area, is_blocked, block_date, id, visitCount, purchaseTime } = props;
+  const { first_name, last_name, first_name_kana, last_name_kana, img_path, occupation, area, is_blocked, block_date, id, visitCount, purchaseTime } = props;
   return (
     <Card border="0" className="shadow text-center p-0">
       <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />
       <Card.Body className="pb-5">
         {img_path ? <Card.Img src={img_path} className="avatar-xl rounded-circle mx-auto mt-n7 mb-4" /> : <Card.Img src="/images/default_user_icon.png" className="avatar-xl rounded-circle mx-auto mt-n7 mb-4" />}
+        <div className="color-gray small">{last_name_kana} {first_name_kana}</div>
         <Card.Title>{last_name} {first_name}</Card.Title>
-        <Card.Subtitle className="fw-normal">
-          {occupation}
-        </Card.Subtitle>
         <Card.Text className="text-gray mb-4">
           {area}
         </Card.Text>

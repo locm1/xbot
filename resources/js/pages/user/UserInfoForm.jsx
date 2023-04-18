@@ -42,10 +42,12 @@ export const UserInfoForm = (props) => {
 
   return (
     <Card border="0" className="shadow mb-4">
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">お客様情報</h5>
+      </Card.Header>  
       <Card.Body>
-        <h5 className="mb-4 border-bottom pb-3">お客様情報</h5>
         <Form>
-          <Row>
+          {/* <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>氏名（姓）</Form.Label>
@@ -70,7 +72,7 @@ export const UserInfoForm = (props) => {
                 <Form.Control required type="text" name="first_name_kana" value={first_name_kana ?? ''} onChange={(e) => props.handleChange(e.target.value, 'first_name_kana')} placeholder="" />
               </Form.Group>
             </Col>
-          </Row>
+          </Row> */}
           <Row className="align-items-center">
             <Col md={6} className="mb-3">
               <Form.Group id="birthday">
@@ -171,7 +173,7 @@ export const UserInfoForm = (props) => {
           </Row>
 
         <div className="d-flex justify-content-end">
-          <Button variant="gray-800" className="me-2" onClick={saveUser}>
+          <Button variant="success" className="me-2" onClick={saveUser}>
             保存する
           </Button>
         </div>

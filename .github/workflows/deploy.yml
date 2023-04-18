@@ -40,5 +40,5 @@ jobs:
             git config --local user.name "githubaction"
             git fetch origin
             git reset --hard origin/main
-            php artisan migrate:fresh
-            php artisan db:seed
+            # php artisan migrate:fresh
+            # php artisan db:seed

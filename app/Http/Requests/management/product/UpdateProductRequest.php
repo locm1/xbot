@@ -31,7 +31,7 @@ class UpdateProductRequest extends FormRequest
             'is_picked_up' => 'required|boolean',
             'is_undisclosed' => 'required|boolean',
             'is_unlimited' => 'required|boolean',
-            'discount_rate' => 'required|numeric|between:1,100',
+            'discount_rate' => 'required|numeric|between:0,100',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
         ];

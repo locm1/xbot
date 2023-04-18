@@ -96,7 +96,7 @@ export default () => {
         </div>
         <h3 className="fs-5 mb-0 liff-product-detail-name">{product.name}</h3>
         {
-          isSalePeriod(product.product_sale.start_date, product.product_sale.end_date) ? (
+          isSalePeriod(product.product_sale.start_date, product.product_sale.end_date) && product.product_sale.discount_rate !== 0 ? (
             <>
             <div className="d-flex flex-wrap">
               <div className="liff-product-detail-sale mt-2 mb-2">{product.product_sale.discount_rate}%OFF</div>

@@ -48,13 +48,13 @@ export default (props) => {
               <Card.Body className="pb-3 rounded-bottom p-2 pt-3">
                 <Card.Title className="liff-product-card-title">{name}</Card.Title>
                 {
-                  isSalePeriod(product_sale.start_date, product_sale.end_date) ? (
+                  isSalePeriod(product_sale.start_date, product_sale.end_date) && product_sale.discount_rate !== 0 ? (
                     <>
-                    <div className="d-flex flex-wrap mb-1">
-                      <div className="liff-product-sale">{product_sale.discount_rate}%OFF</div>
-                      <span className="text-decoration-line-through text-black-50 liff-product-card-price liff-product-before-price mx-1">￥{price.toLocaleString()}</span>
-                    </div>
-                    <Card.Subtitle className="fw-bold liff-product-card-price text-danger mt-1">￥{isNaN(sale_price) ? price.toLocaleString() : Math.floor(sale_price).toLocaleString()}</Card.Subtitle>
+                      <div className="d-flex flex-wrap mb-1">
+                        <div className="liff-product-sale">{product_sale.discount_rate}%OFF</div>
+                        <span className="text-decoration-line-through text-black-50 liff-product-card-price liff-product-before-price mx-1">￥{price.toLocaleString()}</span>
+                      </div>
+                      <Card.Subtitle className="fw-bold liff-product-card-price text-danger mt-1">￥{isNaN(sale_price) ? price.toLocaleString() : Math.floor(sale_price).toLocaleString()}</Card.Subtitle>
                     </>
                   ) : (
                     <>

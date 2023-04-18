@@ -36,7 +36,7 @@ export default () => {
 
   const storeTag = async (e) => {
     e.preventDefault();
-    await axios.post('/api/v1/management/tags', {
+    await axios.post('/api/v1/management/user_tags', {
       name: name
     })
     .then((res) => {
@@ -51,15 +51,13 @@ export default () => {
 
   const updateTag = async (e, id) => {
     e.preventDefault();
-    await axios.put(`/api/v1/management/tags/${id}`, {
+    await axios.put(`/api/v1/management/user_tags/${id}`, {
       name: name
     })
     .then((res) => {
-      const tag = res.data.tag;
-      const newTag = {
-        id: tag.id,
-        name: tag.name
-      }
+      const updateTag = res.data.tag;
+      const newTag = tags.find(tag => tag.id == id);
+      newTag.name = updateTag.name
       setTags(
         tags.map((tag) => (tag.id === id ? newTag : tag))
       );
@@ -83,9 +81,9 @@ export default () => {
     });
 
     if (result.isConfirmed) {
-      await axios.delete(`/api/v1/management/tags/${id}`)
+      await axios.delete(`/api/v1/management/user_tags/${id}`)
       .then((response) => {
-        deleteTag()
+        deleteTag(id)
         console.log(response);
       })
       .catch(error => {
@@ -94,10 +92,10 @@ export default () => {
     }
   };
 
-  const deleteTag = async () => {
+  const deleteTag = async (id) => {
+    setTags(tags.filter(tag => tag.id !== id))
     const confirmMessage = "選択した項目は削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    location.reload();
   };
 
   useEffect(() => {

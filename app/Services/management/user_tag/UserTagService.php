@@ -30,26 +30,26 @@ class UserTagService extends AbstractManagementService
     /**
      * Display the specified resource.
      *
-     * @param  UserTag $tag
+     * @param  UserTag $user_tag
      * @return UserTag
      */
-    public function show(Model $tag): UserTag
+    public function show(Model $user_tag): UserTag
     {
-        return $tag;
+        return $user_tag;
     }
 
 
-    public function update($request, Model $tag) :array
+    public function update($request, Model $user_tag) :array
     {
         $data = $request->only(['name']);
-        $tag->update($data);
+        $user_tag->update($data);
         return $data;
     }
 
 
-    public function destroy(Model $tag) 
+    public function destroy(Model $user_tag) 
     {
-        return $tag->delete();
+        return $user_tag->delete();
     }
 
 }

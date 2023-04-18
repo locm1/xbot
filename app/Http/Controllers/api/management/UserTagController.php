@@ -42,9 +42,9 @@ class UserTagController extends Controller
      * @param  int  $id
      * @return JsonResource
      */
-    public function show(UserTag $tag)
+    public function show(UserTag $user_tag)
     {
-        $tag = $this->tag_service->show($tag);
+        $tag = $this->tag_service->show($user_tag);
         return response()->json(['tag' => $tag], 200);
     }
 
@@ -55,9 +55,9 @@ class UserTagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTagRequest $request, UserTag $tag)
+    public function update(UpdateTagRequest $request, UserTag $user_tag)
     {
-        $tag = $this->tag_service->update($request, $tag);
+        $tag = $this->tag_service->update($request, $user_tag);
         return response()->json(['tag' => $tag], 200);
     }
 
@@ -67,9 +67,9 @@ class UserTagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserTag $tag)
+    public function destroy(UserTag $user_tag)
     {
-        $this->tag_service->destroy($tag);
+        $this->tag_service->destroy($user_tag);
         return response()->json([], 204);
     }
 }

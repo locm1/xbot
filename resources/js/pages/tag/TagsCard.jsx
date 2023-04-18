@@ -53,7 +53,9 @@ export default (props) => {
         <Col xs={10} sm={2} lg={2} xl={2} className="d-none d-lg-block d-xl-inline-flex align-items-center ms-lg-auto text-right justify-content-center px-md-0">
           <div className="d-block d-sm-flex">
             <div className="ms-sm-3">
-              <TrashIcon onClick={() => showConfirmDeleteModal(id)} role="button" className="icon icon-xs text-danger me-2 "></TrashIcon>
+              <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+                削除
+              </Button>
             </div>
           </div>
         </Col>

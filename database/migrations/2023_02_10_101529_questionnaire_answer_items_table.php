@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('questionnaire_answer_items', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(QuestionnaireAnswer::class);
-            $table->text('answer');
+            $table->text('answer')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

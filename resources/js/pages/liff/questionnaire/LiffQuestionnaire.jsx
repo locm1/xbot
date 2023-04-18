@@ -74,6 +74,7 @@ export default () => {
     // });
     Object.assign(formValue, {questionnaires: questionnaires});
     console.log(formValue);
+    console.log(user);
     storeQuestionnaireAnswers(user.id, formValue, setErrors, setIsLoading, onSave)
     //storeQuestionnaireAnswers(102, formValue, setErrors)
     //storeQuestionnaireAnswers(user.id, formValue, setErrors)

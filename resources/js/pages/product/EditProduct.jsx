@@ -11,7 +11,7 @@ import 'flatpickr/dist/l10n/ja.js';
 
 import { 
   showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts, 
-  getProducts, updateRelatedProduct, deleteImages, storeImages, updateImages
+  getAllProducts, updateRelatedProduct, deleteImages, storeImages, updateImages
 } from "@/pages/product/api/ProductApiMethods";
 import { getCategories, } from "@/pages/product/api/ProductCategoryApiMethods";
 
@@ -248,7 +248,7 @@ export default () => {
       setProductImages([]);
     }
     getCategories(setCategories)
-    getProducts(setProducts);
+    getAllProducts(setProducts);
   }, []);
 
   return (
@@ -284,7 +284,7 @@ export default () => {
                     label="非公開にする"
                     id="switch1"
                     htmlFor="switch1"
-                    checked={privateProduct}
+                    defaultChecked={privateProduct}
                     onClick={() => updatePrivate(!privateProduct)}
                     />
                     <Form.Check
@@ -292,7 +292,7 @@ export default () => {
                     label="ピックアップ商品に追加する"
                     id="switch2"
                     htmlFor="switch2"
-                    checked={isPickedUp}
+                    defaultChecked={isPickedUp}
                     onClick={() => updateIsPickedUp(!isPickedUp)}
                     />
                   </Form.Group>
@@ -332,7 +332,7 @@ export default () => {
                           <InputGroup className="me-2 me-lg-3">
                             <InputGroup.Text className="d-flex">
                               <Form.Check id="checkbox1" htmlFor="checkbox1" onClick={() => updateIsUnlimited(!disableInputForm)} />
-                              <Form.Label htmlFor="checkbox1" className="mb-0">無制限</Form.Label>
+                              <Form.Label defaultValue={false} htmlFor="checkbox1" className="mb-0">無制限</Form.Label>
                             </InputGroup.Text>
                             <Form.Control
                               disabled={disableInputForm}

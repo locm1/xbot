@@ -65,7 +65,9 @@ export default () => {
 			<Card className="shadow mb-4">
 				<Card.Body>
 					messaging APIのWebhook URLには末尾 /api/line/webhook/urwhdwwrlx を付与してください。<br />
-					(例: https://example.com/api/line/webhook/urwhdwwrlx)
+					(例: https://example.com/api/line/webhook/urwhdwwrlx)<br />
+					liff設定画面のScope全てにチェックを入れてください。<br />
+					liff設定画面のシェアターゲットピッカーをONにしてください。<br />
 				</Card.Body>
 			</Card>
 			<Card className="shadow mb-4">

@@ -23,6 +23,16 @@ export const getProducts = async (params, setProducts, setLinks, setPaginate) =>
   });
 };
 
+export const getAllProducts = async (setProducts) => {
+  axios.get('/api/v1/management/products?no_paginate=1', {no_paginate: true})
+  .then((response) => {
+    setProducts(response.data.products ?? [{image_path: ''}]);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 export const storeProduct = async (formValue, storeProductImages, storeImages, history, setError) => {
   axios.post(`/api/v1/management/products`, formValue)
   .then((response) => {

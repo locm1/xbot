@@ -20,6 +20,7 @@ class ProductService
         if (isset($request->name) || isset($request->category)) {
             return $this->search_product_action->search($request);
         }
+        if ($request->no_paginate) return Product::all();
         return Product::with(['productImages', 'productCategory'])->paginate(10);
     }
 

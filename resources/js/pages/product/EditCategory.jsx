@@ -72,7 +72,7 @@ export default () => {
               <Row>
                 <Col md={12} className="mb-4">
                   <Form.Group id="name">
-                    <Form.Label>カテゴリー名</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>カテゴリー名</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -90,7 +90,7 @@ export default () => {
                 </Col>
                 <Col md={12} className="mb-4">
                   <Form.Group id="overview">
-                    <Form.Label>カテゴリー概要</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>カテゴリー概要</Form.Label>
                     <Form.Control
                       as="textarea"
                       rows="3"
@@ -106,7 +106,7 @@ export default () => {
                 </Col>
                 <Col md={12} className="mb-4">
                   <Form.Group id="overview">
-                    <Form.Label>カテゴリー色選択</Form.Label>
+                    <Form.Label><span className="questionnaire-required me-2">必須</span>カテゴリー色選択</Form.Label>
                     <CirclePicker
                       colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']}
                       onChange={handleBackgroundColorChange}

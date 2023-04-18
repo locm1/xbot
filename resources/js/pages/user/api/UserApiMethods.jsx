@@ -20,7 +20,8 @@ export const getUsers = async (params, setUsers, setLinks, setPaginate) => {
 export const getDemographic = async (setDemographic) => {
   axios.get('/api/v1/management/demographic')
   .then((response) => {
-    const genders = response.data.genders;
+    const genders = response.data.demographic.genders;
+    console.log(genders);
     setDemographic({
       man: genders['1'], women: genders['2'], others: genders["3"]
     });

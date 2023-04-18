@@ -4,16 +4,21 @@ import { CloudUploadIcon, CollectionIcon, FireIcon, PlusIcon, ShieldExclamationI
 import { Col, Row, Button, Dropdown } from 'react-bootstrap';
 
 import { CustomersWidget, RevenueWidget, UsersWidget, WeeklyReportWidget, LineGraphChartWidget, TeamMembersWidget, ProgressTrackWidget, EventsWidget, RankingWidget, VisitsMapWidget, SalesValueWidget, AcquisitionWidget, TimelineWidget } from "@/components/Widgets";
-import { PieChart } from "@/components/Charts";
 import { PageVisitsTable } from "@/components/Tables";
-import { trafficShares, trafficVolumes, pieChartTest } from "@/data/charts";
-
-import { getReportUsers, getReportAnalysis } from "@/pages/dashboard/api/DashboardApiMethods";
+import { getReportUsers, getReportAnalysis, getDemographic } from "@/pages/dashboard/api/DashboardApiMethods";
+import PieChart from "@/pages/dashboard/PieChart";
+import PrefectureWidget from "@/pages/dashboard/PrefectureWidget";
+import BarChartWidget from "@/pages/dashboard/BarChartWidget";
 
 export default () => {
   const [friendCount, setFriendCount] = useState();
   const [blockCount, setBlockCount] = useState();
   const [analyses, setAnalyses] = useState([]);
+  const [genders, setGenders] = useState([]); 
+  const [birthMonths, setBirthMonths] = useState([]); 
+  const [prefectures, setPrefectures] = useState([]);
+  const genderLabels = ['男性', '女性', 'その他', '無記入'];
+  const colors = ['#0073a8', '#c82c55', '#00a968', '#f39800'];
 
   const params = {
     params: {
@@ -27,7 +32,7 @@ export default () => {
   useEffect(() => {
     getReportUsers(setFriendCount, setBlockCount, params);
     getReportAnalysis(setAnalyses);
-    console.log(pieChartTest);
+    getDemographic(setGenders, setBirthMonths, setPrefectures)
   }, []);
 
   return (
@@ -75,51 +80,35 @@ export default () => {
       </Row>
 
       <Row>
+        <Col xs={12} sm={12} xl={8} className="mb-4">
+          <Row>
+            <Col xs={12} sm={6} xl={6} className="mb-4">
+              <UsersWidget
+                category="友達総数"
+                title={friendCount}
+                period={period}
+                percentage={20}
+              />
+            </Col>
+            <Col xs={12} sm={6} xl={6} className="mb-4">
+              <CustomersWidget
+                category="ブロック数"
+                title={blockCount}
+                period={period}
+                percentage={18.2}
+              />
+            </Col>
+            <Col xs={12} xxl={12} className="mb-4">
+              <PieChart title="性別" labels={genderLabels} series={genders} colors={colors} />
+            </Col>
+            <Col xs={12} xxl={12} className="mb-4">
+              <BarChartWidget title="誕生月別" data={birthMonths} />
+            </Col>
+          </Row>
+        </Col>
         <Col xs={12} sm={12} xl={4} className="mb-4">
-          <UsersWidget
-            category="友達総数"
-            title={friendCount}
-            period={period}
-            percentage={20}
-          />
+          <PrefectureWidget prefectures={prefectures} />
         </Col>
-
-        <Col xs={12} sm={6} xl={4} className="mb-4">
-          <CustomersWidget
-            category="ブロック数"
-            title={blockCount}
-            period={period}
-            percentage={18.2}
-          />
-        </Col>
-
-        <Col xs={12} sm={6} xl={4} className="mb-4">
-          {/* <RevenueWidget
-            category="Revenue"
-            title="$43,594"
-            period={period}
-            percentage={-5.4}
-          /> */}
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xs={12} xxl={4} className="mb-4">
-          {/* <WeeklyReportWidget
-            headerTitle="Weekly Sales"
-            headerSubtitle="28 Daily Avg."
-            reportTitle="$456,678"
-            reportSubtitle="Total Themesberg Sales"
-          /> */}
-        </Col>
-
-        {/* <Col xs={12} md={6} xxl={4} className="mb-4">
-          <TopAuthorsWidget title="Top Author Earnings" />
-        </Col>
-
-        <Col xs={12} md={6} xxl={4} className="mb-4">
-          <TimelineWidget title="Notifications" />
-        </Col> */}
       </Row>
 
       <Row>
@@ -137,20 +126,6 @@ export default () => {
               <ProgressTrackWidget />
             </Col>
           </Row>
-        </Col>
-
-        <Col xs={12} xl={5} xxl={4} className="mb-4">
-          <Col xs={12} className="px-0 mb-4">
-            <RankingWidget />
-          </Col>
-
-          <Col xs={12} className="px-0 mb-4">
-            <AcquisitionWidget />
-          </Col>
-
-          <Col xs={12} className="px-0">
-            <VisitsMapWidget />
-          </Col>
         </Col>
       </Row>
     </>

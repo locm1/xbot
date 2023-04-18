@@ -12,6 +12,24 @@ export const getReportUsers = async (setFriendCount, setBlockCount, params) => {
   });
 };
 
+export const getDemographic = async (setGenders, setBirthMonths, setPrefectures) => {
+  axios.get('/api/v1/management/demographic')
+  .then((response) => {
+    const demographic = response.data.demographic;
+    setGenders(Object.values(demographic.genders))
+    setBirthMonths([{
+      id: 1,
+      label: "誕生月",
+      color: "#f0bc74",
+      values: demographic.birth_months
+    }])
+    setPrefectures(demographic.prefectures)
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 export const getReportAnalysis = async (setAnalyses) => {
   axios.get('/api/v1/management/report/user/analysis')
   .then((response) => {

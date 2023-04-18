@@ -40,7 +40,7 @@ class UserFactory extends Factory
             'first_name_kana' => fake()->optional('90')->firstKanaName(),
             'last_name_kana' => fake()->optional('90')->lastKanaName(),
             'nickname' => fake()->shuffleString($random_str),
-            'birth_date' => fake()->optional('90')->date(),
+            'birth_date' => fake()->date(),
             'gender' => fake()->optional('90')->numberBetween(1, 3),
             'zipcode' => fake()->optional('90')->postcode(),
             'prefecture' => fake()->optional('90')->prefecture(),

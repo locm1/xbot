@@ -109,9 +109,8 @@ export const OrdersTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover>
-          <thead>
+       <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">注文番号</th>
               <th className="border-gray-200">注文日時</th>
@@ -136,7 +135,6 @@ export const OrdersTable = (props) => {
           setPaginate={setPaginate}
           searchValue={searchValue}
         />
-      </Card.Body>
     </Card>
   );
 };

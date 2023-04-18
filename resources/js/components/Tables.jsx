@@ -283,8 +283,8 @@ export const TransactionsTable = (props) => {
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
       <Card.Body>
-        <Table hover>
-          <thead>
+       <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">#</th>
               <th className="border-gray-200">Bill For</th>

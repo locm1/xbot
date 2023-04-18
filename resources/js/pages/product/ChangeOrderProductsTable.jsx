@@ -73,9 +73,8 @@ export const ChangeOrderProductsTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover>
-          <thead>
+       <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">商品名</th>
               <th className="border-gray-200">カテゴリー</th>
@@ -100,7 +99,6 @@ export const ChangeOrderProductsTable = (props) => {
         </Table>
         <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
         </Card.Footer>
-      </Card.Body>
     </Card>
   );
 };

@@ -79,9 +79,8 @@ export const InflowRouteTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
         <Table hover className="user-table align-items-center">
-          <thead>
+          <thead className="bg-primary text-white">
             <tr>
               <th className="border-bottom">管理名称</th>
               <th className="border-bottom">生成QRコード</th>
@@ -94,7 +93,6 @@ export const InflowRouteTable = (props) => {
             {inflows.map((v, k) => <TableRow key={`inflow-${k}`} {...v} />)}
           </tbody>
         </Table>
-      </Card.Body>
       <Pagination 
         links={links}
         paginate={paginate}

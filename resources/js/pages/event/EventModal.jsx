@@ -106,7 +106,6 @@ export const EventModal = (props) => {
 
   return (
     <Modal as={Modal.Dialog} centered show={show} onHide={onHide} enforceFocus={false}>
-      <Button onClick={() => console.log(rangeStart)} />
       <Form className="modal-content">
         <Modal.Body>
           <Errors />

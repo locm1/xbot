@@ -68,29 +68,27 @@ export const AccountsTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover className="user-table align-items-center">
-          <thead>
-            <tr>
-              <th className="border-bottom">ログインID</th>
-              <th className="border-bottom">ユーザー名</th>
-              <th className="border-bottom">権限レベル</th>
-              <th className="border-bottom text-center">編集・削除</th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {accounts.map(u => <TableRow key={`account-${u.id}`} {...u} />)}
-          </tbody>
-        </Table>
-        <Pagination 
-          links={links}
-          paginate={paginate}
-          getListBypage={getAccounts} 
-          setList={setAccounts}
-          setLinks={setLinks}
-          setPaginate={setPaginate}
+      <Table hover className="user-table align-items-center">
+        <thead className="bg-primary text-white">
+          <tr>
+            <th className="border-bottom">ログインID</th>
+            <th className="border-bottom">ユーザー名</th>
+            <th className="border-bottom">権限レベル</th>
+            <th className="border-bottom text-center">編集・削除</th>
+          </tr>
+        </thead>
+        <tbody className="border-0">
+          {accounts.map(u => <TableRow key={`account-${u.id}`} {...u} />)}
+        </tbody>
+      </Table>
+      <Pagination 
+        links={links}
+        paginate={paginate}
+        getListBypage={getAccounts} 
+        setList={setAccounts}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
       />
-      </Card.Body>
     </Card>
   );
 };

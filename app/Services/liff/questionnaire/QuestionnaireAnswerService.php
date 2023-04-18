@@ -54,12 +54,12 @@ class QuestionnaireAnswerService
             $this->order_destination_service->store($request, $user);
 
             # スピーカーのインセンティブ発行
-            $issue_invite_incentive_service = new IssueInviteIncentiveService($user, 2);
-            $inviter_invite_incentive = $issue_invite_incentive_service->issueInviterIncentive();
-            Log::debug($inviter_invite_incentive);
+            // $issue_invite_incentive_service = new IssueInviteIncentiveService($user, 2);
+            // $inviter_invite_incentive = $issue_invite_incentive_service->issueInviterIncentive();
+            // Log::debug($inviter_invite_incentive);
 
             # 招待者のインセンティブ発行
-            $issue_invite_incentive_service->issueInviteeIncentive();
+            // $issue_invite_incentive_service->issueInviteeIncentive();
         });
 
         return $merged_questionnaire_answers;

@@ -19,7 +19,7 @@ export const getDemographic = async (setGenders, setBirthMonths, setPrefectures)
     setGenders(Object.values(demographic.genders))
     setBirthMonths([{
       id: 1,
-      label: "誕生月",
+      label: "誕生月別人数",
       color: "#f0bc74",
       values: demographic.birth_months
     }])
@@ -49,6 +49,18 @@ export const getReportAnalysis = async (setAnalyses) => {
       },
     ];
     setAnalyses(userAnalysis);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getReportAnalysisByOrderProducts = async (setProducts) => {
+  axios.get('/api/v1/management/report/order/analysis')
+  .then((response) => {
+    const order_products = Object.values(response.data.order_products);
+    setProducts(_.sortBy(order_products, 'count').reverse())
+    console.log(_.sortBy(order_products, 'count').reverse());
   })
   .catch(error => {
       console.error(error);

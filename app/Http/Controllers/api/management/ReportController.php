@@ -31,4 +31,10 @@ class ReportController extends Controller
         $users = $this->report_service->getUserByMonth();
         return response()->json($users, 200);
     }
+
+    public function getTopSellingProductsFromLastMonth()
+    {
+        $order_products = $this->report_service->getTopSellingProductsFromLastMonth();
+        return response()->json(['order_products' => $order_products], 200);
+    }
 }

@@ -43,12 +43,12 @@ const PeriodOverviewWidget = (props) => {
               <CalendarIcon className="icon icon-xxs text-gray-400 me-1" />
               {period}
             </small>
-            <div className="small d-flex mt-1">
+            {/* <div className="small d-flex mt-1">
               <PercentageIcon className={`icon icon-xs ${percentageColor}`} />
               <span className={`${percentageColor} fw-bolder me-1`}>
                 {Math.abs(percentage)}%
               </span> Since last month
-            </div>
+            </div> */}
           </Col>
         </Row>
       </Card.Body>

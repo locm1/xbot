@@ -46,12 +46,12 @@ class LineWebhookController extends Controller
 
                 $greeting_service = new GreetingService($bot, $event['source']['userId'], $event['replyToken']);
                 // $invite_service = new InviteService($bot, $User);
-                return $greeting_service->sendGreetingMessage();
+                $greeting_service->sendGreetingMessage();
                 // return $invite_service->sendInviteMessage($invitee_incentive_user->is_issued, 'invitee', 1);
                 
             } elseif ($event['type'] === 'unfollow') {
                 $unfollow_service = new UnfollowService($bot, $event['source']['userId']);
-                return $unfollow_service->updateUser($event['timestamp']);
+                $unfollow_service->updateUser($event['timestamp']);
             }
             $response = $bot->replyText($event['replyToken'], $event['message']['text']);
         }

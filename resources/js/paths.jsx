@@ -87,6 +87,7 @@ export const Paths = {
     LiffFriendAdd: { path: "/friends/add/:userId/:inviteIncentiveId" },
     LiffInflowRoute: { path: "/inflow-route/:key" },
     LiffInit: { path: "/liff" },
+    LiffServerError: { path: "/internal-server-error" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

@@ -85,6 +85,7 @@ import OrderComplete from '@/pages/liff/order/OrderComplete';
 import LiffProductReservationComplete from '@/pages/liff/product_reservation/ProductReservationComplete';
 import LiffFriendAdd from '@/pages/liff/friend/LiffFriendAdd';
 import LiffInflowRoute from '@/pages/liff/inflow_route/InflowRoute';
+import LiffServerError from '@/pages/error/InternalServerError';
 
 // components
 import Footer from '@/components/Footer';
@@ -415,6 +416,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
       <NoFooterRoute exact path={Paths.LiffFriendAdd.path} component={LiffFriendAdd} />
       <NoFooterRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
+      <NoFooterRoute exact path={Paths.LiffServerError.path} component={LiffServerError} />
 
       <Route component={NotFound} />
     </Switch>

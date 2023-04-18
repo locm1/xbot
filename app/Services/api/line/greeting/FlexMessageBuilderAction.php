@@ -17,7 +17,7 @@ class FlexMessageBuilderAction
         $button_component_builder = $this->createButton($action_builder);
         $box_component_builder = $this->createBox($button_component_builder);
         $bubble_container_builder = $this->createContents($box_component_builder);
-        $flex_message_builder = new FlexMessageBuilder('アンケート', $bubble_container_builder);
+        $flex_message_builder = new FlexMessageBuilder('アンケートに回答してください', $bubble_container_builder);
         return $flex_message_builder;
     }
 

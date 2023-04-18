@@ -33,15 +33,15 @@ class LineWebhookController extends Controller
         foreach ($events as $event) {
             if ($event['type'] === 'follow') {
                 $follow_service = new FollowService($bot, $event['source']['userId']);
-                $invite_incentive_job_service = new InviteIncentiveJobService;
-                $invitee_incentive_service = new InviteeIncentiveService;
+                // $invite_incentive_job_service = new InviteIncentiveJobService;
+                // $invitee_incentive_service = new InviteeIncentiveService;
                 //ユーザー作成
                 $User = $follow_service->createUser();
                 //流入経路
                 $update_count = $follow_service->checkInflowRoute($User);
                 //招待管理
-                $InviteIncentiveJob = $invite_incentive_job_service->searchByLineId($User->line_id);
-                if ($InviteIncentiveJob) $InviteIncentiveJob->update(['invitee_user_id' => $User->id]);
+                // $InviteIncentiveJob = $invite_incentive_job_service->searchByLineId($User->line_id);
+                // if ($InviteIncentiveJob) $InviteIncentiveJob->update(['invitee_user_id' => $User->id]);
                 //招待クーポン発行
 
                 $greeting_service = new GreetingService($bot, $event['source']['userId'], $event['replyToken']);

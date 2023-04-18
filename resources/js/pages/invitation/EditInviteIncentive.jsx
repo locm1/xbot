@@ -160,8 +160,8 @@ export default () => {
     {/* <Card border="0" className="table-wrapper table-responsive shadow">
       <Card.Body>
         <h5 className="mb-4 border-bottom pb-3">発行者一覧</h5>
-        <Table hover>
-          <thead>
+       <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
             <tr>
               <th className="border-bottom">取得日時</th>
               <th className="border-bottom">利用者</th>

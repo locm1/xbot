@@ -51,11 +51,11 @@ export const TemplateMessageTable = (props) => {
     return (
       <tr className="border-bottom">
         <td>
-          <span className="fw-bold text-decoration-underline">
-            <Link to={link}>
+          <Link to={link}>
+            <span className="fw-bold text-decoration-underline">
               {title}
-            </Link>
-          </span>
+            </span>
+          </Link>
         </td>
         <td>
           <span className="fw-normal">
@@ -81,30 +81,28 @@ export const TemplateMessageTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover>
-          <thead>
-            <tr>
-              <th className="border-gray-200">タイトル</th>
-              <th className="border-gray-200">追加日時</th>
-              <th className="border-gray-200">公開ステータス</th>
-              <th className="border-gray-200">編集・削除</th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {messages && messages.map((t) => <TableRow key={`template-message-${t.id}`} {...t} />)}
-          </tbody>
-        </Table>
-        <Pagination 
-          links={links}
-          paginate={paginate}
-          getListBypage={getMessages} 
-          setList={setMessages}
-          setLinks={setLinks}
-          setPaginate={setPaginate}
-          searchValue={searchValue}
-        />
-      </Card.Body>
+      <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
+          <tr>
+            <th className="border-gray-200">タイトル</th>
+            <th className="border-gray-200">追加日時</th>
+            <th className="border-gray-200">公開ステータス</th>
+            <th className="border-gray-200">編集・削除</th>
+          </tr>
+        </thead>
+        <tbody className="border-0">
+          {messages && messages.map((t) => <TableRow key={`template-message-${t.id}`} {...t} />)}
+        </tbody>
+      </Table>
+      <Pagination 
+        links={links}
+        paginate={paginate}
+        getListBypage={getMessages} 
+        setList={setMessages}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        searchValue={searchValue}
+      />
     </Card>
   );
 };

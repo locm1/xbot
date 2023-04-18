@@ -56,20 +56,18 @@ export const RichMenusTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover className="user-table align-items-center">
-          <thead>
-            <tr>
-              <th className="border-bottom">タイトル</th>
-              <th className="border-bottom">リッチメニューID</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {menus.map((v, k) => <TableRow key={`menu-${k}`} {...v} />)}
-          </tbody>
-        </Table>
-      </Card.Body>
+      <Table hover className="user-table align-items-center">
+        <thead className="bg-primary text-white">
+          <tr>
+            <th className="border-bottom">タイトル</th>
+            <th className="border-bottom">リッチメニューID</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody className="border-0">
+          {menus.map((v, k) => <TableRow key={`menu-${k}`} {...v} />)}
+        </tbody>
+      </Table>
     </Card>
   );
 };

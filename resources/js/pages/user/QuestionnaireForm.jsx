@@ -63,8 +63,10 @@ export const QuestionnaireForm = (props) => {
 
   return (
     <Card border="0" className="shadow mb-4">
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">アンケート</h5>
+      </Card.Header>  
       <Card.Body>
-        <h5 className="mb-4 border-bottom pb-3">アンケート</h5>
         <Form>
           <Row>
             {questionnaireAnswers.map((v, k) => (

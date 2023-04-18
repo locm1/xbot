@@ -4,6 +4,7 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar,
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Pagination from "@/components/Pagination";
+import moment from "moment-timezone";
 
 export const UsersTable = (props) => {
   const { users, setUsers, links, getUsers, setLinks, paginate, setPaginate, searchValue } = props;
@@ -23,19 +24,19 @@ export const UsersTable = (props) => {
       <tr className="border-bottom">
         <td>
           <Link to={link}>
-          <div className="d-flex align-items-center">
-            {img_path ? (<Image src={img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
-            <div className="d-block">
-              {first_name && first_name_kana && last_name && last_name_kana ? 
-                <>
-                  <div className="text-gray small">{last_name_kana} {first_name_kana}</div>
-                  <span className="fw-bold text-decoration-underline">{name}</span> 
-                </>
-              :
-                <span className="fw-bold text-decoration-underline">{nickname}</span> 
-              }
+            <div className="d-flex align-items-center">
+              {img_path ? (<Image src={img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
+              <div className="d-block">
+                {first_name && first_name_kana && last_name && last_name_kana ? 
+                  <>
+                    <div className="text-gray small">{last_name_kana} {first_name_kana}</div>
+                    <span className="fw-bold text-decoration-underline">{name}</span> 
+                  </>
+                :
+                  <span className="fw-bold text-decoration-underline">{nickname}</span> 
+                }
+              </div>
             </div>
-          </div>
           </Link>
         </td>
         <td><span className="fw-normal">{tel}</span></td>
@@ -44,7 +45,7 @@ export const UsersTable = (props) => {
             {sex_array[gender]}
           </span>
         </td>
-        <td><span className="fw-normal">{birth_date}</span></td>
+        <td><span className="fw-normal">{moment(birth_date).format('YYYY-MM-DD')}</span></td>
         <td><span className="fw-normal">{prefecture}</span></td>
         <td className="text-center">
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
@@ -59,24 +60,22 @@ export const UsersTable = (props) => {
   };
 
   return (
-    <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover className="user-table align-items-center">
-          <thead>
-            <tr>
-              <th className="border-bottom">氏名</th>
-              <th className="border-bottom">電話番号</th>
-              <th className="border-bottom">性別</th>
-              <th className="border-bottom">生年月日</th>
-              <th className="border-bottom">都道府県</th>
-              <th className="border-bottom text-center">編集・削除</th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {users.map(u => <TableRow key={`user-${u.id}`} {...u} />)}
-          </tbody>
-        </Table>
-      </Card.Body>
+    <Card border="0" className="table-wrapper table-responsive shadow mb-3">
+      <Table hover className="user-table align-items-center">
+        <thead className="bg-primary text-white">
+          <tr>
+            <th className="border-bottom">氏名</th>
+            <th className="border-bottom">電話番号</th>
+            <th className="border-bottom">性別</th>
+            <th className="border-bottom">生年月日</th>
+            <th className="border-bottom">都道府県</th>
+            <th className="border-bottom text-center">編集・削除</th>
+          </tr>
+        </thead>
+        <tbody className="border-0">
+          {users.map(u => <TableRow key={`user-${u.id}`} {...u} />)}
+        </tbody>
+      </Table>
       <Pagination 
         links={links}
         paginate={paginate}

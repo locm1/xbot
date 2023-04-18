@@ -75,31 +75,29 @@ export const VisitorHistoriesTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover className="user-table align-items-center">
-          <thead>
-            <tr>
-              <th className="border-gray-200">お名前</th>
-              <th className="border-gray-200">性別</th>
-              <th className="border-gray-200">来店日時</th>
-              <th className="border-gray-200">メモ</th>
-              <th className="border-gray-200">編集・削除</th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {visitorHistories.map(t => <TableRow key={`visitorHistories-${t.id}`} {...t} />)}
-          </tbody>
-        </Table>
-        <Pagination 
-          links={links}
-          paginate={paginate}
-          getListBypage={getVisitorHistories} 
-          setList={setVisitorHistories}
-          setLinks={setLinks}
-          setPaginate={setPaginate}
-          searchValue={searchValue}
-        />
-      </Card.Body>
+      <Table hover className="user-table align-items-center">
+        <thead className="bg-primary text-white">
+          <tr>
+            <th className="border-gray-200">お名前</th>
+            <th className="border-gray-200">性別</th>
+            <th className="border-gray-200">来店日時</th>
+            <th className="border-gray-200">メモ</th>
+            <th className="border-gray-200">編集・削除</th>
+          </tr>
+        </thead>
+        <tbody className="border-0">
+          {visitorHistories.map(t => <TableRow key={`visitorHistories-${t.id}`} {...t} />)}
+        </tbody>
+      </Table>
+      <Pagination 
+        links={links}
+        paginate={paginate}
+        getListBypage={getVisitorHistories} 
+        setList={setVisitorHistories}
+        setLinks={setLinks}
+        setPaginate={setPaginate}
+        searchValue={searchValue}
+      />
     </Card>
   );
 };

@@ -45,8 +45,7 @@ export default () => {
     }
 
 	return (
-		<>      
-    <Button onClick={() => console.log(inflows)} />
+		<>
     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-2 list-wrap">
       <div className="">
         <h1 className="page-title">流入経路管理</h1>

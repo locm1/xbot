@@ -103,9 +103,8 @@ export const ReservesTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover>
-          <thead>
+       <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">ユーザー名</th>
               <th className="border-gray-200">商品名</th>
@@ -140,7 +139,6 @@ export const ReservesTable = (props) => {
             Showing <b>{totalReserves}</b> out of <b>25</b> entries
           </small>
         </Card.Footer>
-      </Card.Body>
     </Card>
   );
 };

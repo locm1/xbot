@@ -80,9 +80,8 @@ export const ProductsTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover>
-          <thead>
+       <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">商品ID</th>
               <th className="border-gray-200">商品名</th>
@@ -97,7 +96,6 @@ export const ProductsTable = (props) => {
             {products.map(t => <TableRow key={`products-${t.id}`} {...t} />)}
           </tbody>
         </Table>
-      </Card.Body>
       <Pagination 
         links={links}
         paginate={paginate}

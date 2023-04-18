@@ -82,9 +82,8 @@ export default () => {
       </div>
 
       <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover>
-          <thead>
+       <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">利用者</th>
               <th className="border-gray-200">取得日時</th>
@@ -117,7 +116,6 @@ export default () => {
             Showing <b>{totalInviteeIncentiveUsers}</b> out of <b>25</b> entries
           </small>
         </Card.Footer>
-      </Card.Body>
     </Card>
     </>
   );

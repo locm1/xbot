@@ -101,9 +101,8 @@ export const InviteIncentivesTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-      <Card.Body>
-        <Table hover>
-          <thead>
+       <Table hover className="align-items-center">
+        <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">管理名称</th>
               <th className="border-gray-200">スピーカータイミング</th>
@@ -124,7 +123,6 @@ export const InviteIncentivesTable = (props) => {
           setPaginate={setPaginate}
           searchValue={searchParams}
         />
-      </Card.Body>
     </Card>
   );
 };

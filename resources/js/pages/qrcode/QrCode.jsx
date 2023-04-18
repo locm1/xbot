@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Col, Row, Card, Form, Image, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
 import { ChoosePhotoWidget } from "@/components/Widgets";
-import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
+import { PaperClipIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 
 import QrCode from "@img/img/add_friend_qr.png";
 
@@ -38,10 +38,30 @@ export default () => {
       </div>
       <Row>
         <Col xs={12} sm={6} xl={12}>
-          <ChoosePhotoWidget
-            title="お友達追加用QRコード"
-            photo={QrCode}
-          />
+          <Card border="0" className="shadow mb-4">
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">お友達追加用QRコード</h5>
+            </Card.Header> 
+            <Card.Body>
+              <div className="d-flex align-items-center">
+                <div className="me-3">
+                  <Image fluid rounded src={QrCode} />
+                </div>
+                <div className="file-field">
+                  <div className="d-flex justify-content-xl-center ms-xl-3">
+                    <div className="d-flex">
+                      <PaperClipIcon className="icon text-gray-500 me-2" />
+                      <input type="file" />
+                      <div className="d-md-block text-left">
+                        <div className="fw-normal text-dark mb-1">Choose Image</div>
+                        <div className="text-gray small">JPG, GIF or PNG. Max size of 800K</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
     </>

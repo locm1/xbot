@@ -47,8 +47,12 @@ export default () => {
               <Form.Group className="mb-3">
                 <Form.Control as="textarea" rows="30" name="privacy_policy" value={content} onChange={(e) => changeContent(e)} />
               </Form.Group>
-              <div className="mt-3">
-                <Button variant="gray-800" className="mt-2 animate-up-2" onClick={handleClick}>
+              <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+                <Button
+                  variant="success"
+                  className="d-inline-flex align-items-center"
+                  onClick={handleClick}
+                >
                   保存する
                 </Button>
               </div>

@@ -276,9 +276,11 @@ export default () => {
           <Tab.Pane eventKey="products" className="py-4">
             <Col xs={12} xl={12}>
               <Card border="0" className="shadow mb-4">
+                <Card.Header className="bg-primary text-white px-3 py-2">
+                  <h5 className="mb-0 fw-bolder">商品情報</h5>
+                </Card.Header> 
                 <Card.Body>
-                  <div className="d-flex justify-content-between">
-                  <h5 className="mb-4 border-bottom pb-3">商品情報</h5>
+                  <div className="d-flex flex-row-reverse">
                   <Form.Group id="category">
                     <Form.Check
                     type="switch"
@@ -489,7 +491,7 @@ export default () => {
                         </Col>
                       </Row>
                       <Row>
-                        <Form.Label>商品画像</Form.Label>
+                        <Form.Label><span className="questionnaire-required me-2">必須</span>商品画像</Form.Label>
                         {productImages && productImages.map((image, k) => (
                           <DropzoneFile key={k} {...image} index={k} updateProductImages={updateProductImages} setUpdateProductImages={setUpdateProductImages} />
                         ))}
@@ -505,7 +507,7 @@ export default () => {
                     </Col>
                     <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
                       <Button
-                        variant="primary"
+                        variant="success"
                         className="d-inline-flex align-items-center"
                         onClick={() => onSaveProduct()}
                       >
@@ -521,8 +523,10 @@ export default () => {
           <Tab.Pane eventKey="related_products" className="py-4 pb-12">
             <Col xs={12} xl={12}>
               <Card border="0" className="shadow mb-4">
+                <Card.Header className="bg-primary text-white px-3 py-2">
+                  <h5 className="mb-0 fw-bolder">セット割商品</h5>
+                </Card.Header> 
                 <Card.Body>
-                  <h5 className="mb-4 border-bottom pb-3">セット割商品</h5>
                   <Row>
                     {relatedProducts.map((v,k) => (
                       <React.Fragment key={`relatedProducts-${k}`}>
@@ -545,9 +549,9 @@ export default () => {
                       </React.Fragment>
                     ))}
                   </Row>
-                  <div className="d-flex justify-content-end">
+                  <div className="d-flex justify-content-end py-3">
                     <Button
-                      variant="primary"
+                      variant="success"
                       className="d-inline-flex align-items-center"
                       onClick={() => onSaveRelatedProduct()}
                     >

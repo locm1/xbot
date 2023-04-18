@@ -9,9 +9,11 @@ export default (props) => {
   const { message, handleChange , isUndisclosed, setIsUndisclosed} = props;
   return (
     <Card border="0" className="shadow mb-4">
+      <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">タイトル</h5>
+        </Card.Header> 
       <Card.Body>
-        <div className="d-flex mb-4 border-bottom pb-3 justify-content-between">
-          <h5 className="">タイトル</h5>
+        <div className="d-flex justify-content-between flex-row-reverse">
           <Form.Group id="isUndisclosed">
             <Form.Check
             type="switch"

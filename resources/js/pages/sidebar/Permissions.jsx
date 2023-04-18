@@ -32,6 +32,27 @@ export default () => {
     )
   } 
 
+  const TableRow = (props) => {
+    const { id, name, role,  } = props;
+
+    return (
+      <tr className="border-bottom product-table-tr">
+        <td>
+          <span className="fw-normal">{name}</span>
+        </td>
+        <td>
+          <span className="fw-normal">
+            <Form.Select defaultValue={role} className="mb-0" onChange={(e) => handleChange(e, id)}>
+              {
+                roles.map((role, index) => <option key={index} value={role.role}>{role.name}以上</option>)
+              }
+            </Form.Select>
+          </span>
+        </td>
+      </tr>
+    );
+  };
+
   const SettingsItem = (props) => {
     const { id, name, role, last } = props;
     const borderBottomClass = !last ? "border-bottom" : "";
@@ -63,24 +84,24 @@ export default () => {
           <h1 className="page-title">権限設定</h1>
         </div>
       </div>
-			<Card border="0" className="shadow mb-4 mb-xl-0">
-      <Card.Body>
-        <ListGroup className="list-group-flush">
-          <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 mb-">
-            <div><h5>ページ名</h5></div>
-            <div className="w-50"><h5>閲覧権限</h5></div>
-          </ListGroup.Item>
-          {
-            pages && pages.map((page, index) => <SettingsItem key={`page-setting-${page.id}`} {...page} last={(pages.length - 1 == index) ? true : false} />)
-          }
-        </ListGroup>
-      </Card.Body>
+			<Card border="0" className="table-wrapper table-responsive shadow">
+        <Table className="align-items-center">
+          <thead className="bg-primary text-white">
+            <tr>
+              <th className="border-gray-200">ページ名</th>
+              <th className="border-gray-200">閲覧権限</th>
+            </tr>
+          </thead>
+          <tbody className="border-0">
+            { pages && pages.map((page, index) => <TableRow key={`page-setting-${page.id}`} {...page} />)}
+          </tbody>
+        </Table>
+        <div className="d-flex flex-row-reverse py-3">
+          <Button onClick={handleClick} variant="success" className="me-2">
+            保存する
+          </Button>
+        </div>
       </Card>
-			<div className="d-flex flex-row-reverse py-3">
-        <Button onClick={handleClick} variant="gray-800" className="me-2">
-          保存する
-        </Button>
-      </div>
 		</>
 	)
 }

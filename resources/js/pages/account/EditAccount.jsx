@@ -96,8 +96,10 @@ export default () => {
         </div>
       </div>
       <Card border="0" className="shadow mb-4">
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">アカウント情報</h5>
+        </Card.Header> 
         <Card.Body>
-          <h5 className="mb-4 border-bottom pb-3">アカウント情報</h5>
           <Row className="mb-3">
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
@@ -144,7 +146,7 @@ export default () => {
                 </Col>
                 </Row>
                 <div onClick={updateAdmin} className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-4">
-                  <Button variant="gray-800" className="animate-up-2">
+                  <Button variant="success" className="animate-up-2">
                     更新する
                   </Button>
                 </div>

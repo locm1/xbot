@@ -55,9 +55,11 @@ export default () => {
       <Row>
         <Col xs={12} xl={12}>
           <Card border="0" className="shadow mb-4">
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">カテゴリー情報</h5>
+            </Card.Header> 
             <Card.Body>
-              <div className="d-flex justify-content-between">
-              <h5 className="mb-4 border-bottom pb-3">カテゴリー情報</h5>
+              <div className="d-flex flex-row-reverse justify-content-between">
               <Form.Group id="category">
                 <Form.Check
                 checked={privateProduct}
@@ -121,7 +123,7 @@ export default () => {
               </Row>
               <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
                 <Button
-                  variant="primary"
+                  variant="success"
                   className="d-inline-flex align-items-center"
                   onClick={handleClick}
                 >

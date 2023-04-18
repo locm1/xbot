@@ -13,7 +13,7 @@ use App\Services\common\CreateLineBotUtility;
 use App\Services\management\invitation\InviteeIncentiveUserService;
 use App\Services\management\invitation\InviterIncentiveUserService;
 
-class InviterService 
+class InviterIncentiveService 
 {
     private $user;
     private $invite_service;

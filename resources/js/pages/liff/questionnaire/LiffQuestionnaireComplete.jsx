@@ -15,7 +15,7 @@ export default () => {
           <CheckCircleIcon className="icon liff-check-icon" />
           <h3 className="mt-4 liff-check-complete-title">送信完了！</h3>
         </div>
-        <div className="liff-product-list pe-5 ps-5">
+        <div className="liff-product-list text-center">
           <p>簡易アンケートへのご回答<br />ありがとうございました。</p>
         </div>
       </main>

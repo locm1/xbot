@@ -8,6 +8,7 @@ use App\Services\api\line\invite\InviteService;
 use App\Services\api\line\UnfollowService;
 use Illuminate\Http\Request;
 use App\Services\api\LineBotService as LINEBot;
+use App\Services\liff\invite\InviteIncentiveJobService;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use Illuminate\Support\Facades\Log;
 
@@ -31,9 +32,12 @@ class LineWebhookController extends Controller
         foreach ($events as $event) {
             if ($event['type'] === 'follow') {
                 $follow_service = new FollowService($bot, $event['source']['userId']);
+                $invite_incentive_job_service = new InviteIncentiveJobService;
                 $User = $follow_service->createUser();
                 $update_count = $follow_service->checkInflowRoute($User);
-                list($inviter_incentive_user, $invitee_incentive_user) = $follow_service->checkInviteeUser($User);
+                $InviteIncentiveJob = $invite_incentive_job_service->searchByLineId($User->line_id);
+                if ($InviteIncentiveJob) $InviteIncentiveJob->update(['invitee_user_id' => $User->id]);
+
 
                 $greeting_service = new GreetingService($bot, $event['source']['userId'], $event['replyToken']);
                 $invite_service = new InviteService($bot, $User);

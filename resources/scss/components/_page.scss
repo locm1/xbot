@@ -377,3 +377,50 @@ $base_color: #707070;
   font-size: 24px;
   font-weight: bold;
 }
+
+.message {
+  padding: 10px;
+  position: fixed;
+  background: #4e4e4e;
+  color: white;
+  bottom: 34px;
+  z-index: 100;
+}
+
+.message-enter {
+  padding: 10px;
+  position: fixed;
+  background: #4e4e4e;
+  color: white;
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.message-enter-active {
+  padding: 10px;
+  position: fixed;
+  background: #4e4e4e;
+  color: white;
+  opacity: 1;
+  transform: translateY(0%);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.message-exit {
+  padding: 10px;
+  position: fixed;
+  background: #4e4e4e;
+  color: white;
+  opacity: 1;
+  transform: translateY(0%);
+}
+
+.message-exit-active {
+  padding: 10px;
+  position: fixed;
+  background: #4e4e4e;
+  color: white;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}

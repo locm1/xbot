@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Image, Form, Button, Card } from 'react-bootstrap';
-import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
+import { Image, Form, Button, Card, Col, Row } from 'react-bootstrap';
+import { ClipboardCopyIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Swal from 'sweetalert2';
@@ -9,6 +9,7 @@ import liff from '@line/liff';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import LineFigure from "@img/img/line-figure.png";
 import { getInviteMessage, getInviteeIncentives, getInviterIncentives, updateInviteeIncentives, updateInviterIncentives } from "@/pages/liff/api/InviteApiMethods";
+import { CSSTransition } from "react-transition-group";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -30,12 +31,11 @@ export default () => {
     { id: 1, invite_incentive: {id: 1, invitee_content: '', invitee_title: ''}}
   ]);
   const [link, setLink] = useState();
+  const [showMessage, setShowMessage] = useState();
 
   useEffect(() => {
     const idToken = liff.getIDToken();
-    // getInviteMessage(2, setMessages, setLink)
-    // getInviteeIncentives(2, setInviteeIncentives)
-    // getInviterIncentives(2, setInviterIncentives)
+    console.log(idToken);
     getUser(idToken, setUser).then(response => {
       getInviteMessage(response.id, setMessages, setLink)
       getInviteeIncentives(response.id, setInviteeIncentives)
@@ -76,6 +76,15 @@ export default () => {
       //updateInviteeIncentives(2, id, formValue, inviteeIncentives, setInviteeIncentives)
     }
   }
+
+  //クリップボードにコピー関数
+  const copyToClipboard = async () => {
+    await global.navigator.clipboard.writeText(link);
+    setShowMessage(true);
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 3000);
+  };
 
   const CouponCard = (props) => {
     const {id, invite_incentive, invite } = props;
@@ -121,12 +130,24 @@ export default () => {
               </div>
                 <div className="coupon-label">ご紹介ルール</div>
                 <div className="coupon-text">
-                  クーポンを受け取るには、友だちが新規友だち追加後に<br />①アンケートに回答すると、クーポンが発行されます。<br />②ご来店すると、スペシャルクーポンが当たります。
+                  クーポンを受け取るには、友だちが新規友だち追加後に
+                  <br />①アンケートに回答すると、クーポンが発行されます。
+                  <br />②ご来店すると、スペシャルクーポンが当たります。
+                  <br />③クーポンを使用する際は、店員にお声がけください。
                 </div>
                 <div className="coupon-label">あなたの招待コード</div>
-                <div className="coupon-input form-group">
-                  <Form.Control type="text" value={link} />
+                <div className="coupon-input form-group d-flex">
+                  <Form.Control type="text" defaultValue={link} className='flex-grow-1' />
+                  <ClipboardCopyIcon onClick={copyToClipboard} height={30} width={30} className='my-2 ms-2' />
                 </div>
+                <CSSTransition
+                  in={showMessage}
+                  timeout={500}
+                  classNames="message"
+                  unmountOnExit
+                >
+                  <div className="message">コピーが完了しました</div>
+                </CSSTransition>
                 <Button onClick={sendMessage} variant="gray-800" className="common-button common-button--line mt-0 mb-0">
                   LINEでコードを送る
                 </Button>
@@ -135,13 +156,17 @@ export default () => {
               <div className="coupon-title">
                 獲得済の紹介者クーポンはこちら！
               </div>
-              {inviterIncentives && inviterIncentives.map(inviterIncentive => <CouponCard key={`inviter-incentive-${inviterIncentive.id}`} {...inviterIncentive} invite="inviter" />)}
+              {inviterIncentives ? inviterIncentives.map(inviterIncentive => <CouponCard key={`inviter-incentive-${inviterIncentive.id}`} {...inviterIncentive} invite="inviter" />)
+                : <div className="coupon-title fs-6">現在獲得済のクーポンはありません</div>
+              }
             </div>
             <div className="c-box mb-0">
               <div className="coupon-title">
                 獲得済の招待者クーポンはこちら！
               </div>
-              {inviteeIncentives && inviteeIncentives.map(inviteeIncentive => <CouponCard key={`invitee-incentive-${inviteeIncentive.id}`} {...inviteeIncentive} invite="invitee" />)}
+              {inviteeIncentives ? inviteeIncentives.map(inviteeIncentive => <CouponCard key={`invitee-incentive-${inviteeIncentive.id}`} {...inviteeIncentive} invite="invitee" />)
+                : <div className="coupon-title fs-6">現在獲得済のクーポンはありません</div>
+              }
             </div>
           </div>
         </div>

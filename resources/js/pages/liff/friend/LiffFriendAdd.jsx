@@ -4,7 +4,7 @@ import { Link, useHistory, Redirect, useLocation, useParams } from 'react-router
 import liff from '@line/liff';
 
 export default () => {
-  const { userId, versionKey, date } = useParams();
+  const { userId, inviteIncentiveId } = useParams();
 
   const searchInviteeUsers = async (searchParams) => {
     return await axios.get(`/api/v1/invitee-users`, searchParams)
@@ -19,7 +19,7 @@ export default () => {
   };
 
   const storeInviteeUser = async (formValue) => {
-    return await axios.post(`/api/v1/invitee-users`, formValue)
+    return await axios.post(`/api/v1/invite-incentive-job`, formValue)
     .then((response) => {
       console.log(response.data.invitee_user);
     })
@@ -32,7 +32,7 @@ export default () => {
     const idToken = liff.getIDToken();
     const formValue = {
       token: idToken, inviter_user_id: userId,
-      version_key: versionKey, invited_at: date
+      invite_incentive_id: inviteIncentiveId
     }
     const searchParams = {
       params: {token: idToken}

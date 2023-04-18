@@ -6,6 +6,7 @@ use App\Models\InviteeIncentiveUser;
 use App\Models\InviteeUser;
 use App\Models\InviteHistory;
 use App\Models\InviteIncentive;
+use App\Models\InviteIncentiveJob;
 use App\Models\InviterIncentiveUser;
 use App\Models\User;
 use App\Services\management\invitation\InviteeIncentiveUserService;
@@ -59,47 +60,40 @@ class FollowService
         return $update_count;
     }
 
-    public function checkInviteeUser(User $User)
+    public function create(InviteIncentiveJob $InviteIncentiveJob)
     {
-        $five_minute_before = date("Y-m-d H:i:s",strtotime("-5 minute"));
-        $now = date('Y-m-d H:i:s');
-        $term = [$five_minute_before, $now];
-        $invitee_user = InviteeUser::where('line_id', $this->line_id)->whereBetween('created_at', $term)->first();
+        return DB::transaction(function () use ($InviteIncentiveJob, $User) {
+            $invite_incentive = InviteIncentive::where('version_key', $InviteIncentiveJob->version_key)->latest('id')->first();
 
-        # 対象のLINE IDがInviteeUserテーブルに存在する場合 かつ、Usersに登録されていない時
-        if ($invitee_user) {
-            return DB::transaction(function () use ($invitee_user, $User) {
-                $invite_incentive = InviteIncentive::where('version_key', $invitee_user->version_key)->latest('id')->first();
+            $invite_history_service = new InviteHistoryService();
+            $inviter_incentive_user_service = new InviterIncentiveUserService();
+            $invitee_incentive_user_service = new InviteeIncentiveUserService();
 
-                $invite_history_service = new InviteHistoryService();
-                $inviter_incentive_user_service = new InviterIncentiveUserService();
-                $invitee_incentive_user_service = new InviteeIncentiveUserService();
+            # 紹介者テーブルのインサート
+            $inviter_incentive_data = [
+                'invite_incentive_id' => $invite_incentive->id, 
+                'user_id' => $InviteIncentiveJob->inviter_user_id,
+                'is_issued' => $invite_incentive->inviter_timing == 1 ? 1 : 0, 
+                'usage_status' => 1, 
+                'issued_at' => $InviteIncentiveJob->invited_at
+            ];
+            $inviter_incentive_user = $inviter_incentive_user_service->store($inviter_incentive_data);
 
-                # 紹介者テーブルのインサート
-                $inviter_incentive_data = [
-                    'invite_incentive_id' => $invite_incentive->id, 
-                    'user_id' => $invitee_user->inviter_user_id,
-                    'is_issued' => $invite_incentive->inviter_timing == 1 ? 1 : 0, 
-                    'usage_status' => 1, 
-                    'issued_at' => $invitee_user->invited_at
-                ];
-                $inviter_incentive_user = $inviter_incentive_user_service->store($inviter_incentive_data);
+            # 招待者テーブルのインサート
+            $invitee_incentive_data = [
+                'invite_incentive_id' => $invite_incentive->id, 
+                'user_id' => $User->id,
+                'inviter_incentive_user_id' => $inviter_incentive_user->id,
+                'is_issued' => $invite_incentive->invitee_timing == 1 ? 1 : 0, 
+                'usage_status' => 1, 
+                'issued_at' => $InviteIncentiveJob->invited_at
+            ];
+            $invitee_incentive_user = $invitee_incentive_user_service->store($invitee_incentive_data);
 
-                # 招待者テーブルのインサート
-                $invitee_incentive_data = [
-                    'invite_incentive_id' => $invite_incentive->id, 
-                    'user_id' => $User->id,
-                    'inviter_incentive_user_id' => $inviter_incentive_user->id,
-                    'is_issued' => $invite_incentive->invitee_timing == 1 ? 1 : 0, 
-                    'usage_status' => 1, 
-                    'issued_at' => $invitee_user->invited_at
-                ];
-                $invitee_incentive_user = $invitee_incentive_user_service->store($invitee_incentive_data);
-
-                # 招待履歴のインサート
-                $invite_history_service->store($User, $invitee_user->inviter_user_id);
-                return array($inviter_incentive_user, $invitee_incentive_user);
-            });
-        }
+            # 招待履歴のインサート
+            $invite_history_service->store($User, $InviteIncentiveJob->inviter_user_id);
+            return array($inviter_incentive_user, $invitee_incentive_user);
+        });
+        
     }
 }

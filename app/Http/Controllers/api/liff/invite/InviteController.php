@@ -16,11 +16,14 @@ class InviteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(User $user)
+    public function __invoke(User $User)
     {
-        $bot = new CreateLineBotUtility;
-        $invite_service = new InviteService($bot(), $user);
-        $messages = $invite_service->createTextMessage();
-        return response()->json(['messages' => $messages], 200);
+        $service = new InviteService();
+        $uri = $service->getUri($User);
+        $message = $service->getMessage($User->line_id, $uri);
+        return response()->json([
+            'message' => $message,
+            'link' => $uri
+        ], 200);
     }
 }

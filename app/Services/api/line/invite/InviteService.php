@@ -3,63 +3,47 @@ namespace App\Services\api\line\invite;
 
 use App\Models\DefaultInviteIncentive;
 use App\Models\User;
+use App\Services\common\CreateLineBotUtility;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class InviteService 
 {
-    private $user;
     private $bot;
-    private $passphrase;
 
-    public function __construct(LINEBot $bot, User $user) {
-        $this->bot = $bot;
-        $this->user = $user;
-        $this->passphrase = config('api_key.COMMON_PASSWORD');
+    public function __construct() {
+        $this->bot = (new CreateLineBotUtility)();
     }
 
-    public function createTextMessage()
+
+    public function getUri(User $User): string
     {
-        $display_name = $this->bot->getProfile($this->user->line_id)->getJSONDecodedBody()['displayName'];
-        $text = "$display_name さんから招待コードが届きました！友達登録し、アンケートを回答するとスペシャルクーポンが発行されます！\n\n";
-        
-        $default_invite_incentive = DefaultInviteIncentive::find(1)->inviteIncentive;
-        $encrypt_date = $this->encryptData(date("Y-m-d H:i:s"));
-        $encrypt_version_key = $this->encryptData($default_invite_incentive->version_key);
-        $encrypt_user_id = $this->encryptData($this->user->id);
-        $url = "https://liff.line.me/1660723896-RmovvEYY?path=friends/add/$encrypt_user_id/$encrypt_version_key/$encrypt_date";
-        
-        return [
-            'message' => [
-                'type' => 'text',
-                'text' => $text .$url
-            ],
-            'url' => $url
-        ];
+        $invite_incentive_id = DefaultInviteIncentive::find(1)->invite_incentive_id;
+        $encrypt_invite_incentive_id = $this->encryptData($invite_incentive_id);
+        $encrypt_user_id = $this->encryptData($User->id);
+        return "https://liff.line.me/1660723896-RmovvEYY?path=friends/add/$encrypt_user_id/$encrypt_invite_incentive_id";
     }
 
-    public function sendInviteMessage($is_issued, $invite, $timing)
+    public function getMessage(string $line_id, string $uri): string
     {
-        $timings = [1 => '友達登録', 2 => '利用者登録', 3 => '初来店', 4 => '初購入'];
-        $invite_incentive = DefaultInviteIncentive::find(1)->inviteIncentive;
+        $display_name = $this->bot->getProfile($line_id)->getJSONDecodedBody()['displayName'];
+        $message = "$display_name さんから招待コードが届きました！友達登録し、アンケートを回答するとスペシャルクーポンが発行されます！\n\n$uri";
+        
+        return $message;
+    }
 
-        $incentive_timing = $invite == 'inviter' ? $timings[$invite_incentive->inviter_timing] : $timings[$invite_incentive->invitee_timing];
-        $text_message =  $incentive_timing ."ありがとうございます。\n招待専用クーポンが発行されました。\nメニューの「紹介」からクーポンをご確認いただけます。";
-
-        $target_timing = $invite == 'inviter' ? $invite_incentive->inviter_timing : $invite_incentive->invitee_timing;
-
-        if ($is_issued == 1 && $target_timing == $timing) {
-            $message_builder = new TextMessageBuilder($text_message);
-            return $this->bot->pushMessage($this->user->line_id, $message_builder)->getJSONDecodedBody();
-        }
+    public function sendInviteMessage(string $line_id)
+    {
+        $text_message =  "招待専用クーポンが発行されました。\nメニューの「紹介」からクーポンをご確認いただけます。";
+        $message_builder = new TextMessageBuilder($text_message);
+        return $this->bot->pushMessage($line_id, $message_builder)->getJSONDecodedBody();
     }
 
     private function encryptData($data)
     {
-        $iv = openssl_random_pseudo_bytes(16);
-        $iv = str_pad($iv, 16, "\0");
-        $encrypted = openssl_encrypt($data, 'aes-128-cbc', $this->passphrase, OPENSSL_RAW_DATA, $iv);
-        return rtrim(strtr(base64_encode($encrypted . '::' . $iv), '+/', '-_'), '=');
+        $encrypted = openssl_encrypt($data, 'AES-128-ECB', config('passphrase'));
+        $replaced = str_replace(array('=', '/', '+'), array('_', '-', '.'), $encrypted);
+        return $replaced;
     }
 }

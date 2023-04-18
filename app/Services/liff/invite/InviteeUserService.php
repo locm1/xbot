@@ -2,44 +2,41 @@
 namespace App\Services\liff\invite;
 
 use App\Models\InviteeUser;
+use App\Models\InviteIncentiveJob;
 use App\Services\api\line\verify\VerifyService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class InviteeUserService 
 {
-    private $passphrase;
     private $verify_service;
 
     public function __construct(VerifyService $verify_service) {
-        $this->passphrase = config('api_key.COMMON_PASSWORD');
         $this->verify_service = $verify_service;
     }
 
     public function index($request): Collection
     {
         $line_id = $this->verify_service->verifyIdToken($request->token)['sub'];
-        return InviteeUser::where('line_id', $line_id)->get();
+        return InviteIncentiveJob::where('line_id', $line_id)->get();
     }
 
     public function store($request)
     {
+        $invite_incentive_id = $this->decryptData($request->invite_incentive_id);
         $line_id = $this->verify_service->verifyIdToken($request->token)['sub'];
         $inviter_user_id = $this->decryptData($request->inviter_user_id);
-        $version_key = $this->decryptData($request->version_key);
-        $invited_at = $this->decryptData($request->invited_at);
         $data = [
-            'line_id' => $line_id, 'inviter_user_id' => $inviter_user_id,
-            'version_key' => $version_key, 'invited_at' => $invited_at
+            'invitee_line_id' => $line_id, 'inviter_user_id' => $inviter_user_id,
+            'invite_incentive_id' => $invite_incentive_id
         ];
-        return InviteeUser::create($data);
+        return InviteIncentiveJob::create($data);
     }
 
-    private function decryptData(string $encrypted_data): string
+    private function decryptData(string $encrypted): string
     {
-        $data = base64_decode(str_pad(strtr($encrypted_data, '-_', '+/'), strlen($encrypted_data) % 4, '=', STR_PAD_RIGHT));
-        list($encrypted, $iv) = explode('::', $data, 2);
-        $iv = str_pad($iv, 16, "\0");
-        return openssl_decrypt($encrypted, 'aes-128-cbc', $this->passphrase, OPENSSL_RAW_DATA, $iv);
+        $decrypted = openssl_decrypt($encrypted, 'AES-128-ECB', config('passphrase'));
+        $replaced = str_replace(array('_','-', '.'), array('=', '/', '+'), $decrypted);
+        return $replaced;
     }
 }

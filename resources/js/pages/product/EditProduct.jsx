@@ -75,6 +75,7 @@ export default () => {
       image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile))[0]
     }
     setStoreProductImages([...storeProductImages, ...acceptedFiles])
+    console.log([...storeProductImages, ...acceptedFiles]);
 
     setProductImages([...productImages, newImage]);
   };
@@ -194,7 +195,7 @@ export default () => {
     console.log(product);
     
     if (pathname.includes('/edit')) {
-      updateProduct(id, product, setError);
+      updateProduct(id, product, setError, storeProductImages, storeImages);
       // 画像削除stateに値があればAPI発火
       if (deleteProductImages.length > 0) {
         const params = {

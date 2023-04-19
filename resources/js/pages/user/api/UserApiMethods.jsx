@@ -45,7 +45,7 @@ export const showUser = async (id, setUser) => {
 export const deleteUser = async (id, completeDelete) => {
   axios.delete(`/api/v1/management/users/${id}`)
   .then((response) => {
-    completeDelete();
+    completeDelete(id);
   })
   .catch(error => {
       console.error(error);

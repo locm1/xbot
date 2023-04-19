@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
-import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Form, Card, Image, Badge, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { storeEcommerceConfiguration, getEcommerceConfiguration, updateEcommerceConfiguration } from "@/pages/product/api/EcommerceConfigurationApiMethods";
 
@@ -40,14 +40,14 @@ export default () => {
       <Row>
         <Col xs={12} xl={12}>
           <Card border="0" className="shadow mb-4">
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">環境情報</h5>
+            </Card.Header> 
             <Card.Body>
-              <div className="d-flex justify-content-between">
-              <h5 className="mb-4 border-bottom pb-3">環境情報</h5>
-              </div>
               <Row>
                 <Col md={6} className="mb-3">
-                  <Form.Group id="postage">
-                    <Form.Label>対象金額</Form.Label>
+                  <Form.Group id="target-amount">
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>対象金額</Form.Label>
                     <InputGroup className="">
                       <Form.Control 
                         type="number"
@@ -62,7 +62,7 @@ export default () => {
                 </Col>
                 <Col md={6} className="mb-3">
                   <Form.Group id="postage">
-                    <Form.Label>送料</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>送料</Form.Label>
                     <InputGroup className="">
                       <Form.Control
                         type="number"
@@ -76,9 +76,9 @@ export default () => {
                   </Form.Group>
                 </Col>
                 <Col md={12} className="mb-3">
-                  <Form.Group id="tel">
+                  <Form.Group>
                     <div className="d-flex flex-wrap flex-md-nowrap align-items-center">
-                      <Form.Label>代引き手数料</Form.Label>
+                      <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>代引き手数料</Form.Label>
                       <Form.Check
                         label="代引きを有効にする"
                         id="cash_on_delivery"
@@ -103,7 +103,7 @@ export default () => {
                 </Col>
                 <Col md={12} className="mb-3">
                   <Form.Group id="tel">
-                    <Form.Label>電話番号</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>電話番号</Form.Label>
                     <Form.Control
                       required
                       type="tel"
@@ -115,8 +115,8 @@ export default () => {
                   </Form.Group>
                 </Col>
                 <Col md={12} className="mb-3">
-                  <Form.Group id="tel">
-                    <Form.Label>メールアドレス</Form.Label>
+                  <Form.Group id="email">
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>メールアドレス</Form.Label>
                     <Form.Control
                       required
                       type="email"
@@ -130,7 +130,7 @@ export default () => {
               </Row>
               <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
                 <Button
-                  variant="primary"
+                  variant="success"
                   className="d-inline-flex align-items-center"
                   onClick={handleClick}
                 >

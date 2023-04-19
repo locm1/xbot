@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { Col, Row, Form, Button, InputGroup, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
+import { Col, Row, Form, Button, InputGroup, Card, Badge, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Paths } from "@/paths";
@@ -59,94 +59,96 @@ export default () => {
         </div>
       </div>
       <Card border="0" className="shadow mb-4">
-      <Card.Body>
-        <h5 className="mb-4 border-bottom pb-3">クーポン情報</h5>
-        <Row>
-          <Col md={6} className="mb-4">
-            <Form.Group id="firstName">
-              <Form.Label><span className="questionnaire-required me-2">必須</span>管理名称</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                value={coupon.name}
-                onChange={(e) => handleChange(e, 'name')}
-                placeholder="例：友達紹介クーポン"
-                isInvalid={coupon.name !== '' ? false : error.name ? true : false}
-              />
-              {
-                error.name && 
-                <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
-              }
-            </Form.Group>
-          </Col>
-          <Col md={6} className="mb-4">
-            <Form.Group id="lastName">
-              <Form.Label><span className="questionnaire-required me-2">必須</span>使用上限数</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                value={coupon.upper_limit}
-                onChange={(e) => handleChange(e, 'upper_limit')}
-                placeholder="例：20"
-                isInvalid={coupon.upper_limit !== '' ? false : error.upper_limit ? true : false}
-              />
-              {
-                error.upper_limit && 
-                <Form.Control.Feedback type="invalid">{error.upper_limit[0]}</Form.Control.Feedback>
-              }
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={6} className="mb-4">
-            <Form.Group id="name">
-              <Form.Label><span className="questionnaire-required me-2">必須</span>割引率(%)</Form.Label>
-              <InputGroup>
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">クーポン情報</h5>
+        </Card.Header> 
+        <Card.Body>
+          <Row>
+            <Col md={6} className="mb-4">
+              <Form.Group id="firstName">
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>管理名称</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  value={coupon.name}
+                  onChange={(e) => handleChange(e, 'name')}
+                  placeholder="例：友達紹介クーポン"
+                  isInvalid={coupon.name !== '' ? false : error.name ? true : false}
+                />
+                {
+                  error.name && 
+                  <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                }
+              </Form.Group>
+            </Col>
+            <Col md={6} className="mb-4">
+              <Form.Group id="lastName">
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>使用上限数</Form.Label>
                 <Form.Control
                   required
                   type="number"
-                  value={coupon.discount_price}
-                  onChange={(e) => handleChange(e, 'discount_price')}
+                  value={coupon.upper_limit}
+                  onChange={(e) => handleChange(e, 'upper_limit')}
                   placeholder="例：20"
-                  isInvalid={coupon.discount_price !== '' ? false : error.discount_price ? true : false}
+                  isInvalid={coupon.upper_limit !== '' ? false : error.upper_limit ? true : false}
                 />
-                <InputGroup.Text>％</InputGroup.Text>
                 {
-                  error.discount_price && 
-                  <Form.Control.Feedback type="invalid">{error.discount_price}</Form.Control.Feedback>
+                  error.upper_limit && 
+                  <Form.Control.Feedback type="invalid">{error.upper_limit[0]}</Form.Control.Feedback>
                 }
-              </InputGroup>
-            </Form.Group>
-          </Col>
-          <Col md={6} className="mb-4">
-            <Form.Group id="lastName">
-              <Form.Label><span className="questionnaire-required me-2">必須</span>利用コード</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                value={coupon.code}
-                onChange={(e) => handleChange(e, 'code')}
-                placeholder="例：#1234abc"
-                isInvalid={coupon.code !== '' ? false : error.code ? true : false}
-              />
-              {
-                error.code && 
-                <Form.Control.Feedback type="invalid">{error.code[0]}</Form.Control.Feedback>
-              }
-            </Form.Group>
-          </Col>
-        </Row>
-        <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
-          <Button
-            variant="primary"
-            className="d-inline-flex align-items-center"
-            onClick={handleClick}
-          >
-            保存する
-          </Button>
-        </div>
-      </Card.Body>
-    </Card>
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6} className="mb-4">
+              <Form.Group id="name">
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>割引率(%)</Form.Label>
+                <InputGroup>
+                  <Form.Control
+                    required
+                    type="number"
+                    value={coupon.discount_price}
+                    onChange={(e) => handleChange(e, 'discount_price')}
+                    placeholder="例：20"
+                    isInvalid={coupon.discount_price !== '' ? false : error.discount_price ? true : false}
+                  />
+                  <InputGroup.Text>％</InputGroup.Text>
+                  {
+                    error.discount_price && 
+                    <Form.Control.Feedback type="invalid">{error.discount_price}</Form.Control.Feedback>
+                  }
+                </InputGroup>
+              </Form.Group>
+            </Col>
+            <Col md={6} className="mb-4">
+              <Form.Group id="lastName">
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>利用コード</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  value={coupon.code}
+                  onChange={(e) => handleChange(e, 'code')}
+                  placeholder="例：#1234abc"
+                  isInvalid={coupon.code !== '' ? false : error.code ? true : false}
+                />
+                {
+                  error.code && 
+                  <Form.Control.Feedback type="invalid">{error.code[0]}</Form.Control.Feedback>
+                }
+              </Form.Group>
+            </Col>
+          </Row>
+          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+            <Button
+              variant="success"
+              className="d-inline-flex align-items-center"
+              onClick={handleClick}
+            >
+              保存する
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
     </>
   );
 };

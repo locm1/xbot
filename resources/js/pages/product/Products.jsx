@@ -2,12 +2,21 @@ import React, { useState, useEffect } from "react";
 import { CalendarIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { ProductsTable } from "@/pages/product/ProductsTable";
 import { Paths } from "@/paths";
 
-import { getProducts } from "@/pages/product/api/ProductApiMethods";
+import { getProducts, deleteProduct } from "@/pages/product/api/ProductApiMethods";
 import { getCategories } from "@/pages/product/api/ProductCategoryApiMethods";
+
+const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-primary me-3',
+    cancelButton: 'btn btn-gray-100'
+  },
+  buttonsStyling: false
+}));
 
 export default () => {
   const [products, setProducts] = useState([]);
@@ -35,6 +44,35 @@ export default () => {
     }, 1000)
 
     setTimer(newTimer)
+  };
+
+  const deleteProducts = async (id) => {
+    const textMessage = "本当にこの商品を削除しますか？";
+
+    const result = await SwalWithBootstrapButtons.fire({
+      icon: "error",
+      title: "削除確認",
+      text: textMessage,
+      showCancelButton: true,
+      confirmButtonText: "削除",
+      cancelButtonText: "キャンセル"
+    });
+
+    if (result.isConfirmed) {
+      deleteProduct(id, completeDelete)
+    }
+  };
+
+  const completeDelete = async (id) => {
+    const confirmMessage = "選択した商品は削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    const newProducts = products.filter(product => product.id !== id)
+
+    const currentPage = newProducts.length == 0 ? paginate.current_page - 1 : paginate.current_page
+    const searchParams = {
+      params: {...searchValue, page: currentPage}
+    };
+    getProducts(searchParams, setProducts, setLinks, setPaginate)
   };
 
   useEffect(() => {
@@ -91,6 +129,7 @@ export default () => {
         setLinks={setLinks}
         setPaginate={setPaginate}
         searchValue={searchValue}
+        deleteProducts={deleteProducts}
       />
     </>
   );

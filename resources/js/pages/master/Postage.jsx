@@ -51,8 +51,10 @@ export default () => {
       </div>
     </div>
     <Card border="0" className="shadow mb-4">
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">都道府県別送料設定</h5>
+      </Card.Header> 
       <Card.Body>
-        <h5 className="mb-4 border-bottom pb-3">都道府県別送料設定</h5>
         <div className="pb-4 border-bottom">
           <Form.Label>全国一律に設定</Form.Label>
           <InputGroup>

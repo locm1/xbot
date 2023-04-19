@@ -19,8 +19,10 @@ export const EditVisitorHistoryForm = (props) => {
 
   return (
     <Card border="0" className="shadow mb-4">
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">来店情報</h5>
+      </Card.Header>
       <Card.Body>
-        <h5 className="mb-4 border-bottom pb-3">来店情報</h5>
         <Row>
           <Col md={12} className="mb-3">
             <Form.Group id="created_at">
@@ -55,7 +57,7 @@ export const EditVisitorHistoryForm = (props) => {
           </Col>
         </Row>
         <div className="d-flex flex-row-reverse">
-          <Button onClick={update} variant="gray-800" className="me-2 d-flex ">
+          <Button onClick={update} variant="success" className="me-2 d-flex ">
             保存する
           </Button>
         </div>

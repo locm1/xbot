@@ -14,7 +14,8 @@ export default (props) => {
     pagination: false,
     height: '18rem',
     drag: true,
-    lazyLoad: true
+    lazyLoad: true,
+    arrows: productImages.length > 1 ? true : false,
   }
 
   const thumbsOptions = {
@@ -47,22 +48,26 @@ export default (props) => {
         ref={mainRef}
       >
         {productImages && productImages.map((image, index) => 
-          <SplideSlide>
+          <SplideSlide key={`product-slide-${index}`}>
             <Image src={image.image_path} className="slide-img" />
           </SplideSlide>
         )}
       </Splide>
-      <Splide
-          options={ thumbsOptions }
-          ref={thumbsRef}
-          className="thumbnail-slider"
-      >
-        {productImages && productImages.map((image, index) => 
-          <SplideSlide className="thumbnail-slide-img">
-            <Image src={image.image_path} className="slide-img" />
-          </SplideSlide>
-        )}
-      </Splide>
+      {
+        productImages.length > 1 && (
+          <Splide
+            options={ thumbsOptions }
+            ref={thumbsRef}
+            className="thumbnail-slider"
+          >
+            {productImages && productImages.map((image, index) => 
+              <SplideSlide className="thumbnail-slide-img" key={`product-slide-thumbnail-${index}`}>
+                <Image src={image.image_path} className="slide-img" />
+              </SplideSlide>
+            )}
+          </Splide>
+        )
+      }
     </>
   );
 };

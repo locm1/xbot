@@ -51,11 +51,10 @@ export const updateInviteIncentive = async (id, inviteIncentive, storeComplete) 
   });
 };
 
-export const deleteInviteIncentive = async (id, deleteComplete, setInviteIncentives, inviteIncentives) => {
+export const deleteInviteIncentive = async (id, deleteComplete) => {
   axios.delete(`/api/v1/management/invite-incentives/${id}`)
   .then((response) => {
-    deleteComplete();
-    setInviteIncentives(inviteIncentives.filter((inviteIncentive) => (inviteIncentive.id !== id)));
+    deleteComplete(id);
   })
   .catch(error => {
       console.error(error);

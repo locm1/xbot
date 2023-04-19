@@ -62,11 +62,10 @@ export const updateCoupon = async (id, coupon, updateComplete, setError) => {
   });
 };
 
-export const deleteCoupon = async (id, deleteComplete, setCoupons, coupons) => {
+export const deleteCoupon = async (id, deleteComplete) => {
   axios.delete(`/api/v1/management/coupons/${id}`)
   .then((response) => {
-    deleteComplete();
-    setCoupons(coupons.filter((coupon) => (coupon.id !== id)));
+    deleteComplete(id);
   })
   .catch(error => {
       console.error(error);

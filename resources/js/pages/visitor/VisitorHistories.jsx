@@ -8,7 +8,7 @@ import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
 import { VisitorHistoriesTable } from "@/pages/visitor/VisitorHistoriesTable";
 
-import { getVisitorHistories, deleteVisitorHistory, searchVisitorHistories } from "@/pages/visitor/api/VisitorHistoryApiMethods";
+import { getVisitorHistories, deleteVisitorHistory } from "@/pages/visitor/api/VisitorHistoryApiMethods";
 
 export default () => {
   const [visitorHistories, setVisitorHistories] = useState([]);
@@ -73,10 +73,16 @@ export default () => {
     }
   };
 
-  const completeDelete = async () => {
+  const completeDelete = async (id) => {
     const confirmMessage = "選択した来店履歴は削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    location.reload();
+    const newVisitorHistories = visitorHistories.filter(user => user.id !== id)
+
+    const currentPage = newVisitorHistories.length == 0 ? paginate.current_page - 1 : paginate.current_page
+    const searchParams = {
+      params: {...searchValue, page: currentPage}
+    };
+    getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate)
   };
 
   useEffect(() => {

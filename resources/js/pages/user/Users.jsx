@@ -25,7 +25,7 @@ export default () => {
     man: '', women: '', others: ''
   })
   const [paginate, setPaginate] = useState({ 
-    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+    current_page: 1, per_page: 1, from: 1, to: 1, total: 1 
   })
   const [links, setLinks] = useState([]);
   const [timer, setTimer] = useState(null);
@@ -63,10 +63,16 @@ export default () => {
     }
   };
 
-  const completeDelete = async () => {
+  const completeDelete = async (id) => {
     const confirmMessage = "選択したユーザーは削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    location.reload();
+    const newUsers = users.filter(user => user.id !== id)
+
+    const currentPage = newUsers.length == 0 ? paginate.current_page - 1 : paginate.current_page
+    const searchParams = {
+      params: {...searchValue, page: currentPage}
+    };
+    getUsers(searchParams, setUsers, setLinks, setPaginate)
   };
 
   useEffect(() => {

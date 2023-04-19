@@ -28,6 +28,7 @@ use App\Http\Controllers\api\liff\terms_of_service\TermsOfServiceController as L
 use App\Http\Controllers\api\liff\user\UserController as LiffUserController;
 use App\Http\Controllers\api\liff\postage\PostageController as LiffPostageController;
 use App\Http\Controllers\api\liff\privileges\PrivilegeController as LiffPrivilegeController;
+use App\Http\Controllers\api\liff\visitor\VisitorHistoryController as LiffVisitorHistoryController;
 use App\Http\Controllers\api\liff\visitor_confirm\VisitorConfirmController;
 use App\Http\Controllers\api\LineChannelAccessTokenController;
 use Illuminate\Http\Request;
@@ -241,6 +242,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('users/{user}/event/reservations', [EventReservationController::class, 'index']);
     Route::apiResource('users/{user}/inviter-incentives', LiffInviterIncentiveUserController::class);
     Route::apiResource('users/{user}/invitee-incentives', LiffInviteeIncentiveUserController::class);
+    Route::get('users/{user}/visitor-histories/count', LiffVisitorHistoryController::class);
     Route::get('users/{user}/invites', InviteController::class);
     Route::get('postages', LiffPostageController::class);
     Route::get('address', SearchZipcodeController::class);

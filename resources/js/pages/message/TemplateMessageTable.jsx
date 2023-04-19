@@ -18,7 +18,8 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export const TemplateMessageTable = (props) => {
-  const { messages, deleteMessage, setMessages, links, setLinks, paginate, setPaginate, getMessages, title } = props;
+  const { messages, deleteMessage, setMessages, links, setLinks, paginate, setPaginate, 
+    getMessages, title } = props;
   const searchValue = {title: title}
 
   const showConfirmDeleteModal = async (id) => {
@@ -34,13 +35,20 @@ export const TemplateMessageTable = (props) => {
     });
 
     if (result.isConfirmed) {
-      deleteMessage(id, deleteComplete, setMessages, messages)
+      deleteMessage(id, deleteComplete)
     }
   };
 
-  const deleteComplete = async () => {
+  const deleteComplete = async (id) => {
     const confirmMessage = "選択した項目は削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    const newMessages = messages.filter(message => message.id !== id)
+
+    const currentPage = newMessages.length == 0 ? paginate.current_page - 1 : paginate.current_page
+    const searchParams = {
+      params: {title: title, page: currentPage}
+    };
+    getMessages(searchParams, setMessages, setLinks, setPaginate)
   };
 
   const TableRow = (props) => {

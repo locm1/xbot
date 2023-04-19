@@ -359,12 +359,14 @@ export default () => {
       )
     }
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-          <h1 className="page-title">リッチメニュー設定</h1>
-          <Button href={Paths.RichMenus.path} className="mt-2 animate-up-2">一覧へ戻る</Button>
+        <h1 className="page-title">リッチメニュー設定</h1>
+        <Button href={Paths.RichMenus.path} className="mt-2 animate-up-2">一覧へ戻る</Button>
       </div>
       <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">コンテンツ設定</h5>
+        </Card.Header> 
         <Card.Body>
-          <h5 className="mb-4 border-bottom pb-3">コンテンツ設定</h5>
           <Row>
             <Col md={12} className="mb-5">
               <Form.Group id="title">
@@ -436,8 +438,8 @@ export default () => {
             </div>
           </div>
           <div className="d-flex justify-content-end gap-2 mt-2">
-            <Button onClick={() => saveMenu(true)}>保存&デフォルト設定</Button>
-            <Button onClick={() => saveMenu(false)}>保存する</Button>
+            <Button variant="success" onClick={() => saveMenu(true)}>保存&デフォルト設定</Button>
+            <Button variant="success" onClick={() => saveMenu(false)}>保存する</Button>
           </div>
         </Card.Body>
       </Card>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import moment from "moment-timezone";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, XIcon, HomeIcon, PlusIcon, SearchIcon, TrashIcon, QuestionMarkCircleIcon } from "@heroicons/react/solid";
-import { Col, Row, Form, Card, Image, Breadcrumb, Button, ListGroup, InputGroup, Tab, Nav } from 'react-bootstrap';
+import { Col, Row, Form, Card, Image, Badge, Button, ListGroup, InputGroup, Tab, Nav } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import Select from 'react-select'
 import "flatpickr/dist/flatpickr.css";
@@ -75,6 +75,7 @@ export default () => {
       image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile))[0]
     }
     setStoreProductImages([...storeProductImages, ...acceptedFiles])
+    console.log([...storeProductImages, ...acceptedFiles]);
 
     setProductImages([...productImages, newImage]);
   };
@@ -194,7 +195,7 @@ export default () => {
     console.log(product);
     
     if (pathname.includes('/edit')) {
-      updateProduct(id, product, setError);
+      updateProduct(id, product, setError, storeProductImages, storeImages);
       // 画像削除stateに値があればAPI発火
       if (deleteProductImages.length > 0) {
         const params = {
@@ -222,11 +223,6 @@ export default () => {
 
   const onSaveRelatedProduct = () => {
     updateRelatedProduct(id, relatedProducts);
-  }
-
-  const updatePrivate = (privateProduct) => {
-    setProduct({...product, ['is_undisclosed']: privateProduct ? 1 : 0})
-    setPrivate(privateProduct)
   }
 
   const updateIsPickedUp = (isPickedUp) => {
@@ -273,62 +269,45 @@ export default () => {
         </Nav>
         <Tab.Content>
           <Tab.Pane eventKey="products" className="py-4">
-            <Col xs={12} xl={12}>
-              <Card border="0" className="shadow mb-4">
-                <Card.Body>
-                  <div className="d-flex justify-content-between">
-                  <h5 className="mb-4 border-bottom pb-3">商品情報</h5>
-                  <Form.Group id="category">
-                    <Form.Check
-                    type="switch"
-                    label="非公開にする"
-                    id="switch1"
-                    htmlFor="switch1"
-                    defaultChecked={privateProduct}
-                    onClick={() => updatePrivate(!privateProduct)}
-                    />
-                    <Form.Check
-                    type="switch"
-                    label="ピックアップ商品に追加する"
-                    id="switch2"
-                    htmlFor="switch2"
-                    defaultChecked={isPickedUp}
-                    onClick={() => updateIsPickedUp(!isPickedUp)}
-                    />
-                  </Form.Group>
-                  </div>
-                    <Col xs={12} xl={12}>
-                      <Row>
-                        <Col md={12} className="mb-4">
-                          <Form.Group id="name">
-                            <Form.Label><span className="questionnaire-required me-2">必須</span>商品名</Form.Label>
-                            <Form.Control 
-                              required 
-                              type="text" 
-                              name="name" 
-                              value={product.name} 
-                              onChange={(e) => handleChange(e, 'name')} 
-                              placeholder="シャンプー" 
-                              isInvalid={product.name !== '' ? false : error.name ? true : false}
-                            />
+            <Row>
+              <Col xs={12} xl={8}>
+                <Card border="0" className="shadow mb-4">
+                  <Card.Header className="bg-primary text-white px-3 py-2">
+                    <h5 className="mb-0 fw-bolder">商品情報</h5>
+                  </Card.Header> 
+                  <Card.Body>
+                    <Row>
+                      <Col md={12} className="mb-4">
+                        <Form.Group id="name">
+                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>商品名</Form.Label>
+                          <Form.Control 
+                            required 
+                            type="text" 
+                            name="name" 
+                            value={product.name} 
+                            onChange={(e) => handleChange(e, 'name')} 
+                            placeholder="シャンプー" 
+                            isInvalid={product.name !== '' ? false : error.name ? true : false}
+                          />
+                          {
+                            error.name && 
+                            <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                          }
+                        </Form.Group>
+                      </Col>
+                      <Col md={6} className="mb-4">
+                        <Form.Group id="category">
+                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>カテゴリー</Form.Label>
+                          <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => {handleChange(e, 'product_category_id')}}>
                             {
-                              error.name && 
-                              <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                              categories.map((category, index) => <option key={`category-${index}`} value={category.id}>{category.name}</option>)
                             }
-                          </Form.Group>
-                        </Col>
-                        <Col md={6} className="mb-4">
-                          <Form.Group id="category">
-                            <Form.Label><span className="questionnaire-required me-2">必須</span>カテゴリー</Form.Label>
-                            <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => {handleChange(e, 'product_category_id')}}>
-                              {
-                                categories.map((category, index) => <option key={`category-${index}`} value={category.id}>{category.name}</option>)
-                              }
-                            </Form.Select>
-                          </Form.Group>
-                        </Col>
-                        <Col md={6} className="mb-4">
-                          <Form.Label><span className="questionnaire-required me-2">必須</span>在庫数</Form.Label>
+                          </Form.Select>
+                        </Form.Group>
+                      </Col>
+                      <Col md={6} className="mb-4">
+                        <Form.Group id="stock-quantity">
+                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>在庫数</Form.Label>
                           <InputGroup className="me-2 me-lg-3">
                             <InputGroup.Text className="d-flex">
                               <Form.Check id="checkbox1" htmlFor="checkbox1" onClick={() => updateIsUnlimited(!disableInputForm)} />
@@ -349,179 +328,227 @@ export default () => {
                               <Form.Control.Feedback type="invalid">{error.stock_quantity[0]}</Form.Control.Feedback>
                             }
                           </InputGroup>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col md={4} className="mb-4">
-                          <Form.Group id="price">
-                            <Form.Label><span className="questionnaire-required me-2">必須</span>販売価格（税込）</Form.Label>
-                            <InputGroup>
-                              <Form.Control
-                                required 
-                                type="number" 
-                                name="price" 
-                                value={product.price} 
-                                onChange={(e) => handleChange(e, 'price')} 
-                                placeholder="3000" 
-                                isInvalid={product.price !== '' ? false : error.price ? true : false}
-                              />
-                              <InputGroup.Text>円</InputGroup.Text>
-                            </InputGroup>
-                            {
-                              error.price && 
-                              <Form.Control.Feedback type="invalid">{error.price[0]}</Form.Control.Feedback>
-                            }
-                          </Form.Group>
-                        </Col>
-                        <Col md={4} className="mb-4">
-                          <Form.Group id="discountRate">
-                            <Form.Label><span className="questionnaire-required me-2">必須</span>セール割引率（%）</Form.Label>
-                            <InputGroup>
-                              <Form.Control
-                                required 
-                                type="number" 
-                                name="discount_rate" 
-                                value={productSale.discount_rate} 
-                                onChange={(e) => handleSaleChange(e, 'discount_rate')} 
-                                placeholder="10"
-                                isInvalid={productSale.discount_rate !== '' ? false : error.discount_rate ? true : false} 
-                              />
-                              <InputGroup.Text>%</InputGroup.Text>
-                            </InputGroup>
-                            {
-                              error.discount_rate && 
-                              <Form.Control.Feedback type="invalid">{error.discount_rate[0]}</Form.Control.Feedback>
-                            }
-                          </Form.Group>
-                        </Col>
-                        <Col md={4} className="mb-4">
-                          <ListGroup className="list-group-flush mt-3">
-                            <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 mt-4">
-                              <div>
-                                <Card.Text className="h6">セール金額：￥{isNaN(sale_price) ? product.price.toLocaleString() : sale_price.toLocaleString()}</Card.Text>
-                              </div>
-                            </ListGroup.Item>
-                          </ListGroup>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col md={6} className="mb-4">
-                          <Form.Group id="startDate">
-                            <Form.Label><span className="questionnaire-required me-2">必須</span>開始日時</Form.Label>
-                            <Flatpickr
-                              options={ startOptions }
-                              value={productSale.start_date}
-                              render={(props, ref) => {
-                                return (
-                                  <InputGroup>
-                                  <InputGroup.Text>
-                                    <CalendarIcon className="icon icon-xs" />
-                                  </InputGroup.Text>
-                                  <Form.Control
-                                    data-enable-time
-                                    data-time_24hr
-                                    required
-                                    type="text"
-                                    placeholder="YYYY-MM-DD"
-                                    ref={ref}
-                                    isInvalid={productSale.start_date !== '' ? false : error.start_date ? true : false} 
+                        </Form.Group>
+                      </Col>
+                      <Col md={4} className="mb-4">
+                        <Form.Group id="price">
+                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>販売価格（税込）</Form.Label>
+                          <InputGroup>
+                            <Form.Control
+                              required 
+                              type="number" 
+                              name="price" 
+                              value={product.price} 
+                              onChange={(e) => handleChange(e, 'price')} 
+                              placeholder="3000" 
+                              isInvalid={product.price !== '' ? false : error.price ? true : false}
+                            />
+                            <InputGroup.Text>円</InputGroup.Text>
+                          </InputGroup>
+                          {
+                            error.price && 
+                            <Form.Control.Feedback type="invalid">{error.price[0]}</Form.Control.Feedback>
+                          }
+                        </Form.Group>
+                      </Col>
+                      <Col md={12} className="mb-4">
+                        <Form.Group id="overview">
+                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>商品概要</Form.Label>
+                          <Form.Control 
+                            as="textarea" 
+                            rows="3" 
+                            value={product.overview} 
+                            onChange={(e) => handleChange(e, 'overview')} 
+                            placeholder="商品の概要を入力してください" 
+                            isInvalid={product.overview !== '' ? false : error.overview ? true : false} 
+                          />
+                          {
+                            error.overview && 
+                            <Form.Control.Feedback type="invalid">{error.overview[0]}</Form.Control.Feedback>
+                          }
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+                <Card border="0" className="shadow mb-4">
+                  <Card.Header className="bg-primary text-white px-3 py-2">
+                    <h5 className="mb-0 fw-bolder">セール設定</h5>
+                  </Card.Header> 
+                  <Card.Body>
+                    <Row>
+                      <Col md={6} className="mb-4">
+                        <Form.Group id="discountRate">
+                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>セール割引率（%）</Form.Label>
+                          <InputGroup>
+                            <Form.Control
+                              required 
+                              type="number" 
+                              name="discount_rate" 
+                              value={productSale.discount_rate} 
+                              onChange={(e) => handleSaleChange(e, 'discount_rate')} 
+                              placeholder="10"
+                              isInvalid={productSale.discount_rate !== '' ? false : error.discount_rate ? true : false} 
+                            />
+                            <InputGroup.Text>%</InputGroup.Text>
+                          </InputGroup>
+                          {
+                            error.discount_rate && 
+                            <Form.Control.Feedback type="invalid">{error.discount_rate[0]}</Form.Control.Feedback>
+                          }
+                        </Form.Group>
+                      </Col>
+                      <Col md={6} className="mb-4">
+                        <ListGroup className="list-group-flush mt-3">
+                          <ListGroup.Item className="d-flex align-items-center justify-content-between px-0 mt-4">
+                            <div>
+                              <Card.Text className="h6">セール金額：￥{isNaN(sale_price) ? product.price.toLocaleString() : Math.floor(sale_price).toLocaleString()}</Card.Text>
+                            </div>
+                          </ListGroup.Item>
+                        </ListGroup>
+                      </Col>
+                      <Col md={6} className="mb-4">
+                        <Form.Group id="startDate">
+                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>開始日時</Form.Label>
+                          <Flatpickr
+                            options={ startOptions }
+                            value={productSale.start_date}
+                            render={(props, ref) => {
+                              return (
+                                <InputGroup>
+                                <InputGroup.Text>
+                                  <CalendarIcon className="icon icon-xs" />
+                                </InputGroup.Text>
+                                <Form.Control
+                                  data-enable-time
+                                  data-time_24hr
+                                  required
+                                  type="text"
+                                  placeholder="YYYY-MM-DD"
+                                  ref={ref}
+                                  isInvalid={productSale.start_date !== '' ? false : error.start_date ? true : false} 
+                                />
+                              </InputGroup>
+                              );
+                            }}
+                          />
+                          {
+                            error.start_date && 
+                            <Form.Control.Feedback type="invalid">{error.start_date[0]}</Form.Control.Feedback>
+                          }
+                        </Form.Group>
+                      </Col>
+                      <Col md={6} className="mb-4">
+                        <Form.Group id="endDate">
+                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>終了日時</Form.Label>
+                          <Flatpickr
+                            options={ endOptions }
+                            value={productSale.end_date}
+                            render={(props, ref) => {
+                              return (
+                                <InputGroup>
+                                <InputGroup.Text>
+                                  <CalendarIcon className="icon icon-xs" />
+                                </InputGroup.Text>
+                                <Form.Control
+                                  data-enable-time
+                                  data-time_24hr
+                                  required
+                                  type="text"
+                                  placeholder="YYYY-MM-DD"
+                                  ref={ref}
+                                  isInvalid={productSale.end_date !== '' ? false : error.end_date ? true : false} 
                                   />
                                 </InputGroup>
-                                );
-                              }}
-                            />
-                            {
-                              error.start_date && 
-                              <Form.Control.Feedback type="invalid">{error.start_date[0]}</Form.Control.Feedback>
-                            }
-                          </Form.Group>
-                        </Col>
-                        <Col md={6} className="mb-4">
-                          <Form.Group id="endDate">
-                            <Form.Label><span className="questionnaire-required me-2">必須</span>終了日時</Form.Label>
-                            <Flatpickr
-                              options={ endOptions }
-                              value={productSale.end_date}
-                              render={(props, ref) => {
-                                return (
-                                  <InputGroup>
-                                  <InputGroup.Text>
-                                    <CalendarIcon className="icon icon-xs" />
-                                  </InputGroup.Text>
-                                  <Form.Control
-                                    data-enable-time
-                                    data-time_24hr
-                                    required
-                                    type="text"
-                                    placeholder="YYYY-MM-DD"
-                                    ref={ref}
-                                    isInvalid={productSale.end_date !== '' ? false : error.end_date ? true : false} 
-                                    />
-                                  </InputGroup>
-                                );
-                              }}
-                            />
-                            {
-                              error.end_date && 
-                              <Form.Control.Feedback type="invalid">{error.end_date[0]}</Form.Control.Feedback>
-                            }
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col md={12} className="mb-4">
-                          <Form.Group id="overview">
-                            <Form.Label><span className="questionnaire-required me-2">必須</span>商品概要</Form.Label>
-                            <Form.Control 
-                              as="textarea" 
-                              rows="3" 
-                              value={product.overview} 
-                              onChange={(e) => handleChange(e, 'overview')} 
-                              placeholder="商品の概要を入力してください" 
-                              isInvalid={product.overview !== '' ? false : error.overview ? true : false} 
-                            />
-                            {
-                              error.overview && 
-                              <Form.Control.Feedback type="invalid">{error.overview[0]}</Form.Control.Feedback>
-                            }
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Form.Label>商品画像</Form.Label>
-                        {productImages && productImages.map((image, k) => (
-                          <DropzoneFile key={k} {...image} index={k} updateProductImages={updateProductImages} setUpdateProductImages={setUpdateProductImages} />
-                        ))}
-                        <Col md={2} className="pt-4">
-                          <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="150px" >
-                            <Form.Control {...getInputProps()} />
-                            <div className="dz-default dz-message text-center">
-                              <p className="dz-button mb-0">画像を追加</p>
-                            </div>
-                          </Form>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
-                      <Button
-                        variant="primary"
-                        className="d-inline-flex align-items-center"
-                        onClick={() => onSaveProduct()}
-                      >
-                        保存する
-                      </Button>
+                              );
+                            }}
+                          />
+                          {
+                            error.end_date && 
+                            <Form.Control.Feedback type="invalid">{error.end_date[0]}</Form.Control.Feedback>
+                          }
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col xs={12} xl={4}>
+                <Card border="0" className="shadow mb-4">
+                  <Card.Header className="bg-primary text-white px-3 py-2">
+                    <h5 className="mb-0 fw-bolder">商品設定</h5>
+                  </Card.Header> 
+                  <Card.Body>
+                    <div className="mb-4">
+                      <Form.Group id="status">
+                        <Form.Label><Badge bg="danger" className="me-2">必須</Badge>ステータス</Form.Label>
+                        <Form.Select value={product.is_undisclosed} className="mb-0" onChange={(e) => {handleChange(e, 'is_undisclosed')}}>
+                          <option value="0">公開</option>
+                          <option value="1">非公開</option>
+                        </Form.Select>
+                      </Form.Group>
                     </div>
-                </Card.Body>
-              </Card>
-            </Col>
+                    <div className="mb-4">
+                      <Form.Group id="pickup">
+                        <Form.Label>ピックアップ</Form.Label>
+                        <Form.Check
+                          type="switch"
+                          label="ピックアップ商品に追加する"
+                          id="switch2"
+                          htmlFor="switch2"
+                          defaultChecked={isPickedUp}
+                          onClick={() => updateIsPickedUp(!isPickedUp)}
+                          variant="gray-800"
+                        />
+                      </Form.Group>
+                    </div>
+                  </Card.Body>
+                </Card>
+                <Card border="0" className="shadow mb-4">
+                  <Card.Header className="bg-primary text-white px-3 py-2">
+                    <h5 className="mb-0 fw-bolder">商品画像</h5>
+                  </Card.Header> 
+                  <Card.Body>
+                    <div className="mb-4">
+                      <Row>
+                        {productImages && productImages.map((image, k) => (
+                          <Col md={6}>
+                            <DropzoneFile key={k} {...image} index={k} updateProductImages={updateProductImages} setUpdateProductImages={setUpdateProductImages} />
+                          </Col>
+                        ))}
+                      </Row>
+                      <Col md={12} className="pt-4">
+                        <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="150px" >
+                          <Form.Control {...getInputProps()} />
+                          <div className="dz-default dz-message text-center">
+                            <p className="dz-button mb-0">画像を追加</p>
+                          </div>
+                        </Form>
+                      </Col>
+                    </div>
+                  </Card.Body>
+                </Card>
+                <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+                  <Button
+                    variant="success"
+                    className="d-inline-flex align-items-center"
+                    onClick={() => onSaveProduct()}
+                  >
+                    保存する
+                  </Button>
+                </div>
+              </Col>
+            </Row>
           </Tab.Pane>
         </Tab.Content>
         <Tab.Content>
           <Tab.Pane eventKey="related_products" className="py-4 pb-12">
             <Col xs={12} xl={12}>
               <Card border="0" className="shadow mb-4">
+                <Card.Header className="bg-primary text-white px-3 py-2">
+                  <h5 className="mb-0 fw-bolder">セット割商品</h5>
+                </Card.Header> 
                 <Card.Body>
-                  <h5 className="mb-4 border-bottom pb-3">セット割商品</h5>
                   <Row>
                     {relatedProducts.map((v,k) => (
                       <React.Fragment key={`relatedProducts-${k}`}>
@@ -544,9 +571,9 @@ export default () => {
                       </React.Fragment>
                     ))}
                   </Row>
-                  <div className="d-flex justify-content-end">
+                  <div className="d-flex justify-content-end py-3">
                     <Button
-                      variant="primary"
+                      variant="success"
                       className="d-inline-flex align-items-center"
                       onClick={() => onSaveRelatedProduct()}
                     >

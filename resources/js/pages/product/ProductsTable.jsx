@@ -8,7 +8,7 @@ import noImage from "@img/img/noimage.jpg"
 
 
 export const ProductsTable = (props) => {
-  const { products, setProducts, links, getProducts, setLinks, paginate, setPaginate, searchValue } = props;
+  const { products, setProducts, links, getProducts, setLinks, paginate, setPaginate, searchValue, deleteProducts } = props;
 
   const getImages = (image) => {
     if (image) {
@@ -70,7 +70,7 @@ export const ProductsTable = (props) => {
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
             編集
           </Button>
-          <Button variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button onClick={() => deleteProducts(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
         </td>
@@ -80,7 +80,7 @@ export const ProductsTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-       <Table hover className="align-items-center">
+      <Table hover className="align-items-center">
         <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">商品ID</th>

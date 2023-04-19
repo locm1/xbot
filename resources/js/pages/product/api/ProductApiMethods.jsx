@@ -79,9 +79,16 @@ export const showProduct = async (id, setProduct, setPrivate, setIsPickedUp, set
   });
 };
 
-export const updateProduct = (id, formValue, setError) => {
+export const updateProduct = (id, formValue, setError, storeProductImages, storeImages) => {
   axios.put(`/api/v1/management/products/${id}`, formValue)
   .then((response) => {
+    // 画像保存stateに値があればAPI発火
+    if (storeProductImages.length > 0) {
+      const formData = new FormData();
+      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
+      storeImages(id, formData)
+    }
+
     Swal.fire(
       '更新完了',
       '商品情報の更新に成功しました',

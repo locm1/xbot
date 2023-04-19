@@ -16,6 +16,17 @@ const failedMessage = (message) => {
   )
 } 
 
+export const getAllMessages = async (params, setMessages) => {
+  axios.get('/api/v1/management/messages', params)
+  .then((response) => {
+    const messages = response.data.messages;
+    setMessages(messages);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 export const getMessages = async (params, setMessages, setLinks, setPaginate) => {
   axios.get('/api/v1/management/messages', params)
   .then((response) => {
@@ -70,11 +81,10 @@ export const updateMessage = async (id, message, completeMessage) => {
   });
 };
 
-export const deleteMessage = async (id, deleteComplete, setMessages, messages) => {
+export const deleteMessage = async (id, deleteComplete) => {
   axios.delete(`/api/v1/management/messages/${id}`)
   .then((response) => {
-    deleteComplete();
-    setMessages(messages.filter((message) => (message.id !== id)));
+    deleteComplete(id);
   })
   .catch(error => {
       console.error(error);

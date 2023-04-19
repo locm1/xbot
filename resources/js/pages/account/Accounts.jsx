@@ -48,7 +48,7 @@ export default () => {
     if (result.isConfirmed) {
       await axios.delete(`/api/v1/management/admins/${id}`)
       .then((response) => {
-        deleteAdmin()
+        deleteAdmin(id)
         console.log(response);
       })
       .catch(error => {
@@ -57,12 +57,15 @@ export default () => {
     }
   };
 
-  const deleteAdmin = async () => {
+  const deleteAdmin = async (id) => {
     const confirmMessage = "選択したアカウントは削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    setTimeout(() => {
-      location.reload();
-    }, 1000);
+    const newAccounts = accounts.filter((account) => (account.id !== id));
+    const currentPage = newAccounts.length == 0 ? paginate.current_page - 1 : paginate.current_page
+    const searchParams = {
+      params: {page: currentPage}
+    };
+    getAccounts(searchParams, setAccounts, setLinks, setPaginate);
   };
 
   return (

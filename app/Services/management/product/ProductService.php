@@ -69,9 +69,13 @@ class ProductService
     }
 
 
-    public function destroy($model) 
+    public function destroy(Product $product) 
     {
-        //
+        return DB::transaction(function () use ($product) {
+            $product->productSale()->delete();
+            $product->productImages()->delete();
+            return $product->delete();
+        });
     }
 
 }

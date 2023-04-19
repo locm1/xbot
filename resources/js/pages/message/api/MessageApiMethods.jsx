@@ -81,11 +81,10 @@ export const updateMessage = async (id, message, completeMessage) => {
   });
 };
 
-export const deleteMessage = async (id, deleteComplete, setMessages, messages) => {
+export const deleteMessage = async (id, deleteComplete) => {
   axios.delete(`/api/v1/management/messages/${id}`)
   .then((response) => {
-    deleteComplete();
-    setMessages(messages.filter((message) => (message.id !== id)));
+    deleteComplete(id);
   })
   .catch(error => {
       console.error(error);

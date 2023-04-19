@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { useDropzone } from "react-dropzone";
 import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
-import { Col, Row, Card, Form, Image, Button, InputGroup } from 'react-bootstrap';
+import { Col, Row, Card, Form, Badge, Button, InputGroup } from 'react-bootstrap';
 
 export default (props) => {
   const { message, handleChange , isUndisclosed, setIsUndisclosed} = props;
@@ -28,7 +28,7 @@ export default (props) => {
         <Row>
           <Col md={12} className="mb-3">
             <Form.Group id="firstName">
-              <Form.Label>タイトル</Form.Label>
+              <Form.Label><Badge bg="danger" className="me-2">必須</Badge>タイトル</Form.Label>
               <Form.Control required type="text" name="last_name" value={message.title} onChange={(e) => handleChange(e, 'title')} placeholder="" />
             </Form.Group>
           </Col>

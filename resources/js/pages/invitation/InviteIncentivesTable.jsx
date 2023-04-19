@@ -54,13 +54,19 @@ export const InviteIncentivesTable = (props) => {
       });
   
       if (result.isConfirmed) {
-        deleteInviteIncentive(id, deleteComplete, setInviteIncentives, inviteIncentives)
+        deleteInviteIncentive(id, deleteComplete)
       }
     };
 
-    const deleteComplete = async () => {
+    const deleteComplete = async (id) => {
       const confirmMessage = "選択した項目は削除されました。";
       await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+      const newInviteIncentives = inviteIncentives.invite_incentives.filter((inviteIncentive) => (inviteIncentive.id !== id));
+      const currentPage = newInviteIncentives.length == 0 ? paginate.current_page - 1 : paginate.current_page
+      const searchParams = {
+        params: {page: currentPage}
+      };
+      getInviteIncentives(searchParams, setInviteIncentives, setLinks, setPaginate);
     };
 
     return (

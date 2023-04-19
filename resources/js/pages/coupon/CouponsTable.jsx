@@ -40,13 +40,20 @@ export const CouponsTable = (props) => {
       });
   
       if (result.isConfirmed) {
-        deleteCoupon(id, deleteComplete, setCoupons, coupons)
+        deleteCoupon(id, deleteComplete)
       }
     };
 
-    const deleteComplete = async () => {
+    const deleteComplete = async (id) => {
       const confirmMessage = "選択した項目は削除されました。";
       await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+      const newCoupons = coupons.filter(coupon => coupon.id !== id)
+
+      const currentPage = newCoupons.length == 0 ? paginate.current_page - 1 : paginate.current_page
+      const searchParams = {
+        params: {...searchValue, page: currentPage}
+      };
+      getCoupons(searchParams, setCoupons, setLinks, setPaginate)
     };
 
     const showUsers = (id) => {

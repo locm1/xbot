@@ -4,13 +4,13 @@ namespace App\Http\Controllers\api\management\invitation;
 
 use App\Http\Controllers\Controller;
 use App\Models\InviteIncentive;
-use App\Services\management\invitation\InviterIncentiveUserService;
+use App\Services\liff\invite\InviterIncentiveService;
 
 class InviterIncentiveController extends Controller
 {
     private $service;
 
-    public function __construct(InviterIncentiveUserService $service)
+    public function __construct(InviterIncentiveService $service)
     {
         $this->service = $service;
     }

@@ -38,11 +38,12 @@ export default () => {
       params: {token: idToken}
     };
 
-    //招待者テーブルから検索をかけ、存在しなかったら追加
+    // 招待者テーブルから検索をかけ、存在しなかったら追加
     storeInviteeUser(formValue).then(response => location.href = "https://lin.ee/nGVYloK")
   }, []);
 
   return (
-    <></>
+    <>
+    </>
   );
 };

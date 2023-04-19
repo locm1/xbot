@@ -33,27 +33,24 @@ class LineWebhookController extends Controller
         foreach ($events as $event) {
             if ($event['type'] === 'follow') {
                 $follow_service = new FollowService($bot, $event['source']['userId']);
-                // $invite_incentive_job_service = new InviteIncentiveJobService;
-                // $invitee_incentive_service = new InviteeIncentiveService;
+                $invite_service = new InviteService;
+                $greeting_service = new GreetingService($bot, $event['source']['userId'], $event['replyToken']);
+                //招待管理のために今回が新規作成か（既にDBに登録されていないか）確認
+                $userExisted = $follow_service->userExists();
                 //ユーザー作成
-                $User = $follow_service->createUser();
+                $User = $follow_service->upsertUser();
                 //流入経路
                 $update_count = $follow_service->checkInflowRoute($User);
-                //招待管理
-                // $InviteIncentiveJob = $invite_incentive_job_service->searchByLineId($User->line_id);
-                // if ($InviteIncentiveJob) $InviteIncentiveJob->update(['invitee_user_id' => $User->id]);
-                //招待クーポン発行
-
-                $greeting_service = new GreetingService($bot, $event['source']['userId'], $event['replyToken']);
-                // $invite_service = new InviteService($bot, $User);
+                //今回が新規登録だった場合、invite処理
+                if (!$userExisted) $invite_service($User->line_id, 1);
+                //挨拶文送信
                 $greeting_service->sendGreetingMessage();
-                // return $invite_service->sendInviteMessage($invitee_incentive_user->is_issued, 'invitee', 1);
                 
             } elseif ($event['type'] === 'unfollow') {
                 $unfollow_service = new UnfollowService($bot, $event['source']['userId']);
                 $unfollow_service->updateUser($event['timestamp']);
             }
-            $response = $bot->replyText($event['replyToken'], $event['message']['text']);
+            // $response = $bot->replyText($event['replyToken'], $event['message']['text']);
         }
         return;
     }

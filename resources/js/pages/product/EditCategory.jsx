@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
-import { Col, Row, Form, Card, Image, Breadcrumb, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Form, Card, Badge, Breadcrumb, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { CirclePicker } from 'react-color';
 
 import { storeCategory, showCategory, updateCategory } from "@/pages/product/api/ProductCategoryApiMethods";
@@ -74,7 +74,7 @@ export default () => {
               <Row>
                 <Col md={12} className="mb-4">
                   <Form.Group id="name">
-                    <Form.Label><span className="questionnaire-required me-2">必須</span>カテゴリー名</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>カテゴリー名</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -92,7 +92,7 @@ export default () => {
                 </Col>
                 <Col md={12} className="mb-4">
                   <Form.Group id="overview">
-                    <Form.Label><span className="questionnaire-required me-2">必須</span>カテゴリー概要</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>カテゴリー概要</Form.Label>
                     <Form.Control
                       as="textarea"
                       rows="3"
@@ -108,7 +108,7 @@ export default () => {
                 </Col>
                 <Col md={12} className="mb-4">
                   <Form.Group id="overview">
-                    <Form.Label><span className="questionnaire-required me-2">必須</span>カテゴリー色選択</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>カテゴリー色選択</Form.Label>
                     <CirclePicker
                       colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']}
                       onChange={handleBackgroundColorChange}

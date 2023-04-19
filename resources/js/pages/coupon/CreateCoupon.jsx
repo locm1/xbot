@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { Col, Row, Form, Button, InputGroup, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
+import { Col, Row, Form, Button, InputGroup, Card, Badge, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Paths } from "@/paths";
@@ -66,7 +66,7 @@ export default () => {
           <Row>
             <Col md={6} className="mb-4">
               <Form.Group id="firstName">
-                <Form.Label><span className="questionnaire-required me-2">必須</span>管理名称</Form.Label>
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>管理名称</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -83,7 +83,7 @@ export default () => {
             </Col>
             <Col md={6} className="mb-4">
               <Form.Group id="lastName">
-                <Form.Label><span className="questionnaire-required me-2">必須</span>使用上限数</Form.Label>
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>使用上限数</Form.Label>
                 <Form.Control
                   required
                   type="number"
@@ -102,7 +102,7 @@ export default () => {
           <Row>
             <Col md={6} className="mb-4">
               <Form.Group id="name">
-                <Form.Label><span className="questionnaire-required me-2">必須</span>割引率(%)</Form.Label>
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>割引率(%)</Form.Label>
                 <InputGroup>
                   <Form.Control
                     required
@@ -122,7 +122,7 @@ export default () => {
             </Col>
             <Col md={6} className="mb-4">
               <Form.Group id="lastName">
-                <Form.Label><span className="questionnaire-required me-2">必須</span>利用コード</Form.Label>
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>利用コード</Form.Label>
                 <Form.Control
                   required
                   type="text"

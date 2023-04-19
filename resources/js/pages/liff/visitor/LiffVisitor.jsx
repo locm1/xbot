@@ -5,7 +5,7 @@ import { Paths } from "@/paths";
 import QRCode from "qrcode.react";
 import liff from '@line/liff';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
-
+import { getVisitorHistoryCount } from "@/pages/liff/api/VisitorHistoryApiMethods";
 import Logo from "@img/img/logo_admin.png";
 import QrCode from "@img/img/add_friend_qr.png";
 
@@ -19,6 +19,7 @@ export default () => {
       ]
     },
   ]);
+  const [visitorCount, setVisitorCount] = useState(0);
   const [uri, setUri] = useState('');
   const [user, setUser] = useState({
     "id": 9999999,
@@ -54,6 +55,7 @@ export default () => {
         getUser(idToken, setUser).then((response) => {
           const location = window.location.href
           setUri(`${location}/confirm/${response.id}`)
+          getVisitorHistoryCount(response.id, setVisitorCount)
         });
       })
       .catch((error) => {
@@ -82,7 +84,7 @@ export default () => {
               </div>
               <div className="text-center text-md-center mb-4 mt-md-0">
                 <h4 className="fs-5 text-white">来店回数</h4>
-                <h5 className="mb-3 text-white"><span className="liff-visitor-count">0</span>回</h5>
+                <h5 className="mb-3 text-white"><span className="liff-visitor-count">{visitorCount}</span>回</h5>
               </div>
             </Col>
           </Row>

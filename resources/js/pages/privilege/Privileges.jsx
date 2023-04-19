@@ -55,6 +55,7 @@ export default () => {
                 <Form onSubmit={(e) => handleKeyDown(e)}>
                   <Form.Control
                     autoFocus
+                    type="number"
                     value={time}
                     className="fs-6 fw-bold p-2 m-0 lh-1 border-0"
                     onChange={(e) => setTime(e.target.value)}

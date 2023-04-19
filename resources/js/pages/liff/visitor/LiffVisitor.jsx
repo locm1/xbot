@@ -61,6 +61,7 @@ export default () => {
       })
     axios.get('/api/v1/privileges')
       .then(response => {
+        console.log(response.data.sort((a, b) => a.visits_times - b.visits_times));
         setPrivileges(response.data.sort((a, b) => a.visits_times - b.visits_times));
       })
       .catch((error) => {

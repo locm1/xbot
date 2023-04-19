@@ -31,20 +31,38 @@ export default (props) => {
         <Col xs={11} lg={9} className="px-0 mb-md-0 mt-2">
           {
             isEdit.id == id ? (
-              <div className="mb-2 d-flex flex-wrap flex-md-nowrap">
-                <Form>
-                  <Form.Control className="tag-edit-form" required type="text" name="name" value={updateName} onChange={(e) => editName(e)} placeholder="タグ名を入力してください" />
-                </Form>
-                <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center">
-                  <div onClick={(e) => updateTag(e, id)} className="tag-edit-button ms-2"><CheckIcon className="icon icon-xs" /></div>
-                  <div onClick={() => setIsEdit(!isEdit)} className="tag-edit-button ms-2"><Button variant="close" /></div>
+              <>
+                <div className="mb-2 d-flex flex-wrap flex-md-nowrap">
+                  <Form>
+                    <Form.Control className="tag-edit-form" required type="text" name="name" value={updateName} onChange={(e) => editName(e)} placeholder="タグ名を入力してください" />
+                  </Form>
                 </div>
-              </div>
+                <div className="d-flex flex-wrap flex-md-nowrap align-items-center">
+                  <div onClick={(e) => updateTag(e, id)} className="ms-2">
+                    {/* <CheckIcon className="icon icon-xs" /> */}
+                    <Button
+                      variant="success"
+                      size="sm"
+                      className="d-inline-flex align-items-center me-3"
+                      onClick={(e) => updateTag(e, id)}
+                    >
+                      保存する
+                    </Button>
+                    <Button
+                      variant="gray-800"
+                      size="sm"
+                      className="d-inline-flex align-items-center me-3"
+                      onClick={() => setIsEdit(!isEdit)}
+                    >
+                      キャンセル
+                    </Button>
+                  </div>
+                </div>
+              </>
             ) : (
               <div className="mb-2">
                 <h6 className="">
                   {name}
-                  <PencilIcon className="icon icon-xs ps-2 pb-1 management-tag-name" onClick={() => handleIsEdit(id)} />
                 </h6>
               </div>
             )
@@ -53,6 +71,9 @@ export default (props) => {
         <Col xs={10} sm={2} lg={2} xl={2} className="d-none d-lg-block d-xl-inline-flex align-items-center ms-lg-auto text-right justify-content-center px-md-0">
           <div className="d-block d-sm-flex">
             <div className="ms-sm-3">
+              <Button onClick={() => handleIsEdit(id)} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+                編集
+              </Button>
               <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
                 削除
               </Button>

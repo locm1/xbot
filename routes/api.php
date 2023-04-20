@@ -242,7 +242,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('users/{user}/event/reservations', [EventReservationController::class, 'index']);
     Route::apiResource('users/{user}/inviter-incentives', LiffInviterIncentiveUserController::class);
     Route::apiResource('users/{user}/invitee-incentives', LiffInviteeIncentiveUserController::class);
-    Route::get('users/{user}/visitor-histories/count', LiffVisitorHistoryController::class);
+    Route::apiResource('users/{user}/visitor-histories', LiffVisitorHistoryController::class);
     Route::get('users/{user}/invites', InviteController::class);
     Route::get('postages', LiffPostageController::class);
     Route::get('address', SearchZipcodeController::class);

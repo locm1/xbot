@@ -6,9 +6,10 @@ import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown }
 import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
+import QRCode from "qrcode.react";
 import { VisitorHistoriesTable } from "@/pages/visitor/VisitorHistoriesTable";
-
 import { getVisitorHistories, deleteVisitorHistory } from "@/pages/visitor/api/VisitorHistoryApiMethods";
+import VisitorHistoryQrModal from "@/pages/visitor/VisitorHistoryQrModal";
 
 export default () => {
   const [visitorHistories, setVisitorHistories] = useState([]);
@@ -20,6 +21,7 @@ export default () => {
   const [paginate, setPaginate] = useState({ 
     current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
   })
+  const [openModal, setOpenModal] = useState(false);
 
   const handleChange = (e, input) => {
     const value = (input == 'start_created_at' || input == 'end_created_at') ? e : e.target.value;
@@ -85,6 +87,10 @@ export default () => {
     getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate)
   };
 
+  const onHide = () => {
+    setOpenModal(!openModal);
+  }
+
   useEffect(() => {
     const searchParams = {
       params: {name: null, start_created_at: null, end_created_at: null, page: 1}
@@ -94,10 +100,21 @@ export default () => {
 
   return (
     <>
+      {openModal && (
+        <VisitorHistoryQrModal
+          show={true}
+          onHide={onHide}
+        />
+      )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">来店履歴</h1>
         </div>
+        <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+        <Button onClick={() => setOpenModal(!openModal)} variant="gray-800" className="mt-2">
+          設置用QRコード
+        </Button>
+      </div>
       </div>
 
       <div className="table-settings mb-4">

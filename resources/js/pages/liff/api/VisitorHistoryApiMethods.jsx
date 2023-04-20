@@ -15,11 +15,13 @@ export const getVisitorHistoryCount = async (userId, setVisitorCount) => {
 export const storeVisitorHistory = async (userId) => {
   return await axios.post(`/api/v1/users/${userId}/visitor-histories`)
   .then((response) => {
-    Swal.fire(
-      '来店処理完了',
-      '来店履歴にデータが作成されました',
-      'success'
-    )
+    Swal.fire({
+      icon: 'success',
+      title: '来店処理完了',
+      text: '来店履歴にデータが作成されました',
+      showConfirmButton: false,
+      timer: 1500
+    })
   })
   .catch(error => {
       console.error(error);

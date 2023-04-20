@@ -4,15 +4,18 @@ namespace App\Http\Controllers\api\liff\visitor;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\liff\visitor\VisitorHistoryService;
 use App\Services\management\user\UserHistoryService;
 use Illuminate\Http\Request;
 
 class VisitorHistoryController extends Controller
 {
     private $service;
+    private $visitor_history_service;
 
-    public function __construct(UserHistoryService $service) {
+    public function __construct(UserHistoryService $service, VisitorHistoryService $visitor_history_service) {
         $this->service = $service;
+        $this->visitor_history_service = $visitor_history_service;
     }
 
     /**
@@ -30,12 +33,12 @@ class VisitorHistoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user)
+    public function store(User $user)
     {
-        // $cart = $this->service->store($request, $user);
-        // return response()->json(['cart' => $cart], 200);
+        $visitor_history = $this->visitor_history_service->store($user);
+        return response()->json(['visitor_history' => $visitor_history], 200);
     }
 }

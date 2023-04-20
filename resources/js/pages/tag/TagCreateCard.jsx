@@ -37,6 +37,25 @@ export default (props) => {
                   autoFocus={true} 
                 />
               </Form>
+                <div className="d-flex flex-wrap flex-row-reverse flex-md-nowrap align-items-center mt-3">
+                  <div className="ms-2">
+                    {/* <CheckIcon className="icon icon-xs" /> */}
+                    <Button
+                      variant="success"
+                      size="sm"
+                      className="d-inline-flex align-items-center me-3"
+                    >
+                      保存する
+                    </Button>
+                    <Button
+                      variant="gray-800"
+                      size="sm"
+                      className="d-inline-flex align-items-center me-3"
+                    >
+                      キャンセル
+                    </Button>
+                  </div>
+                </div>
             </div>
           </Col>
         </Card.Body>

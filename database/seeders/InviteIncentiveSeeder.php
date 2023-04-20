@@ -22,7 +22,7 @@ class InviteIncentiveSeeder extends Seeder
                 "inviter_format" => 1,
                 "inviter_title" => "クーポンタイトル招待側",
                 "inviter_content" => "クーポンタイトル中身",
-                "invitee_timing" => 2,
+                "invitee_timing" => 3,
                 "invitee_format" => 1,
                 "invitee_title" => "クーポンタイトル招待側",
                 "invitee_content" => "クーポンタイトル中身",

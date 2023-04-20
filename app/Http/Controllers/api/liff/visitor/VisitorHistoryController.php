@@ -24,7 +24,7 @@ class VisitorHistoryController extends Controller
      * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function show(User $user)
     {
         $visitor_histories_count = $this->service->getVisitorHistoriesById($user)->count();
         return response()->json(['visitor_histories_count' => $visitor_histories_count], 200);
@@ -36,9 +36,9 @@ class VisitorHistoryController extends Controller
      * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function store(User $user)
+    public function store(User $User)
     {
-        $visitor_history = $this->visitor_history_service->store($user);
+        $visitor_history = $this->visitor_history_service->store($User->id);
         return response()->json(['visitor_history' => $visitor_history], 200);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\liff\visitor_confirm;
 
 use App\Http\Controllers\Controller;
 use App\Models\VisitorHistory;
+use App\Services\liff\visitor\VisitorHistoryService;
 use Illuminate\Http\Request;
 
 class VisitorConfirmController extends Controller
@@ -17,7 +18,8 @@ class VisitorConfirmController extends Controller
     public function __invoke(Request $request)
     {
         if ($request->password === config('api_key')['COMMON_PASSWORD']) {
-            return VisitorHistory::create(['user_id' => $request->user_id]);
+            $visitor_history_service = new VisitorHistoryService;
+            return $visitor_history_service->store((int) $request->user_id);
         }
         return abort(401, '認証失敗');
     }

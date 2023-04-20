@@ -34,7 +34,7 @@ class InviteIncentiveJobService
         $five_minute_before = date("Y-m-d H:i:s",strtotime("-5 minute"));
         $now = date('Y-m-d H:i:s');
         $term = [$five_minute_before, $now];
-        $InviteIncentiveJob = InviteIncentiveJob::with('inviteIncentive')->where('invitee_line_id', $line_id)->whereBetween('created_at', $term)->first();
+        $InviteIncentiveJob = InviteIncentiveJob::with('inviteIncentive')->where('invitee_line_id', $line_id)->latest()->first();
         return $InviteIncentiveJob;
     }
 
@@ -43,7 +43,7 @@ class InviteIncentiveJobService
         $five_minute_before = date("Y-m-d H:i:s",strtotime("-5 minute"));
         $now = date('Y-m-d H:i:s');
         $term = [$five_minute_before, $now];
-        $InviteIncentiveJob = InviteIncentiveJob::with('inviteIncentive')->where('invitee_user_id', $user_id)->whereBetween('created_at', $term)->first();
+        $InviteIncentiveJob = InviteIncentiveJob::with('inviteIncentive')->where('invitee_user_id', $user_id)->latest()->first();
 
         return $InviteIncentiveJob;
     }

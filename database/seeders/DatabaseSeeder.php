@@ -79,9 +79,10 @@ class DatabaseSeeder extends Seeder
                 // UserSeeder::class,
                 InflowRouteSeeder::class,
                 InviteIncentiveSeeder::class,
-                InviteIncentiveJobSeeder::class,
-                InviteeIncentiveSeeder::class,
-                InviterIncentiveSeeder::class
+                DefaultInviteIncentiveSeeder::class,
+                // InviteIncentiveJobSeeder::class,
+                // InviteeIncentiveSeeder::class,
+                // InviterIncentiveSeeder::class
             ]);
             Admin::factory(10)->create();
             Occupation::factory(10)->create();
@@ -111,7 +112,7 @@ class DatabaseSeeder extends Seeder
             InviteHistory::factory(100)->create();
             ReserveHistory::factory(300)->create();
             RelatedProduct::factory(300)->create();
-            InviteIncentive::factory(100)->create();
+            // InviteIncentive::factory(100)->create();
             // InviterIncentiveUser::factory(100)->create()->each(function($inviter_incentive_user) {
             //     InviteeIncentiveUser::factory()->create(['inviter_incentive_user_id' => $inviter_incentive_user->id]);
             // });

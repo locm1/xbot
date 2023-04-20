@@ -28,7 +28,12 @@ class FollowService
         $this->bot = $bot;
     }
 
-    public function createUser()
+    public function userExists(): bool
+    {
+        return User::where('line_id', $this->line_id)->first() ? true : false;
+    }
+
+    public function upsertUser()
     {
         $response = $this->bot->getProfile($this->line_id);
         if ($response->isSucceeded()) {

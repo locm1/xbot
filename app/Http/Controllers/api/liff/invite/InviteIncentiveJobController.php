@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\api\liff\invite;
 
 use App\Http\Controllers\Controller;
-use App\Services\liff\invite\InviteeUserService;
+use App\Services\liff\invite\InviteIncentiveJobService;
 use Illuminate\Http\Request;
 
 class InviteIncentiveJobController extends Controller
 {
     private $service;
 
-    public function __construct(InviteeUserService $service)
+    public function __construct(InviteIncentiveJobService $service)
     {
         $this->service = $service;
     }

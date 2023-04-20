@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Col, Row, Form, Button, Badge , Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import Swal from "sweetalert2";
+import { Paths } from "@/paths";
 import { showInviteIncentive, updateInviteIncentive, storeInviteIncentive } from "@/pages/invitation/api/InviteIncentiveApiMethods";
 
 export default () => {
   const { id } = useParams();
+  const history = useHistory();
   const pathname = useLocation().pathname;
   const [inviteIncentive, setInviteIncentive] = useState({
     name: '', invitee_content: '', invitee_timing: 1, invitee_format: 1, invitee_title: '',
@@ -19,10 +21,14 @@ export default () => {
     return setInviteIncentive({...inviteIncentive, [name]: value})
   };
 
-  const storeComplete = (message) => {
+  const storeComplete = (message, id) => {
     Swal.fire(
       `${message}完了`, `招待情報の${message}に成功しました`, 'success'
-    )
+    ).then(result => {
+      if (result.isConfirmed) {
+        history.push(Paths.EditInviteIncentive.path.replace(':id', id))
+      }
+    })
   } 
 
   const handleClick = () => {

@@ -20,7 +20,9 @@ class InviteIncentiveService
 
     public function index() 
     {
-        $invite_incentives = InviteIncentive::paginate(10);
+        $invite_incentives = InviteIncentive::whereIn('id', function($query) {
+            $query->select(DB::raw('MAX(id) As id'))->from('invite_incentives')->groupBy('version_key');
+        })->paginate(10);
         $default_invite_incentive = DefaultInviteIncentive::find(1);
         return [
             'invite_incentives' => $invite_incentives,

@@ -32,9 +32,9 @@ export const showInviteIncentive = async (id, setInviteIncentive) => {
 };
 
 export const storeInviteIncentive = async (inviteIncentive, storeComplete) => {
-  axios.post(`/api/v1/management/invite-incentives`, inviteIncentive)
+  return axios.post(`/api/v1/management/invite-incentives`, inviteIncentive)
   .then((response) => {
-    storeComplete('登録');
+    storeComplete('登録', response.data.invite_incentive.id);
   })
   .catch(error => {
       console.error(error);
@@ -44,7 +44,7 @@ export const storeInviteIncentive = async (inviteIncentive, storeComplete) => {
 export const updateInviteIncentive = async (id, inviteIncentive, storeComplete) => {
   axios.put(`/api/v1/management/invite-incentives/${id}`, inviteIncentive)
   .then((response) => {
-    storeComplete('更新');
+    storeComplete('更新', response.data.invite_incentive.id);
   })
   .catch(error => {
       console.error(error);

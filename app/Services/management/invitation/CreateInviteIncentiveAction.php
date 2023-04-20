@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateInviteIncentiveAction
 {
-    public function createInviteIncentive($request, $data, $version_key) 
+    public function createInviteIncentive($request, $data, $version_key): InviteIncentive
     {
         return DB::transaction(function () use ($data, $version_key, $request) {
             $invite_incentive = InviteIncentive::create(array_merge($data, ['version_key' => $version_key]));

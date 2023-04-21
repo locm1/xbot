@@ -387,6 +387,7 @@ const Routing = () => {
   const history = useHistory();
   
   axios.interceptors.response.use(null, (error) => {
+    console.log(error);
     if (error.response.status === 401) {
       history.push('/manage/login'); // ログイン画面にリダイレクト
     }

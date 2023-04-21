@@ -124,7 +124,7 @@ export default () => {
     
 
     return (
-      <div className="dropzone-preview pb-4 product-preview-image-wrap">
+      <div className="dropzone-preview py-2">
         <div>{index + 1}枚目</div>
         <div className="product-preview-image d-flex">
           <Image src={image_path} className="dropzone-image" onClick={() => changeImage(id)} />

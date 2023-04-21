@@ -7,7 +7,7 @@ import { useLayoutEffect } from "react";
 export default () => {
   const [sendMessages, setSendMessages] = useState([]);
   const [paginate, setPaginate] = useState({ 
-    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+    current_page: 0, per_page: 0, from: 0, to: 0,total: 0 
   })
   const [links, setLinks] = useState([]);
   

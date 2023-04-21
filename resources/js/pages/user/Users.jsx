@@ -17,6 +17,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
+  const [isRendered, setIsRendered] = useState(false);
   const [users, setUsers] = useState([]);
   const [searchValue, setSearchValue] = useState({
     name: '', tel: ''
@@ -25,7 +26,7 @@ export default () => {
     man: '', women: '', others: ''
   })
   const [paginate, setPaginate] = useState({ 
-    current_page: 1, per_page: 1, from: 1, to: 1, total: 1 
+    current_page: 0, per_page: 0, from: 0, to: 0, total: 0 
   })
   const [links, setLinks] = useState([]);
   const [timer, setTimer] = useState(null);
@@ -79,11 +80,11 @@ export default () => {
     const searchParams = {
       params: {name: null, tel: null, page: 1}
     };
-    getUsers(searchParams, setUsers, setLinks, setPaginate)
+    getUsers(searchParams, setUsers, setLinks, setPaginate,setIsRendered)
     getDemographic(setDemographic)
   }, []);
 
-  return (
+  return isRendered ? (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap">
         <div className="d-block mb-4 mb-md-0">
@@ -139,5 +140,7 @@ export default () => {
         searchValue={searchValue}
       />
     </>
+  ) :  (
+    <></>
   );
 };

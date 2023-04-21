@@ -1,5 +1,5 @@
-export const getUsers = async (params, setUsers, setLinks, setPaginate) => {
-  axios.get('/api/v1/management/users', params)
+export const getUsers = async (params, setUsers, setLinks, setPaginate, setIsRendered) => {
+  return axios.get('/api/v1/management/users', params)
   .then((response) => {
     const users = response.data.users;
     setUsers(users.data);
@@ -11,6 +11,7 @@ export const getUsers = async (params, setUsers, setLinks, setPaginate) => {
       to: users.to,
       total: users.total,
     })
+    setIsRendered(true);
   })
   .catch(error => {
       console.error(error);
@@ -31,13 +32,14 @@ export const getDemographic = async (setDemographic) => {
   });
 };
 
-export const showUser = async (id, setUser) => {
+export const showUser = async (id, setUser, setIsRendered) => {
   axios.get(`/api/v1/management/users/${id}`)
     .then((res) => {
       if(res.status !== 200) {
         throw new Error("APIが正しく取得されませんでした");
       } else {
         setUser(res.data.user);
+        setIsRendered(true);
       }
     });
 };

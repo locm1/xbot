@@ -24,6 +24,7 @@ import { CSVLink } from "react-csv";
 import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const [isRendered, setIsrendered] = useState(false);
   const { setIsLoading } = useContext(LoadingContext);
   const [definedQuestion, setDefinedQuestion] = useState([]);
   const [questionnaires, setQuestionnaires] = useState([]);
@@ -267,6 +268,7 @@ export default () => {
         .then((response) => {
           const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
           setSegmentTemplates(newSegmentTemplates);
+          setIsrendered(true);
         })
         .catch(error => {
             console.error(error);
@@ -504,12 +506,11 @@ export default () => {
     };
   }
 
-  return (
+  return isRendered ? (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          <Button onClick={() => {console.log(selectTemplate)}} />
           {/* <Button onClick={() => {console.log(templates)}} /> */}
           {/* <Button onClick={() => {console.log(users)}} /> */}
           {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
@@ -591,5 +592,7 @@ export default () => {
         </Button>
       </div>
     </>
+  ) : (
+    <></>
   );
 };

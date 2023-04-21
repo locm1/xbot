@@ -17,7 +17,7 @@ import "./bootstrap";
 // packages
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useHistory } from "react-router-dom";
 
 // Components
 import Routing from "@/routing";
@@ -31,7 +31,6 @@ import "leaflet/dist/leaflet.css";
 //import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import "react-datetime/css/react-datetime.css";
 import { create } from "lodash";
-
 
 import { LoadingProvider } from "./components/LoadingContext";
 import { LoadingScreen } from "./components/LoadingScreen";

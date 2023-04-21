@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { HomeIcon, UserIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, Form, Nav, Button, Tab, Breadcrumb } from 'react-bootstrap';
 import { ProfileCardWidget } from "@/components/Widgets";
@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 
 
 export default () => {
+  const [isRendered, setIsRendered] = useState(false);
   const { id } = useParams();
   const orderHistoryHeaders = ['注文日時', '注文商品', '個数', '値段'];
   const reserveHistoryHeaders = ['取置日時', '取置商品', '個数', '期日'];
@@ -55,8 +56,8 @@ export default () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [tags, setTags] = useState([]);
 
-  useEffect(() => {
-    showUser(id, setUser)
+  useLayoutEffect(() => {
+    showUser(id, setUser, setIsRendered)
     getUserVisitorHistories(id, setVisitorHistory)
     getUserVisitorHistoryCount(id, setVisitCount)
     getOccupations(setOccupations)
@@ -76,7 +77,7 @@ export default () => {
   }
 
   
-  return (
+  return isRendered ? (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
@@ -153,10 +154,12 @@ export default () => {
         </Tab.Content>
       </Tab.Container>
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.Users.path} className="mt-2 animate-up-2">
+        <Button href={Paths.Users.path} className="mt-2 animate-up-2 btn-secondary">
           ユーザーリストに戻る
         </Button>
       </div>
     </>
+  ) : (
+    <></>
   );
 };

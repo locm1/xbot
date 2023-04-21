@@ -384,6 +384,14 @@ const GuestRoute = ({ component: Component, ...rest }) => {
 
 
 const Routing = () => {
+  const history = useHistory();
+  
+  axios.interceptors.response.use(null, (error) => {
+    if (error.response.status === 401) {
+      history.push('/manage/login'); // ログイン画面にリダイレクト
+    }
+    return Promise.reject(error);
+  });
   return (
     <Switch>
       <GuestRoute exact path={Paths.Signin.path} component={SignIn} />

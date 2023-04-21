@@ -14,7 +14,7 @@ import { getCoupons, deleteCoupon, getCouponUsers } from "@/pages/coupon/api/Cou
 export default () => {
   const [coupons, setCoupons] = useState([]);
   const [paginate, setPaginate] = useState({ 
-    current_page: 1, per_page: 1, from: 1, to: 1,total: 1 
+    current_page: 0, per_page: 0, from: 0, to: 0,total: 0 
   })
   const [links, setLinks] = useState([]);
   const [name, setName] = useState('');

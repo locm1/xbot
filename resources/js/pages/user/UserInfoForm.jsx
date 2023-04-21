@@ -171,14 +171,15 @@ export const UserInfoForm = (props) => {
               <TagForm userId={id} tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
             </Col>
           </Row>
-
+        </Form>
+      </Card.Body>
+      <Card.Footer>
         <div className="d-flex justify-content-end">
-          <Button variant="success" className="me-2" onClick={saveUser}>
+          <Button variant="success" className="me-2 col-md-4 col-6" onClick={saveUser}>
             保存する
           </Button>
         </div>
-        </Form>
-      </Card.Body>
+      </Card.Footer>
     </Card>
   );
 };

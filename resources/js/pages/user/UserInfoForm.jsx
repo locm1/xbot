@@ -75,7 +75,6 @@ export const UserInfoForm = (props) => {
           </Row> */}
           <Row className="align-items-center">
             <Col md={6} className="mb-3">
-              <Form.Group id="birthday">
                 <Form.Label>生年月日</Form.Label>
                 <Flatpickr
                   options={ birthDateOptions }
@@ -101,7 +100,6 @@ export const UserInfoForm = (props) => {
                     );
                   }}
                 />
-              </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="gender">
@@ -114,8 +112,6 @@ export const UserInfoForm = (props) => {
                 </Form.Select>
               </Form.Group>
             </Col>
-          </Row>
-          <Row>
           <Col md={4} className="mb-3">
               <Form.Group id="zipcode">
                 <Form.Label>郵便番号</Form.Label>

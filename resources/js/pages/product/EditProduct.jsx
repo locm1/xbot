@@ -122,7 +122,7 @@ export default () => {
     
 
     return (
-      <Col md={2} className="dropzone-preview py-2 product-preview-image-wrap">
+      <div className="dropzone-preview py-2">
         <div>{index + 1}枚目</div>
         <div className="product-preview-image d-flex">
           <Image src={image_path} className="dropzone-image" onClick={() => changeImage(id)} />
@@ -138,7 +138,7 @@ export default () => {
             onChange={(e) => handleChange(id, e)}
           />
         </div>
-      </Col>
+      </div>
     );
   };
 

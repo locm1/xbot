@@ -19,12 +19,12 @@ class QuestionnaireEnablingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  QuestionnaireEnabling $questionnaire_enabling
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(QuestionnaireEnabling $questionnaire_enabling)
+    public function show($id)
     {
-        $questionnaireEnabling = $this->service->show($questionnaire_enabling);
+        $questionnaireEnabling = $this->service->show($id);
         return response()->json(['questionnaire_enabling' => $questionnaireEnabling], 200);
     }
 

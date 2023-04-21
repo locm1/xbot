@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Auth;
 class QuestionnaireEnablingService
 {
 
-    public function show(QuestionnaireEnabling $questionnaire_enabling): QuestionnaireEnabling
+    public function show($id): QuestionnaireEnabling
     {
-        return $questionnaire_enabling;
+        return QuestionnaireEnabling::find($id);
     }
 
     /**

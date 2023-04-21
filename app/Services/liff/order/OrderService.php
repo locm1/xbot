@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\api\line\invite\InviteService;
 use App\Services\liff\order\SearchOrderAction;
 use App\Services\api\payjp\charge\ChargeService;
 use App\Services\liff\invite\IssueInviteIncentiveService;
@@ -77,18 +78,12 @@ class OrderService
             # 注文メール送信
             $this->order_mail_service->sendOrderMail($order, $merged_order_products);
 
-            # ユーザーが初購入の場合、インセンティブ発行
-            if (Order::where('user_id', $user->id)->count() == 1) {
-                $issue_invite_incentive_service = new IssueInviteIncentiveService($user, 4);
-
-                # 招待者のインセンティブ発行
-                $issue_invite_incentive_service->issueInviteeIncentive();
-                # スピーカーのインセンティブ発行
-                $inviter_invite_incentive = $issue_invite_incentive_service->issueInviterIncentive();
-            }
-
             DB::commit();
 
+            # ユーザーが初購入の場合、インセンティブ発行
+            if (Order::where('user_id', $user->id)->count() === 1) {
+                $issued = (new InviteService)($user->id, 4);
+            }
         } catch (\Exception $e) {
             if ($order['payment_method'] == 1) {
                 # pay.jp APIで決済の取り消し

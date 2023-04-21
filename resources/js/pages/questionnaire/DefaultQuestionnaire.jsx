@@ -11,9 +11,20 @@ export default () => {
   const [isValid, setIsValid] = useState(false);
 
   const handleChange = (e, id, input) => {
+    const newUserInfoStatus = userInfoStatuses.find(status => status.id == id)
+
+    if (input == 'is_required') {
+      newUserInfoStatus.is_required = e.target.value
+    }
+
+    if (input == 'is_undisclosed' && e.target.value == 1) {
+      newUserInfoStatus.is_undisclosed = e.target.value
+      newUserInfoStatus.is_required = 0
+    } else if (input == 'is_undisclosed' && e.target.value == 0) {
+      newUserInfoStatus.is_undisclosed = e.target.value
+    }
     setUserInfoStatuses(
-      userInfoStatuses.map((userInfoStatus) => 
-      (userInfoStatus.id === id ? {...userInfoStatus, [input]: e.target.value} : userInfoStatus))
+      userInfoStatuses.map((userInfoStatus) => (userInfoStatus.id === id ? newUserInfoStatus : userInfoStatus))
     );
   };
 
@@ -46,7 +57,12 @@ export default () => {
           </Form.Select>
         </td>
         <td>
-          <Form.Select value={is_required} className="mb-0" onChange={(e) => {handleChange(e, id, 'is_required')}}>
+          <Form.Select
+            value={is_required}
+            className="mb-0"
+            onChange={(e) => {handleChange(e, id, 'is_required')}}
+            disabled={is_undisclosed == 1 && true}
+          >
             <option value="0">任意</option>
             <option value="1">必須</option>
           </Form.Select>

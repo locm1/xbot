@@ -29,7 +29,8 @@ class InviteService
     {
         $invite_incentive_job_service = new InviteIncentiveJobService;
         $type = gettype($id);
-        if ($type === "int") {
+        $InviteIncentiveJob = null;
+        if ($type === "integer") {
             $user_id = $id;
             $InviteIncentiveJob = $invite_incentive_job_service->findByUserId($id);
         } else if ($type === "string") {
@@ -44,8 +45,8 @@ class InviteService
             $this->sendInviteMessage($user_id);
         }
         if ($InviteIncentiveJob->inviteIncentive->inviter_timing === $timing) {
-            $invitee_incentive_service = new InviterIncentiveService;
-            $invitee_incentive_service->issue($InviteIncentiveJob);
+            $inviter_incentive_service = new InviterIncentiveService;
+            $inviter_incentive_service->issue($InviteIncentiveJob);
             $this->sendInviteMessage($InviteIncentiveJob->inviter_user_id);
         }
         return true;

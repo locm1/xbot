@@ -4,9 +4,21 @@ import { Paths } from "@/paths";
 export const getSelectOrderDestination = async (userId, setDeliveryAddress) => {
   return await axios.get(`/api/v1/users/${userId}/selected-destination`)
   .then((response) => {
+    const order_destination = response.data.order_destination;
     setDeliveryAddress(response.data.order_destination);
-    console.log(response.data.order_destination);
-    return response.data.order_destination;
+
+    if (order_destination == null) {
+      const new_order_destination = {
+        first_name: '', first_name_kana: '', last_name: '', last_name_kana: '',
+        zipcode: '', prefecture: '', city: '', address: '', building_name: '', 
+        tel: '', is_selected: ''
+      }
+      setDeliveryAddress(new_order_destination);
+      return new_order_destination;
+    } else {
+      setDeliveryAddress(order_destination);
+      return order_destination;
+    }
   })
   .catch(error => {
       console.error(error);

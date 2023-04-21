@@ -89,8 +89,8 @@ export default () => {
     Object.assign(formValue, {questionnaires: questionnaires});
     console.log(formValue);
     console.log(user);
-    // storeQuestionnaireAnswers(user.id, formValue, setErrors, setIsLoading, onSave)
-    storeQuestionnaireAnswers(1, formValue, setErrors, setIsLoading, onSave)
+    storeQuestionnaireAnswers(user.id, formValue, setErrors, setIsLoading, onSave)
+    //storeQuestionnaireAnswers(1, formValue, setErrors, setIsLoading, onSave)
     //storeQuestionnaireAnswers(user.id, formValue, setErrors)
     //storeQuestionnaireAnswers(100, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
 
@@ -130,13 +130,14 @@ export default () => {
     }
   };
 
+  const UserInfoIsDisclosed = (name) => {
+    const userInfoStatus = userInfoStatuses.find(status => status.name == name);
+    return userInfoStatus.is_undisclosed == 0 ? true : false
+  };
+
   useEffect(() => {
-    // const idToken = liff.getIDToken();
-    // getUser(idToken, setUser).then(response => {
-    //   if (response.is_registered == 1) {
-    //     history.push(Paths.LiffAlreadyQuestionnaire.path);
-    //   }
-    // })
+    const idToken = liff.getIDToken();
+    getUser(idToken, setUser)
     getUserInfoStatuses(setUserInfoStatuses)
     showQuestionnaireEnabling(1, setQuestionnaireEnabling)
     getPrefectures(setPrefectures)
@@ -161,242 +162,294 @@ export default () => {
                 </Card.Header>
                 <Card.Body className="py-0">
                   <Row className="mt-3">
-                    <Col xs={12} className="mb-5">
-                      <Form.Label>{UserInfoIsRequired('氏名')}氏名</Form.Label>
-                      <div className="d-flex">
-                        <Form.Group id="last_name" className="pe-3">
-                          <Form.Control 
-                            required
-                            type="text" 
-                            name="last_name" 
-                            value={formValue.last_name} 
-                            onChange={(e) => handleChange(e, 'last_name')} 
-                            placeholder="例）山田" 
-                            isInvalid={!!errors.last_name}
-                            autoComplete="family-name"
-                          />
-                          {
-                            errors.last_name && 
-                            <Form.Control.Feedback type="invalid">{errors.last_name[0]}</Form.Control.Feedback>
-                          }
-                        </Form.Group>
-                        <Form.Group id="first_name" className="ps-3">
-                          <Form.Control 
-                            required
-                            type="text"
-                            name="first_name"
-                            value={formValue.first_name} 
-                            onChange={(e) => handleChange(e, 'first_name')} 
-                            placeholder="例）太郎"
-                            isInvalid={!!errors.first_name}
-                            autoComplete="given-name"
-                          />
-                          {
-                            errors.first_name && 
-                            <Form.Control.Feedback type="invalid">{errors.first_name[0]}</Form.Control.Feedback>
-                          }
-                        </Form.Group>
-                      </div>
-                    </Col>
-                    <Col xs={12} className="mb-5">
-                      <Form.Label>{UserInfoIsRequired('フリガナ')}フリガナ</Form.Label>
-                      <div className="d-flex">
-                        <Form.Group id="last_name_kana" className="pe-3">
-                          <Form.Control
-                            required
-                            type="text"
-                            name="last_name_kana"
-                            value={formValue.last_name_kana} 
-                            onChange={(e) => handleChange(e, 'last_name_kana')} 
-                            placeholder="例）ヤマダ"
-                            isInvalid={!!errors.last_name_kana}
-                            autoComplete="family-name"
-                          />
-                          {
-                            errors.last_name_kana && 
-                            <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
-                          }
-                        </Form.Group>
-                        <Form.Group id="first_name_kana" className="ps-3">
-                          <Form.Control
-                            required
-                            type="text"
-                            name="first_name_kana"
-                            value={formValue.first_name_kana} 
-                            onChange={(e) => handleChange(e, 'first_name_kana')} 
-                            placeholder="例）タロウ"
-                            isInvalid={!!errors.first_name_kana}
-                            autoComplete="given-name"
-                          />
-                          {
-                            errors.last_name_kana && 
-                            <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
-                          }
-                        </Form.Group>
-                      </div>
-                    </Col>
-                  </Row>
-                        
-                  <LiffQuestionnaireBirthdateForm formValue={formValue} handleChange={handleChange} UserInfoIsRequired={UserInfoIsRequired} />
-                        
-                  <Row className="">
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="gender">
-                        <Form.Label>{UserInfoIsRequired('性別')}性別</Form.Label>
-                          <div>
-                            {
-                              genders.map((gender, index) => 
-                                <Form.Check
-                                  key={`gender-${index + 1}`}
-                                  defaultChecked={index == 0 ? true : false}
-                                  type="radio"
-                                  defaultValue={gender}
-                                  label={gender}
-                                  name="gender"
-                                  value={index + 1}
-                                  id={`gender-${gender}`}
-                                  htmlFor={`gender-${gender}`}
-                                  onChange={() => changeGender(index + 1)}
-                                />
-                              )
-                            }
+                    {
+                      UserInfoIsDisclosed('氏名') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Label>{UserInfoIsRequired('氏名')}氏名</Form.Label>
+                          <div className="d-flex">
+                            <Form.Group id="last_name" className="pe-3">
+                              <Form.Control 
+                                required
+                                type="text" 
+                                name="last_name" 
+                                value={formValue.last_name} 
+                                onChange={(e) => handleChange(e, 'last_name')} 
+                                placeholder="例）山田" 
+                                isInvalid={!!errors.last_name}
+                                autoComplete="family-name"
+                              />
+                              {
+                                errors.last_name && 
+                                <Form.Control.Feedback type="invalid">{errors.last_name[0]}</Form.Control.Feedback>
+                              }
+                            </Form.Group>
+                            <Form.Group id="first_name" className="ps-3">
+                              <Form.Control 
+                                required
+                                type="text"
+                                name="first_name"
+                                value={formValue.first_name} 
+                                onChange={(e) => handleChange(e, 'first_name')} 
+                                placeholder="例）太郎"
+                                isInvalid={!!errors.first_name}
+                                autoComplete="given-name"
+                              />
+                              {
+                                errors.first_name && 
+                                <Form.Control.Feedback type="invalid">{errors.first_name[0]}</Form.Control.Feedback>
+                              }
+                            </Form.Group>
                           </div>
-                      </Form.Group>
-                    </Col>
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="tel">
-                        <Form.Label>{UserInfoIsRequired('電話番号')}電話番号</Form.Label>
-                        <Form.Control
-                          required
-                          type="tel"
-                          name="tel"
-                          placeholder="例）08000000000"
-                          value={formValue.tel} 
-                          onChange={(e) => handleChange(e, 'tel')} 
-                          isInvalid={!!errors.tel}
-                          autoComplete="tel"
-                        />
-                        {
-                          errors.tel && 
-                          <Form.Control.Feedback type="invalid">{errors.tel[0]}</Form.Control.Feedback>
-                        }
-                      </Form.Group>
-                    </Col>
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="occupation">
-                        <Form.Label>{UserInfoIsRequired('ご職業')}ご職業</Form.Label>
-                        <Form.Select defaultValue="0" value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id')} className="mb-0 w-100">
-                          {
-                            occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)
-                          }
-                        </Form.Select>
-                      </Form.Group>
-                    </Col>
+                        </Col>
+                      )
+                    }
+                    {
+                      UserInfoIsDisclosed('フリガナ') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Label>{UserInfoIsRequired('フリガナ')}フリガナ</Form.Label>
+                          <div className="d-flex">
+                            <Form.Group id="last_name_kana" className="pe-3">
+                              <Form.Control
+                                required
+                                type="text"
+                                name="last_name_kana"
+                                value={formValue.last_name_kana} 
+                                onChange={(e) => handleChange(e, 'last_name_kana')} 
+                                placeholder="例）ヤマダ"
+                                isInvalid={!!errors.last_name_kana}
+                                autoComplete="family-name"
+                              />
+                              {
+                                errors.last_name_kana && 
+                                <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
+                              }
+                            </Form.Group>
+                            <Form.Group id="first_name_kana" className="ps-3">
+                              <Form.Control
+                                required
+                                type="text"
+                                name="first_name_kana"
+                                value={formValue.first_name_kana} 
+                                onChange={(e) => handleChange(e, 'first_name_kana')} 
+                                placeholder="例）タロウ"
+                                isInvalid={!!errors.first_name_kana}
+                                autoComplete="given-name"
+                              />
+                              {
+                                errors.last_name_kana && 
+                                <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
+                              }
+                            </Form.Group>
+                          </div>
+                        </Col>
+                      )
+                    }
                   </Row>
-                        
+                  
+                  {
+                    UserInfoIsDisclosed('生年月日') && (
+                      <LiffQuestionnaireBirthdateForm 
+                        formValue={formValue}
+                        handleChange={handleChange}
+                        UserInfoIsRequired={UserInfoIsRequired}
+                      />
+                    )
+                  }
+                  
                   <Row className="">
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="zipcode">
-                        <Form.Label>{UserInfoIsRequired('郵便番号')}郵便番号</Form.Label>
-                        <Form.Control
-                          required
-                          type="number"
-                          name="zipcode"
-                          placeholder="例）0001111"
-                          value={formValue.zipcode} 
-                          onChange={(e) => searchZipCode(e, 'zipcode')} 
-                          isInvalid={!!errors.zipcode}
-                          autoComplete="postal-code"
-                        />
-                        {
-                          errors.zipcode && 
-                          <Form.Control.Feedback type="invalid">{errors.zipcode[0]}</Form.Control.Feedback>
-                        }
-                      </Form.Group>
-                    </Col>
+                    {
+                      UserInfoIsDisclosed('性別') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="gender">
+                            <Form.Label>{UserInfoIsRequired('性別')}性別</Form.Label>
+                              <div>
+                                {
+                                  genders.map((gender, index) => 
+                                    <Form.Check
+                                      key={`gender-${index + 1}`}
+                                      defaultChecked={index == 0 ? true : false}
+                                      type="radio"
+                                      defaultValue={gender}
+                                      label={gender}
+                                      name="gender"
+                                      value={index + 1}
+                                      id={`gender-${gender}`}
+                                      htmlFor={`gender-${gender}`}
+                                      onChange={() => changeGender(index + 1)}
+                                    />
+                                  )
+                                }
+                              </div>
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
+                    {
+                      UserInfoIsDisclosed('電話番号') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="tel">
+                            <Form.Label>{UserInfoIsRequired('電話番号')}電話番号</Form.Label>
+                            <Form.Control
+                              required
+                              type="tel"
+                              name="tel"
+                              placeholder="例）08000000000"
+                              value={formValue.tel} 
+                              onChange={(e) => handleChange(e, 'tel')} 
+                              isInvalid={!!errors.tel}
+                              autoComplete="tel"
+                            />
+                            {
+                              errors.tel && 
+                              <Form.Control.Feedback type="invalid">{errors.tel[0]}</Form.Control.Feedback>
+                            }
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
+                    {
+                      UserInfoIsDisclosed('ご職業') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="occupation">
+                            <Form.Label>{UserInfoIsRequired('ご職業')}ご職業</Form.Label>
+                            <Form.Select defaultValue="0" value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id')} className="mb-0 w-100">
+                              {
+                                occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)
+                              }
+                            </Form.Select>
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
+                  </Row>
+                  
+                  <Row className="">
+                    {
+                      UserInfoIsDisclosed('郵便番号') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="zipcode">
+                            <Form.Label>{UserInfoIsRequired('郵便番号')}郵便番号</Form.Label>
+                            <Form.Control
+                              required
+                              type="number"
+                              name="zipcode"
+                              placeholder="例）0001111"
+                              value={formValue.zipcode} 
+                              onChange={(e) => searchZipCode(e, 'zipcode')} 
+                              isInvalid={!!errors.zipcode}
+                              autoComplete="postal-code"
+                            />
+                            {
+                              errors.zipcode && 
+                              <Form.Control.Feedback type="invalid">{errors.zipcode[0]}</Form.Control.Feedback>
+                            }
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
                   </Row>
                   <Row className="">
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="prefecture">
-                        <Form.Label>{UserInfoIsRequired('都道府県')}都道府県</Form.Label>
-                        <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="mb-0 w-100">
-                          {
-                            prefectures && prefectures.map((prefecture, index) => <option key={index} value={prefecture.name}>{prefecture.name}</option>)
-                          }
-                        </Form.Select>
-                      </Form.Group>
-                    </Col>
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="city">
-                        <Form.Label>{UserInfoIsRequired('市区町村')}市区町村</Form.Label>
-                        <Form.Control
-                          required
-                          type="text"
-                          name="city"
-                          placeholder="例）札幌市中央区南一条西"
-                          value={formValue.city} 
-                          onChange={(e) => handleChange(e, 'city')} 
-                          isInvalid={!!errors.city}
-                          autoComplete="address-level2"
-                        />
-                        {
-                          errors.city && 
-                          <Form.Control.Feedback type="invalid">{errors.city[0]}</Form.Control.Feedback>
-                        }
-                      </Form.Group>
-                    </Col>
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="address">
-                        <Form.Label>{UserInfoIsRequired('丁目・番地・号')}丁目・番地・号</Form.Label>
-                        <Form.Control
-                          required
-                          type="text"
-                          name="address"
-                          placeholder="例）5-16"
-                          value={formValue.address} 
-                          onChange={(e) => handleChange(e, 'address')} 
-                          isInvalid={!!errors.address}
-                          autoComplete="address-level3"
-                        />
-                        {
-                          errors.address && 
-                          <Form.Control.Feedback type="invalid">{errors.address[0]}</Form.Control.Feedback>
-                        }
-                      </Form.Group>
-                    </Col>
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="building_name">
-                        <Form.Label>{UserInfoIsRequired('建物名/会社名')}建物名/会社名</Form.Label>
-                        <Form.Control
-                          required
-                          type="text"
-                          name="building_name"
-                          placeholder="例）プレジデント松井ビル100"
-                          value={formValue.building_name} 
-                          onChange={(e) => handleChange(e, 'building_name')} 
-                          isInvalid={!!errors.building_name}
-                          autoComplete="address-level4"
-                        />
-                        {
-                          errors.building_name && 
-                          <Form.Control.Feedback type="invalid">{errors.building_name[0]}</Form.Control.Feedback>
-                        }
-                      </Form.Group>
-                    </Col>
-                    <Col xs={12} className="mb-5">
-                      <Form.Group id="room_number">
-                        <Form.Label>{UserInfoIsRequired('部屋番号')}部屋番号</Form.Label>
-                        <Form.Control
-                          required
-                          type="number"
-                          name="room_number"
-                          placeholder="例）3"
-                          value={formValue.room_number} 
-                          onChange={(e) => handleChange(e, 'room_number')} 
-                          autoComplete="address-level4"
-                        />
-                      </Form.Group>
-                    </Col>
+                    {
+                      UserInfoIsDisclosed('都道府県') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="prefecture">
+                            <Form.Label>{UserInfoIsRequired('都道府県')}都道府県</Form.Label>
+                            <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="mb-0 w-100">
+                              {
+                                prefectures && prefectures.map((prefecture, index) => <option key={index} value={prefecture.name}>{prefecture.name}</option>)
+                              }
+                            </Form.Select>
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
+                    {
+                      UserInfoIsDisclosed('市区町村') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="city">
+                            <Form.Label>{UserInfoIsRequired('市区町村')}市区町村</Form.Label>
+                            <Form.Control
+                              required
+                              type="text"
+                              name="city"
+                              placeholder="例）札幌市中央区南一条西"
+                              value={formValue.city} 
+                              onChange={(e) => handleChange(e, 'city')} 
+                              isInvalid={!!errors.city}
+                              autoComplete="address-level2"
+                            />
+                            {
+                              errors.city && 
+                              <Form.Control.Feedback type="invalid">{errors.city[0]}</Form.Control.Feedback>
+                            }
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
+                    {
+                      UserInfoIsDisclosed('丁目・番地・号') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="address">
+                            <Form.Label>{UserInfoIsRequired('丁目・番地・号')}丁目・番地・号</Form.Label>
+                            <Form.Control
+                              required
+                              type="text"
+                              name="address"
+                              placeholder="例）5-16"
+                              value={formValue.address} 
+                              onChange={(e) => handleChange(e, 'address')} 
+                              isInvalid={!!errors.address}
+                              autoComplete="address-level3"
+                            />
+                            {
+                              errors.address && 
+                              <Form.Control.Feedback type="invalid">{errors.address[0]}</Form.Control.Feedback>
+                            }
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
+                    {
+                      UserInfoIsDisclosed('建物名/会社名') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="building_name">
+                            <Form.Label>{UserInfoIsRequired('建物名/会社名')}建物名/会社名</Form.Label>
+                            <Form.Control
+                              required
+                              type="text"
+                              name="building_name"
+                              placeholder="例）プレジデント松井ビル100"
+                              value={formValue.building_name} 
+                              onChange={(e) => handleChange(e, 'building_name')} 
+                              isInvalid={!!errors.building_name}
+                              autoComplete="address-level4"
+                            />
+                            {
+                              errors.building_name && 
+                              <Form.Control.Feedback type="invalid">{errors.building_name[0]}</Form.Control.Feedback>
+                            }
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
+                    {
+                      UserInfoIsDisclosed('部屋番号') && (
+                        <Col xs={12} className="mb-5">
+                          <Form.Group id="room_number">
+                            <Form.Label>{UserInfoIsRequired('部屋番号')}部屋番号</Form.Label>
+                            <Form.Control
+                              required
+                              type="number"
+                              name="room_number"
+                              placeholder="例）3"
+                              value={formValue.room_number} 
+                              onChange={(e) => handleChange(e, 'room_number')} 
+                              autoComplete="address-level4"
+                            />
+                          </Form.Group>
+                        </Col>
+                      )
+                    }
                   </Row>
                 </Card.Body>
               </Card>

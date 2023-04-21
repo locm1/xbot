@@ -59,7 +59,7 @@ export default (props) => {
             <th className="border-gray-200">カテゴリー名</th>
             <th className="border-gray-200">商品数</th>
             <th className="border-gray-200">公開ステータス</th>
-            <th className="border-gray-200 ">削除</th>
+            <th className="border-gray-200 ">編集・削除</th>
           </tr>
         </thead>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -94,7 +94,10 @@ export default (props) => {
                                 {getIsUndisclosed(t.is_undisclosed)}
                               </span>
                             </td>
-                            <td style={{width: "150px"}} className="">
+                            <td style={{width: "200px"}} className="">
+                              <Button as={Link} to={Paths.EditCategory.path.replace(':id', t.id)} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+                                編集
+                              </Button>
                               <Button onClick={() => confirmDeleteCategory(t.id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
                                 削除
                               </Button>

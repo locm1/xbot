@@ -9,10 +9,9 @@ class UserDemographicService
 
     public function getUserDemographic() 
     {
-        $users = User::orderBy('id', 'asc')->get();
-        $genders = $this->getGender($users);
-        $birth_months = $this->getBirthMonth($users);
-        $prefectures = $this->getPrefecture($users);
+        $genders = $this->getGender();
+        $birth_months = $this->getBirthMonth();
+        $prefectures = $this->getPrefecture();
 
         return [
             'genders' => $genders,
@@ -21,17 +20,19 @@ class UserDemographicService
         ];
     }
 
-    private function getGender($users)
+    private function getGender()
     {
+        $users = User::whereNotNull('gender')->orderBy('id', 'asc')->get();
         return $users->groupBy(function ($row) {return $row->gender;})
             ->map(function ($gender) {
                 return $gender->count();
             });
     }
 
-    private function getBirthMonth($users)
+    private function getBirthMonth()
     {
         $birth_months = array();
+        $users = User::whereNotNull('birth_date')->orderBy('id', 'asc')->get();
         $result_users = $users->groupBy(function ($row) {return $row->birth_date->format('m');})
             ->map(function ($month) {
                 return $month->count();
@@ -47,10 +48,10 @@ class UserDemographicService
         return $birth_months;
     }
 
-    private function getPrefecture($users)
+    private function getPrefecture()
     {
         $prefectures = array();
-
+        $users = User::whereNotNull('prefecture')->orderBy('id', 'asc')->get();
         $group_by_users = $users->groupBy(function ($row) {return $row->prefecture;})
         ->map(function ($prefecture) use ($users) {
             return [

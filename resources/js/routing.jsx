@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-dom";
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
@@ -7,11 +7,13 @@ import { LiffMockPlugin } from '@line/liff-mock';
 import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 import { generateEnv } from '@/components/common/GenerateEnv';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
+import { showQuestionnaireEnabling } from "@/pages/liff/api/QuestionnaireApiMethods";
 
 // page
 import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
 import CreateQuestionnaire from '@/pages/questionnaire/CreateQuestionnaire';
+import DefaultQuestionnaire from '@/pages/questionnaire/DefaultQuestionnaire';
 import Users from '@/pages/user/Users';
 import EditUser from '@/pages/user/EditUser';
 import SendSegments from '@/pages/message/SendSegments';
@@ -145,12 +147,13 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   ]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getPages(setPages)
 
     axios.get('/api/v1/management/me').then(response => {
       setAdmin(response.data.admin);
       setLoading(false)
+      console.log(response.data.admin);
     }).catch(error => {
       console.error(error);
       setLoading(false)
@@ -211,7 +214,9 @@ const RegisteredLiffRoute = ({ component: Component, ...rest }) => {
   const idToken = liff.getIDToken();
   const [user, setUser] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [questionnaireEnabling, setQuestionnaireEnabling] = useState({});
   useEffect(() => {
+    showQuestionnaireEnabling(1, setQuestionnaireEnabling)
     getUser(idToken, setUser).finally(() => {
       setIsLoading(false);
     });
@@ -222,9 +227,58 @@ const RegisteredLiffRoute = ({ component: Component, ...rest }) => {
     return <LoadingPage />;
   }
 
+  if (questionnaireEnabling.is_default_questionnaire_enabled === 0 && questionnaireEnabling.is_questionnaire_enabled == 0) {
+    return (
+      <Route {...rest} render={props => (
+        <>
+          <Component {...props} />
+          <Footer />
+        </>
+      )}
+      />
+    );
+  }
+
   if (user.is_registered == 0) {
     // userがnullの場合はアンケート画面を出力
     return <ToQuestionnairePage />;
+  }
+
+  return (
+    <Route {...rest} render={props => (
+      <>
+        <Component {...props} />
+        <Footer />
+      </>
+    )}
+    />
+  );
+}
+
+const QuestionnaireLiffRoute = ({ component: Component, ...rest }) => {
+  const idToken = liff.getIDToken();
+  const [user, setUser] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [questionnaireEnabling, setQuestionnaireEnabling] = useState({});
+  useEffect(() => {
+    showQuestionnaireEnabling(1, setQuestionnaireEnabling)
+    getUser(idToken, setUser).finally(() => {
+      setIsLoading(false);
+    });
+  }, []);
+  
+  if (isLoading) {
+    // getUserの処理が完了するまでローディング画面を表示
+    return <LoadingPage />;
+  }
+
+  if (questionnaireEnabling.is_default_questionnaire_enabled === 0 && questionnaireEnabling.is_questionnaire_enabled == 0) {
+    return <LiffServerError />;
+  }
+
+  if (user.is_registered == 1) {
+    // userがnullの場合はアンケート画面を出力
+    return <LiffAlreadyQuestionnaire />;
   }
 
   return (
@@ -347,6 +401,7 @@ const Routing = () => {
       </Route>
       <RouteWithSidebar exact role_path="dashboard" path={Paths.DashboardOverview.path} component={DashboardOverview} role={3} />
       <RouteWithSidebar exact role_path="questionnaire" path={Paths.CreateQuestionnaire.path} component={CreateQuestionnaire} />
+      <RouteWithSidebar exact role_path="questionnaire" path={Paths.DefaultQuestionnaire.path} component={DefaultQuestionnaire} />
       <RouteWithSidebar exact role_path="user" path={Paths.Users.path} component={Users} />
       <RouteWithSidebar exact role_path="user" path={Paths.EditUser.path} component={EditUser} />
       <RouteWithSidebar exact role_path="user" path={Paths.Tags.path} component={Tags} />
@@ -397,19 +452,19 @@ const Routing = () => {
       
       <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
-      <LiffRoute exact path={Paths.LiffProductReservationComplete.path} component={LiffProductReservationComplete} />
+      <RegisteredLiffRoute exact path={Paths.LiffProductReservationComplete.path} component={LiffProductReservationComplete} />
       <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
       <LiffRoute exact path={Paths.LiffPickupProducs.path} component={LiffProductCategories} />
       <LiffRoute exact path={Paths.LiffCarts.path} component={LiffCarts} />
-      <LiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
-      <LiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
-      <LiffRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
-      <LiffRoute exact path={Paths.LiffCheckoutEditAddress.path} component={LiffCheckoutAddAddress} />
-      <LiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
-      <LiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
-      <LiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
-      <LiffRoute exact path={Paths.LIffCheckoutAddCoupon.path} component={LIffCheckoutAddCoupon} />
-      <LiffRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
+      <RegisteredLiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
+      <RegisteredLiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
+      <RegisteredLiffRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
+      <RegisteredLiffRoute exact path={Paths.LiffCheckoutEditAddress.path} component={LiffCheckoutAddAddress} />
+      <RegisteredLiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
+      <RegisteredLiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
+      <RegisteredLiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
+      <RegisteredLiffRoute exact path={Paths.LIffCheckoutAddCoupon.path} component={LIffCheckoutAddCoupon} />
+      <RegisteredLiffRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
       <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
       <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
@@ -417,12 +472,12 @@ const Routing = () => {
       {/* <LiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} /> */}
       <LiffRoute exact path={Paths.LiffVisitorConfirm.path} component={LiffVisitorConfirm} />
       <LiffRoute exact path={Paths.LiffAboutVisitorPrivileges.path} component={LiffAboutVisitorPrivileges} />
-      <LiffRoute exact path={Paths.LiffEventReservations.path} component={LiffEventReservations} />
-      <LiffRoute exact path={Paths.LiffAlreadyQuestionnaire.path} component={LiffAlreadyQuestionnaire} />
-      <LiffRoute exact path={Paths.LiffQuestionnaire.path} component={LiffQuestionnaire} />
-      <LiffRoute exact path={Paths.LiffQuestionnaireComplete.path} component={LiffQuestionnaireComplete} />
-      <LiffRoute exact path={Paths.LiffProductHistories.path} component={LiffProductHistories} />
-      <LiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
+      <RegisteredLiffRoute exact path={Paths.LiffEventReservations.path} component={LiffEventReservations} />
+      <RegisteredLiffRoute exact path={Paths.LiffAlreadyQuestionnaire.path} component={LiffAlreadyQuestionnaire} />
+      <QuestionnaireLiffRoute exact path={Paths.LiffQuestionnaire.path} component={LiffQuestionnaire} />
+      <QuestionnaireLiffRoute exact path={Paths.LiffQuestionnaireComplete.path} component={LiffQuestionnaireComplete} />
+      <RegisteredLiffRoute exact path={Paths.LiffProductHistories.path} component={LiffProductHistories} />
+      <RegisteredLiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
       <NoFooterRoute exact path={Paths.LiffFriendAdd.path} component={LiffFriendAdd} />
       <NoFooterRoute exact path={Paths.LiffVisitorHistoryAdd.path} component={LiffVisitorHistoryAdd} />

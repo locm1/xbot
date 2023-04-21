@@ -16,9 +16,6 @@ export default () => {
               <h1 className="mt-5">
                 500 Internal Server <span className="fw-bolder">Error</span>
               </h1>
-              <p className="lead my-4">
-                アクセスしようとしたページは表示できませんでした。
-              </p>
             </Col>
             <Col xs={12} lg={7} className="order-1 order-lg-2 text-center d-flex align-items-center justify-content-center">
               <Image src={ErrorImage} className="img-fluid w-75" />

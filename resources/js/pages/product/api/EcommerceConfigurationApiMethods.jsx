@@ -20,7 +20,7 @@ export const getEcommerceConfiguration = async (setFormValue, setIsDisbled) => {
   });
 };
 
-export const storeEcommerceConfiguration = async (formValue) => {
+export const storeEcommerceConfiguration = async (formValue, setError) => {
   axios.post(`/api/v1/management/ecommerce-configurations`, formValue)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;
@@ -32,11 +32,12 @@ export const storeEcommerceConfiguration = async (formValue) => {
     )
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 
-export const updateEcommerceConfiguration = async (id, formValue) => {
+export const updateEcommerceConfiguration = async (id, formValue, setError) => {
   axios.put(`/api/v1/management/ecommerce-configurations/${id}`, formValue)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;
@@ -48,6 +49,7 @@ export const updateEcommerceConfiguration = async (id, formValue) => {
     )
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };

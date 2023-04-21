@@ -25,14 +25,14 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'order.first_name' => 'required'
         ];
     }
 
-    public function withValidator($validator)
+    public function messages()
     {
-        $order_products = $this->order_products;
-        $format_product_action = new FormatProductAction();
-        $update_products = $format_product_action->createBulkUpdateArray($order_products);
+        return [
+            'order.first_name' => 'お届け先住所を選択してください。',
+        ];
     }
 }

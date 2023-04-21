@@ -69,7 +69,6 @@ export default () => {
       payment_method: paymentMethod.payment_method, shipping_fee: postage,
       discount_price: discountedTotalAmount
     }
-    console.log(carts);
     const products = carts.map(cart => {return {product_id: cart.product_id, quantity:cart.quantity, price: cart.product.price}})
     Object.assign(order, newDeliveryAddress)
     if (paymentMethod.payment_method == 1) {
@@ -85,6 +84,7 @@ export default () => {
     const formValue = {
       order: order, order_products: products, charge: charge
     }
+    console.log(formValue);
     storeOrder(user.id, formValue, storeComplete, setIsLoading)
     .then(response => {
       failedStore(response.message)
@@ -113,15 +113,19 @@ export default () => {
     
     getUser(idToken, setUser).then(response => {
       getSelectOrderDestination(response.id, setDeliveryAddress).then(destination_response => {
-        const searchParams = {
-          params: {name: destination_response.prefecture}
-        };
-        searchPostage(searchParams).then(postage => {
-          console.log(postage[0]);
-          getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts).then(
-            response => getEcommerceConfigurationAndPostage(response, postage[0], setPostage, setEcommerceConfiguration)
-          )
-        })
+        if (destination_response == null) {
+          getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts)
+        } else {
+          const searchParams = {
+            params: {name: destination_response.prefecture}
+          };
+          searchPostage(searchParams).then(postage => {
+            console.log(postage[0]);
+            getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts).then(
+              response => getEcommerceConfigurationAndPostage(response, postage[0], setPostage, setEcommerceConfiguration)
+            )
+          })
+        }
       });
       showPaymentMethod(response.id, setIsLoading).then(payment_response => {
         setPaymentMethod(payment_response)

@@ -28,10 +28,10 @@ export default (props) => {
           <Form.Control
             value={questionnaire.answer}
             name={`questionnaire_${questionnaire.id}`}
-            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, null)}
+            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, null, index)}
             type="text"
             placeholder="こちらに自由にご回答をお願いいたします。"
-            isInvalid={questionnaire.answer !== '' ? false : questionnaireErrors[`questionnaires.${index}.answer`] !== '' ? true : false}
+            isInvalid={!!questionnaireErrors[`questionnaires.${index}.answer`]}
           />
           {
             questionnaireErrors[`questionnaires.${index}.answer`]  && 
@@ -48,9 +48,9 @@ export default (props) => {
             rows="4"
             name={`questionnaire_${questionnaire.id}`}
             value={questionnaire.answer}
-            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, null)}
+            onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, null, index)}
             placeholder="こちらに自由にご回答をお願いいたします。"
-            isInvalid={questionnaire.answer !== '' ? false : questionnaireErrors[`questionnaires.${index}.answer`] !== '' && questionnaireErrors[`questionnaires.${index}.answer`] ? true : false}
+            isInvalid={!!questionnaireErrors[`questionnaires.${index}.answer`]}
           />
           {
             questionnaireErrors[`questionnaires.${index}.answer`]  && 

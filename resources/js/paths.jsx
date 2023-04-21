@@ -9,6 +9,7 @@ export const Paths = {
     Users: { path: `${prefix}/user/list` },
     EditUser: { path: `${prefix}/user/edit/:id`},
     CreateQuestionnaire: { path: `${prefix}/questionnaire/list` },
+    DefaultQuestionnaire: { path: `${prefix}/default/questionnaire/list` },
     SendSegments: { path: `${prefix}/message/send/segment` },
     TemplateMessages: { path: `${prefix}/message/template/list` },
     CreateMessage: { path: `${prefix}/message/template/create` },

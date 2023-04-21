@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 export default (props) => {
-  const { formValue, handleChange } = props;
+  const { formValue, handleChange, UserInfoIsRequired } = props;
   const months = [...Array(12).keys()].map(i => ++i);
   const days = [...Array(31).keys()].map(i => ++i);
   const date = new Date();
@@ -24,7 +24,7 @@ export default (props) => {
     <>
       <Row className="">
         <Col xs={12} className="mb-5">
-          <Form.Label><span className="questionnaire-required me-2">必須</span>生年月日</Form.Label>
+          <Form.Label>{UserInfoIsRequired('生年月日')}生年月日</Form.Label>
           <div className="d-flex">
             <Form.Select defaultValue="1990" value={formValue.year} onChange={(e) => handleChange(e, 'year')} className="mb-0">
               {getYear()}

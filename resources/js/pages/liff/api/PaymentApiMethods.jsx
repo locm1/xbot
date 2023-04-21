@@ -2,9 +2,13 @@ export const showPaymentMethod = async (userId, setIsLoading) => {
   return await axios.get(`/api/v1/users/${userId}/payments`)
   .then((response) => {
     const order_payment_method = response.data.order_payment_methods
+    const new_order_payment_method = {
+      payment_method: null, payjp_default_card_id: ''
+    }
     console.log(order_payment_method);
+
     setIsLoading(false)
-    return order_payment_method;
+    return order_payment_method == null ? new_order_payment_method : order_payment_method;
   })
   .catch(error => {
       console.error(error);

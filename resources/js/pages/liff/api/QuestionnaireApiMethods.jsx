@@ -16,6 +16,29 @@ export const getQuestionnaires = async (setQuestionnaires) => {
   });
 };
 
+export const showQuestionnaireEnabling = async (id, setQuestionnaireEnabling) => {
+  return await axios.get(`/api/v1/questionnaire-enabling/${id}`)
+  .then((response) => {
+    const questionnaire_enabling = response.data.questionnaire_enabling;
+    setQuestionnaireEnabling(questionnaire_enabling);
+    console.log(questionnaire_enabling);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
+export const getUserInfoStatuses = async (setUserInfoStatuses) => {
+  return await axios.get('/api/v1/user-info-statuses')
+  .then((response) => {
+    console.log(response.data.user_info_statuses);
+    setUserInfoStatuses(response.data.user_info_statuses);
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 export const storeQuestionnaireAnswers = async (userId, questionnaires, setQuestionnaireErrors, setIsLoading, onSave) => {
   return await axios.post(`/api/v1/users/${userId}/user-deliveryaddress-questionnaireanswers`, questionnaires)
   .then((response) => {

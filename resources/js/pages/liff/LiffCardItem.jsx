@@ -201,7 +201,7 @@ export const PaymentDetailItem = (props) => {
       <Row className="">
         <Col xs={getColButton(location).colSize} className="px-0">
           {
-            paymentMethod ? (
+            paymentMethod.payment_method ? (
               <div className="m-1">
                 <h4 className="fs-6 text-dark">
                   {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "代金引換え" : ""}
@@ -257,12 +257,20 @@ export const DeliveryAddressItem = (props) => {
       <Row className="">
         <Col xs={getColButton(location).colSize} className="px-0">
           <div className="m-1">
-            <h4 className="fs-6 text-dark mb-0">{last_name} {first_name} 様</h4>
-            <h4 className="fs-6 text-dark mt-2">
-              〒{target_split}-{zipcode && zipcode.split(target_split)[1]}<br />
-              {prefecture} {city} {address} {building_name}
-            </h4>
-            <h4 className="fs-6 text-dark mt-1">{tel}</h4>
+            {
+              typeof id === 'undefined' ? (
+                <h4 className="fs-6 text-dark mb-0">お届け先住所を選択してください</h4>
+              ) : (
+                <>
+                  <h4 className="fs-6 text-dark mb-0">{last_name} {first_name} 様</h4>
+                  <h4 className="fs-6 text-dark mt-2">
+                    〒{target_split}-{zipcode && zipcode.split(target_split)[1]}<br />
+                    {prefecture} {city} {address} {building_name}
+                  </h4>
+                  <h4 className="fs-6 text-dark mt-1">{tel}</h4>
+                </>
+              )
+            }
           </div>
         </Col>
         {

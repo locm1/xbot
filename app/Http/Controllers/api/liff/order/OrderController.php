@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\liff\order;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\liff\order\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\liff\cart\DeleteCartService;
@@ -36,11 +37,11 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  StoreOrderRequest  $request
      * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user)
+    public function store(StoreOrderRequest $request, User $user)
     {
         $stock_quantity_checker_service = new StockQuantityCheckerService();
         $check_result = $stock_quantity_checker_service($request->order_products);

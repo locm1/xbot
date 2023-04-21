@@ -46,7 +46,7 @@ export default (props) => {
       const currentDeliveryTime = deliveryTimes.find((deliveryTime) => deliveryTime.value === delivery_time)
       setSpecificTime(`お届け日時指定 ${currentDeliveryTime.title}`)
     } else {
-      setSpecificTime('選択してください')
+      setSpecificTime('お届け日時を選択してください')
     }
   }
 

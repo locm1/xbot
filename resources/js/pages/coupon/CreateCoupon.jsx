@@ -25,6 +25,7 @@ export default () => {
 
   const handleChange = (e, input) => {
     setCoupon({...coupon, [input]: e.target.value})
+    setError({...error, [input]: ''})
   };
 
   const updateComplete = () => {
@@ -73,7 +74,7 @@ export default () => {
                   value={coupon.name}
                   onChange={(e) => handleChange(e, 'name')}
                   placeholder="例：友達紹介クーポン"
-                  isInvalid={coupon.name !== '' ? false : error.name ? true : false}
+                  isInvalid={!!error.name}
                 />
                 {
                   error.name && 
@@ -90,7 +91,7 @@ export default () => {
                   value={coupon.upper_limit}
                   onChange={(e) => handleChange(e, 'upper_limit')}
                   placeholder="例：20"
-                  isInvalid={coupon.upper_limit !== '' ? false : error.upper_limit ? true : false}
+                  isInvalid={!!error.upper_limit}
                 />
                 {
                   error.upper_limit && 
@@ -110,7 +111,7 @@ export default () => {
                     value={coupon.discount_price}
                     onChange={(e) => handleChange(e, 'discount_price')}
                     placeholder="例：20"
-                    isInvalid={coupon.discount_price !== '' ? false : error.discount_price ? true : false}
+                    isInvalid={!!error.discount_price}
                   />
                   <InputGroup.Text>％</InputGroup.Text>
                   {
@@ -129,7 +130,7 @@ export default () => {
                   value={coupon.code}
                   onChange={(e) => handleChange(e, 'code')}
                   placeholder="例：#1234abc"
-                  isInvalid={coupon.code !== '' ? false : error.code ? true : false}
+                  isInvalid={!!error.code}
                 />
                 {
                   error.code && 

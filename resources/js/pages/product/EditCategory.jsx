@@ -20,11 +20,13 @@ export default () => {
 
   const handleChange = (e, input) => {
     setCategory({...category, [input]: e.target.value})
+    setError({...error, [input]: ''})
   };
 
   const handleBackgroundColorChange = (color) => {
     const colorHex = color.hex;
     setBackgroundColor(colorHex);
+    setError({...error, color: ''})
   };
 
   const handleClick = () => {
@@ -82,7 +84,7 @@ export default () => {
                       value={category.name}
                       onChange={(e) => handleChange(e, 'name')}
                       placeholder="飲料水"
-                      isInvalid={category.name !== '' ? false : error.name ? true : false}
+                      isInvalid={!!error.name}
                     />
                     {
                       error.name && 
@@ -98,7 +100,7 @@ export default () => {
                       rows="3"
                       value={category.content}
                       onChange={(e) => handleChange(e, 'content')} 
-                      isInvalid={category.content !== '' ? false : error.content ? true : false}
+                      isInvalid={!!error.content}
                     />
                     {
                       error.content && 
@@ -113,12 +115,18 @@ export default () => {
                       colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']}
                       onChange={handleBackgroundColorChange}
                     />
+                    <Form.Control
+                      type="hidden"
+                      name="color"
+                      value={backgroundColor}
+                      isInvalid={!!error.color}
+                    />
+                    {
+                      error.color && 
+                      <Form.Control.Feedback type="invalid">{error.color[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                   <div className="category-color" style={{backgroundColor: backgroundColor}}>{backgroundColor}</div>
-                  {
-                    error.color && 
-                    <Form.Control.Feedback type="invalid">{error.color[0]}</Form.Control.Feedback>
-                  }
                 </Col>
               </Row>
               <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">

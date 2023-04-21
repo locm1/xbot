@@ -80,6 +80,7 @@ use App\Http\Controllers\api\management\order\OrderUserController;
 use App\Http\Controllers\api\management\PageController;
 use App\Http\Controllers\api\management\product\ProductController;
 use App\Http\Controllers\api\management\product\ProductImageController;
+use App\Http\Controllers\api\management\questionnaire\QuestionnaireEnablingController;
 use App\Http\Controllers\api\management\questionnaire\QuestionnaireSortController;
 use App\Http\Controllers\api\management\QuestionnaireAnswerController;
 use App\Http\Controllers\api\management\RelatedProductController;
@@ -95,6 +96,7 @@ use App\Http\Controllers\api\management\SegmentTemplateController;
 use App\Http\Controllers\api\management\SendMessageController;
 use App\Http\Controllers\api\management\SendMulticastMessage;
 use App\Http\Controllers\api\management\TagUserController;
+use App\Http\Controllers\api\management\user\UserInfoStatusController;
 use App\Http\Controllers\api\management\UserTagController;
 use App\Http\Controllers\api\management\UserInviteHistoryController;
 use App\Http\Controllers\api\management\user\UserOrderHistoryController;
@@ -140,6 +142,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('users/{user}/orders', UserOrderHistoryController::class);
         Route::get('users/{user}/reserve-history', UserReserveHistoryController::class);
         Route::get('users/{user}/purchase', UserPurchaseController::class);
+        Route::get('user-info-statuses', [UserInfoStatusController::class, 'index']);
+        Route::put('user-info-statuses', [UserInfoStatusController::class, 'update']);
         Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);
         Route::apiResource('terms-of-service', TermsOfServiceController::class);
@@ -157,6 +161,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('categories', ProductCategoryController::class);
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
         Route::apiResource('questionnaires', QuestionnaireController::class);
+        Route::apiResource('questionnaire-enabling', QuestionnaireEnablingController::class);
         Route::apiResource('questionnaires/{questionnaire}/items', QuestionnaireItemController::class, array("as" => "api"))->only([
             'store', 'update', 'destroy'
         ]);
@@ -244,10 +249,12 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('users/{user}/invitee-incentives', LiffInviteeIncentiveUserController::class);
     Route::apiResource('users/{user}/visitor-histories', LiffVisitorHistoryController::class);
     Route::get('users/{user}/invites', InviteController::class);
+    Route::get('user-info-statuses', [UserInfoStatusController::class, 'index']);
     Route::get('postages', LiffPostageController::class);
     Route::get('address', SearchZipcodeController::class);
     Route::get('prefectures', PrefectureController::class);
     Route::get('questionnaires', LiffQuestionnaireController::class);
+    Route::apiResource('questionnaire-enabling', QuestionnaireEnablingController::class);
     Route::apiResource('occupations', OccupationController::class);
     Route::get('privacy-policy', LiffPrivacyPolicyController::class);
     Route::get('terms-of-service', LiffTermsOfServiceController::class);

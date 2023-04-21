@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-dom";
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
@@ -12,6 +12,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
 import CreateQuestionnaire from '@/pages/questionnaire/CreateQuestionnaire';
+import DefaultQuestionnaire from '@/pages/questionnaire/DefaultQuestionnaire';
 import Users from '@/pages/user/Users';
 import EditUser from '@/pages/user/EditUser';
 import SendSegments from '@/pages/message/SendSegments';
@@ -145,12 +146,13 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   ]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getPages(setPages)
 
     axios.get('/api/v1/management/me').then(response => {
       setAdmin(response.data.admin);
       setLoading(false)
+      console.log(response.data.admin);
     }).catch(error => {
       console.error(error);
       setLoading(false)
@@ -338,6 +340,7 @@ const Routing = () => {
       </Route>
       <RouteWithSidebar exact role_path="dashboard" path={Paths.DashboardOverview.path} component={DashboardOverview} role={3} />
       <RouteWithSidebar exact role_path="questionnaire" path={Paths.CreateQuestionnaire.path} component={CreateQuestionnaire} />
+      <RouteWithSidebar exact role_path="questionnaire" path={Paths.DefaultQuestionnaire.path} component={DefaultQuestionnaire} />
       <RouteWithSidebar exact role_path="user" path={Paths.Users.path} component={Users} />
       <RouteWithSidebar exact role_path="user" path={Paths.EditUser.path} component={EditUser} />
       <RouteWithSidebar exact role_path="user" path={Paths.Tags.path} component={Tags} />

@@ -81,7 +81,9 @@ class DatabaseSeeder extends Seeder
                 InviteIncentiveSeeder::class,
                 InviteIncentiveJobSeeder::class,
                 InviteeIncentiveSeeder::class,
-                InviterIncentiveSeeder::class
+                InviterIncentiveSeeder::class,
+                UserInfoStatusTableSeeder::class,
+                QuestionnaireEnablingTableSeeder::class
             ]);
             Admin::factory(10)->create();
             Occupation::factory(10)->create();
@@ -130,7 +132,9 @@ class DatabaseSeeder extends Seeder
                 TermsOfServicesTableSeeder::class,
                 PagesTableSeeder::class,
                 OccupationSeeder::class,
-                GreetingMessagesWithQuestionnaireSeeder::class
+                GreetingMessagesWithQuestionnaireSeeder::class,
+                UserInfoStatusTableSeeder::class,
+                QuestionnaireEnablingTableSeeder::class
             ]);
         }
     }

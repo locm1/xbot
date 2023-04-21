@@ -61,11 +61,13 @@ export default () => {
 
   const handleChange = (e, input) => {
     setProduct({...product, [input]: e.target.value})
+    setError({...error, [input]: ''})
   };
 
   const handleSaleChange = (e, input) => {
     const value = (input == 'start_date' || input == 'end_date') ? e : e.target.value;
     setProductSale({...productSale, [input]: value})
+    setError({...error, [input]: ''})
   };
 
   const onDrop = (acceptedFiles) => {
@@ -122,7 +124,7 @@ export default () => {
     
 
     return (
-      <Col md={2} className="dropzone-preview py-2 product-preview-image-wrap">
+      <div className="dropzone-preview pb-4 product-preview-image-wrap">
         <div>{index + 1}枚目</div>
         <div className="product-preview-image d-flex">
           <Image src={image_path} className="dropzone-image" onClick={() => changeImage(id)} />
@@ -138,7 +140,7 @@ export default () => {
             onChange={(e) => handleChange(id, e)}
           />
         </div>
-      </Col>
+      </div>
     );
   };
 
@@ -287,7 +289,7 @@ export default () => {
                             value={product.name} 
                             onChange={(e) => handleChange(e, 'name')} 
                             placeholder="シャンプー" 
-                            isInvalid={product.name !== '' ? false : error.name ? true : false}
+                            isInvalid={!!error.name}
                           />
                           {
                             error.name && 
@@ -321,7 +323,7 @@ export default () => {
                               name="stock_quantity"
                               value={product.stock_quantity}
                               onChange={(e) => handleChange(e, 'stock_quantity')}
-                              isInvalid={product.stock_quantity !== '' ? false : error.stock_quantity ? true : false}
+                              isInvalid={!!error.stock_quantity}
                             />
                             {
                               error.stock_quantity && 
@@ -341,7 +343,7 @@ export default () => {
                               value={product.price} 
                               onChange={(e) => handleChange(e, 'price')} 
                               placeholder="3000" 
-                              isInvalid={product.price !== '' ? false : error.price ? true : false}
+                              isInvalid={!!error.price}
                             />
                             <InputGroup.Text>円</InputGroup.Text>
                           </InputGroup>
@@ -360,7 +362,7 @@ export default () => {
                             value={product.overview} 
                             onChange={(e) => handleChange(e, 'overview')} 
                             placeholder="商品の概要を入力してください" 
-                            isInvalid={product.overview !== '' ? false : error.overview ? true : false} 
+                            isInvalid={!!error.overview}
                           />
                           {
                             error.overview && 
@@ -388,7 +390,7 @@ export default () => {
                               value={productSale.discount_rate} 
                               onChange={(e) => handleSaleChange(e, 'discount_rate')} 
                               placeholder="10"
-                              isInvalid={productSale.discount_rate !== '' ? false : error.discount_rate ? true : false} 
+                              isInvalid={!!error.discount_rate} 
                             />
                             <InputGroup.Text>%</InputGroup.Text>
                           </InputGroup>
@@ -426,16 +428,16 @@ export default () => {
                                   type="text"
                                   placeholder="YYYY-MM-DD"
                                   ref={ref}
-                                  isInvalid={productSale.start_date !== '' ? false : error.start_date ? true : false} 
+                                  isInvalid={!!error.start_date} 
                                 />
+                                {
+                                  error.start_date && 
+                                  <Form.Control.Feedback type="invalid">{error.start_date[0]}</Form.Control.Feedback>
+                                }
                               </InputGroup>
                               );
                             }}
                           />
-                          {
-                            error.start_date && 
-                            <Form.Control.Feedback type="invalid">{error.start_date[0]}</Form.Control.Feedback>
-                          }
                         </Form.Group>
                       </Col>
                       <Col md={6} className="mb-4">
@@ -457,23 +459,23 @@ export default () => {
                                   type="text"
                                   placeholder="YYYY-MM-DD"
                                   ref={ref}
-                                  isInvalid={productSale.end_date !== '' ? false : error.end_date ? true : false} 
+                                  isInvalid={!!error.end_date} 
                                   />
+                                  {
+                                    error.end_date && 
+                                    <Form.Control.Feedback type="invalid">{error.end_date[0]}</Form.Control.Feedback>
+                                  }
                                 </InputGroup>
                               );
                             }}
                           />
-                          {
-                            error.end_date && 
-                            <Form.Control.Feedback type="invalid">{error.end_date[0]}</Form.Control.Feedback>
-                          }
                         </Form.Group>
                       </Col>
                     </Row>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col xs={12} xl={4}>
+              <Col xs={12} lg={4}>
                 <Card border="0" className="shadow mb-4">
                   <Card.Header className="bg-primary text-white px-3 py-2">
                     <h5 className="mb-0 fw-bolder">商品設定</h5>
@@ -512,8 +514,8 @@ export default () => {
                     <div className="mb-4">
                       <Row>
                         {productImages && productImages.map((image, k) => (
-                          <Col md={6}>
-                            <DropzoneFile key={k} {...image} index={k} updateProductImages={updateProductImages} setUpdateProductImages={setUpdateProductImages} />
+                          <Col xl={6} key={`product-image-${k}`}>
+                            <DropzoneFile {...image} index={k} updateProductImages={updateProductImages} setUpdateProductImages={setUpdateProductImages} />
                           </Col>
                         ))}
                       </Row>

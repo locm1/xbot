@@ -10,9 +10,13 @@ export default () => {
     target_amount: '', postage: '', cash_on_delivery_fee: '', 
     tel: '', email: '', is_enabled: false
   })
+  const [error, setError] = useState({
+    target_amount: '', postage: '', tel: '', email: ''
+  });
 
   const handleChange = (e, input) => {
     setFormValue({...formValue, [input]: e.target.value})
+    setError({...error, [input]: ''})
   };
 
   const handleClick = () => {
@@ -20,9 +24,9 @@ export default () => {
     formValue.is_enabled = is_enabled
     console.log(formValue);
     if (Object.keys(formValue).indexOf('id') !== -1) {
-      updateEcommerceConfiguration(formValue.id, formValue)
+      updateEcommerceConfiguration(formValue.id, formValue, setError)
     } else {
-      storeEcommerceConfiguration(formValue);
+      storeEcommerceConfiguration(formValue, setError);
     }
   };
 
@@ -45,7 +49,7 @@ export default () => {
             </Card.Header> 
             <Card.Body>
               <Row>
-                <Col md={6} className="mb-3">
+                <Col md={6} className="mb-4">
                   <Form.Group id="target-amount">
                     <Form.Label><Badge bg="danger" className="me-2">必須</Badge>対象金額</Form.Label>
                     <InputGroup className="">
@@ -55,12 +59,17 @@ export default () => {
                         name="target_amount"
                         value={formValue.target_amount}
                         onChange={(e) => handleChange(e, 'target_amount')}
+                        isInvalid={!!error.target_amount}
                       />
                       <InputGroup.Text>以上</InputGroup.Text>
+                      {
+                        error.target_amount && 
+                        <Form.Control.Feedback type="invalid">{error.target_amount[0]}</Form.Control.Feedback>
+                      }
                     </InputGroup>
                   </Form.Group>
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} className="mb-4">
                   <Form.Group id="postage">
                     <Form.Label><Badge bg="danger" className="me-2">必須</Badge>送料</Form.Label>
                     <InputGroup className="">
@@ -70,12 +79,17 @@ export default () => {
                         name="postage"
                         value={formValue.postage}
                         onChange={(e) => handleChange(e, 'postage')}
+                        isInvalid={!!error.postage}
                       />
                       <InputGroup.Text>円</InputGroup.Text>
+                      {
+                        error.postage && 
+                        <Form.Control.Feedback type="invalid">{error.postage[0]}</Form.Control.Feedback>
+                      }
                     </InputGroup>
                   </Form.Group>
                 </Col>
-                <Col md={12} className="mb-3">
+                <Col md={12} className="mb-4">
                   <Form.Group>
                     <div className="d-flex flex-wrap flex-md-nowrap align-items-center">
                       <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>代引き手数料</Form.Label>
@@ -101,7 +115,7 @@ export default () => {
                     </InputGroup>
                   </Form.Group>
                 </Col>
-                <Col md={12} className="mb-3">
+                <Col md={12} className="mb-4">
                   <Form.Group id="tel">
                     <Form.Label><Badge bg="danger" className="me-2">必須</Badge>電話番号</Form.Label>
                     <Form.Control
@@ -111,10 +125,15 @@ export default () => {
                       value={formValue.tel}
                       onChange={(e) => handleChange(e, 'tel')}
                       placeholder="例）08000000000"
+                      isInvalid={!!error.tel}
                     />
+                    {
+                      error.tel && 
+                      <Form.Control.Feedback type="invalid">{error.tel[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
-                <Col md={12} className="mb-3">
+                <Col md={12} className="mb-4">
                   <Form.Group id="email">
                     <Form.Label><Badge bg="danger" className="me-2">必須</Badge>メールアドレス</Form.Label>
                     <Form.Control
@@ -124,7 +143,12 @@ export default () => {
                       value={formValue.email}
                       onChange={(e) => handleChange(e, 'email')}
                       placeholder="例）sample@sample.com"
+                      isInvalid={!!error.email}
                     />
+                    {
+                      error.email && 
+                      <Form.Control.Feedback type="invalid">{error.email[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
               </Row>

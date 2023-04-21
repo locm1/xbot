@@ -40,4 +40,11 @@ class StoreProductCategoryRequest extends FormRequest
             'is_undisclosed' => '非公開'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'color.required' => 'カラーを選択してください',
+        ];
+    }
 }

@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
+import { showQuestionnaireEnabling, updateQuestionnaireEnabling } from "@/pages/questionnaire/api/QuestionnaireEnablingApiMethods";
 import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard";
 import { handleOnDragEnd } from "@/components/common/Sort";
 
@@ -26,7 +27,8 @@ export default () => {
   const [alert, setAlert] = useState(false);
   const [message, setMessage] = useState('');
   const [timer, setTimer] = useState(null);
-  const [isCheck, setIsCheck] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+  const [questionnaireEnabling, setQuestionnaireEnabling] = useState({});
 
   const update = (e, id, column) => {
     const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
@@ -129,8 +131,16 @@ export default () => {
     handleOnDragEnd(result, questionnaires, sortQuestionnaire)
   }
 
+  const changeQuestionnaireEnabling = (isValid) => {
+    const updateData = {...questionnaireEnabling, ['is_questionnaire_enabled']: isValid ? 1 : 0}
+    setIsValid(isValid)
+    setQuestionnaireEnabling(updateData)
+    updateQuestionnaireEnabling(1, updateData)
+  }
+
   useEffect(() => {
     getQuestionnaires(setQuestionnaires)
+    showQuestionnaireEnabling(1, setQuestionnaireEnabling, setIsValid, 'questionnaire')
   }, []);
 
   return (
@@ -144,6 +154,18 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">アンケート管理</h1>
+        </div>
+        <div className="d-flex flex-row-reverse mt-3">
+          <Form.Group id="default-questionnaire">
+            <Form.Check
+            type="switch"
+            label="アンケートをONにする"
+            id="is-default-questionnaire-valid"
+            htmlFor="is-default-questionnaire-valid"
+            checked={isValid}
+            onClick={() => changeQuestionnaireEnabling(!isValid)}
+            />
+          </Form.Group>
         </div>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>

@@ -24,6 +24,13 @@ export const storeVisitorHistory = async (userId) => {
     })
   })
   .catch(error => {
-      console.error(error);
+    console.error(error);
+    Swal.fire({
+      icon: 'error',
+      title: '来店処理失敗',
+      text: '来店処理に失敗しました',
+      showConfirmButton: false,
+      timer: 1500
+    })
   });
 };

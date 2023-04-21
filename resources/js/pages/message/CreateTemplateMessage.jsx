@@ -134,13 +134,10 @@ export default () => {
   };
 
   const onSaveMessage = (event) => {
+    console.log('run');
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-      return ;
-    }
+    event.preventDefault();
+    event.stopPropagation();
     if (pathname.includes('/edit')) {
       message.is_undisclosed = isUndisclosed ? 1 : 0
       updateMessage(id, message, completeMessage)

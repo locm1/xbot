@@ -11,7 +11,7 @@ export default () => {
     tel: '', email: '', is_enabled: false
   })
   const [error, setError] = useState({
-    target_amount: '', postage: '', tel: '', email: ''
+    target_amount: '', postage: '', tel: '', email: '', cash_on_delivery_fee: ''
   });
 
   const handleChange = (e, input) => {
@@ -92,7 +92,16 @@ export default () => {
                 <Col md={12} className="mb-4">
                   <Form.Group>
                     <div className="d-flex flex-wrap flex-md-nowrap align-items-center">
-                      <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>代引き手数料</Form.Label>
+                      <Form.Label>
+                        {
+                          isDisabled ? (
+                            <Badge bg="gray-600" className="me-2">任意</Badge>
+                          ) : (
+                            <Badge bg="danger" className="me-2">必須</Badge>
+                          )
+                        }
+                        代引き手数料
+                      </Form.Label>
                       <Form.Check
                         label="代引きを有効にする"
                         id="cash_on_delivery"
@@ -110,8 +119,13 @@ export default () => {
                         name="cash_on_delivery_fee"
                         value={formValue.cash_on_delivery_fee}
                         onChange={(e) => handleChange(e, 'cash_on_delivery_fee')}
+                        isInvalid={!!error.cash_on_delivery_fee}
                         />
                       <InputGroup.Text>円</InputGroup.Text>
+                      {
+                        error.cash_on_delivery_fee && 
+                        <Form.Control.Feedback type="invalid">{error.cash_on_delivery_fee[0]}</Form.Control.Feedback>
+                      }
                     </InputGroup>
                   </Form.Group>
                 </Col>

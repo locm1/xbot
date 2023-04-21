@@ -45,7 +45,7 @@ export const UsersTable = (props) => {
             {sex_array[gender]}
           </span>
         </td>
-        <td><span className="fw-normal">{moment(birth_date).format('YYYY-MM-DD')}</span></td>
+        <td><span className="fw-normal">{birth_date && moment(birth_date).format('YYYY-MM-DD')}</span></td>
         <td><span className="fw-normal">{prefecture}</span></td>
         <td className="text-center">
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">

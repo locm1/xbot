@@ -54,18 +54,13 @@ export default () => {
       updateOrderDestination(user.id, id, formValue, updateComplete, setErrors)
       //updateOrderDestination(101, id, formValue, updateComplete)
     } else {
-      storeOrderDestination(user.id, formValue, location, setErrors)
+      storeOrderDestination(user.id, formValue, location, updateComplete, setErrors)
       //storeOrderDestination(101, formValue, location)
     }
   };
 
   const updateComplete = () => {
-    if (pathname.includes('/edit')) {
-      history.push(Paths.LiffCheckoutDestinations.path);
-    } else {
-      //storeOrderDestination(user.id, formValue)
-      //storeOrderDestination(101, formValue, location)
-    }
+    history.push(Paths.LiffCheckoutDestinations.path);
   };
 
   useEffect(() => {

@@ -6,7 +6,7 @@ export default (props) => {
 
   return (
     <Card className="shadow mb-4">
-      <Card.Header className={apiKeyCheck[name] ? "py-2 px-3 bg-success" : "py-2 px-3 bg-gray-800"}>
+      <Card.Header className={apiKeyCheck[name] ? "py-2 px-3 bg-gray-800" : "py-2 px-3 bg-gray-800"}>
         <Form.Label className="mb-0 text-white">{title}</Form.Label>&nbsp;
         {apiKeyCheck[name] ? <BadgeCheckIcon className="icon-sm text-success" /> : <ExclamationCircleIcon className="icon-sm text-danger" />}
       </Card.Header>

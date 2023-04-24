@@ -63,13 +63,11 @@ export default () => {
             <Button variant="secondary" onClick={() => setPostageAll()}>各都道府県に適用</Button>
           </InputGroup>
         </div>
-        <Container>
-          <Row md={2}>
-            {postages.map((postage, index) => (
-              <PostageForm {...postage} key={index} handleChange={handleChange} />
-            ))}
-          </Row>
-        </Container>
+        <Row md={2} xl={3} className="justify-between">
+          {postages.map((postage, index) => (
+            <PostageForm {...postage} key={index} handleChange={handleChange} />
+          ))}
+        </Row>
         <div className="d-flex justify-content-end">
           <Button variant="tertiary" onClick={handleClick}>保存する</Button>
         </div>

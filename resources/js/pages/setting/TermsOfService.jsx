@@ -42,22 +42,18 @@ export default () => {
       </div>
       <Card border="0" className="shadow mb-4">
         <Card.Body>
-          <Row>
-            <Col xs={12} sm={6} xl={12}>
-              <Form.Group className="mb-3">
-                <Form.Control as="textarea" rows="30" maxLength="5000" name="content" value={content} onChange={(e) => changeContent(e)} />
-              </Form.Group>
-              <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
-                <Button
-                  variant="success"
-                  className="d-inline-flex align-items-center"
-                  onClick={handleClick}
-                >
-                  保存する
-                </Button>
-              </div>
-            </Col>
-          </Row>
+          <Form.Group className="mb-3">
+            <Form.Control as="textarea" rows="30" maxLength="5000" name="content" value={content} onChange={(e) => changeContent(e)} />
+          </Form.Group>
+          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+            <Button
+              variant="success"
+              className="d-inline-flex align-items-center"
+              onClick={handleClick}
+            >
+              保存する
+            </Button>
+          </div>
         </Card.Body>
       </Card>
     </>

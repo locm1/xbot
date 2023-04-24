@@ -93,7 +93,7 @@ export default () => {
             <div className="list-head__items">
               <div className="list-head__item"> <span className="u-men"> 男性 </span>：{demographic.man}名 </div>
               <div className="list-head__item"> <span className="u-women "> 女性 </span>：{demographic.women}名 </div>
-              <div className="list-head__item"> <span> その他 </span>：{demographic.others}名 </div>
+              {/* <div className="list-head__item"> <span> その他 </span>：{demographic.others}名 </div> */}
             </div>
           </div>
         </div>

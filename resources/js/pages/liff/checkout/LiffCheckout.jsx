@@ -58,8 +58,39 @@ export default () => {
     return cloneObject
   }
 
+  const isEmpty = (obj) => {
+    return !Object.keys(obj).length;
+  }
+
+  const validationCheck = () => {
+    const errors = [];
+  
+    if (isEmpty(deliveryAddress)) {
+      errors.push("配送先を選択してください");
+    }
+    if (paymentMethod.payjp_default_card_id === '') {
+      errors.push("支払い方法を選択してください");
+    }
+    if (Cookies.get('delivery_time') === undefined) {
+      errors.push("配送オプションを選択してください");
+    }
+  
+    return errors;
+  }
+
   const createOrder = () => {
     setIsLoading(true);
+    const errors = validationCheck();
+    console.log(errors);
+    if (errors.length > 0) {
+      Swal.fire({
+        title: 'エラー',
+        icon: 'error',
+        html: errors.join('<br>')
+      })
+      setIsLoading(false);
+      return;
+    }
     const keys = ['id', 'is_selected', 'updated_at', 'user_id', 'created_at', 'deleted_at'];
     const delivery_time = Cookies.get('delivery_time')
     const newDeliveryAddress = deleteProperty(keys)

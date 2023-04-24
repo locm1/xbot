@@ -122,7 +122,7 @@ class DatabaseSeeder extends Seeder
             Message::factory(100)->create();
             MessageItem::factory(200)->create();
             GreetingMessage::factory(3)->create();
-            OrderPaymentMethod::factory(100)->create();
+            // OrderPaymentMethod::factory(100)->create();
         } else if ($environment  === 'stg') {
             $this->call([
                 AdminTableSeeder::class,

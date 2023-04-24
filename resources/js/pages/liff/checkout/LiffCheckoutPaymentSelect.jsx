@@ -18,7 +18,7 @@ export default () => {
   const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState({
-    payment_method: 1
+    payment_method: null
   });
   const [customer, setCustomer] = useState({
     id: '', default_card: {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
@@ -63,6 +63,7 @@ export default () => {
     getUser(idToken, setUser).then(response => {
       showPaymentMethod(response.id, setIsLoading).then(
         response => {
+          console.log(response);
           setPaymentMethod(response == null ? {payment_method: 1} : response)
           setSelectCardId(response.payjp_default_card_id)
           response.payjp_customer_id && getCards(response.id, response.payjp_customer_id, setCreditCards)

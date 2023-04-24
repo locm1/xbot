@@ -64,7 +64,7 @@ export default () => {
               <div className="d-flex flex-row-reverse justify-content-between">
               <Form.Group id="category">
                 <Form.Check
-                checked={privateProduct}
+                defaultChecked={privateProduct}
                 type="switch"
                 label="非公開にする"
                 id="switch1"
@@ -94,7 +94,7 @@ export default () => {
                 </Col>
                 <Col md={12} className="mb-4">
                   <Form.Group id="overview">
-                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>カテゴリー概要</Form.Label>
+                    <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>カテゴリー概要</Form.Label>
                     <Form.Control
                       as="textarea"
                       rows="3"
@@ -118,7 +118,7 @@ export default () => {
                     <Form.Control
                       type="hidden"
                       name="color"
-                      value={backgroundColor}
+                      defaultValue={backgroundColor}
                       isInvalid={!!error.color}
                     />
                     {

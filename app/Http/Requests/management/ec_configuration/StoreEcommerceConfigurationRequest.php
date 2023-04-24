@@ -23,10 +23,12 @@ class StoreEcommerceConfigurationRequest extends FormRequest
      */
     public function rules()
     {
+        $is_enabled = $this->is_enabled;
         return [
             'is_enabled' => 'required|numeric|boolean',
             'postage' => 'required|numeric',
             'target_amount' => 'required|numeric',
+            'cash_on_delivery_fee' => $is_enabled === 1 ? 'required|numeric' : 'nullable',
             'tel' => 'required|numeric|digits_between:8,11',
             'email' => 'required|email:filter,dns'
         ];

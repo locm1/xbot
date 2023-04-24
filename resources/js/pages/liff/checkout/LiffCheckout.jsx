@@ -131,10 +131,8 @@ export default () => {
     Swal.fire(
       `エラー`,
       message,
-      'error'
-    ).then((result) => {
-      result.isConfirmed && history.push(Paths.LiffCarts.path);
-    })
+      'error',
+    )
   }
 
   useEffect(() => {

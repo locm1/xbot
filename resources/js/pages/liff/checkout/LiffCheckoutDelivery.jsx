@@ -53,7 +53,7 @@ export default () => {
     return (
       <>
       <ListGroup.Item className="bg-transparent border-bottom py-3 px-0 checkout-card-check-wrap">
-        <Row className="">
+        <Row className="gx-0">
           <Col xs="12" className="">
             <Form.Check
               type="radio"

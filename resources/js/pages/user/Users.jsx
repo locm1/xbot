@@ -23,7 +23,7 @@ export default () => {
     name: '', tel: ''
   });
   const [demographic, setDemographic] = useState({
-    man: '', women: '', others: ''
+    friend: '', registered: '', man: '', women: '', others: ''
   })
   const [paginate, setPaginate] = useState({ 
     current_page: 0, per_page: 0, from: 0, to: 0, total: 0 
@@ -91,9 +91,12 @@ export default () => {
           <h1 className="page-title">ユーザー管理</h1>
           <div className="list-head d-flex flex-wrap mb-4 align-items-center">
             <div className="list-head__items">
+              <div className="list-head__item"> <span>お友達総数</span>：{demographic.friend}名</div>
+              <div className="list-head__item"> <span className="">利用者登録済み</span>：{demographic.registered}名</div>
+              <div className="list-head__item"> <span className="">|</span></div>
               <div className="list-head__item"> <span className="u-men"> 男性 </span>：{demographic.man}名 </div>
               <div className="list-head__item"> <span className="u-women "> 女性 </span>：{demographic.women}名 </div>
-              <div className="list-head__item"> <span> その他 </span>：{demographic.others}名 </div>
+              {/* <div className="list-head__item"> <span> その他 </span>：{demographic.others}名 </div> */}
             </div>
           </div>
         </div>

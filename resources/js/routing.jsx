@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory, useLocation, Link } from "react-router-dom";
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
@@ -97,7 +97,7 @@ import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
 import axios from 'axios';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Stack } from 'react-bootstrap';
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const history = useHistory();
@@ -211,6 +211,28 @@ const LiffRoute = ({ component: Component, ...rest }) => {
     />
   );
 }
+
+const LiffECRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route {...rest} render={props => (
+      <>
+        <ECHeader />
+        <Component {...props} />
+        <Footer />
+      </>
+    )}
+    />
+  );
+}
+
+const ECHeader = () => (
+  <header>
+    <Stack direction='horizontal'>
+      <Link className='m-2' to={Paths.LiffProducts.path}>TOPページ</Link>
+      <Link className='ms-auto m-2' to={Paths.LiffCarts.path}>カート</Link>
+    </Stack>
+  </header>
+)
 
 const RegisteredLiffRoute = ({ component: Component, ...rest }) => {
   const idToken = liff.getIDToken();
@@ -459,10 +481,10 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="account" path={Paths.InflowRoute.path} component={InflowRoute} />
       
       <LiffInitRoute path={Paths.LiffInit.path} />
-      <LiffRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
+      <LiffECRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <RegisteredLiffRoute exact path={Paths.LiffProductReservationComplete.path} component={LiffProductReservationComplete} />
-      <LiffRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
-      <LiffRoute exact path={Paths.LiffPickupProducs.path} component={LiffProductCategories} />
+      <LiffECRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
+      <LiffECRoute exact path={Paths.LiffPickupProducs.path} component={LiffProductCategories} />
       <LiffRoute exact path={Paths.LiffCarts.path} component={LiffCarts} />
       <RegisteredLiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
       <RegisteredLiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />

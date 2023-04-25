@@ -108,7 +108,6 @@ export const UserInfoForm = (props) => {
                   <option>選択してください</option>
                   <option value="1">男性</option>
                   <option value="2">女性</option>
-                  <option value="3">その他</option>
                 </Form.Select>
               </Form.Group>
             </Col>

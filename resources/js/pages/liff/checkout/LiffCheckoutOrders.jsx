@@ -54,8 +54,7 @@ export default (props) => {
     const { img, name, price, id, quantity } = props;
 
     return (
-      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-        <Row className="">
+        <Row className="py-3">
           <Col xs="8" className="px-0">
             <div className="m-1">
               <h4 className="fs-6 text-dark mb-0">{specificTime}</h4>
@@ -72,7 +71,6 @@ export default (props) => {
             </div>
           </Col>
         </Row>
-      </ListGroup.Item>
     );
   }
 
@@ -80,11 +78,18 @@ export default (props) => {
     <>
       <Card border="0" className="shadow my-3">
         <Card.Header className="border-bottom">
+          <h5 className="liff-product-detail-name mb-0">配送オプション</h5>
+        </Card.Header>
+        <Card.Body className="py-0">
+          <TimeSpecificationItem />
+        </Card.Body>
+      </Card>
+      <Card border="0" className="shadow my-3">
+        <Card.Header className="border-bottom">
           <h5 className="liff-product-detail-name mb-0">購入商品</h5>
         </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            <TimeSpecificationItem />
           </ListGroup>
           <ListGroup className="list-group-flush">
             {carts.map(cart => <CartItem key={`cart-${cart.id}`} {...cart} />)}

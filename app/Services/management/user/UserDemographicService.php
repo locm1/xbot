@@ -9,24 +9,39 @@ class UserDemographicService
 
     public function getUserDemographic() 
     {
-        $genders = $this->getGender();
-        $birth_months = $this->getBirthMonth();
-        $prefectures = $this->getPrefecture();
-
         return [
-            'genders' => $genders,
-            'birth_months' => $birth_months,
-            'prefectures' => $prefectures,
+            'friend' => $this->getFriendCount(),
+            'registered' => $this->getRegisteredCount(),
+            'genders' => $this->getGenderCount(),
+            'birth_months' => $this->getBirthMonth(),
+            'prefectures' => $this->getPrefecture(),
         ];
     }
 
-    private function getGender()
+    private function getFriendCount(): int
     {
-        $users = User::whereNotNull('gender')->orderBy('id', 'asc')->get();
-        return $users->groupBy(function ($row) {return $row->gender;})
-            ->map(function ($gender) {
-                return $gender->count();
-            });
+        return User::where('is_blocked', 0)->count();
+    }
+
+    private function getRegisteredCount(): int
+    {
+        return User::where('is_registered', 1)->count();
+    }
+
+    private function getGenderCount(): array
+    {        
+        // 後で福士くんに聞く
+        // $users = User::whereNotNull('gender')->orderBy('id', 'asc')->get();
+        // return $users->groupBy(function ($row) {return $row->gender;})
+        //     ->map(function ($gender) {
+        //         return $gender->count();
+        //     });
+
+        return [
+            'male' => User::where('gender', 1)->count(),
+            'female' => User::where('gender', 2)->count(),
+            'other' => User::where('gender', 3)->count(),
+        ];
     }
 
     private function getBirthMonth()

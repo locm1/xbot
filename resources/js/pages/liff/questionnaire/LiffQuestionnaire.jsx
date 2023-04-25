@@ -58,7 +58,7 @@ export default () => {
     "questionnaires.0.answer": ''
   });
 
-  const genders = ['男性', '女性', 'その他'];
+  const genders = ['男性', '女性'];
 
   const handleChange = (e, input) => {
     setFormValue({...formValue, [input]: e.target.value})

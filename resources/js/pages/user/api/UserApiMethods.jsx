@@ -21,10 +21,11 @@ export const getUsers = async (params, setUsers, setLinks, setPaginate, setIsRen
 export const getDemographic = async (setDemographic) => {
   axios.get('/api/v1/management/demographic')
   .then((response) => {
+    const friend = response.data.demographic.friend;
+    const registered = response.data.demographic.registered;
     const genders = response.data.demographic.genders;
-    console.log(genders);
     setDemographic({
-      man: genders['1'], women: genders['2'], others: genders["3"]
+      friend: friend, registered: registered, man: genders['male'], women: genders['female'], others: genders["other"]
     });
   })
   .catch(error => {

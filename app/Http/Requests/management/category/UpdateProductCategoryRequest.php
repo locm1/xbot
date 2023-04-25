@@ -26,7 +26,7 @@ class UpdateProductCategoryRequest extends FormRequest
         return [
             'name' => 'required', 
             'color' => 'required', 
-            'content' => 'required', 
+            // 'content' => 'required', 
             'is_undisclosed' => 'required|boolean'
         ];
     }
@@ -36,7 +36,7 @@ class UpdateProductCategoryRequest extends FormRequest
         return [
             'name' => 'カテゴリー名',
             'color' => 'カラー', 
-            'content' => 'カテゴリー概要', 
+            // 'content' => 'カテゴリー概要', 
             'is_undisclosed' => '非公開'
         ];
     }

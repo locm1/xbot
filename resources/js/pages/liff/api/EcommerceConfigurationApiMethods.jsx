@@ -8,6 +8,7 @@ export const getEcommerceConfigurationAndPostage = async (carts, targetPostage, 
       ? ecommerce_configuration.postage
       : targetPostage.postage;
     setPostage(postage)
+    console.log(ecommerce_configuration);
     setEcommerceConfiguration(ecommerce_configuration)
   })
   .catch(error => {

@@ -25,7 +25,7 @@ class StoreProductCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required', 
-            'color' => 'required', 
+            // 'color' => 'required', 
             // 'content' => 'required', 
             'is_undisclosed' => 'required|boolean'
         ];
@@ -35,7 +35,7 @@ class StoreProductCategoryRequest extends FormRequest
     {
         return [
             'name' => 'カテゴリー名',
-            'color' => 'カラー', 
+            // 'color' => 'カラー', 
             // 'content' => 'カテゴリー概要', 
             'is_undisclosed' => '非公開'
         ];
@@ -44,7 +44,7 @@ class StoreProductCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'color.required' => 'カラーを選択してください',
+            // 'color.required' => 'カラーを選択してください',
         ];
     }
 }

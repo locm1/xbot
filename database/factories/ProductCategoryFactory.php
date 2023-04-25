@@ -20,7 +20,7 @@ class ProductCategoryFactory extends Factory
 
         return [
             'name' => fake()->randomElement($categories),
-            'color' => fake()->hexColor(),
+            // 'color' => fake()->hexColor(),
             'content' => fake()->sentences(2, true),
             'is_undisclosed' => 0,
             'display_order' => fake()->randomFloat(null, 1, 200)

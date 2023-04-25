@@ -30,13 +30,6 @@ class UserDemographicService
 
     private function getGenderCount(): array
     {        
-        // 後で福士くんに聞く
-        // $users = User::whereNotNull('gender')->orderBy('id', 'asc')->get();
-        // return $users->groupBy(function ($row) {return $row->gender;})
-        //     ->map(function ($gender) {
-        //         return $gender->count();
-        //     });
-
         return [
             'male' => User::where('gender', 1)->count(),
             'female' => User::where('gender', 2)->count(),

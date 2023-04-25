@@ -108,7 +108,7 @@ export default () => {
                     }
                   </Form.Group>
                 </Col>
-                <Col md={12} className="mb-4">
+                {/* <Col md={12} className="mb-4">
                   <Form.Group id="overview">
                     <Form.Label><Badge bg="danger" className="me-2">必須</Badge>カテゴリー色選択</Form.Label>
                     <CirclePicker
@@ -127,7 +127,7 @@ export default () => {
                     }
                   </Form.Group>
                   <div className="category-color" style={{backgroundColor: backgroundColor}}>{backgroundColor}</div>
-                </Col>
+                </Col> */}
               </Row>
               <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
                 <Button

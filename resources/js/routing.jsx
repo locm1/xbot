@@ -179,7 +179,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
                   admin={admin}
                   pages={pages}
                 />
-                <main className="content">
+                <main className="content mb-5">
                   <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} admin={admin} />
                   <Component {...props} />
                 </main>

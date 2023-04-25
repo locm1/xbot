@@ -8,6 +8,7 @@ use App\Services\management\message\MessageService;
 use App\Http\Requests\management\message\UpdateMessageRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\management\message\StoreMessageRequest;
+use App\Http\Requests\management\message\UpdateMessageItemRequest;
 
 class MessageController extends Controller
 {
@@ -63,7 +64,7 @@ class MessageController extends Controller
      */
     public function update(UpdateMessageRequest $request, Message $message)
     {
-        $message = $this->message_service->update($request, $message);
+        $message = $this->message_service->update($request, $message, 'update');
         return response()->json(['message' => $message], 200);
     }
 

@@ -46,15 +46,19 @@ export const getMessages = async (params, setMessages, setLinks, setPaginate) =>
   });
 };
 
-export const storeMessage = async (message, formData, storeMessageItems, completeMessage) => {
-  axios.post('/api/v1/management/messages', message)
+export const storeMessage = async (formData, setError, completeMessage) => {
+  axios.post('/api/v1/management/messages', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  })
   .then((response) => {
     const message = response.data.message;
-    storeMessageItems(message.id, formData)
     completeMessage('作成');
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 
@@ -71,13 +75,19 @@ export const showMessage = async (id, setMessage, setIsUndisclosed) => {
   });
 };
 
-export const updateMessage = async (id, message, completeMessage) => {
-  axios.put(`/api/v1/management/messages/${id}`, message)
+export const updateMessage = async (id, formData, setError, completeMessage) => {
+  axios.post(`/api/v1/management/messages/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'X-HTTP-Method-Override': 'PUT',
+    }
+  })
   .then((response) => {
     completeMessage('更新')
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 

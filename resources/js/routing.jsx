@@ -3,6 +3,8 @@ import { Route, Switch, Redirect, useHistory, useLocation, Link } from "react-ro
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
+import Swal from "sweetalert2";
+import withReactContent from 'sweetalert2-react-content';
 import { LiffMockPlugin } from '@line/liff-mock';
 import { getPages, updatePages } from "@/pages/sidebar/api/PageApiMethods";
 import { generateEnv } from '@/components/common/GenerateEnv';
@@ -412,6 +414,12 @@ const Routing = () => {
     console.log(error);
     if (error.response.status === 401) {
       history.push('/manage/login'); // ログイン画面にリダイレクト
+    } else if (error.response.status === 422) {
+      Swal.fire(
+        `エラー`,
+        `入力項目を確認してください。`,
+        'error'
+      )
     }
     return Promise.reject(error);
   });

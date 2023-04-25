@@ -5,8 +5,11 @@ import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player'
 
 export default (props) => {
-  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems,
-     handleAddCarouselProductButtonClick, handleAddCarouselImageButtonClick } = props;
+  const { 
+    handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems,
+    handleAddCarouselProductButtonClick, handleAddCarouselImageButtonClick, error, index, setError,
+    deleteCarouselImages, deleteCarouselProducts, updateCarouselImageImageIds, updateCarouselImageImages
+  } = props;
 
   const getDefaultActiveKey = (type) => {
     switch (type) {
@@ -88,18 +91,44 @@ export default (props) => {
     setMessageItems(newMessageItems);
   }
 
-  const handleCarouselImageChange = (e, display_id) => {
+  const handleCarouselImageChange = (e, display_id, carouselImagesIndex) => {
     const newCarouselImages = messageItem.carousel_images.map(v => v.display_id == display_id ? {...v, [e.target.name]: e.target.value} : {...v});
+    messageItem.image_path = null
+    messageItem.video_path = null
+    messageItem.text = ''
+    deleteCarouselProducts(messageItem)
     const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_images: newCarouselImages, type: 4} : {...v});
     console.log(newMessageItems);
     setMessageItems(newMessageItems);
+
+    switch (e.target.name) {
+      case 'file':
+        setError({...error, [`message_items.${index}.carousel_images.${carouselImagesIndex}.image_path`]: ''})
+        break;
+      default:
+        setError({...error, [`message_items.${index}.carousel_images.${carouselImagesIndex}.${e.target.name}`]: ''})
+        break;
+    }
   }
 
-  const handleCarouselProductChange = (e, display_id) => {
+  const handleCarouselProductChange = (e, display_id, carouselImagesIndex) => {
     const newCarouselProduct = messageItem.carousel_products.map(v => v.display_id == display_id ? {...v, [e.target.name]: e.target.value} : {...v});
+    messageItem.image_path = null
+    messageItem.video_path = null
+    messageItem.text = ''
+    deleteCarouselImages(messageItem)
     const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_products: newCarouselProduct, type: 5} : {...v});
     console.log(newMessageItems);
     setMessageItems(newMessageItems);
+
+    switch (e.target.name) {
+      case 'file':
+        setError({...error, [`message_items.${index}.carousel_products.${carouselImagesIndex}.image_path`]: ''})
+        break;
+      default:
+        setError({...error, [`message_items.${index}.carousel_products.${carouselImagesIndex}.${e.target.name}`]: ''})
+        break;
+    }
   }
 
   const handleTabClick = (type) => {
@@ -237,19 +266,33 @@ export default (props) => {
                         <Card.Body>
                           <Row>
                             <Col xs={6}>
-                              <Form.Label>画像</Form.Label>
+                              <Form.Label onClick={() => test(messageItem.display_id, v.display_id)}>画像</Form.Label>
                               <Form.Control
                                 required={v.image_path ? false : true}
                                 type="file"
                                 name="file"
                                 id="carousel-image-picture" 
-                                accept="image/*"
-                                onChange={(e) => handlePreviewChange(e, 'carousel-image', messageItem.display_id, v.display_id)} 
+                                accept="image/png,image/jpg,image/jpeg"
+                                onChange={(e) => handlePreviewChange(e, 'carousel-image', messageItem.display_id, v.display_id, index, k)}
+                                isInvalid={!!error[`message_items.${index}.carousel_images.${k}.image_path`]} 
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {error[`message_items.${index}.carousel_images.${k}.image_path`]}
+                              </Form.Control.Feedback>
                             </Col>
                             <Col xs={6}>
                               <Form.Label>ラベル(最大12文字)</Form.Label>
-                              <Form.Control required maxlength="12" name="label" value={v.label} onChange={(e) => handleCarouselImageChange(e, v.display_id)} />
+                              <Form.Control
+                                required
+                                maxlength="12"
+                                name="label"
+                                value={v.label}
+                                onChange={(e) => handleCarouselImageChange(e, v.display_id, k)} 
+                                isInvalid={!!error[`message_items.${index}.carousel_images.${k}.label`]}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {error[`message_items.${index}.carousel_images.${k}.label`]}
+                              </Form.Control.Feedback>
                             </Col>
                             <Col xs={12} className="mt-3">
                               <DropzoneFile messageItem={v} />
@@ -263,10 +306,11 @@ export default (props) => {
                                 required 
                                 name="uri" 
                                 value={v.uri} 
-                                onChange={(e) => handleCarouselImageChange(e, v.display_id)}
+                                onChange={(e) => handleCarouselImageChange(e, v.display_id, k)}
+                                isInvalid={!!error[`message_items.${index}.carousel_images.${k}.uri`]}
                               />
                               <Form.Control.Feedback type="invalid">
-                                正しいURLを入力してください。
+                                {error[`message_items.${index}.carousel_images.${k}.uri`]}
                               </Form.Control.Feedback>
                             </Col>
                           </Row>
@@ -313,24 +357,59 @@ export default (props) => {
                                   type="file"
                                   name="file"
                                   id="carousel-product-picture" 
-                                  accept="image/*"
-                                  onChange={(e) => handlePreviewChange(e, 'carousel-product', messageItem.display_id, v.display_id)} 
+                                  accept="image/png,image/jpg,image/jpeg"
+                                  onChange={(e) => handlePreviewChange(e, 'carousel-product', messageItem.display_id, v.display_id, index, k)} 
+                                  isInvalid={!!error[`message_items.${index}.carousel_products.${k}.image_path`]}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  {error[`message_items.${index}.carousel_products.${k}.image_path`]}
+                                </Form.Control.Feedback>
                               </Col>
                               <Col xs={6}>
                                 <Form.Label>タイトル(最大40文字)</Form.Label>
-                                <Form.Control required maxlength="40" name="title" value={v.title} onChange={(e) => handleCarouselProductChange(e, v.display_id)} />
+                                <Form.Control
+                                  required
+                                  maxlength="40"
+                                  name="title"
+                                  value={v.title}
+                                  onChange={(e) => handleCarouselProductChange(e, v.display_id, k)}
+                                  isInvalid={!!error[`message_items.${index}.carousel_products.${k}.title`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {error[`message_items.${index}.carousel_products.${k}.title`]}
+                                </Form.Control.Feedback>
                               </Col>
                               <Col xs={12} className="mt-3">
                                 <DropzoneFile messageItem={v} />
                               </Col>
                               <Col xs={12}>
                                 <Form.Label className="mt-2">テキスト(最大60文字)</Form.Label>
-                                <Form.Control required maxlength="60" name="text" value={v.text} onChange={(e) => handleCarouselProductChange(e, v.display_id)} as="textarea" />
+                                <Form.Control
+                                  required
+                                  maxlength="60"
+                                  name="text"
+                                  value={v.text}
+                                  onChange={(e) => handleCarouselProductChange(e, v.display_id, k)}
+                                  as="textarea" 
+                                  isInvalid={!!error[`message_items.${index}.carousel_products.${k}.text`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {error[`message_items.${index}.carousel_products.${k}.text`]} 
+                                </Form.Control.Feedback>
                               </Col>
                               <Col xs={6}>
                                 <Form.Label className="mt-2">ボタン名(最大20文字)</Form.Label>
-                                <Form.Control required maxlength="20" name="label" value={v.label} onChange={(e) => handleCarouselProductChange(e, v.display_id)} />
+                                <Form.Control
+                                  required
+                                  maxlength="20"
+                                  name="label"
+                                  value={v.label}
+                                  onChange={(e) => handleCarouselProductChange(e, v.display_id, k)} 
+                                  isInvalid={!!error[`message_items.${index}.carousel_products.${k}.label`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {error[`message_items.${index}.carousel_products.${k}.label`]} 
+                                </Form.Control.Feedback>
                               </Col>
                               <Col xs={6}>
                                 <Form.Label className="mt-2">URL</Form.Label>
@@ -341,10 +420,11 @@ export default (props) => {
                                   required 
                                   name="uri" 
                                   value={v.uri} 
-                                  onChange={(e) => handleCarouselProductChange(e, v.display_id)} 
+                                  onChange={(e) => handleCarouselProductChange(e, v.display_id, k)} 
+                                  isInvalid={!!error[`message_items.${index}.carousel_products.${k}.uri`]}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  正しいURLを入力してください。
+                                  {error[`message_items.${index}.carousel_products.${k}.uri`]} 
                                 </Form.Control.Feedback>
                               </Col>
                             </Row>

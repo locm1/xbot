@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Services\management\message\MessageItemService;
 use Illuminate\Http\Request;
 use App\Http\Requests\management\message\StoreMessageItemRequest;
+use App\Http\Requests\management\message\UpdateMessageItemRequest;
 
 class MessageItemController extends Controller
 {
@@ -47,7 +48,7 @@ class MessageItemController extends Controller
      * @param  Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Message $message)
+    public function update(UpdateMessageItemRequest $request, Message $message)
     {
         $message_item = $this->message_item_service->update($request, $message, 'update');
         return response()->json(['message_item' => $message_item], 200);

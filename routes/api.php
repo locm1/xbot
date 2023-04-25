@@ -196,8 +196,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('invite-incentives/{invite_incentive}/invitee-users', InviteeIncentiveController::class);
         Route::apiResource('messages', MessageController::class);
         Route::get('messages/{message}/items', [MessageItemController::class, 'index']);
-        Route::post('messages/{message}/items', [MessageItemController::class, 'store']);
-        Route::put('messages/{message}/items', [MessageItemController::class, 'update']);
         Route::delete('messages/{message}/items', [MessageItemController::class, 'destroy']);
         Route::apiResource('api-keys', ApiKeyController::class);
         Route::get('pages', [PageController::class, 'index']);

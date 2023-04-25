@@ -47,7 +47,8 @@ export const ProductsTable = (props) => {
           </div>
         </td>
         <td>
-          <div style={{backgroundColor: product_category.color}} className="me-1 product-category-badge fw-normal">
+          {/* <div className="me-1 product-category-badge fw-normal bg-tertiary"> */}
+          <div className="me-1 product-category-badge fw-normal bg-tertiary">
             {product_category.name}
           </div>
         </td>

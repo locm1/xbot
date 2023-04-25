@@ -91,7 +91,8 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
       <ProductDetailSlider productImages={productImages} />
       <div className="py-5">
-        <div style={{backgroundColor: category.color}} className="me-1 product-category-badge fw-normal mb-3">
+        {/* <div style={{backgroundColor: category.color}} className="me-1 product-category-badge fw-normal mb-3"> */}
+        <div className="me-1 product-category-badge fw-normal bg-tertiary">
           {category.name}
         </div>
         <h3 className="fs-5 mb-0 liff-product-detail-name">{product.name}</h3>

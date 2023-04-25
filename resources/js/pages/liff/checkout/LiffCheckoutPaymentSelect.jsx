@@ -161,14 +161,14 @@ export default () => {
           )
         }
         <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-          <a href={Paths.LiffCheckoutPaymentCreditCard.path} className="d-flex align-items-center p-2">
+          <Link to={Paths.LiffCheckoutPaymentCreditCard.path} className="d-flex align-items-center p-2">
             <h2 className="fs-6 fw-bold mb-0">カードを追加</h2>
             <div className="ms-auto">
               <span className="link-arrow">
                 <ChevronRightIcon className="icon icon-sm" />
               </span>
             </div>
-          </a>
+          </Link>
         </ListGroup.Item>
         </>
       }

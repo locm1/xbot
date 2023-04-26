@@ -1,3 +1,5 @@
+@import "../volt/variables";
+
 .checkbox-btn {
   margin: {
     left: 5px;
@@ -113,4 +115,9 @@
 
 .not-allowed {
   cursor: not-allowed;
+}
+
+.btn:disabled{
+  background-color: $gray-400;
+  border-color: $gray-300
 }

@@ -15,6 +15,7 @@ use App\Http\Controllers\api\liff\order\OrderController as LiffOrderController;
 use App\Http\Controllers\api\liff\order_destination\OrderDestinationController as LiffOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\SelectedOrderDestinationController;
 use App\Http\Controllers\api\liff\order_destination\UpdateOrderDestinationController;
+use App\Http\Controllers\api\liff\payjp\PayJpKeyController;
 use App\Http\Controllers\api\liff\payment_method\PaymentMethodController;
 use App\Http\Controllers\api\liff\privacy_policy\PrivacyPolicyController as LiffPrivacyPolicyController;
 use App\Http\Controllers\api\liff\product\ProductCategoryController as LiffProductCategoryController;
@@ -260,6 +261,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('ecommerce-configurations', LiffEcommerceConfigurationController::class);
     Route::apiResource('inflow-route-users', InflowRouteUserController::class);
     Route::get('get-liff-id', GetLiffIdController::class);
+    Route::get('payjp-public-key', PayJpKeyController::class);
     Route::post('visitor-confirm', VisitorConfirmController::class);
     Route::apiResource('invite-incentive-job', InviteIncentiveJobController::class);
     Route::apiResource('events', LiffEventController::class);

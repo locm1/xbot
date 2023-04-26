@@ -8,14 +8,7 @@ import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import BackToListLink from "@/components/BackToListLink";
-
-const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
-  customClass: {
-    confirmButton: 'btn btn-primary me-3',
-    cancelButton: 'btn btn-gray'
-  },
-  buttonsStyling: false
-}));
+import { getAccount, storeAccount, updateAccount } from "@/pages/account/api/AdminApiMethods";
 
 export default () => {
   const { id } = useParams();
@@ -26,8 +19,7 @@ export default () => {
   const [formValue, setFormValue] = useState(
     {login_id: '', name: '', role: 1, password: '', password_confirmation: ''}
   );
-  const [searchValue, setSearchValue] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [error, setError] = useState({});
   const roles = [
     {role: 1, name: '管理者'},
     {role: 2, name: '編集者'},
@@ -36,7 +28,7 @@ export default () => {
 
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      getAdmin();
+      getAccount(id, setFormValue);
     }
   }, []);
 
@@ -44,48 +36,17 @@ export default () => {
     setFormValue({...formValue, [input]: e.target.value})
   };
 
-  const getAdmin = async () => {
-    await axios.get(`/api/v1/management/admins/${id}`)
-    .then((response) => {
-      const admin = response.data.admin;
-      setFormValue({
-        login_id: admin.login_id, 
-        name: admin.name, 
-        role: admin.role,
-        password: '',
-        password_confirmation: '',
-      })
-    });
-  }
-
-  const registerAdmin = async () => {
-    await axios.post('/api/v1/management/admins', formValue)
-    .then((response) => {
-      history.push(Paths.Accounts.path);
-      alert('登録しました');
-      console.log(response);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
-
-
-  const updateAdmin = async () => {
-    const newFormValues = {
-      data: formValue,
-      is_checked: isCheck,
+  const onSaveAccount = () => {
+    if (pathname.includes('/edit')) {
+      const newFormValues = {
+        data: formValue,
+        is_checked: isCheck,
+      }
+      updateAccount(id, newFormValues, setError)
+    } else {
+      storeAccount(formValue, setError)
     }
-    await axios.put(`/api/v1/management/admins/${id}`, newFormValues)
-    .then((response) => {
-      alert('更新しました');
-      console.log(newFormValues);
-      console.log(response);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
+  };
 
   return (
     <>
@@ -102,21 +63,35 @@ export default () => {
         <Card.Body>
           <Row className="mb-3">
             <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
+              <Form.Group id="login_id">
                 <Form.Label>ログインID</Form.Label>
-                <Form.Control required type="text" name="login_id" value={formValue.login_id} onChange={(e) => handleChange(e, 'login_id')} placeholder="" />
+                <Form.Control
+                  required
+                  type="text"
+                  name="login_id"
+                  value={formValue.login_id}
+                  onChange={(e) => handleChange(e, 'login_id')} 
+                  placeholder="" 
+                />
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
+              <Form.Group id="name">
                 <Form.Label>ユーザー名</Form.Label>
-                <Form.Control required type="text" name="name" value={formValue.name} onChange={(e) => handleChange(e, 'name')} placeholder="" />
+                <Form.Control
+                  required
+                  type="text" 
+                  name="name"
+                  value={formValue.name}
+                  onChange={(e) => handleChange(e, 'name')}
+                  placeholder=""
+                />
               </Form.Group>
             </Col>
             <Col md={12} className="mb-3">
-              <Form.Group id="email">
+              <Form.Group id="role">
                 <Form.Label>権限レベル</Form.Label>
-                <Form.Select className="mb-0" defaultValue={formValue.role} onChange={(e) => handleChange(e, 'role')}>
+                <Form.Select className="mb-0" value={formValue.role} onChange={(e) => handleChange(e, 'role')}>
                   {
                     roles.map((role, index) => <option key={index} value={role.role}>{role.name}</option>)
                   }
@@ -124,60 +99,53 @@ export default () => {
               </Form.Group>
             </Col>
           </Row>
-          {(() => {
-            if (pathname.includes('/edit')) {
-              return (
-                <>
-                <Row>
+          <Row>
+            {
+              pathname.includes('/edit') && (
                 <Col md={12}>
-                  <Form.Check label="パスワードを変更する" onClick={() => setIsCheck(!isCheck)} id="password_chenge_checkbox" htmlFor="password_chenge_checkbox" />
+                  <Form.Check
+                    label="パスワードを変更する"
+                    onClick={() => setIsCheck(!isCheck)}
+                    id="password_chenge_checkbox"
+                    htmlFor="password_chenge_checkbox"
+                  />
                 </Col>
-                <Col md={6} className="mb-3">
-                  <Form.Group id="firstName">
-                    <Form.Label>パスワード</Form.Label>
-                    <Form.Control required type="password" name="password" value={formValue.password} onChange={(e) => handleChange(e, 'password')} placeholder="" disabled={!isCheck} />
-                  </Form.Group>
-                </Col>
-                <Col md={6} className="mb-3">
-                  <Form.Group id="firstName">
-                    <Form.Label>確認用パスワード</Form.Label>
-                    <Form.Control required type="password" name="confirm_password" value={formValue.password_confirmation} onChange={(e) => handleChange(e, 'password_confirmation')} placeholder="" disabled={!isCheck} />
-                  </Form.Group>
-                </Col>
-                </Row>
-                <div onClick={updateAdmin} className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-4">
-                  <Button variant="success" className="animate-up-2">
-                    更新する
-                  </Button>
-                </div>
-                </>
-              );
-            } else {
-              return (
-                <>
-                <Row>
-                  <Col md={6} className="mb-3">
-                    <Form.Group id="firstName">
-                      <Form.Label>パスワード</Form.Label>
-                      <Form.Control required type="password" name="password" value={formValue.password} onChange={(e) => handleChange(e, 'password')} placeholder="" />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} className="mb-3">
-                    <Form.Group id="firstName">
-                      <Form.Label>確認用パスワード</Form.Label>
-                      <Form.Control required type="password" name="confirm_password" value={formValue.password_confirmation} onChange={(e) => handleChange(e, 'password_confirmation')} placeholder="" />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <div onClick={registerAdmin} className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-4">
-                  <Button variant="gray-800" className="animate-up-2">
-                    登録する
-                  </Button>
-                </div>
-                </>
-              );
+              )
             }
-          })()}
+            <Col md={6} className="mb-3">
+              <Form.Group id="password">
+                <Form.Label>パスワード</Form.Label>
+                <Form.Control
+                  required
+                  type="password"
+                  name="password"
+                  value={formValue.password}
+                  onChange={(e) => handleChange(e, 'password')}
+                  placeholder=""
+                  disabled={pathname.includes('/edit') ? !isCheck : false}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6} className="mb-3">
+              <Form.Group id="confirm_password">
+                <Form.Label>確認用パスワード</Form.Label>
+                <Form.Control
+                  required
+                  type="password"
+                  name="confirm_password"
+                  value={formValue.password_confirmation}
+                  onChange={(e) => handleChange(e, 'password_confirmation')}
+                  placeholder=""
+                  disabled={pathname.includes('/edit') ? !isCheck : false}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <div onClick={onSaveAccount} className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-4">
+            <Button variant="success" className="animate-up-2">
+              {pathname.includes('/edit') ? '更新する' : '登録する'}
+            </Button>
+          </div>
         </Card.Body>
       </Card>
     </>

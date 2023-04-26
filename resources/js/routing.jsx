@@ -367,6 +367,36 @@ const NoFooterRoute = ({ component: Component, ...rest }) => {
   );
 }
 
+const LiffCreditCardRoute = ({ component: Component, ...rest }) => {
+  const [isInit, setIsInit] = useState(false);
+  axios.get('/api/v1/get-liff-id')
+    .then((response) => {
+      console.log(response);
+      liff.init({liffId: response.data})
+        .then(() => {
+          if(liff.isLoggedIn() === false) liff.login()
+          setIsInit(true);
+        })
+        .catch((err) => {
+          console.log(err.code, err.message);
+        });
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+
+    return isInit && (
+      <Route {...rest} render={props => (
+        <>
+          <Component {...props} />
+          <Footer />
+        </>
+      )}
+      />
+    );
+}
+
+
 const LiffInitRoute = () => {
   const search = useLocation().search;
   const query = new URLSearchParams(search);
@@ -492,7 +522,7 @@ const Routing = () => {
       <RegisteredLiffRoute exact path={Paths.LiffCheckoutEditAddress.path} component={LiffCheckoutAddAddress} />
       <RegisteredLiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
       <RegisteredLiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
-      <RegisteredLiffRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
+      <LiffCreditCardRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
       <RegisteredLiffRoute exact path={Paths.LIffCheckoutAddCoupon.path} component={LIffCheckoutAddCoupon} />
       <RegisteredLiffRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
       <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />

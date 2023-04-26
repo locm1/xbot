@@ -6,8 +6,9 @@ export const getEcommerceConfigurationAndPostage = async (carts, targetPostage, 
     const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0)
     const postage = (orderTotal >= ecommerce_configuration.target_amount)
       ? ecommerce_configuration.postage
-      : targetPostage.postage;
+      : targetPostage ? targetPostage.postage : 0; 
     setPostage(postage)
+    console.log(ecommerce_configuration);
     setEcommerceConfiguration(ecommerce_configuration)
   })
   .catch(error => {

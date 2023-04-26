@@ -17,5 +17,5 @@ yarn-error.log
 /.idea
 /.vscode
 .DS_Store
-/public/js/index.js
+/public/js
 /public/images/test_img

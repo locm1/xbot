@@ -13,6 +13,17 @@ export default (props) => {
   const { show, onHide } = props
   const [liffId, setLiffId] = useState('');
 
+  const downloadQrCode = () => {
+    const qrCode = document.getElementById('visitor-history-qr-code');
+    qrCode.toBlob((blob) => {
+      const downloadLink = document.createElement('a');
+      document.body.appendChild(downloadLink);
+      downloadLink.download = 'visitor_qr_code.png';
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.click()
+    }, 'image/png')
+  }
+
   useLayoutEffect(() => {
     axios.get('/api/v1/get-liff-id')
     .then((response) => {
@@ -42,6 +53,9 @@ export default (props) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
+          <Button variant="primary" className="me-2" onClick={downloadQrCode}>
+            ダウンロード
+          </Button>
           <Button onClick={onHide} variant="link" className="text-gray ms-auto">
             閉じる
           </Button>

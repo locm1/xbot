@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import { LoadingContext } from "@/components/LoadingContext";
@@ -11,6 +11,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod, updatePaymentMethod, storePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { storeCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { storeCard } from "@/pages/liff/api/CardApiMethods";
+import { getPublicKey } from "@/pages/liff/api/PayJpKeyApiMethods";
 
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
@@ -22,24 +23,23 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true)
+    getPublicKey().then(response => showCreditCardForm(response))
     const idToken = liff.getIDToken();
-    showCreditCardForm()
     getUser(idToken, setUser).then(
       response => showPaymentMethod(response.id, setIsLoading).then(response => setPaymentMethod(response))
     )
     //showPaymentMethod(101, setPaymentMethod)
   }, []);
 
-  const showCreditCardForm = () => {
+  const showCreditCardForm = (key) => {
     const payJp = document.getElementById('pay-jp');
     const scriptUrl = document.createElement('script');
-    const key = process.env.MIX_PAYJP_PUBLIC_KEY
     const submitText = "トークンを作成する";
     const partial = true;
     scriptUrl.type = 'text/javascript';
     scriptUrl.src = 'https://checkout.pay.jp/';
-    scriptUrl.setAttribute("data-key", key);
     scriptUrl.setAttribute("class", 'payjp-button');
+    scriptUrl.setAttribute("data-key", key);
     scriptUrl.setAttribute("data-submit-text", submitText);
     scriptUrl.setAttribute("data-partial", partial);
     payJp.appendChild(scriptUrl);

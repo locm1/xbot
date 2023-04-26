@@ -71,20 +71,21 @@ $colors: ("blue": $blue,
 
 // Color scheme
 // $primary        : #262B40 !default;
-$primary        : #DC87A3 !default;
-$secondary      : #61DAFB !default;
+// $primary        : #DC87A3 !default;
+$primary        : #DB8C88 !default;
+$secondary      : #DBBE88 !default;
 $secondary-alt  : #acebfd !default;
-$tertiary       : #1B998B !default;
+$tertiary       : #263238 !default;
 
-$success: $green !default;
-$info   : $blue !default;
-$warning: $orange !default;
-$danger : #D05A82 !default;
-$gray   : $gray-900 !default;
+$success: #81C784 !default;
+$info   : #546E7A !default;
+$warning: #FF8A65 !default;
+$danger : #EF5350 !default;
+$gray   : #B0BEC5 !default;
 $light  : $gray-400 !default;
 $lighten: $gray-300 !default;
 $soft   : $gray-200 !default;
-$dark   : $dark !default;
+$dark   : #455A64 !default;
 
 // Brands colors
 $facebook : #3b5999 !default;

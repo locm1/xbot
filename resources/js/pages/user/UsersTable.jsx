@@ -17,7 +17,7 @@ export const UsersTable = (props) => {
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
     const { id, last_name, first_name, last_name_kana, first_name_kana, img_path, nickname, tel, gender, birth_date, prefecture, isSelected } = props;
     const name = last_name + ' ' + first_name;
-    const sexVariant = gender === 1 ? "info" : gender === 2 ? "danger" : "primary";
+    const sexVariant = gender === 1 ? "u-men" : gender === 2 ? "u-women" : "primary";
     const link = Paths.EditUser.path.replace(':id', id);
 
     return (
@@ -41,7 +41,7 @@ export const UsersTable = (props) => {
         </td>
         <td><span className="fw-normal">{tel}</span></td>
         <td>
-          <span className={`fw-normal text-${sexVariant}`}>
+          <span className={`fw-normal ${sexVariant}`}>
             {sex_array[gender]}
           </span>
         </td>

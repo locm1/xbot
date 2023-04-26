@@ -1,6 +1,7 @@
 @import "./pages/send_history";
 @import "./pages/liff";
 @import "./pages/product";
+@import "../volt/variables";
 
 $base_color: #707070;
 
@@ -423,4 +424,13 @@ $base_color: #707070;
   opacity: 0;
   transform: translateY(100%);
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.btn-default-success {
+  width: 100%;
+  max-width: 250px;
+  line-height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: $success;
 }

@@ -66,7 +66,6 @@ export default (props) => {
               questionnaire_items.map((questionnaire_item, index) => (
                 <Form.Check
                   key={questionnaire_item.id}
-                  defaultChecked={index == 0 ? true : false}
                   type="radio"
                   defaultValue={index}
                   label={questionnaire_item.name}

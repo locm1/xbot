@@ -46,7 +46,8 @@ export default (props) => {
       text: textMessage,
       showCancelButton: true,
       confirmButtonText: "削除",
-      cancelButtonText: "キャンセル"
+      cancelButtonText: "キャンセル",
+      reverseButtons: true
     });
 
     if (result.isConfirmed) {

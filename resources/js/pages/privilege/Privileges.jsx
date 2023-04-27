@@ -13,15 +13,43 @@ export default () => {
   const [cardToEdit, setCardToEdit] = useState(null);
   const [isCreate, setIsCreate] = useState(false);
   const [time, setTime] = useState('');
+  const [values, setValues] = useState({
+    time: '', privileges: ['', '', '']
+  })
+  const [refresh, setRefresh] = useState(false);
 
   const handleKeyDown = (e) => {
     e.preventDefault();
-    storePrivileges(time, privileges, setPrivileges, setIsCreate)
+    storePrivileges(time, privileges, setPrivileges, setIsCreate);
+    setTime('');
   };
+
+  const createPrivilege = () => {
+    storePrivileges(values);
+    setRefresh(!refresh);
+    setValues({time: '', privileges: ['', '', '']});
+    setIsCreate(false);
+  }
 
   useEffect(() => {
     getPrivileges(setPrivileges)
-  }, []);
+  }, [refresh]);
+
+  const addForm = () => {
+    setValues(prev => ({
+      ...prev,
+      privileges: [...prev.privileges, '']
+    }))
+  }
+  
+  const handleChange = (e) => {
+    const index = parseInt(e.target.name); // 配列番号を数値に変換
+    const newValue = e.target.value;
+    setValues(prev => ({
+      ...prev,
+      privileges: [...prev.privileges.slice(0, index), newValue, ...prev.privileges.slice(index + 1)]
+    }))
+  }
 
   return (
     <>
@@ -50,21 +78,51 @@ export default () => {
         {
           isCreate ? (
             <Card border={1} className="p-4 privilege-card-item">
-              <div className="d-flex align-items-center m-0 privilege-create-wrap">
-                <p className="fw-bold p-2 m-0">来店回数</p>
-                <Form onSubmit={(e) => handleKeyDown(e)}>
-                  <Form.Control
-                    autoFocus
-                    type="number"
-                    value={time}
-                    className="fs-6 fw-bold p-2 m-0 lh-1 border-0"
-                    onChange={(e) => setTime(e.target.value)}
-                  />
-                </Form>
+            {/* <Form onSubmit={(e) => handleKeyDown(e)} className=""> */}
+              <div className="m-0">
+                <p className="fw-bold m-0">1. 来店回数を数字で入力してください</p>
+                  <div className="d-flex align-items-center mt-2">
+                    <Form.Control
+                      autoFocus
+                      placeholder=""
+                      style={{ width: 100 }}
+                      type="number"
+                      min="0"
+                      step="1"
+                      pattern="\d+"
+                      value={values.time}
+                      onChange={(e) => setValues(prev => ({...prev, time: +e.target.value}))}
+                    />
+                    <div className="ms-2">回</div>
+                  </div>
+                  <p className="fw-bold m-0 mt-4">2. 特典を設定してください</p>
+                  {values.privileges.map((v, k) => 
+                    <Form.Control 
+                    key={`privilege-form-${k}`} 
+                    name={k}
+                    className="mt-2" 
+                    placeholder="例：お菓子盛り合わせプレゼント"
+                    onChange={handleChange}
+                    />
+                  )}
+                  <div className="privilege-button mb-4">
+                    <Button
+                      variant="outline-gray-500"
+                      onClick={addForm}
+                      className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+                    >
+                      <PlusIcon className="icon icon-xs me-2" /> 追加
+                    </Button>
+                  </div>
                 </div>
-                <div className="privilege-delete-button">
-                  <Button variant="close" onClick={() => setIsCreate(!isCreate)} />
+              <Card.Footer className="p-0 pt-4">
+                <div className="d-flex justify-content-end">
+                  <Button variant="success" className="btn-default-success" onClick={createPrivilege}>
+                    保存する
+                  </Button>
                 </div>
+              </Card.Footer>
+              {/* </Form> */}
             </Card>
           ) : (
             <div className="privilege-button mb-4">

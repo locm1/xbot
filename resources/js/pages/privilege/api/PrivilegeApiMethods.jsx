@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
+import Swal from "sweetalert2";
+
+const completeSwal = () => {
+  Swal.fire(
+    '保存完了',
+    '保存に成功しました',
+    'success'
+  )
+}
 
 export const getPrivileges = async (setPrivileges) => {
   axios.get('/api/v1/management/privileges')
@@ -13,14 +22,11 @@ export const getPrivileges = async (setPrivileges) => {
   });
 };
 
-export const storePrivileges = async (time, privileges, setPrivileges, setIsCreate) => {
-  await axios.post('/api/v1/management/privileges', {
-    visits_times: time
-  })
+export const storePrivileges = async (values) => {
+  await axios.post('/api/v1/management/privileges', values)
   .then((response) => {
+      completeSwal();
       console.log(response);
-      setPrivileges([...privileges, response.data.privilege]);
-      setIsCreate(false);
   })
   .catch(error => {
       console.error(error);

@@ -24,8 +24,9 @@ class EcommerceConfigurationService
     }
 
 
-    public function update($request, EcommerceConfiguration $ecommerce_configuration) 
+    public function update($request, $id) 
     {
+        $ecommerce_configuration = EcommerceConfiguration::find($id);
         $data = ($request->is_enabled == 1)
             ? $request->only(['cash_on_delivery_fee', 'is_enabled', 'postage', 'target_amount', 'tel', 'email'])
             : $request->only(['is_enabled', 'postage', 'target_amount', 'tel', 'email']);

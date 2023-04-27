@@ -48,9 +48,9 @@ class EcommerceConfigurationController extends Controller
      * @param  EcommerceConfiguration  $ecommerce_configuration
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEcommerceConfigurationRequest $request, EcommerceConfiguration $ecommerce_configuration)
+    public function update(UpdateEcommerceConfigurationRequest $request, $id)
     {
-        $ecommerce_configuration = $this->ecommerce_configuration_service->update($request, $ecommerce_configuration);
+        $ecommerce_configuration = $this->ecommerce_configuration_service->update($request, $id);
         return response()->json(['ecommerce_configuration' => $ecommerce_configuration], 200);
     }
 

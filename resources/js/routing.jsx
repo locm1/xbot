@@ -26,6 +26,7 @@ import SendHistories from '@/pages/message/SendHistories';
 import VisitorHistories from '@/pages/visitor/VisitorHistories';
 import EditVisitorHistory from '@/pages/visitor/EditVisitorHistory';
 import Privileges from '@/pages/privilege/Privileges';
+import Payment from '@/pages/payment/Payment';
 import Environment from '@/pages/product/Environment';
 import Products from '@/pages/product/Products';
 import ProductCategory from '@/pages/product/ProductCategory';
@@ -474,6 +475,7 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="visitor" path={Paths.VisitorHistories.path} component={VisitorHistories} />
       <RouteWithSidebar exact role_path="visitor" path={Paths.EditVisitorHistory.path} component={EditVisitorHistory} />
       <RouteWithSidebar exact role_path="visitor" path={Paths.Privileges.path} component={Privileges} />
+      <RouteWithSidebar exact role_path="ec" path={Paths.Payment.path} component={Payment} />
       <RouteWithSidebar exact role_path="ec" path={Paths.Environment.path} component={Environment} />
       <RouteWithSidebar exact role_path="ec" path={Paths.Products.path} component={Products} />
       <RouteWithSidebar exact role_path="ec" path={Paths.ProductCategory.path} component={ProductCategory} />

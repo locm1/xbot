@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('ecommerce_configurations', function (Blueprint $table) {
             $table->id();
-            $table->integer('target_amount');
-            $table->integer('postage');
-            $table->tinyInteger('is_enabled');
+            $table->integer('target_amount')->nullable();
+            $table->integer('postage')->nullable();
+            $table->tinyInteger('is_enabled')->nullable();
             $table->integer('cash_on_delivery_fee')->nullable();
-            $table->string('tel');
+            $table->string('tel')->nullable();
             $table->timestamps();
         });
     }

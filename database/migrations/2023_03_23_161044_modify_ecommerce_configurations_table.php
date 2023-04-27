@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('ecommerce_configurations', function (Blueprint $table) {
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
         });
     }
 

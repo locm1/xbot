@@ -22,10 +22,11 @@ export const getDemographic = async (setDemographic) => {
   axios.get('/api/v1/management/demographic')
   .then((response) => {
     const friend = response.data.demographic.friend;
+    const blocked = response.data.demographic.blocked;
     const registered = response.data.demographic.registered;
     const genders = response.data.demographic.genders;
     setDemographic({
-      friend: friend, registered: registered, man: genders['male'], women: genders['female'], others: genders["other"]
+      friend: friend, blocked: blocked, registered: registered, man: genders['male'], women: genders['female'], others: genders["other"]
     });
   })
   .catch(error => {

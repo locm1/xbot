@@ -92,6 +92,7 @@ export default () => {
           <div className="list-head d-flex flex-wrap mb-4 align-items-center">
             <div className="list-head__items">
               <div className="list-head__item"> <span>お友達総数</span>：{demographic.friend}名</div>
+              <div className="list-head__item"> <span>（ブロック</span>：{demographic.blocked}名） /</div>
               <div className="list-head__item"> <span className="">利用者登録済み</span>：{demographic.registered}名</div>
               <div className="list-head__item"> <span className="">|</span></div>
               <div className="list-head__item"> <span className="u-men"> 男性 </span>：{demographic.man}名 </div>

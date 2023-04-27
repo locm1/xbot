@@ -1,51 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { Col, Row, Modal, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
-import { CustomersWidget, RevenueWidget, UsersWidget, WeeklyReportWidget, TopAuthorsWidget, TeamMembersWidget, ProgressTrackWidget, EventsWidget, RankingWidget, VisitsMapWidget, SalesValueWidget, AcquisitionWidget, TimelineWidget } from "@/components/Widgets";
 import { useDropzone } from "react-dropzone";
 
-// forms
-import TemplateMessageForm from "@/pages/message/form/TemplateMessageForm";
-import MessageEditor from "@/pages/message/MessageEditor";
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import LinePreview from "@/components/line/LinePreview";
 import { TargetUsersWidget } from "@/pages/message/detail/TargetUsersWidget";
 import { SendHistoryInfoWidget } from "@/pages/message/detail/SendHistoryInfoWidget";
+import { showSendMessage } from "@/pages/message/api/SendMessageApiMethods";
+import { getSegmentTemplates } from "@/pages/message/api/SegmentTemplateApiMethods";
 
 import { Paths } from "@/paths";
 
 export default (props) => {
-  const [files, setFiles] = useState([]);
-  const [formValue, setFormValue] = useState(
-    {title: ''}
-  );
+  const history = useHistory();
+  const { id } = useParams();
+  const [sendMessage, setSendMessage] = useState({
+    message: {title: ''}, send_message_users: [], search_json: {}
+  });
+  const [segmentTemplate, setSegmentTemplate] = useState([]);
 
-  const [formId, setFormId] = useState();
+  const searchSegment = () => {
+    history.push({
+      pathname: Paths.SendSegments.path,
+      state: {segmentTemplate: segmentTemplate}
+    });
+  }
 
-  const [messageDetailModal, setMessageDetailModal] = useState(false);
-  const [previews, setPreviews] = useState([
-    {id: 1, key: '', content: '', files:''}
-  ]);
-
-  const handlePreviewChange = (e, input, previewIndex, files) => {
-    setFormId(e.target.id);
-
-    if (input == 'content') {
-      setPreviews(
-        previews.map((preview, index) => (index == previewIndex ? { ...preview, content: e.target.value } : preview))
-      )
-    }
-  };
-
-  const handleDelete = (previewIndex) => {
-    setPreviews(
-      previews.filter((preview, index) => (index !== previewIndex))
-    )
-  };
-
-  const handleChange = (e, input) => {
-    setFormValue({...formValue, [input]: e.target.value})
-  };
+  useEffect(() => {
+    showSendMessage(id, setSendMessage).then(response => {
+      console.log(JSON.parse(response.search_json));
+      setSegmentTemplate(JSON.parse(response.search_json))
+    })
+  }, []);
 
   return (
     <>
@@ -57,18 +44,21 @@ export default (props) => {
           <Button as={Link} to={Paths.SendHistories.path} variant="gray-800" className="me-2">
             配信管理に戻る
           </Button>
+          <Button onClick={searchSegment} variant="info" className="me-2">
+            同じセグメント条件で検索する
+          </Button>
         </div>
       </div>
 
       <Row>
         <Col xs={12} md={6} xxl={6} className="mb-4">
-          <SendHistoryInfoWidget title="配信情報" />
+          <SendHistoryInfoWidget title="配信情報" {...sendMessage} />
         </Col>
         <Col xs={12} md={6} xxl={6} className="mb-4">
-          <TargetUsersWidget title="対象ユーザー" />
+          <TargetUsersWidget title="対象ユーザー" users={sendMessage.send_message_users} />
         </Col>
       </Row>
-      <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >
+      {/* <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >
         <div className='mt-2 line-preview-button' onClick={() => setMessageDetailModal(!messageDetailModal)}>
           {
             messageDetailModal ? <ChevronDownIcon className="icon icon-xs me-2 line-preview-icon" /> : <ChevronUpIcon className="icon icon-xs me-2 line-preview-icon" />
@@ -78,7 +68,7 @@ export default (props) => {
         <div className='line-preview-content'>
           <LinePreview formValue={formValue} files={files} formId={formId} previews={previews} />
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

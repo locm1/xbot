@@ -9,19 +9,20 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 export const SendHistoryInfoWidget = (props) => {
-  const { title } = props;
+  const { title, id, message, message_id, send_message_users, status, created_at } = props;
   const histories = [
-    {"id": 1, "name": "ステータス", "value": 1},
-    {"id": 2, "name": "テンプレート名", "value": '「テキスト＋画像」の配信', "templateId": 1},
-    {"id": 3, "name": "配信日時", "value": '2022-08-10 10:31:38'},
-    {"id": 4, "name": "該当人数", "value": 5},
-    {"id": 5, "name": "配信数", "value": 5},
-    {"id": 6, "name": "セグメント条件", "value": 'セグメント条件1'},
+    {"id": 1, "name": "ステータス", "value": status},
+    {"id": 2, "name": "テンプレート名", "value": message.title, "templateId": message_id},
+    {"id": 3, "name": "配信日時", "value": moment(created_at).format("YYYY-MM-DD H:m:s")},
+    {"id": 4, "name": "該当人数", "value": send_message_users.length},
+    {"id": 5, "name": "配信数", "value": send_message_users.length},
   ]
 
   const getStatus = (status) => {
-    if (status == 1) {
+    if (status == 0) {
       return <Badge bg="success" className="me-1 is-delivered">配信済</Badge>;
+    } else if (status == 1) {
+      return <Badge bg="info" className="me-1 is-delivered">予約済</Badge>;
     }
   }
 
@@ -58,11 +59,9 @@ export const SendHistoryInfoWidget = (props) => {
 
   return (
     <Card border="0" className="shadow">
-      <Card.Header className="border-bottom">
-        <h2 className="fs-5 fw-bold mb-0">
-          {title}
-        </h2>
-      </Card.Header>
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">{title}</h5>
+      </Card.Header> 
       <Card.Body className="py-0">
         <ListGroup className="list-group-flush">
           {histories.map(history => <SendHistoryItem key={`send-history-${history.id}`} {...history} />)}

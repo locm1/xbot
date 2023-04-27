@@ -17,10 +17,11 @@ const failedMessage = (message) => {
 } 
 
 export const getSendMessages = async (params, setSendMessages, setLinks, setPaginate) => {
-  axios.get('/api/v1/management/send-message', params)
+  axios.get('/api/v1/management/send-messages', params)
   .then((response) => {
     setSendMessages(response.data);
     const messages = response.data.send_messages;
+    console.log(messages);
     setSendMessages(messages.data);
     setLinks([...Array(messages.last_page)].map((_, i) => i + 1))
     setPaginate({
@@ -35,6 +36,21 @@ export const getSendMessages = async (params, setSendMessages, setLinks, setPagi
       console.error(error);
   });
 };
+
+
+export const showSendMessage = async (id, setSendMessage) => {
+  return await axios.get(`/api/v1/management/send-messages/${id}`)
+  .then((response) => {
+    const sendMessage = response.data.send_message
+    console.log(sendMessage);
+    setSendMessage(sendMessage);
+    return sendMessage
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 
 export const searchMessages = async (params, setMessages) => {
   axios.get('/api/v1/management/messages', params)

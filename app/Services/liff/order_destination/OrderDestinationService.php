@@ -20,7 +20,11 @@ class OrderDestinationService
             'prefecture', 'city', 'address', 'building_name', 'tel', 'is_selected'
         ]);
         $merged_order_destination = MergeArrayUtility::mergeUserIdToArray($user->id, $data);
-        return OrderDestination::create($merged_order_destination);
+        $merged_building_name = array_merge(
+            $merged_order_destination, 
+            ['building_name' => $request->building_name . ' ' .$request->room_number]
+        );
+        return OrderDestination::create($merged_building_name);
     }
 
     public function show(OrderDestination $destination)

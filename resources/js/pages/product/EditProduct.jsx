@@ -381,7 +381,7 @@ export default () => {
                     <Row>
                       <Col md={6} className="mb-4">
                         <Form.Group id="discountRate">
-                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>セール割引率（%）</Form.Label>
+                          <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>セール割引率（%）</Form.Label>
                           <InputGroup>
                             <Form.Control
                               required 
@@ -393,11 +393,11 @@ export default () => {
                               isInvalid={!!error.discount_rate} 
                             />
                             <InputGroup.Text>%</InputGroup.Text>
-                          </InputGroup>
-                          {
+                            {
                             error.discount_rate && 
-                            <Form.Control.Feedback type="invalid">{error.discount_rate[0]}</Form.Control.Feedback>
-                          }
+                              <Form.Control.Feedback type="invalid">{error.discount_rate[0]}</Form.Control.Feedback>
+                            }
+                          </InputGroup>
                         </Form.Group>
                       </Col>
                       <Col md={6} className="mb-4">
@@ -411,7 +411,7 @@ export default () => {
                       </Col>
                       <Col md={6} className="mb-4">
                         <Form.Group id="startDate">
-                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>開始日時</Form.Label>
+                          <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>開始日時</Form.Label>
                           <Flatpickr
                             options={ startOptions }
                             value={productSale.start_date}
@@ -442,7 +442,7 @@ export default () => {
                       </Col>
                       <Col md={6} className="mb-4">
                         <Form.Group id="endDate">
-                          <Form.Label><Badge bg="danger" className="me-2">必須</Badge>終了日時</Form.Label>
+                          <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>終了日時</Form.Label>
                           <Flatpickr
                             options={ endOptions }
                             value={productSale.end_date}

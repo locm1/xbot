@@ -23,7 +23,7 @@ export default (props) => {
   return (
     <>
       <Row className="">
-        <Col xs={12} className="mb-5">
+        <Col xs={12} className="mb-4">
           <Form.Label>{UserInfoIsRequired('生年月日')}生年月日</Form.Label>
           <div className="d-flex">
             <Form.Select defaultValue="1990" value={formValue.year} onChange={(e) => handleChange(e, 'year')} className="mb-0">

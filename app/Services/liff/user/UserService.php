@@ -31,8 +31,13 @@ class UserService
         $data = $request->only([
             'first_name', 'last_name', 'first_name_kana', 'last_name_kana', 'zipcode',
             'prefecture', 'city', 'address', 'building_name', 'tel',
-            'birth_date', 'gender'
+            'birth_date', 'gender', 'occupation_id'
         ]);
-        return $user->update(array_merge($data, ['is_registered' => 1]));
+        $merged_data = array_merge(
+            $data, 
+            ['is_registered' => 1], 
+            ['building_name' => $request->building_name . ' ' .$request->room_number]
+        );
+        return $user->update($merged_data);
     }
 }

@@ -11,6 +11,7 @@ class UserDemographicService
     {
         return [
             'friend' => $this->getFriendCount(),
+            'blocked' => $this->getBlockedCount(),
             'registered' => $this->getRegisteredCount(),
             'genders' => $this->getGenderCount(),
             'birth_months' => $this->getBirthMonth(),
@@ -20,7 +21,12 @@ class UserDemographicService
 
     private function getFriendCount(): int
     {
-        return User::where('is_blocked', 0)->count();
+        return User::count();
+    }
+    
+    private function getBlockedCount(): int
+    {
+        return User::where('is_blocked', 1)->count();
     }
 
     private function getRegisteredCount(): int

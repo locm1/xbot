@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
                 DefaultSegmentItemSeeder::class,
                 TermsOfServicesTableSeeder::class,
                 PagesTableSeeder::class,
-                UserSeeder::class,
+                // UserSeeder::class,
                 InflowRouteSeeder::class,
                 InviteIncentiveSeeder::class,
                 DefaultInviteIncentiveSeeder::class,

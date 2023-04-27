@@ -45,16 +45,18 @@ export default () => {
           <Form.Group className="mb-3">
             <Form.Control as="textarea" rows="30" maxLength="5000" name="content" value={content} onChange={(e) => changeContent(e)} />
           </Form.Group>
-          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+        </Card.Body>
+        <Card.Footer>
+          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center">
             <Button
               variant="success"
-              className="d-inline-flex align-items-center"
+              className="btn-default-success"
               onClick={handleClick}
             >
               保存する
             </Button>
           </div>
-        </Card.Body>
+        </Card.Footer>
       </Card>
     </>
   )

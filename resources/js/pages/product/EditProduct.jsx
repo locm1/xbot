@@ -530,10 +530,10 @@ export default () => {
                     </div>
                   </Card.Body>
                 </Card>
-                <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+                <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
                   <Button
                     variant="success"
-                    className="d-inline-flex align-items-center"
+                    className="btn-default-success"
                     onClick={() => onSaveProduct()}
                   >
                     保存する
@@ -573,16 +573,18 @@ export default () => {
                       </React.Fragment>
                     ))}
                   </Row>
-                  <div className="d-flex justify-content-end py-3">
+                </Card.Body>
+                <Card.Footer>
+                  <div className="d-flex justify-content-end">
                     <Button
                       variant="success"
-                      className="d-inline-flex align-items-center"
+                      className="btn-default-success"
                       onClick={() => onSaveRelatedProduct()}
                     >
                       保存する
                     </Button>
                   </div>
-                </Card.Body>
+                </Card.Footer>
               </Card>
             </Col>
           </Tab.Pane>

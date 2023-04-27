@@ -67,7 +67,6 @@ export default (props) => {
                 <Form.Check
                   key={questionnaire_item.id}
                   type="radio"
-                  defaultValue={index}
                   label={questionnaire_item.name}
                   value={questionnaire_item.name}
                   onChange={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, questionnaire_item.id)}

@@ -88,7 +88,6 @@ export default () => {
     // });
     Object.assign(formValue, {questionnaires: questionnaires});
     console.log(formValue);
-    console.log(user);
     storeQuestionnaireAnswers(user.id, formValue, setErrors, setIsLoading, onSave)
     //storeQuestionnaireAnswers(1, formValue, setErrors, setIsLoading, onSave)
     //storeQuestionnaireAnswers(user.id, formValue, setErrors)

@@ -58,7 +58,7 @@ export const SendHistoriesTable = (props) => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {sendHistories.map(t => <TableRow key={`sendHistories-${t.id}`} {...t} />)}
+            {sendHistories && sendHistories.map(t => <TableRow key={`sendHistories-${t.id}`} {...t} />)}
           </tbody>
         </Table>
         <Pagination 

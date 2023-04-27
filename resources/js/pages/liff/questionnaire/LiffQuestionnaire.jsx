@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
+import { Row, Col, Badge, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import '@splidejs/splide/css';
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
@@ -80,7 +80,7 @@ export default () => {
   const handleClick = () => {
     setIsLoading(true);
     formValue.birth_date = formValue.year + '-' + formValue.month + '-' + formValue.day
-    formValue.building_name += ' ' + formValue.room_number
+    // formValue.building_name += ' ' + formValue.room_number
     formValue.is_registered = 1
     formValue.is_selected = 1
     // const newQuestionnaires = questionnaires.filter((questionnaire, index) => {
@@ -123,9 +123,9 @@ export default () => {
   const UserInfoIsRequired = (name) => {
     const userInfoStatus = userInfoStatuses.find(status => status.name == name);
     if (userInfoStatus.is_required == 1) {
-      return <span className="questionnaire-required me-2">必須</span>
+      return <Badge bg="danger" className="me-2">必須</Badge>
     } else {
-      return <span className="questionnaire-any me-2">任意</span>
+      return <Badge bg="gray-600" className="me-2">任意</Badge>
     }
   };
 
@@ -163,7 +163,7 @@ export default () => {
                   <Row className="mt-3">
                     {
                       UserInfoIsDisclosed('氏名') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Label>{UserInfoIsRequired('氏名')}氏名</Form.Label>
                           <div className="d-flex">
                             <Form.Group id="last_name" className="pe-3">
@@ -204,7 +204,7 @@ export default () => {
                     }
                     {
                       UserInfoIsDisclosed('フリガナ') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Label>{UserInfoIsRequired('フリガナ')}フリガナ</Form.Label>
                           <div className="d-flex">
                             <Form.Group id="last_name_kana" className="pe-3">
@@ -258,7 +258,7 @@ export default () => {
                   <Row className="">
                     {
                       UserInfoIsDisclosed('性別') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="gender">
                             <Form.Label>{UserInfoIsRequired('性別')}性別</Form.Label>
                               <div>
@@ -285,7 +285,7 @@ export default () => {
                     }
                     {
                       UserInfoIsDisclosed('電話番号') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="tel">
                             <Form.Label>{UserInfoIsRequired('電話番号')}電話番号</Form.Label>
                             <Form.Control
@@ -308,10 +308,10 @@ export default () => {
                     }
                     {
                       UserInfoIsDisclosed('ご職業') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="occupation">
                             <Form.Label>{UserInfoIsRequired('ご職業')}ご職業</Form.Label>
-                            <Form.Select defaultValue="0" value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id')} className="mb-0 w-100">
+                            <Form.Select value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id')} className="mb-0 w-100">
                               {
                                 occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)
                               }
@@ -325,7 +325,7 @@ export default () => {
                   <Row className="">
                     {
                       UserInfoIsDisclosed('郵便番号') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="zipcode">
                             <Form.Label>{UserInfoIsRequired('郵便番号')}郵便番号</Form.Label>
                             <Form.Control
@@ -350,7 +350,7 @@ export default () => {
                   <Row className="">
                     {
                       UserInfoIsDisclosed('都道府県') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="prefecture">
                             <Form.Label>{UserInfoIsRequired('都道府県')}都道府県</Form.Label>
                             <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="mb-0 w-100">
@@ -364,7 +364,7 @@ export default () => {
                     }
                     {
                       UserInfoIsDisclosed('市区町村') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="city">
                             <Form.Label>{UserInfoIsRequired('市区町村')}市区町村</Form.Label>
                             <Form.Control
@@ -387,7 +387,7 @@ export default () => {
                     }
                     {
                       UserInfoIsDisclosed('丁目・番地・号') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="address">
                             <Form.Label>{UserInfoIsRequired('丁目・番地・号')}丁目・番地・号</Form.Label>
                             <Form.Control
@@ -410,7 +410,7 @@ export default () => {
                     }
                     {
                       UserInfoIsDisclosed('建物名/会社名') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="building_name">
                             <Form.Label>{UserInfoIsRequired('建物名/会社名')}建物名/会社名</Form.Label>
                             <Form.Control
@@ -433,7 +433,7 @@ export default () => {
                     }
                     {
                       UserInfoIsDisclosed('部屋番号') && (
-                        <Col xs={12} className="mb-5">
+                        <Col xs={12} className="mb-4">
                           <Form.Group id="room_number">
                             <Form.Label>{UserInfoIsRequired('部屋番号')}部屋番号</Form.Label>
                             <Form.Control
@@ -444,7 +444,12 @@ export default () => {
                               value={formValue.room_number} 
                               onChange={(e) => handleChange(e, 'room_number')} 
                               autoComplete="address-level4"
+                              isInvalid={!!errors.room_number}
                             />
+                            {
+                              errors.room_number && 
+                              <Form.Control.Feedback type="invalid">{errors.room_number[0]}</Form.Control.Feedback>
+                            }
                           </Form.Group>
                         </Col>
                       )

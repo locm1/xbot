@@ -48,6 +48,8 @@ class StoreQuestionnaireAnswerRequest extends FormRequest
                 'prefecture' => 'nullable',
                 'city' => 'nullable',
                 'address' => 'nullable',
+                'building_name' => 'nullable',
+                'room_number' => 'nullable',
                 'tel' => 'nullable',
                 'occupation_id' => 'nullable',
                 'is_registered' => 'required|numeric|boolean'
@@ -65,6 +67,8 @@ class StoreQuestionnaireAnswerRequest extends FormRequest
             'prefecture' => $user_info_statuses[7] == 1 ? 'required' : 'nullable',
             'city' => $user_info_statuses[8] == 1 ? 'required' : 'nullable',
             'address' => $user_info_statuses[9] == 1 ? 'required' : 'nullable',
+            'building_name' => $user_info_statuses[10] == 1 ? 'required' : 'nullable',
+            'room_number' => $user_info_statuses[11] == 1 ? 'required' : 'nullable',
             'tel' => $user_info_statuses[4] == 1 ? 'required|numeric|digits_between:8,11' : 'nullable',
             'occupation_id' => $user_info_statuses[5] == 1 ? 'required|numeric|exists:occupations,id' : 'nullable',
             'is_registered' => 'required|numeric|boolean'
@@ -107,6 +111,7 @@ class StoreQuestionnaireAnswerRequest extends FormRequest
             'city' => '市区町村',
             'address' => '丁目・番地・号',
             'building_name' => '建物名/会社名',
+            'room_number' => '部屋番号',
             'tel' => '電話番号',
             'occupation_id' => 'ご職業',
             'is_registered' => '登録ステータス',

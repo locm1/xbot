@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form, FormGroup } from 'react-bootstrap';
+import { Row, Col, ListGroup, Button, Card, Badge, InputGroup, Form, FormGroup } from 'react-bootstrap';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 import { Link } from 'react-router-dom';
@@ -13,9 +13,9 @@ export default (props) => {
 
   const QuestionnaireIsRequired = (questionnaire) => {
     if (questionnaire.is_required == 1) {
-      return <span className="questionnaire-required me-2">必須</span>
+      return <Badge bg="danger" className="me-2">必須</Badge>
     } else {
-      return <span className="questionnaire-any me-2">任意</span>
+      return <Badge bg="gray-600" className="me-2">任意</Badge>
     }
   }
 
@@ -118,7 +118,7 @@ export default (props) => {
           >
             <option value="default">選択してください</option>
             {
-              questionnaire_items.map((questionnaire_item, index) => <option key={index} value={index + 1}>{questionnaire_item.name}</option>)
+              questionnaire_items.map((questionnaire_item, index) => <option key={index} value={questionnaire_item.name}>{questionnaire_item.name}</option>)
             }
           </Form.Select>
           {
@@ -140,8 +140,8 @@ export default (props) => {
           <Row className="mt-3">
             {
               questionnaires && questionnaires.map((questionnaire, index) => 
-                <Col xs={12} className="mb-3" key={questionnaire.id}>
-                  <Form.Group id="firstName">
+                <Col xs={12} className="mb-4" key={questionnaire.id}>
+                  <Form.Group id={`questionnaire-group-${questionnaire.od}`}>
                     <Form.Label>
                       {QuestionnaireIsRequired(questionnaire)}
                       Q{index + 1}. {questionnaire.title}

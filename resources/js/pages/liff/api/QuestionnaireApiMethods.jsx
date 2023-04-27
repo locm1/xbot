@@ -51,5 +51,6 @@ export const storeQuestionnaireAnswers = async (userId, questionnaires, setQuest
     setIsLoading(false)
     console.error(error);
     setQuestionnaireErrors(error.response.data.errors)
+    window.scrollTo({ top: 0, behavior: "smooth" })
   });
 };

@@ -154,7 +154,7 @@ export default () => {
         </Tab.Content>
       </Tab.Container>
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.Users.path} className="mt-2 animate-up-2 btn-info">
+        <Button href={Paths.Users.path} variant='tertiary' className="mt-2 animate-up-2">
           ユーザーリストに戻る
         </Button>
       </div>

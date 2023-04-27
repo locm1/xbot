@@ -61,11 +61,6 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">来店履歴詳細</h1>
         </div>
-        <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.VisitorHistories.path} variant="gray-800" className="mt-2 animate-up-2">
-          来店履歴に戻る
-        </Button>
-      </div>
       </div>
 
       <Row>
@@ -82,6 +77,11 @@ export default () => {
           <UserInformation {...userInformations} details={details} img_path={user.img_path} />
         </Col>
       </Row>
+        <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+        <Button href={Paths.VisitorHistories.path} variant="tertiary" className="mt-2 animate-up-2">
+          来店履歴に戻る
+        </Button>
+        </div>
     </>
   );
 };

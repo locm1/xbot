@@ -368,8 +368,12 @@ export default () => {
         )
       }
       </Form>
-      <div className="d-flex justify-content-flex-end flex-wrap flex-md-nowrap align-items-center py-3">
-        <Button onClick={addEditCard} variant="gray-800" className="mt-2 animate-up-2">
+      <div className="privilege-button mb-4">
+        <Button
+          variant="outline-gray-500"
+          onClick={addEditCard}
+          className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+        >
           <PlusIcon className="icon icon-xs me-2" /> 追加
         </Button>
       </div>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             // $table->string('color');
-            $table->text('content');
+            $table->text('content')->nullable();
             $table->tinyInteger('is_undisclosed');
             $table->float('display_order')->nullable(false);
             $table->softDeletes();

@@ -27,6 +27,12 @@ class StorePostageRequest extends FormRequest
             'postages' => 'required|array',
             'postages.*.prefecture_id' => 'required|numeric',
             'postages.*.postage' => 'required|numeric',
+            'is_enabled' => 'nullable',
+            'postage' => 'required|numeric',
+            'target_amount' => 'required|numeric',
+            'cash_on_delivery_fee' => 'nullable',
+            'tel' => 'nullable',
+            'email' => 'nullable'
         ];
     }
 
@@ -34,7 +40,13 @@ class StorePostageRequest extends FormRequest
     {
         return [
             'postages.*.postage' => '送料',
-            'postages.*prefecture_id' => '都道府県ID'
+            'postages.*prefecture_id' => '都道府県ID',
+            'is_enabled' => '代引き手数料の有効ステータス',
+            'postage' => '送料',
+            'target_amount' => '対象金額',
+            'cash_on_delivery_fee' => '代引き手数料',
+            'tel' => '電話番号',
+            'email' => 'メールアドレス'
         ];
     }
 }

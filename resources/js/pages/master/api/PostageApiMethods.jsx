@@ -36,25 +36,27 @@ export const getPostages = async (setPostages, setIsUpdate) => {
 };
 
 
-export const storePostage = async (postages) => {
-  await axios.post(`/api/v1/management/postages`, {postages: postages})
+export const storePostage = async (newFormValue, setError) => {
+  await axios.post(`/api/v1/management/postages`, newFormValue)
   .then((response) => {
     console.log(response.data.postages);
-    // Swal.fire('保存成功', `送料の保存に成功しました。`, 'success');
+    Swal.fire('保存成功', `送料の保存に成功しました。`, 'success');
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 
 
-export const updatePostage = async (postages) => {
-  await axios.put(`/api/v1/management/postages`, {postages: postages})
+export const updatePostage = async (newFormValue, setError) => {
+  await axios.put(`/api/v1/management/postages`, newFormValue)
   .then((response) => {
     console.log(response.data.postages);
-    // Swal.fire('更新成功', `送料の更新に成功しました。`, 'success');
+    Swal.fire('更新成功', `送料の更新に成功しました。`, 'success');
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };

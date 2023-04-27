@@ -3,6 +3,7 @@
 namespace App\Http\Requests\management\ec_configuration;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class StoreEcommerceConfigurationRequest extends FormRequest
 {
@@ -24,14 +25,51 @@ class StoreEcommerceConfigurationRequest extends FormRequest
     public function rules()
     {
         $is_enabled = $this->is_enabled;
-        return [
-            'is_enabled' => 'required|numeric|boolean',
-            'postage' => 'required|numeric',
-            'target_amount' => 'required|numeric',
-            'cash_on_delivery_fee' => $is_enabled === 1 ? 'required|numeric' : 'nullable',
-            'tel' => 'required|numeric|digits_between:8,11',
-            'email' => 'required|email:filter,dns'
-        ];
+        $type = $this->type;
+
+        switch ($type) {
+            case 'environment':
+                $rules = [
+                    'is_enabled' => 'nullable',
+                    'postage' => 'nullable',
+                    'target_amount' => 'nullable',
+                    'cash_on_delivery_fee' => 'nullable',
+                    'tel' => 'required|numeric|digits_between:8,11',
+                    'email' => 'required|email:filter,dns'
+                ];
+                break;
+            case 'payment':
+                $rules = [
+                    'is_enabled' => 'required|numeric|boolean',
+                    'postage' => 'nullable',
+                    'target_amount' => 'nullable',
+                    'cash_on_delivery_fee' => $is_enabled === 1 ? 'required|numeric' : 'nullable',
+                    'tel' => 'nullable',
+                    'email' => 'nullable'
+                ];
+                break;
+            case 'postage':
+                $rules = [
+                    'is_enabled' => 'nullable',
+                    'postage' => 'required|numeric',
+                    'target_amount' => 'required|numeric',
+                    'cash_on_delivery_fee' => 'nullable',
+                    'tel' => 'nullable',
+                    'email' => 'nullable'
+                ];
+                break;
+            default:
+                $rules = [
+                    'is_enabled' => 'required|numeric|boolean',
+                    'postage' => 'required|numeric',
+                    'target_amount' => 'required|numeric',
+                    'cash_on_delivery_fee' => $is_enabled === 1 ? 'required|numeric' : 'nullable',
+                    'tel' => 'required|numeric|digits_between:8,11',
+                    'email' => 'required|email:filter,dns'
+                ];
+                break;
+        }
+        return $rules;
     }
 
     public function attributes()
@@ -44,19 +82,5 @@ class StoreEcommerceConfigurationRequest extends FormRequest
             'tel' => '電話番号',
             'email' => 'メールアドレス'
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $is_enabled = $this->is_enabled;
-        $validation_rules = [
-            'cash_on_delivery_fee' => 'required|numeric',
-        ];
-        foreach ($validation_rules as $key => $value) {
-            # 代引きが有効ならバリデーション追加
-            $validator->sometimes($key, $value, function() use($is_enabled) {
-                return $is_enabled == 1;
-            });
-        }
     }
 }

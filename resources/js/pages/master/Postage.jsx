@@ -10,14 +10,14 @@ export default () => {
   const [allApply, setAllApply] = useState();
   const [postages, setPostages] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [results, setResults] = useState([]);
   const [isDisabled, setIsDisbled] = useState(true);
   const [formValue, setFormValue] = useState({
     target_amount: '', postage: '', cash_on_delivery_fee: '', 
     tel: '', email: '', is_enabled: false
   })
   const [error, setError] = useState({
-    target_amount: '', postage: '', tel: '', email: '', cash_on_delivery_fee: ''
+    target_amount: '', postage: '', tel: '', email: '', cash_on_delivery_fee: '',
+    'postages.0.postage' : ''
   });
 
 
@@ -29,12 +29,13 @@ export default () => {
     setPostages(newPrefectureObject);
   }
 
-  const handleChange = (e, id) => {
+  const handleChange = (e, id, input = null) => {
     const newPostage = postages.filter(postage => (postage.id === id))[0]
     newPostage.postage = e.target.value
     setPostages(
       postages.map(postage => (postage.id === id ? newPostage : postage))
     )
+    setError({...error, [input]: ''})
   }
 
   const handleEnvChange = (e, input) => {
@@ -45,19 +46,19 @@ export default () => {
   const handleClick = () => {
     const is_enabled = (isDisabled ? 0 : 1)
     formValue.is_enabled = is_enabled
-    console.log(formValue);
-    if (Object.keys(formValue).indexOf('id') !== -1) {
-      updateEcommerceConfiguration(formValue.id, formValue, setError)
-    } else {
-      storeEcommerceConfiguration(formValue, setError);
-    }
     const upsertPostages = postages.map(
       (postage) => ({id: postage.id, prefecture_id: postage.prefecture_id, postage: postage.postage})
     )
+    const newFormValue = {...formValue, postages: upsertPostages}
+
+    if (Object.keys(formValue).indexOf('id') !== -1) {
+      newFormValue.ecommerce_configuration_id = formValue.id
+    }
+
     if (isUpdate) {
-      updatePostage(upsertPostages)
+      updatePostage(newFormValue, setError)
     } else {
-      storePostage(upsertPostages)
+      storePostage(newFormValue, setError)
     }
   }
 
@@ -140,9 +141,9 @@ export default () => {
             <Button variant="secondary" onClick={() => setPostageAll()}>各都道府県に適用</Button>
           </InputGroup>
         </div>
-        <Row md={2} xl={3} className="justify-between">
+        <Row xs={1} md={2} xl={3} className="justify-between">
           {postages.map((postage, index) => (
-            <PostageForm {...postage} key={index} handleChange={handleChange} />
+            <PostageForm {...postage} key={index} handleChange={handleChange} error={error} index={index} />
           ))}
         </Row>
       </Card.Body>

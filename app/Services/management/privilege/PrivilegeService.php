@@ -4,6 +4,7 @@ namespace App\Services\management\privilege;
 
 use App\Services\management\AbstractManagementService;
 use App\Models\Privilege;
+use App\Models\PrivilegeItem;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,10 +17,23 @@ class PrivilegeService extends AbstractManagementService
     }
 
 
-    public function store($request):  Privilege
+    public function store($request): Privilege
     {
-        $visits_times = $request->only(['visits_times']);
-        return Privilege::create($visits_times);
+        $Privilege = Privilege::create(['visits_times' => $request->time]);
+        $now = now()->format('Y-m-d H:i:s');
+        $data = [];
+        foreach ($request->privileges as $k => $v) {
+            if (!$v) continue;
+            $data[] = [
+                'privilege_id' => $Privilege->id,
+                'name' => $v,
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        }
+        PrivilegeItem::insert($data);
+
+        return $Privilege;
     }
 
 

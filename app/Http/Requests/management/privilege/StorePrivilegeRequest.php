@@ -24,14 +24,15 @@ class StorePrivilegeRequest extends FormRequest
     public function rules()
     {
         return [
-            'visits_times' => 'required|numeric'
+            'time' => 'required|numeric',
+            'privileges' => 'array',
         ];
     }
 
     public function attributes()
     {
         return [
-            'visits_times' => '来店回数',
+            'time' => '来店回数',
         ];
     }
 }

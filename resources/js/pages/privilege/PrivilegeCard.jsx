@@ -13,7 +13,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 export default (props) => {
   const { 
-    id, visits_times, setPrivileges, updatePrivileges, getPrivileges, privileges
+    id, visits_times, setPrivileges, updatePrivileges, getPrivileges, privileges, refresh, setRefresh
   } = props; 
 
   const [isTimeEditable, setIsTimeEditable] = useState(false);
@@ -46,14 +46,14 @@ export default (props) => {
     });
 
     if (result.isConfirmed) {
-      deletePrivileges(id, deletePrivilege)
+      deletePrivileges(id, deletePrivilege);
     }
   };
 
   const deletePrivilege = async () => {
     const confirmMessage = "選択した項目は削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    location.reload();
+    setRefresh(!refresh);
   };
 
   const handleKeyDown = (e) => {
@@ -71,16 +71,19 @@ export default (props) => {
 
   useEffect(() => {
     getPrivilegeItems(id, setPrivilegeItems)
-  }, []);
+  }, [refresh]);
 
   return (
     <>
-      <Card border={1} className="p-4 privilege-card-item">
-        <Card.Header className="d-flex align-items-center justify-content-start border-0 p-0 mb-3 pb-3">
+      <Card border={1} className="mb-3">
+        <div className="privilege-delete-button">
+          <Button variant="close" onClick={() => showConfirmDeleteModal(id)} />
+        </div>
+        <Card.Header className="border-0">
           {isTimeEditable ? (
           <Form.Group id="title" className="w-50">
             <InputGroup>
-              <h5 className="kanban-title d-flex align-items-center fw-bold p-2 m-0">来店回数</h5>
+              <h5 className="mb-0">来店回数</h5>
               <Form.Control
                 autoFocus
                 type="number"
@@ -94,14 +97,12 @@ export default (props) => {
             </InputGroup>
           </Form.Group>
         ) : (
-          <h5 className="kanban-title d-flex align-items-center w-50 fw-bold p-2 m-0" onClick={onTimeEditChange}>
+          <h5 className="mb-0" onClick={onTimeEditChange}>
             来店回数 {time} 回
           </h5>
         )}
-          <div className="privilege-delete-button">
-            <Button variant="close" onClick={() => showConfirmDeleteModal(id)} />
-          </div>
         </Card.Header>
+        <Card.Body>
         {
           privilegeItems && privilegeItems.map((privilegeItem, index) => 
             <PrivilegeItemCard
@@ -117,6 +118,7 @@ export default (props) => {
             />
           )
         }
+        </Card.Body>
         {
           !isCreate ? (
             <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">

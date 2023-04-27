@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, Badge, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-
+import moment from "moment-timezone";
 import { Paths } from "@/paths";
 import Pagination from "@/components/Pagination";
 
@@ -12,13 +12,12 @@ export const SendHistoriesTable = (props) => {
     sendHistories, setSendMessages, getSendMessages, links,
     paginate, setLinks, setPaginate
   } = props;
-  const totalSendHistories = sendHistories.length;
 
   const getStatus = (status) => {
-    if (status == 1) {
+    if (status == 0) {
       return <Badge bg="success" className="me-1 is-delivered">配信済</Badge>;
-    } else if (status == 0) {
-      return <Badge bg="success" className="me-1 is-delivered">予約済</Badge>;
+    } else if (status == 1) {
+      return <Badge bg="info" className="me-1 is-delivered">予約済</Badge>;
     }
   }
 
@@ -38,7 +37,7 @@ export const SendHistoriesTable = (props) => {
           <span className="fw-normal">{templateName}</span>
         </td>
         <td>
-          <span className="fw-normal">{sendDate}</span>
+          <span className="fw-normal">{moment(sendDate).format("YYYY-MM-DD H:m:s")}</span>
         </td>
         <td>
           <span className="fw-normal">{targetCount}</span>
@@ -49,7 +48,7 @@ export const SendHistoriesTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-       <Table hover className="align-items-center">
+      <Table hover className="align-items-center">
         <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">ステータス</th>

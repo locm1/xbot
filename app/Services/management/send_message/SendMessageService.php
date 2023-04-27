@@ -38,9 +38,9 @@ class SendMessageService
     }
 
 
-    public function show($SendMessage) 
+    public function show(SendMessage $send_message) 
     {
-        
+        return $send_message->with(['sendMessageUsers.user', 'message'])->find($send_message->id);
     }
 
 

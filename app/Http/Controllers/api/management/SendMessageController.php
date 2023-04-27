@@ -52,9 +52,10 @@ class SendMessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(SendMessage $id)
+    public function show(SendMessage $send_message)
     {
-        return $this->service->show();
+        $SendMessage = $this->service->show($send_message);
+        return response()->json(['send_message' => $SendMessage], 200);
     }
 
     /**

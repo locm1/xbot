@@ -5,14 +5,12 @@ import withReactContent from "sweetalert2-react-content";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Col, Row, Button, Container, Breadcrumb, Form, Card } from "react-bootstrap";
 
-import KANBAN_LISTS from "@/data/kanban";
-import { ArchiveIcon, PlusIcon, HomeIcon } from "@heroicons/react/solid";
-
 import { Paths } from "@/paths";
 import segments from "@/data/segments";
 import SegmentList from "@/pages/message/segment/Segments";
 import SegmentCard from "@/pages/message/segment/SegmentCard";
 import MessageDetail from "./MessageDetail";
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { SegmentCardCreateModal } from "@/pages/message/segment/SegmentCardCreateModal";
 import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import { UsersTable } from "@/pages/user/UsersTable";
@@ -24,6 +22,7 @@ import { CSVLink } from "react-csv";
 import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const location = useLocation();
   const [isRendered, setIsrendered] = useState(false);
   const { setIsLoading } = useContext(LoadingContext);
   const [definedQuestion, setDefinedQuestion] = useState([]);
@@ -200,6 +199,7 @@ export default () => {
     const params = {
       params: {count: 'all'}
     };
+
     getAllMessages(params, setTemplates);
     axios.get('/api/v1/management/default-segments')
     .then((response) => {
@@ -249,7 +249,7 @@ export default () => {
               type: 1,
               questionTitle: v.title,
               questionnaireItems: 
-                v.questionnaire_items.map((b, k) => ({id: k, name: 'questionnaireId-' + v.id, label: b.name, value: ''}))
+                v.questionnaire_items.map((b, k) => ({id: b.id, name: 'questionnaireId-' + b.id, label: b.name, value: ''}))
             })
           }}
         })
@@ -268,6 +268,15 @@ export default () => {
         .then((response) => {
           const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
           setSegmentTemplates(newSegmentTemplates);
+          console.log(newSegmentTemplates);
+
+          //  別画面から、セグメント条件が渡されていたら
+          if (typeof location.state !== "undefined") {
+            const selectSegmentTemplate = newSegmentTemplates.find(v => _.isEqual(v.search_terms_json, location.state.segmentTemplate));
+            console.log(selectSegmentTemplate);
+            typeof selectSegmentTemplate !== "undefined" && setSearchTerms(selectSegmentTemplate.search_terms_json);
+          } 
+
           setIsrendered(true);
         })
         .catch(error => {
@@ -552,14 +561,14 @@ export default () => {
         <Col>
           <Row className="mt-4">
             {oddQuestionnaires.map((v, k) => 
-              <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}
+              <SegmentCard {...v} key={k} questionnaireType="odd" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}
             />)}
           </Row>
         </Col>
         <Col>
           <Row className="mt-4">
             {evenQuestionnaires.map((v, k) => 
-              <SegmentCard {...v} key={k} handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}/>
+              <SegmentCard {...v} key={k} questionnaireType="even" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}/>
             )}
           </Row>
         </Col>

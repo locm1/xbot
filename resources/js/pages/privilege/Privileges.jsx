@@ -71,6 +71,8 @@ export default () => {
                 setPrivileges={setPrivileges}
                 getPrivileges={getPrivileges}
                 updatePrivileges={updatePrivileges}
+                refresh={refresh}
+                setRefresh={setRefresh}
               />
             )
           }

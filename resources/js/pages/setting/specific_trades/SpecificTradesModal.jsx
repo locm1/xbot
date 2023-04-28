@@ -56,12 +56,8 @@ export default (props) => {
             />
           </Form.Group>
         </Modal.Body>
-        <Modal.Footer className="justify-content-start border-0 pt-0">
-          <Button variant="outline-gray-500" onClick={onHide}>
-            キャンセル
-          </Button>
-          <Button variant="secondary" className="d-inline-flex align-items-center" onClick={executionCreateOrUpdate}>
-            <PlusIcon className="icon icon-xs me-2" />
+        <Modal.Footer className="d-flex justify-content-end pb-0">
+          <Button variant="success" className="btn-default-success" onClick={executionCreateOrUpdate}>
             {page == 'create' ? '追加する' : '変更する'}
           </Button>
         </Modal.Footer>

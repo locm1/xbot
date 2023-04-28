@@ -141,7 +141,7 @@ export default () => {
             <Button variant="secondary" onClick={() => setPostageAll()}>各都道府県に適用</Button>
           </InputGroup>
         </div>
-        <Row xs={1} md={2} xl={3} className="justify-between">
+        <Row xs={1} md={2} className="justify-between">
           {postages.map((postage, index) => (
             <PostageForm {...postage} key={index} handleChange={handleChange} error={error} index={index} />
           ))}

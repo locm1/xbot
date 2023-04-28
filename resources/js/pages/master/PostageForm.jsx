@@ -7,7 +7,7 @@ export const PostageForm = (props) => {
   return (
     <Col>
       <Form className="py-4 d-flex">
-        <div className="text-center py-2 w-15 text-truncate">{name}</div>
+        <div className="text-center py-2 w-15 text-nowrap">{name}</div>
         <InputGroup className="w-75 mx-4">
           <InputGroup.Text><CurrencyYenIcon className="icon icon-xs" /></InputGroup.Text>
           <Form.Control

@@ -82,25 +82,28 @@ export default (props) => {
         </div>
         <Card.Header className="border-0">
           {isTimeEditable ? (
-          <Form.Group id="title" className="w-50">
-            <InputGroup>
-              <h5 className="mb-0">来店回数</h5>
+          <div id="title" className="d-flex">
+              <h5 className="mb-0" style={{width: 83}}>来店回数</h5>
               <Form.Control
                 autoFocus
                 type="number"
                 value={time}
-                className="fs-6 fw-bold p-2 m-0 lh-1 border-0"
+                style={{width: 40}}
+                className="p-0"
                 onChange={(e) => setTime(e.target.value)}
                 onFocus={(e) => e.target.select()}
                 onBlur={handleTimeChange}
                 onKeyDown={(e) => handleKeyDown(e)} 
               />
-            </InputGroup>
-          </Form.Group>
+              <h5 className="mb-0">回</h5>
+          </div>
         ) : (
-          <h5 className="mb-0" onClick={onTimeEditChange}>
+          <>
+          <h5 className="mb-0">
             来店回数 {time} 回
+            <PencilIcon className="icon icon-xs ps-2 pb-1 management-tag-name" onClick={onTimeEditChange} />
           </h5>
+          </>
         )}
         </Card.Header>
         <Card.Body>

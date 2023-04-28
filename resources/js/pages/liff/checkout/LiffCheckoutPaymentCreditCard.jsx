@@ -79,7 +79,13 @@ export default () => {
     const formValue = {
       payjp_token: payjpToken[0].value, payjp_customer_id: paymentMethod.payjp_customer_id
     };
-    storeCard(user.id, formValue, onSaveComplete)
+    storeCard(user.id, formValue).then(
+      response => {
+        paymentMethod.payjp_default_card_id = response.id
+        paymentMethod.payment_method = 1
+        createPaymentMethod(paymentMethod)
+      }
+    )
     //storeCard(101, formValue, onSaveComplete)
   };
 

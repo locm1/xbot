@@ -4,7 +4,7 @@ export const getEcommerceConfigurationAndPostage = async (carts, targetPostage, 
     const ecommerce_configuration = response.data.ecommerce_configuration;
 
     const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0)
-    const postage = (orderTotal >= ecommerce_configuration.target_amount)
+    const postage = (ecommerce_configuration && orderTotal >= ecommerce_configuration.target_amount)
       ? ecommerce_configuration.postage
       : targetPostage ? targetPostage.postage : 0; 
     setPostage(postage)
@@ -33,7 +33,7 @@ export const getEcommerceConfigurationAndPayment = async (setEcommerceConfigurat
     const ecommerce_configuration = response.data.ecommerce_configuration;
     setEcommerceConfiguration(ecommerce_configuration)
 
-    const payments = (ecommerce_configuration.is_enabled == 1)
+    const payments = (ecommerce_configuration && ecommerce_configuration.is_enabled == 1)
       ? ['クレジットカード', '代金引き換え']
       : ['クレジットカード'];
     

@@ -27,11 +27,11 @@ export const showCard = async (userId, payjp_customer_id, cardId, setCard) => {
   });
 };
 
-export const storeCard = async (userId, formValue, onSaveComplete) => {
-  return await axios.post(`/api/v1/users/${userId}/cards`, formValue, onSaveComplete)
+export const storeCard = async (userId, formValue) => {
+  return await axios.post(`/api/v1/users/${userId}/cards`, formValue)
   .then((response) => {
     console.log(response.data.card);
-    onSaveComplete();
+    return response.data.card;
   })
   .catch(error => {
       console.error(error);

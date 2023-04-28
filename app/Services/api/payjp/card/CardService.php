@@ -44,9 +44,17 @@ class CardService
         Payjp::setApiKey($this->secret_key);
 
         $customer = Customer::retrieve($request->payjp_customer_id);
-        return $customer->cards->create([
+        $card =  $customer->cards->create([
             'card' => $request->payjp_token,
         ]);
+        return [
+            'id' => $card->id,
+            'card_number' =>  "**** **** **** {$card->last4}",
+            'brand' =>  $card->brand,
+            'exp_year' =>  $card->exp_year,
+            'exp_month' =>  $card->exp_month,
+            'name' =>  $card->name,
+        ];
     }
 
     public function show($request, $card)

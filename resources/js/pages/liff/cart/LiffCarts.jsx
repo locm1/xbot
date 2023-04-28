@@ -166,6 +166,7 @@ export default () => {
         if (itemsExistInCart) {
           return (
             <>
+            <div className="mx-3 mt-3">
               <Card border="0" className="shadow">
                 <Card.Header className="border-bottom">
                   <h2 className="fs-5 fw-bold mb-0">カートに入っている商品：{totalCount}点</h2>
@@ -176,7 +177,7 @@ export default () => {
                   </ListGroup>
                 </Card.Body>
               </Card>
-              <LiffCartSlideCard relatedProducts={relatedProducts} addCart={addCart} />
+              {relatedProducts.length > 0 && <LiffCartSlideCard relatedProducts={relatedProducts} addCart={addCart} />}
               <div className="p-4 pt-3 pb-0">
                 <ListGroup.Item className="bg-transparent p-3 px-0">
                   <Row className="">
@@ -201,16 +202,17 @@ export default () => {
                   </Row>
                 </ListGroup.Item>
               </div>
-              <div className="d-flex justify-content-between flex-wrap align-items-center p-3 mb-4">
+              <div className="d-flex justify-content-between flex-wrap align-items-center mb-4">
                 <Button as={Link} to={Paths.LiffProducts.path} variant="gray-800" className="mt-2 liff-product-detail-button">
                   <InboxIcon className="icon icon-xs me-2" />
                   他の商品を見る
                 </Button>
                 <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="mt-2 liff-product-detail-button">
                   <ShoppingCartIcon className="icon icon-xs me-2" />
-                  レジに進む
+                  ご購入の手続き
                 </Button>
               </div>
+            </div>
             </>
           )
         } else {

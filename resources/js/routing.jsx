@@ -2,6 +2,7 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { Route, Switch, Redirect, useHistory, useLocation, Link } from "react-router-dom";
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
+import { ShoppingCartIcon, ShoppingBagIcon } from '@heroicons/react/solid';
 import liff from '@line/liff';
 import Swal from "sweetalert2";
 import withReactContent from 'sweetalert2-react-content';
@@ -217,8 +218,8 @@ const LiffECRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={props => (
       <>
-        <ECHeader />
         <Component {...props} />
+        <ECFooter />
         <Footer />
       </>
     )}
@@ -226,13 +227,23 @@ const LiffECRoute = ({ component: Component, ...rest }) => {
   );
 }
 
-const ECHeader = () => (
-  <header>
-    <Stack direction='horizontal'>
-      <Link className='m-2' to={Paths.LiffProducts.path}>TOPページ</Link>
-      <Link className='ms-auto m-2' to={Paths.LiffCarts.path}>カート</Link>
-    </Stack>
-  </header>
+const ECFooter = () => (
+  <div className="d-flex justify-content-between flex-wrap align-items-center px-2 py-4">
+    <Button as={Link} to={Paths.LiffProducts.path}  variant="gray-800" className="liff-product-detail-button">
+      <ShoppingBagIcon className="icon icon-xs me-2" />
+      TOPページ
+      </Button>
+    <Button variant="tertiary" as={Link} to={Paths.LiffCarts.path} className="liff-product-detail-button">
+      <ShoppingCartIcon className="icon icon-xs me-2" />
+      カート
+    </Button>
+  </div>
+  // <footer>
+  //   <Stack direction='horizontal'>
+  //     <Link className='m-2' to={Paths.LiffProducts.path}>TOPページ</Link>
+  //     <Link className='ms-auto m-2' to={Paths.LiffCarts.path}>カート</Link>
+  //   </Stack>
+  // </footer>
 )
 
 const RegisteredLiffRoute = ({ component: Component, ...rest }) => {

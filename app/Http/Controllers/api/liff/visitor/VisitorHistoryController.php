@@ -24,7 +24,7 @@ class VisitorHistoryController extends Controller
      * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function index(User $user)
     {
         $visitor_histories_count = $this->service->getVisitorHistoriesById($user)->count();
         return response()->json(['visitor_histories_count' => $visitor_histories_count], 200);

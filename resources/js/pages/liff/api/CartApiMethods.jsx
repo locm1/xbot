@@ -33,7 +33,7 @@ export const storeRelatedProdcutInCart = async (userId, formValue ,setCarts, car
   });
 };
 
-export const getCarts = async (userId, setCarts, setItemsExistInCart, setRelatedProducts) => {
+export const getCarts = async (userId, setCarts, setItemsExistInCart, setRelatedProducts, setIsLoading) => {
   return await axios.get(`/api/v1/users/${userId}/carts`)
   .then((response) => {
     const carts = response.data.carts;
@@ -57,10 +57,12 @@ export const getCarts = async (userId, setCarts, setItemsExistInCart, setRelated
     )
     setRelatedProducts(carts.related_products)
     console.log(carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })));
+    setIsLoading(false)
     return carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity }));
   })
   .catch(error => {
       console.error(error);
+      setIsLoading(false)
   });
 };
 
@@ -106,7 +108,7 @@ export const getCartsAndRelatedProducts = async (userId, setCarts, setItemsExist
   });
 };
 
-export const searchCarts = async (userId, params, setCarts, setItemsExistInCart) => {
+export const searchCarts = async (userId, params, setCarts, setItemsExistInCart, setIsLoading) => {
   axios.get(`/api/v1/users/${userId}/carts`, params)
   .then((response) => {
     const carts = response.data.carts;
@@ -117,9 +119,11 @@ export const searchCarts = async (userId, params, setCarts, setItemsExistInCart)
     } else {
       setItemsExistInCart(false);
     }
+    setIsLoading(false)
   })
   .catch(error => {
       console.error(error);
+      setIsLoading(false)
   });
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
@@ -6,11 +6,12 @@ import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import liff from '@line/liff';
 import Cookies from 'js-cookie';
-
+import { LoadingContext } from "@/components/LoadingContext";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getOrderDestinations, updateOrderDestination, updateOrderDestinations } from "@/pages/liff/api/OrderDestinationApiMethods";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext)
   const history = useHistory();
   const [deliveryAddresses, setDeliveryAddresses] = useState([]);
   const [selectId, setSelectId] = useState();
@@ -32,9 +33,10 @@ export default () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const idToken = liff.getIDToken();
     getUser(idToken, setUser).then(response => {
-      getOrderDestinations(response.id, setDeliveryAddresses, setSelectId)
+      getOrderDestinations(response.id, setDeliveryAddresses, setSelectId, setIsLoading)
     })
     //getOrderDestinations(101, setDeliveryAddresses, setSelectId)
   }, []);

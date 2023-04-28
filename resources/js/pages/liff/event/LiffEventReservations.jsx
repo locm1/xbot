@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import Swal from 'sweetalert2';
 import moment from "moment-timezone";
 import withReactContent from 'sweetalert2-react-content';
@@ -10,6 +10,7 @@ import liff from '@line/liff';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getEvents, eventReservation, getEventsByUserId } from "@/pages/liff/api/EventApiMethods";
 import { MapPinIcon } from "@/components/icons/Icons";
+import { LoadingContext } from "@/components/LoadingContext";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -20,6 +21,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const [events, setEvents] = useState({
     '2023-01-01': [
       {id: 1, start_date: '2023-01-01 12:00:00', end_date: '2023-01-01 13:00:00'}
@@ -34,13 +36,14 @@ export default () => {
   const [month, setMonth] = useState(date.getMonth() + 1);
 
   useEffect(() => {
+    setIsLoading(true)
     const idToken = liff.getIDToken();
     const searchParams = {
       params: {year: year, month: month}
     };
     getEvents(searchParams, setEvents);
     getUser(idToken, setUser).then(response => {
-      getEventsByUserId(response.id, setUserEvents)
+      getEventsByUserId(response.id, setUserEvents, setIsLoading)
     })
     //getEventsByUserId(102, setUserEvents)
   }, []);

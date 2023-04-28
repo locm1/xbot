@@ -14,14 +14,16 @@ export const getInviteMessage = async (userId, setMessages, setLink) => {
   });
 };
 
-export const getInviterIncentives = async (userId, setInviterIncentives) => {
+export const getInviterIncentives = async (userId, setInviterIncentives, setIsLoading) => {
   axios.get(`/api/v1/users/${userId}/inviter-incentives`)
   .then((response) => {
     setInviterIncentives(response.data.inviter_incentives)
     console.log(response.data.inviter_incentives);
+    setIsLoading(false)
   })
   .catch(error => {
       console.error(error);
+      setIsLoading(false)
   });
 };
 

@@ -9,13 +9,15 @@ export const getEvents = async (searchParams, setEvents) => {
   });
 };
 
-export const getEventsByUserId = async (userId, setUserEvents) => {
+export const getEventsByUserId = async (userId, setUserEvents, setIsLoading) => {
   return await axios.get(`/api/v1/users/${userId}/event/reservations`)
   .then((response) => {
     setUserEvents(response.data.events);
+    setIsLoading(false)
   })
   .catch(error => {
       console.error(error);
+      setIsLoading(false)
   });
 };
 

@@ -2,12 +2,12 @@ import Swal from "sweetalert2";
 import { Paths } from "@/paths";
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 
-export const getOrders = async (userId, setOrders) => {
+export const getOrders = async (userId, setOrders, setIsLoading = null) => {
   axios.get(`/api/v1/users/${userId}/orders`)
   .then((response) => {
     setOrders(response.data.orders)
     console.log(response.data.orders);
-    //setIsLoading(false);
+    setIsLoading(false);
     //成功したらメール通知する処理
   })
   .catch(error => {

@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
-
+import { LoadingContext } from "@/components/LoadingContext";
 import { CouponDetailItem } from "@/pages/liff/LiffCardItem";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
@@ -17,6 +17,7 @@ export default (props) => {
   const [user, setUser] = useState({
     is_registered: 0
   });
+  const { setIsLoading } = useContext(LoadingContext)
   const history = useHistory();
   const [couponCode, setCouponCode] = useState('');
   const [coupons, setCoupons] = useState([]);
@@ -47,9 +48,11 @@ export default (props) => {
   };
 
   useEffect(() => {
+    setIsLoading(true)
     const idToken = liff.getIDToken();
     // getUser(idToken, setUser)
     getUser(idToken, setUser).then(response => getCouponOwnerships(response.id, setCoupons))
+    setIsLoading(false)
     //getCouponOwnerships(102, setCoupons)
   }, []);
 

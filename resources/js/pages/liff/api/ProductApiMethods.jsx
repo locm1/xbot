@@ -1,13 +1,15 @@
 import noImage from "@img/img/noimage.jpg"
 
-export const getProducts = async (setProducts) => {
+export const getProducts = async (setProducts, setIsLoading) => {
   axios.get('/api/v1/products')
   .then((response) => {
     setProducts(response.data.products);
     console.log(response.data.products);
+    setIsLoading(false)
   })
   .catch(error => {
-      console.error(error);
+    setIsLoading(false)
+    console.error(error);
   });
 };
 

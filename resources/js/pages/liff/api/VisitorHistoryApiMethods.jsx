@@ -1,13 +1,15 @@
 import Swal from "sweetalert2";
 
-export const getVisitorHistoryCount = async (userId, setVisitorCount) => {
+export const getVisitorHistoryCount = async (userId, setVisitorCount, setIsLoading) => {
   return await axios.get(`/api/v1/users/${userId}/visitor-histories`)
   .then((response) => {
     console.log(response.data.visitor_histories_count);
     setVisitorCount(response.data.visitor_histories_count)
+    setIsLoading(false)
   })
   .catch(error => {
       console.error(error);
+      setIsLoading(false)
   });
 };
 

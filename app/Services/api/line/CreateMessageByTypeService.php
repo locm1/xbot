@@ -42,8 +42,10 @@ class CreateMessageByTypeService
                     $message_builder = $text_message_builder_action->createTextMessage($message->text);
                     break;
                 case 2:
-                    $image_url = $url .$message->image_path;
-                    Log::debug($image_url);
+                    $filename = basename($message->image_path);
+                    $encoded_filename = urlencode($filename);
+                    $encoded_image_path = str_replace($filename, $encoded_filename, $message->image_path);
+                    $image_url = $url . $encoded_image_path;
                     $message_builder = new ImageMessageBuilder($image_url, $image_url);
                     break;
                 case 3:

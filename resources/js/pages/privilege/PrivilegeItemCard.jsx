@@ -11,8 +11,8 @@ export default (props) => {
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
-      confirmButton: 'btn btn-primary me-3',
-      cancelButton: 'btn btn-gray-100'
+      confirmButton: 'btn btn-danger',
+      cancelButton: 'btn btn-gray-400 me-3'
     },
     buttonsStyling: false
   }));
@@ -45,6 +45,7 @@ export default (props) => {
       title: "削除確認",
       text: textMessage,
       showCancelButton: true,
+      reverseButtons: true,
       confirmButtonText: "削除",
       cancelButtonText: "キャンセル",
       reverseButtons: true
@@ -63,7 +64,7 @@ export default (props) => {
 
   return (
       <div className="d-flex border py-1 ps-3 align-items-center">
-        <Col className="px-0 mt-2">
+        <Col className="px-0 mt-2 py-2">
           {
             isEdit.id == id ? (
               <div className="mb-2 d-flex flex-wrap flex-md-nowrap">
@@ -94,7 +95,10 @@ export default (props) => {
         <Col className="">
           <div className="d-block d-sm-flex">
             <div className="ms-sm-3">
-              <TrashIcon onClick={() => showConfirmDeleteModal(id)} role="button" className="icon icon-xs text-danger me-2 "></TrashIcon>
+              <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+                削除
+              </Button>
+              {/* <TrashIcon onClick={() => showConfirmDeleteModal(id)} role="button" className="icon icon-xs text-danger me-2 "></TrashIcon> */}
             </div>
           </div>
         </Col>

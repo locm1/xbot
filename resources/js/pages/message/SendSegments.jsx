@@ -98,8 +98,8 @@ export default () => {
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
-      confirmButton: "btn btn-primary me-3",
-      cancelButton: "btn btn-gray-100"
+      confirmButton: "btn btn-danger",
+      cancelButton: "btn btn-gray-400 me-3"
     },
     buttonsStyling: false
   }));
@@ -125,7 +125,12 @@ export default () => {
                 <Form.Control className="m-1" id="segment-template" />
               </div>,
         showCancelButton: true,
+        reverseButtons: true,
         confirmButtonText: "保存",
+        customClass: {
+          confirmButton: "btn btn-primary",
+          cancelButton: "btn btn-gray-400 me-3"
+        },
         cancelButtonText: "キャンセル",
         preConfirm: () => {
           const templateName = Swal.getPopup().querySelector('#segment-template').value
@@ -167,6 +172,11 @@ export default () => {
         icon: "question",
         text: textMessage,
         showCancelButton: true,
+        reverseButtons: true,
+        customClass: {
+          confirmButton: "btn btn-primary",
+          cancelButton: "btn btn-gray-400 me-3"
+        },
         confirmButtonText: "上書き",
         cancelButtonText: "キャンセル",
       })
@@ -489,6 +499,7 @@ export default () => {
       title: title,
       text: textMessage,
       showCancelButton: true,
+      reverseButtons: true,
       confirmButtonText: "削除",
       cancelButtonText: "キャンセル",
     });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
+use App\Models\InflowRoute;
 use App\Services\management\inflow_route\InflowRouteService;
 use Illuminate\Http\Request;
 
@@ -61,11 +62,12 @@ class InflowRouteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  InflowRoute  $inflow_route
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(InflowRoute $inflow_route)
     {
-        //
+        $this->service->destroy($inflow_route);
+        return response()->json([], 204);
     }
 }

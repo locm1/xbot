@@ -40,4 +40,9 @@ class InflowRouteService
 
         return InflowRoute::create(['name' => $name, 'key' => $key, 'count' => 0]);
     }
+
+    public function destroy(InflowRoute $inflow_route)
+    {
+        return $inflow_route->delete();
+    }
 }

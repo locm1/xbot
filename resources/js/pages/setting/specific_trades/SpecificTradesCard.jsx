@@ -26,12 +26,12 @@ export default (props) => {
         </Col>
         <Col xs={10} sm={2} lg={2} xl={2} className="d-none d-lg-block d-xl-inline-flex align-items-center ms-lg-auto text-right justify-content-center px-md-0">
           <div className="d-block d-sm-flex">
-            <div role="button" className="ms-sm-3">
-              <PencilAltIcon onClick={() => editOpenModal(id)} className="icon icon-xs me-2" />
-            </div>
-            <div className="ms-sm-3">
-              <TrashIcon onClick={(e) => showConfirmDeleteModal(e, id)} role="button" className="icon icon-xs text-danger me-2 "></TrashIcon>
-            </div>
+            <Button onClick={() => editOpenModal(id)} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+              編集
+            </Button>
+            <Button onClick={(e) => showConfirmDeleteModal(e, id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+              削除
+            </Button>
           </div>
         </Col>
       </Card.Body>

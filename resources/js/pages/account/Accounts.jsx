@@ -12,8 +12,8 @@ import { getAccounts } from "@/pages/account/api/AdminApiMethods";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
-    confirmButton: 'btn btn-primary me-3',
-    cancelButton: 'btn btn-gray'
+    confirmButton: 'btn btn-danger',
+    cancelButton: 'btn btn-gray-400 me-3'
   },
   buttonsStyling: false
 }));
@@ -41,6 +41,7 @@ export default () => {
       title: "削除確認",
       text: textMessage,
       showCancelButton: true,
+      reverseButtons: true,
       confirmButtonText: "削除",
       cancelButtonText: "キャンセル"
     });

@@ -22,3 +22,14 @@ export const getInflowRoutes = async (params, setInflows, setLinks, setPaginate)
       console.error(error);
   },);
 };
+
+
+export const deleteInflowRoutes = async (id, deleteComplete) => {
+  axios.delete(`/api/v1/management/inflow-routes/${id}`)
+  .then((response) => {
+    deleteComplete(id);
+  })
+  .catch(error => {
+      console.error(error);
+  },);
+};

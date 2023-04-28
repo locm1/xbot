@@ -32,7 +32,6 @@ export const storeCoupon = async (coupon, storeComplete, setError) => {
   axios.post('/api/v1/management/coupons', coupon)
   .then((response) => {
     storeComplete();
-    location.href = '/manage/coupon/list';
   })
   .catch(error => {
     setError(error.response.data.errors)

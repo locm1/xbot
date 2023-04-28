@@ -35,20 +35,21 @@ export const InviteIncentivesTable = (props) => {
 
     const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
       customClass: {
-        confirmButton: 'btn btn-primary me-3',
-        cancelButton: 'btn btn-gray-100'
+        confirmButton: 'btn btn-danger',
+        cancelButton: 'btn btn-gray-400 me-3'
       },
       buttonsStyling: false
     }));
 
     const showConfirmDeleteModal = async (id) => {
-      const textMessage = "本当に招待を削除しますか？";
+      const textMessage = "本当にこのインセンティブを削除しますか？";
   
       const result = await SwalWithBootstrapButtons.fire({
         icon: "error",
         title: "削除確認",
         text: textMessage,
         showCancelButton: true,
+        reverseButtons: true,
         confirmButtonText: "削除",
         cancelButtonText: "キャンセル"
       });

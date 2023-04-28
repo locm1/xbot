@@ -9,7 +9,7 @@ import QRCode from "qrcode.react";
 import Pagination from "@/components/Pagination";
 
 export const InflowRouteTable = (props) => {
-  const { inflows, setInflows, links, getInflowRoutes, setLinks, paginate, setPaginate } = props;
+  const { inflows, setInflows, links, getInflowRoutes, setLinks, paginate, setPaginate, showConfirmDeleteModal } = props;
 
   const downloadQR = (id) => {
     const canvas = document.getElementById(id);
@@ -23,23 +23,6 @@ export const InflowRouteTable = (props) => {
     downloadLink.click();
     document.body.removeChild(downloadLink);
   };
-
-//   const showSwalDelete = (richMenuId, name) => {
-//     Swal.fire({
-//       icon: 'warning',
-//       title: '削除確認',
-//       text: `「${name}」を削除しますか？`,
-//       confirmButtonColor: '#d33',
-//       confirmButtonText: '削除する',
-//       showCancelButton: true,
-//       cancelButtonText:
-//         'キャンセル',
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         deleteRichMenu(richMenuId, setMenus, name);
-//       }
-//     })
-//   }
 
   const TableRow = (props) => {
     const {id, name, uri, count} = props;
@@ -66,10 +49,7 @@ export const InflowRouteTable = (props) => {
         </td>
         <td className="text-center">
           {/* <Button  variant="info" as={Link} to={link} size="sm" className="d-inline-flex align-items-center me-3"> */}
-          <Button  variant="info" size="sm" className="d-inline-flex align-items-center me-3">
-            編集
-          </Button>
-          <Button  variant="danger" size="sm" className="d-inline-flex align-items-center">
+          <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
             削除
           </Button>
         </td>
@@ -86,7 +66,7 @@ export const InflowRouteTable = (props) => {
               <th className="border-bottom">生成QRコード</th>
               <th className="border-bottom">URL</th>
               <th className="border-bottom">カウント</th>
-              <th></th>
+              <th className="border-bottom">削除</th>
             </tr>
           </thead>
           <tbody className="border-0">

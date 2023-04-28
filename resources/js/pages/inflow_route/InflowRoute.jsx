@@ -1,13 +1,22 @@
 import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown, Image } from 'react-bootstrap';
 import { SearchIcon } from "@heroicons/react/solid";
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { LoadingContext } from "@/components/LoadingContext";
 import { InflowRouteTable } from "@/pages/inflow_route/InflowRouteTable";
-import { getInflowRoutes } from "@/pages/inflow_route/api/InflowRouteApiMethods";
+import { getInflowRoutes, deleteInflowRoutes } from "@/pages/inflow_route/api/InflowRouteApiMethods";
 import axios from "axios";
+
+const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-danger',
+    cancelButton: 'btn btn-gray-400 me-3'
+  },
+  buttonsStyling: false
+}));
 
 export default () => {
     const [newInflows, setNewInflows] = useState("");
@@ -16,6 +25,36 @@ export default () => {
       current_page: 0, per_page: 0, from: 0, to: 0,total: 0 
     })
     const [links, setLinks] = useState([]);
+
+    const showConfirmDeleteModal = async (id) => {
+      const textMessage = "本当にこの流入経路を削除しますか？";
+  
+      const result = await SwalWithBootstrapButtons.fire({
+        icon: "error",
+        title: "削除確認",
+        text: textMessage,
+        showCancelButton: true,
+        reverseButtons: true,
+        confirmButtonText: "削除",
+        cancelButtonText: "キャンセル"
+      });
+  
+      if (result.isConfirmed) {
+        deleteInflowRoutes(id, deleteComplete)
+      }
+    };
+
+    const deleteComplete = async (id) => {
+      const confirmMessage = "選択した項目は削除されました。";
+      await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+      const newInflows = inflows.filter(inflow => inflow.id !== id)
+
+      const currentPage = newInflows.length == 0 ? paginate.current_page - 1 : paginate.current_page
+      const searchParams = {
+        params: {page: currentPage}
+      };
+      getInflowRoutes(searchParams, setInflows, setLinks, setPaginate)
+    };
 
     useLayoutEffect(() => {
       const searchParams = {
@@ -31,18 +70,32 @@ export default () => {
     const submit = () => {
       axios.post('/api/v1/management/inflow-routes', {name: newInflows})
       .then((response) => {
+        console.log(response.data);
         setInflows([...inflows, {
           id: response.data.id,
           name: response.data.name,
           uri: "https://liff.line.me/1660723896-RmovvEYY?path=inflow-route/" + response.data.key,
-          count: v.count
+          count: response.data.count
         }]);
         setNewInflows("");
+        storeComplete();
+        const searchParams = {
+          params: {page: 1}
+        };
+        getInflowRoutes(searchParams, setInflows, setLinks, setPaginate)
       })
       .catch(error => {
           console.error(error);
       });
     }
+
+    const storeComplete = () => {
+      Swal.fire(
+        '作成完了',
+        '流入経路の作成に成功しました',
+        'success'
+      )
+    } 
 
 	return (
 		<>
@@ -64,6 +117,7 @@ export default () => {
       paginate={paginate}
       setLinks={setLinks}
       setPaginate={setPaginate}
+      showConfirmDeleteModal={showConfirmDeleteModal}
     />
     </>
 	)

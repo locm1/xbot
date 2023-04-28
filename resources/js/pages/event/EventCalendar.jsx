@@ -17,8 +17,8 @@ import { DeleteEvent, GetAllEvents } from "./EventApiMethods"
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
-    confirmButton: "btn btn-primary me-3",
-    cancelButton: "btn btn-gray"
+    confirmButton: "btn btn-primary",
+    cancelButton: "btn btn-gray-400 me-3"
   },
   buttonsStyling: false
 }));
@@ -102,6 +102,7 @@ export default () => {
       title: "削除の確認",
       text: "本当にこのイベントを削除してもよろしいですか？",
       showCancelButton: true,
+      reverseButtons: true,
       confirmButtonText: "OK",
       cancelButtonText: "キャンセル"
     });

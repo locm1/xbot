@@ -24,7 +24,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
-  const defaultModalProps = { id: "", title: "", start: null, end: null, location: "", remaining: 0, is_unlimited: 0, color: "", };
+  const defaultModalProps = { id: "", title: "", start: null, end: null, location: "", remaining: 0, is_unlimited: 0, color: "", startTime: "", endTime: "" };
   const history = useHistory();
   const [events, setEvents] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -47,6 +47,7 @@ export default () => {
   };
 
   const onEventClick = (props) => {
+    console.log(props)
     const { event: { id, title, start, end, backgroundColor, extendedProps: {location, remaining, is_unlimited} } } = props;
     setModalProps({ id, title, start, end, location, remaining, backgroundColor, is_unlimited });
     setShowEditModal(true);

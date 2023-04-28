@@ -31,7 +31,7 @@ class StoreEventCalendarRequest extends FormRequest
             'end_date' => ['date'],
             'location' => ['required', 'max:50'],
             'remaining' => ['required', 'int'],
-            'is_unlimited' => ['required', 'int'],
+            // 'is_unlimited' => ['required', 'int'],
         ];
     }
 
@@ -51,7 +51,7 @@ class StoreEventCalendarRequest extends FormRequest
             // 'end_date.after' => '終了日付が開始日付よりも前になっています',
             'location.required' => '場所は必須です',
             'remaining.required' => '残数は必須です',
-            'is_unlimited.required' => '値が不正です',
+            // 'is_unlimited.required' => '値が不正です',
         ];
     }
 

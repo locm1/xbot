@@ -25,7 +25,7 @@ export const getSelectOrderDestination = async (userId, setDeliveryAddress) => {
   });
 };
 
-export const getOrderDestinations = async (userId, setDeliveryAddresses, setSelectId) => {
+export const getOrderDestinations = async (userId, setDeliveryAddresses, setSelectId, setIsLoading) => {
   return await axios.get(`/api/v1/users/${userId}/destinations`)
   .then((response) => {
     const order_destinations = response.data.order_destinations;
@@ -33,9 +33,11 @@ export const getOrderDestinations = async (userId, setDeliveryAddresses, setSele
     const selectAddress = order_destinations.find((order_destination) => order_destination.is_selected == 1);
     console.log(selectAddress);
     setSelectId(selectAddress.id)
+    setIsLoading(false)
   })
   .catch(error => {
       console.error(error);
+      setIsLoading(false)
   });
 };
 

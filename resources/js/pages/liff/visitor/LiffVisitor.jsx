@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
@@ -7,9 +7,10 @@ import liff from '@line/liff';
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getVisitorHistoryCount } from "@/pages/liff/api/VisitorHistoryApiMethods";
 import Logo from "@img/img/logo_admin.png";
-import QrCode from "@img/img/add_friend_qr.png";
+import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const [privileges, setPrivileges] = useState([
     {
       "id": 1,
@@ -48,19 +49,11 @@ export default () => {
     "is_blocked": 0
   })
   const [liffId, setLiffId] = useState('');
-  useLayoutEffect(() => {
+
+  useEffect(() => {
+    setIsLoading(true)
     const idToken = liff.getIDToken();
-    axios.get('/api/v1/get-liff-id')
-      .then((liff) => {
-        getUser(idToken, setUser).then((response) => {
-          const location = window.location.href
-          setUri(`${location}/confirm/${response.id}`)
-          getVisitorHistoryCount(response.id, setVisitorCount)
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+
     axios.get('/api/v1/privileges')
       .then(response => {
         console.log(response.data.sort((a, b) => a.visits_times - b.visits_times));
@@ -69,7 +62,20 @@ export default () => {
       .catch((error) => {
         console.error(error);
       })
+
+    axios.get('/api/v1/get-liff-id')
+      .then((liff) => {
+        getUser(idToken, setUser).then((response) => {
+          const location = window.location.href
+          setUri(`${location}/confirm/${response.id}`)
+          getVisitorHistoryCount(response.id, setVisitorCount, setIsLoading)
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }, []);
+
   const LiffVisitorCard = (props) => {
     return (
       <Card border="0" className=" liff-visitor-card">

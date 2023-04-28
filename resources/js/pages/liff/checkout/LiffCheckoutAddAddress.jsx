@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
@@ -10,8 +10,10 @@ import { getPrefectures } from "@/pages/liff/api/PrefectureApiMethods";
 import { storeOrderDestination, showOrderDestination, updateOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
 import { getAddress } from "@/pages/liff/api/ZipcodeApiMethods";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
+import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext)
   const history = useHistory();
   const { id } = useParams();
   const location = useLocation().pathname;
@@ -64,6 +66,7 @@ export default () => {
   };
 
   useEffect(() => {
+    setIsLoading(true)
     const idToken = liff.getIDToken();
     getPrefectures(setPrefectures)
 
@@ -71,9 +74,11 @@ export default () => {
       getUser(idToken, setUser).then(response => {
         showOrderDestination(response.id, id, setFormValue)
       })
+      setIsLoading(false)
       //showOrderDestination(101, id, setFormValue)
     } else {
       getUser(idToken, setUser)
+      setIsLoading(false)
     }
   }, []);
 

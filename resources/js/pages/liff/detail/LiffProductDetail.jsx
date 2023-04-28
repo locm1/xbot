@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, Form, Button, Card, Image } from 'react-bootstrap';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
 import Swal from "sweetalert2";
 import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
-
+import { LoadingContext } from "@/components/LoadingContext";
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
 import moment from "moment-timezone";
@@ -19,6 +19,7 @@ import { storeProductReservation } from "@/pages/liff/api/ProductReservationApiM
 import { isSalePeriod } from "@/components/common/IsSalePeriod";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const location = useLocation().pathname;
   const { id } = useParams();
@@ -74,6 +75,7 @@ export default () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const idToken = liff.getIDToken();
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
@@ -82,7 +84,7 @@ export default () => {
       params: {product_id: id}
     };
     getUser(idToken, setUser).then(response => {
-      searchCarts(response.id, searchParams, setCarts, setItemsExistInCart)
+      searchCarts(response.id, searchParams, setCarts, setItemsExistInCart, setIsLoading)
     })
   }, []);
 

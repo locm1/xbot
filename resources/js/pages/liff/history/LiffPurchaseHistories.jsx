@@ -43,13 +43,14 @@ export default () => {
   };
 
   useEffect(() => {
-    //setIsLoading(true);
+    setIsLoading(true);
     const idToken = liff.getIDToken();
     //getOrders(101, setOrders)
 
     getUser(idToken, setUser).then(response => {
-      getOrders(response.id, setOrders)
+      getOrders(response.id, setOrders, setIsLoading)
     })
+    //setIsLoading(false);
   }, []);
 
   const OrderCard = (props) => {

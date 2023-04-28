@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { PlusIcon, MinusIcon, ShoppingCartIcon, InboxIcon, TrashIcon } from '@heroicons/react/solid';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
@@ -8,6 +8,7 @@ import { Paths } from "@/paths";
 import noImage from "@img/img/noimage.jpg"
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
+import { LoadingContext } from "@/components/LoadingContext";
 import { LiffMockPlugin } from '@line/liff-mock';
 import LiffCartSlideCard from "@/pages/liff/cart/LiffCartSlideCard";
 import { isSalePeriod } from "@/components/common/IsSalePeriod";
@@ -15,6 +16,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart, storeRelatedProdcutInCart } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const location = useLocation().pathname;
   const history = useHistory();
   const [carts, setCarts] = useState([]);
@@ -35,8 +37,9 @@ export default () => {
   const total = orderTotal - discountedTotalAmount;
 
   useEffect(() => {
+    setIsLoading(true);
     const idToken = liff.getIDToken();
-    getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart, setRelatedProducts))
+    getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart, setRelatedProducts, setIsLoading))
   }, []);
 
   useEffect(() => {

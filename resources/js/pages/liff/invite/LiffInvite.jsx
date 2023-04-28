@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Image, Form, Button, Card, Col, Row } from 'react-bootstrap';
 import { ClipboardCopyIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import LineFigure from "@img/img/line-figure.png";
 import { getInviteMessage, getInviteeIncentives, getInviterIncentives, updateInviteeIncentives, updateInviterIncentives } from "@/pages/liff/api/InviteApiMethods";
 import { CSSTransition } from "react-transition-group";
+import { LoadingContext } from "@/components/LoadingContext";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -20,6 +21,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const [user, setUser] = useState({
     is_registered: 0
   });
@@ -34,12 +36,13 @@ export default () => {
   const [showMessage, setShowMessage] = useState();
 
   useEffect(() => {
+    setIsLoading(true)
     const idToken = liff.getIDToken();
     console.log(idToken);
     getUser(idToken, setUser).then(response => {
       getInviteMessage(response.id, setMessages, setLink)
       getInviteeIncentives(response.id, setInviteeIncentives)
-      getInviterIncentives(response.id, setInviterIncentives)
+      getInviterIncentives(response.id, setInviterIncentives, setIsLoading)
     })
   }, []);
 

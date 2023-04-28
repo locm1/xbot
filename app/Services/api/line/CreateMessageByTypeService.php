@@ -43,6 +43,7 @@ class CreateMessageByTypeService
                     break;
                 case 2:
                     $image_url = $url .$message->image_path;
+                    Log::debug($image_url);
                     $message_builder = new ImageMessageBuilder($image_url, $image_url);
                     break;
                 case 3:

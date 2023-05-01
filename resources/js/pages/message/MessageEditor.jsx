@@ -284,7 +284,7 @@ export default (props) => {
                               <Form.Label>ラベル(最大12文字)</Form.Label>
                               <Form.Control
                                 required
-                                maxlength="12"
+                                maxLength="12"
                                 name="label"
                                 value={v.label}
                                 onChange={(e) => handleCarouselImageChange(e, v.display_id, k)} 
@@ -369,7 +369,7 @@ export default (props) => {
                                 <Form.Label>タイトル(最大40文字)</Form.Label>
                                 <Form.Control
                                   required
-                                  maxlength="40"
+                                  maxLength="40"
                                   name="title"
                                   value={v.title}
                                   onChange={(e) => handleCarouselProductChange(e, v.display_id, k)}
@@ -386,7 +386,7 @@ export default (props) => {
                                 <Form.Label className="mt-2">テキスト(最大60文字)</Form.Label>
                                 <Form.Control
                                   required
-                                  maxlength="60"
+                                  maxLength="60"
                                   name="text"
                                   value={v.text}
                                   onChange={(e) => handleCarouselProductChange(e, v.display_id, k)}
@@ -401,7 +401,7 @@ export default (props) => {
                                 <Form.Label className="mt-2">ボタン名(最大20文字)</Form.Label>
                                 <Form.Control
                                   required
-                                  maxlength="20"
+                                  maxLength="20"
                                   name="label"
                                   value={v.label}
                                   onChange={(e) => handleCarouselProductChange(e, v.display_id, k)} 

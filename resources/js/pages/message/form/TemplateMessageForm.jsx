@@ -21,7 +21,7 @@ export default (props) => {
             id="switch1"
             htmlFor="switch1"
             checked={isUndisclosed}
-            onClick={() => setIsUndisclosed(!isUndisclosed)}
+            onChange={() => setIsUndisclosed(!isUndisclosed)}
             />
           </Form.Group>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
-import { Col, Row, Modal, Button, Dropdown, Breadcrumb, Form } from 'react-bootstrap';
+import { Col, Row, Modal, Button, Dropdown, Breadcrumb, Form, Card } from 'react-bootstrap';
 import Swal from "sweetalert2";
 import withReactContent from 'sweetalert2-react-content';
 
@@ -22,9 +22,9 @@ export default () => {
   });
   const [messageItems, setMessageItems] = useState([
     {
-      display_id: 1, id: null, type: 1, text: '', image_path: null, video_path: null, 
-      carousel_images: [{id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false}],
-      carousel_products: [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]
+      display_id: 1, id: null, type: 1, text: '', image_path: null, video_path: null,
+      carousel_images: [{ id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false }],
+      carousel_products: [{ id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false }]
     }
   ]);
   const [updateImages, setUpdateImages] = useState([]);
@@ -44,8 +44,8 @@ export default () => {
   })
 
   const handleChange = (e, input) => {
-    setMessage({...message, [input]: e.target.value})
-    setError({...error, [input]: ''})
+    setMessage({ ...message, [input]: e.target.value })
+    setError({ ...error, [input]: '' })
   };
 
   const [messageDetailModal, setMessageDetailModal] = useState(false);
@@ -54,7 +54,7 @@ export default () => {
     const newCarouselImages = [];
 
     currentMessageItem.carousel_images.forEach(carousel_image => {
-      newCarouselImages.push({...carousel_image, label: '', uri: '', image_path: null})
+      newCarouselImages.push({ ...carousel_image, label: '', uri: '', image_path: null })
     })
     currentMessageItem.carousel_images = newCarouselImages
   };
@@ -63,7 +63,7 @@ export default () => {
     const newCarouselProducts = [];
 
     currentMessageItem.carousel_products.forEach(carousel_product => {
-      newCarouselProducts.push({...carousel_product, label: '', text: '', title: '', uri: '', image_path: null})
+      newCarouselProducts.push({ ...carousel_product, label: '', text: '', title: '', uri: '', image_path: null })
     })
     currentMessageItem.carousel_products = newCarouselProducts
   };
@@ -76,11 +76,11 @@ export default () => {
       currentMessageItem.image_path = null
       currentMessageItem.video_path = null
       currentMessageItem.text = e.target.value
-      
+
       deleteCarouselImages(currentMessageItem)
       deleteCarouselProducts(currentMessageItem)
       setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
-      if (e.target.name == 'text') setError({...error, [`message_items.${index}.text`]: ''});
+      if (e.target.name == 'text') setError({ ...error, [`message_items.${index}.text`]: '' });
     } else if (input == 'file') {
       currentMessageItem.type = 2
       currentMessageItem.text = ''
@@ -91,14 +91,14 @@ export default () => {
 
       deleteCarouselImages(currentMessageItem)
       deleteCarouselProducts(currentMessageItem)
-      
+
       const reader = new FileReader()
       reader.onload = (e) => {
         currentMessageItem.image_path = e.target.result
         setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
       }
       reader.readAsDataURL(e.target.files[0])
-      if (e.target.name == 'image') setError({...error, [`message_items.${index}.image_path`]: ''});
+      if (e.target.name == 'image') setError({ ...error, [`message_items.${index}.image_path`]: '' });
     } else if (input == 'video') {
       currentMessageItem.type = 3
       currentMessageItem.text = ''
@@ -112,7 +112,7 @@ export default () => {
 
       currentMessageItem.video_path = URL.createObjectURL(e.target.files[0])
       setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
-      if (e.target.name == 'video') setError({...error, [`message_items.${index}.video_path`]: ''});
+      if (e.target.name == 'video') setError({ ...error, [`message_items.${index}.video_path`]: '' });
     } else if (input == 'carousel-image') {
       currentMessageItem.image_path = null
       currentMessageItem.video_path = null
@@ -121,16 +121,16 @@ export default () => {
       setUpdateCarouselImageImageIds([...updateCarouselImageImageIds, display_id + '-' + carousel_display_id])
       const image_path = URL.createObjectURL(e.target.files[0])
       deleteCarouselProducts(currentMessageItem)
-      const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? {...currentMessageItem, carousel_images: (currentMessageItem.carousel_images.map(v => v.display_id == carousel_display_id ? {...v, image_path: image_path} : {...v}))} : {...messageItem})));
+      const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? { ...currentMessageItem, carousel_images: (currentMessageItem.carousel_images.map(v => v.display_id == carousel_display_id ? { ...v, image_path: image_path } : { ...v })) } : { ...messageItem })));
       setMessageItems(data);
 
       switch (e.target.name) {
         case 'file':
-          setError({...error, [`message_items.${index}.carousel_images.${carouselIndex}.image_path`]: ''})
-          setError({...error, [`carousel_image_images.${carouselIndex}`]: ''})
+          setError({ ...error, [`message_items.${index}.carousel_images.${carouselIndex}.image_path`]: '' })
+          setError({ ...error, [`carousel_image_images.${carouselIndex}`]: '' })
           break;
         default:
-          setError({...error, [`message_items.${index}.carousel_images.${carouselIndex}.${e.target.name}`]: ''})
+          setError({ ...error, [`message_items.${index}.carousel_images.${carouselIndex}.${e.target.name}`]: '' })
           break;
       }
 
@@ -155,16 +155,16 @@ export default () => {
       setUpdateCarouselProductImageIds([...updateCarouselProductImageIds, display_id + '-' + carousel_display_id])
       const image_path = URL.createObjectURL(selectedImage)
       deleteCarouselImages(currentMessageItem)
-      const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? {...currentMessageItem, carousel_products: (messageItem.carousel_products.map(v => v.display_id == carousel_display_id ? {...v, image_path: image_path} : {...v}))} : {...messageItem})));
+      const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? { ...currentMessageItem, carousel_products: (messageItem.carousel_products.map(v => v.display_id == carousel_display_id ? { ...v, image_path: image_path } : { ...v })) } : { ...messageItem })));
       setMessageItems(data);
 
       switch (e.target.name) {
         case 'file':
-          setError({...error, [`message_items.${index}.carousel_products.${carouselIndex}.image_path`]: ''})
-          setError({...error, [`carousel_product_images.${carouselIndex}`]: ''})
+          setError({ ...error, [`message_items.${index}.carousel_products.${carouselIndex}.image_path`]: '' })
+          setError({ ...error, [`carousel_product_images.${carouselIndex}`]: '' })
           break;
         default:
-          setError({...error, [`message_items.${index}.carousel_products.${carouselIndex}.${e.target.name}`]: ''})
+          setError({ ...error, [`message_items.${index}.carousel_products.${carouselIndex}.${e.target.name}`]: '' })
           break;
       }
     }
@@ -193,16 +193,18 @@ export default () => {
 
   const addEditCard = () => {
     const lastMessageItem = messageItems.slice(-1)[0]
-    setMessageItems([...messageItems, {display_id: lastMessageItem.display_id + 1, id: null, type: 1, text: '', image_path: null, video_path: null,
-    carousel_images: [{id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false}],
-    carousel_products: [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]}])
+    setMessageItems([...messageItems, {
+      display_id: lastMessageItem.display_id + 1, id: null, type: 1, text: '', image_path: null, video_path: null,
+      carousel_images: [{ id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false }],
+      carousel_products: [{ id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false }]
+    }])
   };
 
   const onSaveMessage = (event) => {
-    console.log('run');
-    const form = event.currentTarget;
-    event.preventDefault();
-    event.stopPropagation();
+    // console.log('run');
+    // const form = event.currentTarget;
+    // event.preventDefault();
+    // event.stopPropagation();
 
     message.is_undisclosed = isUndisclosed ? 1 : 0
 
@@ -218,7 +220,7 @@ export default () => {
     updateCarouselProductImageIds.forEach((updateImageId) => formData.append("carousel_product_image_ids[]", updateImageId));
     updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
     updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
-    
+
     if (pathname.includes('/edit')) {
       updateMessage(id, formData, setError, completeMessage)
       // 画像削除stateに値があればAPI発火
@@ -276,8 +278,8 @@ export default () => {
     updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
     updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
     storeMessage(message, formData, storeMessageItems, completeMessage)
-    
-  } 
+
+  }
 
   const completeMessage = (message) => {
     Swal.fire(
@@ -286,7 +288,7 @@ export default () => {
       'success'
     )
     // setTimeout(() => location.reload(), 1000)
-  } 
+  }
 
   const handleAddCarouselProductButtonClick = (display_id) => {
     let lastCarouselProductId;
@@ -295,7 +297,7 @@ export default () => {
         lastCarouselProductId = v.carousel_products[v.carousel_products.length - 1].display_id
       }
     });
-    const newMessageItems = messageItems.map(v => (v.display_id == display_id ? {...v, carousel_products: [...v.carousel_products, {id: null, display_id: lastCarouselProductId + 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]} : {...v}));
+    const newMessageItems = messageItems.map(v => (v.display_id == display_id ? { ...v, carousel_products: [...v.carousel_products, { id: null, display_id: lastCarouselProductId + 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false }] } : { ...v }));
     setMessageItems(newMessageItems);
   }
 
@@ -306,7 +308,7 @@ export default () => {
         lastCarouselImageId = v.carousel_images[v.carousel_images.length - 1].display_id
       }
     });
-    const newMessageItems = messageItems.map(v => (v.display_id == display_id ? {...v, carousel_images: [...v.carousel_images, {id: null, display_id: lastCarouselImageId + 1, image_path: null, label: '', uri: '', is_deleted: false}]} : {...v}));
+    const newMessageItems = messageItems.map(v => (v.display_id == display_id ? { ...v, carousel_images: [...v.carousel_images, { id: null, display_id: lastCarouselImageId + 1, image_path: null, label: '', uri: '', is_deleted: false }] } : { ...v }));
     setMessageItems(newMessageItems);
   }
 
@@ -318,72 +320,92 @@ export default () => {
   }, []);
 
   return (
-    <div className="fullscreenmaxwidth">
+    <div className="">
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">{pathname.includes('/edit') ? 'メッセージ編集' : 'メッセージ作成'}</h1>
         </div>
       </div>
-      <Form noValidate validated={validated} onSubmit={onSaveMessage}>
       <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button type="submit" variant="primary" className="me-2">
-          {pathname.includes('/edit') ? '更新する' : '保存する'}
-        </Button>
-        <Button onClick={duplicateTemplate} variant="primary" className="me-2 animate-up-2">
-          複製する
-        </Button>
-        <Button variant="primary" className="me-2 animate-up-2">
-          このテンプレートで配信
-        </Button>
-        <Button href={Paths.TemplateMessages.path} variant="primary" className="me-2 animate-up-2">
+        <Button href={Paths.TemplateMessages.path} variant="gray-500" className="me-2 animate-up-2 me-auto">
           テンプレートリストに戻る
         </Button>
-      </div>
-
-      <Row>
-        <Col xs={12} xl={12}>
-          <TemplateMessageForm
-            handleChange={handleChange} 
-            message={message} 
-            setIsUndisclosed={setIsUndisclosed}
-            isUndisclosed={isUndisclosed}
-            error={error}
-          />
-        </Col>
-      </Row>
-      {
-        messageItems && messageItems.map((messageItem, index) => 
-          <div key={messageItem.display_id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
-            <MessageEditor
-              messageItem={messageItem}
-              handleChange={handleChange}
-              handlePreviewChange={handlePreviewChange}
-              handlePictureImageDelete={handlePictureImageDelete}
-              handleDelete={handleDelete}
-              messageItems={messageItems}
-              setMessageItems={setMessageItems}
-              handleAddCarouselProductButtonClick={handleAddCarouselProductButtonClick}
-              handleAddCarouselImageButtonClick={handleAddCarouselImageButtonClick}
-              error={error}
-              index={index}
-              setError={setError}
-              deleteCarouselImages={deleteCarouselImages}
-              deleteCarouselProducts={deleteCarouselProducts}
-              updateCarouselImageImages={updateCarouselImageImages}
-              updateCarouselImageImageIds={updateCarouselImageImageIds}
-            />
-          </div>
-        )
-      }
-      </Form>
-      <div className="privilege-button mb-4">
-        <Button
-          variant="outline-gray-500"
-          onClick={addEditCard}
-          className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
-        >
-          <PlusIcon className="icon icon-xs me-2" /> 追加
+        <Button onClick={onSaveMessage} variant="success" className="me-2">
+          {pathname.includes('/edit') ? '更新する' : '保存する'}
         </Button>
+      </div>
+      <div className="d-flex">
+        <div className="col-9">
+          <Row>
+            <Col xs={12} xl={12}>
+              <TemplateMessageForm
+                handleChange={handleChange}
+                message={message}
+                setIsUndisclosed={setIsUndisclosed}
+                isUndisclosed={isUndisclosed}
+                error={error}
+              />
+            </Col>
+          </Row>
+          {
+            messageItems && messageItems.map((messageItem, index) =>
+              <div key={messageItem.display_id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
+                <MessageEditor
+                  messageItem={messageItem}
+                  handleChange={handleChange}
+                  handlePreviewChange={handlePreviewChange}
+                  handlePictureImageDelete={handlePictureImageDelete}
+                  handleDelete={handleDelete}
+                  messageItems={messageItems}
+                  setMessageItems={setMessageItems}
+                  handleAddCarouselProductButtonClick={handleAddCarouselProductButtonClick}
+                  handleAddCarouselImageButtonClick={handleAddCarouselImageButtonClick}
+                  error={error}
+                  index={index}
+                  setError={setError}
+                  deleteCarouselImages={deleteCarouselImages}
+                  deleteCarouselProducts={deleteCarouselProducts}
+                  updateCarouselImageImages={updateCarouselImageImages}
+                  updateCarouselImageImageIds={updateCarouselImageImageIds}
+                />
+              </div>
+            )
+          }
+          <div className="privilege-button mb-4">
+            <Button
+              variant="outline-gray-500"
+              onClick={addEditCard}
+              className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+            >
+              <PlusIcon className="icon icon-xs me-2" /> 追加
+            </Button>
+          </div>
+        </div>
+        <div className="col-3">
+          <Card border="0" className="shadow mb-4 ms-3">
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">情報</h5>
+            </Card.Header>
+            <Card.Body>
+              <Form.Group id="isUndisclosed">
+                <Form.Check
+                type="switch"
+                label="非公開にする"
+                id="switch1"
+                htmlFor="switch1"
+                checked={isUndisclosed}
+                onChange={() => setIsUndisclosed(!isUndisclosed)}
+                />
+              </Form.Group>
+                <Button onClick={duplicateTemplate} variant="primary" className="me-2 mt-3">
+                  複製する
+                </Button>
+                <Button variant="primary" className="me-2 mt-3">
+                  このテンプレートで配信
+                </Button>
+            </Card.Body>
+          </Card>
+        </div>
       </div>
       <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >
         <div className='mt-2 line-preview-button' onClick={() => setMessageDetailModal(!messageDetailModal)}>
@@ -396,6 +418,9 @@ export default () => {
           <LinePreview previews={messageItems} />
         </div>
       </div>
+      <Button href={Paths.TemplateMessages.path} variant="gray-500" className="me-2 animate-up-2 me-auto">
+        テンプレートリストに戻る
+      </Button>
     </div>
   );
 };

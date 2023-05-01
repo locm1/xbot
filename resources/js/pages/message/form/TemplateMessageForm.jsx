@@ -13,18 +13,6 @@ export default (props) => {
           <h5 className="mb-0 fw-bolder">タイトル</h5>
         </Card.Header> 
       <Card.Body>
-        <div className="d-flex justify-content-between flex-row-reverse">
-          <Form.Group id="isUndisclosed">
-            <Form.Check
-            type="switch"
-            label="非公開にする"
-            id="switch1"
-            htmlFor="switch1"
-            checked={isUndisclosed}
-            onChange={() => setIsUndisclosed(!isUndisclosed)}
-            />
-          </Form.Group>
-        </div>
         <Row>
           <Col md={12} className="mb-3">
             <Form.Group id="title">

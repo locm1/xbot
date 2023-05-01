@@ -217,14 +217,14 @@ export default (props) => {
                       onChange={(e) => handlePreviewChange(e, 'text', messageItem.display_id)} 
                     />
                   </Form.Group>
-                  <div className="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center py-3">
+                  {/* <div className="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center py-3">
                     <Button onClick={() => addName(messageItem.display_id, '%friend_name%')} variant="primary" className="me-2">
                       友だちの表示名
                     </Button>
                     <Button onClick={() => addName(messageItem.display_id, '%account_name%')} variant="primary" className="me-2">
                       アカウント名
                     </Button>
-                  </div>
+                  </div> */}
                 </Tab.Pane>
                 <Tab.Pane eventKey="picture" className="py-4">
                   {messageItem.image_path == null ? (

@@ -9,11 +9,11 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 export const SendHistoryInfoWidget = (props) => {
-  const { title, id, message, message_id, send_message_users, status, created_at } = props;
+  const { title, id, message, message_id, send_message_users, status, updated_at } = props;
   const histories = [
     {"id": 1, "name": "ステータス", "value": status},
     {"id": 2, "name": "テンプレート名", "value": message.title, "templateId": message_id},
-    {"id": 3, "name": "配信日時", "value": moment(created_at).format("YYYY-MM-DD H:mm:ss")},
+    {"id": 3, "name": "配信日時", "value": moment(updated_at).format("YYYY-MM-DD H:mm:ss")},
     {"id": 4, "name": "該当人数", "value": send_message_users.length},
     {"id": 5, "name": "配信数", "value": send_message_users.length},
   ]

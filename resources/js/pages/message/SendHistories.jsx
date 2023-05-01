@@ -27,7 +27,7 @@ export default () => {
       </div>
 
       <SendHistoriesTable
-        sendHistories={sendMessages.reverse()}
+        sendHistories={sendMessages}
         setSendMessages={setSendMessages}
         getSendMessages={getSendMessages}
         links={links}

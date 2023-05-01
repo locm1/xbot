@@ -28,6 +28,7 @@ class SendMessageService
             'from' => $send_messages->firstItem(),
             'to' => $send_messages->lastItem(),
             'total' => $send_messages->total(),
+            'last_page' => $send_messages->lastPage()
         ];
     }
 

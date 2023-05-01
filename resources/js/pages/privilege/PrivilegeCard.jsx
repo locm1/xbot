@@ -122,7 +122,6 @@ export default (props) => {
             />
           )
         }
-        </Card.Body>
         {
           !isCreate ? (
             <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
@@ -145,6 +144,7 @@ export default (props) => {
             />
           )
         }
+        </Card.Body>
       </Card>
     </>
   );

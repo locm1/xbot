@@ -15,7 +15,7 @@ export const TargetUsersWidget = (props) => {
         <Row className="align-items-center">
           <Col xs="auto">
             <Card.Link href="#" className="avatar-md">
-              <Image rounded src={img_path} className="m-0" />
+              {img_path ? <Image rounded src={img_path} className="m-0" /> : (<Image rounded src="/images/default_user_icon.png" className="m-0"/>)}
             </Card.Link>
           </Col>
           <Col xs="auto" className="px-0">

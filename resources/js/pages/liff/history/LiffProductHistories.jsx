@@ -26,7 +26,6 @@ export default () => {
   return (
     <>
     <main className="content liff-product-detail">
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
       {/* <Tab.Container defaultActiveKey="purchase_history" className="mb-6">
         <Nav fill variant="pills" className="flex-column">
           <Row>
@@ -56,9 +55,9 @@ export default () => {
         </Tab.Content>
       </Tab.Container> */}
       <LiffPurchaseHistories />
-      <Card border="0" className="shadow p-0 liff-product-card-splide mb-4">
+      <Card border="0" className="shadow p-0 my-3">
         <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name mb-0">キャンセルについて</h5>
+          <h5 className="liff-product-detail-name py-3">キャンセルについて</h5>
         </Card.Header>
         <Card.Body className="pb-3 rounded-bottompt-3">
           <p>キャンセルする場合は、お手数ですが下記ボタンからご連絡ください。</p>

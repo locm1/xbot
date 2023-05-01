@@ -101,7 +101,7 @@ export default () => {
 
   return (
     <>
-    <Card border="0" className="shadow p-0">
+    <Card border="0" className="shadow p-0 mt-3">
       <Card.Body className="pb-3 rounded-bottompt-3">
         <Row>
           <Col xs={12} className="my-1">
@@ -119,7 +119,11 @@ export default () => {
       </Card.Body>
     </Card>
     <div className="d-flex align-items-center content">
-      <p className="mb-3 mt-3">件数：{orders.length}件</p>
+      {
+        orders.length > 0 
+        ? <p className="mt-4">件数：{orders.length}件</p> 
+        : <p className="mt-4">購入履歴はありません。</p>
+      }
     </div>
     {orders.map(order => <OrderCard key={`order-${order.id}`} {...order} />)}
     </>

@@ -80,6 +80,7 @@ import LiffSpecificTrades from '@/pages/liff/LiffSpecificTrades';
 import LiffVisitor from '@/pages/liff/visitor/LiffVisitor';
 import LiffVisitorConfirm from '@/pages/liff/visitor/LiffVisitorConfirm';
 import LiffVisitorHistoryAdd from '@/pages/liff/visitor/LiffVisitorHistoryAdd';
+import LiffVisitorHistoryResult from '@/pages/liff/visitor/LiffVisitorHistoryResult';
 import LiffAboutVisitorPrivileges from '@/pages/liff/visitor/LiffAboutVisitorPrivileges';
 import LiffEventReservations from '@/pages/liff/event/LiffEventReservations';
 import LiffAlreadyQuestionnaire from '@/pages/liff/questionnaire/LiffAlreadyQuestionnaire';
@@ -554,6 +555,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
       <NoFooterRoute exact path={Paths.LiffFriendAdd.path} component={LiffFriendAdd} />
       <NoFooterRoute exact path={Paths.LiffVisitorHistoryAdd.path} component={LiffVisitorHistoryAdd} />
+      <NoFooterRoute exact path={Paths.LiffVisitorHistoryResult.path} component={LiffVisitorHistoryResult} />
       <NoFooterRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
       <NoFooterRoute exact path={Paths.LiffServerError.path} component={LiffServerError} />
 

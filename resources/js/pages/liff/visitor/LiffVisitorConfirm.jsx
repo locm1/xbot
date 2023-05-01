@@ -34,7 +34,7 @@ export default () => {
   return (
     <Card className='m-3 p-3'>
       <div className='text-center mb-3'>パスワードを入力してください</div>
-      <Form.Control value={password} onChange={handleChange} className="mb-3"></Form.Control>
+      <Form.Control type="password" value={password} onChange={handleChange} className="mb-3"></Form.Control>
       <Button onClick={handleClick}>送信</Button>
     </Card>
   )

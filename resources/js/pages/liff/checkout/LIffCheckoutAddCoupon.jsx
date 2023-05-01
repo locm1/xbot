@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';

@@ -75,13 +75,15 @@ export const OrderDetailItem = (props) => {
         <Col xs="7" className="px-0">
           <div className="m-1">
             <h4 className="fs-6 text-dark mb-0">商品合計</h4>
-            {postage !== 0 && <h4 className="fs-6 text-dark mb-0 mt-1">送料</h4>}
+            {postage > 0 && (
+              <h4 className="fs-6 text-dark mb-0 mt-1">送料</h4>
+            )}
             { 
-              paymentMethod && paymentMethod.payment_method == 2 && (
+              paymentMethod && paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1 && (
                 <h4 className="fs-6 text-dark mb-0 mt-1">代金引換手数料</h4>
               )
             }
-            {coupon && <h4 className="fs-6 text-dark mb-0 mt-1">クーポン割引</h4>}
+            {coupon.id && <h4 className="fs-6 text-dark mb-0 mt-1">クーポン割引</h4>}
             { 
               discountedTotalAmount !== 0 && (
                 <h4 className="fs-6 text-dark mb-0 mt-1">セット商品割引</h4>
@@ -93,13 +95,13 @@ export const OrderDetailItem = (props) => {
         <Col xs="5" className="">
           <div className="m-1 text-end">
             {orderTotal && <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>}
-            {postage !== 0 && <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h4>}
+            {postage > 0 && <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h4>}
             { 
-              paymentMethod && paymentMethod.payment_method == 2 && 
+              paymentMethod && paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1 && 
               <h4 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h4>
             }
             {
-              coupon && 
+              coupon.id && 
               <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">
                 - ￥ {isNaN(getDiscountAmount()) ? 0 : Math.floor(getDiscountAmount()).toLocaleString()}
               </h4>
@@ -200,22 +202,37 @@ export const PaymentDetailItem = (props) => {
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
         <Col xs={getColButton(location).colSize} className="px-0">
-          {
-            paymentMethod.payment_method ? (
-              <div className="m-1">
-                <h4 className="fs-6 text-dark">
-                  {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "代金引換え" : ""}
-                </h4>
-                <div className="liff-checkout-payment-title">
-                  {getPaymentMethod(paymentMethod)}
+          {(() => {
+            if (paymentMethod.payment_method && paymentMethod.payment_method == 1) {
+              return (
+                <div className="m-1">
+                  <h4 className="fs-6 text-dark">
+                    {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "代金引換え" : ""}
+                  </h4>
+                  <div className="liff-checkout-payment-title">
+                    {getPaymentMethod(paymentMethod)}
+                  </div>
                 </div>
+              )
+            } else if (paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1) {
+              return (
+                <div className="m-1">
+                  <h4 className="fs-6 text-dark">
+                    {paymentMethod.payment_method === 1 ? "クレジットカード" : paymentMethod.payment_method === 2 ? "代金引換え" : ""}
+                  </h4>
+                  <div className="liff-checkout-payment-title">
+                    {getPaymentMethod(paymentMethod)}
+                  </div>
               </div>
-            ) : (
-              <div className="m-1 mt-3">
-                <h4 className="fs-6 text-dark">支払い方法を選択してください</h4>
-              </div>
-            )
-          }
+              )
+            } else {
+              return (
+                <div className="m-1 mt-3">
+                  <h4 className="fs-6 text-dark">支払い方法を選択してください</h4>
+                </div>
+              )
+            }
+          })()}
         </Col>
         {
           getColButton(location).isButton &&

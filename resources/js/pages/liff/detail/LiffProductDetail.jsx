@@ -136,7 +136,7 @@ export default () => {
             カートに入れる
           </Button>
         </div>
-        <Card border="0" className="shadow mb-4 mt-5">
+        <Card border="0" className="shadow mt-5">
           <Card.Body>
             <h5 className="mb-4 border-bottom pb-3">説明</h5>
             <p>{product.overview}</p>

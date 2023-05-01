@@ -163,11 +163,17 @@ export default () => {
     <>
       <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-        <div className="mb-2">
+        <div className="mb-2 px-4">
           <LiffVisitorCard />
           <LiffVisitorQrCard />
-          <h2 className="ps-3">特典一覧</h2>
-          {privileges.map(v => <LiffVisitorPrivilegeCard key={`privilege-${v.id}`}  {...v} />)}
+          {
+            privileges.length > 0 && (
+              <>
+              <h2 className="ps-3">特典一覧</h2>
+              {privileges && privileges.map(v => <LiffVisitorPrivilegeCard key={`privilege-${v.id}`}  {...v} />)}
+              </>
+            )
+          }
           {/* <div className="d-flex justify-content-end me-2">
             <Link to={Paths.LiffAboutVisitorPrivileges.path} className="text-decoration-underline py-3">
               来店特典一覧確認

@@ -50,13 +50,11 @@ export default () => {
   const discountedTotalAmount = relatedProducts.reduce((relatedProduct, i) => relatedProduct + i.discount_price, 0)
   const discount_rate_decimal = coupon.discount_price / 100.0
   const discount_amount = orderTotal * discount_rate_decimal
-  const total = (paymentMethod && paymentMethod.payment_method == 1) ? orderTotal + postage - discountedTotalAmount - discount_amount : orderTotal + postage + ecommerceConfiguration.cash_on_delivery_fee - discountedTotalAmount - discount_amount;
-
-  const deleteProperty = (keys) => {
-    const cloneObject = Object.assign(deliveryAddress)
-    keys.map(key => { delete cloneObject[key]})
-    return cloneObject
-  }
+  const total = (paymentMethod && paymentMethod.payment_method == 1) 
+    ? orderTotal + postage - discountedTotalAmount - discount_amount 
+    : (paymentMethod && paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1)
+    ? orderTotal + postage + ecommerceConfiguration.cash_on_delivery_fee - discountedTotalAmount - discount_amount
+    : orderTotal + postage - discountedTotalAmount - discount_amount
 
   const isEmpty = (obj) => {
     return !Object.keys(obj).length;
@@ -91,9 +89,8 @@ export default () => {
       setIsLoading(false);
       return;
     }
-    const keys = ['id', 'is_selected', 'updated_at', 'user_id', 'created_at', 'deleted_at'];
+    const keys = ['updated_at', 'user_id', 'created_at', 'deleted_at'];
     const delivery_time = Cookies.get('delivery_time')
-    const newDeliveryAddress = deleteProperty(keys)
     
     const order = {
       user_id: user.id, delivery_time: delivery_time, purchase_amount: Math.floor(total), status: 1, 
@@ -101,7 +98,7 @@ export default () => {
       discount_price: discountedTotalAmount
     }
     const products = carts.map(cart => {return {product_id: cart.product_id, quantity:cart.quantity, price: cart.product.price}})
-    Object.assign(order, newDeliveryAddress)
+    Object.assign(order, deliveryAddress)
     if (paymentMethod.payment_method == 1) {
       order.payjp_url = `https://pay.jp/d/customers/${paymentMethod.payjp_customer_id}`
       order.payjp_card_id = card.id
@@ -119,6 +116,9 @@ export default () => {
     storeOrder(user.id, formValue, storeComplete, setIsLoading)
     .then(response => {
       failedStore(response.message)
+      if (response.status == 500) {
+        history.push(Paths.LiffCheckout.path);
+      }
     });
     // storeOrder(101, formValue, storeComplete, setIsLoading)
   }
@@ -137,6 +137,7 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true);
+    location.state && console.log(location.state.coupon);
     location.state && setCoupon(location.state.coupon);
     const idToken = liff.getIDToken();
     
@@ -168,7 +169,7 @@ export default () => {
   return (
     <>
       <main className="liff-product-detail">
-        <div className="liff-product-list">
+        <div className="liff-product-list px-3">
           <Card border="0" className="shadow my-3">
             <Card.Header className="border-bottom">
               <h5 className="liff-product-detail-name mb-0">お届け先住所</h5>

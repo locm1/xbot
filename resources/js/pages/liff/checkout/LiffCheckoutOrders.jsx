@@ -36,7 +36,7 @@ export default (props) => {
     const delivery_time = Cookies.get('delivery_time')
     // getUser(idToken, setUser)
     //getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart))
-    getDeliveryTimeItem(parseInt(delivery_time, 10))
+    getDeliveryTimeItem(delivery_time ? parseInt(delivery_time, 10) : 1)
   }, []);
 
   const getDeliveryTimeItem = (delivery_time) => {

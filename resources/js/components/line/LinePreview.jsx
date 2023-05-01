@@ -64,8 +64,8 @@ export default (props) => {
     return (
       <div className="overflow-x-scroll d-flex">
         <div className="d-flex">
-          {(props.preview.carousel_images.map(v => 
-              <div className="for-img me-3">
+          {(props.preview.carousel_images.map((v, k) => 
+              <div key={`carousel-image-${k}`} className="for-img me-3">
                 <Image src={v.image_path} width="330" height="330" className="rounded" />
                 <div className="line-label">
                   {v.label}
@@ -81,8 +81,8 @@ export default (props) => {
     return (
       <div className="overflow-x-scroll d-flex">
         <div className="d-flex">
-          {(props.preview.carousel_products.map(v => 
-              <div className="product-card me-3 rounded">
+          {(props.preview.carousel_products.map((v, k) => 
+              <div key={`carousel-product-${k}`}  className="product-card me-3 rounded">
                 <Image src={v.image_path} width="300" height="195" className="" />
                 <div className="product-labels">
                   <div className="product-label-title">{v.title}</div>

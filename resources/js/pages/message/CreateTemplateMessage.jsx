@@ -113,8 +113,8 @@ export default () => {
       currentMessageItem.image_path = null
       currentMessageItem.video_path = null
       currentMessageItem.text = ''
-      setUpdateCarouselImageImages([...updateImages, e.target.files[0]])
-      setUpdateCarouselImageImageIds([...updateImageIds, display_id + '-' + carousel_display_id])
+      setUpdateCarouselImageImages([...updateCarouselImageImages, e.target.files[0]])
+      setUpdateCarouselImageImageIds([...updateCarouselImageImageIds, display_id + '-' + carousel_display_id])
       const image_path = URL.createObjectURL(e.target.files[0])
       deleteCarouselProducts(currentMessageItem)
       const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? {...currentMessageItem, carousel_images: (currentMessageItem.carousel_images.map(v => v.display_id == carousel_display_id ? {...v, image_path: image_path} : {...v}))} : {...messageItem})));
@@ -146,8 +146,8 @@ export default () => {
         )
         return;
       }
-      setUpdateCarouselProductImages([...updateImages, selectedImage])
-      setUpdateCarouselProductImageIds([...updateImageIds, display_id + '-' + carousel_display_id])
+      setUpdateCarouselProductImages([...updateCarouselProductImages, selectedImage])
+      setUpdateCarouselProductImageIds([...updateCarouselProductImageIds, display_id + '-' + carousel_display_id])
       const image_path = URL.createObjectURL(selectedImage)
       deleteCarouselImages(currentMessageItem)
       const data = (messageItems.map((messageItem) => (messageItem.display_id == display_id ? {...currentMessageItem, carousel_products: (messageItem.carousel_products.map(v => v.display_id == carousel_display_id ? {...v, image_path: image_path} : {...v}))} : {...messageItem})));

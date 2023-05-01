@@ -85,6 +85,7 @@ export default () => {
   const deleteImage = (id) => {
     const deleteImage = productImages.find((image) => image.id === id)
     setProductImages(productImages.filter(image => image.id !== id))
+    setStoreProductImages(storeProductImages.filter(image => image.id !== id))
     // 削除対象のstate から、idがない、つまりフロント側で追加した画像をバックエンドに送らないようにする
     if (Object.keys(deleteImage).indexOf('id') !== -1) {
       setDeleteProductImages([...deleteProductImages, deleteImage]);

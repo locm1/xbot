@@ -14,25 +14,35 @@ export const getVisitorHistoryCount = async (userId, setVisitorCount, setIsLoadi
 };
 
 
-export const storeVisitorHistory = async (userId) => {
+export const storeVisitorHistory = async (userId, storeComplete) => {
   return await axios.post(`/api/v1/users/${userId}/visitor-histories`)
   .then((response) => {
-    Swal.fire({
-      icon: 'success',
-      title: '来店処理完了',
+    // Swal.fire({
+    //   icon: 'success',
+    //   title: '来店処理完了',
+    //   text: '来店履歴にデータが作成されました',
+    //   showConfirmButton: false,
+    //   timer: 1500
+    // })
+    const messages = {
       text: '来店履歴にデータが作成されました',
-      showConfirmButton: false,
-      timer: 1500
-    })
+      status: 200
+    }
+    storeComplete(messages)
   })
   .catch(error => {
     console.error(error);
-    Swal.fire({
-      icon: 'error',
-      title: '来店処理失敗',
+    // Swal.fire({
+    //   icon: 'error',
+    //   title: '来店処理失敗',
+    //   text: '来店処理に失敗しました',
+    //   showConfirmButton: false,
+    //   timer: 1500
+    // })
+    const messages = {
       text: '来店処理に失敗しました',
-      showConfirmButton: false,
-      timer: 1500
-    })
+      status: 500
+    }
+    storeComplete(messages)
   });
 };

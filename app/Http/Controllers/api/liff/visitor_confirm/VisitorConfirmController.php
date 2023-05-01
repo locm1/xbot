@@ -21,6 +21,6 @@ class VisitorConfirmController extends Controller
             $visitor_history_service = new VisitorHistoryService;
             return $visitor_history_service->store((int) $request->user_id);
         }
-        return abort(401, '認証失敗');
+        return abort(400, '認証失敗');
     }
 }

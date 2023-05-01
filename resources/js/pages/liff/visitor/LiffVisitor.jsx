@@ -163,7 +163,7 @@ export default () => {
     <>
       <main className="liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-        <div className="mb-2 px-4">
+        <div className="mb-2 px-5">
           <LiffVisitorCard />
           <LiffVisitorQrCard />
           {

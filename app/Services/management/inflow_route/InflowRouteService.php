@@ -26,6 +26,7 @@ class InflowRouteService
             'from' => $InflowRoute->firstItem(),
             'to' => $InflowRoute->lastItem(),
             'total' => $InflowRoute->total(),
+            'last_page' => $InflowRoute->lastPage()
         ];
     }
 

@@ -63,9 +63,8 @@ class InviteService
     public function getMessage(string $line_id, string $uri): string
     {
         $display_name = $this->bot->getProfile($line_id)->getJSONDecodedBody()['displayName'];
-        $message = "$display_name さんから招待コードが届きました！友達登録し、アンケートを回答するとスペシャルクーポンが発行されます！\n\n$uri";
-        
-        return $message;
+        $message = $display_name ."さんから招待コードが届きました！友達登録し、アンケートを回答するとスペシャルクーポンが発行されます！\n\n$uri";
+        return urlencode($message);
     }
 
     public function sendInviteMessage(int $user_id)

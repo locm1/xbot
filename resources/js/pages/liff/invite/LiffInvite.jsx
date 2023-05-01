@@ -25,7 +25,7 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState([]);
   const [inviteeIncentives, setInviteeIncentives] = useState([
     { id: 1, invite_incentive: {id: 1, invitee_content: '', invitee_title: ''}}
   ]);
@@ -40,16 +40,17 @@ export default () => {
     const idToken = liff.getIDToken();
     console.log(idToken);
     getUser(idToken, setUser).then(response => {
-      getInviteMessage(response.id, setMessages, setLink)
+      getInviteMessage(response.id, setMessage, setLink)
       getInviteeIncentives(response.id, setInviteeIncentives)
       getInviterIncentives(response.id, setInviterIncentives, setIsLoading)
     })
   }, []);
 
   const sendMessage = () => {
-    if (liff.isApiAvailable('shareTargetPicker')) {
-      liff.shareTargetPicker(messages).then(response => console.log(`[${response.status}] Message sent!`));
-    }
+    console.log(`https://line.me/R/share?text=${message}`);
+    // if (liff.isApiAvailable('shareTargetPicker')) {
+    //   liff.shareTargetPicker(messages).then(response => console.log(`[${response.status}] Message sent!`));
+    // }
   }
 
   const confirmUpdate = async (id, invite) => {
@@ -151,7 +152,7 @@ export default () => {
                 >
                   <div className="message">コピーが完了しました</div>
                 </CSSTransition>
-                <Button onClick={sendMessage} variant="gray-800" className="common-button common-button--line mt-0 mb-0">
+                <Button href={`https://line.me/R/share?text=${message}`} variant="gray-800" className="common-button common-button--line mt-0 mb-0">
                   LINEでコードを送る
                 </Button>
             </div>

@@ -1,13 +1,10 @@
-export const getInviteMessage = async (userId, setMessages, setLink) => {
+export const getInviteMessage = async (userId, setMessage, setLink) => {
   axios.get(`/api/v1/users/${userId}/invites`)
   .then((response) => {
     const data = response.data;
-    setMessages([{
-      type: 'text',
-      text: data.message
-    }]);
+    setMessage(data.message);
     setLink(data.link)
-    console.log([data.message]);
+    console.log(data);
   })
   .catch(error => {
       console.error(error);

@@ -4,6 +4,7 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar,
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { first } from "lodash";
+import moment from "moment-timezone";
 
 export const SendSegmentUserCard = (props) => {
   const { users = [], allSelected, setUsers } = props;
@@ -61,7 +62,7 @@ export const SendSegmentUserCard = (props) => {
             {sex_array[gender]}
           </span>
         </td>
-        <td><span className="fw-normal">{birth_date}</span></td>
+        <td><span className="fw-normal">{moment(birth_date).format("YYYY-MM-DD")}</span></td>
         <td><span className="fw-normal">{prefecture}</span></td>
       </tr>
     );

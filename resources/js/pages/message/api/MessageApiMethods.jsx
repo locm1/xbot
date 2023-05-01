@@ -47,7 +47,7 @@ export const getMessages = async (params, setMessages, setLinks, setPaginate) =>
 };
 
 export const storeMessage = async (formData, setError, completeMessage) => {
-  axios.post('/api/v1/management/messages', formData, {
+  return await axios.post('/api/v1/management/messages', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     }
@@ -55,6 +55,7 @@ export const storeMessage = async (formData, setError, completeMessage) => {
   .then((response) => {
     const message = response.data.message;
     completeMessage('作成');
+    return message;
   })
   .catch(error => {
       console.error(error);

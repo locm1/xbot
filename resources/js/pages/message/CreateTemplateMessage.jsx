@@ -7,13 +7,14 @@ import withReactContent from 'sweetalert2-react-content';
 // forms
 import TemplateMessageForm from "@/pages/message/form/TemplateMessageForm";
 import MessageEditor from "@/pages/message/MessageEditor";
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
 import LinePreview from "@/components/line/LinePreview";
 import { Paths } from "@/paths";
 import { showMessage, updateMessage, storeMessage } from "@/pages/message/api/MessageApiMethods";
 import { getMessageItems, updateMessageItems, deleteMessageItem, storeMessageItems } from "@/pages/message/api/MessageItemApiMethods";
 
 export default () => {
+  const history = useHistory();
   const { id } = useParams();
   const pathname = useLocation().pathname;
   const [message, setMessage] = useState({
@@ -224,7 +225,9 @@ export default () => {
       }
     } else {
       //saveMessage(formData, setError, completeMessage)
-      storeMessage(formData, setError, completeMessage)
+      storeMessage(formData, setError, completeMessage).then(message => {
+        history.push(Paths.EditMessage.path.replace(':id', message.message_id));
+      })
     }
   };
 

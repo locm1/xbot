@@ -80,6 +80,7 @@ export default () => {
       deleteCarouselImages(currentMessageItem)
       deleteCarouselProducts(currentMessageItem)
       setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
+      if (e.target.name == 'text') setError({...error, [`message_items.${index}.text`]: ''});
     } else if (input == 'file') {
       currentMessageItem.type = 2
       currentMessageItem.text = ''
@@ -97,6 +98,7 @@ export default () => {
         setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
       }
       reader.readAsDataURL(e.target.files[0])
+      if (e.target.name == 'image') setError({...error, [`message_items.${index}.image_path`]: ''});
     } else if (input == 'video') {
       currentMessageItem.type = 3
       currentMessageItem.text = ''
@@ -110,6 +112,7 @@ export default () => {
 
       currentMessageItem.video_path = URL.createObjectURL(e.target.files[0])
       setMessageItems(messageItems.map((messageItem) => (messageItem.display_id === display_id ? currentMessageItem : messageItem)));
+      if (e.target.name == 'video') setError({...error, [`message_items.${index}.video_path`]: ''});
     } else if (input == 'carousel-image') {
       currentMessageItem.image_path = null
       currentMessageItem.video_path = null
@@ -124,6 +127,7 @@ export default () => {
       switch (e.target.name) {
         case 'file':
           setError({...error, [`message_items.${index}.carousel_images.${carouselIndex}.image_path`]: ''})
+          setError({...error, [`carousel_image_images.${carouselIndex}`]: ''})
           break;
         default:
           setError({...error, [`message_items.${index}.carousel_images.${carouselIndex}.${e.target.name}`]: ''})
@@ -157,6 +161,7 @@ export default () => {
       switch (e.target.name) {
         case 'file':
           setError({...error, [`message_items.${index}.carousel_products.${carouselIndex}.image_path`]: ''})
+          setError({...error, [`carousel_product_images.${carouselIndex}`]: ''})
           break;
         default:
           setError({...error, [`message_items.${index}.carousel_products.${carouselIndex}.${e.target.name}`]: ''})

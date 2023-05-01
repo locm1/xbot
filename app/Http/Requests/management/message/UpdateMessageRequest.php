@@ -3,6 +3,7 @@
 namespace App\Http\Requests\management\message;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class UpdateMessageRequest extends FormRequest
 {
@@ -45,6 +46,10 @@ class UpdateMessageRequest extends FormRequest
     {
         $message_items = $this->message_items;
         foreach ($message_items as $key => $message_item) {
+            // $image_rules = [
+            //     'message_image.*' => 'file|max:10240|mimes:jpeg,png,jpg',
+            // ];
+
             $carousel_image_rules = [
                 'carousel_image_images.*' => 'file|max:10240|mimes:jpeg,png,jpg',
                 "message_items.$key.carousel_images.*.image_path" => 'required',
@@ -53,12 +58,25 @@ class UpdateMessageRequest extends FormRequest
             ];
 
             $carousel_product_rules = [
+                'carousel_product_images.*' => 'file|max:10240|mimes:jpeg,png,jpg',
                 "message_items.$key.carousel_products.*.image_path" => 'required',
                 "message_items.$key.carousel_products.*.text" => 'required|max:60',
                 "message_items.$key.carousel_products.*.title" => 'required|max:40',
                 "message_items.$key.carousel_products.*.label" => 'required|max:20',
                 "message_items.$key.carousel_products.*.uri" => 'required|url',
             ];
+
+            $validator->sometimes("message_items.$key.text", 'required', function() use($message_item) {
+                return $message_item['type'] == 1;
+            });
+
+            $validator->sometimes("message_items.$key.image_path", 'required', function() use($message_item) {
+                return $message_item['type'] == 2;
+            });
+
+            $validator->sometimes("message_items.$key.video_path", 'required', function() use($message_item) {
+                return $message_item['type'] == 3;
+            });
 
             foreach ($carousel_image_rules as $key => $value) {
                 $validator->sometimes($key, $value, function() use($message_item) {
@@ -79,10 +97,14 @@ class UpdateMessageRequest extends FormRequest
         $messages = array();
         $message_items = $this->message_items;
         foreach ($message_items as $key => $message_item) {
+            $messages["message_items.$key.text"] = 'テキスト';
+            $messages["message_items.$key.image_path"] = '画像';
+            $messages["message_items.$key.video_path"] = '動画';
             $messages["carousel_image_images.*"] = 'カルーセル画像';
             $messages["message_items.$key.carousel_images.*.image_path"] = 'カルーセル画像';
             $messages["message_items.$key.carousel_images.*.label"] = '画像カルーセルラベル';
             $messages["message_items.$key.carousel_images.*.uri"] = '画像カルーセルURL';
+            $messages["carousel_product_images.*"] = '商品カルーセル画像';
             $messages["message_items.$key.carousel_products.*.image_path"] = '商品カルーセル画像';
             $messages["message_items.$key.carousel_products.*.uri"] = '商品カルーセルURL';
             $messages["message_items.$key.carousel_products.*.label"] = '商品カルーセルボタン名';

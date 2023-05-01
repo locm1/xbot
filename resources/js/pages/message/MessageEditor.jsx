@@ -30,7 +30,7 @@ export default (props) => {
     const { messageItem } = props;
 
     return (
-      <Col xs={6} className="dropzone-preview line-preview-image-wrap">
+      <Col xs={6} className="dropzone-preview line-preview-image-wrap mt-3">
         <div className="product-preview-image d-flex">
           <Image src={messageItem.image_path} className="dropzone-image" />
           {/* <Button variant="gray-800" className="product-image-button">
@@ -45,17 +45,9 @@ export default (props) => {
     const { messageItem } = props;
 
     return (
-      <Col xs={6} className="dropzone-preview line-preview-image-wrap">
-        <div className="product-preview-video d-flex">
-            <Form.Control
-              type="file"
-              name="video"
-              accept="video/*"
-              id="preview-video" 
-            />
-          <Button variant="gray-800" className="product-image-button">
-            <XIcon className="icon icon-sm line-preview-image-icon" onClick={() => handlePictureImageDelete(messageItem.display_id, messageItem.type)} />
-          </Button>
+      <Col xs={6} className="text-center text-lg-start mt-3">
+        <div className="line-preview-comment-image">
+          <ReactPlayer url={messageItem.video_path} controls width="100%" />
         </div>
       </Col>
     );
@@ -211,11 +203,16 @@ export default (props) => {
                     <Form.Control 
                       as="textarea"
                       rows="5" 
+                      name="text"
                       placeholder="テキストを入力" 
                       id={`preview-text-${messageItem.display_id}`} 
                       value={messageItem.text} 
-                      onChange={(e) => handlePreviewChange(e, 'text', messageItem.display_id)} 
+                      onChange={(e) => handlePreviewChange(e, 'text', messageItem.display_id, _, index)} 
+                      isInvalid={!!error[`message_items.${index}.text`]}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {error[`message_items.${index}.text`]}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   {/* <div className="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center py-3">
                     <Button onClick={() => addName(messageItem.display_id, '%friend_name%')} variant="primary" className="me-2">
@@ -227,30 +224,32 @@ export default (props) => {
                   </div> */}
                 </Tab.Pane>
                 <Tab.Pane eventKey="picture" className="py-4">
-                  {messageItem.image_path == null ? (
                       <Form.Control
                         type="file"
-                        name="file"
-                        id="preview-picture" 
-                        accept="image/*"
-                        onChange={(e) => handlePreviewChange(e, 'file', messageItem.display_id)} 
+                        name="image"
+                        id="preview-picture"
+                        accept="image/png,image/jpg,image/jpeg"
+                        onChange={(e) => handlePreviewChange(e, 'file', messageItem.display_id, _, index)} 
+                        isInvalid={!!error[`message_items.${index}.image_path`]}
                       />
-                  ) : (
+                      <Form.Control.Feedback type="invalid">
+                        {error[`message_items.${index}.image_path`]}
+                      </Form.Control.Feedback>
                     <DropzoneFile messageItem={messageItem} />
-                  )} 
                 </Tab.Pane>
                 <Tab.Pane eventKey="movie" className="py-4">
-                  {messageItem.video_path == null ? (
-                      <Form.Control
-                        type="file"
-                        name="video"
-                        accept="video/*"
-                        id="preview-video" 
-                        onChange={(e) => handlePreviewChange(e, 'video', messageItem.display_id)} 
-                      />
-                  ) : (
-                    <VideoFile messageItem={messageItem} />
-                  )} 
+                    <Form.Control
+                      type="file"
+                      name="video"
+                      accept="video/*"
+                      id="preview-video" 
+                      onChange={(e) => handlePreviewChange(e, 'video', messageItem.display_id, _, index)} 
+                      isInvalid={!!error[`message_items.${index}.video_path`]}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {error[`message_items.${index}.video_path`]}
+                    </Form.Control.Feedback>
+                  {messageItem.video_path && <VideoFile messageItem={messageItem} />}
                 </Tab.Pane>
                 <Tab.Pane eventKey="carousel-image" className="py-4">
                   {messageItem.carousel_images.map((v, k) => {

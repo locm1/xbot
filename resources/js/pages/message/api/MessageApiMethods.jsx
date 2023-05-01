@@ -84,6 +84,7 @@ export const updateMessage = async (id, formData, setError, completeMessage) => 
     }
   })
   .then((response) => {
+    console.log(response);
     completeMessage('更新')
   })
   .catch(error => {

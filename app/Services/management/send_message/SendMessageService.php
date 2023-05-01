@@ -10,7 +10,7 @@ class SendMessageService
 
     public function index() 
     {
-        $send_messages = SendMessage::with(['sendMessageUsers', 'message'])->paginate(10);
+        $send_messages = SendMessage::with(['sendMessageUsers', 'message'])->orderBy('updated_at', 'desc')->paginate(10);
         $data = [];
         foreach ($send_messages as $k => $v) {
             $data[] = [

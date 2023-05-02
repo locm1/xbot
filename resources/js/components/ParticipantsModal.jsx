@@ -27,22 +27,22 @@ export default (props) => {
         <Modal.Body className="px-3 pb-0">
           <div className="px-3">
             {users.map((user, index) => (
-                <Row
-                  key={`user-${index}`}
-                  className="kanban-card-member border-bottom py-2"
-                  as={Link}
-                  to={Paths.EditUser.path.replace(':id', user.id)}
-                >
-                  <Col xs={2}>
-                    <Image src={user.img_path} className="avatar-md rounded-circle" />
-                  </Col>
-                  <Col xs={8} className="d-flex align-items-center justify-content-start">
-                    <h4 className="fs-6 text-dark mb-0">
-                      {user.last_name} {user.first_name}
-                    </h4>
-                  </Col>
-                </Row>
-              ))}
+              <Row
+                key={`user-${index}`}
+                className="kanban-card-member border-bottom py-2"
+                as={Link}
+                to={Paths.EditUser.path.replace(':id', user.id)}
+              >
+                <Col xs={2}>
+                  <Image src={user.img_path ?? "/images/default_user_icon.png"} className="avatar-md rounded-circle" />
+                </Col>
+                <Col xs={8} className="d-flex align-items-center justify-content-start">
+                  <h4 className="fs-6 text-dark mb-0">
+                    {user.last_name} {user.first_name}
+                  </h4>
+                </Col>
+              </Row>
+            ))}
           </div>
         </Modal.Body>
       </Form>

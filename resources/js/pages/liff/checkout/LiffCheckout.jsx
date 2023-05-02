@@ -64,9 +64,15 @@ export default () => {
     const errors = [];
   
     if (isEmpty(deliveryAddress)) {
-      errors.push("配送先を選択してください");
+      errors.push("お届け先住所を選択してください");
+    }
+    if (paymentMethod.payment_method == 1 && !paymentMethod.payjp_customer_id) {
+      errors.push("クレジットカードを選択してください");
     }
     if (paymentMethod.payjp_default_card_id === '') {
+      errors.push("支払い方法を選択してください");
+    }
+    if (paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 0) {
       errors.push("支払い方法を選択してください");
     }
     if (Cookies.get('delivery_time') === undefined) {
@@ -94,7 +100,7 @@ export default () => {
     
     const order = {
       user_id: user.id, delivery_time: delivery_time, purchase_amount: Math.floor(total), status: 1, 
-      payment_method: paymentMethod.payment_method, shipping_fee: postage,
+      payment_method: paymentMethod.payment_method, shipping_fee: postage ? postage : 0,
       discount_price: discountedTotalAmount
     }
     const products = carts.map(cart => {return {product_id: cart.product_id, quantity:cart.quantity, price: cart.product.price}})
@@ -120,7 +126,7 @@ export default () => {
         history.push(Paths.LiffCheckout.path);
       }
     });
-    // storeOrder(101, formValue, storeComplete, setIsLoading)
+    //storeOrder(101, formValue, storeComplete, setIsLoading)
   }
 
   const storeComplete = () => {

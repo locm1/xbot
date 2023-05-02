@@ -59,6 +59,7 @@ export const showOrder = async (userId, id, setOrder, setCoupon, setDiscountedTo
     setOrder({...order, order_total: orderTotal})
     setDiscountedTotalAmount(order.discount_price)
     setCoupon(order.coupon)
+    order.coupon ? setCoupon(order.coupon) : setCoupon({ discount_price: 0})
     console.log({...order, order_total: orderTotal});
     return {...order, order_total: orderTotal};
     //setIsLoading(false);

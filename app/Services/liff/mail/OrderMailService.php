@@ -21,6 +21,8 @@ class OrderMailService
         $product_ids = array_column($order_products, 'product_id');
         $products = Product::whereIn('id', $product_ids)->get();
         $configuration = $this->ecommerce_service->index();
-        Mail::send(new OrderMail($configuration->email, $order, $products));
+        if (isset($configuration->email)) {
+            Mail::send(new OrderMail($configuration->email, $order, $products));
+        }
     }
 }

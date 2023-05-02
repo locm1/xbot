@@ -24,8 +24,10 @@ class StoreOrderRequest extends FormRequest
      */
     public function rules()
     {
+        $payment_method = $this->order['payment_method'];
         return [
-            'order.first_name' => 'required'
+            'order.first_name' => 'required',
+            // 'charge.payjp_customer_id' => $payment_method == 1 ? 'required' : 'nullable'
         ];
     }
 
@@ -33,6 +35,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'order.first_name' => 'お届け先住所を選択してください。',
+            'charge.payjp_customer_id' => 'クレジットカードを選択してください。',
         ];
     }
 }

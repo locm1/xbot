@@ -69,12 +69,13 @@ export default () => {
   }
 
   const deleteCartCard = (id) => {
-    setCarts(carts.filter((cart) => (cart.id !== id)));
+    const newCarts = carts.filter((cart) => (cart.id !== id))
+    setCarts(newCarts);
     setRelatedProducts(relatedProducts.filter((relatedProduct) => (relatedProduct.related_product_id !== id)));
     //deleteCart(101, id)
     deleteCart(user.id, id)
 
-    if (carts.length == 0) {
+    if (newCarts.length == 0) {
       setItemsExistInCart(false);
     }
   }

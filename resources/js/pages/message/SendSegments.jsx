@@ -259,7 +259,7 @@ export default () => {
               type: 1,
               questionTitle: v.title,
               questionnaireItems: 
-                v.questionnaire_items.map((b, k) => ({id: b.id, name: 'questionnaireId-' + b.id, label: b.name, value: ''}))
+                v.questionnaire_items.map((b, k) => ({id: b.id, name: 'questionnaireId-' + v.id, label: b.name, value: b.name}))
             })
           }}
         })
@@ -529,7 +529,7 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          {/* <Button onClick={() => {console.log(templates)}} /> */}
+          {/* <Button onClick={() => {console.log(evenQuestionnaires)}} /> */}
           {/* <Button onClick={() => {console.log(users)}} /> */}
           {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
           {/* <Button onClick={() => {console.log(sendDate)}} /> */}

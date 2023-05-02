@@ -151,10 +151,9 @@ export default () => {
   return (
     <>
       <main className="">
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-        <div className="liff-product-list">
+        <div className="px-3 py-3">
           <div className="d-flex align-items-center">
-            <h2 className="fs-5 liff-product-detail-name mb-3 ms-3">アンケートにお答えください</h2>
+            <h2 className="fs-5 liff-product-detail-name ms-3">アンケートにお答えください</h2>
           </div>
 
           {

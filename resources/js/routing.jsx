@@ -39,7 +39,7 @@ import CreateCoupon from '@/pages/coupon/CreateCoupon';
 import Orders from '@/pages/order/Orders';
 import Reserves from '@/pages/reserve/Reserves';
 import EventCalendar from '@/pages/event/EventCalendar';
-import Events from '@/pages/event/Events';
+import Events from '@/pages/event/EventTable';
 import InviteIncentives from '@/pages/invitation/InviteIncentives';
 import EditInviteIncentive from '@/pages/invitation/EditInviteIncentive';
 import InviterIncentives from '@/pages/invitation/InviterIncentives';

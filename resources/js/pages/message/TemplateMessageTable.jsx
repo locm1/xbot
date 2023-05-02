@@ -68,7 +68,7 @@ export const TemplateMessageTable = (props) => {
         </td>
         <td>
           <span className="fw-normal">
-            {moment(created_at).format("YYYY-MM-DD H:m:s")}
+            {moment(created_at).format("YYYY-MM-DD HH:mm:ss")}
           </span>
         </td>
         <td>

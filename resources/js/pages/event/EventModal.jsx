@@ -1,8 +1,8 @@
 
 import React, { useState } from "react";
 import moment from "moment-timezone";
-import { CalendarIcon,} from "@heroicons/react/solid";
-import { Col, Row, Form, Modal, Button, InputGroup, Alert,} from 'react-bootstrap';
+import { CalendarIcon, } from "@heroicons/react/solid";
+import { Col, Row, Form, Modal, Button, InputGroup, Alert, } from 'react-bootstrap';
 import { CirclePicker } from 'react-color';
 
 import "flatpickr/dist/flatpickr.css";
@@ -40,8 +40,8 @@ export const EventModal = (props) => {
   const [rangeStart, setRangeStart] = useState(moment(start).format("YYYY-MM-DD"));
   const [rangeEnd, setRangeEnd] = useState();
   const [errors, setErrors] = useState(null);
-  const [startTime, setStartTime] = useState(props.start ? moment(props.start).format("HH:mm") :'07:00');
-  const [endTime, setEndTime] = useState(props.end ? moment(props.end).format("HH:mm") :'08:00');
+  const [startTime, setStartTime] = useState(props.start ? moment(props.start).format("HH:mm") : '07:00');
+  const [endTime, setEndTime] = useState(props.end ? moment(props.end).format("HH:mm") : '08:00');
 
   const { show = false, edit = false, id, setChange } = props;
   // const startDate = start ? moment(start).format("YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
@@ -60,7 +60,7 @@ export const EventModal = (props) => {
   const onConfirm = () => {
     const payload = { id, title, start: start_date, end: end_date, is_unlimited: is_unlimited, location: location, remaining: remaining, color: backgroundColor };
     const updateData = {
-      title: title, start_date: rangeStart, end_date: rangeEnd, remaining: remaining, 
+      title: title, start_date: rangeStart, end_date: rangeEnd, remaining: remaining,
       is_unlimited: is_unlimited, location: location, color: backgroundColor,
       start_time: startTime, end_time: endTime,
     }
@@ -73,7 +73,7 @@ export const EventModal = (props) => {
       CreateEvent(updateData, setErrors).then(response => {
         if (response.result === 'failed') {
           setErrors(response.errors);
-        } else {  
+        } else {
           payload.id = response.res.data.event.id;
           onHide();
           // return props.onAdd && props.onAdd(payload);
@@ -99,7 +99,7 @@ export const EventModal = (props) => {
     }
   }
   const handleUnlimited = (e) => {
-    // is_unlimited === 1 ? setUnlimited(0) : setUnlimited(1);
+    e.target.checked ? setUnlimited(1) : setUnlimited(0);
     setIsChecked(e.target.checked);
     setRemaining(99999);
   }
@@ -126,25 +126,25 @@ export const EventModal = (props) => {
               <Form.Group id="startDate">
                 <Form.Label>開始時刻</Form.Label>
                 <Flatpickr
-                  options={ startOptions }
+                  options={startOptions}
                   render={(props, ref) => {
                     return (
                       <InputGroup>
-                      <InputGroup.Text>
-                        <CalendarIcon className="icon icon-xs" />
-                      </InputGroup.Text>
-                      <Form.Control
-                        value={startTime}
-                        data-enable-time
-                        data-time_24hr
-                        data-no-calendar
-                        required
-                        type="text"
-                        placeholder="MM:DD"
-                        onChange={() => {}}
-                        ref={ref}
-                      />
-                    </InputGroup>
+                        <InputGroup.Text>
+                          <CalendarIcon className="icon icon-xs" />
+                        </InputGroup.Text>
+                        <Form.Control
+                          value={startTime}
+                          data-enable-time
+                          data-time_24hr
+                          data-no-calendar
+                          required
+                          type="text"
+                          placeholder="MM:DD"
+                          onChange={() => { }}
+                          ref={ref}
+                        />
+                      </InputGroup>
                     );
                   }}
                 />
@@ -154,22 +154,22 @@ export const EventModal = (props) => {
               <Form.Group id="endDate" className="mb-2">
                 <Form.Label>終了時刻</Form.Label>
                 <Flatpickr
-                  options={ endOptions }
+                  options={endOptions}
                   value={endTime}
                   render={(props, ref) => {
                     return (
                       <InputGroup>
-                      <InputGroup.Text>
-                        <CalendarIcon className="icon icon-xs" />
-                      </InputGroup.Text>
-                      <Form.Control
-                        data-enable-time
-                        data-time_24hr
-                        data-no-calendar
-                        required
-                        type="text"
-                        placeholder="YYYY-MM-DD"
-                        ref={ref}
+                        <InputGroup.Text>
+                          <CalendarIcon className="icon icon-xs" />
+                        </InputGroup.Text>
+                        <Form.Control
+                          data-enable-time
+                          data-time_24hr
+                          data-no-calendar
+                          required
+                          type="text"
+                          placeholder="YYYY-MM-DD"
+                          ref={ref}
                         />
                       </InputGroup>
                     );
@@ -190,42 +190,45 @@ export const EventModal = (props) => {
             <Col xs={12} lg={6}>
               <Form.Group id="remaining">
                 <Form.Label>残数</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={remaining}
-                  onChange={onRemainingChange}
-                  disabled={isChecked}
-                />
-                  <div className="d-flex">
-                    <Form.Check label="無制限にする" id="checkbox1" htmlFor="checkbox1" className="" checked={isChecked} onChange={handleUnlimited} />
-                  </div>
+                <InputGroup className="">
+                  <InputGroup.Text className="d-flex">
+                    <Form.Check id="checkbox1" htmlFor="checkbox1" className="" checked={is_unlimited == 1 ? true : false} onChange={handleUnlimited} />
+                    <Form.Label htmlFor="checkbox1" className="mb-0">無制限</Form.Label>
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="number"
+                    value={remaining}
+                    onChange={onRemainingChange}
+                    disabled={is_unlimited == 1 ? true : false}
+                  />
+                </InputGroup>
               </Form.Group>
             </Col>
-            {!edit && 
-            <Col xs={12} lg={12}>
-              <Form.Group id="dateRange">
-                <Form.Label>範囲指定</Form.Label>
-                <Flatpickr
-                  options={ rangeOptions }
-                  render={(props, ref) => {
-                    return (
-                      <InputGroup>
-                      <InputGroup.Text>
-                        <CalendarIcon className="icon icon-xs" />
-                      </InputGroup.Text>
-                      <Form.Control
-                        defaultValue={rangeStart}
-                        required
-                        type="text"
-                        placeholder="YYYY-MM-DD"
-                        ref={ref}
-                      />
-                    </InputGroup>
-                    );
-                  }}
-                />
-              </Form.Group>
-            </Col>}
+            {!edit &&
+              <Col xs={12} lg={12}>
+                <Form.Group id="dateRange">
+                  <Form.Label>範囲指定</Form.Label>
+                  <Flatpickr
+                    options={rangeOptions}
+                    render={(props, ref) => {
+                      return (
+                        <InputGroup>
+                          <InputGroup.Text>
+                            <CalendarIcon className="icon icon-xs" />
+                          </InputGroup.Text>
+                          <Form.Control
+                            defaultValue={rangeStart}
+                            required
+                            type="text"
+                            placeholder="YYYY-MM-DD"
+                            ref={ref}
+                          />
+                        </InputGroup>
+                      );
+                    }}
+                  />
+                </Form.Group>
+              </Col>}
             {/* <Col xs={12} lg={6} className="mt-2">
               <Form.Label>色選択</Form.Label>
               <CirclePicker colors={['#F47373', '#37D67A', '#2CCCE4', '#ff8a65', '#ba68c8', '#697689']} onChange={handleBackgroundColorChange}  />
@@ -234,18 +237,16 @@ export const EventModal = (props) => {
           </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" className="me-2" onClick={onConfirm}>
-            {edit ? "更新" : "保存"}
+          <Button variant="link" className="text-gray me-auto" onClick={onHide}>
+            閉じる
           </Button>
-
           {edit ? (
-            <Button variant="danger" onClick={onDelete}>
+            <Button variant="danger" className="me-2" onClick={onDelete}>
               削除
             </Button>
           ) : null}
-
-          <Button variant="link" className="text-gray ms-auto" onClick={onHide}>
-            閉じる
+          <Button variant="success" className="" onClick={onConfirm}>
+            {edit ? "更新" : "保存"}
           </Button>
         </Modal.Footer>
       </Form>

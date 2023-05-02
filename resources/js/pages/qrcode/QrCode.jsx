@@ -21,7 +21,11 @@ export default () => {
 
   useEffect(() => {
     getApiKeys().then((response) => {
-      setUri('https://line.me/R/ti/p/' + response.data.LIFF_CHANNEL_ID);
+      if (response.data.LIFF_CHANNEL_ID) {
+        setUri('https://line.me/R/ti/p/' + response.data.LIFF_CHANNEL_ID);
+      } else {
+        setUri('');
+      }
     })
   }, [])
   const downloadQR = (id) => {

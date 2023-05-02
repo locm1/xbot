@@ -37,7 +37,7 @@ export const SendHistoriesTable = (props) => {
           <span className="fw-normal">{templateName}</span>
         </td>
         <td>
-          <span className="fw-normal">{moment(sendDate).format("YYYY-MM-DD H:mm:ss")}</span>
+          <span className="fw-normal">{moment(sendDate).format("YYYY-MM-DD HH:mm:ss")}</span>
         </td>
         <td>
           <span className="fw-normal">{targetCount}</span>

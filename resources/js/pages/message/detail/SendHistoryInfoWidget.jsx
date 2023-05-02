@@ -13,7 +13,7 @@ export const SendHistoryInfoWidget = (props) => {
   const histories = [
     {"id": 1, "name": "ステータス", "value": status},
     {"id": 2, "name": "テンプレート名", "value": message.title, "templateId": message_id},
-    {"id": 3, "name": "配信日時", "value": moment(updated_at).format("YYYY-MM-DD H:mm:ss")},
+    {"id": 3, "name": "配信日時", "value": moment(updated_at).format("YYYY-MM-DD HH:mm:ss")},
     {"id": 4, "name": "該当人数", "value": send_message_users.length},
     {"id": 5, "name": "配信数", "value": send_message_users.length},
   ]

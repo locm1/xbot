@@ -32,7 +32,6 @@ class CreateMessageByTypeService
 
     public function __invoke(MultiMessageBuilder $multi_message_builder): MultiMessageBuilder
     {
-        $url = secure_url('');
         foreach ($this->messages as $message) {
             $column_builder = null;
             $action_builder = null;
@@ -42,21 +41,19 @@ class CreateMessageByTypeService
                     $message_builder = $text_message_builder_action->createTextMessage($message->text);
                     break;
                 case 2:
-                    $filename = basename($message->image_path);
-                    $encoded_filename = urlencode($filename);
-                    $encoded_image_path = str_replace($filename, $encoded_filename, $message->image_path);
-                    $image_url = $url . $encoded_image_path;
+                    $image_url = $this->getFullUrl($message->image_path);
                     $message_builder = new ImageMessageBuilder($image_url, $image_url);
                     break;
                 case 3:
-                    $video_url = $url .$message->video_path;
+                    $video_url = $this->getFullUrl($message->video_path);
                     $message_builder = new VideoMessageBuilder($video_url, $video_url);
                     break;
                 case 4:
                     $carousel_images = $message->carouselImages;
                     foreach ($carousel_images as $k => $v) {
+                        $image_url = $this->getFullUrl($v->image_path);
                         $action_builder = new UriTemplateActionBuilder($v->label, $v->uri);
-                        $column_builder[] = new ImageCarouselColumnTemplateBuilder("https://satonoca-web.com/wp-content/uploads/2020/09/1.414-1-300-212.png", $action_builder);
+                        $column_builder[] = new ImageCarouselColumnTemplateBuilder($image_url, $action_builder);
                     }
                     $carousel_builder = new ImageCarouselTemplateBuilder($column_builder);
                     $message_builder = new TemplateMessageBuilder('新着メッセージがあります', $carousel_builder);
@@ -64,9 +61,10 @@ class CreateMessageByTypeService
                 case 5:
                     $carousel_products = $message->carouselProducts;
                     foreach ($carousel_products as $k => $v) {
+                        $image_url = $this->getFullUrl($v->image_path);
                         $action_builder = null;
                         $action_builder[] = new UriTemplateActionBuilder($v->label, $v->uri);
-                        $column_builder[] = new CarouselColumnTemplateBuilder($v->title, $v->text, "https://satonoca-web.com/wp-content/uploads/2020/09/1.414-1-300-212.png", $action_builder);
+                        $column_builder[] = new CarouselColumnTemplateBuilder($v->title, $v->text, $image_url, $action_builder);
                     }
                     $carousel_builder = new CarouselTemplateBuilder($column_builder);
                     $message_builder = new TemplateMessageBuilder('新着メッセージがあります', $carousel_builder);
@@ -75,5 +73,17 @@ class CreateMessageByTypeService
             $multi_message_builder->add($message_builder);
         }
         return $multi_message_builder;
+    }
+
+    /**
+     * ファイルが日本語名の時のためurlencodeを含む
+     */
+    private function getFullUrl($path): string
+    {
+        $url = secure_url('');
+        $filename = basename($path);
+        $encoded_filename = urlencode($filename);
+        $encoded_image_path = str_replace($filename, $encoded_filename, $path);
+        return $url . $encoded_image_path;
     }
 }

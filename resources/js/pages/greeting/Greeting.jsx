@@ -10,7 +10,7 @@ import { getGreetingMessageWithQuestionnaires, storeGreetingMessageWithQuestionn
 
 export default () => {
   const [messages, setMessages] = useState([
-    {id: 1, type: 1, text: '', image_path: null, video_path: null}
+    { id: 1, type: 1, text: '', image_path: null, video_path: null }
   ]);
   const [isQuestionnaireAnswerButton, setIsQuestionnaireAnswerButton] = useState(false);
   const [greetingMessageWithQuestionnaire, setQreetingMessageWithQuestionnaire] = useState({});
@@ -38,7 +38,7 @@ export default () => {
       currentMessage.video_path = null
       setUpdateImages([...updateImages, e.target.files[0]])
       setUpdateImageIds([...updateImageIds, currentMessage.id])
-      
+
       const reader = new FileReader()
       reader.onload = (e) => {
         currentMessage.image_path = e.target.result
@@ -83,7 +83,7 @@ export default () => {
 
   const addEditCard = () => {
     const lastMessage = messages.slice(-1)[0]
-    setMessages([...messages, {id: lastMessage.id + 1, type: 1, text: null, image_path: null, video_path: null}])
+    setMessages([...messages, { id: lastMessage.id + 1, type: 1, text: null, image_path: null, video_path: null }])
   };
 
   const onSaveMessage = () => {
@@ -93,7 +93,7 @@ export default () => {
     updateImageIds.forEach((updateImageId) => formData.append("image_ids[]", updateImageId));
     updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
     updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
-    const formValue = {is_questionnaire: isQuestionnaireAnswerButton ? 1 : 0}
+    const formValue = { is_questionnaire: isQuestionnaireAnswerButton ? 1 : 0 }
 
     // 画像削除stateに値があればAPI発火
     if (deleteMessages.length > 0) {
@@ -123,7 +123,7 @@ export default () => {
       'success'
     )
     // setTimeout(() => location.reload(), 1000)
-  } 
+  }
 
   useEffect(() => {
     getGreetingMessages(setMessages)
@@ -135,9 +135,22 @@ export default () => {
     setMessageCount(count)
   }, [isQuestionnaireAnswerButton]);
 
-	return (
-		<>
-			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+  const onChangeAnswerButton = (e) => {
+    setIsQuestionnaireAnswerButton(e.target.checked);
+    if (greetingMessageWithQuestionnaire) {
+      updateGreetingMessageWithQuestionnaires(greetingMessageWithQuestionnaire.id, { is_questionnaire: e.target.checked }).then(response => {
+        Swal.fire('保存成功', '保存に成功しました', 'success');
+      })
+    } else {
+      storeGreetingMessageWithQuestionnaires({ is_questionnaire: e.target.checked }).then(response => {
+        Swal.fire('保存成功', '保存に成功しました', 'success');
+      })
+    }
+  }
+
+  return (
+    <>
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">あいさつメッセージ設定</h1>
         </div>
@@ -145,38 +158,44 @@ export default () => {
       <div className="d-flex flex-row-reverse mt-3">
         <Form.Group id="questionnaire">
           <Form.Check
-          type="switch"
-          label="アンケート回答ボタンをつける"
-          id="questionnaire"
-          htmlFor="questionnaire"
-          checked={isQuestionnaireAnswerButton}
-          onClick={() => setIsQuestionnaireAnswerButton(!isQuestionnaireAnswerButton)}
+            type="switch"
+            label="アンケート回答ボタンをつける"
+            id="questionnaire"
+            htmlFor="questionnaire"
+            checked={isQuestionnaireAnswerButton}
+            onChange={onChangeAnswerButton}
           />
         </Form.Group>
       </div>
-        {
-          messages && messages.map((message, index) => 
-            <div key={message.id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-              <MessageEditor
-                messageItem={message}
-                handlePreviewChange={handlePreviewChange}
-                handlePictureImageDelete={handlePictureVideoDelete}
-                handleDelete={handleDelete}
-                messageItems={messages}
-                setMessageItems={setMessages}
-              />
-            </div>
-          )
-        }
-      <div className="d-flex justify-content-flex-end flex-wrap flex-md-nowrap align-items-center my-4">
-        {
-          messages.length < messageCount && (
-            <Button onClick={addEditCard} variant="gray-800" className="animate-up-2">
+      {
+        messages && messages.map((message, index) =>
+          <div key={message.id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <MessageEditor
+              messageItem={message}
+              handlePreviewChange={handlePreviewChange}
+              handlePictureImageDelete={handlePictureVideoDelete}
+              handleDelete={handleDelete}
+              messageItems={messages}
+              setMessageItems={setMessages}
+            />
+          </div>
+        )
+      }
+      {
+        messages.length < messageCount && (
+          <div className="privilege-button my-4">
+            <Button
+              variant="outline-gray-500"
+              className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+              onClick={addEditCard}
+            >
               <PlusIcon className="icon icon-xs me-2" /> 追加
             </Button>
-          )
-        }
-        <Button onClick={onSaveMessage} variant="gray-800" className="ms-7">
+          </div>
+        )
+      }
+      <div className="d-flex justify-content-end mb-3">
+        <Button onClick={onSaveMessage} variant="success" className="btn-default-success">
           保存する
         </Button>
       </div>
@@ -191,6 +210,6 @@ export default () => {
           <LinePreview previews={messages} />
         </div>
       </div>
-		</>
-	)
+    </>
+  )
 }

@@ -33,11 +33,14 @@ export const getAllProducts = async (setProducts) => {
   });
 };
 
-export const storeProduct = async (formValue, storeProductImages, storeImages, history, setError) => {
-  axios.post(`/api/v1/management/products`, formValue)
+export const storeProduct = async (formData, history, setError) => {
+  axios.post(`/api/v1/management/products`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
   .then((response) => {
     const product = response.data.product;
-    console.log(product);
 
     Swal.fire(
       '保存完了',
@@ -48,13 +51,6 @@ export const storeProduct = async (formValue, storeProductImages, storeImages, h
         history.push(Paths.EditProduct.path.replace(':id', product.id))
       }
     })
-
-    // 画像保存stateに値があればAPI発火
-    if (storeProductImages.length > 0) {
-      const formData = new FormData();
-      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
-      storeImages(product.id, formData)
-    }
 
   })
   .catch(error => {
@@ -79,16 +75,14 @@ export const showProduct = async (id, setProduct, setPrivate, setIsPickedUp, set
   });
 };
 
-export const updateProduct = (id, formValue, setError, storeProductImages, storeImages) => {
-  axios.put(`/api/v1/management/products/${id}`, formValue)
-  .then((response) => {
-    // 画像保存stateに値があればAPI発火
-    if (storeProductImages.length > 0) {
-      const formData = new FormData();
-      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
-      storeImages(id, formData)
+export const updateProduct = (id, formData, setError) => {
+  axios.post(`/api/v1/management/products/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'X-HTTP-Method-Override': 'PUT',
     }
-
+  })
+  .then((response) => {
     Swal.fire(
       '更新完了',
       '商品情報の更新に成功しました',
@@ -125,8 +119,9 @@ export const sortProduct = async (id, formValue) => {
 export const getProductImages = async (id, setProductImages) => {
   axios.get(`/api/v1/management/products/${id}/images`)
   .then((response) => {
-    setProductImages(response.data.product_images);
-    console.log(response.data.product_images);
+    const productImages = response.data.product_images;
+    setProductImages(productImages.map(productImage => ({ ...productImage, display_id: productImage.id })))
+    console.log(productImages.map(productImage => ({ ...productImage, display_id: productImage.id })));
   })
   .catch(error => {
       console.error(error);

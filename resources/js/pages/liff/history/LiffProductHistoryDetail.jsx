@@ -43,8 +43,9 @@ export default () => {
   ]);
   const [card, setCard] = useState({brand: '', card_number: '', exp_month: '', exp_year: '', name: ''});
   const deliveryAddress = {
-    last_name: order.last_name, first_name: order.first_name, zipcode: order.zipcode, prefecture: order.prefecture, 
-    city: order.city, address: order.address, building_name: order.building_name, tel: order.tel
+    id: id,last_name: order.last_name, first_name: order.first_name, zipcode: order.zipcode, 
+    prefecture: order.prefecture, city: order.city, address: order.address, 
+    building_name: order.building_name, tel: order.tel
   }
 
   const getTotal = (amount) => {
@@ -134,8 +135,7 @@ export default () => {
   return (
     <>
     <main className="liff-product-detail">
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-      <div className="liff-product-list">
+      <div className="mx-3 my-3">
         <Card border="0" className="shadow mb-4">
           <Card.Header className="border-bottom">
             <h5 className="liff-product-detail-name mb-0">お届け先情報</h5>

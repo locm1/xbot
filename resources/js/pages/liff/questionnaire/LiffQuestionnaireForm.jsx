@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 
 import CheckboxButton from "@/components/CheckboxButton";
+import { isMobile } from "react-device-detect";
 
 export default (props) => {
   const { questionnaires, answerSurvey, questionnaireErrors } = props;
@@ -18,10 +19,11 @@ export default (props) => {
     }
   }
 
-  const questionnaireCheck = (questionnaire_item_id) => {
-    const targetQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
-    const answers = targetQuestionnaire.answer.find((answer, index) => answer.questionnaire_item_id === questionnaire_item_id);
-    return !!answers
+  const questionnaireCheck = (answers, id) => {
+    if (answers.length > 0) {
+      return answers.some(v => v.questionnaire_item_id == id);
+    }
+    return false;
   }
 
   const getQuestionnaireItems = (questionnaire, type, questionnaire_items, index) => {
@@ -91,10 +93,11 @@ export default (props) => {
       case 4:
         return (
           <>
+          {isMobile ? 'mobile' : 'pc'}
             {
               questionnaire_items.map((questionnaire_item, index) => (
                 <CheckboxButton
-                  checked={() => questionnaireCheck(questionnaire_item.id)}
+                  checked={questionnaireCheck(questionnaire.answer, questionnaire_item.id)}
                   key={questionnaire_item.id}
                   name={`questionnaire_${questionnaire.id}`}
                   value={questionnaire_item.name}

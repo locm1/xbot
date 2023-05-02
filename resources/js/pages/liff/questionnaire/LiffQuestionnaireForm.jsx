@@ -93,7 +93,6 @@ export default (props) => {
       case 4:
         return (
           <>
-          {isMobile ? 'mobile' : 'pc'}
             {
               questionnaire_items.map((questionnaire_item, index) => (
                 <CheckboxButton

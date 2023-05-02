@@ -251,12 +251,11 @@ export default () => {
 
   const saveMenu = (shouldSetDefault) => {
     const formData = new FormData();
+    setIsLoading(true);
     for (const key in formValue) {
       formData.append(key, formValue[key]);
     }
-    // formData.append('menuType', richMenu.type)
     formData.append('image', image);
-    console.log(...formData.entries());
     if (pathname.includes('/edit')) {
       updateRichMenu(richMenuId, formData).then(response => {
         if (response === 'failed') {
@@ -268,6 +267,7 @@ export default () => {
         } else {
           if (shouldSetDefault) {
             setDefaultRichMenu(response).then(response => {
+              setIsLoading(false)
               if (response === 'failed') {
                 Swal.fire({
                   icon: 'error',
@@ -280,7 +280,7 @@ export default () => {
                   title: '保存完了',
                   text: `「${formValue.title}」を保存しました`,
                 }).then((result) => {
-                  if (result.isConfirmed) {
+                  if (result.isDismissed || result.isConfirmed) {
                     let responseRichMenuId = response.replace('richmenu-', '');
                     history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
                   }
@@ -288,6 +288,7 @@ export default () => {
               }
             })
           } else {
+            setIsLoading(false)
             Swal.fire({
               icon: 'success',
               title: '保存完了',
@@ -320,7 +321,7 @@ export default () => {
               let responseRichMenuId = response.replace('richmenu-', '');
               history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
             }
-          })
+          }).finally(res => setIsLoading(false))
         }
       })
     }

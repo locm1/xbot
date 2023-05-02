@@ -90,7 +90,7 @@ export default () => {
               id="is-default-questionnaire-valid"
               htmlFor="is-default-questionnaire-valid"
               checked={isValid}
-              onClick={() => changeQuestionnaireEnabling(!isValid)}
+              onChange={() => changeQuestionnaireEnabling(!isValid)}
             />
           </Form.Group>
         </div>

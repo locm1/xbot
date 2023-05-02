@@ -2,8 +2,8 @@
 import React, { useState, useLayoutEffect } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
-import { CalendarIcon,} from "@heroicons/react/solid";
-import { Col, Row, Form, Modal, Button, InputGroup, Alert,} from 'react-bootstrap';
+import { CalendarIcon, } from "@heroicons/react/solid";
+import { Col, Row, Form, Modal, Button, InputGroup, Alert, } from 'react-bootstrap';
 import { CirclePicker } from 'react-color';
 import QRCode from "qrcode.react";
 import "flatpickr/dist/flatpickr.css";
@@ -26,12 +26,12 @@ export default (props) => {
 
   useLayoutEffect(() => {
     axios.get('/api/v1/get-liff-id')
-    .then((response) => {
-      setLiffId(response.data)
-    })
-    .catch((error) => {
-      console.error(error);
-    })
+      .then((response) => {
+        setLiffId(response.data)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }, []);
 
   return (
@@ -42,22 +42,26 @@ export default (props) => {
           <Button variant="close" onClick={onHide} />
         </Modal.Header>
         <Modal.Body>
-          <div className="text-center">
-            <QRCode
-              id="visitor-history-qr-code"
-              value={`https://liff.line.me/${liffId}/liff/?path=visitor-histories/add`}
-              size={300}
-              level={"L"}
-              includeMargin={false}
-            />
-          </div>
+          {liffId ?
+            <div className="text-center">
+              <QRCode
+                id="visitor-history-qr-code"
+                value={`https://liff.line.me/${liffId}/liff/?path=visitor-histories/add`}
+                size={300}
+                level={"L"}
+                includeMargin={false}
+              />
+            </div> :
+            <div className="text-center">
+              <div style={{ width: 300, height: 300 }}></div>
+            </div>}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" className="me-2" onClick={downloadQrCode}>
-            ダウンロード
-          </Button>
-          <Button onClick={onHide} variant="link" className="text-gray ms-auto">
+          <Button onClick={onHide} variant="link" className="">
             閉じる
+          </Button>
+          <Button variant="primary" className="me-2 ms-auto" onClick={downloadQrCode}>
+            ダウンロード
           </Button>
         </Modal.Footer>
       </Form>

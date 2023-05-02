@@ -29,7 +29,18 @@ export default (props) => {
             <Card.Body>
               <h5 className="mb-4">{questionTitle}</h5>
               {questionnaireItems.map((v, k) => (
-                <CheckboxButton checked={searchTerms[v.name] ? searchTerms[v.name].some(b => b == v.value) ? true : false : false} isDefault={isDefault} type={type} name={v.name} id={`questionnaire-item-${v.id}-${v.label}`} segmentid={id} value={v.value} title={v.label} key={`questionnaire-item-${v.label}-${v.id}`} change={handleChange} /> 
+                <CheckboxButton
+                  checked={searchTerms[v.name] ? searchTerms[v.name].some(b => b == v.value) ? true : false : false}
+                  isDefault={isDefault}
+                  type={type}
+                  name={v.name}
+                  id={`questionnaire-item-${v.id}-${v.label}`}
+                  segmentid={id}
+                  value={v.value}
+                  title={v.label}
+                  key={`questionnaire-item-${v.label}-${v.id}`}
+                  change={handleChange}
+                /> 
               ))}
             </Card.Body>
           </Card>

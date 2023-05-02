@@ -57,6 +57,7 @@ export default () => {
     prefecture: '', city: '', address: '', building_name: '', room_number: '',
     "questionnaires.0.answer": ''
   });
+  const [answers, setAnswers] = useState([]);
 
   const genders = ['男性', '女性'];
 
@@ -91,6 +92,7 @@ export default () => {
     storeQuestionnaireAnswers(user.id, formValue, setErrors, setIsLoading, onSave)
     //storeQuestionnaireAnswers(1, formValue, setErrors, setIsLoading, onSave)
     //storeQuestionnaireAnswers(user.id, formValue, setErrors)
+    // window.scrollTo({ top: 0, behavior: "smooth" })
     //storeQuestionnaireAnswers(100, {questionnaires: newQuestionnaires}, setQuestionnaireErrors)
 
   };
@@ -112,6 +114,8 @@ export default () => {
       } else {
         targetQuestionnaire.answer = targetQuestionnaire.answer.filter((answer, index) => (answer.questionnaire_item_id !== questionnaire_item_id));
       }
+
+      console.log(questionnaires);
 
     } else {
       targetQuestionnaire.answer = e.target.value;
@@ -466,6 +470,7 @@ export default () => {
                 questionnaires={questionnaires}
                 answerSurvey={answerSurvey}
                 questionnaireErrors={errors}
+                answers={answers}
               />
             )
           }

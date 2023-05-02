@@ -104,6 +104,21 @@ import { Button, Card, Stack } from 'react-bootstrap';
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const history = useHistory();
+  
+  axios.interceptors.response.use(null, (error) => {
+    console.log(error);
+    if (error.response.status === 401) {
+      history.push('/manage/login'); // ログイン画面にリダイレクト
+    } else if (error.response.status === 422) {
+      Swal.fire(
+        `エラー`,
+        `入力項目を確認してください。`,
+        'error'
+      )
+    }
+    return Promise.reject(error);
+  });
+  
   const resize = () => {
     var resize = setInterval(() => {
       window.dispatchEvent(new Event('resize'));
@@ -451,21 +466,6 @@ const GuestRoute = ({ component: Component, ...rest }) => {
 
 
 const Routing = () => {
-  const history = useHistory();
-  
-  axios.interceptors.response.use(null, (error) => {
-    console.log(error);
-    if (error.response.status === 401) {
-      history.push('/manage/login'); // ログイン画面にリダイレクト
-    } else if (error.response.status === 422) {
-      Swal.fire(
-        `エラー`,
-        `入力項目を確認してください。`,
-        'error'
-      )
-    }
-    return Promise.reject(error);
-  });
   return (
     <Switch>
       <GuestRoute exact path={Paths.Signin.path} component={SignIn} />

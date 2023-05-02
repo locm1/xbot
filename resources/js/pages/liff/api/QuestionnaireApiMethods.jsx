@@ -50,7 +50,11 @@ export const storeQuestionnaireAnswers = async (userId, questionnaires, setQuest
   .catch(error => {
     setIsLoading(false)
     console.error(error);
-    setQuestionnaireErrors(error.response.data.errors)
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    const errors = error.response.data.errors
+    setQuestionnaireErrors(errors)
+    
+    // バリデーションエラー時の最初のエラー箇所に移動
+    const element = document.getElementById(Object.keys(errors).shift());
+    element.scrollIntoView();
   });
 };

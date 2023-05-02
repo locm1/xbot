@@ -9,7 +9,6 @@ import CheckboxButton from "@/components/CheckboxButton";
 
 export default (props) => {
   const { questionnaires, answerSurvey, questionnaireErrors } = props;
-  console.log(questionnaireErrors);
 
   const QuestionnaireIsRequired = (questionnaire) => {
     if (questionnaire.is_required == 1) {
@@ -17,6 +16,12 @@ export default (props) => {
     } else {
       return <Badge bg="gray-600" className="me-2">任意</Badge>
     }
+  }
+
+  const questionnaireCheck = (questionnaire_item_id) => {
+    const targetQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
+    const answers = targetQuestionnaire.answer.find((answer, index) => answer.questionnaire_item_id === questionnaire_item_id);
+    return !!answers
   }
 
   const getQuestionnaireItems = (questionnaire, type, questionnaire_items, index) => {
@@ -89,13 +94,14 @@ export default (props) => {
             {
               questionnaire_items.map((questionnaire_item, index) => (
                 <CheckboxButton
+                  checked={() => questionnaireCheck(questionnaire_item.id)}
                   key={questionnaire_item.id}
                   name={`questionnaire_${questionnaire.id}`}
                   value={questionnaire_item.name}
                   change={(e) => answerSurvey(e, questionnaire.id, questionnaire.type, questionnaire_item.id)}
                   title={questionnaire_item.name}
-                  id={`questionnaire_item-${questionnaire_item.id}`}
-                  htmlFor={`questionnaire_item-${questionnaire_item.id}`}
+                  id={`questionnaire-item-checkbook-${questionnaire_item.id}-${questionnaire_item.name}`}
+                  htmlFor={`questionnaire-item-checkbook-${questionnaire_item.id}-${questionnaire_item.name}`}
                 />
               ))
             }
@@ -141,7 +147,7 @@ export default (props) => {
             {
               questionnaires && questionnaires.map((questionnaire, index) => 
                 <Col xs={12} className="mb-4" key={questionnaire.id}>
-                  <Form.Group id={`questionnaire-group-${questionnaire.od}`}>
+                  <Form.Group id={`questionnaires.${index}.answer`}>
                     <Form.Label>
                       {QuestionnaireIsRequired(questionnaire)}
                       Q{index + 1}. {questionnaire.title}

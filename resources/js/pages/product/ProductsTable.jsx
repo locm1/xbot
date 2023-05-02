@@ -28,7 +28,7 @@ export const ProductsTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { name, price, stock_quantity, is_undisclosed, id, product_images, product_category } = props;
+    const { name, price, stock_quantity, is_undisclosed, id, product_images, product_category, is_unlimited } = props;
     const link = Paths.EditProduct.path.replace(':id', id);
 
     return (
@@ -59,7 +59,7 @@ export const ProductsTable = (props) => {
         </td>
         <td>
           <span className="fw-normal">
-            {stock_quantity}
+            {is_unlimited == 1 ? '無制限' : stock_quantity}
           </span>
         </td>
         <td>

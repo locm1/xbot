@@ -233,9 +233,9 @@ export default () => {
     setIsPickedUp(isPickedUp)
   }
 
-  const updateIsUnlimited = (disableInputForm) => {
-    setProduct({...product, ['is_unlimited']: disableInputForm ? 1 : 0, stock_quantity: 99999})
-    setDisable(disableInputForm)
+  const updateIsUnlimited = (e) => {
+    setProduct({...product, ['is_unlimited']: e.target.checked ? 1 : 0, stock_quantity: 99999})
+    setDisable(e.target.checked)
   }
 
   useEffect(() => {
@@ -313,8 +313,8 @@ export default () => {
                           <Form.Label><Badge bg="danger" className="me-2">必須</Badge>在庫数</Form.Label>
                           <InputGroup className="me-2 me-lg-3">
                             <InputGroup.Text className="d-flex">
-                              <Form.Check id="checkbox1" htmlFor="checkbox1" onClick={() => updateIsUnlimited(!disableInputForm)} />
-                              <Form.Label defaultValue={false} htmlFor="checkbox1" className="mb-0">無制限</Form.Label>
+                              <Form.Check checked={product.is_unlimited == 1 ? true : false} id="checkbox1" htmlFor="checkbox1" onChange={updateIsUnlimited} />
+                              <Form.Label htmlFor="checkbox1" className="mb-0">無制限</Form.Label>
                             </InputGroup.Text>
                             <Form.Control
                               disabled={disableInputForm}

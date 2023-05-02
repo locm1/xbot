@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Col, Row, Card, Form, Image, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
 import { ChoosePhotoWidget } from "@/components/Widgets";
 import { PaperClipIcon, CheckIcon, HomeIcon, PlusIcon, SearchIcon, CogIcon } from "@heroicons/react/solid";
+import { getApiKeys, storeApiKey } from "@/pages/api_key/api/ApiKeyApiMethods";
 
-import QrCode from "@img/img/add_friend_qr.png";
+import QRCode from "qrcode.react";
 
 
 export default () => {
   const [files, setFiles] = useState([]);
+  const [uri, setUri] = useState('');
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     onDrop: files => setFiles(files.map(file => ({
@@ -17,18 +19,24 @@ export default () => {
     })))
   });
 
-  const DropzoneFile = (props) => {
-    const { path, preview } = props;
-
-    return (
-      <Col xs={6} className="dropzone-preview">
-        <Image src={preview} className="dropzone-image" />
-        <Card.Text className="dropzone-filename">
-          {path}
-        </Card.Text>
-      </Col>
-    );
+  useEffect(() => {
+    getApiKeys().then((response) => {
+      setUri('https://line.me/R/ti/p/' + response.data.LIFF_CHANNEL_ID);
+    })
+  }, [])
+  const downloadQR = (id) => {
+    const canvas = document.getElementById(id);
+    const pngUrl = canvas
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    let downloadLink = document.createElement("a");
+    downloadLink.href = pngUrl;
+    downloadLink.download = `${id}.png`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   };
+
 
   return (
     <>
@@ -41,23 +49,22 @@ export default () => {
           <Card border="0" className="shadow mb-4">
             <Card.Header className="bg-primary text-white px-3 py-2">
               <h5 className="mb-0 fw-bolder">お友達追加用QRコード</h5>
-            </Card.Header> 
+            </Card.Header>
             <Card.Body>
               <div className="d-flex align-items-center">
                 <div className="me-3">
-                  <Image fluid rounded src={QrCode} />
-                </div>
-                <div className="file-field">
-                  <div className="d-flex justify-content-xl-center ms-xl-3">
-                    <div className="d-flex">
-                      <PaperClipIcon className="icon text-gray-500 me-2" />
-                      <input type="file" />
-                      <div className="d-md-block text-left">
-                        <div className="fw-normal text-dark mb-1">Choose Image</div>
-                        <div className="text-gray small">JPG, GIF or PNG. Max size of 800K</div>
-                      </div>
-                    </div>
-                  </div>
+                  {uri &&
+                    <>
+                      <QRCode
+                        id={`add-friend-qr`}
+                        value={uri}
+                        size={300}
+                        level={"L"}
+                        includeMargin={false}
+                      />
+                      <a className="d-block" onClick={() => downloadQR(`add-friend-qr`)}> Download QR </a>
+                    </>
+                  }
                 </div>
               </div>
             </Card.Body>

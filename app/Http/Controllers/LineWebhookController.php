@@ -37,8 +37,13 @@ class LineWebhookController extends Controller
                 $greeting_service = new GreetingService($bot, $event['source']['userId'], $event['replyToken']);
                 //招待管理のために今回が新規作成か（既にDBに登録されていないか）確認
                 $userExisted = $follow_service->userExists();
-                //ユーザー作成
-                $User = $follow_service->upsertUser();
+                if ($userExisted) {
+                    //すでに存在している場合はis_blockedを0に
+                    $User = $follow_service->unblock();
+                } else {
+                    //ユーザー作成
+                    $User = $follow_service->upsertUser();
+                }
                 //流入経路
                 $update_count = $follow_service->checkInflowRoute($User);
                 //今回が新規登録だった場合、invite処理

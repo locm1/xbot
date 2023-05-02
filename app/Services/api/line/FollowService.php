@@ -101,4 +101,12 @@ class FollowService
         });
         
     }
+
+    public function unblock(): User
+    {
+        $User = User::where('line_id', $this->line_id)->first();
+        $User->update(['block_date' => null, 'is_blocked' => 0]);
+
+        return $User;
+    }
 }

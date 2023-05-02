@@ -11,7 +11,7 @@ import 'flatpickr/dist/l10n/ja.js';
 
 import { 
   showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts, 
-  getAllProducts, updateRelatedProduct, deleteImages, storeImages, updateImages
+  getAllProducts, updateRelatedProduct, storeImages, updateImages
 } from "@/pages/product/api/ProductApiMethods";
 import { getCategories, } from "@/pages/product/api/ProductCategoryApiMethods";
 
@@ -73,34 +73,38 @@ export default () => {
   const onDrop = (acceptedFiles) => {
     const currentImage = productImages.slice(-1)[0];
     const newImage = {
+      display_id: typeof currentImage !== 'undefined' ? currentImage.display_id + 1 : 1,
       product_id: id,
       image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile))[0]
     }
     setStoreProductImages([...storeProductImages, ...acceptedFiles])
-    console.log([...storeProductImages, ...acceptedFiles]);
 
     setProductImages([...productImages, newImage]);
+    console.log([...productImages, newImage]);
   };
 
-  const deleteImage = (id) => {
+  const deleteImage = (id, display_id) => {
     const deleteImage = productImages.find((image) => image.id === id)
-    setProductImages(productImages.filter(image => image.id !== id))
+    setProductImages(productImages.filter(image => image.display_id !== display_id))
     setStoreProductImages(storeProductImages.filter(image => image.id !== id))
     // 削除対象のstate から、idがない、つまりフロント側で追加した画像をバックエンドに送らないようにする
-    if (Object.keys(deleteImage).indexOf('id') !== -1) {
+    if (typeof deleteImage !== "undefined") {
       setDeleteProductImages([...deleteProductImages, deleteImage]);
     }
   };
   
   const { getRootProps, getInputProps } = useDropzone({
-    accept: {'image/*': ['.jpeg', '.jpg', '.png'],},
+    accept: {
+      'image/jpg': ['.jpeg', '.jpg'],
+      'image/png': ['.png'],
+    },
     onDrop
   });
 
   const DropzoneFile = (props) => {
     const inputFileRef = useRef();
 
-    const { image_path, index, id, setUpdateProductImages, updateProductImages } = props;
+    const { image_path, display_id, index, id, setUpdateProductImages, updateProductImages } = props;
     
     const changeImage = (id) => {
       const inputFile = inputFileRef.current;
@@ -129,7 +133,7 @@ export default () => {
         <div>{index + 1}枚目</div>
         <div className="product-preview-image d-flex">
           <Image src={image_path} className="dropzone-image" onClick={() => changeImage(id)} />
-          <Button variant="gray-800" className="product-image-button" onClick={() => deleteImage(id)}>
+          <Button variant="gray-800" className="product-image-button" onClick={() => id ? deleteImage(id, display_id) : deleteImage(null, display_id)}>
             <XIcon className="icon icon-sm line-preview-image-icon" />
           </Button>
           <input
@@ -196,31 +200,37 @@ export default () => {
   const onSaveProduct = () => {
     Object.assign(product, productSale);
     console.log(product);
+    const formValues = [
+      'product_category_id', 'name', 'stock_quantity', 'price', 'overview', 
+      'is_undisclosed', 'is_unlimited', 'is_picked_up', 'discount_rate', 'start_date', 'end_date'
+    ];
+    const formData = new FormData();
+    formValues.forEach((formValue) => formData.append(formValue, product[formValue]));
+
+    // 画像保存stateに値があればAPI発火
+    if (storeProductImages.length > 0) {
+      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
+    }
     
     if (pathname.includes('/edit')) {
-      updateProduct(id, product, setError, storeProductImages, storeImages);
       // 画像削除stateに値があればAPI発火
       if (deleteProductImages.length > 0) {
-        const params = {
-          ids: deleteProductImages.map(deleteProductImage => deleteProductImage.id),
-          image_paths: deleteProductImages.map(
-            deleteProductImage => deleteProductImage.image_path.split('/')[2] + '/' + deleteProductImage.image_path.split('/')[3]
-          )
-        }
-        deleteImages(id, params)
+        deleteProductImages.forEach((deleteProductImage) => formData.append("ids[]", deleteProductImage.id));
+        deleteProductImages.forEach((deleteProductImage) => formData.append("image_paths[]", deleteProductImage.image_path.split('/')[2] + '/' + deleteProductImage.image_path.split('/')[3]));
+        // deleteImages(id, params)
       }
 
       // 画像更新stateに値があればAPI発火
       if (updateProductImages.length > 0) {
-        console.log(updateProductImages);
-        const formData = new FormData();
-        updateProductImages.forEach((image) => formData.append("files[]", image));
+        updateProductImages.forEach((image) => formData.append("update_files[]", image, image.name));
         updateProductImageIds.forEach((id) => formData.append("product_image_ids[]", id));
-        updateImages(id, formData)
+        // updateImages(id, formData)
       }
 
+      updateProduct(id, formData, setError);
+
     } else {
-      storeProduct(product, storeProductImages, storeImages, history, setError)
+      storeProduct(formData, history, setError)
     }
   }
 

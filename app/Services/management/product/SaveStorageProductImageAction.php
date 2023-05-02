@@ -29,7 +29,7 @@ class SaveStorageProductImageAction
     {
         $merged_product_images = array();
 
-        foreach (array_map(null, $request->file('files'), $request->product_image_ids) as [$file, $id]) {
+        foreach (array_map(null, $request->file('update_files'), $request->product_image_ids) as [$file, $id]) {
             # 画像を削除しストレージに保存
             $file_name = $file->getClientOriginalName();
             Storage::disk('public')->delete("products/$file_name");

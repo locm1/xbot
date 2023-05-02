@@ -25,7 +25,7 @@ class StoreProductImageRequest extends FormRequest
     {
         return [
             'files' => 'required|array',
-            'files.*' => 'file|mimes:jpeg,png,jpg,pdf'
+            'files.*' => 'file|mimes:jpeg,png,jpg'
         ];
     }
 

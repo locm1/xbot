@@ -282,9 +282,7 @@ export default () => {
 
           //  別画面から、セグメント条件が渡されていたら
           if (typeof location.state !== "undefined") {
-            const selectSegmentTemplate = newSegmentTemplates.find(v => _.isEqual(v.search_terms_json, location.state.segmentTemplate));
-            console.log(selectSegmentTemplate);
-            typeof selectSegmentTemplate !== "undefined" && setSearchTerms(selectSegmentTemplate.search_terms_json);
+            setSearchTerms(location.state.segmentTemplate);
           } 
 
           setIsrendered(true);

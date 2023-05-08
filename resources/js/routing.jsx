@@ -79,6 +79,7 @@ import LiffTermsOfService from '@/pages/liff/LiffTermsOfService';
 import LiffSpecificTrades from '@/pages/liff/LiffSpecificTrades';
 import LiffVisitor from '@/pages/liff/visitor/LiffVisitor';
 import LiffVisitorConfirm from '@/pages/liff/visitor/LiffVisitorConfirm';
+import LiffVisitorUserInfo from '@/pages/liff/visitor/LiffVisitorUserInfo';
 import LiffVisitorHistoryAdd from '@/pages/liff/visitor/LiffVisitorHistoryAdd';
 import LiffVisitorHistoryResult from '@/pages/liff/visitor/LiffVisitorHistoryResult';
 import LiffAboutVisitorPrivileges from '@/pages/liff/visitor/LiffAboutVisitorPrivileges';

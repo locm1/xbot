@@ -3,13 +3,14 @@ import { Row, Col, Form, Button, Card, Image } from 'react-bootstrap';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/css';
 
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import LiffProductCard from "@/pages/liff/LiffProductCard";
 import noImage from "@img/img/noimage.jpg"
 
 export default (props) => {
   const { products } = props;
+  const history = useHistory();
 
   const mainOptions = {
     perPage: 3,
@@ -29,7 +30,7 @@ export default (props) => {
       <div className="d-flex align-items-center">
         <h2 className="fs-6 fw-bold mb-0">ピックアップ商品一覧</h2>
         <div className="ms-auto">
-          <Card.Link href={Paths.LiffPickupProducs.path} className="d-inline-flex align-items-center fw-normal liff-product-view-all">
+          <Card.Link onClick={() => {history.push(Paths.LiffPickupProducs.path)}} className="d-inline-flex align-items-center fw-normal liff-product-view-all">
             すべてを見る
           </Card.Link>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useContext } from 'react';
 import { Route, Switch, Redirect, useHistory, useLocation, Link } from "react-router-dom";
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
@@ -101,6 +101,25 @@ import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
 import axios from 'axios';
 import { Button, Card, Stack } from 'react-bootstrap';
+import { LoadingContext } from "@/components/LoadingContext";
+
+const InterceptLoading = () => {
+  const { setIsLoading } = useContext(LoadingContext);
+  axios.interceptors.request.use(function (config) {
+    setIsLoading(true);
+    return config;
+  }, function (error) {
+    return Promise.reject(error);
+  });
+
+  axios.interceptors.response.use(function (response) {
+    setIsLoading(false);
+    return response;
+  }, function (error) {
+    setIsLoading(false);
+    return Promise.reject(error);
+  });
+}
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const history = useHistory();
@@ -219,6 +238,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 };
 
 const LiffRoute = ({ component: Component, ...rest }) => {
+  InterceptLoading();
   return (
     <Route {...rest} render={props => (
       <>
@@ -231,6 +251,7 @@ const LiffRoute = ({ component: Component, ...rest }) => {
 }
 
 const LiffECRoute = ({ component: Component, ...rest }) => {
+  InterceptLoading();
   return (
     <Route {...rest} render={props => (
       <>
@@ -265,16 +286,19 @@ const ECFooter = () => (
 const RegisteredLiffRoute = ({ component: Component, ...rest }) => {
   const idToken = liff.getIDToken();
   const [user, setUser] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(true);
+  const { setIsLoading } = useContext(LoadingContext);
   const [questionnaireEnabling, setQuestionnaireEnabling] = useState({});
   useEffect(() => {
+    setIsLoading(true);
     showQuestionnaireEnabling(1, setQuestionnaireEnabling)
     getUser(idToken, setUser).finally(() => {
       setIsLoading(false);
+      setLoadingPage(false);
     });
   }, []);
   
-  if (isLoading) {
+  if (loadingPage) {
     // getUserの処理が完了するまでローディング画面を表示
     return <LoadingPage />;
   }
@@ -310,16 +334,19 @@ const RegisteredLiffRoute = ({ component: Component, ...rest }) => {
 const QuestionnaireLiffRoute = ({ component: Component, ...rest }) => {
   const idToken = liff.getIDToken();
   const [user, setUser] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(true);
+  const { setIsLoading } = useContext(LoadingContext);
   const [questionnaireEnabling, setQuestionnaireEnabling] = useState({});
   useEffect(() => {
+    setIsLoading(true);
     showQuestionnaireEnabling(1, setQuestionnaireEnabling)
     getUser(idToken, setUser).finally(() => {
       setIsLoading(false);
+      setLoadingPage(false);
     });
   }, []);
   
-  if (isLoading) {
+  if (loadingPage) {
     // getUserの処理が完了するまでローディング画面を表示
     return <LoadingPage />;
   }
@@ -355,6 +382,7 @@ const LoadingPage = () => {
 const ToQuestionnairePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [liffId, setLiffId] = useState('');
+  InterceptLoading();
   axios.get('/api/v1/get-liff-id')
     .then((response) => {
       setLiffId(response.data);
@@ -366,10 +394,6 @@ const ToQuestionnairePage = () => {
       setIsLoading(false);
     });
 
-  if (isLoading) {
-    // getUserの処理が完了するまでローディング画面を表示
-    return <LoadingPage />;
-  }
   return (
     <>
       <Card className='m-3 p-3'>
@@ -430,6 +454,7 @@ const LiffInitRoute = () => {
   const query = new URLSearchParams(search);
   const path = query.get('path')
   const [redirect, setRedirect] = useState('');
+  InterceptLoading();
   axios.get('/api/v1/get-liff-id')
     .then((response) => {
       console.log(response);
@@ -444,6 +469,7 @@ const LiffInitRoute = () => {
     })
     .catch((error) => {
       console.error(error);
+    }).finally(() => {
     })
 
 

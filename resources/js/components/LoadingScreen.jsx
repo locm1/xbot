@@ -15,7 +15,7 @@ export const LoadingScreen = ({children}) => {
     <>
     <CSSTransition
       in={isLoading}
-      timeout={500}
+      timeout={300}
       classNames="loading-screen"
       unmountOnExit
     >

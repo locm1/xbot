@@ -121,7 +121,7 @@ export default () => {
 
   return (
     <>
-    <main className="liff-product-detail">
+    <main className="liff-product-detail p-3">
       <div className="liff-content">
         <div className="content__inner">
           <div className="coupon">

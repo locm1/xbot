@@ -139,7 +139,12 @@ export default () => {
         <Card border="0" className="shadow mt-5">
           <Card.Body>
             <h5 className="mb-4 border-bottom pb-3">説明</h5>
-            <p>{product.overview}</p>
+            {product.overview.split("\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                {index !== product.overview.split("\n").length - 1 && <br />}
+              </React.Fragment>
+            ))}
           </Card.Body>
         </Card>
       </div>

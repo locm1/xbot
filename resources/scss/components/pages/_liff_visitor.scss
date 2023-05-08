@@ -1,7 +1,8 @@
 @import "variables";
 
 .liff-visitor-card {
-  background-color: $liff_default_color;
+  background-color: $liff_default_color;    
+  box-shadow: 6px 6px #94504f;
 }
 
 .liff-visitor-card-item {
@@ -33,4 +34,9 @@
 .liff-visitor-qrcode {
   width: 70%;
   height: auto;
+}
+
+.liff-visitor-qrcode-card {
+  top: -119px;
+  z-index: -1;
 }

@@ -78,38 +78,42 @@ export default () => {
 
   const LiffVisitorCard = (props) => {
     return (
-      <Card border="0" className=" liff-visitor-card">
-        <Card.Body className="py-0">
-          <Row className="">
-            <Col xs="12" className="mt-3 mb-3 liff-visitor-card-item">
-              <div className="text-center text-md-center mb-4 mt-md-0 border-bottom">
-                <Image src={Logo} className="navbar-logo-wrap" />
-              </div>
-              <div className="text-center text-md-center mb-4 mt-md-0 border-bottom">
-                <h2 className="mb-3 ms-3 liff-visitor-name">{user.last_name + user.first_name}<span>様</span></h2>
-              </div>
-              <div className="text-center text-md-center mb-4 mt-md-0">
-                <h4 className="fs-5 text-white">来店回数</h4>
-                <h5 className="mb-3 text-white"><span className="liff-visitor-count">{visitorCount}</span>回</h5>
-              </div>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
+      <>
+        <Card border="0" className="rounded-0 liff-visitor-card m-3 z-1">
+          <Card.Body className="py-0">
+            <Row className="">
+              <Col xs="12" className="mt-3 mb-3 liff-visitor-card-item">
+                <div className="text-center text-md-center mb-4 mt-md-0 border-bottom">
+                  <Image src={Logo} width={144} className="mb-3" />
+                </div>
+                <div className="text-center text-md-center mb-4 mt-md-0 border-bottom">
+                  <h2 className="mb-3 ms-3 liff-visitor-name">{user.last_name + user.first_name}<span>様</span></h2>
+                </div>
+                <div className="text-center text-md-center mt-md-0">
+                  <h4 className="fs-5 text-white">来店回数</h4>
+                  <h5 className="text-white"><span className="liff-visitor-count">{visitorCount}</span>回</h5>
+                </div>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      </>
     );
   }
 
   const LiffVisitorQrCard = (props) => {
 
     return (
-      <Card border="0" className=" my-4">
-        <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name mb-0">来店QRコード</h5>
+      <Card border="0" className="my-4 rounded-0">
+        <Card.Header className="pb-0 border-0">
+          <div className="">
+            <h5 className="text-center fw-bolder fs-1 text-primary">来店QRコード</h5>
+          </div>
         </Card.Header>
         <Card.Body className="py-0">
           <Row className="">
             <Col xs="12" className="mt-3 mb-3">
-              <p>来店されましたら、QRコードをスタッフにお見せください。</p>
+              <p className="text-center">来店されましたら<br />QRコードをスタッフにお見せください。</p>
               <div className="text-center text-md-center mt-md-0">
               <QRCode
                 id={`qr`}
@@ -121,6 +125,16 @@ export default () => {
               </div>
             </Col>
           </Row>
+          <div className="px-3">
+          {
+            privileges.length > 0 && (
+              <>
+              <h5 className="text-center fw-bolder fs-1 text-primary text-decoration-underline mt-3">特典一覧</h5>
+              {privileges && privileges.map(v => <LiffVisitorPrivilegeCard key={`privilege-${v.id}`}  {...v} />)}
+              </>
+            )
+          }
+          </div>
         </Card.Body>
       </Card>
     );
@@ -132,13 +146,13 @@ export default () => {
       const { name, id, number } = props;
   
       return (
-        <ListGroup.Item className="bg-transparent border-bottom px-0">
+        <ListGroup.Item className="bg-transparent px-0">
           <Row className="align-items-center">
             <Col xs="2">
               <h4 className="fs-6 text-dark mb-0">{number}.</h4>
             </Col>
             <Col xs="10" className="px-0">
-              <h4 className="fs-6 text-dark mb-0">{name}プレゼント</h4>
+              <h4 className="fs-6 text-dark mb-0">{name}</h4>
             </Col>
           </Row>
         </ListGroup.Item>
@@ -147,10 +161,10 @@ export default () => {
 
     return (
       <Card border="0" className="mb-4">
-        <Card.Header className="border-bottom">
+        <Card.Header className="rounded-0 bg-primary p-1 text-center border-0 card-header text-white">
           <h5 className="liff-product-detail-name mb-0">来店{visits_times}回目</h5>
         </Card.Header>
-        <Card.Body className="py-0">
+        <Card.Body className="py-0 bg-secondary-alt">
           <ListGroup className="list-group-flush">
             {items.map((item, k) => <LiffVisitorPrivilegeItem key={`item-${item.id}`} number={k + 1} {...item} />)}
           </ListGroup>
@@ -162,23 +176,9 @@ export default () => {
   return (
     <>
       <main className="liff-product-detail">
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-        <div className="mb-2 px-5">
+        <div className="p-3">
           <LiffVisitorCard />
           <LiffVisitorQrCard />
-          {
-            privileges.length > 0 && (
-              <>
-              <h2 className="ps-3">特典一覧</h2>
-              {privileges && privileges.map(v => <LiffVisitorPrivilegeCard key={`privilege-${v.id}`}  {...v} />)}
-              </>
-            )
-          }
-          {/* <div className="d-flex justify-content-end me-2">
-            <Link to={Paths.LiffAboutVisitorPrivileges.path} className="text-decoration-underline py-3">
-              来店特典一覧確認
-            </Link>
-          </div> */}
         </div>
       </main>
     </>

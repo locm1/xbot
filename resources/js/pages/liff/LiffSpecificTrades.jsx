@@ -34,8 +34,7 @@ export default () => {
   return (
     <>
       <main className="liff-product-detail">
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-        <div className="liff-product-list">
+        <div className="p-3">
           <Card border="0" className="shadow">
             <Card.Header className="border-bottom">
               <h5 className="liff-product-detail-name mb-0">特定商取引法に基づく表記</h5>

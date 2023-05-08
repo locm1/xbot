@@ -34,6 +34,8 @@ export default () => {
   const date = new Date();
   const [year, setYear] = useState(date.getFullYear());
   const [month, setMonth] = useState(date.getMonth() + 1);
+  const currentDate = new Date();
+  const targetDate = new Date(year + "-" + month);
 
   useEffect(() => {
     setIsLoading(true)
@@ -134,7 +136,7 @@ export default () => {
     const weeks = ['日', '月', '火', '水', '木', '金', '土'];
 
     const EventItem = (props) => {
-      const { id, title, start_date, end_date, location, remaining } = props;
+      const { id, title, start_date, end_date, location, remaining, is_unlimited } = props;
       const startDateSplit = start_date.split(' ')[1].split(':');
       const endDateSplit = end_date.split(' ')[1].split(':');
       const startDate = `${startDateSplit[0]}:${startDateSplit[1]}`;
@@ -154,7 +156,7 @@ export default () => {
             </Col>
             <Col xs="5" className="text-end">
               <small>残枠数：</small>
-              <span className="fs-5 fw-bolder text-dark">{remaining}</span>
+              <span className="fs-5 fw-bolder text-dark">{is_unlimited == 1 ? '無制限' : remaining}</span>
             </Col>
             <Col xs="12" className="px-0">
               <div className="d-frex mt-1">
@@ -209,7 +211,7 @@ export default () => {
       </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            {eventItems.map(eventItem => <EventItem key={`event-item-${eventItem.id}`} {...eventItem} />)}
+            {eventItems.map(eventItem => (eventItem.remaining > 0 && <EventItem key={`event-item-${eventItem.id}`} {...eventItem} />))}
           </ListGroup>
         </Card.Body>
       </Card>
@@ -232,7 +234,7 @@ export default () => {
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="liff-product-list">
           <div className="d-flex align-items-center justify-content-between mb-3">
-            <Button variant="primary" size="sm" onClick={showPreviousMonth}>
+            <Button variant="primary" size="sm" onClick={showPreviousMonth} className={targetDate < currentDate && 'invisible disabled'}>
               <ChevronLeftIcon className="icon icon-xs" />
               <span className="me-2 ms-1">{month === 1 ? '12' : month - 1}月</span>
             </Button>

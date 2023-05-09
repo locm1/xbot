@@ -26,23 +26,11 @@ export default forwardRef((props, ref) => {
   }
 
   const editItem = (e, id) => {
-    const changeItem = {
-      name: e.target.value
-    }
     const currentItem = items.filter(item => (item.id === id))[0]
     currentItem.name = e.target.value
     setItems(
       items.map((item) => (item.id === id ? currentItem : item))
     );
-    clearTimeout(timer);
-
-    // 一定期間操作がなかったらAPI叩く
-    const newTimer = setTimeout(() => {
-      setMessage('更新しました')
-      updateQuestionnaireItem(questionnaire.id, changeItem, id, setAlert)
-    }, 1000)
-
-    setTimer(newTimer)
   }
 
   const deleteItem = (id) => {
@@ -64,7 +52,7 @@ export default forwardRef((props, ref) => {
       case 5:
         return <QuestionnairePullDown items={items} addItem={addItem} editItem={editItem} deleteItem={deleteItem} />
       default:
-        return <Form.Control required type="text" className="text-dark mb-1 w-75" disabled placeholder="記述式テキスト（短文）" />
+        return <Form.Control required value="" type="text" className="text-dark mb-1 w-75" disabled placeholder="記述式テキスト（短文）" />
     }
   };
 

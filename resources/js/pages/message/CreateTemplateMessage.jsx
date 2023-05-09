@@ -326,7 +326,7 @@ export default () => {
           <h1 className="page-title">{pathname.includes('/edit') ? 'メッセージ編集' : 'メッセージ作成'}</h1>
         </div>
       </div>
-      <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
+      <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pb-4">
         <Button onClick={() => {history.push(Paths.TemplateMessages.path)}} variant="gray-500" className="me-2 animate-up-2 me-auto">
           テンプレートリストに戻る
         </Button>

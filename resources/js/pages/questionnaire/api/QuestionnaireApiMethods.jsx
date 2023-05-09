@@ -26,13 +26,9 @@ export const storeQuestionnaire = async (formValue, questionnaires, setQuestionn
   });
 };
 
-export const updateQuestionnaire = async (id, formValue, setAlert) => {
-  await axios.put(`/api/v1/management/questionnaires/${id}`, formValue)
+export const updateQuestionnaire = async (id, formValue) => {
+  return await axios.put(`/api/v1/management/questionnaires/${id}`, formValue)
   .then((response) => {
-    setAlert(true);
-    setTimeout(() => {
-      setAlert(false);
-    }, 3000);
   })
   .catch(error => {
       console.error(error);

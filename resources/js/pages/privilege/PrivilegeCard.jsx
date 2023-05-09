@@ -119,6 +119,7 @@ export default (props) => {
               setPrivilegeItems={setPrivilegeItems}
               updatePrivilegeItem={updatePrivilegeItem}
               deletePrivilegeItem={deletePrivilegeItem}
+              setRefresh={setRefresh}
             />
           )
         }

@@ -5,7 +5,7 @@ import { PencilIcon, CheckIcon, TrashIcon, PlusIcon } from "@heroicons/react/sol
 import { Card, Button, Image, Col, Row, Form, Badge, InputGroup } from "react-bootstrap";
 
 export default (props) => {
-  const { id, privilege_id, name, isEdit, setIsEdit, updatePrivilegeItem, privilegeItems, setPrivilegeItems, deletePrivilegeItem } = props; 
+  const { id, privilege_id, name, isEdit, setIsEdit, updatePrivilegeItem, privilegeItems, setPrivilegeItems, deletePrivilegeItem, setRefresh } = props; 
   const [isTimeEditable, setIsTimeEditable] = useState(false);
   const [updateName, setUpdateName] = useState(name);
 
@@ -59,7 +59,7 @@ export default (props) => {
   const deleteItem = async () => {
     const confirmMessage = "選択した項目は削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    location.reload();
+    setRefresh(prev => !prev)
   };
 
   return (

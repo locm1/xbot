@@ -146,7 +146,7 @@ export default () => {
         return (<>
         <div className="d-flex flex-wrap gap-2 mt-2">
           {pages.map((v, k) => 
-            <Button key={`page-${k}`} variant="outline-primary" size="sm" className="description" name={`${title}-value`} value={`https://liff.line.me/${liffId}?path=${v.path}`} onClick={handleChange}>{v.name}</Button>
+            <Button key={`page-${k}`} variant={`https://liff.line.me/${liffId}?path=${v.path}` === formValue[`${title}-value`] ? "primary" : "outline-primary"} size="sm" className="description" name={`${title}-value`} value={`https://liff.line.me/${liffId}?path=${v.path}`} onClick={handleChange}>{v.name}</Button>
           )}
         </div>
           <Form.Control className="mb-3 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />

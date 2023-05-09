@@ -92,9 +92,9 @@ export default () => {
     <main className="content liff-product-detail">
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
       <ProductDetailSlider productImages={productImages} />
-      <div className="py-5">
+      <div className="py-3">
         {/* <div style={{backgroundColor: category.color}} className="me-1 product-category-badge fw-normal mb-3"> */}
-        <div className="me-1 product-category-badge fw-normal bg-tertiary">
+        <div className="me-1 product-category-badge fw-normal bg-tertiary mb-3">
           {category.name}
         </div>
         <h3 className="fs-5 mb-0 liff-product-detail-name">{product.name}</h3>
@@ -131,12 +131,12 @@ export default () => {
             <InboxIcon className="icon icon-xs me-2" />
             取り置きする
           </Button> */}
-          <Button variant="tertiary" onClick={saveCart} className="mt-2 liff-product-detail-button w-100">
+          <Button variant="tertiary" onClick={saveCart} className="liff-product-detail-button w-100">
             <ShoppingCartIcon className="icon icon-xs me-2" />
             カートに入れる
           </Button>
         </div>
-        <Card border="0" className="shadow mt-5">
+        <Card border="0" className="shadow">
           <Card.Body>
             <h5 className="mb-4 border-bottom pb-3">説明</h5>
             {product.overview.split("\n").map((line, index) => (

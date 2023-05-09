@@ -49,7 +49,9 @@ export default (props) => {
       >
         {productImages && productImages.map((image, index) => 
           <SplideSlide key={`product-slide-${index}`}>
-            <Image src={image.image_path} className="slide-img" />
+            <div className="d-flex justify-content-center">
+              <Image src={image.image_path} className="" />
+            </div>
           </SplideSlide>
         )}
       </Splide>

@@ -1,5 +1,5 @@
 export const getPages = async (setPages) => {
-  axios.get('/api/v1/management/pages')
+  await axios.get('/api/v1/management/pages')
   .then((response) => {
     setPages(response.data.pages)
   })

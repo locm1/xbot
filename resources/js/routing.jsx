@@ -124,7 +124,7 @@ const InterceptLoading = () => {
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const history = useHistory();
-  
+
   axios.interceptors.response.use(null, (error) => {
     console.log(error);
     if (error.response.status === 401) {
@@ -138,7 +138,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     }
     return Promise.reject(error);
   });
-  
+
   const resize = () => {
     var resize = setInterval(() => {
       window.dispatchEvent(new Event('resize'));
@@ -180,61 +180,54 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   }
 
   const [admin, setAdmin] = useState(
-    {id: 1, login_id: 'admin', name: '管理者用アカウン', role: ''}
+    { id: 1, login_id: 'admin', name: '管理者用アカウン', role: '' }
   );
   const [pages, setPages] = useState([
-    {role: ''}
+    { role: '' }
   ]);
   const [loading, setLoading] = useState(true);
 
   useLayoutEffect(() => {
-    getPages(setPages)
-
     axios.get('/api/v1/management/me').then(response => {
       setAdmin(response.data.admin);
-      setLoading(false)
       console.log(response.data.admin);
     }).catch(error => {
       console.error(error);
-      setLoading(false)
       history.push(Paths.Signin.path);
+    }).finally(() => {
+      getPages(setPages).finally(() => {
+        setLoading(false);
+      })
     })
   }, [])
-  
-  //ログインユーザーの権限レベルに応じてページの閲覧可能かどうか判定
-  const pageRole = pages && pages.filter(page => { return page.path == rest.role_path})
 
+  //ログインユーザーの権限レベルに応じてページの閲覧可能かどうか判定
+  const pageRole = pages.filter(page => { return page.path == rest.role_path })
+
+  if (loading) {
+    return <LoadingPage />;
+  }
+  console.log(pageRole);
   return (
-    <>
-      {(() => {
-        if (pageRole[0] && admin.role <= pageRole[0].role) {
-          return(
-            <>
-            <Route {...rest} render={props => (
-              <>
-                <Sidebar
-                  contracted={contractSidebar}
-                  onMouseEnter={toggleMouseOver}
-                  onMouseLeave={toggleMouseOver}
-                  admin={admin}
-                  pages={pages}
-                />
-                <main className="content mb-5">
-                  <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} admin={admin} />
-                  <Component {...props} />
-                </main>
-              </>
-            )}
-            />
-            </>
-          );
-        } else {
-          return (
-            loading ? '' : <Route component={NotFound} />
-          );
-        }
-      })()}
-    </>
+    pageRole[0] && admin.role <= pageRole[0].role ?
+      <Route {...rest} render={props => (
+        <>
+          <Sidebar
+            contracted={contractSidebar}
+            onMouseEnter={toggleMouseOver}
+            onMouseLeave={toggleMouseOver}
+            admin={admin}
+            pages={pages}
+          />
+          <main className="content mb-5">
+            <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} admin={admin} />
+            <Component {...props} />
+          </main>
+        </>
+      )}
+      />
+      :
+      <Route component={NotFound} />
   );
 };
 
@@ -267,10 +260,10 @@ const LiffECRoute = ({ component: Component, ...rest }) => {
 
 const ECFooter = () => (
   <div className="d-flex justify-content-between flex-wrap align-items-center px-2 py-4">
-    <Button as={Link} to={Paths.LiffProducts.path}  variant="gray-800" className="liff-product-detail-button">
+    <Button as={Link} to={Paths.LiffProducts.path} variant="gray-800" className="liff-product-detail-button">
       <ShoppingBagIcon className="icon icon-xs me-2" />
       TOPページ
-      </Button>
+    </Button>
     <Button variant="tertiary" as={Link} to={Paths.LiffCarts.path} className="liff-product-detail-button">
       <ShoppingCartIcon className="icon icon-xs me-2" />
       カート
@@ -298,7 +291,7 @@ const RegisteredLiffRoute = ({ component: Component, ...rest }) => {
       setLoadingPage(false);
     });
   }, []);
-  
+
   if (loadingPage) {
     // getUserの処理が完了するまでローディング画面を表示
     return <LoadingPage />;
@@ -346,7 +339,7 @@ const QuestionnaireLiffRoute = ({ component: Component, ...rest }) => {
       setLoadingPage(false);
     });
   }, []);
-  
+
   if (loadingPage) {
     // getUserの処理が完了するまでローディング画面を表示
     return <LoadingPage />;
@@ -425,9 +418,9 @@ const LiffCreditCardRoute = ({ component: Component, ...rest }) => {
   axios.get('/api/v1/get-liff-id')
     .then((response) => {
       console.log(response);
-      liff.init({liffId: response.data})
+      liff.init({ liffId: response.data })
         .then(() => {
-          if(liff.isLoggedIn() === false) liff.login()
+          if (liff.isLoggedIn() === false) liff.login()
           setIsInit(true);
         })
         .catch((err) => {
@@ -438,15 +431,15 @@ const LiffCreditCardRoute = ({ component: Component, ...rest }) => {
       console.error(error);
     })
 
-    return isInit && (
-      <Route {...rest} render={props => (
-        <>
-          <Component {...props} />
-          <Footer />
-        </>
-      )}
-      />
-    );
+  return isInit && (
+    <Route {...rest} render={props => (
+      <>
+        <Component {...props} />
+        <Footer />
+      </>
+    )}
+    />
+  );
 }
 
 
@@ -459,9 +452,9 @@ const LiffInitRoute = () => {
   axios.get('/api/v1/get-liff-id')
     .then((response) => {
       console.log(response);
-      liff.init({liffId: response.data})
+      liff.init({ liffId: response.data })
         .then(() => {
-          if(liff.isLoggedIn() === false) liff.login()
+          if (liff.isLoggedIn() === false) liff.login()
           setRedirect(path);
         })
         .catch((err) => {
@@ -474,7 +467,7 @@ const LiffInitRoute = () => {
     })
 
 
-    return redirect && <Redirect to={`/${redirect}`} />
+  return redirect && <Redirect to={`/${redirect}`} />
 }
 
 
@@ -550,7 +543,7 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="account" path={Paths.RegisterAccount.path} component={EditAccount} />
       <RouteWithSidebar exact role_path="account" path={Paths.Permissions.path} component={Permissions} />
       <RouteWithSidebar exact role_path="account" path={Paths.InflowRoute.path} component={InflowRoute} />
-      
+
       <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffECRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
       <RegisteredLiffRoute exact path={Paths.LiffProductReservationComplete.path} component={LiffProductReservationComplete} />

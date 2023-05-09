@@ -294,7 +294,7 @@ export default () => {
               title: '保存完了',
               text: `「${formValue.title}」を保存しました`,
             }).then((result) => {
-              if (result.isConfirmed) {
+              if (result.isDismissed || result.isConfirmed) {
                 let responseRichMenuId = response.replace('richmenu-', '');
                 history.push(`/manage/account/richmenu/edit/${responseRichMenuId}`)
               }

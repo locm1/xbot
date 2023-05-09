@@ -124,6 +124,7 @@ const InterceptLoading = () => {
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const history = useHistory();
+  InterceptLoading();
 
   axios.interceptors.response.use(null, (error) => {
     console.log(error);

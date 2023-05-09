@@ -25,6 +25,18 @@ export default () => {
       current_page: 0, per_page: 0, from: 0, to: 0,total: 0 
     })
     const [links, setLinks] = useState([]);
+    const [liffId, setLiffId] = useState('');
+    const { setIsLoading } = useContext(LoadingContext);
+
+    useEffect(() => {
+      setIsLoading(true);
+      axios.get('/api/v1/get-liff-id').then((response) => {
+        setLiffId(response.data);
+        }).catch((error) => {
+          console.error(error);
+        }).finally(() => {
+          setIsLoading(false);
+    })}, [])
 
     const showConfirmDeleteModal = async (id) => {
       const textMessage = "本当にこの流入経路を削除しますか？";
@@ -74,7 +86,7 @@ export default () => {
         setInflows([...inflows, {
           id: response.data.id,
           name: response.data.name,
-          uri: "https://liff.line.me/1660723896-RmovvEYY?path=inflow-route/" + response.data.key,
+          uri: "https://liff.line.me/" + liffId + "?path=inflow-route/" + response.data.key,
           count: response.data.count
         }]);
         setNewInflows("");

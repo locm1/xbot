@@ -7,7 +7,7 @@ import { ProfileCardWidget } from "@/components/Widgets";
 import { HistoryTable } from "@/pages/user/HistoryTable";
 import { UserInfoForm } from "@/pages/user/UserInfoForm";
 import { QuestionnaireForm } from "@/pages/user/QuestionnaireForm";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 import { showUser, getOccupations, getUserTag, getUserPurchase } from "@/pages/user/api/UserApiMethods";
 import { getUserVisitorHistories, getUserVisitorHistoryCount, getUserOrders, getUserInviteHistories, getUserReserveHistories } from "@/pages/user/api/UserHistoryApiMethods";
@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 
 
 export default () => {
+  const history = useHistory();
   const [isRendered, setIsRendered] = useState(false);
   const { id } = useParams();
   const orderHistoryHeaders = ['注文日時', '注文商品', '個数', '値段'];
@@ -154,7 +155,7 @@ export default () => {
         </Tab.Content>
       </Tab.Container>
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.Users.path} variant='tertiary' className="mt-2 animate-up-2">
+        <Button onClick={() => {history.push(Paths.Users.path)}} variant='tertiary' className="mt-2 animate-up-2">
           ユーザーリストに戻る
         </Button>
       </div>

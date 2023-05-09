@@ -327,7 +327,7 @@ export default () => {
         </div>
       </div>
       <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.TemplateMessages.path} variant="gray-500" className="me-2 animate-up-2 me-auto">
+        <Button onClick={() => {history.push(Paths.TemplateMessages.path)}} variant="gray-500" className="me-2 animate-up-2 me-auto">
           テンプレートリストに戻る
         </Button>
         <Button onClick={onSaveMessage} variant="success" className="me-2">

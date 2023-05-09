@@ -361,7 +361,7 @@ export default () => {
     }
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <h1 className="page-title">リッチメニュー設定</h1>
-        <Button href={Paths.RichMenus.path} className="mt-2 animate-up-2">一覧へ戻る</Button>
+        <Button onClick={() => {history.push(Paths.RichMenus.path)}} className="mt-2 animate-up-2">一覧へ戻る</Button>
       </div>
       <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
         <Card.Header className="bg-primary text-white px-3 py-2">

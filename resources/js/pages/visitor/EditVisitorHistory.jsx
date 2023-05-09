@@ -78,7 +78,7 @@ export default () => {
         </Col>
       </Row>
         <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.VisitorHistories.path} variant="tertiary" className="mt-2 animate-up-2">
+        <Button onClick={() => {history.push(Paths.VisitorHistories.path)}} variant="tertiary" className="mt-2 animate-up-2">
           来店履歴に戻る
         </Button>
         </div>

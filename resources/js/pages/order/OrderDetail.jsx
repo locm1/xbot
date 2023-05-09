@@ -153,7 +153,7 @@ export default () => {
         </Col>
       </Row>
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button href={Paths.Orders.path} size="lg" className="mt-2">
+        <Button onClick={() => {history.push(Paths.Orders.path)}} size="lg" className="mt-2">
           一覧へ戻る
         </Button>
       </div>

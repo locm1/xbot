@@ -146,53 +146,54 @@ export default () => {
       const targetEvent = userEvents.find(userEvent => userEvent.id == id)
   
       return (
-        <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-          <Row className="align-items-center">
-            <Col xs="12" className="px-0">
-              <h4 className="fs-6 mb-1 liff-event-venue-title">{title}</h4>
-            </Col>
-            <Col xs="7" className="px-0">
-              <small>時間：{startDate}〜{endDate}</small>
-            </Col>
-            <Col xs="5" className="text-end">
-              <small>残枠数：</small>
-              <span className="fs-5 fw-bolder text-dark">{is_unlimited == 1 ? '無制限' : remaining}</span>
-            </Col>
-            <Col xs="12" className="px-0">
-              <div className="d-frex mt-1">
-                <MapPinIcon className="icon icon-xs liff-event-icon" />
-                <small className="liff-event-place">{location}</small>
-              </div>
-            </Col>
-            <Col xs="12" className="text-end">
-              <div className="align-items-center mt-3">
-                {
-                  (() => {
-                    if (targetEvent) {
-                      return(
-                        <Button disabled variant="gray-800" className="w-100">
-                          予約済み
-                        </Button>
-                      )
-                    } else if (remaining == 0) {
-                      return (
-                        <Button disabled variant="gray-800" className="w-100">
-                          予約不可
-                        </Button>
-                      )
-                    } else {
-                      return (
-                        <Button onClick={() => completeReservations(id, startDate, endDate)} variant="tertiary" className="w-100">
-                          予約する
-                        </Button>
-                      )
-                    }
-                  })()
-                }
-              </div>
-            </Col>
-          </Row>
-        </ListGroup.Item>
+        remaining == 0 && !targetEvent ? null : 
+          <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+            <Row className="align-items-center">
+              <Col xs="12" className="px-0">
+                <h4 className="fs-6 mb-1 liff-event-venue-title">{title}</h4>
+              </Col>
+              <Col xs="6" className="px-0">
+                <small>時間：{startDate}〜{endDate}</small>
+              </Col>
+              <Col xs="6" className="text-end">
+                <small>残枠数：</small>
+                <span className="fs-5 fw-bolder text-dark">{is_unlimited == 1 ? '無制限' : remaining}</span>
+              </Col>
+              <Col xs="12" className="px-0">
+                <div className="d-frex mt-1">
+                  <MapPinIcon className="icon icon-xs liff-event-icon" />
+                  <small className="liff-event-place">{location}</small>
+                </div>
+              </Col>
+              <Col xs="12" className="text-end">
+                <div className="align-items-center mt-3">
+                  {
+                    (() => {
+                      if (targetEvent) {
+                        return(
+                          <Button disabled variant="gray-800" className="w-100">
+                            予約済み
+                          </Button>
+                        )
+                      } else if (remaining == 0) {
+                        return (
+                          <Button disabled variant="gray-800" className="w-100">
+                            予約不可
+                          </Button>
+                        )
+                      } else {
+                        return (
+                          <Button onClick={() => completeReservations(id, startDate, endDate)} variant="tertiary" className="w-100">
+                            予約する
+                          </Button>
+                        )
+                      }
+                    })()
+                  }
+                </div>
+              </Col>
+            </Row>
+          </ListGroup.Item>
       );
     }
 
@@ -211,7 +212,7 @@ export default () => {
       </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
-            {eventItems.map(eventItem => (eventItem.remaining > 0 && <EventItem key={`event-item-${eventItem.id}`} {...eventItem} />))}
+            {eventItems.map(eventItem => (<EventItem key={`event-item-${eventItem.id}`} {...eventItem} />))}
           </ListGroup>
         </Card.Body>
       </Card>

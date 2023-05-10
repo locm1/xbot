@@ -66,7 +66,7 @@ export default () => {
           {location}
         </td>
         <td className="fw-bolder text-gray-500">
-          {remaining}
+          {is_unlimited == 0 ? remaining : '無制限'}
         </td>
         <td className="fw-bolder text-gray-500">
           <Button variant="tertiary" onClick={() => onCardClick(id)}>参加者一覧</Button>

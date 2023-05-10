@@ -24,7 +24,10 @@ class EventReservationService
             $event->users()->attach($request->user_id);
 
             # イベントの残数を再計算（-1）
-            $event->update(['remaining' => $event->remaining - 1]);
+            if ($event->is_unlimited === 0) {
+                $event->update(['remaining' => $event->remaining - 1]);
+            }
+            
             return $event;
         });
     }

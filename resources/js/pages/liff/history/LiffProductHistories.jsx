@@ -57,7 +57,7 @@ export default () => {
       <LiffPurchaseHistories />
       <Card border="0" className="shadow p-0 my-3">
         <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name py-3">キャンセルについて</h5>
+          <h5 className="liff-product-detail-name">キャンセルについて</h5>
         </Card.Header>
         <Card.Body className="pb-3 rounded-bottompt-3">
           <p>キャンセルする場合は、お手数ですが下記ボタンからご連絡ください。</p>

@@ -66,10 +66,15 @@ export default () => {
   }, [])
   useEffect(() => {
     if (pathname.includes('/edit')) {
+      setIsLoading(true);
       showRichMenu(richMenuId, setFormValue).then((response) => {
         setRichMenu(richmenu_1.filter(v => v.type == response.menuType)[0] ?? {id: 1, img: '', size: 6, type: 1})
+        getImage(richMenuId, setImage, setImagePath).finally(() => {
+          setIsLoading(false);
+        }).catch(error => {
+          setIsLoading(false);
+        })
       })
-      getImage(richMenuId, setImage, setImagePath);
     }
   }, []);
   const [formValue, setFormValue] = useState(

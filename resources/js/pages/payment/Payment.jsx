@@ -91,16 +91,14 @@ export default () => {
                   </Form.Group>
                 </Col>
               </Row>
-              <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
-                <Button
-                  variant="success"
-                  className="d-inline-flex align-items-center"
-                  onClick={handleClick}
-                >
+            </Card.Body>
+            <Card.Footer>
+              <div className="d-flex justify-content-end">
+                <Button variant="success" className="btn-default-success" onClick={handleClick}>
                   保存する
                 </Button>
               </div>
-            </Card.Body>
+            </Card.Footer>
           </Card>
         </Col>
       </Row>

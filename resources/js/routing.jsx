@@ -105,6 +105,7 @@ import { Button, Card, Stack } from 'react-bootstrap';
 import { LoadingContext } from "@/components/LoadingContext";
 
 const InterceptLoading = () => {
+  console.log('soaoidajiodjaidjaidsaiojo')
   const { setIsLoading } = useContext(LoadingContext);
   axios.interceptors.request.use(function (config) {
     setIsLoading(true);
@@ -124,7 +125,7 @@ const InterceptLoading = () => {
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const history = useHistory();
-  InterceptLoading();
+  // InterceptLoading();
 
   axios.interceptors.response.use(null, (error) => {
     console.log(error);
@@ -559,7 +560,7 @@ const Routing = () => {
       <RegisteredLiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
       <LiffCreditCardRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
       <RegisteredLiffRoute exact path={Paths.LIffCheckoutAddCoupon.path} component={LIffCheckoutAddCoupon} />
-      <RegisteredLiffRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
+      <LiffECRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
       <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
       <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />

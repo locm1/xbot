@@ -38,7 +38,7 @@ export const getRichMenus = async (setRichMenus) => {
   };
 
   export const getImage = async (id, setImage, setImagePath) => {
-    axios.get(`/api/v1/management/rich-menu-image/${id}`, {responseType: 'blob',})
+    return await axios.get(`/api/v1/management/rich-menu-image/${id}`, {responseType: 'blob',})
     .then((response) => {
 	    const file = new File([response.data], "file1.png", { type: "image/png" })
       setImagePath(URL.createObjectURL(file));

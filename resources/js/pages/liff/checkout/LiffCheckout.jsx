@@ -75,9 +75,6 @@ export default () => {
     if (paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 0) {
       errors.push("支払い方法を選択してください");
     }
-    if (Cookies.get('delivery_time') === undefined) {
-      errors.push("配送オプションを選択してください");
-    }
   
     return errors;
   }
@@ -96,7 +93,7 @@ export default () => {
       return;
     }
     const keys = ['updated_at', 'user_id', 'created_at', 'deleted_at'];
-    const delivery_time = Cookies.get('delivery_time')
+    const delivery_time = Cookies.get('delivery_time') ?? 1;
     
     const order = {
       user_id: user.id, delivery_time: delivery_time, purchase_amount: Math.floor(total), status: 1, 

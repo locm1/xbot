@@ -2,6 +2,7 @@
 
 namespace App\Services\management\rich_menu;
 
+use App\Http\Controllers\api\management\RichMenuSetDefaultController;
 use App\Services\management\AbstractManagementService;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot\RichMenuBuilder;
@@ -62,6 +63,8 @@ class RichMenuService
             $ailias_service = new RichMenuAliasService;
             $response = $ailias_service->store($reduce_richmenu_id, $richmenu_id);
         }
+
+        if ($form_value['shouldSetDefault'] === 'true') (new RichMenuSetDefaultController)($richmenu_id);
 
         return $richmenu_id;
     }

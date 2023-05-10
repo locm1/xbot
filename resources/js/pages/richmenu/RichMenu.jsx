@@ -31,6 +31,7 @@ export default () => {
   const richMenuId = 'richmenu-' + id;
   const pathname = useLocation().pathname;  
   const history = useHistory();
+  const [fileSize, setFileSize] = useState(null);
   const richmenu_1 = [
     {id: 1, img: squares6, size: 6, type: 1},
     {id: 2, img: squares4, size: 4, type: 2},
@@ -65,10 +66,8 @@ export default () => {
   }, [])
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      setIsLoading(true);
       showRichMenu(richMenuId, setFormValue).then((response) => {
         setRichMenu(richmenu_1.filter(v => v.type == response.menuType)[0] ?? {id: 1, img: '', size: 6, type: 1})
-        setIsLoading(false);
       })
       getImage(richMenuId, setImage, setImagePath);
     }
@@ -205,7 +204,40 @@ export default () => {
 
   const RichMenuImage = (props) => {
     const { files, setImagePath } = props;
-    
+
+    const validation = (width, height) => {
+      const aspectRatio = width / height;
+      const errors = [];
+      if (width < 800 || width > 2500) {
+        errors.push('横幅は800px以上、2500px以下にしてください');
+      }
+      if (height < 250) {
+        errors.push('高さが250px未満です');
+      }
+      if (aspectRatio < 1.45) {
+        errors.push('画像のアスペクト比が1.45未満です');
+      }
+      if (fileSize > 1000000) {
+        errors.push('ファイルサイズが1MBを超過しています');
+      }
+
+      return errors;
+    }
+
+    const handleImageLoad = (event) => {
+      const { naturalWidth, naturalHeight } = event.target;
+      const errors = validation(naturalWidth, naturalHeight);
+
+      if (errors.length > 0) {
+        Swal.fire({
+          title: 'エラー',
+          icon: 'error',
+          html: errors.join('<br>')
+        })
+        setImagePath(null);
+        setFileSize(null);
+      }
+    };
 
     const onFileInputChange = (e) => {
       const fileObject = e.target.files[0];
@@ -219,7 +251,7 @@ export default () => {
       return (
         <Col xs={3} className="dropzone-preview line-preview-image-wrap pb-2">
           <div className="line-preview-image d-flex">
-            <Image src={files} className="dropzone-image" />
+            <Image src={files} onLoad={handleImageLoad} className="dropzone-image" />
             <Button variant="gray-800" className="product-image-button" onClick={() => setImagePath()}>
               <XIcon className="icon icon-sm line-preview-image-icon" />
             </Button>
@@ -256,6 +288,7 @@ export default () => {
       formData.append(key, formValue[key]);
     }
     formData.append('image', image);
+    formData.append('shouldSetDefault', shouldSetDefault);
     if (pathname.includes('/edit')) {
       updateRichMenu(richMenuId, formData).then(response => {
         if (response === 'failed') {
@@ -278,7 +311,7 @@ export default () => {
                 Swal.fire({
                   icon: 'success',
                   title: '保存完了',
-                  text: `「${formValue.title}」を保存しました`,
+                  text: `「${formValue.title}」をデフォルトに保存しました`,
                 }).then((result) => {
                   if (result.isDismissed || result.isConfirmed) {
                     let responseRichMenuId = response.replace('richmenu-', '');

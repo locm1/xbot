@@ -11,10 +11,16 @@ export default (props) => {
   };
 
   const handleIsEdit = (id) => {
+    setName(name);
     setIsEdit({
       id: id, isEdit: !isEdit
     })
-    showTags(id)
+    // showTags(id)
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return
+    updateTag(e, id);
   };
 
   return (
@@ -34,20 +40,14 @@ export default (props) => {
               <>
                 <div className="mb-2 d-flex flex-wrap flex-md-nowrap">
                   <Form>
-                    <Form.Control className="tag-edit-form" required type="text" name="name" value={updateName} onChange={(e) => editName(e)} placeholder="タグ名を入力してください" />
+                    <Form.Control 
+                      className="tag-edit-form" required type="text" name="name" value={updateName} onChange={(e) => editName(e)} 
+                      onKeyDown={(e) => handleKeyDown(e)}  placeholder="タグ名を入力してください" />
                   </Form>
                 </div>
                 <div className="d-flex flex-wrap flex-md-nowrap align-items-center">
-                  <div onClick={(e) => updateTag(e, id)} className="ms-2">
+                  <div className="ms-2">
                     {/* <CheckIcon className="icon icon-xs" /> */}
-                    <Button
-                      variant="success"
-                      size="sm"
-                      className="d-inline-flex align-items-center me-3"
-                      onClick={(e) => updateTag(e, id)}
-                    >
-                      保存する
-                    </Button>
                     <Button
                       variant="gray-800"
                       size="sm"
@@ -55,6 +55,14 @@ export default (props) => {
                       onClick={() => setIsEdit(!isEdit)}
                     >
                       キャンセル
+                    </Button>
+                    <Button
+                      variant="success"
+                      size="sm"
+                      className="d-inline-flex align-items-center me-3"
+                      onClick={(e) => updateTag(e, id)}
+                    >
+                      保存する
                     </Button>
                   </div>
                 </div>

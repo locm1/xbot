@@ -16,7 +16,7 @@ export default () => {
   const [tags, setTags] = useState([]);
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
-  const [name, setName] = useState();
+  const [name, setName] = useState('');
   const [isEdit, setIsEdit] = useState({
     id: '', isEdit: false
   });
@@ -47,6 +47,7 @@ export default () => {
     .catch(error => {
         console.error(error);
     });
+    setName('');
   };
 
   const updateTag = async (e, id) => {

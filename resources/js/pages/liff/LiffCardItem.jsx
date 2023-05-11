@@ -22,41 +22,43 @@ export const CartItem = (props) => {
 
   return (
     <ListGroup.Item className="bg-transparent py-3 px-0">
-      <Link to={link}>
-        <Row className="">
-          <Col xs="5">
+      <Row className="">
+        <Col xs="5">
+          <Link to={link}>
             <div className="liff-cart-img">
-              <Image rounded src={getImages(product.product_images[0])}  className="m-0" />
+              <Image rounded src={getImages(product.product_images[0])} className="m-0" />
             </div>
-          </Col>
-          <Col xs="7" className="px-0 m-0">
+          </Link>
+        </Col>
+        <Col xs="7" className="px-0 m-0">
+          <Link to={link}>
             <h4 className="fs-6 text-dark mb-0">{product.name}</h4>
-            <h4 className="liff-product-detail-price mt-2">
-                {
-                  isSalePeriod(product.product_sale.start_date, product.product_sale.end_date) ? (
-                    `￥${Math.floor(sale_price).toLocaleString()}`
-                  ) : (
-                    `￥${product.price.toLocaleString()}`
-                  )
-                }
-                <span>税込</span>
-            </h4>
-            <div className="">数量：{quantity}個</div>
+          </Link>
+          <h4 className="liff-product-detail-price mt-2">
             {
-              history == 'reserve' &&
-              <div className="">期間：{moment(deadline).format("YYYY年MM月DD日")}まで</div>
+              isSalePeriod(product.product_sale.start_date, product.product_sale.end_date) ? (
+                `￥${Math.floor(sale_price).toLocaleString()}`
+              ) : (
+                `￥${product.price.toLocaleString()}`
+              )
             }
-          </Col>
-        </Row>
-      </Link>
+            <span>税込</span>
+          </h4>
+          <div className="">数量：{quantity}個</div>
+          {
+            history == 'reserve' &&
+            <div className="">期間：{moment(deadline).format("YYYY年MM月DD日")}まで</div>
+          }
+        </Col>
+      </Row>
     </ListGroup.Item>
   );
 }
 
 export const OrderDetailItem = (props) => {
-  const { 
-    total, orderTotal, postage, paymentMethod, 
-    ecommerceConfiguration, discountedTotalAmount, coupon 
+  const {
+    total, orderTotal, postage, paymentMethod,
+    ecommerceConfiguration, discountedTotalAmount, coupon
   } = props;
 
   const getDiscountAmount = () => {
@@ -72,19 +74,19 @@ export const OrderDetailItem = (props) => {
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
-        <Col xs="7" className="px-0">
+        <Col xs="8" className="px-0">
           <div className="m-1">
             <h4 className="fs-6 text-dark mb-0">商品合計</h4>
             {postage > 0 && (
               <h4 className="fs-6 text-dark mb-0 mt-1">送料</h4>
             )}
-            { 
+            {
               paymentMethod && paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1 && (
                 <h4 className="fs-6 text-dark mb-0 mt-1">代金引換手数料</h4>
               )
             }
             {coupon.id && <h4 className="fs-6 text-dark mb-0 mt-1">クーポン割引</h4>}
-            { 
+            {
               discountedTotalAmount !== 0 && (
                 <h4 className="fs-6 text-dark mb-0 mt-1">セット商品割引</h4>
               )
@@ -92,22 +94,22 @@ export const OrderDetailItem = (props) => {
             <h3 className="text-dark mb-0 mt-2 liff-pay-total-title">お支払い金額（税込）</h3>
           </div>
         </Col>
-        <Col xs="5" className="">
+        <Col className="">
           <div className="m-1 text-end">
             {orderTotal && <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>}
             {postage > 0 && <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h4>}
-            { 
-              paymentMethod && paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1 && 
+            {
+              paymentMethod && paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1 &&
               <h4 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h4>
             }
             {
-              coupon.id && 
+              coupon.id &&
               <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">
                 - ￥ {isNaN(getDiscountAmount()) ? 0 : Math.floor(getDiscountAmount()).toLocaleString()}
               </h4>
             }
-            { 
-              discountedTotalAmount !== 0 && 
+            {
+              discountedTotalAmount !== 0 &&
               <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h4>
             }
             <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {Math.floor(total).toLocaleString()}</h3>
@@ -139,7 +141,7 @@ export const CouponDetailItem = (props) => {
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
-        <Col xs={getColButton(location).colSize} className="px-0">
+        <Col xs={12} className="px-0">
           <div className="m-1">
             {
               coupon.id ? (
@@ -155,16 +157,6 @@ export const CouponDetailItem = (props) => {
             }
           </div>
         </Col>
-        {
-          getColButton(location).isButton &&
-          <Col xs="4" className="">
-          <div className="align-items-center mt-2 ms-4">
-            <Button as={Link} to={Paths.LIffCheckoutAddCoupon.path} variant="info" className="w-80">
-              変更
-            </Button>
-          </div>
-        </Col>
-        }
       </Row>
     </ListGroup.Item>
   );
@@ -201,7 +193,7 @@ export const PaymentDetailItem = (props) => {
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
-        <Col xs={getColButton(location).colSize} className="px-0">
+        <Col className="px-0">
           {(() => {
             if (paymentMethod.payment_method && paymentMethod.payment_method == 1) {
               return (
@@ -223,7 +215,7 @@ export const PaymentDetailItem = (props) => {
                   <div className="liff-checkout-payment-title">
                     {getPaymentMethod(paymentMethod)}
                   </div>
-              </div>
+                </div>
               )
             } else {
               return (
@@ -234,16 +226,6 @@ export const PaymentDetailItem = (props) => {
             }
           })()}
         </Col>
-        {
-          getColButton(location).isButton &&
-          <Col xs="4" className="">
-          <div className="align-items-center mt-2 ms-4">
-            <Button as={Link} to={Paths.LiffCheckoutPayment.path} variant="info" className="w-80">
-              変更
-            </Button>
-          </div>
-        </Col>
-        }
       </Row>
     </ListGroup.Item>
   );
@@ -272,7 +254,7 @@ export const DeliveryAddressItem = (props) => {
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
-        <Col xs={getColButton(location).colSize} className="px-0">
+        <Col className="px-0">
           <div className="m-1">
             {
               typeof id === 'undefined' ? (
@@ -290,16 +272,6 @@ export const DeliveryAddressItem = (props) => {
             }
           </div>
         </Col>
-        {
-          getColButton(location).isButton &&
-          <Col xs="4" className="">
-            <div className="align-items-center mt-4 ms-4">
-              <Button as={Link} to={Paths.LiffCheckoutDestinations.path} variant="info" className="w-80">
-                変更
-              </Button>
-            </div>
-          </Col>
-        }
       </Row>
     </ListGroup.Item>
   );

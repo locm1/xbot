@@ -23,7 +23,7 @@ export default () => {
     <>
       <main className="content liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-        <LiffProductCategorySlideCardList products={pickUpProducts} />
+        {pickUpProducts.length > 0 && <LiffProductCategorySlideCardList products={pickUpProducts} />}
       </main>
       <LiffProductList products={products} />
     </>

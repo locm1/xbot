@@ -16,7 +16,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCarts, updateCart, deleteCart, storeRelatedProdcutInCart } from "@/pages/liff/api/CartApiMethods";
 
 export default () => {
-  const { setIsLoading } = useContext(LoadingContext);
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const location = useLocation().pathname;
   const history = useHistory();
   const [carts, setCarts] = useState([]);
@@ -106,7 +106,6 @@ export default () => {
 
     return (
       <ListGroup.Item className="bg-transparent py-3 px-0">
-        <Link to={link}>
           <Row className="">
             <Col xs="5">
               <div className="liff-cart-img">
@@ -114,7 +113,9 @@ export default () => {
               </div>
             </Col>
             <Col xs="7" className="px-0 m-0">
-              <h4 className="fs-6 text-dark mb-0">{product.name}</h4>
+              <Link to={link}>
+                <h4 className="fs-6 text-dark mb-0">{product.name}</h4>
+              </Link>
               <h4 className="liff-product-detail-price mt-2">
                 {
                   isSalePeriod(product.product_sale.start_date, product.product_sale.end_date) ? (
@@ -125,11 +126,10 @@ export default () => {
                 }
                 <span>税込</span>
               </h4>
-              <p className="mt-3">{product.stock_quantity > 0 ? '在庫あり' : '在庫なしのため、商品をカートから削除してください'}</p>
+              {/* <p className="mt-3">{product.stock_quantity > 0 ? '在庫あり' : '在庫なしのため、商品をカートから削除してください'}</p> */}
             </Col>
           </Row>
-        </Link>
-        <Row className="mt-2">
+        <Row className="mt-3 align-items-center">
           <Col xs="5">
             <InputGroup className="liff-cart-change-quantity">
               {(() => {
@@ -153,11 +153,19 @@ export default () => {
               </InputGroup.Text>
             </InputGroup>
           </Col>
-          <Col xs="7" className="px-0 m-0">
-            <Button variant="primary" size="sm" className="me-1" onClick={() => deleteCartCard(id)}>削除</Button>
+          <Col xs="7" className="">
+            <Button variant="danger" size="sm" className="me-1" onClick={() => deleteCartCard(id)}>削除</Button>
           </Col>
         </Row>
       </ListGroup.Item>
+    );
+  }
+  
+  if (isLoading) {
+    return (
+      <div className="loading-page">
+        <p>Loading...</p>
+      </div>
     );
   }
 
@@ -169,9 +177,9 @@ export default () => {
             <>
             <div className="mx-3 mt-3">
               <Card border="0" className="shadow">
-                <Card.Header className="border-bottom">
-                  <h2 className="fs-5 fw-bold mb-0">カートに入っている商品：{totalCount}点</h2>
-                </Card.Header>
+                <Card.Header className="bg-primary text-white px-3 py-2">
+                  <h5 className="mb-0 fw-bolder">カートに入っている商品：{totalCount}点</h5>
+                </Card.Header>  
                 <Card.Body className="py-0">
                   <ListGroup className="list-group-flush">
                     {carts.map(cart => <CartItem key={`cart-${cart.id}`} {...cart} isSalePeriod={isSalePeriod} />)}
@@ -180,28 +188,27 @@ export default () => {
               </Card>
               {relatedProducts.length > 0 && <LiffCartSlideCard relatedProducts={relatedProducts} addCart={addCart} />}
               <div className="p-4 pt-3 pb-0">
-                <ListGroup.Item className="bg-transparent p-3 px-0">
                   <Row className="">
-                    <Col xs="7" className="px-0">
+                    <Col xs="8" className="px-0">
                       <div className="m-1">
                         <h4 className="fs-6 text-dark mb-0">商品合計</h4>
                         <h4 className="fs-6 text-dark mb-0 mt-2">セット商品割引</h4>
                         <h3 className="text-dark mb-0 mt-2 liff-pay-total-title">お支払い金額（税込）</h3>
                       </div>
                     </Col>
-                    <Col xs="5" className="">
+                    <Col className="p-0">
                       <div className="m-1 text-end">
                         <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>
                         { 
-                          discountedTotalAmount && (
-                            <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h4>
-                          )
+                          discountedTotalAmount ? 
+                            <h4 className="fs-6 text-dark mb-0 mt-2 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h4>
+                            :
+                            <h4 className="fs-6 text-dark mb-0 mt-2">￥ 0</h4>
                         }
                         <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {total.toLocaleString()}</h3>
                       </div>
                     </Col>
                   </Row>
-                </ListGroup.Item>
               </div>
               <div className="d-flex justify-content-between flex-wrap align-items-center mb-4">
                 <Button as={Link} to={Paths.LiffProducts.path} variant="gray-800" className="mt-2 liff-product-detail-button">

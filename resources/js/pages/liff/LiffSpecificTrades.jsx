@@ -36,9 +36,9 @@ export default () => {
       <main className="liff-product-detail">
         <div className="p-3">
           <Card border="0" className="shadow">
-            <Card.Header className="border-bottom">
-              <h5 className="liff-product-detail-name mb-0">特定商取引法に基づく表記</h5>
-            </Card.Header>
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">特定商法取引法に基づく表記</h5>
+      </Card.Header>  
             <Card.Body className="py-0">
               <ListGroup className="list-group-flush">
                 {

@@ -72,9 +72,9 @@ export default () => {
 
     return (
       <Card border="0" className="shadow my-4">
-        <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name mb-0">特典1</h5>
-        </Card.Header>
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">特典1</h5>
+      </Card.Header>  
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
             {privileges.map(privilege => <LiffVisitorPrivilegeItem key={`privilege-${privilege.id}`} {...privilege} />)}

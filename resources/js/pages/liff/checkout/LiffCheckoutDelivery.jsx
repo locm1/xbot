@@ -91,8 +91,8 @@ export default () => {
 
   return (
     <>
-      <main className="liff-product-detail">
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
+      <main className="p-3">
+        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center list-wrap"></div>
         <div className="">
           <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
             <div className="">
@@ -104,9 +104,9 @@ export default () => {
           </Link>
         </div>
         <Card border="0" className="shadow mt-2">
-          <Card.Header className="border-bottom">
-            <h2 className="fs-6 fw-bold mb-0">配送時間帯指定</h2>
-          </Card.Header>
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">配送時間帯指定</h5>
+        </Card.Header>  
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
               {

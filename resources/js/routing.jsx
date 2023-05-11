@@ -104,24 +104,24 @@ import axios from 'axios';
 import { Button, Card, Stack } from 'react-bootstrap';
 import { LoadingContext } from "@/components/LoadingContext";
 
-const InterceptLoading = () => {
-  console.log('soaoidajiodjaidjaidsaiojo')
-  const { setIsLoading } = useContext(LoadingContext);
-  axios.interceptors.request.use(function (config) {
-    setIsLoading(true);
-    return config;
-  }, function (error) {
-    return Promise.reject(error);
-  });
+// const InterceptLoading = () => {
+//   console.log('soaoidajiodjaidjaidsaiojo')
+//   const { setIsLoading } = useContext(LoadingContext);
+//   axios.interceptors.request.use(function (config) {
+//     setIsLoading(true);
+//     return config;
+//   }, function (error) {
+//     return Promise.reject(error);
+//   });
 
-  axios.interceptors.response.use(function (response) {
-    setIsLoading(false);
-    return response;
-  }, function (error) {
-    setIsLoading(false);
-    return Promise.reject(error);
-  });
-}
+//   axios.interceptors.response.use(function (response) {
+//     setIsLoading(false);
+//     return response;
+//   }, function (error) {
+//     setIsLoading(false);
+//     return Promise.reject(error);
+//   });
+// }
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const history = useHistory();
@@ -234,7 +234,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 };
 
 const LiffRoute = ({ component: Component, ...rest }) => {
-  InterceptLoading();
   return (
     <Route {...rest} render={props => (
       <>
@@ -247,7 +246,6 @@ const LiffRoute = ({ component: Component, ...rest }) => {
 }
 
 const LiffECRoute = ({ component: Component, ...rest }) => {
-  InterceptLoading();
   return (
     <Route {...rest} render={props => (
       <>
@@ -378,7 +376,6 @@ const LoadingPage = () => {
 const ToQuestionnairePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [liffId, setLiffId] = useState('');
-  InterceptLoading();
   axios.get('/api/v1/get-liff-id')
     .then((response) => {
       setLiffId(response.data);
@@ -450,7 +447,8 @@ const LiffInitRoute = () => {
   const query = new URLSearchParams(search);
   const path = query.get('path')
   const [redirect, setRedirect] = useState('');
-  InterceptLoading();
+  const { setIsLoading } = useContext(LoadingContext);
+  setIsLoading(true);
   axios.get('/api/v1/get-liff-id')
     .then((response) => {
       console.log(response);
@@ -466,6 +464,7 @@ const LiffInitRoute = () => {
     .catch((error) => {
       console.error(error);
     }).finally(() => {
+      setIsLoading(false);
     })
 
 
@@ -561,9 +560,9 @@ const Routing = () => {
       <LiffCreditCardRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
       <RegisteredLiffRoute exact path={Paths.LIffCheckoutAddCoupon.path} component={LIffCheckoutAddCoupon} />
       <LiffECRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
-      <LiffRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
-      <LiffRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
-      <LiffRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
+      <LiffECRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
+      <LiffECRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
+      <LiffECRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
       <RegisteredLiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} />
       {/* <LiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} /> */}
       <LiffRoute exact path={Paths.LiffVisitorConfirm.path} component={LiffVisitorConfirm} />

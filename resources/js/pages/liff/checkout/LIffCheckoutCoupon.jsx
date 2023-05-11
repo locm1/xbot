@@ -17,9 +17,12 @@ export default (props) => {
   return (
     <>
       <Card border="0" className="shadow my-3">
-        <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name mb-0">クーポンの追加</h5>
-        </Card.Header>
+        <Card.Header className="bg-primary text-white px-3 py-2 d-flex align-items-center justify-content-between">
+          <h2 className="fs-5 fw-bolder mb-0">クーポンの追加</h2>
+          <Button variant="info" size="sm" as={Link} to={Paths.LIffCheckoutAddCoupon.path}>
+            変更
+          </Button>
+        </Card.Header>  
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
             <CouponDetailItem coupon={coupon} />

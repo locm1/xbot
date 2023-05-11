@@ -1,5 +1,5 @@
 export const getOrders = async (params, setOrders, setLinks, setPaginate) => {
-  axios.get('/api/v1/management/orders', params)
+  return await axios.get('/api/v1/management/orders', params)
   .then((response) => {
     const orders = response.data.orders;
     setOrders(orders.data);

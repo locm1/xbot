@@ -55,19 +55,12 @@ export default (props) => {
 
     return (
         <Row className="py-3">
-          <Col xs="8" className="px-0">
+          <Col className="px-0">
             <div className="m-1">
               <h4 className="fs-6 text-dark mb-0">{specificTime}</h4>
               <h4 className="liff-checkout-payment-title text-dark mt-2">
                 ※送料については、<Card.Link href={Paths.LiffSpecificTrades.path} target="_blank" className="liff-specific-trades-link">特定商法取引法に基づく表記</Card.Link>をご覧ください。
               </h4>
-            </div>
-          </Col>
-          <Col xs="4" className="">
-            <div className="align-items-center mt-2 ms-4">
-              <Button as={Link} to={Paths.LiffCheckoutDelivery.path} variant="info" className="w-80">
-                変更
-              </Button>
             </div>
           </Col>
         </Row>
@@ -77,17 +70,20 @@ export default (props) => {
   return (
     <>
       <Card border="0" className="shadow my-3">
-        <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name mb-0">配送オプション</h5>
+        <Card.Header className="bg-primary text-white px-3 py-2 d-flex align-items-center justify-content-between">
+          <h5 className="mb-0 fw-bolder">配送オプション</h5>
+          <Button variant="info" size="sm" as={Link} to={Paths.LiffCheckoutDelivery.path}>
+            変更
+          </Button>
         </Card.Header>
         <Card.Body className="py-0">
           <TimeSpecificationItem />
         </Card.Body>
       </Card>
       <Card border="0" className="shadow my-3">
-        <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name mb-0">購入商品</h5>
-        </Card.Header>
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">購入商品</h5>
+        </Card.Header>  
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
           </ListGroup>

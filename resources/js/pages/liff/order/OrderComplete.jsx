@@ -20,8 +20,8 @@ export default () => {
           <p>購入履歴から購入商品が<br />ご確認いただけます。</p>
         </div>
         <div className="align-items-center m-2 mt-4 mb-5">
-          <Button as={Link} to={Paths.LiffProductHistories.path} variant="tertiary" className="w-100 p-3">
-            購入履歴を見る
+          <Button as={Link} to={Paths.LiffProductHistories.path} variant="tertiary" className="w-100">
+            購入履歴を確認
           </Button>
         </div>
       </main>

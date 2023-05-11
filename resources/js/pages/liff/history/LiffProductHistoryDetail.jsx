@@ -92,9 +92,9 @@ export default () => {
   const PurchaseDetailCard = (props) => {
     return (
       <Card border="0" className="shadow">
-        <Card.Header className="border-bottom">
-            <h5 className="liff-product-detail-name mb-0">注文詳細</h5>
-          </Card.Header>
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">注文詳細</h5>
+      </Card.Header>  
         <Card.Body className="py-0">
           <Row className="mt-3 mb-3 pb-3 border-bottom">
             <Col xs={5}>
@@ -123,7 +123,7 @@ export default () => {
             />
           </ListGroup>
           <div className="align-items-center my-4">
-            <Button as={Link} to={Paths.LiffProductHistories.path} variant="gray-800" className="w-100 p-3">
+            <Button as={Link} to={Paths.LiffProductHistories.path} variant="gray-800" className="w-100">
               購入履歴に戻る
             </Button>
           </div>
@@ -137,9 +137,9 @@ export default () => {
     <main className="liff-product-detail">
       <div className="mx-3 my-3">
         <Card border="0" className="shadow mb-4">
-          <Card.Header className="border-bottom">
-            <h5 className="liff-product-detail-name mb-0">お届け先情報</h5>
-          </Card.Header>
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">お届け先情報</h5>
+        </Card.Header>  
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
               <DeliveryAddressItem {...deliveryAddress} />
@@ -147,9 +147,9 @@ export default () => {
           </Card.Body>
         </Card>
         <Card border="0" className="shadow mb-4">
-          <Card.Header className="border-bottom">
-            <h5 className="liff-product-detail-name mb-0">お支払い情報</h5>
-          </Card.Header>
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">お支払い情報</h5>
+      </Card.Header>  
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
               <PaymentDetailItem

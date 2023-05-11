@@ -137,8 +137,10 @@ export default () => {
           </Button>
         </div>
         <Card border="0" className="shadow">
+          <Card.Header className="bg-primary text-white px-3 py-2">
+            <h5 className="mb-0 fw-bolder">説明</h5>
+          </Card.Header>  
           <Card.Body>
-            <h5 className="mb-4 border-bottom pb-3">説明</h5>
             {product.overview.split("\n").map((line, index) => (
               <React.Fragment key={index}>
                 {line}

@@ -18,9 +18,9 @@ export default () => {
       <main className="liff-product-detail">
         <div className="p-3">
           <Card border="0" className="shadow">
-            <Card.Header className="border-bottom">
-              <h5 className="liff-product-detail-name mb-0">利用規約</h5>
-            </Card.Header>
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">利用規約</h5>
+      </Card.Header>  
             <Card.Body className="py-0">
               <Row className="">
                 <Col xs="12" className="mt-3 mb-3">

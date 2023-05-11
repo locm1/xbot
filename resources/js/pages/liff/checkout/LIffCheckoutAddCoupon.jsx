@@ -88,8 +88,8 @@ export default (props) => {
 
   return (
     <>
-      <main className="liff-product-detail">
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
+      <main className="liff-product-detail p-3">
+        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center list-wrap"></div>
         <div className="">
           <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
             <div className="">
@@ -101,8 +101,8 @@ export default (props) => {
           </Link>
         </div>
         <Card border="0" className="shadow mt-2">
-          <Card.Header className="border-bottom">
-            <h2 className="fs-6 fw-bold mb-0">クーポン変更</h2>
+          <Card.Header className="bg-primary text-white px-3 py-2">
+            <h5 className="mb-0 fw-bolder">クーポン変更</h5>
           </Card.Header>
           <Card.Body className="py-0">
             <div className="table-settings mb-4">
@@ -126,17 +126,13 @@ export default (props) => {
                     }
                   </InputGroup>
                 </Col>
-                {
-                  couponCode && (
-                    <Col xs={12} lg={12} className="d-md-flex">
-                      <div className="align-items-center my-4">
-                        <Button onClick={handleClick} variant="gray-800" className="w-100 p-3">
-                          適用
-                        </Button>
-                      </div>
-                    </Col>
-                  )
-                }
+                  <Col xs={12} lg={12} className="d-md-flex">
+                    <div className="align-items-center my-4">
+                      <Button onClick={handleClick} variant="success" disabled={!couponCode} className="w-100">
+                        適用
+                      </Button>
+                    </div>
+                  </Col>
               </Row>
             </div>
             <div>
@@ -151,7 +147,7 @@ export default (props) => {
               }
             </ListGroup> 
             <div className="align-items-center my-4">
-              <Button onClick={saveCoupon} variant="tertiary" className="w-100 p-3">
+              <Button onClick={saveCoupon} variant="tertiary" className="w-100">
                 変更する
               </Button>
             </div>

@@ -56,9 +56,9 @@ export default () => {
       </Tab.Container> */}
       <LiffPurchaseHistories />
       <Card border="0" className="shadow p-0 my-3">
-        <Card.Header className="border-bottom">
-          <h5 className="liff-product-detail-name">キャンセルについて</h5>
-        </Card.Header>
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">キャンセルについて</h5>
+      </Card.Header>  
         <Card.Body className="pb-3 rounded-bottompt-3">
           <p>キャンセルする場合は、お手数ですが下記ボタンからご連絡ください。</p>
           <p>注文番号をお伝えいただくとスムーズです。</p>

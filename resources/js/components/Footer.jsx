@@ -7,6 +7,7 @@ import BS5Logo from "@img/img/technologies/bootstrap-5-logo.svg";
 import ReactLogo from "@img/img/technologies/react-logo.svg";
 
 import { Paths } from "@/paths";
+import { Link } from "react-router-dom";
 
 export default (props) => {
   const { showSettings } = props;
@@ -25,23 +26,23 @@ export default (props) => {
             <Row>
               <Col xs={12} className="mb-1">
                 <li className="list-inline-item px-0 px-sm-2">
-                  <Card.Link href={Paths.LiffPrivacyPolicy.path}>
+                  <Link to={Paths.LiffPrivacyPolicy.path}>
                     プライバシーポリシー
-                  </Card.Link>
+                  </Link>
                 </li>
               </Col>
               <Col xs={12} className="mb-1">
                 <li className="list-inline-item px-0 px-sm-2">
-                  <Card.Link href={Paths.LiffTermsOfService.path}>
+                  <Link to={Paths.LiffTermsOfService.path}>
                   利用規約
-                  </Card.Link>
+                  </Link>
                 </li>
               </Col>
               <Col xs={12}>
                 <li className="list-inline-item px-0 px-sm-2">
-                  <Card.Link href={Paths.LiffSpecificTrades.path}>
+                  <Link to={Paths.LiffSpecificTrades.path}>
                   特定商法取引法に基づく表記
-                  </Card.Link>
+                  </Link>
                 </li>
               </Col>
             </Row>

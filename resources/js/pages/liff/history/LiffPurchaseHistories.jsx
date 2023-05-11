@@ -48,7 +48,7 @@ export default () => {
     //getOrders(101, setOrders)
 
     getUser(idToken, setUser).then(response => {
-      getOrders(response.id, setOrders, setIsLoading)
+      getOrders(response.id, setOrders, setIsLoading).finally(() => setIsLoading(false));
     })
     //setIsLoading(false);
   }, []);
@@ -72,13 +72,12 @@ export default () => {
 
     return (
       <Card border="0" className="shadow p-0 mb-4">
-        <Card.Header className="">
-            <h2 className="fs-5 fw-bold mb-0">{getStatus(status)}</h2>
-        </Card.Header>
-        <Card.Body className="pb-3 rounded-bottompt-3">
-          <div className="d-flex align-items-center pb-3">
-            <small className="">購入日時：{moment(created_at).format("YYYY-MM-DD HH:mm:ss")}</small>
-            <div className="me-1 ms-1">｜</div>
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder justify-content-between">{getStatus(status)}</h5>
+        </Card.Header>  
+        <Card.Body>
+          <div className="d-flex align-items-center pb-3 justify-content-between">
+            <small className="">購入日：{moment(created_at).format("YYYY-MM-DD")}</small>
             <small className="">注文番号：{id}</small>
           </div>
           <ListGroup className="list-group-flush">
@@ -102,11 +101,13 @@ export default () => {
   return (
     <>
     <Card border="0" className="shadow p-0 mt-3">
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">注文日でフィルタリング</h5>
+      </Card.Header>  
       <Card.Body className="pb-3 rounded-bottompt-3">
         <Row>
           <Col xs={12} className="my-1">
             <Form.Group id="order-date">
-              <Form.Label>注文日でフィルタリング</Form.Label>
               <Form.Select defaultValue="1" className="mb-0 w-100" value={time} onChange={(e) => handleChange(e)}>
                 <option value="">注文時期を選択してください</option>
                 <option value={1}>過去1ヶ月</option>
@@ -118,7 +119,7 @@ export default () => {
         </Row>
       </Card.Body>
     </Card>
-    <div className="d-flex align-items-center content">
+    <div className="d-flex align-items-center">
       {
         orders.length > 0 
         ? <p className="mt-4">件数：{orders.length}件</p> 

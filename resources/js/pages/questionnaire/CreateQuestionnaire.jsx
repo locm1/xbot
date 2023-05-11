@@ -146,7 +146,6 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-3">
         <div className="d-block mb-4 mb-md-0">
-          <Button onClick={() => { console.log(questionnaires) }} />
           <h1 className="page-title">アンケート管理</h1>
         </div>
         <div className="d-flex flex-row-reverse mt-3">

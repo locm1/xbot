@@ -12,9 +12,9 @@ export default (props) => {
 
   return (
     <Card border="0" className="shadow my-3">
-      <Card.Header className="border-bottom">
-        <h5 className="liff-product-detail-name mb-0">お客様の情報</h5>
-      </Card.Header>
+      <Card.Header className="bg-primary text-white px-3 py-2">
+        <h5 className="mb-0 fw-bolder">お客様情報</h5>
+      </Card.Header>  
       <Card.Body className="p-0">
         <Table className="mb-0">
           <tbody className="border-0">

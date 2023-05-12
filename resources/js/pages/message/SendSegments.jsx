@@ -560,7 +560,7 @@ export default () => {
                                         : <Button variant="danger" className="" onClick={deleteSegmentTemplate}>削除</Button>}
           </div>
           <div className="justify-content-end d-flex mt-2">
-            <Button variant="primary" className="mt-2 w-100" onClick={showConfirmModal}>
+            <Button variant="success" className="mt-2 w-100" onClick={showConfirmModal}>
               セグメント条件を保存する
             </Button>
           </div>

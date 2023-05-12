@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SimpleBar from 'simplebar-react';
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { CSSTransition } from 'react-transition-group';
 import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, InboxIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon } from "@heroicons/react/solid";
@@ -23,6 +23,7 @@ export default (props) => {
   const [collapsedItems, setCollapsedItems] = useState([pathname]);
   const contracted = props.contracted ? "contracted" : "";
   const showClass = show ? "show" : "";
+  const history = useHistory();
 
   const onCollapse = () => setShow(!show);
   const onMouseEnter = () => props.onMouseEnter && props.onMouseEnter();
@@ -35,6 +36,17 @@ export default (props) => {
   };
 
   const events = isMobile ? {} : { onMouseEnter, onMouseLeave };
+
+  const logout = (e) => {
+    e.preventDefault();
+
+    // ログアウト
+    axios.post('/api/v1/logout').then(response => {
+      history.push(Paths.Signin.path);
+    }).catch(error => {
+      console.log(error);
+    })
+  };
 
   const CollapsableNavItem = (props) => {
     const { eventKey, title, icon: NavItemIcon, children = null } = props;
@@ -120,7 +132,7 @@ export default (props) => {
     <>
       <Navbar as={Col} xs={12} expand={false} collapseOnSelect variant="dark" className="navbar-theme-primary px-4 d-lg-none">
         <Navbar.Brand as={Link} to={Paths.DashboardOverview.path} className="me-lg-5">
-          <Image src={ReactHero} className="navbar-brand-dark" />
+          <Image src={Logo} className="navbar-brand-dark" />
         </Navbar.Brand>
         <div className="d-flex align-items-center">
           <Navbar.Toggle as={Button} onClick={onCollapse}>
@@ -131,15 +143,11 @@ export default (props) => {
       <CSSTransition timeout={300} in={show} classNames="sidebar-transition">
         <SimpleBar {...events} className={`${contracted} ${showClass} sidebar d-lg-block bg-gray-800 text-white collapse pb-8`}>
           <div className="sidebar-inner px-4 ptVolt Pro React-3">
-            <div className="user-card d-flex d-md-none justify-content-between justify-content-md-center pb-4">
+            <div className="user-card d-flex d-md-none justify-content-between justify-content-md-center py-4">
               <div className="d-flex align-items-center">
-                <div className="avatar-lg me-4">
-                  <Image src={ProfilePicture} className="card-img-top rounded-circle border-white" />
-                </div>
                 <div className="d-block">
-                  <h5 className="mb-3">Hi, Jane</h5>
-                  <Button as={Link} variant="secondary" size="sm" to={Paths.Signin.path} className="d-inline-flex align-items-center">
-                    <LogoutIcon className="icon icon-xxs me-1" /> Sign Out
+                  <Button as={Link} onClick={(e) => logout(e)} variant="secondary" size="sm" to={Paths.Signin.path}  className="d-inline-flex align-items-center">
+                    <LogoutIcon className="icon icon-xxs me-1" /> LogOut
                   </Button>
                 </div>
               </div>

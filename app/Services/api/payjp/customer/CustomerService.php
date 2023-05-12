@@ -48,7 +48,18 @@ class CustomerService
             'card' => $request->payjp_token,
             'description' => "userId: {$user->id}",
         ]);
-        return $customer->id;
+        $card = $customer->cards->data[0];
+        return [
+            'customer_id' => $customer->id,
+            'card' => [
+                'id' => $card['id'],
+                'card_number' =>  "**** **** **** {$card['last4']}",
+                'brand' =>  $card['brand'],
+                'exp_year' =>  $card['exp_year'],
+                'exp_month' =>  $card['exp_month'],
+                'name' =>  $card['name'],
+            ]
+        ];
     }
 
     public function update($request)

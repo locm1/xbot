@@ -131,13 +131,14 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     console.log(error);
     if (error.response.status === 401) {
       history.push('/manage/login'); // ログイン画面にリダイレクト
-    } else if (error.response.status === 422) {
-      Swal.fire(
-        `エラー`,
-        `入力項目を確認してください。`,
-        'error'
-      )
-    }
+    } 
+    // else if (error.response.status === 422) {
+    //   Swal.fire(
+    //     `エラー`,
+    //     `入力項目を確認してください。`,
+    //     'error'
+    //   )
+    // }
     return Promise.reject(error);
   });
 

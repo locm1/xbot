@@ -207,7 +207,7 @@ export const EventModal = (props) => {
             {!edit &&
               <Col xs={12} lg={12}>
                 <Form.Group id="dateRange">
-                  <Form.Label>範囲指定</Form.Label>
+                  <Form.Label className="mt-2">範囲指定</Form.Label>
                   <Flatpickr
                     options={rangeOptions}
                     render={(props, ref) => {
@@ -245,7 +245,7 @@ export const EventModal = (props) => {
               削除
             </Button>
           ) : null}
-          <Button variant="success" className="" onClick={onConfirm}>
+          <Button variant="success" className="btn-default-success" onClick={onConfirm}>
             {edit ? "更新" : "保存"}
           </Button>
         </Modal.Footer>

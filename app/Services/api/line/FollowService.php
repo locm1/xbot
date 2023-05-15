@@ -41,11 +41,17 @@ class FollowService
             $display_name = $profile['displayName'];
             $picture_url = $profile['pictureUrl'] ?? null;
             $status_message = $profile['statusMessage'] ?? null;
-            User::upsert([
-                'nickname' => $display_name, 'img_path' => $picture_url, 'line_id' => $this->line_id, 
-                'is_blocked' => 0, 'status_message' => $status_message, 'is_registered' => 0,
-            ], ['line_id']);
             $User = User::where('line_id', $this->line_id)->first();
+            if ($User) {
+                $User->is_blocked = 0;
+                $User->save();
+            } else {
+                User::create([
+                    'nickname' => $display_name, 'img_path' => $picture_url, 'line_id' => $this->line_id, 
+                    'is_blocked' => 0, 'status_message' => $status_message, 'is_registered' => 0,
+                ]);
+                $User = User::where('line_id', $this->line_id)->first();
+            }
             Log::debug($User);
             return $User;
         } else {

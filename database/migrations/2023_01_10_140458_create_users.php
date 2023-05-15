@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('tel', 50)->nullable(true);
             $table->foreignId('occupation_id')->nullable(true)->constrained('occupations');
             $table->text('img_path')->nullable(true);
-            $table->string('line_id')->unique()->nullable(false);
+            $table->string('line_id')->nullable(false);
             $table->tinyInteger('is_registered');
             $table->softDeletes();
             $table->timestamps();

@@ -36,7 +36,8 @@ export default () => {
           console.error(error);
         }).finally(() => {
           setIsLoading(false);
-    })}, [])
+      })
+    }, [])
 
     const showConfirmDeleteModal = async (id) => {
       const textMessage = "本当にこの流入経路を削除しますか？";
@@ -69,10 +70,18 @@ export default () => {
     };
 
     useLayoutEffect(() => {
-      const searchParams = {
-        params: {page: 1}
-      };
-      getInflowRoutes(searchParams, setInflows, setLinks, setPaginate, liffId)
+      setIsLoading(true);
+      axios.get('/api/v1/get-liff-id').then((response) => {
+        setLiffId(response.data);
+        const searchParams = {
+          params: {page: 1}
+        };
+        getInflowRoutes(searchParams, setInflows, setLinks, setPaginate, response.data)
+        }).catch((error) => {
+          console.error(error);
+        }).finally(() => {
+          setIsLoading(false);
+      })
     }, [])
 
     const handleChange = (e) => {
@@ -94,7 +103,7 @@ export default () => {
         const searchParams = {
           params: {page: 1}
         };
-        getInflowRoutes(searchParams, setInflows, setLinks, setPaginate)
+        getInflowRoutes(searchParams, setInflows, setLinks, setPaginate, liffId)
       })
       .catch(error => {
           console.error(error);

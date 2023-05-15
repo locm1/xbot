@@ -55,6 +55,7 @@ export default () => {
 
   const createPaymentMethod = (paymentMethod) => {
     if ('id' in paymentMethod) {
+      console.log(paymentMethod);
       updatePaymentMethod(user.id, paymentMethod.id, paymentMethod, onSaveComplete)
     } else {
       storePaymentMethod(user.id, paymentMethod, onSaveComplete)
@@ -67,7 +68,10 @@ export default () => {
     //storeCustomer(user.id, formValue, paymentMethod)
     storeCustomer(user.id, formValue, paymentMethod).then(
       response => {
-        paymentMethod.payjp_customer_id = response
+        console.log(response);
+        paymentMethod.payment_method = 1
+        paymentMethod.payjp_customer_id = response.customer_id
+        paymentMethod.payjp_default_card_id = response.card.id
         createPaymentMethod(paymentMethod)
       }
     )
@@ -79,8 +83,10 @@ export default () => {
     const formValue = {
       payjp_token: payjpToken[0].value, payjp_customer_id: paymentMethod.payjp_customer_id
     };
+    console.log();
     storeCard(user.id, formValue).then(
       response => {
+        console.log(response);
         paymentMethod.payjp_default_card_id = response.id
         paymentMethod.payment_method = 1
         createPaymentMethod(paymentMethod)

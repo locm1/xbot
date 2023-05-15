@@ -17,7 +17,7 @@ class PaymentMethodService
 
     public function store($request, User $user)
     {
-        $data = $request->only(['payment_method']);
+        $data = $request->only(['payment_method', 'payjp_customer_id', 'payjp_default_card_id']);
         $merged_payment_method = MergeArrayUtility::mergeUserIdToArray($user->id, $data);
         return OrderPaymentMethod::create($merged_payment_method);
     }

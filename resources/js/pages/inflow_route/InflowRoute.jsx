@@ -72,7 +72,7 @@ export default () => {
       const searchParams = {
         params: {page: 1}
       };
-      getInflowRoutes(searchParams, setInflows, setLinks, setPaginate)
+      getInflowRoutes(searchParams, setInflows, setLinks, setPaginate, liffId)
     }, [])
 
     const handleChange = (e) => {

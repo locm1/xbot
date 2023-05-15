@@ -1,11 +1,11 @@
-export const getInflowRoutes = async (params, setInflows, setLinks, setPaginate) => {
+export const getInflowRoutes = async (params, setInflows, setLinks, setPaginate, liffId) => {
   axios.get('/api/v1/management/inflow-routes', params)
   .then((response) => {
     const inflow_routes = response.data.inflow_routes;
     const newData = inflow_routes.data.map(v => ({
       id: v.id,
       name: v.name,
-      uri: "https://liff.line.me/1660723896-RmovvEYY?path=inflow-route/" + v.key,
+      uri: "https://liff.line.me/" + liffId + "?path=inflow-route/" + v.key,
       count: v.count
     }))
     setInflows(newData);

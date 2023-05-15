@@ -56,6 +56,9 @@ export const Paths = {
     Postage: {path: `${prefix}/ec/postage`},
     Permissions: {path: `${prefix}/account/permissions`},
     InflowRoute: {path: `${prefix}/account/inflow-route`},
+    Reports: {path: `${prefix}/report/list`},
+    EditReport: {path: `${prefix}/report/edit/:id`},
+    CreateReport: {path: `${prefix}/report/create`},
 
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },

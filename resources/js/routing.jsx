@@ -57,6 +57,9 @@ import RichMenus from '@/pages/richmenu/RichMenus';
 import Postage from '@/pages/master/Postage';
 import Permissions from '@/pages/sidebar/Permissions';
 import InflowRoute from '@/pages/inflow_route/InflowRoute';
+import Reports from '@/pages/report/Reports';
+import EditReport from '@/pages/report/EditReport';
+
 
 // Account
 import Accounts from '@/pages/account/Accounts';
@@ -545,6 +548,8 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="account" path={Paths.RegisterAccount.path} component={EditAccount} />
       <RouteWithSidebar exact role_path="account" path={Paths.Permissions.path} component={Permissions} />
       <RouteWithSidebar exact role_path="account" path={Paths.InflowRoute.path} component={InflowRoute} />
+      <RouteWithSidebar exact role_path="account" path={Paths.Reports.path} component={Reports} />
+      <RouteWithSidebar exact role_path="account" path={Paths.CreateReport.path} component={EditReport} />
 
       <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffECRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />

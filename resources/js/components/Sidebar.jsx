@@ -3,7 +3,7 @@ import SimpleBar from 'simplebar-react';
 import { useHistory, useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { CSSTransition } from 'react-transition-group';
-import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, InboxIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon } from "@heroicons/react/solid";
+import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, InboxIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon, FilterIcon } from "@heroicons/react/solid";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { Nav, Badge, Image, Button, Dropdown, Navbar, Collapse, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -232,6 +232,12 @@ export default (props) => {
                     <NavItem title="固定アンケート管理" link={Paths.DefaultQuestionnaire.path} />
                     <NavItem title="アンケート管理" link={Paths.CreateQuestionnaire.path} />
                   </CollapsableNavItem>
+                )
+              }
+
+              {
+                pages[8] && admin.role <= pages[8].role && (
+                  <NavItem title="レポート管理" link={Paths.Reports.path} icon={FilterIcon} />
                 )
               }
 

@@ -43,7 +43,7 @@ class FollowService
             $status_message = $profile['statusMessage'] ?? null;
             User::upsert([
                 'nickname' => $display_name, 'img_path' => $picture_url, 'line_id' => $this->line_id, 
-                'is_blocked' => 0, 'status_message' => $status_message, 'is_registered' => 0, 'deleted_at' => null
+                'is_blocked' => 0, 'status_message' => $status_message, 'is_registered' => 0,
             ], ['line_id']);
             $User = User::where('line_id', $this->line_id)->first();
             Log::debug($User);

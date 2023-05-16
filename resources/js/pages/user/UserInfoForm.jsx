@@ -154,7 +154,7 @@ export const UserInfoForm = (props) => {
             <Col md={4} className="mb-3">
               <Form.Group id="phone">
                 <Form.Label>職業</Form.Label>
-                <Form.Select value={occupation_id ?? ''} className="mb-0" name="occupation" onChange={(e) => props.handleChange(e.target.value, 'occupation')}>
+                <Form.Select value={occupation_id ?? ''} className="mb-0" name="occupation" onChange={(e) => props.handleChange(e.target.value, 'occupation_id')}>
                   <option>選択してください</option>
                   {
                     occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)

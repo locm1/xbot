@@ -75,7 +75,7 @@ class UserService
             'last_name_kana',
             'line_id',
             'nickname',
-            'occupation',
+            'occupation_id',
             'prefecture',
             'tel',
             'zipcode',

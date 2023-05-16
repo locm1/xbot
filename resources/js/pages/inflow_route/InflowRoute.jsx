@@ -66,7 +66,7 @@ export default () => {
       const searchParams = {
         params: {page: currentPage}
       };
-      getInflowRoutes(searchParams, setInflows, setLinks, setPaginate)
+      getInflowRoutes(searchParams, setInflows, setLinks, setPaginate, liffId)
     };
 
     useLayoutEffect(() => {

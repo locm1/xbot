@@ -40,10 +40,21 @@ export default () => {
 			<Col>
 				<Card className="mb-3">
 					<Card.Header className="bg-primary text-white px-3 py-2">
-						<h5 className="mb-0 fw-bolder">期間指定</h5>
+						<h5 className="mb-0 fw-bolder">期間</h5>
 					</Card.Header>
 					<Card.Body>
-						<Form.Control />
+							<Form.Check
+								type='radio'
+								label='全期間'
+								name='period'
+								id='period-1'
+							/>
+							<Form.Check
+								type='radio'
+								label='期間指定'
+								name='period'
+								id='period-1'
+							/>
 					</Card.Body>
 				</Card>
 				<Card className="mb-3">

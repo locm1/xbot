@@ -216,6 +216,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('send-multicast-message', SendMulticastMessage::class);
         Route::apiResource('send-messages', SendMessageController::class);
         Route::apiResource('inflow-routes', InflowRouteController::class);
+        Route::apiResource('reports', ReportController::class);
     });
 });
 

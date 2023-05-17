@@ -131,7 +131,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   // InterceptLoading();
 
   axios.interceptors.response.use(null, (error) => {
-    console.log(error);
     if (error.response.status === 401) {
       history.push('/manage/login'); // ログイン画面にリダイレクト
     } 
@@ -196,7 +195,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   useLayoutEffect(() => {
     axios.get('/api/v1/management/me').then(response => {
       setAdmin(response.data.admin);
-      console.log(response.data.admin);
     }).catch(error => {
       console.error(error);
       history.push(Paths.Signin.path);
@@ -213,7 +211,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   if (loading) {
     return <LoadingPage />;
   }
-  console.log(pageRole);
   return (
     pageRole[0] && admin.role <= pageRole[0].role ?
       <Route {...rest} render={props => (
@@ -549,6 +546,7 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="account" path={Paths.Permissions.path} component={Permissions} />
       <RouteWithSidebar exact role_path="account" path={Paths.InflowRoute.path} component={InflowRoute} />
       <RouteWithSidebar exact role_path="account" path={Paths.Reports.path} component={Reports} />
+      <RouteWithSidebar exact role_path="account" path={Paths.EditReport.path} component={EditReport} />
       <RouteWithSidebar exact role_path="account" path={Paths.CreateReport.path} component={EditReport} />
 
       <LiffInitRoute path={Paths.LiffInit.path} />

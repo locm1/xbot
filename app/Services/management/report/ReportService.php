@@ -3,12 +3,14 @@
 namespace App\Services\management\report;
 
 use App\Models\OrderProduct;
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\management\report\GroupingReportAction;
 use App\Services\management\report\FormatReportAction;
 use App\Services\common\DatetimeUtility;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ReportService
 {
@@ -18,6 +20,77 @@ class ReportService
     public function __construct(GroupingReportAction $group_report_action, FormatReportAction $format_action) {
         $this->group_report_action = $group_report_action;
         $this->format_action = $format_action;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return Report::paginate(10);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $data): array
+    {
+        $save_data = [
+            'name' => $data->name,
+            'period' => $data->period,
+            'xlabel' => $data->xlabel,
+            'type' => $data->type,
+            'search_json' => json_encode($data->searchTerms)
+        ];
+        Report::create($save_data);
+
+        return $save_data;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Report $Report)
+    {
+        return $Report;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Report $Report)
+    {
+        $Report->name = $request->name;
+        $Report->period = $request->period;
+        $Report->xlabel = $request->xlabel;
+        $Report->type = $request->type;
+        $Report->search_json = json_encode($request->searchTerms);
+        $Report->save();
+
+        return $Report;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
     }
 
     /**

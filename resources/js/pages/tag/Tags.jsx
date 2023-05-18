@@ -32,6 +32,7 @@ export default () => {
   const createCardOpen = () => {
     setIsCreate(!isCreate)
     setIsEdit(false)
+    setName('')
   };
 
   const storeTag = async (e) => {
@@ -138,6 +139,7 @@ export default () => {
                 updateName={name}
                 setName={setName}
                 isEdit={isEdit}
+                setIsCreate={setIsCreate}
                 setIsEdit={setIsEdit}
                 updateTag={updateTag}
                 showTags={showTags}

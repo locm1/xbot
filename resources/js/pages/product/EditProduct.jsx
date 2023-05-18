@@ -75,15 +75,15 @@ export default () => {
     const newImage = {
       display_id: typeof currentImage !== 'undefined' ? currentImage.display_id + 1 : 1,
       product_id: id,
-      image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile))[0]
+      image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile))
     }
     setStoreProductImages([...storeProductImages, ...acceptedFiles])
 
     setProductImages([...productImages, newImage]);
-    console.log([...productImages, newImage]);
   };
 
-  const deleteImage = (id, display_id) => {
+  const deleteImage = (e, id, display_id) => {
+    e.stopPropagation();
     const deleteImage = productImages.find((image) => image.id === id)
     setProductImages(productImages.filter(image => image.display_id !== display_id))
     setStoreProductImages(storeProductImages.filter(image => image.id !== id))
@@ -93,12 +93,12 @@ export default () => {
     }
   };
   
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
       'image/jpg': ['.jpeg', '.jpg'],
       'image/png': ['.png'],
     },
-    onDrop
+    onDrop,
   });
 
   const DropzoneFile = (props) => {
@@ -126,14 +126,19 @@ export default () => {
       }
       reader.readAsDataURL(e.target.files[0])
     };
+
+    const test = () => {
+      console.log('a');
+      
+    };
     
 
     return (
-      <div className="dropzone-preview py-2">
+      <div className="dropzone-preview py-2" onClick={() => test()}>
         <div>{index + 1}枚目</div>
         <div className="product-preview-image d-flex">
-          <Image src={image_path} className="dropzone-image" onClick={() => changeImage(id)} />
-          <Button variant="gray-800" className="product-image-button" onClick={() => id ? deleteImage(id, display_id) : deleteImage(null, display_id)}>
+          <Image src={image_path} className="dropzone-image" onClick={changeImage(id)} />
+          <Button variant="gray-800" className="product-image-button" onClick={(e) => id ? deleteImage(e, id, display_id) : deleteImage(e, null, display_id)}>
             <XIcon className="icon icon-sm line-preview-image-icon" />
           </Button>
           <input

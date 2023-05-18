@@ -343,12 +343,14 @@ export default () => {
     } else {
       storeRichMenu(formData).then(response => {
         if (response === 'failed') {
+          setIsLoading(false)
           Swal.fire({
             icon: 'error',
             title: 'エラー',
             text: `テンプレート名「${formValue.title}」を保存できませんでした`,
           })
         } else {
+          setIsLoading(false)
           Swal.fire({
             icon: 'success',
             title: '保存完了',

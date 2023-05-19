@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export const getDefaultSegments = (setQuestionnaires) => {
 	axios.get('/api/v1/management/default-segments')
@@ -44,4 +45,13 @@ export const storeReport = (data) => {
 
 export const updateReport = (id, data) => {
 	return axios.put(`/api/v1/management/reports/${id}`, data)
+}
+
+export const deleteReport = async(id) => {
+	return await axios.delete(`/api/v1/management/reports/${id}`).then(response => {
+		console.log(response);
+		Swal.fire('削除成功', '選択したレポートは削除されました', 'success')
+	}).catch(error => {
+		Swal.fire('削除失敗', '選択したレポートの削除に失敗しました', 'error')
+	})
 }

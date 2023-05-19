@@ -5,23 +5,25 @@ import { Col, Row, Button, Dropdown } from 'react-bootstrap';
 
 import { CustomersWidget, RevenueWidget, UsersWidget, WeeklyReportWidget, LineGraphChartWidget, TeamMembersWidget, ProgressTrackWidget, EventsWidget, RankingWidget, VisitsMapWidget, SalesValueWidget, AcquisitionWidget, TimelineWidget } from "@/components/Widgets";
 import { PageVisitsTable } from "@/components/Tables";
-import { getReportUsers, getReportAnalysis, getDemographic, getReportAnalysisByOrderProducts } from "@/pages/dashboard/api/DashboardApiMethods";
+import { getReportUsers, getReportAnalysis, getDemographic, getReportAnalysisByOrderProducts, getReportData } from "@/pages/dashboard/api/DashboardApiMethods";
 import PieChart from "@/pages/dashboard/PieChart";
 import PrefectureWidget from "@/pages/dashboard/PrefectureWidget";
 import BarChartWidget from "@/pages/dashboard/BarChartWidget";
 import OrderProductsWidget from "@/pages/dashboard/OrderProductsWidget";
 import moment from "moment-timezone";
+import BarOrLineChart from "./graphs/BarOrLineChart";
 
 export default () => {
   const [friendCount, setFriendCount] = useState();
   const [blockCount, setBlockCount] = useState();
   const [analyses, setAnalyses] = useState([]);
-  const [genders, setGenders] = useState([]); 
-  const [birthMonths, setBirthMonths] = useState([]); 
+  const [genders, setGenders] = useState([]);
+  const [birthMonths, setBirthMonths] = useState([]);
   const [prefectures, setPrefectures] = useState([]);
   const [products, setProducts] = useState([{
-    product_images: [{image_path: ''}]
+    product_images: [{ image_path: '' }]
   }]);
+  const [reportData, setReportData] = useState([]);
   const genderLabels = ['男性', '女性', 'その他', '無記入'];
   const colors = ['#0073a8', '#c82c55', '#00a968', '#f39800'];
   const date = new Date();
@@ -56,10 +58,19 @@ export default () => {
     getReportAnalysis(setAnalyses);
     getDemographic(setGenders, setBirthMonths, setPrefectures)
     getReportAnalysisByOrderProducts(setProducts)
+    getReportData().then(response => {
+      console.log(response.data);
+      setReportData(response.data);
+    }).catch(error => {
+      console.log(error);
+    })
   }, []);
 
   return (
     <>
+      {reportData.map((v, k) =>
+        <BarOrLineChart key={`chart-${k}`} {...v} className="my-3" />
+      )}
       <div className="py-4">
         <Dropdown>
           <Dropdown.Toggle as={Button} variant="gray-800" className="d-inline-flex align-items-center me-2">

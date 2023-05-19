@@ -2,8 +2,10 @@ import { Button, Card, Col, Form, Row } from "react-bootstrap"
 import CheckboxButton from "@/components/CheckboxButton";
 import SegmentCard from "@/pages/message/segment/SegmentCard";
 import { useEffect, useState } from "react";
-import { getDefaultSegments, storeReport, getReport } from "./api/ReportApiMethods";
-import { useLocation, useParams } from "react-router-dom";
+import { getDefaultSegments, storeReport, getReport, updateReport } from "./api/ReportApiMethods";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import { Paths } from "@/paths";
 
 export default () => {
 	const [title, setTitle] = useState();
@@ -14,8 +16,9 @@ export default () => {
 	const [questionnaires, setQuestionnaires] = useState([]);
 	const periods = ['1週間', '1ヶ月間', '1年間'];
 	const xlabels = ['期間', '性別', '誕生月'];
-	const types = ['棒グラフ', '折れ線グラフ', '円グラフ'];
+	const types = ['棒グラフ', '折れ線グラフ'];
 	const isEditing = useLocation().pathname.includes('/edit');
+	const history = useHistory();
 
 	useEffect(() => {
 		getDefaultSegments(setQuestionnaires);
@@ -24,7 +27,7 @@ export default () => {
 				const report = response.data;
 				setData({name: report.name, period: report.period, xlabel: report.xlabel, type: report.type});
 				setTitle(report.name);
-				setSearchTerms(JSON.parse(report.search_json));
+				setSearchTerms(JSON.parse(report.search_json ?? {}));
 			})
 		}
 	}, []);
@@ -111,8 +114,8 @@ export default () => {
 	const handleSave = () => {
 		data.searchTerms = searchTerms
 		if (isEditing) {
-			updateReport(data).then(response => {
-				console.log(response);
+			updateReport(id, data).then(response => {
+				Swal.fire('保存成功', `${data.name}レポートの保存に成功しました`, 'success');
 			}).catch(error => {
 				console.error(error);
 				if (error.response.status === 422) {
@@ -121,11 +124,11 @@ export default () => {
 			})
 			return ;
 		}
-		console.log('aaa');
 		storeReport(data).then(response => {
-			
+			Swal.fire('保存成功', `${data.name}レポートの保存に成功しました`, 'success');
+			history.push(Paths.EditReport.path.replace(':id', response.data.id))
 		}).catch(error => {
-			console.log(error.response.status);
+			console.log(error.response);
 			if (error.response.status === 422) {
 				setErrors(error.response.data.errors);
 			}
@@ -151,7 +154,7 @@ export default () => {
 						<Card.Header className="bg-primary text-white px-3 py-2">
 							<h5 className="mb-0 fw-bolder">レポート名</h5>
 						</Card.Header>
-						<Card.Body>
+						<Card.Body disabled>
 							<Form.Control
 								name="name"
 								value={data.name}
@@ -176,26 +179,6 @@ export default () => {
 					</Card>
 				</Col>
 				<Col>
-					<Card className="mb-3">
-						<Card.Header className="bg-primary text-white px-3 py-2">
-							<h5 className="mb-0 fw-bolder">期間</h5>
-						</Card.Header>
-						<Card.Body>
-							{periods.map((v, k) => 
-								<Form.Check
-									key={`period-${k}`}
-									type='radio'
-									label={v}
-									name='period'
-									id={`period-${k + 1}`}
-									value={k + 1}
-									checked={data.period == k + 1}
-									onChange={handleDataChange}
-									isInvalid={!!errors.period}
-								/>
-							)}
-						</Card.Body>
-					</Card>
 					<Card className="mb-3">
 						<Card.Header className="bg-primary text-white px-3 py-2">
 							<h5 className="mb-0 fw-bolder">グラフ種別</h5>
@@ -236,6 +219,28 @@ export default () => {
 							)}
 						</Card.Body>
 					</Card>
+					{data.xlabel == 1 && 
+					<Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">期間</h5>
+						</Card.Header>
+						<Card.Body>
+							{periods.map((v, k) => 
+								<Form.Check
+									key={`period-${k}`}
+									type='radio'
+									label={v}
+									name='period'
+									id={`period-${k + 1}`}
+									value={k + 1}
+									checked={data.period == k + 1}
+									onChange={handleDataChange}
+									isInvalid={!!errors.period}
+								/>
+							)}
+						</Card.Body>
+					</Card>}
+					
 				</Col>
 			</Row>
 			<div className="d-flex justify-content-end">

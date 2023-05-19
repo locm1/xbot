@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 export const getReportUsers = async (setFriendCount, setBlockCount, params) => {
@@ -66,3 +67,7 @@ export const getReportAnalysisByOrderProducts = async (setProducts) => {
       console.error(error);
   });
 };
+
+export const getReportData = () => {
+  return axios.get('/api/v1/management/report-data')
+}

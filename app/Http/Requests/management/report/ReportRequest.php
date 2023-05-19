@@ -25,10 +25,12 @@ class ReportRequest extends FormRequest
     {
         return [
             'name' => 'required', 
-            'period' => 'required|integer', 
+            'period' => [
+                'required_if:xlabel,1', // xlabelが1の場合にperiodを必須にする
+            ],
             'xlabel' => 'required|integer', 
             'type' => 'required|integer', 
-            'searchTerms' => 'required|json'
+            'searchTerms' => 'required'
         ];
     }
 

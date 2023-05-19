@@ -38,7 +38,7 @@ class ReportService
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $data): array
+    public function store(Request $data): Report
     {
         $save_data = [
             'name' => $data->name,
@@ -47,9 +47,7 @@ class ReportService
             'type' => $data->type,
             'search_json' => json_encode($data->searchTerms)
         ];
-        Report::create($save_data);
-
-        return $save_data;
+        return Report::create($save_data);
     }
 
     /**
@@ -88,9 +86,9 @@ class ReportService
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Report $Report)
     {
-        //
+        return $Report->delete();
     }
 
     /**

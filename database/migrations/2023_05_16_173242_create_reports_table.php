@@ -19,7 +19,7 @@ return new class extends Migration
             $table->tinyInteger('period')->nullable();
             $table->tinyInteger('xlabel');
             $table->tinyInteger('type');
-            $table->json('search_json');
+            $table->json('search_json')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

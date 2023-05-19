@@ -104,7 +104,8 @@ class DashboardController extends Controller
 
     private function formatByGender(Builder $Users): array
     {
-        $group_users = $Users->selectRaw('gender, COUNT(*) AS count')->groupBy('gender')->get();
+        $group_users = $Users->selectRaw('gender, COUNT(*) AS count')
+        ->orderByRaw('ISNULL(gender), gender ASC')->groupBy('gender')->get();
 
 
         $data = [];

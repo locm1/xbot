@@ -4,7 +4,7 @@ import { Card, Button, Form, Col, Row, Badge } from "react-bootstrap";
 import { Link, useHistory } from 'react-router-dom';
 
 export default (props) => {
-  const { id, name, updateName, setName, isEdit, setIsEdit, updateTag, showTags, showConfirmDeleteModal } = props;
+  const { id, name, updateName, setName, isEdit, setIsEdit, updateTag, showTags, showConfirmDeleteModal, setIsCreate } = props;
 
   const editName = (e) => {
     setName(e.target.value);
@@ -15,7 +15,13 @@ export default (props) => {
     setIsEdit({
       id: id, isEdit: !isEdit
     })
+    setIsCreate(false)
     // showTags(id)
+  };
+
+  const handleCansel = () => {
+    setIsEdit(!isEdit)
+    setName('')
   };
 
   const handleKeyDown = (e) => {
@@ -52,7 +58,7 @@ export default (props) => {
                       variant="gray-800"
                       size="sm"
                       className="d-inline-flex align-items-center me-3"
-                      onClick={() => setIsEdit(!isEdit)}
+                      onClick={handleCansel}
                     >
                       キャンセル
                     </Button>

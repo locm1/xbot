@@ -78,8 +78,7 @@ export default () => {
 
   return (
     <>
-      <main className="liff-product-detail">
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
+      <main className="liff-product-detail p-3">
         <div className="">
           <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
             <div className="">
@@ -92,9 +91,9 @@ export default () => {
         </div>
         <div className="liff-product-list">
           <Card border="0" className="shadow">
-      <Card.Header className="bg-primary text-white px-3 py-2">
-        <h5 className="mb-0 fw-bolder">お届け先住所の選択</h5>
-      </Card.Header>  
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">お届け先住所の選択</h5>
+            </Card.Header>  
             <Card.Body className="py-0">
               <ListGroup className="list-group-flush">
                 {deliveryAddresses.map((deliveryAddress, index) => <DeliveryAddressItem key={`address-${deliveryAddress.id}`} {...deliveryAddress} index={index} />)}

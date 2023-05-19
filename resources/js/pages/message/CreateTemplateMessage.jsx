@@ -400,9 +400,9 @@ export default () => {
                 <Button onClick={duplicateTemplate} variant="primary" className="me-2 mt-3">
                   複製する
                 </Button>
-                <Button variant="primary" className="me-2 mt-3">
+                {/* <Button variant="primary" className="me-2 mt-3">
                   このテンプレートで配信
-                </Button>
+                </Button> */}
             </Card.Body>
           </Card>
         </div>

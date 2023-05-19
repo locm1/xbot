@@ -30,7 +30,7 @@ class ReportRequest extends FormRequest
             ],
             'xlabel' => 'required|integer', 
             'type' => 'required|integer', 
-            'searchTerms' => 'required'
+            // 'searchTerms' => 'required'
         ];
     }
 
@@ -41,7 +41,7 @@ class ReportRequest extends FormRequest
             'period' => '期間', 
             'xlabel' => 'x軸設定', 
             'type' => 'グラフ種別', 
-            'searchTerms' => '出力条件'
+            // 'searchTerms' => '出力条件'
         ];
     }
 }

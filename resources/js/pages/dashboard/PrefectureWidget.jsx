@@ -13,9 +13,9 @@ export default (props) => {
 
     return (
       <Row className="align-items-center mb-4">
-        <Col xs="auto">
+        {/* <Col xs="auto">
           <Image roundedCircle src={JapanFlag} className="image-xs" />
-        </Col>
+        </Col> */}
         <Col>
           <div className="progress-wrapper">
             <div className="progress-info">

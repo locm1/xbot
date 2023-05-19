@@ -12,6 +12,8 @@ import BarChartWidget from "@/pages/dashboard/BarChartWidget";
 import OrderProductsWidget from "@/pages/dashboard/OrderProductsWidget";
 import moment from "moment-timezone";
 import BarOrLineChart from "./graphs/BarOrLineChart";
+import { LoadingContext } from "@/components/LoadingContext";
+import { useContext } from "react";
 
 export default () => {
   const [friendCount, setFriendCount] = useState();
@@ -30,6 +32,7 @@ export default () => {
   const year = date.getFullYear();
   const month = ('00' + (date.getMonth() + 1)).slice(-2)
   const day = ('00' + (date.getDate())).slice(-2)
+  const { setIsLoading } = useContext(LoadingContext);
 
   const getLastDayOfMonth = (date) => {
     const lastDate = new Date(date);
@@ -54,6 +57,7 @@ export default () => {
   const period = `${moment(params.params.begin_date).format("MM月DD日")} - ${moment(params.params.end_date).format("MM月DD日")}`
 
   useEffect(() => {
+    setIsLoading(true);
     getReportUsers(setFriendCount, setBlockCount, params);
     getReportAnalysis(setAnalyses);
     getDemographic(setGenders, setBirthMonths, setPrefectures)
@@ -61,8 +65,10 @@ export default () => {
     getReportData().then(response => {
       console.log(response.data);
       setReportData(response.data);
+      setIsLoading(false);
     }).catch(error => {
       console.log(error);
+      setIsLoading(false);
     })
   }, []);
 
@@ -71,34 +77,6 @@ export default () => {
       {reportData.map((v, k) =>
         <BarOrLineChart key={`chart-${k}`} {...v} className="my-3" />
       )}
-      <div className="py-4">
-        <Dropdown>
-          <Dropdown.Toggle as={Button} variant="gray-800" className="d-inline-flex align-items-center me-2">
-            <PlusIcon className="icon icon-xs me-2" />New Task
-          </Dropdown.Toggle>
-          <Dropdown.Menu className="dashboard-dropdown dropdown-menu-start mt-2 py-1">
-            <Dropdown.Item className="d-flex align-items-center">
-              <UserAddIcon className="icon icon-xs text-gray-400 me-2" /> Add User
-            </Dropdown.Item>
-            <Dropdown.Item className="d-flex align-items-center">
-              <CollectionIcon className="icon icon-xs text-gray-400 me-2" /> Add Widget
-            </Dropdown.Item>
-            <Dropdown.Item className="d-flex align-items-center">
-              <CloudUploadIcon className="icon icon-xs text-gray-400 me-2" /> Upload Files
-            </Dropdown.Item>
-            <Dropdown.Item className="d-flex align-items-center">
-              <ShieldExclamationIcon className="icon icon-xs text-gray-400 me-2" /> Preview Security
-            </Dropdown.Item>
-
-            <Dropdown.Divider as="div" className="my-1" />
-
-            <Dropdown.Item className="d-flex align-items-center">
-              <FireIcon className="icon icon-xs text-danger me-2" /> Upgrade to Pro
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-
       <Row className="justify-content-lg-center">
         <Col xs={12} className="mb-4">
           {/* <SalesValueWidget

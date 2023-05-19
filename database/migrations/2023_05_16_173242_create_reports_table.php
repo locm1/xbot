@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->tinyInteger('period');
+            $table->tinyInteger('period')->nullable();
             $table->tinyInteger('xlabel');
             $table->tinyInteger('type');
             $table->json('search_json');

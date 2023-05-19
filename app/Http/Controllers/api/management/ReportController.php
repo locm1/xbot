@@ -66,9 +66,9 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Report $Report)
     {
-        //
+        return $this->service->destroy($Report);
     }
 
     /**

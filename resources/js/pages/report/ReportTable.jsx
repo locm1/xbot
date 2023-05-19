@@ -7,6 +7,8 @@ import { first } from "lodash";
 import Swal from "sweetalert2";
 import QRCode from "qrcode.react";
 import Pagination from "@/components/Pagination";
+import withReactContent from 'sweetalert2-react-content';
+import { deleteReport } from "./api/ReportApiMethods";
 
 export const ReportTable = (props) => {
 	const { reports, setReports, getAllReports, links, setLinks, paginate, setPaginate } = props;
@@ -28,6 +30,32 @@ export const ReportTable = (props) => {
 	const TableRow = (props) => {
 		const { id, name, period, xlabel, type, search_json } = props;
 		const detailPath = Paths.EditReport.path.replace(':id', id);
+		const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-danger',
+				cancelButton: 'btn btn-gray-400 me-3'
+			},
+			buttonsStyling: false
+		}));
+		const handleDelete = async(id) => {
+			const textMessage = "本当にこのレポートを削除しますか？";
+	
+			const result = await SwalWithBootstrapButtons.fire({
+				icon: "error",
+				title: "削除確認",
+				text: textMessage,
+				reverseButtons: true,
+				showCancelButton: true,
+				confirmButtonText: "削除",
+				cancelButtonText: "キャンセル",
+			});
+	
+			if (result.isConfirmed) {
+				deleteReport(id).then(response => {
+					setReports(prev => prev.filter(report => report.id !== id))
+				})
+			}
+		}
 		return (
 			<tr className="border-bottom">
 				<td>
@@ -39,7 +67,7 @@ export const ReportTable = (props) => {
 				<td>
 					<Stack direction="horizontal" className="text-center justify-content-center" gap={2}>
 						<Button variant="info" size="sm" onClick={() => history.push(detailPath)}>編集</Button>
-						<Button variant="danger" size="sm">削除</Button>
+						<Button variant="danger" size="sm" onClick={() => handleDelete(id)}>削除</Button>
 					</Stack>
 				</td>
 			</tr>

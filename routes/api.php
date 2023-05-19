@@ -46,6 +46,7 @@ use App\Http\Controllers\api\management\category\ProductCategoryController;
 use App\Http\Controllers\api\management\category\ProductCategorySortController;
 use App\Http\Controllers\api\management\coupon\CouponController;
 use App\Http\Controllers\api\management\coupon\CouponUserController;
+use App\Http\Controllers\api\management\dashboard\DashboardController;
 use App\Http\Controllers\api\management\DefaultSegmentController;
 use App\Http\Controllers\api\management\EcommerceConfigurationController;
 use App\Http\Controllers\api\management\event\EventUserController;
@@ -217,6 +218,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('send-messages', SendMessageController::class);
         Route::apiResource('inflow-routes', InflowRouteController::class);
         Route::apiResource('reports', ReportController::class);
+        Route::get('report-data', [DashboardController::class, 'getGraphData']);
     });
 });
 

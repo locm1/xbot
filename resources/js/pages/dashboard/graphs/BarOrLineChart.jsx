@@ -1,9 +1,12 @@
 import { useState } from "react";
 import ApexChart from "react-apexcharts";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
+import { Paths } from "@/paths";
+import { useHistory } from "react-router-dom";
 
 export default (props) => {
-	const { id, data, name, period, title, type, xlabel, className } = props;
+	const { id, data, name, period, title, type, xlabel, className, terms } = props;
+	const history = useHistory();
 	const labels = xlabel == 1 ? {
 		formatter: (timestamp) => {
 			var date = new Date(timestamp);
@@ -22,9 +25,9 @@ export default (props) => {
 		},
 		yaxis: {
 			labels: {
-			  formatter: function (value) {
-				return Math.round(value); // 小数点以下を切り捨てて整数にする
-			  }
+				formatter: function (value) {
+					return Math.round(value); // 小数点以下を切り捨てて整数にする
+				}
 			}
 		}
 	});
@@ -35,14 +38,24 @@ export default (props) => {
 		}
 	]);
 
+	const searchSegment = () => {
+    history.push({
+      pathname: Paths.SendSegments.path,
+      state: {segmentTemplate: terms}
+    });
+  }
+
 	return (
 		<Card className={className}>
 			<Card.Body className="d-flex flex-row align-items-center justify-content-between flex-0 border-bottom">
-				<div>
+				<div className="">
 					<h2 className="fs-3 fw-extrabold">
 						{title}
 					</h2>
 				</div>
+				<Button onClick={searchSegment}>
+					この条件で配信する
+				</Button>
 			</Card.Body>
 			<Card.Body className="p-2 py-5">
 				<ApexChart

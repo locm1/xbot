@@ -125,7 +125,7 @@ export default (props) => {
             </Col>
             {
               messageItems.length > 1 && (
-                <Col lg={2} className="d-flex justify-content-center">
+                <Col lg={2} className="d-flex justify-content-end">
                   <div className="message-editor-header-item-right" onClick={() => handleDelete(messageItem.id)}>
                     <XIcon className="icon icon-sm" />
                   </div>

@@ -137,9 +137,6 @@ export default () => {
 
 	return (
 		<>
-		<Button onClick={() => console.log(data)} />
-		<Button onClick={() => console.log(searchTerms)} />
-		<Button onClick={() => console.log(errors)} />
 			<Row>
 				<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
 					<div className="d-block mb-4 mb-md-0">

@@ -30,8 +30,6 @@ export default () => {
 
 	return (
 		<>
-		<Button onClick={() => console.log(reports)} />
-		<Button onClick={() => console.log(paginate)} />
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-2 list-wrap">
 				<div className="">
 					<h1 className="page-title">レポート一覧</h1>

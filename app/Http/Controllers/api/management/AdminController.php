@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\management\admin\UpdateAdminRequest;
 use App\Http\Requests\management\admin\StoreAdminRequest;
 use App\Models\Admin;
+use App\Models\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AdminController extends Controller
@@ -26,6 +27,7 @@ class AdminController extends Controller
      */
     public function index()
     {
+        // return response()->json(['a' => User::find(1)], 200);
         $admins = $this->admin_service->index();
         return response()->json(['admins' => $admins], 200);
     }

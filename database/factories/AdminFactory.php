@@ -19,7 +19,7 @@ class AdminFactory extends Factory
         return [
             'login_id' => fake()->word(),
             'name' => fake()->name(),
-            'role' => fake()->numberBetween(1, 5),
+            'role' => fake()->numberBetween(1, 3),
             'password' => fake()->sha256(),
         ];
     }

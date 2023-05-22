@@ -14,11 +14,11 @@ class ChatworkApiPostTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
-    {
-        $message = 'チャットワークAPIテスト';
-        $service = new ChatworkMessageService;
-        $response = $service->postedMessage($message);
-        return $response;
-    }
+    // public function test_example()
+    // {
+    //     $message = 'チャットワークAPIテスト';
+    //     $service = new ChatworkMessageService;
+    //     $response = $service->postedMessage($message);
+    //     return $response;
+    // }
 }

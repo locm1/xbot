@@ -83,10 +83,10 @@ export default () => {
   };
 
   const deleteImage = (e, id, display_id) => {
-    e.stopPropagation();
+    // e.stopPropagation();
     const deleteImage = productImages.find((image) => image.id === id)
+    id && setStoreProductImages(storeProductImages.filter(image => image.id !== id))
     setProductImages(productImages.filter(image => image.display_id !== display_id))
-    setStoreProductImages(storeProductImages.filter(image => image.id !== id))
     // 削除対象のstate から、idがない、つまりフロント側で追加した画像をバックエンドに送らないようにする
     if (typeof deleteImage !== "undefined") {
       setStoreProductImages(storeProductImages.filter(image => image.display_id !== display_id));
@@ -128,9 +128,10 @@ export default () => {
       }
       reader.readAsDataURL(e.target.files[0])
     };
+    
 
     return (
-      <div className="dropzone-preview py-2" onClick={() => test()}>
+      <div className="dropzone-preview py-2">
         <div>{index + 1}枚目</div>
         <div className="product-preview-image d-flex">
           <Image src={image_path} className="dropzone-image" onClick={changeImage(id)} />
@@ -210,7 +211,8 @@ export default () => {
 
     // 画像保存stateに値があればAPI発火
     if (storeProductImages.length > 0) {
-      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
+      console.log(storeProductImages);
+      // storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
     }
     
     if (pathname.includes('/edit')) {

@@ -74,7 +74,7 @@ export default () => {
       <div className="d-block mb-4 mb-md-0">
         <h1 className="page-title">送料管理</h1>
       </div>
-        <Button variant="success" onClick={handleClick}>保存する</Button>
+        <Button variant="success" onClick={handleClick} className="btn-default-success">保存する</Button>
     </div>
     <Card border="0" className="shadow mb-4">
       <Card.Header className="bg-primary text-white px-3 py-2">
@@ -149,7 +149,7 @@ export default () => {
       </Card.Body>
     </Card>
         <div className="d-flex justify-content-end mb-3">
-          <Button variant="success" onClick={handleClick}>保存する</Button>
+          <Button variant="success" onClick={handleClick} className="btn-default-success">保存する</Button>
         </div>
   </>
   )

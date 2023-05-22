@@ -20,6 +20,7 @@ import { calculateAge } from "../../components/common/CalculateAge";
 import { getAllMessages, sendMulticastMessage } from "@/pages/message/api/MessageApiMethods";
 import { CSVLink } from "react-csv";
 import { LoadingContext } from "@/components/LoadingContext";
+import CountUp from 'react-countup';
 
 export default () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ export default () => {
   const [questionnaires, setQuestionnaires] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchResultUsers, setSearchResultUsers] = useState([]);
+  const [countStart, setCountStart] = useState(searchResultUsers.length);
   const [searchTerms, setSearchTerms] = useState({});
   const [segmentTemplates, setSegmentTemplates] = useState([]);
   const [segmentTemplateOption, setSegmentTemplateOption] = useState("0");
@@ -270,6 +272,7 @@ export default () => {
           const newUsers = response.data.users.map(u => ({ ...u, isSelected: false, show: true }));
           setUsers(newUsers);
           setSearchResultUsers(newUsers);
+          setIsrendered(true);
         })
         .catch(error => {
             console.error(error);
@@ -285,7 +288,6 @@ export default () => {
             setSearchTerms(location.state.segmentTemplate);
           } 
 
-          setIsrendered(true);
         })
         .catch(error => {
             console.error(error);
@@ -402,6 +404,7 @@ export default () => {
         });
       }
       setSearchResultUsers(results);
+      setCountStart(searchResultUsers.length);
     });
   }, [searchTerms])
 
@@ -529,13 +532,13 @@ export default () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">セグメント配信</h1>
-          <Button onClick={() => {console.log(questionnaires)}} />
+          {/* <Button onClick={() => {console.log(questionnaires)}} /> */}
           {/* <Button onClick={() => {console.log(users)}} /> */}
           {/* <Button onClick={() => {console.log(searchResultUsers)}} /> */}
           {/* <Button onClick={() => {console.log(sendDate)}} /> */}
           {/* <Button onClick={() => {console.log(segmentTemplates)}} /> */}
           {/* <Button onClick={() => {console.log(segmentTemplateOption)}} /> */}
-          <Button onClick={() => {console.log(searchTerms)}} />
+          {/* <Button onClick={() => {console.log(searchTerms)}} /> */}
         </div>
       </div>
       <Row>
@@ -543,7 +546,9 @@ export default () => {
         <div className="btn-group target-count-wrap" role="group" aria-label="Basic radio toggle button group">
           <div className="btn btn-primary d-flex pe-none align-items-center text-white">キーワード選択</div>
             <div className="btn btn-outline-primary pe-none bg-white">該当人数
-            <div className="fs-4 people-wrap d-inline"> <span className="people text-primary" id="people">{searchResultUsers.length}</span> </div>人 
+            <div className="fs-4 people-wrap d-inline"> <span className="people text-primary" id="people">
+              <CountUp start={countStart} end={searchResultUsers.length} startOnMount={false} /></span> 
+            </div>人 
           </div>
         </div>
         </Col>

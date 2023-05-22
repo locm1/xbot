@@ -9,7 +9,7 @@ class EventService
 
     public function index()
     {
-        return Event::with('users')->paginate(10);
+        return Event::with('users')->orderBy('created_at', 'desc')->paginate(10);
     }
 
     public function getEventUsersById($event_calendar)

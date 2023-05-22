@@ -89,7 +89,9 @@ export default () => {
     setStoreProductImages(storeProductImages.filter(image => image.id !== id))
     // 削除対象のstate から、idがない、つまりフロント側で追加した画像をバックエンドに送らないようにする
     if (typeof deleteImage !== "undefined") {
+      setStoreProductImages(storeProductImages.filter(image => image.display_id !== display_id));
       setDeleteProductImages([...deleteProductImages, deleteImage]);
+      console.log('aa');
     }
   };
   
@@ -126,12 +128,6 @@ export default () => {
       }
       reader.readAsDataURL(e.target.files[0])
     };
-
-    const test = () => {
-      console.log('a');
-      
-    };
-    
 
     return (
       <div className="dropzone-preview py-2" onClick={() => test()}>
@@ -274,12 +270,12 @@ export default () => {
       </div>
       <Tab.Container defaultActiveKey="products" className="mb-6">
         <Nav fill variant="pills" className="flex-column flex-sm-row">
-          <Nav.Item>
+          <Nav.Item className="w-50">
             <Nav.Link eventKey="products" className="mb-sm-3 mb-md-0">
               商品情報
             </Nav.Link>
           </Nav.Item>
-          <Nav.Item>
+          <Nav.Item className="w-50">
             <Nav.Link eventKey="related_products" className={`mb-sm-3 mb-md-0 ${pathname.includes('/edit') ? "" : "bg-gray-400"}`} disabled={pathname.includes('/edit') ? false : true}>
               セット割商品{pathname.includes('/edit') ? "" : "(商品保存後設定できます)"}
             </Nav.Link>

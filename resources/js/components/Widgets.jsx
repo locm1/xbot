@@ -604,8 +604,6 @@ export const BarChartWidget = (props) => {
                 </span>
               </div>
               <div className="d-flex align-items-center">
-                <GlobeIcon className="icon icon-xxs text-gray-500 me-1" />
-                <span>WorldWide</span>
               </div>
             </div>
           </div>
@@ -1034,8 +1032,6 @@ export const LineGraphChartWidget = (props) => {
               </span>
             </div>
             <div className="d-flex align-items-center">
-              <GlobeIcon className="icon icon-xxs text-gray-500 me-1" />
-              <span>WorldWide</span>
             </div>
           </small>
         </div>

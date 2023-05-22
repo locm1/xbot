@@ -97,7 +97,7 @@ export default () => {
           </tbody>
         </Table>
         <div className="d-flex flex-row-reverse py-3">
-          <Button onClick={handleClick} variant="success" className="me-2">
+          <Button onClick={handleClick} variant="success" className="btn-default-success me-3">
             保存する
           </Button>
         </div>

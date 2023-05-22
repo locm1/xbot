@@ -75,21 +75,19 @@ export default () => {
     const newImage = {
       display_id: typeof currentImage !== 'undefined' ? currentImage.display_id + 1 : 1,
       product_id: id,
-      image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile))
+      image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile)),
     }
-    setStoreProductImages([...storeProductImages, ...acceptedFiles])
+    acceptedFiles[0].display_id = newImage.display_id;
+    setStoreProductImages([...storeProductImages, ...acceptedFiles, ])
 
     setProductImages([...productImages, newImage]);
   };
 
   const deleteImage = (e, id, display_id) => {
-    // e.stopPropagation();
     const deleteImage = productImages.find((image) => image.id === id)
-    id && setStoreProductImages(storeProductImages.filter(image => image.id !== id))
+    setStoreProductImages(storeProductImages.filter(image => image.display_id !== display_id))
     setProductImages(productImages.filter(image => image.display_id !== display_id))
-    // 削除対象のstate から、idがない、つまりフロント側で追加した画像をバックエンドに送らないようにする
     if (typeof deleteImage !== "undefined") {
-      setStoreProductImages(storeProductImages.filter(image => image.display_id !== display_id));
       setDeleteProductImages([...deleteProductImages, deleteImage]);
       console.log('aa');
     }
@@ -211,8 +209,7 @@ export default () => {
 
     // 画像保存stateに値があればAPI発火
     if (storeProductImages.length > 0) {
-      console.log(storeProductImages);
-      // storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
+      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
     }
     
     if (pathname.includes('/edit')) {

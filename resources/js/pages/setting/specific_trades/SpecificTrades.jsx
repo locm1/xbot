@@ -34,6 +34,11 @@ const SpecificTradesService = (props) => {
         console.log(res);
         setSpecificTrades([...SpecificTrades, res.data.specific])
         setIsOpen(false)
+        Swal.fire(
+          '保存完了',
+          '特定商取引法の保存に成功しました',
+          'success'
+        )
     })
     .catch(error => {
         console.error(error);
@@ -44,7 +49,16 @@ const SpecificTradesService = (props) => {
     await axios.put(`/api/v1/management/specific-trades/${specificTradeId}`, formValue)
     .then((res) => {
         console.log(res);
-        location.reload();
+        const currentSpecific = SpecificTrades.find(specific => specific.id == specificTradeId)
+        currentSpecific.title = formValue.title
+        currentSpecific.content = formValue.content
+        setSpecificTrades(SpecificTrades.map(specific => specific.id == specificTradeId ? currentSpecific : specific))
+        setIsOpen(false)
+        Swal.fire(
+          '更新完了',
+          '特定商取引法の更新に成功しました',
+          'success'
+        )
     })
     .catch(error => {
         console.error(error);
@@ -100,7 +114,7 @@ const SpecificTradesService = (props) => {
     if (result.isConfirmed) {
       await axios.delete(`/api/v1/management/specific-trades/${id}`)
       .then((response) => {
-        deleteSpecificTrades()
+        deleteSpecificTrades(id)
         console.log(response);
       })
       .catch(error => {
@@ -109,10 +123,12 @@ const SpecificTradesService = (props) => {
     }
   };
 
-  const deleteSpecificTrades = async () => {
+  const deleteSpecificTrades = async (id) => {
     const confirmMessage = "選択した項目は削除されました。";
     await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
-    location.reload();
+    setSpecificTrades(
+      SpecificTrades.filter((specific) => (specific.id !== id))
+    )
   };
 
   useEffect(() => {

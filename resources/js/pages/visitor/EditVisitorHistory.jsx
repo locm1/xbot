@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { CalendarIcon, CreditCardIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import { EditVisitorHistoryForm } from "@/pages/visitor/EditVisitorHistoryForm";
@@ -12,6 +12,7 @@ import { showVisitorHistory, showUserByVisitorHistory, updateVisitorHistory } fr
 import { getUserVisitorHistoryCount } from "@/pages/user/api/UserHistoryApiMethods";
 
 export default () => {
+  const history = useHistory();
   const { id } = useParams();
   const { state } = useLocation();
   const [createdAt, setCreatedAt] = useState();

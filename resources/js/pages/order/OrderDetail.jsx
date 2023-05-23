@@ -9,6 +9,7 @@ import { showOrder } from "@/pages/order/api/OrderApiMethods";
 import { getOrderProducts, getOrderUser, getOrderDelivery } from "@/pages/order/api/OrderDetailApiMethods";
 
 export default () => {
+  const history = useHistory();
   const { id } = useParams();
   const [orderProducts, setOrderProducts] = useState([
     {id: 1, name: '', quantity: '', price: '', product_id: 1, product_image: [

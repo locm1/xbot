@@ -8,7 +8,7 @@ import QuestionnairePullDown from "@/pages/questionnaire/QuestionnairePullDown";
 import { storeQuestionnaireItem, updateQuestionnaireItem ,deleteQuestionnaireItem } from "@/pages/questionnaire/api/QuestionnaireItemApiMethods";
 
 export default forwardRef((props, ref) => {
-  const { questionnaire, setAlert, setMessage } = props;
+  const { questionnaire, questionnaires, setQuestionnaires } = props;
   const [items, setItems] = useState(questionnaire.questionnaire_items);
   const [timer, setTimer] = useState(null);
 
@@ -23,6 +23,18 @@ export default forwardRef((props, ref) => {
       "name": '',
     }
     storeQuestionnaireItem(questionnaire.id, newItem, items, setItems)
+    // itemsの最後のIDを取得、なければ1
+    // const lastItem = questionnaire.questionnaire_items.slice(-1)[0]
+    // const id = (typeof lastItem !== "undefined") ? lastItem.id + 1 : 1
+    // const newItem = {
+    //   id: id,
+    //   name: '',
+    //   questionnaire_id: questionnaire.id
+    // }
+    // const currentQuestionnaire = questionnaires.find(question => question.id == questionnaire.id)
+    // currentQuestionnaire.questionnaire_items = [...items, newItem]
+    // setQuestionnaires(questionnaires.map(question => question.id == questionnaire.id ? currentQuestionnaire : question))
+    // setItems([...items, newItem])
   }
 
   const editItem = (e, id) => {
@@ -31,6 +43,7 @@ export default forwardRef((props, ref) => {
     setItems(
       items.map((item) => (item.id === id ? currentItem : item))
     );
+    updateQuestionnaireItem(questionnaire.id, {name: e.target.value}, id)
   }
 
   const deleteItem = (id) => {
@@ -46,11 +59,11 @@ export default forwardRef((props, ref) => {
       case 2:
         return <Form.Control required as="textarea" value="" disabled rows="3" className="text-dark mb-1 w-75" placeholder="記述式テキスト（長文）" />
       case 3:
-        return <QuestionnaireRadioButton items={items} addItem={addItem} editItem={editItem} deleteItem={deleteItem} />
+        return <QuestionnaireRadioButton items={items} addItem={addItem} editItem={editItem} deleteItem={deleteItem} id={questionnaire.id} />
       case 4:
-        return <QuestionnaireCheckBoxButton items={items} addItem={addItem} editItem={editItem} deleteItem={deleteItem} />
+        return <QuestionnaireCheckBoxButton items={items} addItem={addItem} editItem={editItem} deleteItem={deleteItem} id={questionnaire.id} />
       case 5:
-        return <QuestionnairePullDown items={items} addItem={addItem} editItem={editItem} deleteItem={deleteItem} />
+        return <QuestionnairePullDown items={items} addItem={addItem} editItem={editItem} deleteItem={deleteItem} id={questionnaire.id} />
       default:
         return <Form.Control required value="" type="text" className="text-dark mb-1 w-75" disabled placeholder="記述式テキスト（短文）" />
     }

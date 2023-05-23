@@ -298,16 +298,8 @@ const RegisteredLiffRoute = ({ component: Component, ...rest }) => {
     return <LoadingPage />;
   }
 
-  if (questionnaireEnabling.is_default_questionnaire_enabled === 0 && questionnaireEnabling.is_questionnaire_enabled == 0) {
-    return (
-      <Route {...rest} render={props => (
-        <>
-          <Component {...props} />
-          <Footer />
-        </>
-      )}
-      />
-    );
+  if (questionnaireEnabling.is_default_questionnaire_enabled == 0 && questionnaireEnabling.is_questionnaire_enabled == 0) {
+    return <LiffServerError />;
   }
 
   if (user.is_registered == 0) {
@@ -346,7 +338,7 @@ const QuestionnaireLiffRoute = ({ component: Component, ...rest }) => {
     return <LoadingPage />;
   }
 
-  if (questionnaireEnabling.is_default_questionnaire_enabled === 0 && questionnaireEnabling.is_questionnaire_enabled == 0) {
+  if (questionnaireEnabling.is_default_questionnaire_enabled == 0 && questionnaireEnabling.is_questionnaire_enabled == 0) {
     return <LiffServerError />;
   }
 
@@ -448,8 +440,8 @@ const LiffInitRoute = () => {
   const query = new URLSearchParams(search);
   const path = query.get('path')
   const [redirect, setRedirect] = useState('');
-  const { setIsLoading } = useContext(LoadingContext);
-  setIsLoading(true);
+  // const { setIsLoading } = useContext(LoadingContext);
+  // setIsLoading(true);
   axios.get('/api/v1/get-liff-id')
     .then((response) => {
       console.log(response);
@@ -465,7 +457,7 @@ const LiffInitRoute = () => {
     .catch((error) => {
       console.error(error);
     }).finally(() => {
-      setIsLoading(false);
+      // setIsLoading(false);
     })
 
 

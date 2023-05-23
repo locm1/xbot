@@ -238,8 +238,8 @@ export default () => {
                                 autoComplete="given-name"
                               />
                               {
-                                errors.last_name_kana && 
-                                <Form.Control.Feedback type="invalid">{errors.last_name_kana[0]}</Form.Control.Feedback>
+                                errors.first_name_kana && 
+                                <Form.Control.Feedback type="invalid">{errors.first_name_kana[0]}</Form.Control.Feedback>
                               }
                             </Form.Group>
                           </div>

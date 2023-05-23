@@ -3,12 +3,12 @@ import { PlusIcon, MinusIcon, TrashIcon } from "@heroicons/react/solid";
 import { Card, Button, Image, Col, Row, Form } from "react-bootstrap";
 
 export default (props) => {
-  const { items, addItem, editItem, deleteItem } = props;
+  const { items, addItem, editItem, deleteItem, id } = props;
 
   return (
     <>
       {items && items.map((item, index) => (
-        <div key={`choice-name-${item.id}`}>
+        <div key={`questionnaire-${id}-choice-name-${item.id}`}>
           <div className="d-flex align-items-center mb-2">
             <div className="position-absolute questionnaire-radio-button"></div>
             <div>{index + 1}</div>

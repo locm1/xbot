@@ -33,7 +33,7 @@ export default (props) => {
           htmlFor="radio"
         />
         <div className="ps-3">
-          <div className="questionnaire-add-button position-absolute" onClick={addItem}></div>
+          <div className="questionnaire-add-button position-absolute" onClick={() => addItem(id)}></div>
           <div className="text-black-50">項目を追加</div>
         </div>
       </div>

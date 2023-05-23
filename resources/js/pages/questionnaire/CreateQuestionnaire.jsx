@@ -142,8 +142,39 @@ export default () => {
     showQuestionnaireEnabling(1, setQuestionnaireEnabling, setIsValid, 'questionnaire')
   }, []);
 
+  const editItem = (e, id) => {
+    const updatedItems = questionnaires.map(v => {
+      const updatedQuestionnaireItems = v.questionnaire_items.map(questionnaireItem => {
+        if (questionnaireItem.id == id) {
+          questionnaireItem.name = e.target.value;
+        }
+        return questionnaireItem;
+      });
+      v.questionnaire_items = updatedQuestionnaireItems;
+      return v;
+    });
+    setQuestionnaires(updatedItems);
+    console.log(updatedItems);
+  }
+
+  const addItem = (id) => {
+    const updatedItems = questionnaires.map(v => {
+      if (v.id == id) {
+        v.questionnaire_items.push({
+          "id": null,
+          "questionnaire_id": null,
+          "name": '',
+        })
+      }
+      return v;
+    });
+    console.log(updatedItems);
+    setQuestionnaires(updatedItems);
+  }
+
   return (
     <>
+    {/* <Button onClick={() => console.log(questionnaires)} /> */}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-3">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">アンケート管理</h1>
@@ -214,7 +245,10 @@ export default () => {
                           <QuestionnaireCard
                             key={index}
                             questionnaire={questionnaire}
+                            setQuestionnaires={setQuestionnaires}
                             ref={ref}
+                            editItem={editItem}
+                            addItem={addItem}
                           />
                         </Row>
                       </Card.Body>

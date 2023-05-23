@@ -15,7 +15,7 @@ import { SegmentCardCreateModal } from "@/pages/message/segment/SegmentCardCreat
 import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import { UsersTable } from "@/pages/user/UsersTable";
 import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
-import {SendSegmentUserCard} from "./segment/SendSegmentUserCard"
+import { SendSegmentUserCard } from "./segment/SendSegmentUserCard"
 import { calculateAge } from "../../components/common/CalculateAge";
 import { getAllMessages, sendMulticastMessage } from "@/pages/message/api/MessageApiMethods";
 import { CSVLink } from "react-csv";
@@ -38,6 +38,7 @@ export default () => {
   const [timing, setTiming] = useState(0);
   const [sendDate, setSendDate] = useState();
   const [selectTemplate, setSelectTemplate] = useState();
+  const [isFirst, setIsFirst] = useState(true);
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
@@ -51,6 +52,7 @@ export default () => {
   const dateTime = year + month + day + hour + minute;
 
   const csvDLUsers = searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v);
+  setIsLoading(!isRendered);
 
   const handleSendButtonClick = () => {
     Swal.fire({
@@ -107,7 +109,7 @@ export default () => {
   }));
 
   //奇数と偶数でディスプレイ表示を分ける
-  questionnaires.forEach((v,k) => {
+  questionnaires.forEach((v, k) => {
     if (v.displayOrder & 1) {
       oddQuestionnaires.push(v);
     } else {
@@ -123,9 +125,9 @@ export default () => {
         icon: "question",
         text: textMessage,
         html: <div className="mb-2 p-2">
-                {textMessage}
-                <Form.Control className="m-1" id="segment-template" />
-              </div>,
+          {textMessage}
+          <Form.Control className="m-1" id="segment-template" />
+        </div>,
         showCancelButton: true,
         reverseButtons: true,
         confirmButtonText: "保存",
@@ -144,27 +146,27 @@ export default () => {
       })
 
       if (result.isConfirmed) {
-        await axios.post(`/api/v1/management/segment-template`, {'name': result.value.templateName, 'search_terms_json': searchTerms})
-        .then((response) => {
-          Swal.fire(
-            '保存完了',
-            `テンプレート名「${result.value.templateName}」を保存しました`,
-            'success'
-          )
-          setSegmentTemplates(prev => {
-            prev.push(response.data.segmentTemplate);
-            return prev;
+        await axios.post(`/api/v1/management/segment-template`, { 'name': result.value.templateName, 'search_terms_json': searchTerms })
+          .then((response) => {
+            Swal.fire(
+              '保存完了',
+              `テンプレート名「${result.value.templateName}」を保存しました`,
+              'success'
+            )
+            setSegmentTemplates(prev => {
+              prev.push(response.data.segmentTemplate);
+              return prev;
+            });
+            setSegmentTemplateOption(response.data.segmentTemplate.id);
+          })
+          .catch(error => {
+            console.error(error);
+            Swal.fire(
+              'エラー',
+              `テンプレート名「${result.value.templateName}」を保存できませんでした`,
+              'error'
+            )
           });
-          setSegmentTemplateOption(response.data.segmentTemplate.id);
-        })
-        .catch(error => {
-          console.error(error);
-          Swal.fire(
-            'エラー',
-            `テンプレート名「${result.value.templateName}」を保存できませんでした`,
-            'error'
-          )
-        });
       }
     } else {
       const segmentTemplate = segmentTemplates.find(v => v.id == segmentTemplateOption);
@@ -184,24 +186,24 @@ export default () => {
       })
 
       if (result.isConfirmed) {
-        await axios.put(`/api/v1/management/segment-template/${segmentTemplate.id}`, {'search_terms_json': searchTerms})
-        .then((response) => {
-          Swal.fire(
-            '上書き完了',
-            `テンプレート名「${segmentTemplate.name}」を上書きしました`,
-            'success'
-          )
-          const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
-          setSegmentTemplates(newSegmentTemplates);
-        })
-        .catch(error => {
-          console.error(error);
-          Swal.fire(
-            'エラー',
-            `テンプレート名「${segmentTemplate.name}」を上書きできませんでした`,
-            'error'
-          )
-        });
+        await axios.put(`/api/v1/management/segment-template/${segmentTemplate.id}`, { 'search_terms_json': searchTerms })
+          .then((response) => {
+            Swal.fire(
+              '上書き完了',
+              `テンプレート名「${segmentTemplate.name}」を上書きしました`,
+              'success'
+            )
+            const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
+            setSegmentTemplates(newSegmentTemplates);
+          })
+          .catch(error => {
+            console.error(error);
+            Swal.fire(
+              'エラー',
+              `テンプレート名「${segmentTemplate.name}」を上書きできませんでした`,
+              'error'
+            )
+          });
       }
     }
   };
@@ -209,94 +211,95 @@ export default () => {
 
   useEffect(() => {
     const params = {
-      params: {count: 'all'}
+      params: { count: 'all' }
     };
 
     getAllMessages(params, setTemplates);
     axios.get('/api/v1/management/default-segments')
-    .then((response) => {
-      const segments = response.data.segments;
-      const newSegments = [];
-      segments.forEach(v => {
-        if (v.type == 1) {
-          newSegments.push({
-            id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
-            questionnaireItems: v.default_segment_items.map((item, k) => ({id: k + 1, name: v.name, value: item.value, label: item.label}))
-          });
-        } else if (v.type == 4) {
-          newSegments.push({
-            id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
-            questionnaireItems: {value: [] ,name: v.name,}
-          });
-        } else {
-          newSegments.push({
-            id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
-            questionnaireItems: [{name: 'start_' + v.name, value:''}, {name: 'end_' + v.name, value:''}]
-          });
-        }
-      });
-      let maxDisplayOrder = newSegments[newSegments.length - 1].id;
-      getQuestionnaires(setDefinedQuestion)
-      .then((res) => {
-        res.forEach(v => {
-          if (v.questionnaire_items.length == 0) {
-            return;
-          } else
-          {maxDisplayOrder++;
-          if (v.type == 1 || v.type == 2) {
+      .then((response) => {
+        const segments = response.data.segments;
+        const newSegments = [];
+        segments.forEach(v => {
+          if (v.type == 1) {
             newSegments.push({
-              id: v.id,
-              displayOrder: maxDisplayOrder,
-              isDefault: 0,
-              type: 4,
-              questionTitle: v.title,
-              questionnaireItems: 
-                {id: 1, name: 'questionnaireId-' + v.id, label: v.questionnaire_items[0].name, value: ''}
-            })
+              id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
+              questionnaireItems: v.default_segment_items.map((item, k) => ({ id: k + 1, name: v.name, value: item.value, label: item.label }))
+            });
+          } else if (v.type == 4) {
+            newSegments.push({
+              id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
+              questionnaireItems: { value: [], name: v.name, }
+            });
           } else {
             newSegments.push({
-              id: v.id,
-              displayOrder: maxDisplayOrder,
-              isDefault: 0,
-              type: 1,
-              questionTitle: v.title,
-              questionnaireItems: 
-                v.questionnaire_items.map((b, k) => ({id: b.id, name: 'questionnaireId-' + v.id, label: b.name, value: b.name}))
+              id: v.id, displayOrder: v.display_order, type: v.type, questionTitle: v.title, isDefault: 1,
+              questionnaireItems: [{ name: 'start_' + v.name, value: '' }, { name: 'end_' + v.name, value: '' }]
+            });
+          }
+        });
+        let maxDisplayOrder = newSegments[newSegments.length - 1].id;
+        getQuestionnaires(setDefinedQuestion)
+          .then((res) => {
+            res.forEach(v => {
+              if (v.questionnaire_items.length == 0) {
+                return;
+              } else {
+                maxDisplayOrder++;
+                if (v.type == 1 || v.type == 2) {
+                  newSegments.push({
+                    id: v.id,
+                    displayOrder: maxDisplayOrder,
+                    isDefault: 0,
+                    type: 4,
+                    questionTitle: v.title,
+                    questionnaireItems:
+                      { id: 1, name: 'questionnaireId-' + v.id, label: v.questionnaire_items[0].name, value: '' }
+                  })
+                } else {
+                  newSegments.push({
+                    id: v.id,
+                    displayOrder: maxDisplayOrder,
+                    isDefault: 0,
+                    type: 1,
+                    questionTitle: v.title,
+                    questionnaireItems:
+                      v.questionnaire_items.map((b, k) => ({ id: b.id, name: 'questionnaireId-' + v.id, label: b.name, value: b.name }))
+                  })
+                }
+              }
             })
-          }}
-        })
-        setQuestionnaires(newSegments);
-        // getUsers(setUsers)
-        axios.get('/api/v1/management/user-with-questionnaires')
-        .then((response) => {
-          const newUsers = response.data.users.map(u => ({ ...u, isSelected: false, show: true }));
-          setUsers(newUsers);
-          setSearchResultUsers(newUsers);
-          setIsrendered(true);
-        })
-        .catch(error => {
-            console.error(error);
-        });
-        axios.get('/api/v1/management/segment-template')
-        .then((response) => {
-          const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
-          setSegmentTemplates(newSegmentTemplates);
-          console.log(newSegmentTemplates);
+            setQuestionnaires(newSegments);
+            // getUsers(setUsers)
+            axios.get('/api/v1/management/user-with-questionnaires')
+              .then((response) => {
+                const newUsers = response.data.users.map(u => ({ ...u, isSelected: false, show: true }));
+                setUsers(newUsers);
+                setSearchResultUsers(newUsers);
+                setIsrendered(true);
+              })
+              .catch(error => {
+                console.error(error);
+              });
+            axios.get('/api/v1/management/segment-template')
+              .then((response) => {
+                const newSegmentTemplates = response.data.segmentTemplate.map(u => ({ ...u }));
+                setSegmentTemplates(newSegmentTemplates);
+                console.log(newSegmentTemplates);
 
-          //  別画面から、セグメント条件が渡されていたら
-          if (typeof location.state !== "undefined") {
-            setSearchTerms(location.state.segmentTemplate);
-          } 
+                //  別画面から、セグメント条件が渡されていたら
+                if (typeof location.state !== "undefined") {
+                  setSearchTerms(location.state.segmentTemplate);
+                }
 
-        })
-        .catch(error => {
-            console.error(error);
-        });
-      });
-    })
-    .catch(error => {
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          });
+      })
+      .catch(error => {
         console.error(error);
-    })
+      })
   }, [])
 
   useEffect(() => {
@@ -415,7 +418,7 @@ export default () => {
       value = e.target.value;
       checked = e.target.checked ?? true;
       setSearchTerms(prev => {
-        return ({ 
+        return ({
           ...prev,
           [name]: checked
             ? [...(prev[name] || []), value]
@@ -428,9 +431,9 @@ export default () => {
       checked = e.target.checked ?? true;
       setSearchTerms(prev => {
         if (prev[name] ? prev[name].some(v => v === value) : false) {
-          return ({...prev});
+          return ({ ...prev });
         }
-        return ({ 
+        return ({
           ...prev,
           [name]: checked
             ? [...(prev[name] || []), value]
@@ -450,7 +453,7 @@ export default () => {
       value = e.value;
     }
     setSearchTerms((prevSearchTerms) => {
-      if (value) { 
+      if (value) {
         return {
           ...prevSearchTerms,
           [name]: [value]
@@ -460,7 +463,7 @@ export default () => {
         return {
           ...prevSearchTerms,
         };
-      } 
+      }
     });
   }
 
@@ -476,7 +479,7 @@ export default () => {
           questionnaireItems: e.detail.tagify.value
         })
       } else {
-        return {...v};
+        return { ...v };
       }
     })
     setQuestionnaires(newQuestionnaires);
@@ -527,7 +530,7 @@ export default () => {
     };
   }
 
-  return isRendered ? (
+  return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
@@ -543,14 +546,20 @@ export default () => {
       </div>
       <Row>
         <Col xs={6} xl={6}>
-        <div className="btn-group target-count-wrap" role="group" aria-label="Basic radio toggle button group">
-          <div className="btn btn-primary d-flex pe-none align-items-center text-white">キーワード選択</div>
+          <div className="btn-group target-count-wrap" role="group" aria-label="Basic radio toggle button group">
+            <div className="btn btn-primary d-flex pe-none align-items-center text-white">キーワード選択</div>
             <div className="btn btn-outline-primary pe-none bg-white">該当人数
-            <div className="fs-4 people-wrap d-inline"> <span className="people text-primary" id="people">
-              <CountUp start={countStart} end={searchResultUsers.length} startOnMount={false} /></span> 
-            </div>人 
+              <div className="fs-4 people-wrap d-inline"> <span className="people text-primary" id="people">
+                <CountUp
+                  start={countStart}
+                  end={searchResultUsers.length}
+                  duration={isFirst ? 0.1 : 1}
+                  onEnd={() => setIsFirst(false)}
+                />
+              </span>
+              </div>人
+            </div>
           </div>
-        </div>
         </Col>
         <Col xs={3} xl={3}>
         </Col>
@@ -562,8 +571,8 @@ export default () => {
                 <option value={v.id} key={`template-${v.id}`}>{v.name}</option>
               ))}
             </Form.Select>
-            {segmentTemplateOption == 0 ? <Button variant="danger" className="" disabled onClick={deleteSegmentTemplate}>削除</Button> 
-                                        : <Button variant="danger" className="" onClick={deleteSegmentTemplate}>削除</Button>}
+            {segmentTemplateOption == 0 ? <Button variant="danger" className="" disabled onClick={deleteSegmentTemplate}>削除</Button>
+              : <Button variant="danger" className="" onClick={deleteSegmentTemplate}>削除</Button>}
           </div>
           <div className="justify-content-end d-flex mt-2">
             <Button variant="success" className="mt-2 w-100" onClick={showConfirmModal}>
@@ -575,23 +584,23 @@ export default () => {
       <Row>
         <Col>
           <Row className="mt-4">
-            {oddQuestionnaires.map((v, k) => 
+            {oddQuestionnaires.map((v, k) =>
               <SegmentCard {...v} key={k} questionnaireType="odd" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}
-            />)}
+              />)}
           </Row>
         </Col>
         <Col>
           <Row className="mt-4">
-            {evenQuestionnaires.map((v, k) => 
-              <SegmentCard {...v} key={k} questionnaireType="even" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}/>
+            {evenQuestionnaires.map((v, k) =>
+              <SegmentCard {...v} key={k} questionnaireType="even" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms} />
             )}
           </Row>
         </Col>
       </Row>
-        <SendSegmentUserCard
-          users={searchResultUsers}
-          setUsers={setSearchResultUsers}
-        />
+      <SendSegmentUserCard
+        users={searchResultUsers}
+        setUsers={setSearchResultUsers}
+      />
       <MessageDetail
         templates={templates}
         timing={timing}
@@ -603,9 +612,9 @@ export default () => {
       />
 
       <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <CSVLink filename={`data-${dateTime}.csv`} 
-        data={searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v)}
-        className={`btn btn-primary mt-2 w-50 me-3 ${csvDLUsers.length > 0 ? '' : 'disabled'}`}>
+        <CSVLink filename={`data-${dateTime}.csv`}
+          data={searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v)}
+          className={`btn btn-primary mt-2 w-50 me-3 ${csvDLUsers.length > 0 ? '' : 'disabled'}`}>
           ユーザーID抽出
         </CSVLink>
         {/* <Button variant="primary" className="mt-2 w-50 me-3">
@@ -616,7 +625,5 @@ export default () => {
         </Button>
       </div>
     </>
-  ) : (
-    <></>
-  );
+  )
 };

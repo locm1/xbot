@@ -57,11 +57,7 @@ class SearchOrderAction
     private function searchByPrefecture($query, $prefecture)
     {
 
-        $query->whereIn('order_user_id', function ($query) use ($prefecture) {
-            $query->from('order_users')
-                ->select('id')
-                ->where('prefecture', $prefecture);
-        });
+        $query->where('prefecture', $prefecture);
         return $query;
     }
 }

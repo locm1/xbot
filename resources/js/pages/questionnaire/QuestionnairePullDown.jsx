@@ -16,7 +16,7 @@ export default (props) => {
               <div className="ps-3">
                 <Form.Control required type="text" value={item.name === null ? '' : item.name} onChange={(e) => editItem(e, item.id)} className="text-dark mb-1 w-100" placeholder="選択肢" />  
               </div>
-                <TrashIcon className="icon icon-xs ms-3 text-danger" onClick={() => (deleteItem(item.id))}/>
+                <TrashIcon className="icon icon-xs ms-3" onClick={() => (deleteItem(item.id))}/>
             </div>
           </div>
         </div>

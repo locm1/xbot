@@ -28,6 +28,8 @@ export const SendSegmentUserCard = (props) => {
     const name = last_name + ' ' + first_name;
     const sexVariant = gender === 1 ? "info" : gender === 2 ? "danger" : "primary";
     const link = Paths.EditUser.path.replace(':id', id);
+    const format_birth_date = birth_date ? moment(birth_date).format("YYYY-MM-DD") : birth_date
+
     const handleCheckboxChange = (event) => {
       setUsers(
         users.map(user => user.id == id ? {...user, isSelected: event.target.checked} : user)
@@ -50,7 +52,7 @@ export const SendSegmentUserCard = (props) => {
                   <span className="fw-bold text-decoration-underline">{name}</span> 
                 </>
               :
-                <span className="fw-bold text-decoration-underline">{nickname}</span> 
+                <span className="fw-bold text-decoration-underline">({nickname})</span> 
               }
             </div>
           </div>
@@ -62,7 +64,7 @@ export const SendSegmentUserCard = (props) => {
             {sex_array[gender]}
           </span>
         </td>
-        <td><span className="fw-normal">{moment(birth_date).format("YYYY-MM-DD")}</span></td>
+        <td><span className="fw-normal">{format_birth_date}</span></td>
         <td><span className="fw-normal">{prefecture}</span></td>
       </tr>
     );

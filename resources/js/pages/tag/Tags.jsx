@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -14,7 +14,6 @@ import { set } from "lodash";
 
 export default () => {
   const [tags, setTags] = useState([]);
-  const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
   const [name, setName] = useState('');
   const [isEdit, setIsEdit] = useState({
@@ -150,16 +149,21 @@ export default () => {
         }
         {
           isCreate ? (
-            <TagCreateCard setName={setName} name={name} storeTag={storeTag} setIsCreate={setIsCreate} />
+            <TagCreateCard
+              setName={setName}
+              name={name}
+              storeTag={storeTag}
+              setIsCreate={setIsCreate}
+            />
           ) :
           (
             <div className="privilege-button d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
               <Button
+                variant="outline-gray-500"
                 onClick={createCardOpen}
-                variant="primary"
-                className="d-inline-flex align-items-center"
+                className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
               >
-                <PlusIcon className="icon icon-xs me-2" /> タグを追加
+                <PlusIcon className="icon icon-xs me-2" /> タグ追加
               </Button>
             </div>
           )

@@ -157,7 +157,7 @@ export default () => {
             />
           ) :
           (
-            <div className="privilege-button d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
+            <div className="privilege-button d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center m-4">
               <Button
                 variant="outline-gray-500"
                 onClick={createCardOpen}

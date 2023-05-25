@@ -32,8 +32,8 @@ export default (props) => {
           id="checkbox"
           htmlFor="checkbox"
         />
-        <div className="ps-3">
-          <div className="questionnaire-add-button position-absolute" onClick={() => addItem(id)}></div>
+        <div className="ps-3 position-relative">
+          <div className="questionnaire-add-button position-absolute top-50" onClick={() => addItem(id)}></div>
           <div className="text-black-50">項目を追加</div>
         </div>
       </div>

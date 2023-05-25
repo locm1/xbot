@@ -179,7 +179,9 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">アンケート管理</h1>
         </div>
-        <div className="d-flex flex-row-reverse mt-3">
+      </div>
+      <div className="d-flex justify-content-end mb-3">
+        <div className="mt-3 me-4">
           <Form.Group id="default-questionnaire">
             <Form.Check
               type="switch"
@@ -191,8 +193,6 @@ export default () => {
             />
           </Form.Group>
         </div>
-      </div>
-      <div className="d-flex justify-content-end mb-3">
         <Button variant="success" className="btn-default-success" onClick={() => handleSave()}>
           保存する
         </Button>
@@ -206,9 +206,36 @@ export default () => {
                   {(provided) => (
                     <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} border="0" className="mb-4" key={index}>
                       <Card.Body>
-                        <div className="d-flex align-items-center justify-content-between flex-row-reverse">
-                          <Button className="mb-3" variant="close" onClick={() => showConfirmDeleteModal(questionnaire.id)} />
-                          <Form>
+                        <Row>
+                          <Col md={4} className="mb-3">
+                            <Form.Group>
+                              <Form.Select value={questionnaire.type} className="mb-0" onChange={(e) => handleTypeChange(e, questionnaire.id)}>
+                                {
+                                  types.map((type, index) => <option key={index} value={type.value}>{type.title}</option>)
+                                }
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={6} className="mb-3">
+                            <Form.Control as="textarea" value={questionnaire.title} onChange={e => update(e, questionnaire.id, 'title')} placeholder="質問内容を入力してください" />
+                          </Col>
+                        </Row>
+                        <Row className="mb-4 mb-lg-0 mt-4">
+                          <QuestionnaireCard
+                            key={index}
+                            questionnaire={questionnaire}
+                            setQuestionnaires={setQuestionnaires}
+                            ref={ref}
+                            editItem={editItem}
+                            addItem={addItem}
+                          />
+                        </Row>
+                      </Card.Body>
+                      <Card.Footer>
+                        <div className="d-flex align-items-center justify-content-between">
+                          <div className="d-flex align-items-center justify-content-start">
                             <Form.Check
                               checked={questionnaire.is_undisclosed == 1 ? true : false}
                               type="switch"
@@ -224,34 +251,16 @@ export default () => {
                               id={`switch-reqired-${index}`}
                               htmlFor={`switch-reqired-${index}`}
                               onChange={() => handleClick(questionnaire.id, 'is_required')}
+                              className="ms-5"
                             />
-                          </Form>
+                          </div>
+                          <div>
+                            <Button onClick={() => showConfirmDeleteModal(questionnaire.id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+                              削除する
+                            </Button>
+                          </div>
                         </div>
-                        <Row>
-                          <Col md={6} className="mb-3">
-                            <Form.Control as="textarea" value={questionnaire.title} onChange={e => update(e, questionnaire.id, 'title')} placeholder="無題の質問" />
-                          </Col>
-                          <Col md={6} className="mb-3">
-                            <Form.Group id="firstName">
-                              <Form.Select value={questionnaire.type} className="mb-0" onChange={(e) => handleTypeChange(e, questionnaire.id)}>
-                                {
-                                  types.map((type, index) => <option key={index} value={type.value}>{type.title}</option>)
-                                }
-                              </Form.Select>
-                            </Form.Group>
-                          </Col>
-                        </Row>
-                        <Row className="mb-4 mb-lg-0 mt-4">
-                          <QuestionnaireCard
-                            key={index}
-                            questionnaire={questionnaire}
-                            setQuestionnaires={setQuestionnaires}
-                            ref={ref}
-                            editItem={editItem}
-                            addItem={addItem}
-                          />
-                        </Row>
-                      </Card.Body>
+                      </Card.Footer>
                     </Card>
                   )}
                 </Draggable>
@@ -267,7 +276,7 @@ export default () => {
           className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
           onClick={addQuestionnaire}
         >
-          <PlusIcon className="icon icon-xs me-2" /> 質問を追加
+          <PlusIcon className="icon icon-xs me-2" /> アンケートを追加
         </Button>
       </div>
       <div className="d-flex justify-content-end mb-3">

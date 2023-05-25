@@ -24,8 +24,8 @@ export default (props) => {
       <div className="d-flex align-items-center questionnaire-add">
         <div className="position-absolute questionnaire-radio-button"></div>
         <div>{items.length + 1}</div>
-        <div className="ps-3">
-          <div className="questionnaire-add-button position-absolute" onClick={() => addItem(id)}></div>
+        <div className="ps-3 position-relative">
+          <div className="questionnaire-add-button position-absolute top-50" onClick={() => addItem(id)}></div>
           <div className="text-black-50">項目を追加</div>
         </div>
       </div>

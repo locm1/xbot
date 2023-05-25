@@ -20,9 +20,9 @@ export const SendHistoryInfoWidget = (props) => {
 
   const getStatus = (status) => {
     if (status == 0) {
-      return <Badge bg="success" className="me-1 is-delivered">配信済</Badge>;
+      return <Badge bg="success" className="me-1">配信済</Badge>;
     } else if (status == 1) {
-      return <Badge bg="info" className="me-1 is-delivered">予約済</Badge>;
+      return <Badge bg="info" className="me-1">予約済</Badge>;
     }
   }
 

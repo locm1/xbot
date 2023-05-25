@@ -371,15 +371,19 @@ export default () => {
               </div>
             )
           }
-          <div className="privilege-button mb-4">
-            <Button
-              variant="outline-gray-500"
-              onClick={addEditCard}
-              className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
-            >
-              <PlusIcon className="icon icon-xs me-2" /> 追加
-            </Button>
-          </div>
+          {
+            messageItems.length < 5 && (
+              <div className="privilege-button mb-4">
+                <Button
+                  variant="outline-gray-500"
+                  onClick={addEditCard}
+                  className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+                >
+                  <PlusIcon className="icon icon-xs me-2" /> 追加
+                </Button>
+              </div>
+            )
+          }
         </div>
         <div className="col-3">
           <Card border="0" className="shadow mb-4 ms-3">

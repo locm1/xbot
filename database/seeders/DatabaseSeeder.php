@@ -41,6 +41,7 @@ use App\Models\QuestionnaireAnswerItem;
 use App\Models\QuestionnaireItem;
 use App\Models\RelatedProduct;
 use App\Models\ReserveHistory;
+use App\Models\SpecificTrade;
 use App\Models\TagUser;
 use App\Models\User;
 use App\Models\UserTag;
@@ -124,6 +125,7 @@ class DatabaseSeeder extends Seeder
             Message::factory(100)->create();
             MessageItem::factory(200)->create();
             GreetingMessage::factory(3)->create();
+            SpecificTrade::factory(5)->create();
             // OrderPaymentMethod::factory(100)->create();
         } else if ($environment  === 'stg') {
             $this->call([

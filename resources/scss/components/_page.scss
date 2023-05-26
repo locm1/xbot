@@ -1,6 +1,7 @@
 @import "./pages/send_history";
 @import "./pages/liff";
 @import "./pages/product";
+@import "./pages/specific_trades";
 @import "../volt/variables";
 
 $base_color: #707070;
@@ -446,5 +447,4 @@ input[type="number"] {
 
 .wrapper {
   max-width: 1170px;
-  margin: auto;
 }

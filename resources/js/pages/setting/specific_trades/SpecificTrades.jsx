@@ -3,21 +3,14 @@ import moment from "moment-timezone";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { FireIcon, CheckIcon, HomeIcon, PlusIcon, ChevronRightIcon, ChevronLeftIcon, ViewGridAddIcon, ArchiveIcon, CheckCircleIcon, TrashIcon } from "@heroicons/react/solid";
-import { Col, Row, Container, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown, OverlayTrigger, Tooltip, Card } from 'react-bootstrap';
-import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
+import { Col, Row, Table, Button, ButtonGroup, Form, InputGroup, Dropdown, OverlayTrigger, Tooltip, Card } from 'react-bootstrap';
 import SpecificTradesCard from "@/pages/setting/specific_trades/SpecificTradesCard";
-import SpecificTradesModal from "@/pages/setting/specific_trades/SpecificTradesModal";
+import { getSpecificTrades, storeSpecificTrades } from "@/pages/setting/api/SpecificTradesApiMethods";
 import { Paths } from "@/paths";
 
 const SpecificTradesService = (props) => {
   const [SpecificTrades, setSpecificTrades] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [specificTradeId, setSpecificTradeId] = useState();
-  const [formValue, setFormValue] = useState({
-    title: '', content: ''
-  })
-  const [page, setPage] = useState('create');
-  const history = useHistory();
+  const [deleteSpecificTradeIds, setDeleteSpecificTradeIds] = useState([]);
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -27,75 +20,20 @@ const SpecificTradesService = (props) => {
     buttonsStyling: false
   }));
 
-  const createSpecificTrades = async() => {
-    await axios
-    .post('/api/v1/management/specific-trades', formValue)
-    .then((res) => {
-        console.log(res);
-        setSpecificTrades([...SpecificTrades, res.data.specific])
-        setIsOpen(false)
-        Swal.fire(
-          '保存完了',
-          '特定商取引法の保存に成功しました',
-          'success'
-        )
-    })
-    .catch(error => {
-        console.error(error);
-    });
-  }
-
-  const updateSpecificTrades = async () => {
-    await axios.put(`/api/v1/management/specific-trades/${specificTradeId}`, formValue)
-    .then((res) => {
-        console.log(res);
-        const currentSpecific = SpecificTrades.find(specific => specific.id == specificTradeId)
-        currentSpecific.title = formValue.title
-        currentSpecific.content = formValue.content
-        setSpecificTrades(SpecificTrades.map(specific => specific.id == specificTradeId ? currentSpecific : specific))
-        setIsOpen(false)
-        Swal.fire(
-          '更新完了',
-          '特定商取引法の更新に成功しました',
-          'success'
-        )
-    })
-    .catch(error => {
-        console.error(error);
-    });
-  }
-
-  const handleChange = (e, input) => {
-    setFormValue({...formValue, [input]: e.target.value})
+  const addSpecificTrades = () => {
+    const currentSpeficTrade = SpecificTrades.slice(-1)[0];
+    const newSpeficTrade = {
+      display_id: typeof currentSpeficTrade !== 'undefined' ? currentSpeficTrade.display_id + 1 : 1,
+      title: '',
+      content: '',
+    }
+    setSpecificTrades([...SpecificTrades, newSpeficTrade])
   };
 
-  const createOpenModal = () => {
-    setIsOpen(!isOpen)
-    setPage('create');
-    setFormValue({
-      title: '', content: ''
-    })
-  };
-
-  const editOpenModal = (id) => {
-    setIsOpen(!isOpen)
-    setPage('edit');
-    showSpecificTrades(id);
-    setSpecificTradeId(id);
-  };
-
-  const showSpecificTrades = async (id) => {
-    console.log(id);
-    await axios.get(`/api/v1/management/specific-trades/${id}`)
-    .then((response) => {
-      const specificTrade = response.data.specific;
-      setFormValue({
-        title: specificTrade.title, content: specificTrade.content
-      });
-    })
-    .catch(error => {
-        console.error(error);
-    });
+  const handleChange = (e, input, display_id) => {
+    setSpecificTrades(
+      SpecificTrades.map(specificTrade => specificTrade.display_id == display_id ? {...specificTrade, [input]: e.target.value} : specificTrade)
+    )
   };
 
   const showConfirmDeleteModal = async (e, id) => {
@@ -123,63 +61,77 @@ const SpecificTradesService = (props) => {
     }
   };
 
-  const deleteSpecificTrades = async (id) => {
-    const confirmMessage = "選択した項目は削除されました。";
-    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+  const deleteSpecificTrades = (display_id) => {
     setSpecificTrades(
-      SpecificTrades.filter((specific) => (specific.id !== id))
+      SpecificTrades.filter((specific) => (specific.display_id !== display_id))
     )
+
+    const currentSpeficTrade = SpecificTrades.find(SpecificTrade => SpecificTrade.display_id == display_id);
+    
+    //検索結果のオブジェクトにIDがあるかどうか
+    if (currentSpeficTrade.id) {
+      setDeleteSpecificTradeIds([...deleteSpecificTradeIds, currentSpeficTrade.id])
+    }
+  };
+
+  const onSaveSpecificTrades = () => {
+    storeSpecificTrades(SpecificTrades, deleteSpecificTradeIds)
   };
 
   useEffect(() => {
-    axios.get(`/api/v1/management/specific-trades`)
-    .then((data) => {
-      setSpecificTrades(data.data.specific_trades);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    getSpecificTrades(setSpecificTrades)
   }, []);
 
   return (
     <>
-      {
-        isOpen && 
-          <SpecificTradesModal
-            show={isOpen}
-            setIsOpen={setIsOpen}
-            formValue={formValue}
-            handleChange={handleChange}
-            createSpecificTrades={createSpecificTrades}
-            updateSpecificTrades={updateSpecificTrades}
-            page={page}
-          />
-      }
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">特定商取引法に基づく表記</h1>
         </div>
       </div>
-      <div className="task-wrapper border bg-white border-light shadow-sm py-1 rounded">
-        {SpecificTrades.map((SpecificTrade, index) =>
-          <SpecificTradesCard
-            {...SpecificTrade}
-            key={`SpecificTrade-${SpecificTrade.id}`}
-            editOpenModal={editOpenModal}
-            showConfirmDeleteModal={showConfirmDeleteModal}
-          />
-        )}
-
-        <div className="privilege-button d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
-          <Button
-            onClick={createOpenModal}
-            variant="primary"
-            className="d-inline-flex align-items-center"
-          >
-            <PlusIcon className="icon icon-xs me-2" /> 項目を追加
-          </Button>
-        </div>
-      </div>
+      <Card border="0" className="table-wrapper table-responsive shadow mb-4">
+        <Card.Header className="bg-primary text-white px-1 py-2">
+          <div className="wrapper d-flex flex-wrap flex-md-nowrap align-items-center">
+            <div className="ms-3 cell-left">
+              <h6 className="mb-0 fw-bolder">タイトル</h6>
+            </div>
+            <div className="ms-4 cell-center">
+              <h6 className="mb-0 fw-bolder">内容</h6>
+            </div>
+            <div className="ms-4 cell-right">
+              <h6 className="mb-0 fw-bolder">削除</h6>
+            </div>
+          </div>
+        </Card.Header> 
+        <Card.Body>
+          <div className="bg-white">
+            {SpecificTrades.map((SpecificTrade, index) =>
+              <SpecificTradesCard
+                {...SpecificTrade}
+                key={`SpecificTrade-${SpecificTrade.id}`}
+                handleChange={handleChange}
+                deleteSpecificTrades={deleteSpecificTrades}
+              />
+            )}
+          </div>
+          <div className="privilege-button d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center">
+            <Button
+              variant="outline-gray-500"
+              className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+              onClick={addSpecificTrades}
+            >
+              <PlusIcon className="icon icon-xs me-2" /> 項目を追加
+            </Button>
+          </div>
+        </Card.Body>
+        <Card.Footer>
+          <div className="d-flex justify-content-end">
+            <Button onClick={onSaveSpecificTrades} variant="success" className="btn-default-success">
+              保存する
+            </Button>
+          </div>
+        </Card.Footer>
+      </Card>
     </>
   )
 };

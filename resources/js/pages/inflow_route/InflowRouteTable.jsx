@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { BadgeCheckIcon } from "@heroicons/react/solid";
+import { DownloadIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
@@ -39,7 +39,10 @@ export const InflowRouteTable = (props) => {
             level={"L"}
             includeMargin={false}
           />
-          <a className="d-block" onClick={() => downloadQR(`qr-${id}`)}> Download QR </a>
+          <a className="d-block" onClick={() => downloadQR(`qr-${id}`)}>
+            <DownloadIcon className="icon icon-xs me-2" />
+            <span>Download QR</span>
+          </a>
         </td>
         <td>
           {uri}

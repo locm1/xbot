@@ -254,7 +254,12 @@ export default () => {
       title: "複製確認",
       text: textMessage,
       showCancelButton: true,
-      confirmButtonText: "OK!",
+      reverseButtons: true,
+      confirmButtonText: "複製",
+        customClass: {
+          confirmButton: "btn btn-primary",
+          cancelButton: "btn btn-gray-400 me-3"
+        },
       cancelButtonText: "キャンセル"
     });
 
@@ -273,12 +278,18 @@ export default () => {
 
     const formData = new FormData();
     formData.append("message_items", JSON.stringify(messageItems));
+    formData.append("title", message.title)
+    formData.append("is_undisclosed", message.is_undisclosed)
     updateImages.forEach((updateImage) => formData.append("images[]", updateImage));
     updateImageIds.forEach((updateImageId) => formData.append("image_ids[]", updateImageId));
+    updateCarouselImageImages.forEach((updateImage) => formData.append("carousel_image_images[]", updateImage));
+    updateCarouselImageImageIds.forEach((updateImageId) => formData.append("carousel_image_image_ids[]", updateImageId));
+    updateCarouselProductImages.forEach((updateImage) => formData.append("carousel_product_images[]", updateImage));
+    updateCarouselProductImageIds.forEach((updateImageId) => formData.append("carousel_product_image_ids[]", updateImageId));
     updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
     updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
-    storeMessage(message, formData, storeMessageItems, completeMessage)
 
+    storeMessage(formData, setError, completeMessage)
   }
 
   const completeMessage = (message) => {

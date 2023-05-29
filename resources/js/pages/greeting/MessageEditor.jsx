@@ -111,16 +111,6 @@ export default (props) => {
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="card" className="mb-sm-3 mb-md-0 message-editor-header-item">
-                    <OverlayTrigger 
-                      key="example"
-                      overlay={<Tooltip id="top" className="m-0">リッチーカード</Tooltip>}
-                    >
-                      <PencilIcon className="icon icon-sm" />
-                    </OverlayTrigger>
-                  </Nav.Link>
-                </Nav.Item>
               </Nav>
             </Col>
             {

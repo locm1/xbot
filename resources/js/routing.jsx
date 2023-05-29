@@ -439,7 +439,7 @@ const LiffInitRoute = () => {
   const search = useLocation().search;
   const query = new URLSearchParams(search);
   const path = query.get('path')
-  const [redirect, setRedirect] = useState('');
+  const [redirect, setRedirect] = useState();
   // const { setIsLoading } = useContext(LoadingContext);
   // setIsLoading(true);
   axios.get('/api/v1/get-liff-id')
@@ -447,7 +447,7 @@ const LiffInitRoute = () => {
       console.log(response);
       liff.init({ liffId: response.data })
         .then(() => {
-          if (liff.isLoggedIn() === false) liff.login()
+          if (liff.isLoggedIn() === false) liff.login();
           setRedirect(path);
         })
         .catch((err) => {

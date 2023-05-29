@@ -85,6 +85,8 @@ export default () => {
     };
     getUser(idToken, setUser).then(response => {
       searchCarts(response.id, searchParams, setCarts, setItemsExistInCart, setIsLoading)
+    }).catch(error => {
+      setIsLoading(false);
     })
   }, []);
 

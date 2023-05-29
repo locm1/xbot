@@ -12,20 +12,21 @@ export default () => {
 	const [searchTerms, setSearchTerms] = useState({});
 	const [errors, setErrors] = useState({})
 	const [data, setData] = useState({name: '', period: '', xlabel: 0, type: ''});
-  const { id } = useParams();
 	const [questionnaires, setQuestionnaires] = useState([]);
+  const { id } = useParams();
+	const history = useHistory();
+	const isEditing = useLocation().pathname.includes('/edit');
 	const periods = ['1週間', '1ヶ月間', '1年間'];
 	const xlabels = ['期間', '性別', '誕生月'];
 	const types = ['棒グラフ', '折れ線グラフ'];
-	const isEditing = useLocation().pathname.includes('/edit');
-	const history = useHistory();
+	const sizes = ['1/1', '1/2', '1/4']
 
 	useEffect(() => {
 		getDefaultSegments(setQuestionnaires);
 		if (isEditing) {
 			getReport(id).then(response => {
 				const report = response.data;
-				setData({name: report.name, period: report.period, xlabel: report.xlabel, type: report.type});
+				setData({name: report.name, period: report.period, xlabel: report.xlabel, type: report.type, size: report.size});
 				setTitle(report.name);
 				setSearchTerms(JSON.parse(report.search_json ?? {}));
 			})
@@ -195,6 +196,25 @@ export default () => {
 								/>
 							)}
 							<Form.Control.Feedback type="invalid">{errors.type}</Form.Control.Feedback>
+						</Card.Body>
+					</Card>
+					<Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">サイズ設定</h5>
+						</Card.Header>
+						<Card.Body>
+							{sizes.map((v, k) =>
+								<Form.Check
+									key={`size-${k}`}
+									type='radio'
+									label={v}
+									name={'size'}
+									id={`size-${k}`}
+									value={k + 1}
+									checked={data.size == k + 1}
+									onChange={handleDataChange}
+								/>
+							)}
 						</Card.Body>
 					</Card>
 					<Card className="mb-3">

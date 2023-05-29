@@ -74,9 +74,11 @@ export default () => {
 
   return (
     <>
-      {reportData.map((v, k) =>
-        <BarOrLineChart key={`chart-${k}`} {...v} className="my-3" />
-      )}
+      <Row>
+        {reportData.map((v, k) =>
+          <BarOrLineChart key={`chart-${k}`} {...v} className="my-3" />
+        )}
+      </Row>
       <Row className="justify-content-lg-center">
         <Col xs={12} className="mb-4">
           {/* <SalesValueWidget

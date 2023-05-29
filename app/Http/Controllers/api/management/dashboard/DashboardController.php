@@ -37,6 +37,7 @@ class DashboardController extends Controller
                 'type' => GraphTypeConsts::TYPES[$v->type],
                 'period' => $period,
                 'xlabel' => $v->xlabel,
+                'size' => $v->size,
                 'terms' => json_decode($v->search_json)
             ];
         }

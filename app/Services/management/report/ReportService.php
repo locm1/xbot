@@ -45,6 +45,7 @@ class ReportService
             'period' => $data->period,
             'xlabel' => $data->xlabel,
             'type' => $data->type,
+            'size' => $data->size,
             'search_json' => json_encode($data->searchTerms)
         ];
         return Report::create($save_data);
@@ -74,6 +75,7 @@ class ReportService
         $Report->period = $request->period;
         $Report->xlabel = $request->xlabel;
         $Report->type = $request->type;
+        $Report->size = $request->size;
         $Report->search_json = json_encode($request->searchTerms);
         $Report->save();
 

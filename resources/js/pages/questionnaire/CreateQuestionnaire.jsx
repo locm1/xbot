@@ -1,279 +1,196 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
-import { Col, Row, Form, Button, Breadcrumb, Card, Alert } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-
-import { getQuestionnaires, storeQuestionnaire, updateQuestionnaire, deleteQuestionnaire, sortQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
-import { showQuestionnaireEnabling, updateQuestionnaireEnabling } from "@/pages/questionnaire/api/QuestionnaireEnablingApiMethods";
-import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard";
-import { handleOnDragEnd } from "@/components/common/Sort";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import { Col, Row, Form, Button, InputGroup, Card, Alert } from 'react-bootstrap';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import LiffPreview from "@/components/liff/LiffPreview";
+import { showQuestionnaire, storeQuestionnaire, updateQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
+import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard.jsx";
+import { Paths } from "@/paths";
 
 export default () => {
-  const [questionnaires, setQuestionnaires] = useState([
-    { id: '', title: '' }
-  ]);
-  const ref = useRef();
+  const { id } = useParams();
+  const history = useHistory();
+  const pathname = useLocation().pathname;
   const types = [
-    { title: 'テキストボックス', value: 1 },
-    { title: 'テキストエリア', value: 2 },
-    { title: 'ラジオボタン', value: 3 },
-    { title: 'チェックボックス', value: 4 },
-    { title: 'プルダウン', value: 5 },
+    {name: 'テキストボックス', type: 1},
+    {name: 'テキストエリア', type: 2},
+    {name: 'ラジオボタン', type: 3},
+    {name: 'チェックボックス', type: 4},
+    {name: 'プルダウン', type: 5},
   ];
+  const defaultItems = [
+    {display_id: 1, name: ''},
+    {display_id: 2, name: ''},
+    {display_id: 3, name: ''},
+  ];
+  const [previewModal, setPreviewModal] = useState(false);
+  const [questionnaire, setQuestionnaire] = useState({
+    title: '', type: 1, is_undisclosed: 0, is_required: 0
+  });
+  const [questionnaireItems, setQuestionnaireItems] = useState(defaultItems);
+  const [deleteQuestionnaireItemIds, setDeleteQuestionnaireItemIds] = useState([]);
+  const [error, setError] = useState({
+    title: ''
+  });
 
-  const [isValid, setIsValid] = useState(false);
-  const [questionnaireEnabling, setQuestionnaireEnabling] = useState({});
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  const update = (e, id, column) => {
-    const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
-    newQuestionnaire[`${column}`] = e.target.value;
-    setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? newQuestionnaire : questionnaire)));
-    return newQuestionnaire;
-  };
-
-  const handleSave = () => {
-    promiseBulkUpdate().then(response => {
-      Swal.fire('保存成功', 'アンケートを保存しました', 'success');
-    }).catch(error => {
-      Swal.fire('保存失敗', 'アンケートの保存に失敗しました', 'error');
-    })
-  }
-
-  const promiseBulkUpdate = () => {
-    return new Promise((resolve, reject) => {
-      var successCount = 0;
-      var failedCount = 0;
-      questionnaires.map(questionnaire => {
-        updateQuestionnaire(questionnaire.id, questionnaire).then(response => {
-          successCount++;
-        }).catch(error => {
-          failedCount++;
-        })
-      })
-      failedCount === 0 ? resolve(successCount) : reject(failedCount);
-    })
-  };
-
-  const handleTypeChange = (e, id) => {
-    const newQuestionnaire = update(e, id, 'type');
-    //配列の中にあるかどうか
-    const types = [3, 4, 5];
-    const isIncludes = (arr, target) => arr.some(el => target.includes(el));
-
-    //タイプを更新したタイミングで、アイテムが存在しなかった場合
-    if (Object.keys(newQuestionnaire.questionnaire_items).length == 0 && isIncludes(types, newQuestionnaire.type)) {
-      ref.current.addItem()
-    }
-  };
-
-  const handleClick = (id, value) => {
-    const newQuestionnaire = questionnaires.find((questionnaire) => (questionnaire.id === id));
-
-    if (value == 'is_undisclosed') {
-      newQuestionnaire.is_undisclosed = !newQuestionnaire.is_undisclosed;
+    if (name == 'is_undisclosed') {
+      setQuestionnaire({...questionnaire, [name]: !questionnaire.is_undisclosed})
+    } else if (name == 'is_required') {
+      setQuestionnaire({...questionnaire, [name]: !questionnaire.is_required})
     } else {
-      newQuestionnaire.is_required = !newQuestionnaire.is_required;
+      setQuestionnaire({...questionnaire, [name]: value})
     }
-    setQuestionnaires(questionnaires.map((questionnaire) => (questionnaire.id === id ? newQuestionnaire : questionnaire)));
+
+    setError({...error, [name]: ''})
   };
 
-  const addQuestionnaire = () => {
-    const lastQuestionnaire = questionnaires.slice(-1)[0];
-    const displayOrder = (typeof lastQuestionnaire === "undefined") ? 1.0 : lastQuestionnaire.display_order + 1.0
-
-    const newQuestionnaire = {
-      title: '',
-      type: 1,
-      display_order: displayOrder,
-      is_undisclosed: 0,
-      is_required: 0,
-      questionnaire_titles: []
-    }
-    storeQuestionnaire(newQuestionnaire, questionnaires, setQuestionnaires)
-  }
-
-  const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
-    customClass: {
-      confirmButton: 'btn btn-danger',
-      cancelButton: 'btn btn-gray-400 me-3'
-    },
-    buttonsStyling: false
-  }));
-
-  const showConfirmDeleteModal = async (id) => {
-    const textMessage = "本当にこのアンケートを削除しますか？";
-
-    const result = await SwalWithBootstrapButtons.fire({
-      icon: "error",
-      title: "削除確認",
-      text: textMessage,
-      showCancelButton: true,
-      reverseButtons: true,
-      confirmButtonText: "削除",
-      cancelButtonText: "キャンセル"
-    });
-
-    if (result.isConfirmed) {
-      deleteQuestionnaire(id, completeDelete, setQuestionnaires, questionnaires)
+  const onSaveQuestionnaire = () => {
+    questionnaire.is_required = questionnaire.is_required ? 1 : 0;
+    questionnaire.is_undisclosed = questionnaire.is_undisclosed ? 1 : 0;
+    const newQuestionnaireItems = questionnaireItems.filter(item => item.name !== '')
+    Object.assign(questionnaire, {questionnaire_items: newQuestionnaireItems})
+    
+    if (pathname.includes('/edit')) {
+      Object.assign(questionnaire, {delete_questionnaire_item_ids: deleteQuestionnaireItemIds})
+      updateQuestionnaire(id, questionnaire, setError);
+      console.log(deleteQuestionnaireItemIds);
+    } else {
+      storeQuestionnaire(questionnaire, storeComplete, setError)
     }
   };
 
-  const completeDelete = async () => {
-    const confirmMessage = "選択したアンケートは削除されました。";
-    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+
+  const storeComplete = (id) => {
+    history.push(Paths.EditQuestionnaire.path.replace(':id', id))
   };
-
-  const onDragEnd = (result) => {
-    handleOnDragEnd(result, questionnaires, sortQuestionnaire)
-  }
-
-  const changeQuestionnaireEnabling = (isValid) => {
-    const updateData = { ...questionnaireEnabling, ['is_questionnaire_enabled']: isValid ? 1 : 0 }
-    setIsValid(isValid)
-    setQuestionnaireEnabling(updateData)
-    updateQuestionnaireEnabling(1, updateData)
-  }
 
   useEffect(() => {
-    getQuestionnaires(setQuestionnaires)
-    showQuestionnaireEnabling(1, setQuestionnaireEnabling, setIsValid, 'questionnaire')
+    if (pathname.includes('/edit')) {
+      showQuestionnaire(id, setQuestionnaire, setQuestionnaireItems);
+    }
   }, []);
-
-  const editItem = (e, id) => {
-    const updatedItems = questionnaires.map(v => {
-      const updatedQuestionnaireItems = v.questionnaire_items.map(questionnaireItem => {
-        if (questionnaireItem.id == id) {
-          questionnaireItem.name = e.target.value;
-        }
-        return questionnaireItem;
-      });
-      v.questionnaire_items = updatedQuestionnaireItems;
-      return v;
-    });
-    setQuestionnaires(updatedItems);
-    console.log(updatedItems);
-  }
-
-  const addItem = (id) => {
-    const updatedItems = questionnaires.map(v => {
-      if (v.id == id) {
-        v.questionnaire_items.push({
-          "id": null,
-          "questionnaire_id": null,
-          "name": '',
-        })
-      }
-      return v;
-    });
-    console.log(updatedItems);
-    setQuestionnaires(updatedItems);
-  }
 
   return (
     <>
-    {/* <Button onClick={() => console.log(questionnaires)} /> */}
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-3">
-        <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">アンケート管理</h1>
+      <Row>
+				<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+					<div className="d-block mb-4 mb-md-0">
+						<h1 className="page-title">{pathname.includes('/edit') ? 'アンケート編集' : 'アンケート作成'}</h1>
+					</div>
+					<Button onClick={onSaveQuestionnaire} variant="success" className="btn-default-success" >
+						保存する
+					</Button>
+				</div>
+				<Col xs={8}>
+					<Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">質問内容</h5>
+						</Card.Header>
+						<Card.Body disabled>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="title"
+                value={questionnaire.title}
+                onChange={handleChange}
+                placeholder="例：朝ごはんは何を食べましたか？"
+                isInvalid={!!error.title}
+              />
+							{
+								error.title && 
+								<Form.Control.Feedback type="invalid">{error.title[0]}</Form.Control.Feedback>
+							}
+						</Card.Body>
+					</Card>
+					<Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">回答項目</h5>
+						</Card.Header>
+						<Card.Body>
+              <QuestionnaireCard
+                questionnaireItems={questionnaireItems}
+                setQuestionnaireItems={setQuestionnaireItems}
+                deleteQuestionnaireItemIds={deleteQuestionnaireItemIds}
+                setDeleteQuestionnaireItemIds={setDeleteQuestionnaireItemIds}
+                questionnaire={questionnaire}
+                error={error}
+                setError={setError}
+              />
+						</Card.Body>
+					</Card>
+				</Col>
+				<Col>
+					<Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">詳細設定</h5>
+						</Card.Header>
+						<Card.Body>
+              <Form.Check
+                checked={questionnaire.is_undisclosed == 1 ? true : false}
+                name="is_undisclosed"
+                type="switch"
+                label="非公開にする"
+                id={`switch-is_undisclosed`}
+                htmlFor={`switch-is_undisclosed`}
+                className="mt-1"
+                onChange={handleChange}
+              />
+              <Form.Check
+                checked={questionnaire.is_required == 1 ? true : false}
+                name="is_required"
+                type="switch"
+                label="必須にする"
+                id={`switch-reqired`}
+                htmlFor={`switch-reqired`}
+                className="mt-2"
+                onChange={handleChange}
+              />
+						</Card.Body>
+					</Card>
+					<Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">回答形式</h5>
+						</Card.Header>
+						<Card.Body>
+              {types.map((v, k) =>
+								<Form.Check
+									key={`type-${k}`}
+									type='radio'
+									label={v.name}
+									name="type"
+									id={`type-${k}`}
+									value={v.type}
+									checked={questionnaire.type == k + 1}
+									onChange={handleChange}
+									//isInvalid={!!errors.type}
+								/>
+							)}
+						</Card.Body>
+					</Card>
+				</Col>
+			</Row>
+			<div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+        <Button as={Link} to={Paths.Questionnaires.path} variant='tertiary' className="mt-2 animate-up-2">
+          アンケート管理に戻る
+        </Button>
+      </div>
+      <div className={`line-preview-sticky-nav ${previewModal ? 'open-questionnaire-content' : 'close-questionnaire-content'}`} >
+        <div className='line-preview-button' onClick={() => setPreviewModal(!previewModal)}>
+          {
+            previewModal ? <ChevronDownIcon className="icon icon-xs me-2 line-preview-icon" /> : <ChevronUpIcon className="icon icon-xs me-2 line-preview-icon" />
+          }
+          プレビュー
         </div>
-        <div className="d-flex flex-row-reverse mt-3">
-          <Form.Group id="default-questionnaire">
-            <Form.Check
-              type="switch"
-              label="アンケートをONにする"
-              id="is-default-questionnaire-valid"
-              htmlFor="is-default-questionnaire-valid"
-              checked={isValid}
-              onChange={() => changeQuestionnaireEnabling(!isValid)}
-            />
-          </Form.Group>
+        <div className='line-preview-content'>
+          <LiffPreview
+            page="questionnaire"
+            questionnaire={questionnaire}
+            questionnaireItems={questionnaireItems}
+          />
         </div>
-      </div>
-      <div className="d-flex justify-content-end mb-3">
-        <Button variant="success" className="btn-default-success" onClick={() => handleSave()}>
-          保存する
-        </Button>
-      </div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="questionnaireCards">
-          {(provided) => (
-            <div className="questionnaireCards" {...provided.droppableProps} ref={provided.innerRef}>
-              {questionnaires.map((questionnaire, index) => (
-                <Draggable key={questionnaire.id} draggableId={"q-" + questionnaire.id} index={index}>
-                  {(provided) => (
-                    <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} border="0" className="mb-4" key={index}>
-                      <Card.Body>
-                        <div className="d-flex align-items-center justify-content-between flex-row-reverse">
-                          <Button className="mb-3" variant="close" onClick={() => showConfirmDeleteModal(questionnaire.id)} />
-                          <Form>
-                            <Form.Check
-                              checked={questionnaire.is_undisclosed == 1 ? true : false}
-                              type="switch"
-                              label="非公開にする"
-                              id={`switch-${index}`}
-                              htmlFor={`switch-${index}`}
-                              onChange={() => handleClick(questionnaire.id, 'is_undisclosed')}
-                            />
-                            <Form.Check
-                              checked={questionnaire.is_required == 1 ? true : false}
-                              type="switch"
-                              label="必須にする"
-                              id={`switch-reqired-${index}`}
-                              htmlFor={`switch-reqired-${index}`}
-                              onChange={() => handleClick(questionnaire.id, 'is_required')}
-                            />
-                          </Form>
-                        </div>
-                        <Row>
-                          <Col md={6} className="mb-3">
-                            <Form.Control as="textarea" value={questionnaire.title} onChange={e => update(e, questionnaire.id, 'title')} placeholder="無題の質問" />
-                          </Col>
-                          <Col md={6} className="mb-3">
-                            <Form.Group id="firstName">
-                              <Form.Select value={questionnaire.type} className="mb-0" onChange={(e) => handleTypeChange(e, questionnaire.id)}>
-                                {
-                                  types.map((type, index) => <option key={index} value={type.value}>{type.title}</option>)
-                                }
-                              </Form.Select>
-                            </Form.Group>
-                          </Col>
-                        </Row>
-                        <Row className="mb-4 mb-lg-0 mt-4">
-                          <QuestionnaireCard
-                            key={index}
-                            questionnaire={questionnaire}
-                            setQuestionnaires={setQuestionnaires}
-                            ref={ref}
-                            editItem={editItem}
-                            addItem={addItem}
-                          />
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <div className="privilege-button my-4">
-        <Button
-          variant="outline-gray-500"
-          className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
-          onClick={addQuestionnaire}
-        >
-          <PlusIcon className="icon icon-xs me-2" /> 質問を追加
-        </Button>
-      </div>
-      <div className="d-flex justify-content-end mb-3">
-        <Button variant="success" className="btn-default-success" onClick={() => handleSave()}>
-          保存する
-        </Button>
       </div>
     </>
   );

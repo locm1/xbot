@@ -149,7 +149,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('demographic', UserDemographicController::class);
         Route::apiResource('privacy-policy', PrivacyPolicyController::class);
         Route::apiResource('terms-of-service', TermsOfServiceController::class);
-        Route::apiResource('specific-trades', SpecificTradeController::class);
+        Route::get('specific-trades', [SpecificTradeController::class, 'index']);
+        Route::post('specific-trades', [SpecificTradeController::class, 'store']);
         Route::apiResource('user_tags', UserTagController::class);
         Route::apiResource('postages', PostageController::class)->only([
             'index', 'store'

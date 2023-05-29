@@ -17,19 +17,6 @@ class SpecificTradeController extends Controller
         $this->specific_trade_service = $specific_trade_service;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CreateSpecificTradeRequest $request)
-    {
-        //
-        $specific = $this->specific_trade_service->store($request);
-        return response()->json(['specific' => $specific], 201);
-    }
-
     public function index()
     {
         $specific = $this->specific_trade_service->index();
@@ -37,28 +24,16 @@ class SpecificTradeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return JsonResource
-     */
-    public function show(SpecificTrade $specific_trade)
-    {
-        $specific = $this->specific_trade_service->show($specific_trade);
-        return response()->json(['specific' => $specific], 200);
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpecificTradeRequest $request, SpecificTrade $specific_trade)
+    public function store(Request $request)
     {
-        $specific = $this->specific_trade_service->update($request, $specific_trade);
-        return response()->json(['specific' => $specific], 200);
+        //
+        $specific = $this->specific_trade_service->store($request);
+        return response()->json(['specific' => $specific], 201);
     }
 
     /**

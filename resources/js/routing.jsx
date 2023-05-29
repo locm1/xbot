@@ -15,6 +15,7 @@ import { showQuestionnaireEnabling } from "@/pages/liff/api/QuestionnaireApiMeth
 // page
 import SignIn from "@/pages/auth/Signin"
 import DashboardOverview from "@/pages/dashboard/DashboardOverview"
+import Questionnaires from '@/pages/questionnaire/Questionnaires';
 import CreateQuestionnaire from '@/pages/questionnaire/CreateQuestionnaire';
 import DefaultQuestionnaire from '@/pages/questionnaire/DefaultQuestionnaire';
 import Users from '@/pages/user/Users';
@@ -223,6 +224,10 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
             pages={pages}
           />
           <main className="content mb-5">
+            {/* <div className='wrapper'>
+            <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} admin={admin} />
+            <Component {...props} />
+            </div> */}
             <Topbar toggleContracted={toggleContracted} toggleSettings={toggleSettings} admin={admin} />
             <Component {...props} />
           </main>
@@ -487,7 +492,9 @@ const Routing = () => {
         {<Redirect to={Paths.DashboardOverview.path} />}
       </Route>
       <RouteWithSidebar exact role_path="dashboard" path={Paths.DashboardOverview.path} component={DashboardOverview} role={3} />
+      <RouteWithSidebar exact role_path="questionnaire" path={Paths.Questionnaires.path} component={Questionnaires} />
       <RouteWithSidebar exact role_path="questionnaire" path={Paths.CreateQuestionnaire.path} component={CreateQuestionnaire} />
+      <RouteWithSidebar exact role_path="questionnaire" path={Paths.EditQuestionnaire.path} component={CreateQuestionnaire} />
       <RouteWithSidebar exact role_path="questionnaire" path={Paths.DefaultQuestionnaire.path} component={DefaultQuestionnaire} />
       <RouteWithSidebar exact role_path="user" path={Paths.Users.path} component={Users} />
       <RouteWithSidebar exact role_path="user" path={Paths.EditUser.path} component={EditUser} />

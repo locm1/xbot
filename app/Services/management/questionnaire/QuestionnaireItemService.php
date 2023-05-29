@@ -20,10 +20,11 @@ class QuestionnaireItemService
      * @param  \Illuminate\Http\Request  $request
      */
 
-    public function store($request, $questionnaire): QuestionnaireItem
+    public function store($questionnaire_items, $questionnaire): array
     {
-        $merged_data = $this->questionnaire_action->mergeQuestionnaireIdToArray($questionnaire, $request);
-        return QuestionnaireItem::create($merged_data);
+        $merged_data = $this->questionnaire_action->mergeQuestionnaireIdToArray($questionnaire_items, $questionnaire);
+        QuestionnaireItem::upsert($merged_data, ['id']);
+        return $merged_data;
     }
 
     /**
@@ -42,9 +43,9 @@ class QuestionnaireItemService
     }
 
 
-    public function destroy($item) 
+    public function destroy($delete_questionnaire_item_ids) 
     {
-        return $item->delete();
+        return QuestionnaireItem::whereIn('id', $delete_questionnaire_item_ids)->delete();
     }
 
 }

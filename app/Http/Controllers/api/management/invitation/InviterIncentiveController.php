@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api\management\invitation;
 
 use App\Http\Controllers\Controller;
 use App\Models\InviteIncentive;
-use App\Services\liff\invite\InviterIncentiveService;
+use App\Services\management\invitation\InviterIncentiveService;
 
 class InviterIncentiveController extends Controller
 {

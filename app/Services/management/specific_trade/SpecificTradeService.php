@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Models\SpecificTrade;
 use App\Services\management\AbstractManagementService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class SpecificTradeService extends AbstractManagementService
+class SpecificTradeService
 {
 
     public function index() :Collection
@@ -20,36 +21,33 @@ class SpecificTradeService extends AbstractManagementService
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function store($request) :SpecificTrade
+    public function store($request)
     {
-        $data = $request->only(['title', 'content']);
-        return SpecificTrade::create($data);
+        $upsert_specific_trades = array();
+
+        foreach ($request->specific_trades as $specific_trade) {
+            $upsert_specific_trades[] = [
+                'id' => $specific_trade['id'] ?? null,
+                'title' => $specific_trade['title'],
+                'content' => $specific_trade['content'],
+            ];
+        }
+
+        return DB::transaction(function () use ($upsert_specific_trades, $request) {
+            SpecificTrade::upsert($upsert_specific_trades, ['id']);
+
+            # 削除対象IDの配列が送られていたら（空じゃないとき）
+            if (!empty($request->delete_specific_trade_ids)) {
+                $this->destroy($request->delete_specific_trade_ids);
+            }
+        });
+
+        return $upsert_specific_trades;
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  SpecificTrade $specific
-     * @return SpecificTrade
-     */
-    public function show(Model $specific): SpecificTrade
+    private function destroy($delete_specific_trade_ids) 
     {
-        return $specific;
-    }
-
-
-    public function update($request, Model $specific) :array
-    {
-        $data = $request->only(['title', 'content']);
-        $specific->update($data);
-        return $data;
-    }
-
-
-    public function destroy(Model $specific) 
-    {
-        return $specific->delete();
+        return SpecificTrade::whereIn('id', $delete_specific_trade_ids)->delete();
     }
 
 }

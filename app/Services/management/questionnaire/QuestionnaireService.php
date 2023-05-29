@@ -7,9 +7,18 @@ use App\Models\QuestionnaireItem;
 use App\Services\management\AbstractManagementService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class QuestionnaireService
 {
+    private $action;
+    private $service;
+
+    public function __construct(FormatQuestionnaireAction $action, QuestionnaireItemService $service)
+    {
+        $this->action = $action;
+        $this->service = $service;
+    }
 
     public function index(): Collection
     {
@@ -22,11 +31,32 @@ class QuestionnaireService
      * @param  \Illuminate\Http\Request  $request
      */
 
-    public function store($reqest): Questionnaire
+    public function store($request): Questionnaire
     {
-        $data = $reqest->only(['title', 'type', 'display_order', 'is_undisclosed', 'is_required']);
-        $merged_data = array_merge($data, ['admin_id' => Auth::id()]);
-        return Questionnaire::create($merged_data);
+        $data = $request->only(['title', 'type', 'display_order', 'is_undisclosed', 'is_required']);
+        $merged_admin_id = array_merge($data, ['admin_id' => Auth::id()]);
+        $merged_data = $this->action->mergeDisplayorderToArray($merged_admin_id);
+
+        return DB::transaction(function () use ($merged_data, $request) {
+            $Questionnaire = Questionnaire::create($merged_data);
+
+            # リクエストで送られた項目が存在するとき
+            if (!empty($request->questionnaire_items)) {
+                $this->service->store($request->questionnaire_items, $Questionnaire);
+            }
+            return $Questionnaire;
+        });
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Questionnaire $questionnaire
+     * @return Questionnaire
+     */
+    public function show(Questionnaire $questionnaire): Questionnaire
+    {
+        return Questionnaire::with('questionnaireItems')->find($questionnaire->id);
     }
 
     /**
@@ -39,20 +69,20 @@ class QuestionnaireService
     public function update($request, Questionnaire $questionnaire)
     {
         $data = $request->only(['admin_id', 'title', 'type', 'display_order', 'is_undisclosed', 'is_required']);
-        $questionnaire->update($data);
-        foreach ($request->questionnaire_items as $k => $v) {
-            if ($v['id'] === null) {
-                QuestionnaireItem::create([
-                    'questionnaire_id' => $questionnaire->id,
-                    'name' => $v['name'],
-                ]);
-            } else {
-                QuestionnaireItem::find($v['id'])->update([
-                    'questionnaire_id' => $questionnaire->id,
-                    'name' => $v['name'],
-                ]);
+
+        return DB::transaction(function () use ($data, $request, $questionnaire) {
+            $questionnaire->update($data);
+
+            # リクエストで送られた項目が存在するとき
+            if (!empty($request->questionnaire_items)) {
+                $this->service->store($request->questionnaire_items, $questionnaire);
             }
-        }
+
+            # 削除対象IDの配列が送られていたら（空じゃないとき）
+            if (!empty($request->delete_questionnaire_item_ids)) {
+                $this->service->destroy($request->delete_questionnaire_item_ids);
+            }
+        });
         return $questionnaire;
     }
 

@@ -18,7 +18,6 @@ class InviterIncentiveService
     public function index(InviteIncentive $invite_incentive) 
     {
         return InviterIncentive::where('invite_incentive_id', $invite_incentive->id)
-            ->where('is_issued', 1)
             ->with(['user', 'inviteIncentive'])
             ->get();
     }

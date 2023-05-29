@@ -95,6 +95,17 @@ $line_bg_color: rgb(140, 171, 217);
   transition: margin 0.3s ease-in-out;
 }
 
+.open-questionnaire-content {
+  @extend .open-content;
+  border: 1px solid #353a40;
+}
+
+.close-questionnaire-content {
+  margin-bottom: -601px;
+  transition: margin 0.3s ease-in-out;
+  border: 1px solid #353a40;
+}
+
 .line-preview-image-wrap {
   width: 150px;
 }

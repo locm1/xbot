@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export const getQuestionnaires = async (setQuestionnaires) => {
   return await axios.get('/api/v1/management/questionnaires')
   .then((response) => {
@@ -11,27 +13,52 @@ export const getQuestionnaires = async (setQuestionnaires) => {
   });
 };
 
-export const storeQuestionnaire = async (formValue, questionnaires, setQuestionnaires) => {
+export const storeQuestionnaire = async (formValue, storeComplete, setError) => {
   await axios.post(`/api/v1/management/questionnaires`, formValue)
   .then((response) => {
-    setQuestionnaires([...questionnaires, {
-      ...response.data.questionnaire, questionnaire_items: []
-    }]);
-    console.log([...questionnaires, {
-      ...response.data.questionnaire, questionnaire_items: []
-    }]);
+    const questionnaire = response.data.questionnaire;
+    Swal.fire(
+      '保存完了',
+      'アンケートの保存に成功しました',
+      'success'
+    ).then(result => {
+      if (result.isConfirmed) {
+        storeComplete(questionnaire.id)
+      }
+    })
+  })
+  .catch(error => {
+      console.error(error);
+      setError(error.response.data.errors)
+  });
+};
+
+
+export const showQuestionnaire = async (id, setQuestionnaire, setQuestionnaireItems) => {
+  await axios.get(`/api/v1/management/questionnaires/${id}`)
+  .then((response) => {
+    const questionnaire = response.data.questionnaire
+    setQuestionnaire(questionnaire);
+    setQuestionnaireItems(questionnaire.questionnaire_items.map(item => ({ ...item, display_id: item.id })));
   })
   .catch(error => {
       console.error(error);
   });
 };
 
-export const updateQuestionnaire = async (id, formValue) => {
+
+export const updateQuestionnaire = async (id, formValue, setError) => {
   return await axios.put(`/api/v1/management/questionnaires/${id}`, formValue)
   .then((response) => {
+    Swal.fire(
+      '保存完了',
+      'アンケートの保存に成功しました',
+      'success'
+    )
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 

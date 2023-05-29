@@ -230,7 +230,7 @@ export default (props) => {
                 pages[7] && admin.role <= pages[7].role && (
                   <CollapsableNavItem eventKey="questionnaire/" title="アンケート管理" icon={PencilAltIcon}>
                     <NavItem title="固定アンケート管理" link={Paths.DefaultQuestionnaire.path} />
-                    <NavItem title="アンケート管理" link={Paths.CreateQuestionnaire.path} />
+                    <NavItem title="アンケート管理" link={Paths.Questionnaires.path} />
                   </CollapsableNavItem>
                 )
               }

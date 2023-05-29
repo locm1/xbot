@@ -33,7 +33,7 @@ export const UsersTable = (props) => {
                     <span className="fw-bold text-decoration-underline">{name}</span> 
                   </>
                 :
-                  <span className="fw-bold text-decoration-underline">{nickname}</span> 
+                  <span className="fw-bold text-decoration-underline">({nickname})</span> 
                 }
               </div>
             </div>

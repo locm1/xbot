@@ -450,3 +450,35 @@ input[type="number"] {
   margin-right: auto;
   max-width: 1170px;
 }
+
+
+.img-box{
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.hoverQR {
+  cursor: pointer;
+  transition: .2s cubic-bezier(0.45, 0, 0.55, 1);
+  top: 0px;
+  left: 0px;
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0);
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  &:hover .QRicon {
+    opacity: 1;
+  }
+}
+
+.QRicon {
+  transition: .2s cubic-bezier(0.45, 0, 0.55, 1);
+  opacity: 0;
+}
+

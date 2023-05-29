@@ -27,7 +27,7 @@ export default () => {
   const [links, setLinks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchValue, setSearchValue] = useState({
-    name: '', category: 0
+    name: '', category: ''
   });
 
   const handleChange = (e, input) => {
@@ -113,6 +113,7 @@ export default () => {
             </InputGroup>
             <Form.Select defaultValue={searchValue.category} className="mb-0" onChange={(e) => handleChange(e, 'category')}>
               <option>カテゴリー名</option>
+              <option value="0">全て表示</option>
               {
                 categories.map((category, index) => <option key={category.id} value={category.id}>{category.name}</option>)
               }

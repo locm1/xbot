@@ -42,7 +42,7 @@ export default (props) => {
         </div>
         <div className="d-flex">
           <Button as={Link} to={Paths.SendHistories.path} variant="gray-800" className="me-2">
-            配信管理に戻る
+            配信履歴に戻る
           </Button>
           <Button onClick={searchSegment} variant="info" className="me-2">
             同じセグメント条件で検索する

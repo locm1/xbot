@@ -110,7 +110,7 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">来店履歴</h1>
         </div>
-        <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+        <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center">
         <Button onClick={() => setOpenModal(!openModal)} variant="gray-800" className="mt-2">
           設置用QRコード
         </Button>
@@ -118,8 +118,8 @@ export default () => {
       </div>
 
       <div className="table-settings mb-4">
-        <Row className="d-flex justify-content-between align-items-center">
-          <Col xs={6} lg={7} className="d-md-flex">
+        <Row className="d-flex align-items-center">
+          <Col xs={4} lg={4} className="d-md-flex">
             <InputGroup className="me-2 me-lg-3 fmxw-400">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
@@ -132,8 +132,8 @@ export default () => {
               />
             </InputGroup>
           </Col>
-          <Col xs={6} lg={5} className="d-flex justify-content-end">
-            <InputGroup className="me-3 fmxw-500">
+          <Col xs={4} lg={4} className="d-flex justify-content-end">
+            <InputGroup className="fmxw-500">
               <InputGroup.Text>
                 <CalendarIcon className="icon icon-xs" />
                 </InputGroup.Text>

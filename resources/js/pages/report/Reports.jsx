@@ -32,7 +32,7 @@ export default () => {
 		<>
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-2 list-wrap">
 				<div className="">
-					<h1 className="page-title">レポート一覧</h1>
+					<h1 className="page-title">レポート管理</h1>
 				</div>
 				<div className="w-50 d-flex justify-content-end">
 					<Button onClick={() => history.push(Paths.CreateReport.path)}>新規作成</Button>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, InputGroup, Card, Alert } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
-
+import LiffPreview from "@/components/liff/LiffPreview";
 import { showQuestionnaire, storeQuestionnaire, updateQuestionnaire } from "@/pages/questionnaire/api/QuestionnaireApiMethods";
 import QuestionnaireCard from "@/pages/questionnaire/QuestionnaireCard.jsx";
 import { Paths } from "@/paths";
@@ -23,6 +23,7 @@ export default () => {
     {display_id: 2, name: ''},
     {display_id: 3, name: ''},
   ];
+  const [previewModal, setPreviewModal] = useState(false);
   const [questionnaire, setQuestionnaire] = useState({
     title: '', type: 1, is_undisclosed: 0, is_required: 0
   });
@@ -175,6 +176,21 @@ export default () => {
         <Button as={Link} to={Paths.Questionnaires.path} variant='tertiary' className="mt-2 animate-up-2">
           アンケート管理に戻る
         </Button>
+      </div>
+      <div className={`line-preview-sticky-nav ${previewModal ? 'open-questionnaire-content' : 'close-questionnaire-content'}`} >
+        <div className='line-preview-button' onClick={() => setPreviewModal(!previewModal)}>
+          {
+            previewModal ? <ChevronDownIcon className="icon icon-xs me-2 line-preview-icon" /> : <ChevronUpIcon className="icon icon-xs me-2 line-preview-icon" />
+          }
+          プレビュー
+        </div>
+        <div className='line-preview-content'>
+          <LiffPreview
+            page="questionnaire"
+            questionnaire={questionnaire}
+            questionnaireItems={questionnaireItems}
+          />
+        </div>
       </div>
     </>
   );

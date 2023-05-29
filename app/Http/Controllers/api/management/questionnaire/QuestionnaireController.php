@@ -7,6 +7,7 @@ use App\Http\Requests\management\questionnaire\StoreQuestionnaireRequest;
 use App\Http\Requests\management\questionnaire\UpdateQuestionnaireRequest;
 use App\Models\Questionnaire;
 use App\Services\management\questionnaire\QuestionnaireService;
+use Illuminate\Http\Request;
 
 class QuestionnaireController extends Controller
 {
@@ -38,6 +39,18 @@ class QuestionnaireController extends Controller
     {
         $questionnaire = $this->questionnaire_service->store($request);
         return response()->json(['questionnaire' => $questionnaire], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Product $product
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Questionnaire $questionnaire)
+    {
+        $questionnaire = $this->questionnaire_service->show($questionnaire);
+        return response()->json(['questionnaire' => $questionnaire], 200);
     }
 
     /**

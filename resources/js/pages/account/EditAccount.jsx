@@ -50,7 +50,6 @@ export default () => {
 
   return (
     <>
-    <BackToListLink path={Paths.Accounts.path} />
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 mb-4 list-wrap">
         <div className="d-block">
           <h1 className="page-title">{pathname.includes('/edit') ? 'アカウント編集' : 'アカウント登録'}</h1>
@@ -141,13 +140,20 @@ export default () => {
               </Form.Group>
             </Col>
           </Row>
-          <div onClick={onSaveAccount} className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-4">
-            <Button variant="success" className="animate-up-2">
-              {pathname.includes('/edit') ? '更新する' : '登録する'}
+        </Card.Body>
+        <Card.Footer>
+          <div className="d-flex justify-content-end">
+            <Button variant="success" className="btn-default-success" onClick={onSaveAccount}>
+              保存する
             </Button>
           </div>
-        </Card.Body>
+        </Card.Footer>
       </Card>
+      <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+        <Button as={Link} to={Paths.Accounts.path} variant='tertiary' className="mt-2 animate-up-2">
+          アカウント管理に戻る
+        </Button>
+      </div>
     </>
   );
 };

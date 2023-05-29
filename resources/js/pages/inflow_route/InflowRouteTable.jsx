@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { DownloadIcon } from "@heroicons/react/solid";
+import { DownloadIcon, CloudDownloadIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
@@ -10,6 +10,7 @@ import Pagination from "@/components/Pagination";
 
 export const InflowRouteTable = (props) => {
   const { inflows, setInflows, links, getInflowRoutes, setLinks, paginate, setPaginate, showConfirmDeleteModal } = props;
+  const [isHover, setIsHover] = useState(false);
 
   const downloadQR = (id) => {
     const canvas = document.getElementById(id);
@@ -26,23 +27,32 @@ export const InflowRouteTable = (props) => {
 
   const TableRow = (props) => {
     const {id, name, uri, count} = props;
+
+    const style = {
+      backgroundColor: isHover ? 'lightblue' : '',
+      zIndex: 100
+    }
+
     return (
       <tr className="border-bottom">
         <td>
           {name}
         </td>
         <td>
-          <QRCode
-            id={`qr-${id}`}
-            value={uri}
-            size={150}
-            level={"L"}
-            includeMargin={false}
-          />
-          <a className="d-block" onClick={() => downloadQR(`qr-${id}`)}>
-            <DownloadIcon className="icon icon-xs me-2" />
-            <span>Download QR</span>
-          </a>
+          <div onMouseEnter={() => setIsHover(!isHover)}>
+            <QRCode
+              id={`qr-${id}`}
+              value={uri}
+              size={150}
+              level={"L"}
+              includeMargin={false}
+              style={style}
+            />
+          </div>
+          {/* <Button onClick={() => downloadQR(`qr-${id}`)} variant="gray-800" className="mt-2">
+            <CloudDownloadIcon className="icon icon-xs me-2" />
+            Download QR
+          </Button> */}
         </td>
         <td>
           {uri}

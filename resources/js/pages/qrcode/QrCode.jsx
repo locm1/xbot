@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Col, Row, Card, Form, Image, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
 import { ChoosePhotoWidget } from "@/components/Widgets";
-import { PaperClipIcon, CheckIcon, HomeIcon, PlusIcon, DownloadIcon, CogIcon } from "@heroicons/react/solid";
+import { PaperClipIcon, CheckIcon, HomeIcon, PlusIcon, DownloadIcon, CloudDownloadIcon } from "@heroicons/react/solid";
 import { getApiKeys, storeApiKey } from "@/pages/api_key/api/ApiKeyApiMethods";
 
 import QRCode from "qrcode.react";
@@ -66,10 +66,10 @@ export default () => {
                         level={"L"}
                         includeMargin={false}
                       />
-                      <a className="d-block" onClick={() => downloadQR(`add-friend-qr`)}>
-                        <DownloadIcon className="icon icon-xs me-2" />
-                        <span>Download QR</span>
-                      </a>
+                      <Button onClick={() => downloadQR(`add-friend-qr`)} variant="gray-800" className="liff-product-detail-button mt-2">
+                        <CloudDownloadIcon className="icon icon-xs me-2" />
+                        Download QR
+                      </Button>
                     </>
                   }
                 </div>

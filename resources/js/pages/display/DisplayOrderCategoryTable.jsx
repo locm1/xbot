@@ -39,11 +39,10 @@ export default (props) => {
   }
 
   const getIsUndisclosed = (isUndisclosed) => {
-    switch (isUndisclosed) {
-      case 1:
-        return '非公開'
-      case 0:
-        return '公開'
+    if (isUndisclosed == 1) {
+      return <Badge bg="gray-600" className="me-2">非公開</Badge>
+    } else {
+      return <Badge bg="danger" className="me-2">公開</Badge>
     }
   }
 

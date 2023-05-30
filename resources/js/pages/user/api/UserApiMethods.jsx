@@ -87,6 +87,18 @@ export const getUserTag = async (id, setSelectedTags, setTags) => {
     });
 };
 
+
+export const getTags = async (setTags) => {
+  axios.get(`/api/v1/management/user_tags`)
+    .then((data) => {
+      setTags(data.data.tags);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+};
+
+
 export const getUserPurchase = async (id, setPurchaseTime) => {
   axios.get(`/api/v1/management/users/${id}/purchase`)
     .then((res) => {
@@ -96,4 +108,17 @@ export const getUserPurchase = async (id, setPurchaseTime) => {
         setPurchaseTime(res.data.purchase_time);
       }
     });
+};
+
+
+export const getQuestionnaireAnswer = (id, setQuestionnaireAnswers) => {
+  axios.get(`/api/v1/management/users/${id}/questionnaire`)
+  .then((res) => {
+    if(res.status !== 200) {
+      throw new Error("APIが正しく取得されませんでした");
+    } else {
+      setQuestionnaireAnswers(res.data.questionnaireAnswers);
+      console.log(res.data.questionnaireAnswers);
+    }
+  });
 };

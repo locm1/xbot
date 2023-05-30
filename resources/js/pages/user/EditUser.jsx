@@ -9,7 +9,7 @@ import { UserInfoForm } from "@/pages/user/UserInfoForm";
 import { QuestionnaireForm } from "@/pages/user/QuestionnaireForm";
 import { Link, useHistory, useParams } from 'react-router-dom';
 
-import { showUser, getOccupations, getUserTag, getUserPurchase } from "@/pages/user/api/UserApiMethods";
+import { showUser, getOccupations, getUserTag, getUserPurchase, getQuestionnaireAnswer } from "@/pages/user/api/UserApiMethods";
 import { getUserVisitorHistories, getUserVisitorHistoryCount, getUserOrders, getUserInviteHistories, getUserReserveHistories } from "@/pages/user/api/UserHistoryApiMethods";
 
 import { Paths } from "@/paths";
@@ -57,6 +57,10 @@ export default () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [tags, setTags] = useState([]);
 
+  const [questionnaireAnswers, setQuestionnaireAnswers] = useState([
+    {created_at: '', questionnaire: {title: ''}, questionnaire_answer_items: []}
+  ]);
+
   useLayoutEffect(() => {
     showUser(id, setUser, setIsRendered)
     getUserVisitorHistories(id, setVisitorHistory)
@@ -67,6 +71,7 @@ export default () => {
     getUserInviteHistories(id, setInviteHistories, setFromInvitedUser)
     getUserPurchase(id, setPurchaseTime)
     getUserReserveHistories(id, setReserves)
+    getQuestionnaireAnswer(id, setQuestionnaireAnswers)
   }, []);
 
   const confirmSave = () => {
@@ -121,7 +126,7 @@ export default () => {
               <Col xs={12} xl={4}>
                 <Row>
                   <Col xs={12} className="mb-4">
-                    <ProfileCardWidget {...user} visitCount={visitCount} purchaseTime={purchaseTime} />
+                    <ProfileCardWidget {...user} visitCount={visitCount} purchaseTime={purchaseTime} questionnaireAnswers={questionnaireAnswers} />
                   </Col>
                 </Row>
               </Col>
@@ -150,7 +155,7 @@ export default () => {
             </Row>
           </Tab.Pane>
           <Tab.Pane eventKey="questionnaire" className="py-4">
-            <QuestionnaireForm userId={id} />
+            <QuestionnaireForm userId={id} questionnaireAnswers={questionnaireAnswers} />
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>

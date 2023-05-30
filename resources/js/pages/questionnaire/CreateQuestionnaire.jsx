@@ -105,6 +105,26 @@ export default () => {
 							}
 						</Card.Body>
 					</Card>
+          <Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">回答形式</h5>
+						</Card.Header>
+						<Card.Body>
+              {types.map((v, k) =>
+								<Form.Check
+									key={`type-${k}`}
+									type='radio'
+									label={v.name}
+									name="type"
+									id={`type-${k}`}
+									value={v.type}
+									checked={questionnaire.type == k + 1}
+									onChange={handleChange}
+									//isInvalid={!!errors.type}
+								/>
+							)}
+						</Card.Body>
+					</Card>
 					<Card className="mb-3">
 						<Card.Header className="bg-primary text-white px-3 py-2">
 							<h5 className="mb-0 fw-bolder">回答項目</h5>
@@ -148,26 +168,6 @@ export default () => {
                 className="mt-2"
                 onChange={handleChange}
               />
-						</Card.Body>
-					</Card>
-					<Card className="mb-3">
-						<Card.Header className="bg-primary text-white px-3 py-2">
-							<h5 className="mb-0 fw-bolder">回答形式</h5>
-						</Card.Header>
-						<Card.Body>
-              {types.map((v, k) =>
-								<Form.Check
-									key={`type-${k}`}
-									type='radio'
-									label={v.name}
-									name="type"
-									id={`type-${k}`}
-									value={v.type}
-									checked={questionnaire.type == k + 1}
-									onChange={handleChange}
-									//isInvalid={!!errors.type}
-								/>
-							)}
 						</Card.Body>
 					</Card>
 				</Col>

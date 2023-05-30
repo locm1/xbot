@@ -17,6 +17,7 @@ export default (props) => {
 		chart: {
 			id: id
 		},
+		labels: data.map(item => item[0]),
 		xaxis: {
 			min: xlabel == 1 ? new Date(period[0]).getTime() : '',
 			max: xlabel == 1 ? new Date(period[1]).getTime() : '',
@@ -31,12 +32,12 @@ export default (props) => {
 			}
 		}
 	});
-	const [series, setSeries] = useState([
+	const [series, setSeries] = useState(type != "pie" ? [
 		{
 			name: name,
 			data: data.map(item => item[1])
 		}
-	]);
+	] : data.map(item => item[1]));
 
 	const searchSegment = () => {
 		history.push({
@@ -67,7 +68,7 @@ export default (props) => {
 							{title}
 						</h2>
 					</div>
-					<Button onClick={searchSegment}>
+					<Button variant="outline-primary" onClick={searchSegment}>
 						この条件で配信する
 					</Button>
 				</Card.Body>

@@ -72,7 +72,7 @@ export default () => {
   <>
     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
       <div className="d-block mb-4 mb-md-0">
-        <h1 className="page-title">送料管理</h1>
+        <h1 className="page-title">送料設定</h1>
       </div>
         <Button variant="success" onClick={handleClick} className="btn-default-success">保存する</Button>
     </div>

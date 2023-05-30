@@ -26,7 +26,7 @@ export const InflowRouteTable = (props) => {
   };
 
   const TableRow = (props) => {
-    const {id, name, uri, count} = props;
+    const { id, name, uri, count } = props;
 
     const style = {
       backgroundColor: isHover ? 'lightblue' : '',
@@ -39,7 +39,8 @@ export const InflowRouteTable = (props) => {
           {name}
         </td>
         <td>
-          <div onMouseEnter={() => setIsHover(!isHover)}>
+          {/* <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className='hoverQR'> */}
+          <div className="img-box" onClick={() => downloadQR(`qr-${id}`)}>
             <QRCode
               id={`qr-${id}`}
               value={uri}
@@ -48,6 +49,11 @@ export const InflowRouteTable = (props) => {
               includeMargin={false}
               style={style}
             />
+            <div className='hoverQR' width={150} height={150}>
+              <div className="d-flex w-100 h-100 align-items-center justify-content-center">
+                <DownloadIcon className="icon icon-lg QRicon" color="white" />
+              </div>
+            </div>
           </div>
           {/* <Button onClick={() => downloadQR(`qr-${id}`)} variant="gray-800" className="mt-2">
             <CloudDownloadIcon className="icon icon-xs me-2" />
@@ -72,24 +78,24 @@ export const InflowRouteTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-        <Table hover className="user-table align-items-center">
-          <thead className="bg-primary text-white">
-            <tr>
-              <th className="border-bottom">管理名称</th>
-              <th className="border-bottom">生成QRコード</th>
-              <th className="border-bottom">URL</th>
-              <th className="border-bottom">カウント</th>
-              <th className="border-bottom">削除</th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {inflows.map((v, k) => <TableRow key={`inflow-${k}`} {...v} />)}
-          </tbody>
-        </Table>
-      <Pagination 
+      <Table hover className="user-table align-items-center">
+        <thead className="bg-primary text-white">
+          <tr>
+            <th className="border-bottom">管理名称</th>
+            <th className="border-bottom">生成QRコード</th>
+            <th className="border-bottom">URL</th>
+            <th className="border-bottom">カウント</th>
+            <th className="border-bottom">削除</th>
+          </tr>
+        </thead>
+        <tbody className="border-0">
+          {inflows.map((v, k) => <TableRow key={`inflow-${k}`} {...v} />)}
+        </tbody>
+      </Table>
+      <Pagination
         links={links}
         paginate={paginate}
-        getListBypage={getInflowRoutes} 
+        getListBypage={getInflowRoutes}
         setList={setInflows}
         setLinks={setLinks}
         setPaginate={setPaginate}

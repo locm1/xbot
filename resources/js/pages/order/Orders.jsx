@@ -66,13 +66,13 @@ export default () => {
       )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">注文管理</h1>
+          <h1 className="page-title">注文リスト</h1>
         </div>
       </div>
 
       <div className="table-settings mb-4">
         <Row className="d-flex justify-content-between align-items-center">
-          <Col xs={3} lg={3} className="d-md-flex">
+          <Col xs={3} lg={3} className="">
             <InputGroup className="me-2 me-lg-3 fmxw-400">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
@@ -85,12 +85,12 @@ export default () => {
               />
             </InputGroup>
           </Col>
-          <Col xs={3} lg={3} className="d-md-flex">
+          <Col xs={3} lg={3} className="">
             <InputGroup className="fmxw-400">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
-              <Form.Select value={searchValue.status} className="fmxw-200 d-none d-md-inline" onChange={(e) => handleChange(e, 'status')} placeholder="ステータスを選択">
+              <Form.Select value={searchValue.status} className=" d-none d-md-inline" onChange={(e) => handleChange(e, 'status')} placeholder="ステータスを選択">
                 <option value="0">ステータスを選択</option>
                 <option value="1">注文内容確認中</option>
                 <option value="2">配送準備中</option>
@@ -99,7 +99,7 @@ export default () => {
               </Form.Select>
             </InputGroup>
           </Col>
-          <Col xs={3} lg={3} className="d-md-flex">
+          <Col xs={3} lg={3} className="">
             <InputGroup className="fmxw-400">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
@@ -112,12 +112,12 @@ export default () => {
               />
             </InputGroup>
           </Col>
-          <Col xs={3} lg={3} className="d-md-flex">
+          <Col xs={3} lg={3} className="">
             <InputGroup className="me-2 me-lg-3 fmxw-400">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
-              <Form.Select value={searchValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="fmxw-200 d-none d-md-inline"  placeholder="都道府県を選択">
+              <Form.Select value={searchValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className=" d-none d-md-inline"  placeholder="都道府県を選択">
                 <option value="0">都道府県を選択</option>
                 {
                   prefectures.map((prefecture, index) => <option key={prefecture.id} value={prefecture.name}>{prefecture.name}</option>)

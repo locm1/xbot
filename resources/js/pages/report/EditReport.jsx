@@ -18,7 +18,7 @@ export default () => {
 	const isEditing = useLocation().pathname.includes('/edit');
 	const periods = ['1週間', '1ヶ月間', '1年間'];
 	const xlabels = ['期間', '性別', '誕生月'];
-	const types = ['棒グラフ', '折れ線グラフ'];
+	const types = ['棒グラフ', '折れ線グラフ', '円グラフ'];
 	const sizes = ['1/1', '1/2', '1/4']
 
 	useEffect(() => {

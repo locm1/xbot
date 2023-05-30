@@ -150,12 +150,6 @@ export default () => {
     getPrefectures(setPrefectures)
     getQuestionnaires(setQuestionnaires)
     getOccupations(setOccupations)
-
-    if (typeof location.state !== "undefined") {
-      console.log(location.state.page);
-    } else {
-      console.log('ないよ');
-    }
   }, []);
   
   return (

@@ -140,8 +140,7 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true);
-    location.state && console.log(location.state.coupon);
-    location.state && setCoupon(location.state.coupon);
+    location.state.coupon && setCoupon(location.state.coupon);
     const idToken = liff.getIDToken();
     
     getUser(idToken, setUser).then(response => {

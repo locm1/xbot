@@ -29,23 +29,6 @@ export default () => {
     getUser(idToken, setUser).then(
       response => showPaymentMethod(response.id, setIsLoading).then(response => setPaymentMethod(response))
     )
-    
-    const isDisabled = () => {
-      const inputValue = tokenInputRef.current.value;
-      console.log('入力値が変更されました:', inputValue);
-    };
-
-    const checkTokenInput = () => {
-      const tokenInput = document.querySelector('input[name="payjp-token"]');
-      if (tokenInput) {
-        tokenInput.addEventListener('change', isDisabled);
-        inputRef.current = tokenInput;
-      }
-    };
-
-    const observer = new MutationObserver(checkTokenInput);
-    const payJp = document.getElementById('pay-jp');
-    observer.observe(payJp, { childList: true });
     //showPaymentMethod(101, setPaymentMethod)
   }, []);
 

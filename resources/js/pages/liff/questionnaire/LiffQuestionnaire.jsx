@@ -20,7 +20,7 @@ import { LoadingContext } from "@/components/LoadingContext";
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
-  const location = useLocation().pathname;
+  const location = useLocation();
   const [questionnaires, setQuestionnaires] = useState([
     {id: '', title: '', type: 1, answer: '', is_required: 0, questionnaire_items: [{
       name: ''
@@ -98,9 +98,13 @@ export default () => {
   };
 
   const onSave = () => {
+    const nextPage = (typeof location.state !== "undefined") ? location.state.page : 'other';
     const currentPage = Cookies.get('current_page')
     const path = (currentPage == 'cart') ? '/checkout' : '/questionnaire/complete'
-    history.push(path);
+    history.push({
+      pathname: path,
+      state: {page: nextPage}
+    });
   };
 
   const answerSurvey = (e, id, type, questionnaire_item_id, index) => {
@@ -146,6 +150,12 @@ export default () => {
     getPrefectures(setPrefectures)
     getQuestionnaires(setQuestionnaires)
     getOccupations(setOccupations)
+
+    if (typeof location.state !== "undefined") {
+      console.log(location.state.page);
+    } else {
+      console.log('ないよ');
+    }
   }, []);
   
   return (

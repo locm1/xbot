@@ -372,6 +372,8 @@ const LoadingPage = () => {
 }
 
 const ToQuestionnairePage = () => {
+  const location = useLocation();
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [liffId, setLiffId] = useState('');
   axios.get('/api/v1/get-liff-id')
@@ -385,11 +387,25 @@ const ToQuestionnairePage = () => {
       setIsLoading(false);
     });
 
+    const moveQuestionnairePage = () => {
+      if (typeof location.state !== "undefined") {
+        history.push({
+          pathname: Paths.LiffQuestionnaire.path,
+          state: {page: 'checkout'}
+        })
+      } else {
+        history.push(Paths.LiffQuestionnaire.path)
+      }
+    };
+
   return (
     <>
       <Card className='m-3 p-3'>
         <div className='text-center mb-3'>アンケートにお答え頂くと利用できます</div>
-        <Button className='' href={`https://liff.line.me/${liffId}?path=questionnaire`}>
+        {/* <Button className='' href={`https://liff.line.me/${liffId}?path=questionnaire`}>
+          回答する
+        </Button> */}
+        <Button className='' onClick={moveQuestionnairePage}>
           回答する
         </Button>
       </Card>

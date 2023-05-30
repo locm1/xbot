@@ -141,9 +141,9 @@ export default (props) => {
   return (
     <>
       <Card border="0" className="shadow mt-4">
-        <Card.Header className="border-bottom">
-          <h2 className="fs-6 fw-bold mb-0">アンケート</h2>
-        </Card.Header>
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">アンケート</h5>
+        </Card.Header> 
         <Card.Body className="py-0">
           <Row className="mt-3">
             {

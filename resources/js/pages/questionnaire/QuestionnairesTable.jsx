@@ -103,7 +103,7 @@ export default (props) => {
                             {getIsUndisclosed(t.is_undisclosed)}
                           </td>
                           <td style={{width: "200px"}} className="">
-                            <Button as={Link} to={Paths.EditQuestionnaire.path.replace(':id', t.id)} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+                            <Button as={Link} to={Paths.EditQuestionnaire.path.replace(':id', t.id)} variant="info" size="sm" className="d-inline-flex align-items-center border-white me-3">
                               編集
                             </Button>
                             <Button onClick={() => showConfirmDeleteModal(t.id)} variant="danger" size="sm" className="d-inline-flex align-items-center">

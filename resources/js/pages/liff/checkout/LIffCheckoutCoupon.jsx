@@ -19,7 +19,7 @@ export default (props) => {
       <Card border="0" className="shadow my-3">
         <Card.Header className="bg-primary text-white px-3 py-2 d-flex align-items-center justify-content-between">
           <h2 className="fs-5 fw-bolder mb-0">クーポンの追加</h2>
-          <Button variant="info" size="sm" as={Link} to={Paths.LIffCheckoutAddCoupon.path}>
+          <Button variant="outline-white" size="sm" as={Link} to={Paths.LIffCheckoutAddCoupon.path}>
             変更
           </Button>
         </Card.Header>  

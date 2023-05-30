@@ -265,12 +265,12 @@ const LiffECRoute = ({ component: Component, ...rest }) => {
 }
 
 const ECFooter = () => (
-  <div className="d-flex justify-content-between flex-wrap align-items-center px-2 py-4">
+  <div className="d-flex justify-content-evenly flex-wrap align-items-center px-2 py-4">
     <Button as={Link} to={Paths.LiffProducts.path} variant="gray-800" className="liff-product-detail-button">
       <ShoppingBagIcon className="icon icon-xs me-2" />
       TOPページ
     </Button>
-    <Button variant="tertiary" as={Link} to={Paths.LiffCarts.path} className="liff-product-detail-button">
+    <Button variant="gray-800" as={Link} to={Paths.LiffCarts.path} className="liff-product-detail-button">
       <ShoppingCartIcon className="icon icon-xs me-2" />
       カート
     </Button>

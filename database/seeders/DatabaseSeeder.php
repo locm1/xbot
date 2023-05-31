@@ -41,6 +41,7 @@ use App\Models\QuestionnaireAnswerItem;
 use App\Models\QuestionnaireItem;
 use App\Models\RelatedProduct;
 use App\Models\ReserveHistory;
+use App\Models\SendMessage;
 use App\Models\SpecificTrade;
 use App\Models\TagUser;
 use App\Models\User;
@@ -70,6 +71,7 @@ class DatabaseSeeder extends Seeder
 
         if ($environment  === 'local') {
             $this->call([
+                OccupationSeeder::class,
                 AdminTableSeeder::class,
                 PrefecturesTableSeeder::class,
                 PrivacyPoliciesTableSeeder::class,
@@ -86,14 +88,21 @@ class DatabaseSeeder extends Seeder
                 // InviterIncentiveSeeder::class,
                 UserInfoStatusTableSeeder::class,
                 QuestionnaireEnablingTableSeeder::class,
+                UserTagSeeder::class,
+                QuestionnaireSeeder::class,
+                QuestionnaireItemSeeder::class,
+                CouponSeeder::class,
+                SpecificTradeSeeder::class,
+                MessageSeeder::class,
+                MessageItemSeeder::class,
             ]);
             Admin::factory(10)->create();
-            Occupation::factory(10)->create();
+            // Occupation::factory(10)->create();
             User::factory(100)->create();
             Event::factory(20)->create();
             Privilege::factory(5)->create();
             PrivilegeItem::factory(20)->create();
-            UserTag::factory(5)->create();
+            // UserTag::factory(5)->create();
             ProductCategory::factory(10)->create();
             Product::factory(50)->create()->each(function($product) {
                 ProductSale::factory()->create(['product_id' => $product->id]);
@@ -101,12 +110,12 @@ class DatabaseSeeder extends Seeder
             ProductImage::factory(200)->create();
             ProductContent::factory(70)->create();
             EventUser::factory(50)->create();
-            Questionnaire::factory(10)->create();
-            QuestionnaireItem::factory(30)->create();
-            QuestionnaireAnswer::factory(100)->create();
-            QuestionnaireAnswerItem::factory(300)->create();
+            // Questionnaire::factory(10)->create();
+            // QuestionnaireItem::factory(30)->create();
+            QuestionnaireAnswer::factory(200)->create();
+            QuestionnaireAnswerItem::factory(400)->create();
             TagUser::factory(100)->create();
-            Coupon::factory(100)->create();
+            // Coupon::factory(100)->create();
             CouponUser::factory(100)->create();
             VisitorHistory::factory(100)->create();
             OrderDestination::factory(100)->create();
@@ -122,11 +131,12 @@ class DatabaseSeeder extends Seeder
             //     InviteeIncentiveUser::factory()->create(['inviter_incentive_user_id' => $inviter_incentive_user->id]);
             // });
             DefaultInviteIncentive::factory(1)->create();
-            Message::factory(100)->create();
-            MessageItem::factory(200)->create();
+            // Message::factory(100)->create();
+            // MessageItem::factory(200)->create();
             GreetingMessage::factory(3)->create();
-            SpecificTrade::factory(5)->create();
+            // SpecificTrade::factory(5)->create();
             // OrderPaymentMethod::factory(100)->create();
+            SendMessage::factory(50)->create();
         } else if ($environment  === 'stg') {
             $this->call([
                 AdminTableSeeder::class,

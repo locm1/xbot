@@ -18,10 +18,11 @@ class QuestionnaireAnswerItemFactory extends Factory
     public function definition()
     {
         $questionnaire_answer_ids  = QuestionnaireAnswer::pluck('id')->all();
+        $random_element = ['特になし', '良かった'];
 
         return [
             'questionnaire_answer_id' => fake()->randomElement($questionnaire_answer_ids),
-            'answer' => "回答回答回答回答",
+            'answer' => fake()->randomElement($random_element),
         ];
     }
 }

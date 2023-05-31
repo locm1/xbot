@@ -17,10 +17,11 @@ class EventFactory extends Factory
     public function definition()
     {
         $start_date = fake()->dateTimeThisMonth('+1 month');
-        $end_date = fake()->dateTimeInInterval($start_date, '+3 days');
+        $end_date = fake()->dateTimeInInterval($start_date, '+0 days');
+        $title = ['担当者：福士', '担当者：米塚', '担当者：横山', '担当者：長濱'];
 
         return [
-            'title' => fake()->realTextBetween(1, 50),
+            'title' => fake()->randomElement($title),
             'start_date' => $start_date,
             'end_date' => $end_date,
             'location' => fake()->streetName() . fake()->city() . fake()->streetAddress(),

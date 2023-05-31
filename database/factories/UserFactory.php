@@ -30,25 +30,25 @@ class UserFactory extends Factory
     public function definition()
     {
         $random_str = fake()->name() .fake()->emoji() .strval(fake()->randomDigit()) .fake()->randomAscii() .fake()->kanaName();
-        $img_path = str_replace('public', '', fake()->optional('90')->file('resources/assets/img/team', 'public/images/test_img'));
-        $timestamp = fake()->optional('90')->unixTime();
+        $img_path = str_replace('public', '', fake()->optional('100')->file('resources/assets/img/team', 'public/images/test_img'));
+        $timestamp = fake()->optional('100')->unixTime();
         $date = $timestamp ? date('Y-m-d H:i:s', $timestamp) : null;
         
         return [
-            'first_name' => fake()->optional('90')->firstName(),
-            'last_name' => fake()->optional('90')->lastName(),
-            'first_name_kana' => fake()->optional('90')->firstKanaName(),
-            'last_name_kana' => fake()->optional('90')->lastKanaName(),
-            'nickname' => fake()->shuffleString($random_str),
-            'birth_date' => fake()->optional('90')->date(),
-            'gender' => fake()->optional('90')->numberBetween(1, 3),
-            'zipcode' => fake()->optional('90')->postcode(),
-            'prefecture' => fake()->optional('90')->prefecture(),
-            'city' => fake()->optional('90')->city(),
-            'address' => fake()->optional('90')->streetAddress(),
-            'building_name' => fake()->optional('90')->secondaryAddress(),
-            'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->optional('90')->phoneNumber()),
-            'occupation_id' => fake()->optional('90')->numberBetween(1, 10),
+            'first_name' => fake()->optional('100')->firstName(),
+            'last_name' => fake()->optional('100')->lastName(),
+            'first_name_kana' => fake()->optional('100')->firstKanaName(),
+            'last_name_kana' => fake()->optional('100')->lastKanaName(),
+            'nickname' => fake()->optional('100')->firstKanaName(),
+            'birth_date' => fake()->optional('100')->date(),
+            'gender' => fake()->optional('100')->numberBetween(1, 3),
+            'zipcode' => fake()->optional('100')->postcode(),
+            'prefecture' => fake()->optional('100')->prefecture(),
+            'city' => fake()->optional('100')->city(),
+            'address' => fake()->optional('100')->streetAddress(),
+            'building_name' => fake()->optional('100')->secondaryAddress(),
+            'tel' => str_replace(array('-', 'ー', '−', '―', '‐'), '', fake()->optional('100')->phoneNumber()),
+            'occupation_id' => fake()->optional('100')->numberBetween(1, 10),
             'img_path' => $img_path,
             'line_id' => $this->mb_str_shuffle(20),
             'block_date' => $date,

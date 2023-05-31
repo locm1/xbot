@@ -58,7 +58,7 @@ export default (props) => {
 
   const deleteItem = async () => {
     const confirmMessage = "選択した項目は削除されました。";
-    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    await Swal.fire('削除成功', confirmMessage, 'success');
     setRefresh(prev => !prev)
   };
 

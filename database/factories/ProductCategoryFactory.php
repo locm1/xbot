@@ -21,7 +21,7 @@ class ProductCategoryFactory extends Factory
         return [
             'name' => fake()->randomElement($categories),
             // 'color' => fake()->hexColor(),
-            'content' => fake()->sentences(2, true),
+            'content' => 'カテゴリーの説明文が入ります。',
             'is_undisclosed' => 0,
             'display_order' => fake()->randomFloat(null, 1, 200)
         ];

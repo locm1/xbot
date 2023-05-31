@@ -73,13 +73,11 @@ class EcommerceConfigurationService
         if (file_exists($this->env_path) && ($request->payjp_secret_key !== $api_keys['PAYJP_SECRET_KEY'])) {
             $this->action->saveApiKey($this->env_path, strtoupper('payjp_secret_key'), $request->payjp_secret_key);
             Artisan::call('config:cache');
-            Log::debug('秘密鍵変更');
         }
 
         if (file_exists($this->env_path) && ($request->mix_payjp_public_key !== $api_keys['MIX_PAYJP_PUBLIC_KEY'])) {
             $this->action->saveApiKey($this->env_path, strtoupper('mix_payjp_public_key'), $request->mix_payjp_public_key);
             Artisan::call('config:cache');
-            Log::debug('公開鍵変更');
         }
     }
 

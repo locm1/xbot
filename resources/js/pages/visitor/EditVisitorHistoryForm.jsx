@@ -56,12 +56,14 @@ export const EditVisitorHistoryForm = (props) => {
             </Form.Group>
           </Col>
         </Row>
-        <div className="d-flex flex-row-reverse">
-          <Button onClick={update} variant="success" className="me-2 d-flex ">
+      </Card.Body>
+      <Card.Footer>
+        <div className="d-flex justify-content-end">
+          <Button variant="success" className="btn-default-success" onClick={update}>
             保存する
           </Button>
         </div>
-      </Card.Body>
+      </Card.Footer>
     </Card>
   );
 };

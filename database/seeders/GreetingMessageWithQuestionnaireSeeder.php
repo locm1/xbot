@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\GreetingMessagesWithQuestionnaire;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class GreetingMessagesWithQuestionnaireSeeder extends Seeder
+class GreetingMessageWithQuestionnaireSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +14,6 @@ class GreetingMessagesWithQuestionnaireSeeder extends Seeder
      */
     public function run()
     {
-        GreetingMessagesWithQuestionnaire::create([
-            'is_questionnaire' => 1,
-        ]);
+        //
     }
 }

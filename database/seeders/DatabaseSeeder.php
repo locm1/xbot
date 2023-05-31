@@ -95,6 +95,8 @@ class DatabaseSeeder extends Seeder
                 SpecificTradeSeeder::class,
                 MessageSeeder::class,
                 MessageItemSeeder::class,
+                GreetingMessageSeeder::class,
+                GreetingMessagesWithQuestionnaireSeeder::class,
             ]);
             Admin::factory(10)->create();
             // Occupation::factory(10)->create();
@@ -133,7 +135,7 @@ class DatabaseSeeder extends Seeder
             DefaultInviteIncentive::factory(1)->create();
             // Message::factory(100)->create();
             // MessageItem::factory(200)->create();
-            GreetingMessage::factory(3)->create();
+            // GreetingMessage::factory(3)->create();
             // SpecificTrade::factory(5)->create();
             // OrderPaymentMethod::factory(100)->create();
             SendMessage::factory(50)->create();

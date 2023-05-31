@@ -4,12 +4,14 @@ import { Col, Row, Card, Form, Image, Button, Dropdown, Breadcrumb } from 'react
 import { ChoosePhotoWidget } from "@/components/Widgets";
 import { PaperClipIcon, CheckIcon, HomeIcon, PlusIcon, DownloadIcon, CloudDownloadIcon } from "@heroicons/react/solid";
 import { getApiKeys, storeApiKey } from "@/pages/api_key/api/ApiKeyApiMethods";
+import { getBasicId } from "@/pages/qrcode/api/BasicIdApiMethods";
 
 import QRCode from "qrcode.react";
 
 
 export default () => {
   const [files, setFiles] = useState([]);
+  const [basicId, setBasicId] = useState();
   const [uri, setUri] = useState('');
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -20,14 +22,11 @@ export default () => {
   });
 
   useEffect(() => {
-    getApiKeys().then((response) => {
-      if (response.data.LIFF_CHANNEL_ID) {
-        setUri('https://line.me/R/ti/p/' + response.data.LIFF_CHANNEL_ID);
-      } else {
-        setUri('');
-      }
+    getBasicId(setBasicId).then(response => {
+      setUri('https://line.me/R/ti/p/' + response);
     })
   }, [])
+  
   const downloadQR = (id) => {
     const canvas = document.getElementById(id);
     const pngUrl = canvas

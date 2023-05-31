@@ -36,6 +36,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\management\AdminController;
 use App\Http\Controllers\api\management\ApiKeyController;
+use App\Http\Controllers\api\management\BasicIdController;
 use App\Http\Controllers\api\management\event\EventCalendarController;
 use App\Http\Controllers\api\management\event\EventController;
 use App\Http\Controllers\api\management\user\UserController;
@@ -134,6 +135,7 @@ Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'v1/management'], function() {
         Route::get('me', MeController::class);
+        Route::get('basic-id', BasicIdController::class);
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('users/{user}/questionnaire', QuestionnaireAnswerController::class);

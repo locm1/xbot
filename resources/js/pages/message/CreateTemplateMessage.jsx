@@ -256,10 +256,10 @@ export default () => {
       showCancelButton: true,
       reverseButtons: true,
       confirmButtonText: "複製",
-        customClass: {
-          confirmButton: "btn btn-primary",
-          cancelButton: "btn btn-gray-400 me-3"
-        },
+      customClass: {
+        confirmButton: "btn btn-primary",
+        cancelButton: "btn btn-gray-400 me-3"
+      },
       cancelButtonText: "キャンセル"
     });
 
@@ -338,10 +338,10 @@ export default () => {
         </div>
       </div>
       <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pb-4">
-        <Button onClick={() => {history.push(Paths.TemplateMessages.path)}} variant="gray-500" className="me-2 animate-up-2 me-auto">
+        <Button onClick={() => { history.push(Paths.TemplateMessages.path) }} variant="gray-500" className="me-2 animate-up-2 me-auto">
           テンプレートリストに戻る
         </Button>
-        <Button onClick={onSaveMessage} variant="success" className="me-2">
+        <Button variant="success" className="btn-default-success" onClick={onSaveMessage}>
           {pathname.includes('/edit') ? '更新する' : '保存する'}
         </Button>
       </div>
@@ -404,18 +404,18 @@ export default () => {
             <Card.Body>
               <Form.Group id="isUndisclosed">
                 <Form.Check
-                type="switch"
-                label="非公開にする"
-                id="switch1"
-                htmlFor="switch1"
-                checked={isUndisclosed}
-                onChange={() => setIsUndisclosed(!isUndisclosed)}
+                  type="switch"
+                  label="非公開にする"
+                  id="switch1"
+                  htmlFor="switch1"
+                  checked={isUndisclosed}
+                  onChange={() => setIsUndisclosed(!isUndisclosed)}
                 />
               </Form.Group>
-                <Button onClick={duplicateTemplate} variant="primary" className="me-2 mt-3">
-                  複製する
-                </Button>
-                {/* <Button variant="primary" className="me-2 mt-3">
+              <Button onClick={duplicateTemplate} variant="primary" className="me-2 mt-3">
+                複製する
+              </Button>
+              {/* <Button variant="primary" className="me-2 mt-3">
                   このテンプレートで配信
                 </Button> */}
             </Card.Body>
@@ -433,9 +433,14 @@ export default () => {
           <LinePreview previews={messageItems} />
         </div>
       </div>
+      <div className="d-flex justify-content-between">
       <Button href={Paths.TemplateMessages.path} variant="gray-500" className="me-2 animate-up-2 me-auto">
         テンプレートリストに戻る
       </Button>
+      <Button variant="success" className="btn-default-success" onClick={onSaveMessage}>
+          {pathname.includes('/edit') ? '更新する' : '保存する'}
+        </Button>
+        </div>
     </div>
   );
 };

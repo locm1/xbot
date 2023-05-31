@@ -108,8 +108,8 @@ export default () => {
 
       <div className="table-settings mb-4">
         <Row className="align-items-center">
-          <Col xs={3} lg={3} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-300">
+          <Col xs={3} lg={3} className="">
+            <InputGroup className="">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
@@ -121,8 +121,8 @@ export default () => {
               />
             </InputGroup>
           </Col>
-          <Col xs={3} lg={3} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-300">
+          <Col xs={3} lg={3} className="">
+            <InputGroup className="">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
@@ -134,8 +134,8 @@ export default () => {
               />
             </InputGroup>
           </Col>
-          <Col xs={3} lg={3} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-300">
+          <Col xs={3} lg={3} className="">
+            <InputGroup className="">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>

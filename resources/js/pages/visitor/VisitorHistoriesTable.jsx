@@ -16,7 +16,7 @@ export const VisitorHistoriesTable = (props) => {
   const TableRow = (props) => {
     const { created_at, memo, user, id, user_id } = props;
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
-    const sexVariant = user.gender === 1 ? "info" : user.gender === 2 ? "danger" : "primary";
+    const sexVariant = user.gender === 1 ? "u-men" : user.gender === 2 ? "u-women" : "";
     const link = Paths.EditVisitorHistory.path.replace(':id', id);
     const userlink = Paths.EditUser.path.replace(':id', user_id);
     const date = new Date(created_at)
@@ -45,7 +45,7 @@ export const VisitorHistoriesTable = (props) => {
           </Card.Link>
         </td>
         <td>
-          <span className={`fw-normal text-${sexVariant}`}>
+          <span className={`fw-normal ${sexVariant}`}>
             {sex_array[user.gender]}
           </span>
         </td>

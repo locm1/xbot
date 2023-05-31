@@ -11,12 +11,13 @@ class InflowRouteUserService
 {
     public function store(Request $request)
     {
-        $bot = CreateLineBotUtility::class;
+        $bot = (new CreateLineBotUtility)();
         $verify_service = new VerifyService;
         $line_id = $verify_service->verifyIdToken($request->idToken)['sub'];
         $inflow_route_id = InflowRoute::where('key', $request->key)->firstOrFail()->id;
+        $basicId = $bot->getBotInfo()->getJSONDecodedBody()['basicId'];
         $create_data = InflowRouteUser::create(['inflow_route_id' => $inflow_route_id, 'line_id' => $line_id]);
 
-        return $create_data;
+        return ['InflowRouteUser' => $create_data, 'basicId' => $basicId];
     }
 }

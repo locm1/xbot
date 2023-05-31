@@ -15,10 +15,9 @@ export default () => {
       console.log(idToken);
       const data = { key: key, idToken: idToken };
       axios.post('/api/v1/inflow-route-users', data)
-      .then((response) => {
-        if (response)
-        console.log(response);
-        location.href = "https://lin.ee/nGVYloK";
+      .then(({ data }) => {
+        console.log(data);
+        location.href = `https://line.me/R/ti/p/${data.basicId}`;
       })
       .catch(error => {
         console.log(error);

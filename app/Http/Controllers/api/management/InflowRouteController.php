@@ -33,7 +33,8 @@ class InflowRouteController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->service->store($request->name);
+        $data = $this->service->store($request->name);
+        return response()->json($data, 201);
     }
 
     /**

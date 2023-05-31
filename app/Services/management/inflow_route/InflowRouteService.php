@@ -16,7 +16,7 @@ class InflowRouteService
                 'id' => $v->id,
                 'name' => $v->name,
                 'key' => $v->key,
-                'count' => $v->inflowRouteUsers->count(),
+                'count' => $v->inflowRouteUsers->whereNotNull('user_id')->count(),
             ];
         }
         return [

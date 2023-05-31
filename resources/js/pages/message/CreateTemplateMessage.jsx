@@ -338,7 +338,7 @@ export default () => {
         </div>
       </div>
       <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pb-4">
-        <Button onClick={() => { history.push(Paths.TemplateMessages.path) }} variant="gray-500" className="me-2 animate-up-2 me-auto">
+        <Button onClick={() => { history.push(Paths.TemplateMessages.path) }} variant="gray-500" className="me-2 me-auto">
           テンプレートリストに戻る
         </Button>
         <Button variant="success" className="btn-default-success" onClick={onSaveMessage}>
@@ -433,8 +433,8 @@ export default () => {
           <LinePreview previews={messageItems} />
         </div>
       </div>
-      <div className="d-flex justify-content-between">
-      <Button href={Paths.TemplateMessages.path} variant="gray-500" className="me-2 animate-up-2 me-auto">
+      <div className="d-flex justify-content-between align-items-center">
+      <Button href={Paths.TemplateMessages.path} variant="gray-500" className="me-2 me-auto">
         テンプレートリストに戻る
       </Button>
       <Button variant="success" className="btn-default-success" onClick={onSaveMessage}>

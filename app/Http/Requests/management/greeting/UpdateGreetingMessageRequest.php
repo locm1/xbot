@@ -24,7 +24,7 @@ class UpdateGreetingMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'messages' => 'required|json',
+            'messages' => 'required|array',
             'messages.*.id' => 'required|exists:messages,id',
             'messages.*.type' => 'required|between:1,3',
             'images' => 'nullable|array|max:5',
@@ -38,25 +38,50 @@ class UpdateGreetingMessageRequest extends FormRequest
         ];
     }
 
-    public function attributes()
-    {
-        return [
-            'messages' => 'あいさつメッセージリスト',
-            'images' => '画像ファイルリスト',
-            'image_ids' => 'あいさつメッセージIDリスト',
-            'videos' => '動画ファイルリスト',
-            'video_ids' => 'あいさつメッセージIDリスト',
-        ];
-    }
-
     public function withValidator($validator)
     {
-        $messages = json_decode($this->messages);
+        $messages = $this->messages;
+
+        foreach ($messages as $key => $message) {
+            $validator->sometimes("messages.$key.text", 'required', function() use($message) {
+                return $message['type'] == 1;
+            });
+
+            $validator->sometimes("messages.$key.image_path", 'required', function() use($message) {
+                return $message['type'] == 2;
+            });
+
+            $validator->sometimes("messages.$key.video_path", 'required', function() use($message) {
+                return $message['type'] == 3;
+            });
+        }
 
         $validator->after(function ($validator) use($messages) {
             if (count($messages) > 5) {
                 $validator->errors()->add('max_count_error', 'あいさつメッセージは最大5件までです。');
             }
         });
+    }
+
+    public function attributes()
+    {
+        $messages = array();
+        $messages = $this->messages;
+
+        foreach ($messages as $key => $message) {
+            $messages["messages.$key.text"] = 'テキスト';
+            $messages["messages.$key.image_path"] = '画像';
+            $messages["messages.$key.video_path"] = '動画';
+        }
+        return $messages;
+    }
+
+    protected function prepareForValidation()
+    {
+        $messages = $this->messages;
+
+        if ($messages) {
+            $this->merge(['messages' => json_decode($this->messages, true)]);
+        }
     }
 }

@@ -524,7 +524,6 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="visitor" path={Paths.VisitorHistories.path} component={VisitorHistories} />
       <RouteWithSidebar exact role_path="visitor" path={Paths.EditVisitorHistory.path} component={EditVisitorHistory} />
       <RouteWithSidebar exact role_path="visitor" path={Paths.Privileges.path} component={Privileges} />
-      <RouteWithSidebar exact role_path="ec" path={Paths.Payment.path} component={Payment} />
       <RouteWithSidebar exact role_path="ec" path={Paths.Environment.path} component={Environment} />
       <RouteWithSidebar exact role_path="ec" path={Paths.Products.path} component={Products} />
       <RouteWithSidebar exact role_path="ec" path={Paths.ProductCategory.path} component={ProductCategory} />

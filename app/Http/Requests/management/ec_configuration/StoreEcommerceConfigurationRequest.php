@@ -30,22 +30,14 @@ class StoreEcommerceConfigurationRequest extends FormRequest
         switch ($type) {
             case 'environment':
                 $rules = [
-                    'is_enabled' => 'nullable',
-                    'postage' => 'nullable',
-                    'target_amount' => 'nullable',
-                    'cash_on_delivery_fee' => 'nullable',
-                    'tel' => 'required|numeric|digits_between:8,11',
-                    'email' => 'required|email:filter,dns'
-                ];
-                break;
-            case 'payment':
-                $rules = [
                     'is_enabled' => 'required|numeric|boolean',
                     'postage' => 'nullable',
                     'target_amount' => 'nullable',
                     'cash_on_delivery_fee' => $is_enabled === 1 ? 'required|numeric' : 'nullable',
-                    'tel' => 'nullable',
-                    'email' => 'nullable'
+                    'tel' => 'required|numeric|digits_between:8,11',
+                    'email' => 'required|email:filter,dns',
+                    'mix_payjp_public_key' => 'required',
+                    'payjp_secret_key' => 'required',
                 ];
                 break;
             case 'postage':
@@ -55,17 +47,21 @@ class StoreEcommerceConfigurationRequest extends FormRequest
                     'target_amount' => 'required|numeric',
                     'cash_on_delivery_fee' => 'nullable',
                     'tel' => 'nullable',
-                    'email' => 'nullable'
+                    'email' => 'nullable',
+                    'mix_payjp_public_key' => 'nullable',
+                    'payjp_secret_key' => 'nullable',
                 ];
                 break;
             default:
                 $rules = [
                     'is_enabled' => 'required|numeric|boolean',
-                    'postage' => 'required|numeric',
-                    'target_amount' => 'required|numeric',
+                    'postage' => 'nullable',
+                    'target_amount' => 'nullable',
                     'cash_on_delivery_fee' => $is_enabled === 1 ? 'required|numeric' : 'nullable',
                     'tel' => 'required|numeric|digits_between:8,11',
-                    'email' => 'required|email:filter,dns'
+                    'email' => 'required|email:filter,dns',
+                    'mix_payjp_public_key' => 'required',
+                    'payjp_secret_key' => 'required',
                 ];
                 break;
         }
@@ -80,7 +76,9 @@ class StoreEcommerceConfigurationRequest extends FormRequest
             'target_amount' => '対象金額',
             'cash_on_delivery_fee' => '代引き手数料',
             'tel' => '電話番号',
-            'email' => 'メールアドレス'
+            'email' => 'メールアドレス',
+            'mix_payjp_public_key' => 'Pay.jp 公開鍵',
+            'payjp_secret_key' => 'Pay.jp 秘密鍵',
         ];
     }
 }

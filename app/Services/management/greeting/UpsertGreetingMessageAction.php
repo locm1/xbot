@@ -8,37 +8,37 @@ class UpsertGreetingMessageAction
     public function updateFiles($request, $method)
     {
         $merged_greeting_messages = array();
-        $messages = json_decode($request->messages);
+        $messages = $request->messages;
 
         # 更新する画像ファイルがある場合
         $files = isset($request->image_ids) ? $this->getFiles($request, 'images', $request->image_ids, 'greeting') : null;
         $videos = isset($request->video_ids) ? $this->getFiles($request, 'videos', $request->video_ids, 'video') : null;
 
         foreach ($messages as $message) {
-            if (isset($message->current_image_path)) {
-                $this->deleteFile('greeting', $message->current_image_path);
+            if (isset($message['current_image_path'])) {
+                $this->deleteFile('greeting', $message['current_image_path']);
             }
 
-            if (isset($message->current_video_path)) {
-                $this->deleteFile('video', $message->current_video_path);
+            if (isset($message['current_video_path'])) {
+                $this->deleteFile('video', $message['current_video_path']);
             }
 
             $image_file_name = isset($files)
-                ? array_reduce(array_filter($files, function($file) use($message) { return $file['id'] == $message->id;}), 'array_merge', array())
-                : $message->image_path;
+                ? array_reduce(array_filter($files, function($file) use($message) { return $file['id'] == $message['id'];}), 'array_merge', array())
+                : $message['image_path'];
 
             $video_file_name = isset($videos)
-                ? array_reduce(array_filter($videos, function($video) use($message) { return $video['id'] == $message->id;}), 'array_merge', array())
-                : $message->video_path;
+                ? array_reduce(array_filter($videos, function($video) use($message) { return $video['id'] == $message['id'];}), 'array_merge', array())
+                : $message['video_path'];
             
-            $id = ($method == 'update') ? $message->id : null;
+            $id = ($method == 'update') ? $message['id'] : null;
             
             $merged_greeting_messages[] = [
                 'id' => $id,
-                'type' => $message->type,
-                'text' => $message->text,
-                'image_path' => isset($image_file_name['file_name']) ? $image_file_name['file_name'] : $message->image_path,
-                'video_path' => isset($video_file_name['file_name']) ? $video_file_name['file_name'] : $message->video_path,
+                'type' => $message['type'],
+                'text' => $message['text'],
+                'image_path' => isset($image_file_name['file_name']) ? $image_file_name['file_name'] : $message['image_path'],
+                'video_path' => isset($video_file_name['file_name']) ? $video_file_name['file_name'] : $message['video_path'],
             ];
         }
         return $merged_greeting_messages;

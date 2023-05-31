@@ -166,6 +166,9 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">あいさつメッセージ設定</h1>
         </div>
+        <Button onClick={onSaveMessage} variant="success" className="btn-default-success">
+          保存する
+        </Button>
       </div>
       <div className="d-flex flex-row-reverse mt-3">
         <Form.Group id="questionnaire">

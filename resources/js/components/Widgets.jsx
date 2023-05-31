@@ -19,6 +19,7 @@ import { GoogleIcon, TwitterIcon, YoutubeIcon } from "@/components/BrandIcons";
 
 import { PurchaseTimeForm } from "@/pages/user/PurchaseTimeForm";
 import { LineBlockInfoForm } from "@/pages/user/LineBlockInfoForm";
+import { QuestionnaireAnswerForm } from "@/pages/user/QuestionnaireAnswerForm";
 
 const PeriodOverviewWidget = (props) => {
   const { category, title, period, percentage, ChartComponent = CustomersChart } = props;
@@ -74,7 +75,7 @@ export const CardWidget = (props) => {
 };
 
 export const ProfileCardWidget = (props) => {
-  const { first_name, last_name, first_name_kana, last_name_kana, img_path, occupation, area, is_blocked, block_date, id, visitCount, purchaseTime } = props;
+  const { first_name, last_name, first_name_kana, last_name_kana, img_path, questionnaireAnswers, area, is_blocked, block_date, id, visitCount, purchaseTime } = props;
   return (
     <Card border="0" className="shadow text-center p-0">
       <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />
@@ -90,6 +91,9 @@ export const ProfileCardWidget = (props) => {
         </div>
         <div className="py-5">
           <LineBlockInfoForm title="ブロック情報" is_blocked={is_blocked} block_date={block_date} />
+        </div>
+        <div className="py-5">
+          <QuestionnaireAnswerForm title="アンケート情報" questionnaireAnswers={questionnaireAnswers} />
         </div>
       </Card.Body>
     </Card>

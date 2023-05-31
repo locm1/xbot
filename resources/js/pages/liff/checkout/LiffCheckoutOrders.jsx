@@ -72,7 +72,7 @@ export default (props) => {
       <Card border="0" className="shadow my-3">
         <Card.Header className="bg-primary text-white px-3 py-2 d-flex align-items-center justify-content-between">
           <h5 className="mb-0 fw-bolder">配送オプション</h5>
-          <Button variant="info" size="sm" as={Link} to={Paths.LiffCheckoutDelivery.path}>
+          <Button variant="outline-white" size="sm" as={Link} to={Paths.LiffCheckoutDelivery.path}>
             変更
           </Button>
         </Card.Header>

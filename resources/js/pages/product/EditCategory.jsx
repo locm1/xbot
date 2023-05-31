@@ -55,24 +55,12 @@ export default () => {
         </div>
       </div>
       <Row>
-        <Col xs={12} xl={12}>
+        <Col xs={8}>
           <Card border="0" className="shadow mb-4">
             <Card.Header className="bg-primary text-white px-3 py-2">
               <h5 className="mb-0 fw-bolder">カテゴリー情報</h5>
             </Card.Header> 
             <Card.Body>
-              <div className="d-flex flex-row-reverse justify-content-between">
-              <Form.Group id="category">
-                <Form.Check
-                defaultChecked={privateProduct}
-                type="switch"
-                label="非公開にする"
-                id="switch1"
-                htmlFor="switch1"
-                onClick={() => setPrivate(!privateProduct)}
-                />
-              </Form.Group>
-              </div>
               <Row>
                 <Col md={12} className="mb-4">
                   <Form.Group id="name">
@@ -129,18 +117,37 @@ export default () => {
                   <div className="category-color" style={{backgroundColor: backgroundColor}}>{backgroundColor}</div>
                 </Col> */}
               </Row>
-              <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 me-4">
-                <Button
-                  variant="success"
-                  className="d-inline-flex align-items-center"
-                  onClick={handleClick}
-                >
-                  保存する
-                </Button>
-              </div>
             </Card.Body>
           </Card>
         </Col>
+        <Col>
+					<Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">詳細設定</h5>
+						</Card.Header>
+						<Card.Body>
+              <Form.Group id="category">
+                <Form.Check
+                defaultChecked={privateProduct}
+                type="switch"
+                label="非公開にする"
+                id="switch1"
+                htmlFor="switch1"
+                onClick={() => setPrivate(!privateProduct)}
+                />
+              </Form.Group>
+						</Card.Body>
+					</Card>
+          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
+            <Button
+              variant="success"
+              className="btn-default-success"
+              onClick={() => handleClick()}
+            >
+              保存する
+            </Button>
+          </div>
+				</Col>
       </Row>
     </>
   );

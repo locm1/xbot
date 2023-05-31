@@ -74,43 +74,43 @@ export const OrderDetailItem = (props) => {
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
-        <Col xs="8" className="px-0">
+        <Col xs="6" className="px-0">
           <div className="m-1">
-            <h4 className="fs-6 text-dark mb-0">商品合計</h4>
+            <h5 className="fs-6 text-dark mb-0">商品合計</h5>
             {postage > 0 && (
-              <h4 className="fs-6 text-dark mb-0 mt-1">送料</h4>
+              <h5 className="fs-6 text-dark mb-0 mt-1">送料</h5>
             )}
             {
               paymentMethod && paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1 && (
-                <h4 className="fs-6 text-dark mb-0 mt-1">代金引換手数料</h4>
+                <h5 className="fs-6 text-dark mb-0 mt-1">代金引換手数料</h5>
               )
             }
-            {coupon.id && <h4 className="fs-6 text-dark mb-0 mt-1">クーポン割引</h4>}
+            {coupon.id && <h5 className="fs-6 text-dark mb-0 mt-1">クーポン割引</h5>}
             {
               discountedTotalAmount !== 0 && (
-                <h4 className="fs-6 text-dark mb-0 mt-1">セット商品割引</h4>
+                <h5 className="fs-6 text-dark mb-0 mt-1">セット商品割引</h5>
               )
             }
             <h3 className="text-dark mb-0 mt-2 liff-pay-total-title">お支払い金額（税込）</h3>
           </div>
         </Col>
-        <Col className="">
+        <Col xs="6" className="">
           <div className="m-1 text-end">
-            {orderTotal && <h4 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h4>}
-            {postage > 0 && <h4 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h4>}
+            {orderTotal && <h5 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h5>}
+            {postage > 0 && <h5 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h5>}
             {
               paymentMethod && paymentMethod.payment_method == 2 && ecommerceConfiguration.is_enabled == 1 &&
-              <h4 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h4>
+              <h5 className="fs-6 text-dark mb-0 mt-1">￥ {ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</h5>
             }
             {
               coupon.id &&
-              <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">
+              <h5 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">
                 - ￥ {isNaN(getDiscountAmount()) ? 0 : Math.floor(getDiscountAmount()).toLocaleString()}
-              </h4>
+              </h5>
             }
             {
               discountedTotalAmount !== 0 &&
-              <h4 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h4>
+              <h5 className="fs-6 text-dark mb-0 mt-1 liff-pay-discount">- ￥ {discountedTotalAmount.toLocaleString()}</h5>
             }
             <h3 className="text-dark mb-0 mt-2 liff-pay-total">￥ {Math.floor(total).toLocaleString()}</h3>
           </div>

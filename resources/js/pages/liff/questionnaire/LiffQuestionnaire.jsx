@@ -20,7 +20,7 @@ import { LoadingContext } from "@/components/LoadingContext";
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
-  const location = useLocation().pathname;
+  const location = useLocation();
   const [questionnaires, setQuestionnaires] = useState([
     {id: '', title: '', type: 1, answer: '', is_required: 0, questionnaire_items: [{
       name: ''
@@ -98,9 +98,13 @@ export default () => {
   };
 
   const onSave = () => {
+    const nextPage = (typeof location.state !== "undefined") ? location.state.page : 'other';
     const currentPage = Cookies.get('current_page')
     const path = (currentPage == 'cart') ? '/checkout' : '/questionnaire/complete'
-    history.push(path);
+    history.push({
+      pathname: path,
+      state: {page: nextPage}
+    });
   };
 
   const answerSurvey = (e, id, type, questionnaire_item_id, index) => {
@@ -152,16 +156,16 @@ export default () => {
     <>
       <main className="">
         <div className="px-3 py-3">
-          <div className="d-flex align-items-center">
+          {/* <div className="d-flex align-items-center">
             <h2 className="fs-5 liff-product-detail-name ms-3">アンケートにお答えください</h2>
-          </div>
+          </div> */}
 
           {
             questionnaireEnabling.is_default_questionnaire_enabled == 1 && (
               <Card border="0" className="shadow mt-2">
-                <Card.Header className="border-bottom">
-                  <h2 className="fs-6 fw-bold mb-0">お客様の情報</h2>
-                </Card.Header>
+                <Card.Header className="bg-primary text-white px-3 py-2">
+                  <h5 className="mb-0 fw-bolder">お客様の情報</h5>
+                </Card.Header>  
                 <Card.Body className="py-0">
                   <Row className="mt-3">
                     {
@@ -475,9 +479,9 @@ export default () => {
           }
 
           <Card border="0" className="shadow mt-4">
-            <Card.Header className="border-bottom">
-              <h2 className="fs-6 fw-bold mb-0">個人情報の取り扱いについて</h2>
-            </Card.Header>
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">個人情報の取り扱いについて</h5>
+            </Card.Header> 
             <Card.Body className="py-0">
               <Row className="mt-3">
                 <Col xs={12} className="mb-5">

@@ -87,15 +87,11 @@ export default () => {
   const CashondeliveryCard = () => {
     return (
       <div className="m-1">
-        <small>※代金引き換えの場合、購入金額に加え別途手数料がかかります。</small>
+        <small>※代金引き換えには手数料が発生する場合があります。</small>
         <div>
           <small>
-            手数料については「<Card.Link href={Paths.LiffSpecificTrades.path} target="_blank" className="liff-specific-trades-link">特定商法取引法に基づく表記</Card.Link>」
-            をご確認ください。
+            手数料については商品購入画面、手数料項目をご確認ください。
           </small>
-        </div>
-        <div>
-          <small>※購入履歴には手数料を合算した金額ではなく、購入金額のみの記載になります。</small>
         </div>
       </div>
     );

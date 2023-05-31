@@ -14,6 +14,7 @@ import { storeCard } from "@/pages/liff/api/CardApiMethods";
 import { getPublicKey } from "@/pages/liff/api/PayJpKeyApiMethods";
 
 export default () => {
+  const inputRef = useRef();
   const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState();

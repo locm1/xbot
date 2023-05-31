@@ -146,7 +146,7 @@ export default () => {
       const { name, id, number } = props;
   
       return (
-        <ListGroup.Item className="bg-transparent px-0">
+        <ListGroup.Item className="bg-transparent px-1">
           <Row className="align-items-center">
             <Col xs="2">
               <h4 className="fs-6 text-dark mb-0">{number}.</h4>
@@ -164,7 +164,7 @@ export default () => {
         <Card.Header className="rounded-0 bg-primary p-1 text-center border-0 card-header text-white">
           <h5 className="liff-product-detail-name mb-0">来店{visits_times}回目</h5>
         </Card.Header>
-        <Card.Body className="py-0 bg-secondary-alt">
+        <Card.Body className="py-0 px-1 bg-secondary-alt">
           <ListGroup className="list-group-flush">
             {items.map((item, k) => <LiffVisitorPrivilegeItem key={`item-${item.id}`} number={k + 1} {...item} />)}
           </ListGroup>

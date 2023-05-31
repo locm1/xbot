@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export const getCustomer = async (userId, payjp_customer_id, setCustomer, setIsLoading) => {
   return await axios.get(`/api/v1/users/${userId}/customers/${payjp_customer_id}`)
   .then((response) => {
@@ -19,7 +21,7 @@ export const storeCustomer = async (userId, formValue) => {
   })
   .catch(error => {
       console.error(error);
-      alert(error);
+      Swal.fire(`エラー`, 'カードが正常に登録できませんでした。', 'error')
   });
 };
 

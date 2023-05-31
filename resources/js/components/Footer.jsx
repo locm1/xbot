@@ -16,11 +16,6 @@ export default (props) => {
   return (
     <footer className="bg-black shadow p-3 liff-footer">
       <Row>
-        <Col xs={12} md={4} xl={6} className="mb-4 mb-md-0">
-          <p className="mb-0 text-lg-start">
-            © Reno. inc.
-          </p>
-        </Col>
         <Col xs={12} md={8} xl={6} className="">
           <ul className="list-inline list-group-flush list-group-borderless text-md-end mb-0">
             <Row>

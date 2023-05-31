@@ -61,13 +61,100 @@ export default () => {
           <h1 className="page-title">{pathname.includes('/edit') ? 'インセンティブ編集' : 'インセンティブ登録'}</h1>
         </div>
       </div>
-      <Card border="0" className="shadow mb-4">
-        <Card.Header className="bg-primary text-white px-3 py-2">
-          <h5 className="mb-0 fw-bolder">招待情報</h5>
-        </Card.Header> 
-        <Card.Body>
-          <div>
-            <div className="d-flex justify-content-between flex-row-reverse">
+      <Row>
+        <Col xs={8}>
+          <Card border="0" className="shadow mb-4">
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">招待情報</h5>
+            </Card.Header> 
+            <Card.Body>
+              <Form.Group id="name">
+                <Form.Label>管理名称</Form.Label>
+                <Form.Control required type="text" name="name" value={inviteIncentive.name} onChange={handleChange} />
+              </Form.Group>
+            </Card.Body>
+          </Card>
+          <Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">スピーカー情報</h5>
+						</Card.Header>
+						<Card.Body>
+              <Row>
+                <Col md={6} className="mb-3">
+                  <Form.Group id="inviter_timing">
+                    <Form.Label>付与タイミング</Form.Label>
+                    <Form.Select className="mb-3 mt-2" name="inviter_timing" value={inviteIncentive.inviter_timing} onChange={handleChange}>
+                      {
+                        timings.map((timing, index) => <option key={`inviter-timing-option-${index}`} value={index + 1}>{timing}</option>)
+                      }
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Group id="inviter_format">
+                    <Form.Label>形式</Form.Label>
+                    <div>{getFormat(inviteIncentive.inviter_format)}</div>
+                  </Form.Group>
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Group id="inviter_title">
+                    <Form.Label>インセンティブ名</Form.Label>
+                    <Form.Control required type="text" name="inviter_title" value={inviteIncentive.inviter_title} onChange={handleChange} />
+                  </Form.Group>
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Group id="inviter_content">
+                    <Form.Label>インセンティブ説明</Form.Label>
+                    <Form.Control as="textarea" rows="3" name="inviter_content" value={inviteIncentive.inviter_content} onChange={handleChange} placeholder="商品の概要を入力してください" />
+                  </Form.Group>
+                </Col>
+              </Row>
+						</Card.Body>
+					</Card>
+          <Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">招待者情報</h5>
+						</Card.Header>
+						<Card.Body>
+              <Row>
+                <Col md={6} className="mb-3">
+                  <Form.Group id="invitee_timing">
+                    <Form.Label>付与タイミング</Form.Label>
+                    <Form.Select className="mb-3 mt-2" name="invitee_timing" value={inviteIncentive.invitee_timing} onChange={handleChange}>
+                      {
+                        timings.map((timing, index) => <option key={`invitee-timing-option-${index}`} value={index + 1}>{timing}</option>)
+                      }
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Group id="invitee_format">
+                    <Form.Label>形式</Form.Label>
+                    <div>{getFormat(inviteIncentive.inviter_format)}</div>
+                  </Form.Group>
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Group id="invitee_title">
+                    <Form.Label>インセンティブ名</Form.Label>
+                    <Form.Control required type="text" name="invitee_title" value={inviteIncentive.invitee_title} onChange={handleChange} />
+                  </Form.Group>
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Group id="invitee_content">
+                    <Form.Label>インセンティブ説明</Form.Label>
+                    <Form.Control as="textarea" rows="3" name="invitee_content" value={inviteIncentive.invitee_content} onChange={handleChange} placeholder="商品の概要を入力してください" />
+                  </Form.Group>
+                </Col>
+              </Row>
+						</Card.Body>
+					</Card>
+        </Col>
+        <Col>
+					<Card className="mb-3">
+						<Card.Header className="bg-primary text-white px-3 py-2">
+							<h5 className="mb-0 fw-bolder">詳細設定</h5>
+						</Card.Header>
+						<Card.Body>
               <Form.Group id="category">
                 <Form.Check
                 type="switch"
@@ -78,93 +165,19 @@ export default () => {
                 onClick={() => setIsDefault(!isDefault)}
                 />
               </Form.Group>
-            </div>
-            <Row>
-              <Col md={6} className="mb-3">
-                <Form.Group id="name">
-                  <Form.Label>管理名称</Form.Label>
-                  <Form.Control required type="text" name="name" value={inviteIncentive.name} onChange={handleChange} />
-                </Form.Group>
-              </Col>
-            </Row>
-          </div>
-          <div className="mt-4">
-            <h5 className="mb-4 border-bottom pb-3">スピーカー情報</h5>
-            <Row>
-              <Col md={6} className="mb-3">
-                <Form.Group id="inviter_timing">
-                  <Form.Label>付与タイミング</Form.Label>
-                  <Form.Select className="mb-3 mt-2" name="inviter_timing" value={inviteIncentive.inviter_timing} onChange={handleChange}>
-                    {
-                      timings.map((timing, index) => <option key={`inviter-timing-option-${index}`} value={index + 1}>{timing}</option>)
-                    }
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Form.Group id="inviter_format">
-                  <Form.Label>形式</Form.Label>
-                  <div>{getFormat(inviteIncentive.inviter_format)}</div>
-                </Form.Group>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Form.Group id="inviter_title">
-                  <Form.Label>インセンティブ名</Form.Label>
-                  <Form.Control required type="text" name="inviter_title" value={inviteIncentive.inviter_title} onChange={handleChange} />
-                </Form.Group>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Form.Group id="inviter_content">
-                  <Form.Label>インセンティブ説明</Form.Label>
-                  <Form.Control as="textarea" rows="3" name="inviter_content" value={inviteIncentive.inviter_content} onChange={handleChange} placeholder="商品の概要を入力してください" />
-                </Form.Group>
-              </Col>
-            </Row>
-          </div>
-          <div className="mt-4">
-            <h5 className="mb-4 border-bottom pb-3">招待者情報</h5>
-            <Row>
-              <Col md={6} className="mb-3">
-                <Form.Group id="invitee_timing">
-                  <Form.Label>付与タイミング</Form.Label>
-                  <Form.Select className="mb-3 mt-2" name="invitee_timing" value={inviteIncentive.invitee_timing} onChange={handleChange}>
-                    {
-                      timings.map((timing, index) => <option key={`invitee-timing-option-${index}`} value={index + 1}>{timing}</option>)
-                    }
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Form.Group id="invitee_format">
-                  <Form.Label>形式</Form.Label>
-                  <div>{getFormat(inviteIncentive.inviter_format)}</div>
-                </Form.Group>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Form.Group id="invitee_title">
-                  <Form.Label>インセンティブ名</Form.Label>
-                  <Form.Control required type="text" name="invitee_title" value={inviteIncentive.invitee_title} onChange={handleChange} />
-                </Form.Group>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Form.Group id="invitee_content">
-                  <Form.Label>インセンティブ説明</Form.Label>
-                  <Form.Control as="textarea" rows="3" name="invitee_content" value={inviteIncentive.invitee_content} onChange={handleChange} placeholder="商品の概要を入力してください" />
-                </Form.Group>
-              </Col>
-            </Row>
-          </div>
-          <div className="d-flex justify-content-end mt-3">
+						</Card.Body>
+					</Card>
+          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
             <Button
               variant="success"
-              className="d-inline-flex align-items-center"
-              onClick={handleClick}
+              className="btn-default-success"
+              onClick={() => handleClick()}
             >
-              {pathname.includes('/edit') ? '更新する' : '保存する'}
+              保存する
             </Button>
           </div>
-        </Card.Body>
-      </Card>
+				</Col>
+      </Row>
     </>
   );
 };

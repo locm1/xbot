@@ -80,6 +80,13 @@ export default () => {
     }
   }
 
+  const moveCheckout = () => {
+    history.push({
+      pathname: Paths.LiffCheckout.path,
+      state: {page: 'checkout'}
+    })
+  };
+
   const CartItem = (props) => {
     const { id, product_id, quantity, product, isSalePeriod } = props;
     const link = Paths.LiffProductDetail.path.replace(':id', product_id);
@@ -215,7 +222,7 @@ export default () => {
                   <InboxIcon className="icon icon-xs me-2" />
                   他の商品を見る
                 </Button>
-                <Button as={Link} to={Paths.LiffCheckout.path} variant="tertiary" className="mt-2 liff-product-detail-button">
+                <Button onClick={moveCheckout} variant="tertiary" className="mt-2 liff-product-detail-button">
                   <ShoppingCartIcon className="icon icon-xs me-2" />
                   ご購入の手続き
                 </Button>

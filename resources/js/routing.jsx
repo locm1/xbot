@@ -265,12 +265,12 @@ const LiffECRoute = ({ component: Component, ...rest }) => {
 }
 
 const ECFooter = () => (
-  <div className="d-flex justify-content-between flex-wrap align-items-center px-2 py-4">
+  <div className="d-flex justify-content-evenly flex-wrap align-items-center px-2 py-4">
     <Button as={Link} to={Paths.LiffProducts.path} variant="gray-800" className="liff-product-detail-button">
       <ShoppingBagIcon className="icon icon-xs me-2" />
       TOPページ
     </Button>
-    <Button variant="tertiary" as={Link} to={Paths.LiffCarts.path} className="liff-product-detail-button">
+    <Button variant="gray-800" as={Link} to={Paths.LiffCarts.path} className="liff-product-detail-button">
       <ShoppingCartIcon className="icon icon-xs me-2" />
       カート
     </Button>
@@ -372,6 +372,8 @@ const LoadingPage = () => {
 }
 
 const ToQuestionnairePage = () => {
+  const location = useLocation();
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [liffId, setLiffId] = useState('');
   axios.get('/api/v1/get-liff-id')
@@ -385,11 +387,25 @@ const ToQuestionnairePage = () => {
       setIsLoading(false);
     });
 
+    const moveQuestionnairePage = () => {
+      if (typeof location.state !== "undefined") {
+        history.push({
+          pathname: Paths.LiffQuestionnaire.path,
+          state: {page: 'checkout'}
+        })
+      } else {
+        history.push(Paths.LiffQuestionnaire.path)
+      }
+    };
+
   return (
     <>
       <Card className='m-3 p-3'>
         <div className='text-center mb-3'>アンケートにお答え頂くと利用できます</div>
-        <Button className='' href={`https://liff.line.me/${liffId}?path=questionnaire`}>
+        {/* <Button className='' href={`https://liff.line.me/${liffId}?path=questionnaire`}>
+          回答する
+        </Button> */}
+        <Button className='' onClick={moveQuestionnairePage}>
           回答する
         </Button>
       </Card>

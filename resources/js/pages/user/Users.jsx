@@ -6,7 +6,7 @@ import { SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from 'react-bootstrap';
 
 import { UsersTable } from "@/pages/user/UsersTable";
-import { getUsers, getDemographic, deleteUser } from "@/pages/user/api/UserApiMethods";
+import { getUsers, getDemographic, deleteUser, getTags } from "@/pages/user/api/UserApiMethods";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -18,9 +18,10 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 export default () => {
   const [isRendered, setIsRendered] = useState(false);
+  const [tags, setTags] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchValue, setSearchValue] = useState({
-    name: '', tel: ''
+    name: '', tel: '', tag_id: ''
   });
   const [demographic, setDemographic] = useState({
     friend: '', registered: '', man: '', women: '', others: ''
@@ -83,6 +84,7 @@ export default () => {
     };
     getUsers(searchParams, setUsers, setLinks, setPaginate,setIsRendered)
     getDemographic(setDemographic)
+    getTags(setTags)
   }, []);
 
   return isRendered ? (
@@ -105,8 +107,8 @@ export default () => {
       </div>
 
       <div className="table-settings mb-4">
-        <Row className="justify-content-between align-items-center">
-          <Col xs={9} lg={8} className="d-md-flex">
+        <Row className="align-items-center">
+          <Col xs={3} lg={3} className="d-md-flex">
             <InputGroup className="me-2 me-lg-3 fmxw-300">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
@@ -118,6 +120,8 @@ export default () => {
                 onChange={(e) => handleChange(e, 'name')}
               />
             </InputGroup>
+          </Col>
+          <Col xs={3} lg={3} className="d-md-flex">
             <InputGroup className="me-2 me-lg-3 fmxw-300">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
@@ -128,6 +132,20 @@ export default () => {
                 value={searchValue.tel}
                 onChange={(e) => handleChange(e, 'tel')}
               />
+            </InputGroup>
+          </Col>
+          <Col xs={3} lg={3} className="d-md-flex">
+            <InputGroup className="me-2 me-lg-3 fmxw-300">
+              <InputGroup.Text>
+                <SearchIcon className="icon icon-xs" />
+              </InputGroup.Text>
+              <Form.Select defaultValue={searchValue.tag_id} className="mb-0" onChange={(e) => handleChange(e, 'tag_id')}>
+                <option>タグ名</option>
+                <option value="0">全て表示</option>
+                {
+                  tags.map((tag, index) => <option key={tag.id} value={tag.id}>{tag.name}</option>)
+                }
+              </Form.Select>
             </InputGroup>
           </Col>
         </Row>

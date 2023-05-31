@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export const getCards = async (userId, payjp_customer_id, setCreditCards) => {
   const searchParams = {
     params: {payjp_customer_id: payjp_customer_id}
@@ -34,6 +36,7 @@ export const storeCard = async (userId, formValue) => {
     return response.data.card;
   })
   .catch(error => {
+    Swal.fire(`エラー`, 'カードが正常に登録できませんでした。', 'error')
       console.error(error);
   });
 };

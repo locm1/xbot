@@ -20,7 +20,7 @@ class UserService
 
     public function index($request)
     {
-        if (isset($request->name) || isset($request->tel)) {
+        if (isset($request->name) || isset($request->tel) || isset($request->tag_id)) {
             return $this->search_user_action->search($request);
         }
 

@@ -8,7 +8,7 @@ export default (props) => {
   const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems } = props;
 
   const getDefaultActiveKey = (type) => {
-    switch (type) {
+    switch (parseInt(type, 10)) {
       case 1:
         return 'text'
       case 2:
@@ -73,15 +73,19 @@ export default (props) => {
     setMessageItems(messageItems.map((messageItem) => (messageItem.id === id ? currentMessageItem : messageItem)));
   };
 
+  const handleTabClick = (type) => {
+    setMessageItems(prev => prev.map(v => v.id == messageItem.id ? {...v, type: type} : {...v}))
+  }
+
   return (
     <>
     <div className="message-editor-wrap">
       <div className="message-editor-header">
-        <Tab.Container defaultActiveKey={getDefaultActiveKey(messageItem.type)}>
+        <Tab.Container activeKey={getDefaultActiveKey(messageItem.type)}>
           <Row>
             <Col lg={10} className="d-flex justify-content-start">
               <Nav>
-                <Nav.Item>
+                <Nav.Item  onClick={() => handleTabClick(1)}>
                   <Nav.Link eventKey="text" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="text"
@@ -91,17 +95,17 @@ export default (props) => {
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item  onClick={() => handleTabClick(2)}>
                   <Nav.Link eventKey="picture" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
-                      key="example"
+                      key="picture"
                       overlay={<Tooltip id="top" className="m-0">写真</Tooltip>}
                     >
                       <PhotographIcon className="icon icon-sm" />
                     </OverlayTrigger>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item  onClick={() => handleTabClick(3)}>
                   <Nav.Link eventKey="movie" className="mb-sm-3 mb-md-0 message-editor-header-item">
                     <OverlayTrigger 
                       key="example"

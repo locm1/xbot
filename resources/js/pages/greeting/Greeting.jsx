@@ -21,8 +21,13 @@ export default () => {
   const [updateVideoIds, setUpdateVideoIds] = useState([]);
   const [deleteMessages, setDeleteMessages] = useState([]);
   const [messageCount, setMessageCount] = useState();
+  const [error, setError] = useState({
+    'messages.0.text': null,
+    'messages.0.image_path': null,
+    'messages.0.video_path': null,
+  })
 
-  const handlePreviewChange = (e, input, id) => {
+  const handlePreviewChange = (e, input, id, index = null) => {
     const currentMessage = messages.filter(message => (message.id === id))[0]
 
     if (input == 'text') {
@@ -31,6 +36,8 @@ export default () => {
       currentMessage.video_path = null
       currentMessage.text = e.target.value
       setMessages(messages.map((message) => (message.id === id ? currentMessage : message)));
+
+      setError({ ...error, [`messages.${index}.text`]: '' });
 
     } else if (input == 'file') {
       currentMessage.type = 2
@@ -45,6 +52,9 @@ export default () => {
         setMessages(messages.map((message) => (message.id === id ? currentMessage : message)));
       }
       reader.readAsDataURL(e.target.files[0])
+
+      setError({ ...error, [`messages.${index}.image_path`]: '' });
+      
     } else if (input == 'video') {
       currentMessage.type = 3
       currentMessage.text = ''
@@ -54,6 +64,8 @@ export default () => {
 
       currentMessage.video_path = URL.createObjectURL(e.target.files[0])
       setMessages(messages.map((message) => (message.id === id ? currentMessage : message)));
+      
+      setError({ ...error, [`messages.${index}.video_path`]: '' });
     }
 
   }
@@ -103,10 +115,10 @@ export default () => {
       deleteGreetingMessages(params, completeMessage)
     }
 
-    if (messages[0].created_at) {
-      updateGreetingMessages(formData, completeMessage)
+    if (messages[0].id) {
+      updateGreetingMessages(formData, completeMessage, setError)
     } else {
-      storeGreetingMessages(formData, completeMessage)
+      storeGreetingMessages(formData, completeMessage, setError)
     }
 
     if (greetingMessageWithQuestionnaire) {
@@ -177,6 +189,9 @@ export default () => {
               handleDelete={handleDelete}
               messageItems={messages}
               setMessageItems={setMessages}
+              error={error}
+              index={index}
+              setError={setError}
             />
           </div>
         )

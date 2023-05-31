@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player'
 
 export default (props) => {
-  const { handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, setMessageItems, messageItems } = props;
+  const { 
+    handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, 
+    setMessageItems, messageItems, error, index, setError
+  } = props;
 
   const getDefaultActiveKey = (type) => {
     switch (parseInt(type, 10)) {
@@ -136,8 +139,12 @@ export default (props) => {
                       placeholder="テキストを入力" 
                       id={`preview-text-${messageItem.id}`} 
                       value={messageItem.text} 
-                      onChange={(e) => handlePreviewChange(e, 'text', messageItem.id)} 
+                      onChange={(e) => handlePreviewChange(e, 'text', messageItem.id, index)}
+                      isInvalid={!!error[`messages.${index}.text`]} 
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {error[`messages.${index}.text`]}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <div className="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center py-3">
                     <Button onClick={() => addName(messageItem.id, '%friend_name%')} variant="primary" className="me-2">
@@ -150,30 +157,38 @@ export default (props) => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="picture" className="py-4">
                   {messageItem.image_path == null ? (
-                    <Form className="rounded d-flex align-items-center justify-content-center mb-4">
+                    <Form.Group className="mb-3">
                       <Form.Control
                         type="file"
                         name="file"
                         id="preview-picture" 
-                        accept="image/*"
-                        onChange={(e) => handlePreviewChange(e, 'file', messageItem.id)} 
+                        accept="image/png,image/jpg,image/jpeg"
+                        onChange={(e) => handlePreviewChange(e, 'file', messageItem.id, index)} 
+                        isInvalid={!!error[`messages.${index}.image_path`]}
                       />
-                    </Form>
+                      <Form.Control.Feedback type="invalid">
+                        {error[`messages.${index}.image_path`]}
+                      </Form.Control.Feedback>
+                    </Form.Group>
                   ) : (
                     <DropzoneFile messageItem={messageItem} />
                   )} 
                 </Tab.Pane>
                 <Tab.Pane eventKey="movie" className="py-4">
                   {messageItem.video_path == null ? (
-                    <Form className="rounded d-flex align-items-center justify-content-center mb-4">
+                    <Form.Group className="mb-3">
                       <Form.Control
                         type="file"
                         name="video"
                         accept="video/*"
                         id="preview-video" 
-                        onChange={(e) => handlePreviewChange(e, 'video', messageItem.id)} 
+                        onChange={(e) => handlePreviewChange(e, 'video', messageItem.id, index)}
+                        isInvalid={!!error[`messages.${index}.video_path`]}
                       />
-                    </Form>
+                      <Form.Control.Feedback type="invalid">
+                        {error[`messages.${index}.video_path`]}
+                      </Form.Control.Feedback>
+                    </Form.Group>
                   ) : (
                     <VideoFile messageItem={messageItem} />
                   )} 

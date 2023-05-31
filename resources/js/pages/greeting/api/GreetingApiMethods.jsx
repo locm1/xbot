@@ -16,22 +16,23 @@ export const getGreetingMessages = async (setMessages) => {
   });
 };
 
-export const storeGreetingMessages = async (formData, completeMessage) => {
+export const storeGreetingMessages = async (formData, completeMessage, setError) => {
   axios.post(`/api/v1/management/greeting-messages`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     }
   })
   .then((response) => {
-    console.log(response.data.message_item);
+    console.log(response.data.greeting_messages);
     completeMessage('作成');
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 
-export const updateGreetingMessages = async (formData, completeMessage) => {
+export const updateGreetingMessages = async (formData, completeMessage, setError) => {
   axios.post(`/api/v1/management/greeting-messages`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -44,6 +45,7 @@ export const updateGreetingMessages = async (formData, completeMessage) => {
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 

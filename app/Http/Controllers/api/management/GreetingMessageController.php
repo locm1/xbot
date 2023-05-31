@@ -46,7 +46,7 @@ class GreetingMessageController extends Controller
      * @param  UpdateGreetingMessageRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(UpdateGreetingMessageRequest $request)
     {
         $greeting_messages = $this->greeting_message_service->update($request, 'update');
         return response()->json(['greeting_messages' => $greeting_messages], 200);

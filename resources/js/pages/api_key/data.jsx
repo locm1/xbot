@@ -19,14 +19,14 @@ export default [
         title: "LIFF ID",
         name: "mix_liff_id"
     },
-    {
-        title: "Pay.jp 秘密鍵",
-        name: "payjp_secret_key"
-    },
-    {
-        title: "Pay.jp 公開鍵",
-        name: "mix_payjp_public_key"
-    },
+    // {
+    //     title: "Pay.jp 秘密鍵",
+    //     name: "payjp_secret_key"
+    // },
+    // {
+    //     title: "Pay.jp 公開鍵",
+    //     name: "mix_payjp_public_key"
+    // },
     {
         title: "来店承認用パスワード",
         name: "common_password"

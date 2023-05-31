@@ -22,7 +22,6 @@ export const Paths = {
     VisitorHistories: { path: `${prefix}/visitor/history` },
     EditVisitorHistory: { path: `${prefix}/visitor/history/edit/:id` },
     Environment: { path: `${prefix}/ec/environment` },
-    Payment: { path: `${prefix}/ec/payment` },
     Products: { path: `${prefix}/ec/product/list` },
     ProductCategory: { path: `${prefix}/ec/product/category/list` },
     EditCategory: { path: `${prefix}/ec/product/category/edit/:id` },

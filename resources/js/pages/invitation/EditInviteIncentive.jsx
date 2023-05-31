@@ -60,6 +60,13 @@ export default () => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">{pathname.includes('/edit') ? 'インセンティブ編集' : 'インセンティブ登録'}</h1>
         </div>
+        <Button
+          variant="success"
+          className="btn-default-success"
+          onClick={() => handleClick()}
+        >
+          保存する
+        </Button>
       </div>
       <Row>
         <Col xs={8}>
@@ -162,20 +169,11 @@ export default () => {
                 id="is-default-switch"
                 htmlFor="is-default-switch"
                 checked={isDefault}
-                onClick={() => setIsDefault(!isDefault)}
+                onChange={() => setIsDefault(!isDefault)}
                 />
               </Form.Group>
 						</Card.Body>
 					</Card>
-          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
-            <Button
-              variant="success"
-              className="btn-default-success"
-              onClick={() => handleClick()}
-            >
-              保存する
-            </Button>
-          </div>
 				</Col>
       </Row>
     </>

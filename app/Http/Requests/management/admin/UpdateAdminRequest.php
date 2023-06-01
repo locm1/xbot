@@ -25,20 +25,22 @@ class UpdateAdminRequest extends FormRequest
     public function rules()
     {
         return [
-            'data.login_id' => 'required',
-            'data.name' => 'required',
-            'data.role' => 'required|numeric|between:1,3',
+            'login_id' => 'required',
+            'name' => 'required',
+            'role' => 'required|numeric|between:1,3',
             'is_checked' => 'required|boolean',
+            'password_confirmation' => 'required',
         ];
     }
 
     public function attributes()
     {
         return [
-            'data.login_id' => 'ログインID',
-            'data.name' => 'ユーザー名',
-            'data.password' => 'パスワード',
-            'data.role' => '権限レベル',
+            'login_id' => 'ログインID',
+            'name' => 'ユーザー名',
+            'password' => 'パスワード',
+            'role' => '権限レベル',
+            'password_confirmation' => '確認用パスワード', 
         ];
     }
 

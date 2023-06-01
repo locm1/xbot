@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import moment from "moment-timezone";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -11,6 +11,9 @@ import { Paths } from "@/paths";
 const SpecificTradesService = (props) => {
   const [SpecificTrades, setSpecificTrades] = useState([]);
   const [deleteSpecificTradeIds, setDeleteSpecificTradeIds] = useState([]);
+  const [height, setHeight] = useState(0);
+  const textAreaRef = useRef();
+  const invisibleTextAreaRef = useRef();
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -82,6 +85,12 @@ const SpecificTradesService = (props) => {
     getSpecificTrades(setSpecificTrades)
   }, []);
 
+  useEffect(() => {
+    if (invisibleTextAreaRef.current) {
+      setHeight(invisibleTextAreaRef.current.scrollHeight);
+    }
+  }, [SpecificTrades]);
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -114,6 +123,10 @@ const SpecificTradesService = (props) => {
                 key={`SpecificTrade-${SpecificTrade.id}`}
                 handleChange={handleChange}
                 deleteSpecificTrades={deleteSpecificTrades}
+                textAreaRef={textAreaRef}
+                invisibleTextAreaRef={invisibleTextAreaRef}
+                height={height}
+                setHeight={setHeight}
               />
             )}
           </div>

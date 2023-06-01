@@ -54,11 +54,11 @@ export default (props) => {
               <td>{last_name} {first_name}</td>
             </tr>
             <tr className="border-bottom">
-              <th className="h6 text-left fw-bold">配送先氏名(カタカナ)</th>
+              <th className="h6 text-left fw-bolder">配送先氏名(カタカナ)</th>
               <td>{last_name_kana} {first_name_kana}</td>
             </tr>
             <tr className="border-bottom">
-              <th className="h6 text-left fw-bold">配送先住所</th>
+              <th className="h6 text-left fw-bolder">配送先住所</th>
               <td>
                 <div>〒{zipcode}</div>
                 <div>{prefecture} {city} {address}</div>
@@ -66,15 +66,15 @@ export default (props) => {
               </td>
             </tr>
             <tr className="border-bottom">
-              <th className="h6 text-left fw-bold">お支払い方法</th>
+              <th className="h6 text-left fw-bolder">お支払い方法</th>
               <td>{getPaymentMethod(payment_method)}</td>
             </tr>
             <tr className="border-bottom">
-              <th className="h6 text-left fw-bold">配送時間帯</th>
+              <th className="h6 text-left fw-bolder">配送時間帯</th>
               <td>{getDeliveryTime(delivery_time)}</td>
             </tr>
             <tr className="border-bottom">
-              <th className="h6 text-left fw-bold">電話番号</th>
+              <th className="h6 text-left fw-bolder">電話番号</th>
               <td>{tel}</td>
             </tr>
           </tbody>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { AdjustmentsIcon, CheckIcon, CogIcon, HomeIcon, PlusIcon, SearchIcon } from "@heroicons/react/solid";
-import { Col, Row, Form, Button, Breadcrumb, Card, FormCheck, Dropdown } from 'react-bootstrap';
+import { Col, Row, Form, Button, Breadcrumb, Card, Badge, Dropdown } from 'react-bootstrap';
 import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
@@ -19,7 +19,9 @@ export default () => {
   const [formValue, setFormValue] = useState(
     {login_id: '', name: '', role: 1, password: '', password_confirmation: ''}
   );
-  const [error, setError] = useState({});
+  const [error, setError] = useState({
+    login_id: '', password: '', password_confirmation: '', name: ''
+  });
   const roles = [
     {role: 1, name: '管理者'},
     {role: 2, name: '編集者'},
@@ -38,13 +40,22 @@ export default () => {
 
   const onSaveAccount = () => {
     if (pathname.includes('/edit')) {
-      const newFormValues = {
-        data: formValue,
-        is_checked: isCheck,
-      }
-      updateAccount(id, newFormValues, setError)
+      Object.assign(formValue, {is_checked: isCheck})
+      updateAccount(id, formValue, setError)
     } else {
       storeAccount(formValue, setError)
+    }
+  };
+
+  const isRequired = (isCheck) => {
+    if (pathname.includes('/edit') && isCheck === false) {
+      return <Badge bg="gray-600" className="me-2">任意</Badge>
+    } else if (pathname.includes('/edit') && isCheck === true) {
+      return <Badge bg="danger" className="me-2">必須</Badge>
+    } else if (pathname.includes('/register')) {
+      return <Badge bg="danger" className="me-2">必須</Badge>
+    } else {
+      return <Badge bg="danger" className="me-2">必須</Badge>
     }
   };
 
@@ -63,33 +74,43 @@ export default () => {
           <Row className="mb-3">
             <Col md={6} className="mb-3">
               <Form.Group id="login_id">
-                <Form.Label>ログインID</Form.Label>
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>ログインID</Form.Label>
                 <Form.Control
                   required
                   type="text"
                   name="login_id"
                   value={formValue.login_id}
                   onChange={(e) => handleChange(e, 'login_id')} 
-                  placeholder="" 
+                  placeholder="x-bot" 
+                  isInvalid={!!error.login_id}
                 />
+                {
+                  error.login_id && 
+                  <Form.Control.Feedback type="invalid">{error.login_id[0]}</Form.Control.Feedback>
+                }
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="name">
-                <Form.Label>ユーザー名</Form.Label>
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>ユーザー名</Form.Label>
                 <Form.Control
                   required
                   type="text" 
                   name="name"
                   value={formValue.name}
                   onChange={(e) => handleChange(e, 'name')}
-                  placeholder=""
+                  placeholder="管理者用アカウント"
+                  isInvalid={!!error.name}
                 />
+                {
+                  error.name && 
+                  <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                }
               </Form.Group>
             </Col>
             <Col md={12} className="mb-3">
               <Form.Group id="role">
-                <Form.Label>権限レベル</Form.Label>
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>権限レベル</Form.Label>
                 <Form.Select className="mb-0" value={formValue.role} onChange={(e) => handleChange(e, 'role')}>
                   {
                     roles.map((role, index) => <option key={index} value={role.role}>{role.name}</option>)
@@ -113,7 +134,10 @@ export default () => {
             }
             <Col md={6} className="mb-3">
               <Form.Group id="password">
-                <Form.Label>パスワード</Form.Label>
+                <Form.Label>
+                  {isRequired(isCheck)}
+                  パスワード
+                </Form.Label>
                 <Form.Control
                   required
                   type="password"
@@ -122,12 +146,20 @@ export default () => {
                   onChange={(e) => handleChange(e, 'password')}
                   placeholder=""
                   disabled={pathname.includes('/edit') ? !isCheck : false}
+                  isInvalid={!!error.password}
                 />
+                {
+                  error.password && 
+                  <Form.Control.Feedback type="invalid">{error.password[0]}</Form.Control.Feedback>
+                }
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="confirm_password">
-                <Form.Label>確認用パスワード</Form.Label>
+              <Form.Label>
+                  {isRequired(isCheck)}
+                  確認用パスワード
+                </Form.Label>
                 <Form.Control
                   required
                   type="password"
@@ -136,7 +168,12 @@ export default () => {
                   onChange={(e) => handleChange(e, 'password_confirmation')}
                   placeholder=""
                   disabled={pathname.includes('/edit') ? !isCheck : false}
+                  isInvalid={!!error.password_confirmation}
                 />
+                {
+                  error.password_confirmation && 
+                  <Form.Control.Feedback type="invalid">{error.password_confirmation[0]}</Form.Control.Feedback>
+                }
               </Form.Group>
             </Col>
           </Row>

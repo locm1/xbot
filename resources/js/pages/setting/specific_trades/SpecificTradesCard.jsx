@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { ClockIcon, MinusIcon, PencilAltIcon, CheckCircleIcon, DotsHorizontalIcon, TrashIcon, UserIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Modal, Button, InputGroup, Image, Badge, FloatingLabel } from 'react-bootstrap';
 
@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 import { Paths } from "@/paths";
 
 export default (props) => {
-  const { display_id, title, content, handleChange, deleteSpecificTrades } = props;
+  const { 
+    display_id, title, content, handleChange, deleteSpecificTrades, 
+    textAreaRef, invisibleTextAreaRef, height, setHeight 
+  } = props;
 
   const textRowCount = content ? content.split('\n').length : 0;
   const rows = textRowCount + 1;

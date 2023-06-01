@@ -13,11 +13,16 @@ export default () => {
     name: '', invitee_content: '', invitee_timing: 1, invitee_format: 1, invitee_title: '',
     inviter_content: '', inviter_timing: 1, inviter_format: 1, inviter_title: ''
   });
+  const [error, setError] = useState({
+    name: '', invitee_content: '', invitee_timing: '', invitee_title: '',
+    inviter_content: '', inviter_timing: '', inviter_title: ''
+  });
   const [isDefault, setIsDefault] = useState(false);
   const timings = ['友達登録', '利用者登録', '初来店', '初購入'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setError({...error, [name]: ''})
     return setInviteIncentive({...inviteIncentive, [name]: value})
   };
 
@@ -34,10 +39,10 @@ export default () => {
   const handleClick = () => {
     inviteIncentive.is_default = isDefault ? 1 : 0 
     if (pathname.includes('/edit')) {
-      updateInviteIncentive(id, inviteIncentive, storeComplete)
+      updateInviteIncentive(id, inviteIncentive, storeComplete, setError)
     } else {
       console.log(inviteIncentive);
-      storeInviteIncentive(inviteIncentive, storeComplete)
+      storeInviteIncentive(inviteIncentive, storeComplete, setError)
     }
   };
 
@@ -76,8 +81,19 @@ export default () => {
             </Card.Header> 
             <Card.Body>
               <Form.Group id="name">
-                <Form.Label>管理名称</Form.Label>
-                <Form.Control required type="text" name="name" value={inviteIncentive.name} onChange={handleChange} />
+                <Form.Label><Badge bg="danger" className="me-2">必須</Badge>管理名称</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  name="name"
+                  value={inviteIncentive.name}
+                  onChange={handleChange} 
+                  isInvalid={!!error.name}
+                />
+                {
+                  error.name && 
+                  <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                }
               </Form.Group>
             </Card.Body>
           </Card>
@@ -89,7 +105,7 @@ export default () => {
               <Row>
                 <Col md={6} className="mb-3">
                   <Form.Group id="inviter_timing">
-                    <Form.Label>付与タイミング</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>付与タイミング</Form.Label>
                     <Form.Select className="mb-3 mt-2" name="inviter_timing" value={inviteIncentive.inviter_timing} onChange={handleChange}>
                       {
                         timings.map((timing, index) => <option key={`inviter-timing-option-${index}`} value={index + 1}>{timing}</option>)
@@ -105,14 +121,37 @@ export default () => {
                 </Col>
                 <Col md={6} className="mb-3">
                   <Form.Group id="inviter_title">
-                    <Form.Label>インセンティブ名</Form.Label>
-                    <Form.Control required type="text" name="inviter_title" value={inviteIncentive.inviter_title} onChange={handleChange} />
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>インセンティブ名</Form.Label>
+                    <Form.Control
+                      required
+                      type="text"
+                      name="inviter_title"
+                      value={inviteIncentive.inviter_title}
+                      onChange={handleChange} 
+                      isInvalid={!!error.inviter_title}
+                    />
+                    {
+                      error.inviter_title && 
+                      <Form.Control.Feedback type="invalid">{error.inviter_title[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
                 <Col md={6} className="mb-3">
                   <Form.Group id="inviter_content">
-                    <Form.Label>インセンティブ説明</Form.Label>
-                    <Form.Control as="textarea" rows="3" name="inviter_content" value={inviteIncentive.inviter_content} onChange={handleChange} placeholder="商品の概要を入力してください" />
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>インセンティブ説明</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows="3"
+                      name="inviter_content"
+                      value={inviteIncentive.inviter_content}
+                      onChange={handleChange}
+                      placeholder="商品の概要を入力してください"
+                      isInvalid={!!error.inviter_content}
+                    />
+                    {
+                      error.inviter_content && 
+                      <Form.Control.Feedback type="invalid">{error.inviter_content[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
               </Row>
@@ -126,7 +165,7 @@ export default () => {
               <Row>
                 <Col md={6} className="mb-3">
                   <Form.Group id="invitee_timing">
-                    <Form.Label>付与タイミング</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>付与タイミング</Form.Label>
                     <Form.Select className="mb-3 mt-2" name="invitee_timing" value={inviteIncentive.invitee_timing} onChange={handleChange}>
                       {
                         timings.map((timing, index) => <option key={`invitee-timing-option-${index}`} value={index + 1}>{timing}</option>)
@@ -142,14 +181,37 @@ export default () => {
                 </Col>
                 <Col md={6} className="mb-3">
                   <Form.Group id="invitee_title">
-                    <Form.Label>インセンティブ名</Form.Label>
-                    <Form.Control required type="text" name="invitee_title" value={inviteIncentive.invitee_title} onChange={handleChange} />
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>インセンティブ名</Form.Label>
+                    <Form.Control
+                      required
+                      type="text"
+                      name="invitee_title"
+                      value={inviteIncentive.invitee_title}
+                      onChange={handleChange}
+                      isInvalid={!!error.invitee_title}
+                    />
+                    {
+                      error.invitee_title && 
+                      <Form.Control.Feedback type="invalid">{error.invitee_title[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
                 <Col md={6} className="mb-3">
                   <Form.Group id="invitee_content">
-                    <Form.Label>インセンティブ説明</Form.Label>
-                    <Form.Control as="textarea" rows="3" name="invitee_content" value={inviteIncentive.invitee_content} onChange={handleChange} placeholder="商品の概要を入力してください" />
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>インセンティブ説明</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows="3"
+                      name="invitee_content"
+                      value={inviteIncentive.invitee_content} 
+                      onChange={handleChange}
+                      placeholder="商品の概要を入力してください"
+                      isInvalid={!!error.invitee_content}
+                    />
+                    {
+                      error.invitee_content && 
+                      <Form.Control.Feedback type="invalid">{error.invitee_content[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
               </Row>
@@ -176,6 +238,11 @@ export default () => {
 					</Card>
 				</Col>
       </Row>
+      <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+        <Button onClick={() => {history.push(Paths.InviteIncentives.path)}} variant='tertiary' className="mt-2 animate-up-2">
+          友達紹介管理に戻る
+        </Button>
+      </div>
     </>
   );
 };

@@ -2,7 +2,7 @@ import { Button, Card, Col, Form, Row } from "react-bootstrap"
 import CheckboxButton from "@/components/CheckboxButton";
 import SegmentCard from "@/pages/message/segment/SegmentCard";
 import { useEffect, useState } from "react";
-import { getDefaultSegments, storeReport, getReport, updateReport } from "./api/ReportApiMethods";
+import { getDefaultSegments, storeReport, getReport, updateReport, getQuestionnaires } from "./api/ReportApiMethods";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Paths } from "@/paths";
@@ -13,6 +13,7 @@ export default () => {
 	const [errors, setErrors] = useState({})
 	const [data, setData] = useState({name: '', period: '', xlabel: 0, type: ''});
 	const [questionnaires, setQuestionnaires] = useState([]);
+	const [originalQuestions, setOriginalQuestions] = useState([]);
   const { id } = useParams();
 	const history = useHistory();
 	const isEditing = useLocation().pathname.includes('/edit');
@@ -20,9 +21,11 @@ export default () => {
 	const xlabels = ['期間', '性別', '誕生月'];
 	const types = ['棒グラフ', '折れ線グラフ', '円グラフ'];
 	const sizes = ['1/1', '1/2', '1/4']
+	const mergedQuestions = [...questionnaires, ...originalQuestions];
 
 	useEffect(() => {
 		getDefaultSegments(setQuestionnaires);
+		getQuestionnaires(setOriginalQuestions)
 		if (isEditing) {
 			getReport(id).then(response => {
 				const report = response.data;
@@ -34,6 +37,7 @@ export default () => {
 	}, []);
 
 	const handleChange = (e) => {
+		console.log(e.target);
 		let name, value, checked;
 		if (e.target.length !== 0) {
 			name = e.target.name;
@@ -138,6 +142,8 @@ export default () => {
 
 	return (
 		<>
+		<Button onClick={() => console.log(mergedQuestions)} />
+		<Button onClick={() => console.log(searchTerms)} />
 			<Row>
 				<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
 					<div className="d-block mb-4 mb-md-0">
@@ -170,7 +176,7 @@ export default () => {
 							<h5 className="mb-0 fw-bolder">出力条件</h5>
 						</Card.Header>
 						<Card.Body>
-							{questionnaires.map((v, k) =>
+							{mergedQuestions.map((v, k) =>
 								<SegmentCard {...v} key={k} questionnaireType="even" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms} />
 							)}
 						</Card.Body>

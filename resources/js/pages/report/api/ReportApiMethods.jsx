@@ -5,6 +5,7 @@ export const getDefaultSegments = (setQuestionnaires) => {
 	axios.get('/api/v1/management/default-segments')
 		.then((response) => {
 			const segments = response.data.segments;
+			console.log(response.data.segments);
 			const newSegments = [];
 			segments.forEach(v => {
 				if (v.type == 1) {
@@ -55,3 +56,35 @@ export const deleteReport = async(id) => {
 		Swal.fire('削除失敗', '選択したレポートの削除に失敗しました', 'error')
 	})
 }
+
+export const getQuestionnaires = async (setQuestionnaires) => {
+  return await axios.get('/api/v1/questionnaires')
+  .then((response) => {
+    const questionnaires = response.data.questionnaires;
+    console.log(questionnaires);
+		const newQuestionnaires = [];
+		questionnaires.forEach(v => {
+			if (v.type == 3 ||v.type ==  4 ||v.type ==  5) {
+				newQuestionnaires.push({
+					id: v.id, displayOrder: v.display_order, type: 1, questionTitle: v.title, isDefault: 0,
+					questionnaireItems: v.questionnaire_items.map((item, k) => ({ id: item.id , name: 'questionnaireId-' + v.id, value: item.name, label: item.name }))
+				});
+			} else if (v.type == 1 ||v.type ==  2) {
+				console.log('sdasa')
+				newQuestionnaires.push({
+					id: v.id, displayOrder: v.display_order, type: 4, questionTitle: v.title, isDefault: 0,
+					questionnaireItems: { value: [], name: v.id, }
+				});
+			} else {
+				newQuestionnaires.push({
+					id: v.id, displayOrder: v.display_order, type: 5, questionTitle: v.title, isDefault: 0,
+					questionnaireItems: [{ name: 'start_' + v.name, value: '' }, { name: 'end_' + v.name, value: '' }]
+				});
+			}
+		});
+    setQuestionnaires(newQuestionnaires)
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};

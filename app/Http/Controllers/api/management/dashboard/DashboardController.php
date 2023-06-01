@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -47,7 +48,7 @@ class DashboardController extends Controller
 
     private function getUsersByTerms($terms): Builder
     {
-        $Users = User::with(['visitorHistories', 'orders']);
+        $Users = User::with(['visitorHistories', 'orders', 'questionnaireAnswers']);
         if ($terms['gender'] ?? false) {
             $Users->whereIn('gender', $terms['gender']);
         }
@@ -86,6 +87,17 @@ class DashboardController extends Controller
         if ($terms['end_buy_count'] ?? false) {
             $Users->withCount('orders')->having('orders_count', '<=', $terms['end_buy_count']);
         }
+        foreach ($terms as $k => $v) {
+            if (substr($k, 0, 15) === 'questionnaireId') {
+                $questionnaire_id = substr($k, 16);
+                $Users->whereHas('questionnaireAnswers', function ($query) use ($questionnaire_id, $v) {
+                    $query->where('questionnaire_id', $questionnaire_id)->whereHas('questionnaireAnswerItems', function ($items) use ($v) {
+                        $items->where('answer', $v);
+                    });
+                });
+
+            }
+        }
 
         return $Users;
     }
@@ -112,6 +124,19 @@ class DashboardController extends Controller
         $data = [];
         foreach ($group_users as $user) {
             $data[] = [GenderConsts::TYPES[$user->gender], $user->count];
+        }
+        $hasFemale = false;
+        foreach ($data as $innerArray) {
+            if (in_array('女性', $innerArray)) {
+                $hasFemale = true;
+                break;
+            }
+        }
+        if (!$hasFemale) {
+            $data[] = array('女性', 0);
+        }
+        if (count($data) < 3) {
+            $data[] = array ('未回答', 0);
         }
 
         return $data;

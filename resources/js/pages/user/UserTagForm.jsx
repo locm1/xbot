@@ -30,7 +30,7 @@ export default (props) => {
         <Form.Group id="">
           <Form.Label>タグ設定</Form.Label>
           <Select
-            onChange={(e) => { console.log(e) }}
+            onChange={setSelectedTags}
             value={selectedTags}
             name="tags"
             options={selectOptions}

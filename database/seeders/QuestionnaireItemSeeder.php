@@ -22,8 +22,32 @@ class QuestionnaireItemSeeder extends Seeder
             'name' => "とても良かった",
             ],
             [
+            'questionnaire_id' => 1,
+            'name' => "良かった",
+            ],
+            [
+            'questionnaire_id' => 1,
+            'name' => "悪かった",
+            ],
+            [
+            'questionnaire_id' => 1,
+            'name' => "とても悪かった",
+            ],
+            [
             'questionnaire_id' => 2,
             'name' => "とても良かった",
+            ],
+            [
+            'questionnaire_id' => 2,
+            'name' => "良かった",
+            ],
+            [
+            'questionnaire_id' => 2,
+            'name' => "悪かった",
+            ],
+            [
+            'questionnaire_id' => 2,
+            'name' => "とても悪かった",
             ],
             [
             'questionnaire_id' => 3,

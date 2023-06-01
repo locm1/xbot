@@ -31,23 +31,25 @@ export const showInviteIncentive = async (id, setInviteIncentive) => {
   });
 };
 
-export const storeInviteIncentive = async (inviteIncentive, storeComplete) => {
+export const storeInviteIncentive = async (inviteIncentive, storeComplete, setError) => {
   return axios.post(`/api/v1/management/invite-incentives`, inviteIncentive)
   .then((response) => {
     storeComplete('登録', response.data.invite_incentive.id);
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 
-export const updateInviteIncentive = async (id, inviteIncentive, storeComplete) => {
+export const updateInviteIncentive = async (id, inviteIncentive, storeComplete, setError) => {
   axios.put(`/api/v1/management/invite-incentives/${id}`, inviteIncentive)
   .then((response) => {
     storeComplete('更新', response.data.invite_incentive.id);
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 

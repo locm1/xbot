@@ -10,16 +10,8 @@ import QRCode from "qrcode.react";
 
 
 export default () => {
-  const [files, setFiles] = useState([]);
   const [basicId, setBasicId] = useState();
   const [uri, setUri] = useState('');
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
-    onDrop: files => setFiles(files.map(file => ({
-      ...file,
-      preview: URL.createObjectURL(file)
-    })))
-  });
 
   useEffect(() => {
     getBasicId(setBasicId).then(response => {

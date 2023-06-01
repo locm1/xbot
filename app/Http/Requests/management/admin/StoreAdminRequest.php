@@ -28,6 +28,14 @@ class StoreAdminRequest extends FormRequest
             'name' => 'required',
             'role' => 'required|numeric|between:1,3',
             'password' => 'required|confirmed',
+            'password_confirmation' => 'required',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'password_confirmation' => '確認用パスワード', 
         ];
     }
 }

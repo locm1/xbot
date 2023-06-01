@@ -54,7 +54,8 @@ class AdminService extends AbstractManagementService
      */
     public function update($request, Model $admin): array
     {
-        $format_admin_action = new FormatAdminAction($request->data);
+        $data = $request->only(['login_id', 'name', 'role', 'password']);
+        $format_admin_action = new FormatAdminAction($data);
         $formated_data = $format_admin_action->getUpdateData($request->is_checked);
         $admin->update($formated_data);
         return $formated_data;

@@ -14,6 +14,7 @@ import { getUserVisitorHistories, getUserVisitorHistoryCount, getUserOrders, get
 
 import { Paths } from "@/paths";
 import Swal from "sweetalert2";
+import UserTagForm from "./UserTagForm";
 
 
 export default () => {
@@ -38,19 +39,19 @@ export default () => {
   const [purchaseTime, setPurchaseTime] = useState(0);
 
   const handleChange = (e, input) => {
-    setUser({...user, [input]: e})
+    setUser({ ...user, [input]: e })
   };
 
-  const saveUser = async() => {
+  const saveUser = async () => {
     await axios
-    .put(`/api/v1/management/users/${id}`, {...user, "tags": selectedTags})
-    .then((res) => {
-      confirmSave();
-      console.log(res);
-    })
-    .catch(error => {
-      console.error(error);
-    })
+      .put(`/api/v1/management/users/${id}`, { ...user, "tags": selectedTags })
+      .then((res) => {
+        confirmSave();
+        console.log(res);
+      })
+      .catch(error => {
+        console.error(error);
+      })
   }
 
   const [user, setUser] = useState();
@@ -58,7 +59,7 @@ export default () => {
   const [tags, setTags] = useState([]);
 
   const [questionnaireAnswers, setQuestionnaireAnswers] = useState([
-    {created_at: '', questionnaire: {title: ''}, questionnaire_answer_items: []}
+    { created_at: '', questionnaire: { title: '' }, questionnaire_answer_items: [] }
   ]);
 
   useLayoutEffect(() => {
@@ -82,10 +83,10 @@ export default () => {
     )
   }
 
-  
+
   return isRendered ? (
     <>
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
         <div className="d-block mb-4 mb-md-0">
         </div>
       </div>
@@ -108,10 +109,10 @@ export default () => {
           </Nav.Item>
         </Nav>
         <Tab.Content>
-          <Tab.Pane eventKey="user_info" className="py-4">
+          <Tab.Pane eventKey="user_info" className="pt-4">
             <Row>
               <Col xs={12} xl={8}>
-                <UserInfoForm 
+                <UserInfoForm
                   handleChange={handleChange}
                   saveUser={saveUser}
                   {...user}
@@ -121,7 +122,9 @@ export default () => {
                   selectedTags={selectedTags}
                   tags={tags}
                   setSelectedTags={setSelectedTags}
-                />  
+                  getUserTag={getUserTag}
+                  setTags={setTags}
+                />
               </Col>
               <Col xs={12} xl={4}>
                 <Row>
@@ -159,8 +162,8 @@ export default () => {
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>
-      <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button onClick={() => {history.push(Paths.Users.path)}} variant='tertiary' className="mt-2 animate-up-2">
+      <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center">
+        <Button onClick={() => { history.push(Paths.Users.path) }} variant='tertiary' className="mt-2">
           ユーザーリストに戻る
         </Button>
       </div>

@@ -17,10 +17,10 @@ export default (props) => {
 
   return (
     <>
-      <Card border="bottom" className="hover-state rounded-0 rounded-top py-3">
+      <Card border="bottom" className="hover-state rounded-0 rounded-top py-3" style={{height:'88px'}}>
         <Card.Body className="d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-0">
           <Col xs={12} lg={12} className="px-0 mb-4 mb-md-0">
-            <div className="mb-2 d-flex flex-wrap flex-md-nowrap">
+            <div className="mb-2 d-flex flex-wrap flex-md-nowrap align-items-center">
               <div className="w-50">
                 <Form>
                   <Form.Control 
@@ -31,6 +31,7 @@ export default (props) => {
                     onChange={(e) => setName(e.target.value)} 
                     onKeyDown={(e) => handleKeyDown(e)} 
                     placeholder="タグ名を入力してください" 
+                    autoFocus
                   />
                 </Form>
               </div>
@@ -38,7 +39,7 @@ export default (props) => {
                 <Button
                   variant="success"
                   size="sm"
-                  className="d-inline-flex align-items-center me-3"
+                  className="d-inline-flex align-items-center"
                   onClick={(e) => storeTag(e)}
                 >
                   保存する
@@ -48,7 +49,7 @@ export default (props) => {
                 <Button
                   variant="gray-800"
                   size="sm"
-                  className="d-inline-flex align-items-center me-3"
+                  className="d-inline-flex align-items-center"
                   onClick={handleCansel}
                 >
                   キャンセル

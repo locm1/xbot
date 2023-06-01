@@ -42,6 +42,7 @@ use App\Models\QuestionnaireItem;
 use App\Models\RelatedProduct;
 use App\Models\ReserveHistory;
 use App\Models\SendMessage;
+use App\Models\SendMessageUser;
 use App\Models\SpecificTrade;
 use App\Models\TagUser;
 use App\Models\User;
@@ -139,6 +140,7 @@ class DatabaseSeeder extends Seeder
             // SpecificTrade::factory(5)->create();
             // OrderPaymentMethod::factory(100)->create();
             SendMessage::factory(50)->create();
+            SendMessageUser::factory(500)->create();
         } else if ($environment  === 'stg') {
             $this->call([
                 AdminTableSeeder::class,

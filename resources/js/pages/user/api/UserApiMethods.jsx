@@ -69,22 +69,22 @@ export const getOccupations= async (setOccupations) => {
 };
 
 export const getUserTag = async (id, setSelectedTags, setTags) => {
-  axios.get(`/api/v1/management/users/${id}/user_tag`)
-    .then((res) => {
-      if(res.status !== 200) {
-        throw new Error("APIが正しく取得されませんでした");
-      } else {
-        const selectedOptions = res.data.user_tags.map(v => ({ value: v.id, label: v.name }));
-        setSelectedTags(selectedOptions);
-      }
-    });
-    axios.get(`/api/v1/management/user_tags`)
+  axios.get(`/api/v1/management/user_tags`)
     .then((data) => {
       setTags(data.data.tags);
     })
     .catch(error => {
         console.error(error);
     });
+  return axios.get(`/api/v1/management/users/${id}/user_tag`)
+      .then((res) => {
+        if(res.status !== 200) {
+          throw new Error("APIが正しく取得されませんでした");
+        } else {
+          const selectedOptions = res.data.user_tags.map(v => ({ value: v.id, label: v.name }));
+          setSelectedTags(selectedOptions);
+        }
+      });
 };
 
 

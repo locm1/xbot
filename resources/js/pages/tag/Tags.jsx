@@ -97,7 +97,7 @@ export default () => {
   const deleteTag = async (id) => {
     setTags(tags.filter(tag => tag.id !== id))
     const confirmMessage = "選択した項目は削除されました。";
-    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    await Swal.fire('削除成功', confirmMessage, 'success');
   };
 
   useEffect(() => {

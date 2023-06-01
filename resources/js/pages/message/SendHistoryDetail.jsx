@@ -51,10 +51,10 @@ export default (props) => {
       </div>
 
       <Row>
-        <Col xs={12} md={6} xxl={6} className="mb-4">
+        <Col xs={12} md={8} className="mb-4">
           <SendHistoryInfoWidget title="配信情報" {...sendMessage} />
         </Col>
-        <Col xs={12} md={6} xxl={6} className="mb-4">
+        <Col xs={12} md={4} className="mb-4">
           <TargetUsersWidget title="対象ユーザー" users={sendMessage.send_message_users} />
         </Col>
       </Row>

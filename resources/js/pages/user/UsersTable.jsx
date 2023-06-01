@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Pagination from "@/components/Pagination";
 import moment from "moment-timezone";
+import ContentLoader, { Facebook } from "react-content-loader";
 
 export const UsersTable = (props) => {
   const { users, setUsers, links, getUsers, setLinks, paginate, setPaginate, searchValue } = props;
@@ -19,6 +20,8 @@ export const UsersTable = (props) => {
     const name = last_name + ' ' + first_name;
     const sexVariant = gender === 1 ? "u-men" : gender === 2 ? "u-women" : "primary";
     const link = Paths.EditUser.path.replace(':id', id);
+    const MyLoader = () => <ContentLoader />
+    const MyFacebookLoader = () => <Facebook />
 
     return (
       <tr className="border-bottom">

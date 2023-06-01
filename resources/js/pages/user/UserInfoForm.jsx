@@ -13,12 +13,13 @@ import prefectures from "@/data/postage";
 import { TagForm } from "./TagForm";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import UserTagForm from "./UserTagForm";
 
 export const UserInfoForm = (props) => {
   const { 
     first_name, last_name, first_name_kana, last_name_kana, birthDate, birth_date, gender, id,
     zipcode, prefecture, city, address, building_name, tel, occupation_id, setBirthDate, saveUser, occupations,
-    selectedTags, tags, setSelectedTags
+    selectedTags, tags, setSelectedTags, setTags, getUserTag
   } = props;
 
   const birthDateOptions = {
@@ -163,7 +164,7 @@ export const UserInfoForm = (props) => {
               </Form.Group>
             </Col>
             <Col md={12} className="mb-3">
-              <TagForm userId={id} tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+              <UserTagForm setTags={setTags} getUserTag={getUserTag} id={id} tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
             </Col>
           </Row>
         </Form>

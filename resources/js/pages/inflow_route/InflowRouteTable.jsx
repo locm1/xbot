@@ -9,7 +9,7 @@ import QRCode from "qrcode.react";
 import Pagination from "@/components/Pagination";
 
 export const InflowRouteTable = (props) => {
-  const { inflows, setInflows, links, getInflowRoutes, setLinks, paginate, setPaginate, showConfirmDeleteModal } = props;
+  const { inflows, setInflows, links, getInflowRoutes, setLinks, paginate, setPaginate, showConfirmDeleteModal, isRendered } = props;
   const [isHover, setIsHover] = useState(false);
 
   const downloadQR = (id) => {
@@ -89,7 +89,13 @@ export const InflowRouteTable = (props) => {
           </tr>
         </thead>
         <tbody className="border-0">
-          {inflows.map((v, k) => <TableRow key={`inflow-${k}`} {...v} />)}
+          {
+            isRendered ? (
+              inflows.map((v, k) => <TableRow key={`inflow-${k}`} {...v} />)
+            ) : (
+              ''
+            )
+          }
         </tbody>
       </Table>
       <Pagination

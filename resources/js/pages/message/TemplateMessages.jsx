@@ -10,6 +10,7 @@ import { TemplateMessageTable } from "@/pages/message/TemplateMessageTable";
 import { getMessages, deleteMessage } from "@/pages/message/api/MessageApiMethods";
 
 export default () => {
+  const [isRendered, setIsRendered] = useState(false);
   const [messages, setMessages] = useState([]);
   const [paginate, setPaginate] = useState({ 
     current_page: 0, per_page: 0, from: 0, to: 0,total: 0 
@@ -44,7 +45,7 @@ export default () => {
     const searchParams = {
       params: {title: null, page: 1}
     };
-    getMessages(searchParams, setMessages, setLinks, setPaginate)
+    getMessages(searchParams, setMessages, setLinks, setPaginate, setIsRendered)
   }, []);
 
   return (
@@ -90,6 +91,7 @@ export default () => {
         setLinks={setLinks}
         setPaginate={setPaginate}
         title={title}
+        isRendered={isRendered}
       />
     </>
   );

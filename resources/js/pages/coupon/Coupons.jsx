@@ -21,6 +21,7 @@ export default () => {
   const [id, setId] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [timer, setTimer] = useState(null);
+  const [isRendered, setIsRendered] = useState(false);
 
   const handleChange = (e) => {
     setName(e.target.value)
@@ -32,7 +33,7 @@ export default () => {
 
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {
-      getCoupons(searchParams, setCoupons, setLinks, setPaginate);
+      getCoupons(searchParams, setCoupons, setLinks, setPaginate, setIsRendered);
     }, 1000)
 
     setTimer(newTimer)
@@ -46,7 +47,7 @@ export default () => {
     const searchParams = {
       params: { name: null, page: 1 }
     };
-    getCoupons(searchParams, setCoupons, setLinks, setPaginate);
+    getCoupons(searchParams, setCoupons, setLinks, setPaginate, setIsRendered);
   }, []);
 
   return (
@@ -104,6 +105,7 @@ export default () => {
         setLinks={setLinks}
         setPaginate={setPaginate}
         name={name}
+        isRendered={isRendered}
       />
     </>
   );

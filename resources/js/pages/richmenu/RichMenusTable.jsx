@@ -7,9 +7,10 @@ import { first } from "lodash";
 import { deleteRichMenu } from "./RichMenuApiMethods";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import RichMenusContentLoader from "@/pages/richmenu/RichMenusContentLoader.jsx"
 
 export const RichMenusTable = (props) => {
-  const { menus, setMenus } = props;
+  const { menus, setMenus, isRendered } = props;
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -73,7 +74,13 @@ export const RichMenusTable = (props) => {
           </tr>
         </thead>
         <tbody className="border-0">
-          {menus.map((v, k) => <TableRow key={`menu-${k}`} {...v} />)}
+          {
+            isRendered ? (
+              menus.map((v, k) => <TableRow key={`menu-${k}`} {...v} />)
+            ) : (
+              <RichMenusContentLoader />
+            )
+          }
         </tbody>
       </Table>
     </Card>

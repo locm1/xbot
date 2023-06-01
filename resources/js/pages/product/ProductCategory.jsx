@@ -11,8 +11,8 @@ import { Paths } from "@/paths";
 export default () => {
   const [categories, setCategories] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [statusValue, setStatusValue] = useState("all");
   const [isEditing, setIsEditing] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
 
   const editingHandler = (e) => {
     setIsEditing(!isEditing);
@@ -31,7 +31,7 @@ export default () => {
 
 
   useEffect(() => {
-    getCategories(setCategories)
+    getCategories(setCategories, setIsRendered)
   }, []);
 
   return (
@@ -65,7 +65,12 @@ export default () => {
         </Row>
       </div>
 
-      <DisplayOrderCategoryTable categories={categories} deleteCategory={deleteCategory} sortCategory={sortCategory} />
+      <DisplayOrderCategoryTable
+        categories={categories}
+        deleteCategory={deleteCategory}
+        sortCategory={sortCategory}
+        isRendered={isRendered}
+      />
     </>
   );
 }

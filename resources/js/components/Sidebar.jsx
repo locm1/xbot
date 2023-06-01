@@ -92,10 +92,16 @@ export default (props) => {
     const classNames = badgeText ? "d-flex align-items-center justify-content-between" : "";
     const splitLink = link.split('/');
     const spilitPathname = pathname.split('/');
+
     if (spilitPathname[spilitPathname.length - 2] === 'edit' || spilitPathname[spilitPathname.length - 2] === 'detail') {
       spilitPathname[spilitPathname.length - 2] = 'list';
       spilitPathname.pop();
     }
+
+    if (spilitPathname[spilitPathname.length - 1] === 'create') {
+      spilitPathname[spilitPathname.length - 1] = 'list';
+    }
+    
     const navItemClassName = arraysEqual(splitLink, spilitPathname) ? "active" : "";
     return (
       <Nav.Item className={navItemClassName} onClick={() => setShow(false)}>

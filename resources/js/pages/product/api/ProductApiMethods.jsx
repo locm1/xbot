@@ -4,7 +4,7 @@ import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-export const getProducts = async (params, setProducts, setLinks, setPaginate) => {
+export const getProducts = async (params, setProducts, setLinks, setPaginate, setIsRendered) => {
   axios.get('/api/v1/management/products', params)
   .then((response) => {
     const products = response.data.products;
@@ -17,6 +17,7 @@ export const getProducts = async (params, setProducts, setLinks, setPaginate) =>
       to: products.to,
       total: products.total,
     })
+    setIsRendered(true)
   })
   .catch(error => {
       console.error(error);

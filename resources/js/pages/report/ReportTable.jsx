@@ -8,10 +8,12 @@ import Swal from "sweetalert2";
 import QRCode from "qrcode.react";
 import Pagination from "@/components/Pagination";
 import withReactContent from 'sweetalert2-react-content';
+import ReportsContentLoader from "@/pages/report/ReportsContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 import { deleteReport } from "./api/ReportApiMethods";
 
 export const ReportTable = (props) => {
-	const { reports, setReports, getAllReports, links, setLinks, paginate, setPaginate } = props;
+	const { reports, setReports, getAllReports, links, setLinks, paginate, setPaginate, isRendered } = props;
 	const history = useHistory();
 
 	const convertType = (type) => {
@@ -102,17 +104,29 @@ export const ReportTable = (props) => {
 					</tr>
 				</thead>
 				<tbody className="border-0">
-					{reports.map((v, k) => <TableRow key={`table-${k}`} {...v} />)}
+					{
+						isRendered ? (
+							reports.map((v, k) => <TableRow key={`table-${k}`} {...v} />)
+						) : (
+							<ReportsContentLoader />
+						)
+					}
 				</tbody>
 			</Table>
-			<Pagination
-				links={links}
-				paginate={paginate}
-				getListBypage={getAllReports}
-				setList={setReports}
-				setLinks={setLinks}
-				setPaginate={setPaginate}
-			/>
+			{
+				isRendered ? (
+					<Pagination
+						links={links}
+						paginate={paginate}
+						getListBypage={getAllReports}
+						setList={setReports}
+						setLinks={setLinks}
+						setPaginate={setPaginate}
+					/>
+				) : (
+					<PaginationContentLoader />
+				)
+			}
 		</Card>
 	);
 };

@@ -29,6 +29,7 @@ export default () => {
   const [searchValue, setSearchValue] = useState({
     name: '', category: ''
   });
+  const [isRendered, setIsRendered] = useState(false);
 
   const handleChange = (e, input) => {
     setSearchValue({ ...searchValue, [input]: e.target.value })
@@ -40,7 +41,7 @@ export default () => {
 
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {
-      getProducts(searchParams, setProducts, setLinks, setPaginate)
+      getProducts(searchParams, setProducts, setLinks, setPaginate, setIsRendered)
     }, 1000)
 
     setTimer(newTimer)
@@ -73,14 +74,14 @@ export default () => {
     const searchParams = {
       params: { ...searchValue, page: currentPage }
     };
-    getProducts(searchParams, setProducts, setLinks, setPaginate)
+    getProducts(searchParams, setProducts, setLinks, setPaginate, setIsRendered)
   };
 
   useEffect(() => {
     const searchParams = {
       params: { name: null, category: null, page: 1 }
     };
-    getProducts(searchParams, setProducts, setLinks, setPaginate)
+    getProducts(searchParams, setProducts, setLinks, setPaginate, setIsRendered)
     getCategories(setCategories)
   }, []);
 
@@ -134,6 +135,7 @@ export default () => {
         setPaginate={setPaginate}
         searchValue={searchValue}
         deleteProducts={deleteProducts}
+        isRendered={isRendered}
       />
     </>
   );

@@ -1,4 +1,4 @@
-export const getCoupons = async (params, setCoupons, setLinks, setPaginate) => {
+export const getCoupons = async (params, setCoupons, setLinks, setPaginate, setIsRendered) => {
   axios.get('/api/v1/management/coupons', params)
   .then((response) => {
     const coupons = response.data.coupons;
@@ -11,6 +11,7 @@ export const getCoupons = async (params, setCoupons, setLinks, setPaginate) => {
       to: coupons.to,
       total: coupons.total,
     })
+    setIsRendered(true)
   })
   .catch(error => {
       console.error(error);

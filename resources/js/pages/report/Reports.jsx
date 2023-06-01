@@ -14,6 +14,7 @@ export default () => {
 	})
 	const [links, setLinks] = useState([]);
 	const history = useHistory();
+	const [isRendered, setIsRendered] = useState(false);
 
 	useEffect(() => {
 		getAllReports()
@@ -22,6 +23,7 @@ export default () => {
 				delete response.data.data;
 				setPaginate(response.data);
 				setLinks([...Array(response.data.last_page)].map((_, i) => i + 1))
+				setIsRendered(true)
 			})
 			.catch(error => {
 				console.error(error)
@@ -47,6 +49,7 @@ export default () => {
 				setLinks={setLinks}
 				paginate={paginate}
 				setPaginate={setPaginate}
+				isRendered={isRendered}
 			/>
     </>
 	)

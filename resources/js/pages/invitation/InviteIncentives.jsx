@@ -19,12 +19,13 @@ export default () => {
     params: {}
   };
   const [links, setLinks] = useState([]);
+  const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
     const searchParams = {
       params: {page: 1}
     };
-    getInviteIncentives(searchParams, setInviteIncentives, setLinks, setPaginate);
+    getInviteIncentives(searchParams, setInviteIncentives, setLinks, setPaginate, setIsRendered);
   }, []);
 
   return (
@@ -49,6 +50,8 @@ export default () => {
         setLinks={setLinks}
         setPaginate={setPaginate}
         searchParams={searchParams}
+        isRendered={isRendered}
+        setIsRendered={setIsRendered}
       />
     </>
   );

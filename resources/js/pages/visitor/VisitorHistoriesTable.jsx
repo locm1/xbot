@@ -5,11 +5,13 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { Paths } from "@/paths";
 import Pagination from "@/components/Pagination";
+import VisitorHistoriesContentLoader from "@/pages/visitor/VisitorHistoriesContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 export const VisitorHistoriesTable = (props) => {
   const { 
     visitorHistories, deleteVisitorHistoryConfirmModal, links, getVisitorHistories, 
-    setLinks, setVisitorHistories, paginate, setPaginate, searchValue
+    setLinks, setVisitorHistories, paginate, setPaginate, searchValue, isRendered
   } = props;
   const history = useHistory();
 
@@ -86,18 +88,30 @@ export const VisitorHistoriesTable = (props) => {
           </tr>
         </thead>
         <tbody className="border-0">
-          {visitorHistories.map(t => <TableRow key={`visitorHistories-${t.id}`} {...t} />)}
+          {
+            isRendered ? (
+              visitorHistories.map(t => <TableRow key={`visitorHistories-${t.id}`} {...t} />)
+            ) : (
+              <VisitorHistoriesContentLoader />
+            )
+          }
         </tbody>
       </Table>
-      <Pagination 
-        links={links}
-        paginate={paginate}
-        getListBypage={getVisitorHistories} 
-        setList={setVisitorHistories}
-        setLinks={setLinks}
-        setPaginate={setPaginate}
-        searchValue={searchValue}
-      />
+      {
+        isRendered ? (
+          <Pagination 
+            links={links}
+            paginate={paginate}
+            getListBypage={getVisitorHistories} 
+            setList={setVisitorHistories}
+            setLinks={setLinks}
+            setPaginate={setPaginate}
+            searchValue={searchValue}
+          />
+        ) : (
+          <PaginationContentLoader />
+        )
+      }
     </Card>
   );
 };

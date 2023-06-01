@@ -7,11 +7,13 @@ import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Pagination from "@/components/Pagination";
+import CouponsContentLoader from "@/pages/coupon/CouponsContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 export const CouponsTable = (props) => {
   const { 
     coupons, setCoupons, deleteCoupon, openModal, setOpenModal, setId,
-    links, getCoupons, setLinks, paginate, setPaginate, name
+    links, getCoupons, setLinks, paginate, setPaginate, name, isRendered
   } = props;
   const searchValue = {name: name}
 
@@ -112,18 +114,30 @@ export const CouponsTable = (props) => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {coupons && coupons.map(t => <TableRow key={`coupons-${t.id}`} {...t} />)}
+            {
+              isRendered ? (
+                coupons && coupons.map(t => <TableRow key={`coupons-${t.id}`} {...t} />)
+              ) : (
+                <CouponsContentLoader />
+              )
+            }
           </tbody>
         </Table>
-        <Pagination 
-          links={links}
-          paginate={paginate}
-          getListBypage={getCoupons} 
-          setList={setCoupons}
-          setLinks={setLinks}
-          setPaginate={setPaginate}
-          searchValue={searchValue}
-        />
+        {
+          isRendered ? (
+            <Pagination 
+              links={links}
+              paginate={paginate}
+              getListBypage={getCoupons} 
+              setList={setCoupons}
+              setLinks={setLinks}
+              setPaginate={setPaginate}
+              searchValue={searchValue}
+            />
+          ) : (
+            <PaginationContentLoader />
+          )
+        }
     </Card>
   );
 };

@@ -19,4 +19,9 @@ class InviteeIncentive extends Model
     {
         return $this->belongsTo(InviteIncentive::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

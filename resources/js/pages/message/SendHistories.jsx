@@ -9,12 +9,13 @@ export default () => {
     current_page: 0, per_page: 0, from: 0, to: 0,total: 0 
   })
   const [links, setLinks] = useState([]);
+  const [isRendered, setIsRendered] = useState(false);
   
   useLayoutEffect(() => {
     const searchParams = {
       params: {page: 1}
     };
-    getSendMessages(searchParams, setSendMessages, setLinks, setPaginate);
+    getSendMessages(searchParams, setSendMessages, setLinks, setPaginate, setIsRendered);
   }, [])
 
   return (
@@ -33,6 +34,7 @@ export default () => {
         paginate={paginate}
         setLinks={setLinks}
         setPaginate={setPaginate}
+        isRendered={isRendered}
       />
     </>
   );

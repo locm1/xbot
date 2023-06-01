@@ -1,4 +1,4 @@
-export const getOrders = async (params, setOrders, setLinks, setPaginate) => {
+export const getOrders = async (params, setOrders, setLinks, setPaginate, setIsRendered) => {
   return await axios.get('/api/v1/management/orders', params)
   .then((response) => {
     const orders = response.data.orders;
@@ -11,6 +11,7 @@ export const getOrders = async (params, setOrders, setLinks, setPaginate) => {
       to: orders.to,
       total: orders.total,
     })
+    setIsRendered(true)
   })
   .catch(error => {
       console.error(error);

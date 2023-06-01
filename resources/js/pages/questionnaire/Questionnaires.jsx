@@ -21,6 +21,7 @@ export default () => {
   const [questionnaires, setQuestionnaires] = useState([]);
   const [isValid, setIsValid] = useState(false);
   const [questionnaireEnabling, setQuestionnaireEnabling] = useState({});
+  const [isRendered, setIsRendered] = useState(false);
 
   const changeQuestionnaireEnabling = (isValid) => {
     const updateData = { ...questionnaireEnabling, ['is_questionnaire_enabled']: isValid ? 1 : 0 }
@@ -30,7 +31,7 @@ export default () => {
   }
 
   useEffect(() => {
-    getQuestionnaires(setQuestionnaires)
+    getQuestionnaires(setQuestionnaires, setIsRendered)
     showQuestionnaireEnabling(1, setQuestionnaireEnabling, setIsValid, 'questionnaire')
   }, []);
 
@@ -86,6 +87,7 @@ export default () => {
         questionnaires={questionnaires}
         sortQuestionnaire={sortQuestionnaire}
         showConfirmDeleteModal={showConfirmDeleteModal}
+        isRendered={isRendered}
       />
     </>
   );

@@ -1,11 +1,12 @@
 import Swal from "sweetalert2";
 
-export const getQuestionnaires = async (setQuestionnaires) => {
+export const getQuestionnaires = async (setQuestionnaires, setIsRendered) => {
   return await axios.get('/api/v1/management/questionnaires')
   .then((response) => {
     const questionnaires = response.data.questionnaires;
     setQuestionnaires(questionnaires);
     console.log(questionnaires);
+    setIsRendered(true)
     return questionnaires;
   })
   .catch(error => {

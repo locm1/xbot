@@ -5,12 +5,15 @@ import { Link, useHistory } from 'react-router-dom';
 import moment from "moment-timezone";
 import { Paths } from "@/paths";
 import Pagination from "@/components/Pagination";
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
+import SendHistoriesContentLoader from "@/pages/message/loader/SendHistoriesContentLoader";
 
 
 export const SendHistoriesTable = (props) => {
   const { 
     sendHistories, setSendMessages, getSendMessages, links,
-    paginate, setLinks, setPaginate
+    paginate, setLinks, setPaginate, isRendered
   } = props;
 
   const getStatus = (status) => {
@@ -59,17 +62,29 @@ export const SendHistoriesTable = (props) => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {sendHistories && sendHistories.map(t => <TableRow key={`sendHistories-${t.id}`} {...t} />)}
+            {
+              isRendered ? (
+                sendHistories && sendHistories.map(t => <TableRow key={`sendHistories-${t.id}`} {...t} />)
+              ) : (
+                <SendHistoriesContentLoader />
+              )
+            }
           </tbody>
         </Table>
-        <Pagination 
-          links={links}
-          paginate={paginate}
-          getListBypage={getSendMessages} 
-          setList={setSendMessages}
-          setLinks={setLinks}
-          setPaginate={setPaginate}
-        />
+        {
+        isRendered ? (
+          <Pagination 
+            links={links}
+            paginate={paginate}
+            getListBypage={getSendMessages} 
+            setList={setSendMessages}
+            setLinks={setLinks}
+            setPaginate={setPaginate}
+          />
+        ) : (
+          <PaginationContentLoader />
+        )
+      }
     </Card>
   );
 };

@@ -13,6 +13,7 @@ import VisitorHistoryQrModal from "@/pages/visitor/VisitorHistoryQrModal";
 
 export default () => {
   const [visitorHistories, setVisitorHistories] = useState([]);
+  const [isRendered, setIsRendered] = useState(false);
   const [links, setLinks] = useState([]);
   const [timer, setTimer] = useState(null);
   const [searchValue, setSearchValue] = useState({
@@ -84,7 +85,7 @@ export default () => {
     const searchParams = {
       params: {...searchValue, page: currentPage}
     };
-    getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate)
+    getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate, setIsRendered)
   };
 
   const onHide = () => {
@@ -95,7 +96,7 @@ export default () => {
     const searchParams = {
       params: {name: null, start_created_at: null, end_created_at: null, page: 1}
     };
-    getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate);
+    getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate, setIsRendered);
   }, []);
 
   return (
@@ -181,6 +182,7 @@ export default () => {
         setLinks={setLinks}
         setVisitorHistories={setVisitorHistories}
         searchValue={searchValue}
+        isRendered={isRendered}
       />
     </>
   );

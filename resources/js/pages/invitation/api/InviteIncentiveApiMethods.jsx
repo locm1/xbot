@@ -1,4 +1,4 @@
-export const getInviteIncentives = async (params, setInviteIncentives, setLinks, setPaginate) => {
+export const getInviteIncentives = async (params, setInviteIncentives, setLinks, setPaginate, setIsRendered) => {
   axios.get('/api/v1/management/invite-incentives', params)
   .then((response) => {
     const inviteIncentives = response.data.invite_incentives;
@@ -14,6 +14,7 @@ export const getInviteIncentives = async (params, setInviteIncentives, setLinks,
       to: inviteIncentives.invite_incentives.to,
       total: inviteIncentives.invite_incentives.total,
     })
+    setIsRendered(true)
 
   })
   .catch(error => {

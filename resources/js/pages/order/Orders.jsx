@@ -22,6 +22,7 @@ export default () => {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [timer, setTimer] = useState(null);
+  const [isRendered, setIsRendered] = useState(false);
 
   const handleChange = (e, input) => {
     setSearchValue({...searchValue, [input]: e.target.value})
@@ -33,7 +34,7 @@ export default () => {
 
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {
-      getOrders(searchParams, setOrders, setLinks, setPaginate);
+      getOrders(searchParams, setOrders, setLinks, setPaginate, setIsRendered);
     }, 1000)
 
     setTimer(newTimer)
@@ -48,7 +49,7 @@ export default () => {
     const searchParams = {
       params: {name: null, status: null, id: null, prefecture: null, page: 1}
     };
-    getOrders(searchParams, setOrders, setLinks, setPaginate);
+    getOrders(searchParams, setOrders, setLinks, setPaginate, setIsRendered);
     getPrefectures(setPrefectures)
   }, []);
 
@@ -138,6 +139,7 @@ export default () => {
         setLinks={setLinks}
         setPaginate={setPaginate}
         searchValue={searchValue}
+        isRendered={isRendered}
       />
     </>
   );

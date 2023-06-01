@@ -171,7 +171,7 @@ export default () => {
                         htmlFor="cash_on_delivery"
                         className="ps-5" 
                         checked={!isDisabled}
-                        onClick={() => setIsDisbled(!isDisabled)}
+                        onChange={() => setIsDisbled(!isDisabled)}
                       />
                     </div>
                     <InputGroup className="">

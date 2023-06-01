@@ -27,7 +27,7 @@ export const getAllMessages = async (params, setMessages) => {
   });
 };
 
-export const getMessages = async (params, setMessages, setLinks, setPaginate) => {
+export const getMessages = async (params, setMessages, setLinks, setPaginate, setIsRendered) => {
   axios.get('/api/v1/management/messages', params)
   .then((response) => {
     const messages = response.data.messages;
@@ -40,6 +40,7 @@ export const getMessages = async (params, setMessages, setLinks, setPaginate) =>
       to: messages.to,
       total: messages.total,
     })
+    setIsRendered(true);
   })
   .catch(error => {
       console.error(error);

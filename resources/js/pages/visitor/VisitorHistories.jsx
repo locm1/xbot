@@ -111,16 +111,16 @@ export default () => {
           <h1 className="page-title">来店履歴</h1>
         </div>
         <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center">
-        <Button onClick={() => setOpenModal(!openModal)} variant="gray-800" className="mt-2">
+        {/* <Button onClick={() => setOpenModal(!openModal)} variant="gray-800" className="mt-2">
           設置用QRコード
-        </Button>
+        </Button> */}
       </div>
       </div>
 
       <div className="table-settings mb-4">
         <Row className="d-flex align-items-center">
-          <Col xs={4} lg={4} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-400">
+          <Col xs={3} lg={3} className="d-md-flex">
+            <InputGroup className="">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
@@ -133,7 +133,7 @@ export default () => {
             </InputGroup>
           </Col>
           <Col xs={4} lg={4} className="d-flex justify-content-end">
-            <InputGroup className="fmxw-500">
+            <InputGroup className="">
               <InputGroup.Text>
                 <CalendarIcon className="icon icon-xs" />
                 </InputGroup.Text>

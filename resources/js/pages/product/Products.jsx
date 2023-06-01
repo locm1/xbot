@@ -20,8 +20,8 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 
 export default () => {
   const [products, setProducts] = useState([]);
-  const [paginate, setPaginate] = useState({ 
-    current_page: 0, per_page: 0, from: 0, to: 0,total: 0 
+  const [paginate, setPaginate] = useState({
+    current_page: 0, per_page: 0, from: 0, to: 0, total: 0
   })
   const [timer, setTimer] = useState(null);
   const [links, setLinks] = useState([]);
@@ -31,10 +31,10 @@ export default () => {
   });
 
   const handleChange = (e, input) => {
-    setSearchValue({...searchValue, [input]: e.target.value})
+    setSearchValue({ ...searchValue, [input]: e.target.value })
 
     const searchParams = {
-      params: {...searchValue, [input]: e.target.value, page: 1}
+      params: { ...searchValue, [input]: e.target.value, page: 1 }
     };
     clearTimeout(timer);
 
@@ -71,14 +71,14 @@ export default () => {
 
     const currentPage = newProducts.length == 0 ? paginate.current_page - 1 : paginate.current_page
     const searchParams = {
-      params: {...searchValue, page: currentPage}
+      params: { ...searchValue, page: currentPage }
     };
     getProducts(searchParams, setProducts, setLinks, setPaginate)
   };
 
   useEffect(() => {
     const searchParams = {
-      params: {name: null, category: null, page: 1}
+      params: { name: null, category: null, page: 1 }
     };
     getProducts(searchParams, setProducts, setLinks, setPaginate)
     getCategories(setCategories)
@@ -98,9 +98,9 @@ export default () => {
       </div>
 
       <div className="table-settings mb-4">
-        <Row className="d-flex justify-content-between align-items-center">
-          <Col xs={9} lg={8} className="d-md-flex">
-            <InputGroup className="me-2 me-lg-3 fmxw-400">
+        <Row className="d-flex align-items-center">
+          <Col xs={3} lg={3} className="d-md-flex">
+            <InputGroup className="">
               <InputGroup.Text>
                 <SearchIcon className="icon icon-xs" />
               </InputGroup.Text>
@@ -111,6 +111,8 @@ export default () => {
                 onChange={(e) => handleChange(e, 'name')}
               />
             </InputGroup>
+          </Col>
+          <Col xs={3}>
             <Form.Select defaultValue={searchValue.category} className="mb-0" onChange={(e) => handleChange(e, 'category')}>
               <option>カテゴリー名</option>
               <option value="0">全て表示</option>

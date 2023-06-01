@@ -86,13 +86,13 @@ export const ProfileCardWidget = (props) => {
         <Card.Text className="text-gray mb-4">
           {area}
         </Card.Text>
-        <div className="py-5">
+        <div className="py-3">
           <PurchaseTimeForm title="来店 / 購入回数" visitCount={visitCount} purchaseTime={purchaseTime} />
         </div>
-        <div className="py-5">
+        <div className="py-3">
           <LineBlockInfoForm title="ブロック情報" is_blocked={is_blocked} block_date={block_date} />
         </div>
-        <div className="py-5">
+        <div className="py-3">
           <QuestionnaireAnswerForm title="アンケート情報" questionnaireAnswers={questionnaireAnswers} />
         </div>
       </Card.Body>

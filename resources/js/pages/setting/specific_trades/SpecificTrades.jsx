@@ -88,6 +88,9 @@ const SpecificTradesService = (props) => {
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">特定商取引法に基づく表記</h1>
         </div>
+            <Button onClick={onSaveSpecificTrades} variant="success" className="btn-default-success">
+              保存する
+            </Button>
       </div>
       <Card border="0" className="table-wrapper table-responsive shadow mb-4">
         <Card.Header className="bg-primary text-white px-1 py-2">
@@ -103,7 +106,7 @@ const SpecificTradesService = (props) => {
             </div>
           </div>
         </Card.Header> 
-        <Card.Body>
+        <Card.Body className="pt-0">
           <div className="bg-white">
             {SpecificTrades.map((SpecificTrade, index) =>
               <SpecificTradesCard

@@ -39,7 +39,7 @@ export const SendHistoriesTable = (props) => {
         </td>
         <td>
           <Button as={Link} to={link} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
-            編集
+            詳細
           </Button>
         </td>
       </tr>
@@ -55,7 +55,7 @@ export const SendHistoriesTable = (props) => {
               <th className="border-gray-200">テンプレート名</th>
               <th className="border-gray-200">配信日時</th>
               <th className="border-gray-200">配信人数</th>
-              <th className="border-gray-200">編集</th>
+              <th className="border-gray-200">詳細</th>
             </tr>
           </thead>
           <tbody className="border-0">

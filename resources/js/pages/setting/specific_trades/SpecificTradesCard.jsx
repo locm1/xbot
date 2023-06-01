@@ -6,13 +6,7 @@ import { Link } from "react-router-dom";
 import { Paths } from "@/paths";
 
 export default (props) => {
-  const { 
-    display_id, title, content, handleChange, deleteSpecificTrades, 
-    textAreaRef, invisibleTextAreaRef, height, setHeight 
-  } = props;
-
-  const textRowCount = content ? content.split('\n').length : 0;
-  const rows = textRowCount + 1;
+  const { display_id, title, content, handleChange, deleteSpecificTrades, height} = props;
 
   return (
     <>
@@ -33,7 +27,7 @@ export default (props) => {
             autoFocus
             multiple
             as="textarea"
-            rows={rows}
+            style={{ height: height }}
             value={content}
             onChange={(e) => handleChange(e, 'content', display_id)}
           />

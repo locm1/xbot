@@ -4,7 +4,7 @@ export const getSpecificTrades = async (setSpecificTrades) => {
   axios.get(`/api/v1/management/specific-trades`)
     .then((response) => {
       const specificTrades = response.data.specific_trades;
-      setSpecificTrades(specificTrades.map(specificTrade => ({ ...specificTrade, display_id: specificTrade.id })))
+      setSpecificTrades(specificTrades.map(specificTrade => ({ ...specificTrade, display_id: specificTrade.id, height: 'auto' })))
     })
     .catch(error => {
         console.error(error);

@@ -11,9 +11,6 @@ import { Paths } from "@/paths";
 const SpecificTradesService = (props) => {
   const [SpecificTrades, setSpecificTrades] = useState([]);
   const [deleteSpecificTradeIds, setDeleteSpecificTradeIds] = useState([]);
-  const [height, setHeight] = useState(0);
-  const textAreaRef = useRef();
-  const invisibleTextAreaRef = useRef();
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -35,7 +32,12 @@ const SpecificTradesService = (props) => {
 
   const handleChange = (e, input, display_id) => {
     setSpecificTrades(
-      SpecificTrades.map(specificTrade => specificTrade.display_id == display_id ? {...specificTrade, [input]: e.target.value} : specificTrade)
+      SpecificTrades.map(
+        specificTrade => specificTrade.display_id == display_id
+        ? 
+          {...specificTrade, [input]: e.target.value, height: `${e.target.scrollHeight}px`} 
+        : specificTrade
+      )
     )
   };
 
@@ -85,12 +87,6 @@ const SpecificTradesService = (props) => {
     getSpecificTrades(setSpecificTrades)
   }, []);
 
-  useEffect(() => {
-    if (invisibleTextAreaRef.current) {
-      setHeight(invisibleTextAreaRef.current.scrollHeight);
-    }
-  }, [SpecificTrades]);
-
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -120,10 +116,6 @@ const SpecificTradesService = (props) => {
                 key={`SpecificTrade-${SpecificTrade.id}`}
                 handleChange={handleChange}
                 deleteSpecificTrades={deleteSpecificTrades}
-                textAreaRef={textAreaRef}
-                invisibleTextAreaRef={invisibleTextAreaRef}
-                height={height}
-                setHeight={setHeight}
               />
             )}
           </div>

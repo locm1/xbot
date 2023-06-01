@@ -11,7 +11,7 @@ export const getUsers = async (params, setUsers, setLinks, setPaginate, setIsRen
       to: users.to,
       total: users.total,
     })
-    setIsRendered(false);
+    setIsRendered(true);
   })
   .catch(error => {
       console.error(error);

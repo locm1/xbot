@@ -84,7 +84,7 @@ export const ProfileCardWidget = (props) => {
         <div className="color-gray small">{last_name_kana} {first_name_kana}</div>
         <Card.Title>{last_name} {first_name}</Card.Title>
         <Card.Text className="text-gray mb-4">
-          {area}
+          {area && area}
         </Card.Text>
         <div className="py-3">
           <PurchaseTimeForm title="来店 / 購入回数" visitCount={visitCount} purchaseTime={purchaseTime} />

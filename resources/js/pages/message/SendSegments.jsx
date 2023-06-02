@@ -21,11 +21,12 @@ import { getAllMessages, sendMulticastMessage } from "@/pages/message/api/Messag
 import { CSVLink } from "react-csv";
 import { LoadingContext } from "@/components/LoadingContext";
 import CountUp from 'react-countup';
+import SegmentsContentLoader from "@/pages/message/loader/SegmentsContentLoader";
 
 export default () => {
   const location = useLocation();
-  const [isRendered, setIsrendered] = useState(false);
-  const { setIsLoading } = useContext(LoadingContext);
+  //const [isRendered, setIsrendered] = useState(false);
+  //const { setIsLoading } = useContext(LoadingContext);
   const [definedQuestion, setDefinedQuestion] = useState([]);
   const [questionnaires, setQuestionnaires] = useState([]);
   const [users, setUsers] = useState([]);
@@ -39,6 +40,7 @@ export default () => {
   const [sendDate, setSendDate] = useState();
   const [selectTemplate, setSelectTemplate] = useState();
   const [isFirst, setIsFirst] = useState(true);
+  const [isRendered, setIsRendered] = useState(false);
 
   const evenQuestionnaires = [];
   const oddQuestionnaires = [];
@@ -52,7 +54,7 @@ export default () => {
   const dateTime = year + month + day + hour + minute;
 
   const csvDLUsers = searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v);
-  setIsLoading(!isRendered);
+  //setIsLoading(!isRendered);
 
   const handleSendButtonClick = () => {
     Swal.fire({
@@ -84,7 +86,7 @@ export default () => {
             'error'
           )
         } else {
-          setIsLoading(true);
+          //setIsLoading(true);
           sendMulticastMessage(data).then(() => setIsLoading(false));
         }
       }
@@ -215,6 +217,7 @@ export default () => {
     };
 
     getAllMessages(params, setTemplates);
+
     axios.get('/api/v1/management/default-segments')
       .then((response) => {
         const segments = response.data.segments;
@@ -275,7 +278,8 @@ export default () => {
                 const newUsers = response.data.users.map(u => ({ ...u, isSelected: false, show: true }));
                 setUsers(newUsers);
                 setSearchResultUsers(newUsers);
-                setIsrendered(true);
+                //setIsrendered(true);
+                setIsRendered(true)
               })
               .catch(error => {
                 console.error(error);
@@ -582,49 +586,67 @@ export default () => {
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <Row className="mt-4">
-            {oddQuestionnaires.map((v, k) =>
-              <SegmentCard {...v} key={k} questionnaireType="odd" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}
-              />)}
+      {
+        isRendered ? (
+          <>
+          <Row>
+            <Col>
+              <Row className="mt-4">
+                {
+                  oddQuestionnaires.map((v, k) =>
+                    <SegmentCard {...v} key={k} questionnaireType="odd" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}/>
+                  )
+                }
+              </Row>
+            </Col>
+            <Col>
+              <Row className="mt-4">
+                {
+                  evenQuestionnaires.map((v, k) =>
+                  <SegmentCard {...v} key={k} questionnaireType="even" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms}/>
+                  )
+                }
+              </Row>
+            </Col>
           </Row>
-        </Col>
-        <Col>
-          <Row className="mt-4">
-            {evenQuestionnaires.map((v, k) =>
-              <SegmentCard {...v} key={k} questionnaireType="even" handleChange={handleChange} handleChangeForRange={handleChangeForRange} handleChangeTags={handleChangeTags} searchTerms={searchTerms} />
-            )}
+          <SendSegmentUserCard
+            users={searchResultUsers}
+            setUsers={setSearchResultUsers}
+          />
+          <MessageDetail
+            templates={templates}
+            timing={timing}
+            setTiming={setTiming}
+            sendDate={sendDate}
+            setSendDate={setSendDate}
+            selectTemplate={selectTemplate}
+            setSelectTemplate={setSelectTemplate}
+          />
+          <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+            <CSVLink filename={`data-${dateTime}.csv`}
+              data={searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v)}
+              className={`btn btn-primary mt-2 w-50 me-3 ${csvDLUsers.length > 0 ? '' : 'disabled'}`}>
+              ユーザーID抽出
+            </CSVLink>
+            {/* <Button variant="primary" className="mt-2 w-50 me-3">
+              ユーザーID抽出
+            </Button> */}
+            <Button variant="primary" className="mt-2 w-50 ms-3" onClick={handleSendButtonClick}>
+              {timing == 0 ? '配信する' : '予約する'}
+            </Button>
+          </div>
+          </>
+        ) : (
+          <Row>
+            <Col xs={6}>
+              <SegmentsContentLoader />
+            </Col>
+            <Col xs={6}>
+              <SegmentsContentLoader />
+            </Col>
           </Row>
-        </Col>
-      </Row>
-      <SendSegmentUserCard
-        users={searchResultUsers}
-        setUsers={setSearchResultUsers}
-      />
-      <MessageDetail
-        templates={templates}
-        timing={timing}
-        setTiming={setTiming}
-        sendDate={sendDate}
-        setSendDate={setSendDate}
-        selectTemplate={selectTemplate}
-        setSelectTemplate={setSelectTemplate}
-      />
-
-      <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <CSVLink filename={`data-${dateTime}.csv`}
-          data={searchResultUsers.map(v => v.isSelected == true ? [v.line_id] : undefined).filter(v => v)}
-          className={`btn btn-primary mt-2 w-50 me-3 ${csvDLUsers.length > 0 ? '' : 'disabled'}`}>
-          ユーザーID抽出
-        </CSVLink>
-        {/* <Button variant="primary" className="mt-2 w-50 me-3">
-          ユーザーID抽出
-        </Button> */}
-        <Button variant="primary" className="mt-2 w-50 ms-3" onClick={handleSendButtonClick}>
-          {timing == 0 ? '配信する' : '予約する'}
-        </Button>
-      </div>
+        )
+      }
     </>
   )
 };

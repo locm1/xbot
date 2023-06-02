@@ -3,7 +3,7 @@ import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/r
 import { Col, Row, Modal, Button, Dropdown, Breadcrumb, Form, Card } from 'react-bootstrap';
 import Swal from "sweetalert2";
 import withReactContent from 'sweetalert2-react-content';
-
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 // forms
 import TemplateMessageForm from "@/pages/message/form/TemplateMessageForm";
 import MessageEditor from "@/pages/message/MessageEditor";
@@ -12,6 +12,8 @@ import LinePreview from "@/components/line/LinePreview";
 import { Paths } from "@/paths";
 import { showMessage, updateMessage, storeMessage } from "@/pages/message/api/MessageApiMethods";
 import { getMessageItems, updateMessageItems, deleteMessageItem, storeMessageItems } from "@/pages/message/api/MessageItemApiMethods";
+import MessageTemplateContentLoader from "@/pages/message/loader/MessageTemplateContentLoader";
+
 
 export default () => {
   const history = useHistory();
@@ -42,6 +44,7 @@ export default () => {
     'message_items.0.carousel_images.0.uri': null,
     'message_items.0.carousel_products.0.uri': null,
   })
+  const [isRendered, setIsRendered] = useState(false);
 
   const handleChange = (e, input) => {
     setMessage({ ...message, [input]: e.target.value })
@@ -326,7 +329,7 @@ export default () => {
   useEffect(() => {
     if (pathname.includes('/edit')) {
       showMessage(id, setMessage, setIsUndisclosed)
-      getMessageItems(id, setMessageItems)
+      getMessageItems(id, setMessageItems).then(setIsRendered(true))
     }
   }, []);
 
@@ -355,44 +358,53 @@ export default () => {
                 setIsUndisclosed={setIsUndisclosed}
                 isUndisclosed={isUndisclosed}
                 error={error}
+                isRendered={isRendered}
               />
             </Col>
           </Row>
           {
-            messageItems && messageItems.map((messageItem, index) =>
-              <div key={messageItem.display_id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
-                <MessageEditor
-                  messageItem={messageItem}
-                  handleChange={handleChange}
-                  handlePreviewChange={handlePreviewChange}
-                  handlePictureImageDelete={handlePictureImageDelete}
-                  handleDelete={handleDelete}
-                  messageItems={messageItems}
-                  setMessageItems={setMessageItems}
-                  handleAddCarouselProductButtonClick={handleAddCarouselProductButtonClick}
-                  handleAddCarouselImageButtonClick={handleAddCarouselImageButtonClick}
-                  error={error}
-                  index={index}
-                  setError={setError}
-                  deleteCarouselImages={deleteCarouselImages}
-                  deleteCarouselProducts={deleteCarouselProducts}
-                  updateCarouselImageImages={updateCarouselImageImages}
-                  updateCarouselImageImageIds={updateCarouselImageImageIds}
-                />
-              </div>
-            )
-          }
-          {
-            messageItems.length < 5 && (
-              <div className="privilege-button mb-4">
-                <Button
-                  variant="outline-gray-500"
-                  onClick={addEditCard}
-                  className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
-                >
-                  <PlusIcon className="icon icon-xs me-2" /> 追加
-                </Button>
-              </div>
+            isRendered ? (
+              <>
+              {
+                messageItems && messageItems.map((messageItem, index) =>
+                <div key={messageItem.display_id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
+                  <MessageEditor
+                    messageItem={messageItem}
+                    handleChange={handleChange}
+                    handlePreviewChange={handlePreviewChange}
+                    handlePictureImageDelete={handlePictureImageDelete}
+                    handleDelete={handleDelete}
+                    messageItems={messageItems}
+                    setMessageItems={setMessageItems}
+                    handleAddCarouselProductButtonClick={handleAddCarouselProductButtonClick}
+                    handleAddCarouselImageButtonClick={handleAddCarouselImageButtonClick}
+                    error={error}
+                    index={index}
+                    setError={setError}
+                    deleteCarouselImages={deleteCarouselImages}
+                    deleteCarouselProducts={deleteCarouselProducts}
+                    updateCarouselImageImages={updateCarouselImageImages}
+                    updateCarouselImageImageIds={updateCarouselImageImageIds}
+                  />
+                </div>
+              )
+              }
+              {
+                messageItems.length < 5 && (
+                  <div className="privilege-button mb-4">
+                    <Button
+                      variant="outline-gray-500"
+                      onClick={addEditCard}
+                      className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+                    >
+                      <PlusIcon className="icon icon-xs me-2" /> 追加
+                    </Button>
+                  </div>
+                )
+              }
+              </>
+            ) : (
+              <MessageTemplateContentLoader />
             )
           }
         </div>
@@ -402,19 +414,34 @@ export default () => {
               <h5 className="mb-0 fw-bolder">情報</h5>
             </Card.Header>
             <Card.Body>
-              <Form.Group id="isUndisclosed">
-                <Form.Check
-                  type="switch"
-                  label="非公開にする"
-                  id="switch1"
-                  htmlFor="switch1"
-                  checked={isUndisclosed}
-                  onChange={() => setIsUndisclosed(!isUndisclosed)}
-                />
-              </Form.Group>
-              <Button onClick={duplicateTemplate} variant="primary" className="me-2 mt-3">
-                複製する
-              </Button>
+              {
+                isRendered ? (
+                  <>
+                  <Form.Group id="isUndisclosed">
+                    <Form.Check
+                      type="switch"
+                      label="非公開にする"
+                      id="switch1"
+                      htmlFor="switch1"
+                      checked={isUndisclosed}
+                      onChange={() => setIsUndisclosed(!isUndisclosed)}
+                    />
+                  </Form.Group>
+                  <Button onClick={duplicateTemplate} variant="primary" className="me-2 mt-3">
+                    複製する
+                  </Button>
+                  </>
+                ) : (
+                  <ContentLoader
+                    height={150}
+                    width={200}
+                    speed={1}
+                  >
+                    <rect x="0" y="2" rx="3" ry="3" width="80%" height="30" />
+                    <rect x="0" y="65" rx="3" ry="3" width="50%" height="50" />
+                  </ContentLoader>
+                )
+              }
               {/* <Button variant="primary" className="me-2 mt-3">
                   このテンプレートで配信
                 </Button> */}

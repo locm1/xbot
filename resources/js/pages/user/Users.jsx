@@ -20,7 +20,6 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
-  const loadingTables = [_, _, _, _, _, _, _, _, _, _,];
   const [isRendered, setIsRendered] = useState(false);
   const [tags, setTags] = useState([]);
   const [users, setUsers] = useState([]);
@@ -91,22 +90,35 @@ export default () => {
     getTags(setTags)
   }, []);
 
-  return isRendered ? (
+  return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">ユーザーリスト</h1>
-          <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <div className="list-head__items">
-              <div className="list-head__item"> <span>お友達総数</span>：{demographic.friend}名</div>
-              <div className="list-head__item"> <span>（ブロック</span>：{demographic.blocked}名） /</div>
-              <div className="list-head__item"> <span className="">利用者登録済み</span>：{demographic.registered}名</div>
-              <div className="list-head__item"> <span className="">|</span></div>
-              <div className="list-head__item"> <span className="u-men"> 男性 </span>：{demographic.man}名 </div>
-              <div className="list-head__item"> <span className="u-women "> 女性 </span>：{demographic.women}名 </div>
-              {/* <div className="list-head__item"> <span> その他 </span>：{demographic.others}名 </div> */}
-            </div>
-          </div>
+          {
+            isRendered ? (
+              <div className="list-head d-flex flex-wrap mb-4 align-items-center">
+                <div className="list-head__items">
+                  <div className="list-head__item"> <span>お友達総数</span>：{demographic.friend}名</div>
+                  <div className="list-head__item"> <span>（ブロック</span>：{demographic.blocked}名） /</div>
+                  <div className="list-head__item"> <span className="">利用者登録済み</span>：{demographic.registered}名</div>
+                  <div className="list-head__item"> <span className="">|</span></div>
+                  <div className="list-head__item"> <span className="u-men"> 男性 </span>：{demographic.man}名 </div>
+                  <div className="list-head__item"> <span className="u-women "> 女性 </span>：{demographic.women}名 </div>
+                  {/* <div className="list-head__item"> <span> その他 </span>：{demographic.others}名 </div> */}
+                </div>
+              </div>
+            ) : (
+              <ContentLoader
+                height={39.375}
+                width={681.9}
+                speed={1}
+                className="mb-4"
+              >
+                <rect x="0" y="10" rx="3" ry="3" width="680" height="30" />
+              </ContentLoader>
+            )
+          }
         </div>
       </div>
 
@@ -165,139 +177,8 @@ export default () => {
         setLinks={setLinks}
         setPaginate={setPaginate}
         searchValue={searchValue}
+        isRendered={isRendered}
       />
     </>
-  ) : (
-    <>
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap">
-        <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">ユーザーリスト</h1>
-          <div className="list-head d-flex flex-wrap mb-4 align-items-center">
-            <div className="list-head__items">
-              <div className="list-head__item"> <span>お友達総数</span>：{demographic.friend}名</div>
-              <div className="list-head__item"> <span>（ブロック</span>：{demographic.blocked}名） /</div>
-              <div className="list-head__item"> <span className="">利用者登録済み</span>：{demographic.registered}名</div>
-              <div className="list-head__item"> <span className="">|</span></div>
-              <div className="list-head__item"> <span className="u-men"> 男性 </span>：{demographic.man}名 </div>
-              <div className="list-head__item"> <span className="u-women "> 女性 </span>：{demographic.women}名 </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="table-settings mb-4">
-        <Row className="align-items-center">
-          <Col xs={3} lg={3} className="">
-            <InputGroup className="">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="氏名"
-                value={searchValue.name}
-                onChange={(e) => handleChange(e, 'name')}
-              />
-            </InputGroup>
-          </Col>
-          <Col xs={3} lg={3} className="">
-            <InputGroup className="">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Control
-                type="tel"
-                placeholder="電話番号"
-                value={searchValue.tel}
-                onChange={(e) => handleChange(e, 'tel')}
-              />
-            </InputGroup>
-          </Col>
-          <Col xs={3} lg={3} className="">
-            <InputGroup className="">
-              <InputGroup.Text>
-                <SearchIcon className="icon icon-xs" />
-              </InputGroup.Text>
-              <Form.Select defaultValue={searchValue.tag_id} className="mb-0" onChange={(e) => handleChange(e, 'tag_id')}>
-                <option>タグ名</option>
-                <option value="0">全て表示</option>
-                {
-                  tags.map((tag, index) => <option key={tag.id} value={tag.id}>{tag.name}</option>)
-                }
-              </Form.Select>
-            </InputGroup>
-          </Col>
-        </Row>
-      </div>
-      <Card border="0" className="table-wrapper table-responsive shadow mb-3">
-        <Table hover className="user-table align-items-center">
-          <thead className="bg-primary text-white">
-            <tr>
-              <th className="border-bottom">氏名</th>
-              <th className="border-bottom">電話番号</th>
-              <th className="border-bottom">性別</th>
-              <th className="border-bottom">生年月日</th>
-              <th className="border-bottom">都道府県</th>
-              <th className="border-bottom text-center">編集・削除</th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {loadingTables.map(v =>
-              <tr className="border-bottom">
-                <td>
-                  <ContentLoader
-                    height={39.375}
-                    width={230.48}
-                    speed={1}
-                  >
-                    <rect x="0" y="4" rx="100" ry="100" width="32" height="32" />
-                    <rect x="70" y="3" rx="4" ry="4" width="120" height="10" />
-                    <rect x="70" y="22" rx="3" ry="3" width="100" height="13" />
-                  </ContentLoader>
-                </td>
-                <td>
-                  <ContentLoader
-                    height={39.375}
-                    width={150}
-                    speed={1}
-                  >
-                    <rect x="0" y="10" rx="3" ry="3" width="130" height="18" />
-                  </ContentLoader>
-                </td>
-                <td>
-                  <ContentLoader
-                    height={39.375}
-                    width={150}
-                    speed={1}
-                  >
-                    <rect x="0" y="10" rx="3" ry="3" width="130" height="18" />
-                  </ContentLoader>
-                </td>
-                <td>
-                  <ContentLoader
-                    height={39.375}
-                    width={150}
-                    speed={1}
-                  >
-                    <rect x="0" y="10" rx="3" ry="3" width="130" height="18" />
-                  </ContentLoader>
-                </td>
-                <td>
-                  <ContentLoader
-                    height={39.375}
-                    width={150}
-                    speed={1}
-                  >
-                    <rect x="0" y="10" rx="3" ry="3" width="130" height="18" />
-                  </ContentLoader>
-                </td>
-                <TableButtonContentLoader />
-              </tr>
-            )}
-          </tbody>
-        </Table>
-        <PaginationContentLoader />
-      </Card>
-    </>
-  );
+  )
 };

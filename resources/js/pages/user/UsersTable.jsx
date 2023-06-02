@@ -6,9 +6,11 @@ import { Paths } from "@/paths";
 import Pagination from "@/components/Pagination";
 import moment from "moment-timezone";
 import ContentLoader, { Facebook } from "react-content-loader";
+import UsersContentLoader from "@/pages/user/loader/UsersContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 export const UsersTable = (props) => {
-  const { users, setUsers, links, getUsers, setLinks, paginate, setPaginate, searchValue } = props;
+  const { users, setUsers, links, getUsers, setLinks, paginate, setPaginate, searchValue, isRendered } = props;
 
   const deleteUsers = (id) => {
     props.deleteUsers && props.deleteUsers(id)
@@ -76,18 +78,30 @@ export const UsersTable = (props) => {
           </tr>
         </thead>
         <tbody className="border-0">
-          {users.map(u => <TableRow key={`user-${u.id}`} {...u} />)}
+          {
+            isRendered ? (
+              users.map(u => <TableRow key={`user-${u.id}`} {...u} />)
+            ) : (
+              <UsersContentLoader />
+            )
+          }
         </tbody>
       </Table>
-      <Pagination 
-        links={links}
-        paginate={paginate}
-        getListBypage={getUsers} 
-        setList={setUsers}
-        setLinks={setLinks}
-        setPaginate={setPaginate}
-        searchValue={searchValue}
-      />
+      {
+        isRendered ? (
+          <Pagination 
+            links={links}
+            paginate={paginate}
+            getListBypage={getUsers} 
+            setList={setUsers}
+            setLinks={setLinks}
+            setPaginate={setPaginate}
+            searchValue={searchValue}
+          />
+        ) : (
+          <PaginationContentLoader />
+        )
+      }
     </Card>
   );
 };

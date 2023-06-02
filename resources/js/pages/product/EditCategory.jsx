@@ -138,7 +138,9 @@ export default () => {
               </Form.Group>
 						</Card.Body>
 					</Card>
-          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
+				</Col>
+      </Row>
+          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-2">
             <Button
               variant="success"
               className="btn-default-success"
@@ -147,8 +149,6 @@ export default () => {
               保存する
             </Button>
           </div>
-				</Col>
-      </Row>
     </>
   );
 };

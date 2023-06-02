@@ -24,19 +24,19 @@ export default (props) => {
   }
 
   return (
-    <Card border="0" className="shadow p-0">
+    <Card border="0" className="p-0">
       <Link to={link}>
         {
           page == 'cart' ? (
             <>
               <div style={{ backgroundImage: `url(${getImages(relatedProduct.related_product.product_images[0])})` }} className="profile-cover rounded-top liff-product-card-img" />
-              <Card.Body className="pb-3 rounded-bottom p-2 pt-3">
-                <Card.Title className="liff-product-card-title">{relatedProduct.related_product.name}</Card.Title>
+              <Card.Body className="p-3">
+                <Card.Title className="liff-product-card-title overflow-x-scroll">{relatedProduct.related_product.name}</Card.Title>
                 <Card.Subtitle className="fw-bold liff-product-card-price">￥{relatedProduct.related_product.price.toLocaleString()}</Card.Subtitle>
                 <Card.Subtitle className="fw-bold liff-product-card-price pt-3">
                   <span className="liff-product-card-title">合計金額より</span><br />
                   <span className="text-danger">{relatedProduct.discount_price.toLocaleString()}円OFF</span>
-                  </Card.Subtitle>
+                </Card.Subtitle>
                 <Button onClick={(e) => addCart(e, relatedProduct.related_product_id)} variant="tertiary" className="mt-3">
                   追加
                 </Button>
@@ -44,25 +44,26 @@ export default (props) => {
             </>
           ) : (
             <>
-              <div style={{ backgroundImage: `url(${getImages(product_images[0])})` }} className="profile-cover rounded-top liff-product-card-img" />
-              <Card.Body className="pb-3 rounded-bottom p-2 pt-3">
-                <Card.Title className="liff-product-card-title">{name}</Card.Title>
+              <div style={{ backgroundImage: `url(${getImages(product_images[0])})` }} className="profile-cover rounded-top liff-product-card-img position-relative">
+                {isSalePeriod(product_sale.start_date, product_sale.end_date) && product_sale.discount_rate !== 0 &&
+                  <div className="liff-product-sale position-absolute">{product_sale.discount_rate}%OFF</div>
+                }
+              </div>
+              <Card.Body className="p-3">
+                <Card.Title className="liff-product-card-title overflow-x-scroll">{name}</Card.Title>
                 {
                   isSalePeriod(product_sale.start_date, product_sale.end_date) && product_sale.discount_rate !== 0 ? (
-                    <>
-                      <div className="d-flex flex-wrap mb-1">
-                        <div className="liff-product-sale">{product_sale.discount_rate}%OFF</div>
-                        <span className="text-decoration-line-through text-black-50 liff-product-card-price liff-product-before-price mx-1">￥{price.toLocaleString()}</span>
-                      </div>
-                      <Card.Subtitle className="fw-bold liff-product-card-price text-danger mt-1">￥{isNaN(sale_price) ? price.toLocaleString() : Math.floor(sale_price).toLocaleString()}</Card.Subtitle>
-                    </>
+                    <div className="d-flex align-items-end">
+                      <Card.Subtitle className="fw-bold liff-product-card-price text-danger">{isNaN(sale_price) ? price.toLocaleString() : Math.floor(sale_price).toLocaleString()}円</Card.Subtitle>
+                      <span className="text-decoration-line-through text-black-50 liff-product-card-price liff-product-before-price mx-1">{price.toLocaleString()}円</span>
+                    </div>
                   ) : (
                     <>
-                    <Card.Subtitle className="fw-bold liff-product-card-price">￥{price.toLocaleString()}</Card.Subtitle>
+                      <Card.Subtitle className="fw-bold liff-product-card-price">{price.toLocaleString()}円</Card.Subtitle>
                     </>
                   )
                 }
-                
+
               </Card.Body>
             </>
           )

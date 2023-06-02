@@ -22,6 +22,7 @@ export default (props) => {
     fixedWidth: 160,
     cover: false,
     focus: 'center',
+    padding: 12,
   }
 
   return (

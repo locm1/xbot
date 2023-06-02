@@ -245,7 +245,7 @@ export const EventModal = (props) => {
               削除
             </Button>
           ) : null}
-          <Button variant="success" className="btn-default-success" onClick={onConfirm}>
+          <Button variant="success" className="" onClick={onConfirm}>
             {edit ? "更新" : "保存"}
           </Button>
         </Modal.Footer>

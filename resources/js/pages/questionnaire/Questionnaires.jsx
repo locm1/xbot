@@ -31,7 +31,9 @@ export default () => {
   }
 
   useEffect(() => {
-    getQuestionnaires(setQuestionnaires, setIsRendered)
+    getQuestionnaires(setQuestionnaires, setIsRendered).then(() => {
+      setIsRendered(true)
+    })
     showQuestionnaireEnabling(1, setQuestionnaireEnabling, setIsValid, 'questionnaire')
   }, []);
 

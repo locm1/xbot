@@ -26,7 +26,6 @@ export default () => {
     })
     const [links, setLinks] = useState([]);
     const [liffId, setLiffId] = useState('');
-    const { setIsLoading } = useContext(LoadingContext);
     const [isRendered, setIsRendered] = useState(false);
 
     const showConfirmDeleteModal = async (id) => {
@@ -60,7 +59,6 @@ export default () => {
     };
 
     useLayoutEffect(() => {
-      setIsLoading(true);
       axios.get('/api/v1/get-liff-id').then((response) => {
         setLiffId(response.data);
         const searchParams = {
@@ -70,7 +68,6 @@ export default () => {
         }).catch((error) => {
           console.error(error);
         }).finally(() => {
-          setIsLoading(false);
           setIsRendered(true);
       })
     }, [])

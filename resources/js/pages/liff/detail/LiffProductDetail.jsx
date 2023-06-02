@@ -19,7 +19,6 @@ import { storeProductReservation } from "@/pages/liff/api/ProductReservationApiM
 import { isSalePeriod } from "@/components/common/IsSalePeriod";
 
 export default () => {
-  const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const location = useLocation().pathname;
   const { id } = useParams();
@@ -75,19 +74,19 @@ export default () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    const idToken = liff.getIDToken();
+    // setIsLoading(true);
+    // const idToken = liff.getIDToken();
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);
     const searchParams = {
       params: {product_id: id}
     };
-    getUser(idToken, setUser).then(response => {
-      searchCarts(response.id, searchParams, setCarts, setItemsExistInCart, setIsLoading)
-    }).catch(error => {
-      setIsLoading(false);
-    })
+    // getUser(idToken, setUser).then(response => {
+    //   searchCarts(response.id, searchParams, setCarts, setItemsExistInCart, setIsLoading)
+    // }).catch(error => {
+    //   setIsLoading(false);
+    // })
   }, []);
 
   return (

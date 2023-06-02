@@ -23,10 +23,11 @@ export default (props) => {
     fixedWidth: 160,
     cover: false,
     focus: 'center',
+    padding: 12,
   }
 
   return (
-    <div className="liff-product-list">
+    <div className="mb-3">
       <div className="d-flex align-items-center">
         <h2 className="fs-6 fw-bold mb-0">ピックアップ商品一覧</h2>
         <div className="ms-auto">

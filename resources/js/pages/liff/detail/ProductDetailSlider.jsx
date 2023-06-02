@@ -29,6 +29,7 @@ export default (props) => {
     isNavigation: true,
     arrows: false,
     lazyLoad: true,
+    padding: 12,
   };
 
   const mainRef = useRef();

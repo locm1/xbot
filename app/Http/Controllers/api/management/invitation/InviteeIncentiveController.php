@@ -5,7 +5,7 @@ namespace App\Http\Controllers\api\management\invitation;
 use App\Http\Controllers\Controller;
 use App\Models\InviteIncentive;
 use App\Models\User;
-use App\Services\liff\invite\InviteeIncentiveService;
+use App\Services\management\invitation\InviteeIncentiveService;
 
 class InviteeIncentiveController extends Controller
 {
@@ -21,9 +21,9 @@ class InviteeIncentiveController extends Controller
      * @param  InviteIncentive  $invite_incentive
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(User $user)
+    public function __invoke(InviteIncentive $invite_incentive)
     {
-        $invitee_incentive_users = $this->service->index($user);
+        $invitee_incentive_users = $this->service->index($invite_incentive);
         return response()->json(['invitee_incentive_users' => $invitee_incentive_users], 200);
     }
 }

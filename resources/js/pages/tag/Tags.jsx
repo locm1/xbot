@@ -7,10 +7,9 @@ import { ArchiveIcon, PlusIcon, PencilAltIcon } from "@heroicons/react/solid";
 import { Link, useHistory } from 'react-router-dom';
 
 import TagsCard from "@/pages/tag/TagsCard";
-import tags from "@/data/tags";
 import TagCreateCard from "@/pages/tag/TagCreateCard";
+import TagsContentLoader from "@/pages/tag/TagsContentLoader";
 import { Paths } from "@/paths";
-import { set } from "lodash";
 
 export default () => {
   const [tags, setTags] = useState([]);
@@ -19,6 +18,7 @@ export default () => {
   const [isEdit, setIsEdit] = useState({
     id: '', isEdit: false
   });
+  const [isRendered, setIsRendered] = useState(false);
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -107,6 +107,9 @@ export default () => {
     })
     .catch(error => {
         console.error(error);
+    })
+    .finally(() => {
+      setIsRendered(true)
     });
   }, []);
 
@@ -130,25 +133,30 @@ export default () => {
 
       <div className="task-wrapper border bg-white border-light shadow-sm rounded">
         {
-          tags && (
-            tags.map((tag, index) =>
-              <TagsCard
-                {...tag}
-                key={`tag-${tag.id}`}
-                updateName={name}
-                setName={setName}
-                isEdit={isEdit}
-                setIsCreate={setIsCreate}
-                setIsEdit={setIsEdit}
-                updateTag={updateTag}
-                showTags={showTags}
-                showConfirmDeleteModal={showConfirmDeleteModal}
-              />
+          isRendered ? (
+            tags && (
+              tags.map((tag, index) =>
+                <TagsCard
+                  {...tag}
+                  key={`tag-${tag.id}`}
+                  updateName={name}
+                  setName={setName}
+                  isEdit={isEdit}
+                  setIsCreate={setIsCreate}
+                  setIsEdit={setIsEdit}
+                  updateTag={updateTag}
+                  showTags={showTags}
+                  showConfirmDeleteModal={showConfirmDeleteModal}
+                />
+              )
             )
+          ) : (
+            <TagsContentLoader />
           )
         }
         {
-          isCreate ? (
+          isRendered && (
+            isCreate ? (
             <TagCreateCard
               setName={setName}
               name={name}
@@ -166,6 +174,7 @@ export default () => {
                 <PlusIcon className="icon icon-xs me-2" /> タグ追加
               </Button>
             </div>
+          )
           )
         }
       </div>

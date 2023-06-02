@@ -10,9 +10,10 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
 import { handleOnDragEnd } from "@/components/common/Sort";
+import QuestionnairesContentLoader from "@/pages/questionnaire/QuestionnairesContentLoader";
 
 export default (props) => {
-  const { questionnaires, sortQuestionnaire, showConfirmDeleteModal } = props;
+  const { questionnaires, sortQuestionnaire, showConfirmDeleteModal, isRendered } = props;
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -74,48 +75,54 @@ export default (props) => {
           <Droppable droppableId="questionnaires">
             {(provided) => (
               <tbody className="border-0" {...provided.droppableProps} ref={provided.innerRef}>
-                {questionnaires.map((t, index) => {
-                  return (
-                    <Draggable key={t.id} draggableId={"questionnaires-" + t.id} index={index}>                    
-                      {(provided) => (
-                        <tr className={`border-bottom ${t.is_undisclosed == 1 ? "bg-gray-200" : ""}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                          <td style={{width: "30px"}}>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="icon-xs icon">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                          </svg>
-                          </td>
-                          <td style={{width: "500px"}}>
-                            <span className="fw-bold">
-                              <Link to={Paths.EditQuestionnaire.path.replace(':id', t.id)} className="fw-bolder text-decoration-underline">
-                              {t.title}
-                              </Link>
-                            </span>
-                          </td>
-                          <td style={{width: "400px"}}>
-                            <span className="fw-normal">
-                              {getType(t.type)}
-                            </span>
-                          </td>
-                          <td style={{width: "400px"}}>
-                            {getIsRequired(t.is_required)}
-                          </td>
-                          <td style={{width: "400px"}}>
-                            {getIsUndisclosed(t.is_undisclosed)}
-                          </td>
-                          <td style={{width: "200px"}} className="">
-                            <Button as={Link} to={Paths.EditQuestionnaire.path.replace(':id', t.id)} variant="info" size="sm" className="d-inline-flex align-items-center border-white me-3">
-                              編集
-                            </Button>
-                            <Button onClick={() => showConfirmDeleteModal(t.id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
-                              削除
-                            </Button>
-                          </td>
-                          {provided.placeholder}
-                        </tr>
-                      )}
-                    </Draggable>
-                  );
-                })}
+                {
+                  isRendered ? (
+                    questionnaires.map((t, index) => {
+                      return (
+                        <Draggable key={t.id} draggableId={"questionnaires-" + t.id} index={index}>                    
+                          {(provided) => (
+                            <tr className={`border-bottom ${t.is_undisclosed == 1 ? "bg-gray-200" : ""}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                              <td style={{width: "30px"}}>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="icon-xs icon">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                              </svg>
+                              </td>
+                              <td style={{width: "500px"}}>
+                                <span className="fw-bold">
+                                  <Link to={Paths.EditQuestionnaire.path.replace(':id', t.id)} className="fw-bolder text-decoration-underline">
+                                  {t.title}
+                                  </Link>
+                                </span>
+                              </td>
+                              <td style={{width: "400px"}}>
+                                <span className="fw-normal">
+                                  {getType(t.type)}
+                                </span>
+                              </td>
+                              <td style={{width: "400px"}}>
+                                {getIsRequired(t.is_required)}
+                              </td>
+                              <td style={{width: "400px"}}>
+                                {getIsUndisclosed(t.is_undisclosed)}
+                              </td>
+                              <td style={{width: "200px"}} className="">
+                                <Button as={Link} to={Paths.EditQuestionnaire.path.replace(':id', t.id)} variant="info" size="sm" className="d-inline-flex align-items-center border-white me-3">
+                                  編集
+                                </Button>
+                                <Button onClick={() => showConfirmDeleteModal(t.id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
+                                  削除
+                                </Button>
+                              </td>
+                              {provided.placeholder}
+                            </tr>
+                          )}
+                        </Draggable>
+                      );
+                    })
+                  ) : (
+                    <QuestionnairesContentLoader />
+                  )
+                }
               {provided.placeholder}
               </tbody>
             )}

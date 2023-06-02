@@ -82,8 +82,8 @@ export default () => {
       </div>
 
       <Card border="0" className="table-wrapper table-responsive shadow">
-       <Table hover className="align-items-center">
-        <thead className="bg-primary text-white">
+        <Table hover className="align-items-center">
+          <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">利用者</th>
               <th className="border-gray-200">取得日時</th>
@@ -93,30 +93,10 @@ export default () => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {inviteeIncentiveUsers && inviteeIncentiveUsers.map(t => <TableRow key={`inviter-incentive-user-${t.id}`} {...t} />)}
+            {inviteeIncentiveUsers && inviteeIncentiveUsers.map(t => <TableRow key={`invitee-incentive-user-${t.id}`} {...t} />)}
           </tbody>
         </Table>
-        <Card.Footer className="px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-          <Nav>
-            <Pagination className="mb-0">
-              <Pagination.Prev>
-                Previous
-              </Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>
-                Next
-              </Pagination.Next>
-            </Pagination>
-          </Nav>
-          <small className="fw-normal mt-4 mt-lg-0">
-            Showing <b>{totalInviteeIncentiveUsers}</b> out of <b>25</b> entries
-          </small>
-        </Card.Footer>
-    </Card>
+      </Card>
     </>
   );
 };

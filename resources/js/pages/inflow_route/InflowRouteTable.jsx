@@ -7,9 +7,11 @@ import { first } from "lodash";
 import Swal from "sweetalert2";
 import QRCode from "qrcode.react";
 import Pagination from "@/components/Pagination";
+import InflowRouteContentLoader from "@/pages/inflow_route/InflowRouteContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 export const InflowRouteTable = (props) => {
-  const { inflows, setInflows, links, getInflowRoutes, setLinks, paginate, setPaginate, showConfirmDeleteModal } = props;
+  const { inflows, setInflows, links, getInflowRoutes, setLinks, paginate, setPaginate, showConfirmDeleteModal, isRendered } = props;
   const [isHover, setIsHover] = useState(false);
 
   const downloadQR = (id) => {
@@ -89,17 +91,29 @@ export const InflowRouteTable = (props) => {
           </tr>
         </thead>
         <tbody className="border-0">
-          {inflows.map((v, k) => <TableRow key={`inflow-${k}`} {...v} />)}
+          {
+            isRendered ? (
+              inflows.map((v, k) => <TableRow key={`inflow-${k}`} {...v} />)
+            ) : (
+              <InflowRouteContentLoader />
+            )
+          }
         </tbody>
       </Table>
-      <Pagination
-        links={links}
-        paginate={paginate}
-        getListBypage={getInflowRoutes}
-        setList={setInflows}
-        setLinks={setLinks}
-        setPaginate={setPaginate}
-      />
+      {
+        isRendered ? (
+          <Pagination
+            links={links}
+            paginate={paginate}
+            getListBypage={getInflowRoutes}
+            setList={setInflows}
+            setLinks={setLinks}
+            setPaginate={setPaginate}
+          />
+        ) : (
+          <PaginationContentLoader />
+        )
+      }
     </Card>
   );
 };

@@ -8,10 +8,13 @@ import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 import Pagination from "@/components/Pagination";
 import withReactContent from "sweetalert2-react-content";
+import InviteIncentivesContentLoader from "@/pages/invitation/InviteIncentivesContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 export const InviteIncentivesTable = (props) => {
   const { 
-    inviteIncentives, setInviteIncentives, links, getInviteIncentives, setLinks, paginate, setPaginate, searchParams
+    inviteIncentives, setInviteIncentives, links, getInviteIncentives, 
+    setLinks, paginate, setPaginate, searchParams, isRendered, setIsRendered
   } = props;
 
   const TableRow = (props) => {
@@ -67,7 +70,7 @@ export const InviteIncentivesTable = (props) => {
       const searchParams = {
         params: {page: currentPage}
       };
-      getInviteIncentives(searchParams, setInviteIncentives, setLinks, setPaginate);
+      getInviteIncentives(searchParams, setInviteIncentives, setLinks, setPaginate, setIsRendered);
     };
 
     return (
@@ -108,28 +111,40 @@ export const InviteIncentivesTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-       <Table hover className="align-items-center">
+      <Table hover className="align-items-center">
         <thead className="bg-primary text-white">
-            <tr>
-              <th className="border-gray-200">管理名称</th>
-              <th className="border-gray-200">スピーカータイミング</th>
-              <th className="border-gray-200">招待者タイミング</th>
-              <th className="border-gray-200">スピーカー一覧・招待者一覧・編集・削除</th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {inviteIncentives.invite_incentives.map(t => <TableRow key={`invite-incentives-${t.id}`} {...t} defaultInviteIncentive={inviteIncentives.default_invite_incentive} />)}
-          </tbody>
-        </Table>
-        <Pagination 
-          links={links}
-          paginate={paginate}
-          getListBypage={getInviteIncentives} 
-          setList={setInviteIncentives}
-          setLinks={setLinks}
-          setPaginate={setPaginate}
-          searchValue={searchParams}
-        />
+          <tr>
+            <th className="border-gray-200">管理名称</th>
+            <th className="border-gray-200">スピーカータイミング</th>
+            <th className="border-gray-200">招待者タイミング</th>
+            <th className="border-gray-200">スピーカー一覧・招待者一覧・編集・削除</th>
+          </tr>
+        </thead>
+        <tbody className="border-0">
+          {
+            isRendered ? (
+              inviteIncentives.invite_incentives.map(t => <TableRow key={`invite-incentives-${t.id}`} {...t} defaultInviteIncentive={inviteIncentives.default_invite_incentive} />)
+            ) : (
+              <InviteIncentivesContentLoader />
+            )
+          }
+        </tbody>
+      </Table>
+      {
+        isRendered ? (
+          <Pagination 
+            links={links}
+            paginate={paginate}
+            getListBypage={getInviteIncentives} 
+            setList={setInviteIncentives}
+            setLinks={setLinks}
+            setPaginate={setPaginate}
+            searchValue={searchParams}
+          />
+        ) : (
+          <PaginationContentLoader />
+        )
+      }
     </Card>
   );
 };

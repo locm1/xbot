@@ -6,6 +6,9 @@ import { PencilAltIcon, PaperAirplaneIcon, TrashIcon, DocumentDuplicateIcon } fr
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Dropdown, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import Pagination from "@/components/Pagination";
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
+import TemplateMessagesContentLoader from "@/pages/message/loader/TemplateMessagesContentLoader";
 
 import { Paths } from "@/paths";
 
@@ -18,9 +21,12 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export const TemplateMessageTable = (props) => {
-  const { messages, deleteMessage, setMessages, links, setLinks, paginate, setPaginate, 
-    getMessages, title } = props;
+  const { 
+    messages, deleteMessage, setMessages, links, setLinks, paginate, setPaginate, 
+    getMessages, title, isRendered 
+  } = props;
   const searchValue = {title: title}
+  const loadingTables = [_, _, _, _, _, _, _, _, _, _,];
 
   const showConfirmDeleteModal = async (id) => {
     const textMessage = "本当にを削除しますか？";
@@ -100,18 +106,30 @@ export const TemplateMessageTable = (props) => {
           </tr>
         </thead>
         <tbody className="border-0">
-          {messages && messages.map((t) => <TableRow key={`template-message-${t.id}`} {...t} />)}
+          {
+            isRendered ? (
+              messages && messages.map((t) => <TableRow key={`template-message-${t.id}`} {...t} />)
+            ) : (
+              <TemplateMessagesContentLoader />
+            )
+          }
         </tbody>
       </Table>
-      <Pagination 
-        links={links}
-        paginate={paginate}
-        getListBypage={getMessages} 
-        setList={setMessages}
-        setLinks={setLinks}
-        setPaginate={setPaginate}
-        searchValue={searchValue}
-      />
+      {
+        isRendered ? (
+          <Pagination 
+            links={links}
+            paginate={paginate}
+            getListBypage={getMessages} 
+            setList={setMessages}
+            setLinks={setLinks}
+            setPaginate={setPaginate}
+            searchValue={searchValue}
+          />
+        ) : (
+          <PaginationContentLoader />
+        )
+      }
     </Card>
   );
 };

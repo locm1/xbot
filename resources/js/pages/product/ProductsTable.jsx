@@ -5,10 +5,12 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Pagination from "@/components/Pagination";
 import noImage from "@img/img/noimage.jpg"
+import ProductsContentLoader from "@/pages/product/loader/ProductsContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 
 export const ProductsTable = (props) => {
-  const { products, setProducts, links, getProducts, setLinks, paginate, setPaginate, searchValue, deleteProducts } = props;
+  const { products, setProducts, links, getProducts, setLinks, paginate, setPaginate, searchValue, deleteProducts, isRendered } = props;
 
   const getImages = (image) => {
     if (image) {
@@ -83,29 +85,41 @@ export const ProductsTable = (props) => {
     <Card border="0" className="table-wrapper table-responsive shadow">
       <Table hover className="align-items-center">
         <thead className="bg-primary text-white">
-            <tr>
-              <th className="border-gray-200">商品ID</th>
-              <th className="border-gray-200">商品名</th>
-              <th className="border-gray-200">カテゴリー</th>
-              <th className="border-gray-200">販売価格</th>
-              <th className="border-gray-200">残在庫数</th>
-              <th className="border-gray-200">公開ステータス</th>
-              <th className="border-gray-200">編集・削除</th>
-            </tr>
-          </thead>
-          <tbody className="border-0">
-            {products.map(t => <TableRow key={`products-${t.id}`} {...t} />)}
-          </tbody>
-        </Table>
-      <Pagination 
-        links={links}
-        paginate={paginate}
-        getListBypage={getProducts} 
-        setList={setProducts}
-        setLinks={setLinks}
-        setPaginate={setPaginate}
-        searchValue={searchValue}
-      />
+          <tr>
+            <th className="border-gray-200">商品ID</th>
+            <th className="border-gray-200">商品名</th>
+            <th className="border-gray-200">カテゴリー</th>
+            <th className="border-gray-200">販売価格</th>
+            <th className="border-gray-200">残在庫数</th>
+            <th className="border-gray-200">公開ステータス</th>
+            <th className="border-gray-200">編集・削除</th>
+          </tr>
+        </thead>
+        <tbody className="border-0">
+          {
+            isRendered ? (
+              products.map(t => <TableRow key={`products-${t.id}`} {...t} />)
+            ) : (
+              <ProductsContentLoader />
+            )
+          }
+        </tbody>
+      </Table>
+      {
+        isRendered ? (
+          <Pagination 
+            links={links}
+            paginate={paginate}
+            getListBypage={getProducts} 
+            setList={setProducts}
+            setLinks={setLinks}
+            setPaginate={setPaginate}
+            searchValue={searchValue}
+          />
+        ) : (
+          <PaginationContentLoader />
+        )
+      }
     </Card>
   );
 };

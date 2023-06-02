@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 
-export const getAccounts = async (params, setAccounts, setLinks, setPaginate) => {
+export const getAccounts = async (params, setAccounts, setLinks, setPaginate, setIsRendered) => {
   axios.get('/api/v1/management/admins', params)
   .then((response) => {
     const admins = response.data.admins;
@@ -13,6 +13,7 @@ export const getAccounts = async (params, setAccounts, setLinks, setPaginate) =>
       to: admins.to,
       total: admins.total,
     })
+    setIsRendered(true)
   })
   .catch(error => {
       console.error(error);

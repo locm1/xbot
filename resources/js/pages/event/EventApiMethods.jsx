@@ -47,7 +47,7 @@ export const DeleteEvent = async(id) => {
   });
 }
 
-export const GetEvents = (params, setEvents, setLinks, setPaginate) => {
+export const GetEvents = (params, setEvents, setLinks, setPaginate, setIsRendered) => {
   axios.get(`/api/v1/management/events`, params)
   .then((res) => {
     if(res.status !== 200) {
@@ -63,6 +63,7 @@ export const GetEvents = (params, setEvents, setLinks, setPaginate) => {
         to: events.to,
         total: events.total,
       })
+      setIsRendered(true)
     }
   });
 }

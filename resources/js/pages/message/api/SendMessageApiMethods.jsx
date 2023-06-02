@@ -16,7 +16,7 @@ const failedMessage = (message) => {
   )
 } 
 
-export const getSendMessages = async (params, setSendMessages, setLinks, setPaginate) => {
+export const getSendMessages = async (params, setSendMessages, setLinks, setPaginate, setIsRendered) => {
   axios.get('/api/v1/management/send-messages', params)
   .then((response) => {
     setSendMessages(response.data);
@@ -31,6 +31,7 @@ export const getSendMessages = async (params, setSendMessages, setLinks, setPagi
       to: messages.to,
       total: messages.total,
     })
+    setIsRendered(true);
   })
   .catch(error => {
       console.error(error);

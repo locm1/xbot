@@ -8,21 +8,22 @@ import { Paths } from "@/paths";
 import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
-  const { setIsLoading } = useContext(LoadingContext);
   const [menus, setMenus] = useState([]);
+  const [isRendered, setIsRendered] = useState(false);
+
   useLayoutEffect(() => {
-    setIsLoading(true);
     axios.get('/api/v1/management/rich-menus')
     .then((response) => {
       response.data.sort((a, b) => a.name.localeCompare(b.name));
       setMenus(response.data);
-      setIsLoading(false);
+      setIsRendered(true);
     })
     .catch(error => {
         console.error(error);
-        setIsLoading(false);
+        setIsRendered(true);
     },);
   }, [])
+  
 	return (
 		<>      
     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-2 list-wrap">
@@ -35,6 +36,7 @@ export default () => {
     <RichMenusTable
       menus={menus}
       setMenus={setMenus}
+      isRendered={isRendered}
     />
 	  </>
 	)

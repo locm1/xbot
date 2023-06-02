@@ -25,12 +25,13 @@ export default () => {
   })
   const [links, setLinks] = useState([]);
   const history = useHistory();
+  const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
     const searchParams = {
       params: {page: 1}
     };
-    getAccounts(searchParams, setAccounts, setLinks, setPaginate)
+    getAccounts(searchParams, setAccounts, setLinks, setPaginate, setIsRendered)
   }, []);
 
   const showConfirmDeleteModal = async (e, id) => {
@@ -66,7 +67,7 @@ export default () => {
     const searchParams = {
       params: {page: currentPage}
     };
-    getAccounts(searchParams, setAccounts, setLinks, setPaginate);
+    getAccounts(searchParams, setAccounts, setLinks, setPaginate, setIsRendered);
   };
 
   return (
@@ -91,6 +92,7 @@ export default () => {
         paginate={paginate}
         setLinks={setLinks}
         setPaginate={setPaginate}
+        isRendered={isRendered}
       />
     </>
   );

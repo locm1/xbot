@@ -4,11 +4,14 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, To
 import { Link, useHistory } from 'react-router-dom';
 import Pagination from "@/components/Pagination";
 import { Paths } from "@/paths";
+import OrdersContentLoader from "@/pages/order/OrdersContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 
 export const OrdersTable = (props) => {
   const { 
-    orders, setOrders, changeStatusModal, links, getOrders, setLinks, paginate, setPaginate, searchValue
+    orders, setOrders, changeStatusModal, links, getOrders, setLinks, 
+    paginate, setPaginate, searchValue, isRendered
   } = props;
   const history = useHistory();
 
@@ -109,7 +112,7 @@ export const OrdersTable = (props) => {
 
   return (
     <Card border="0" className="table-wrapper table-responsive shadow">
-       <Table hover className="align-items-center">
+      <Table hover className="align-items-center">
         <thead className="bg-primary text-white">
             <tr>
               <th className="border-gray-200">注文番号</th>
@@ -123,18 +126,30 @@ export const OrdersTable = (props) => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {orders.map(t => <TableRow key={`orders-${t.id}`} {...t} />)}
+            {
+              isRendered ? (
+                orders.map(t => <TableRow key={`orders-${t.id}`} {...t} />)
+              ) : (
+                <OrdersContentLoader />
+              )
+            }
           </tbody>
         </Table>
-        <Pagination 
-          links={links}
-          paginate={paginate}
-          getListBypage={getOrders} 
-          setList={setOrders}
-          setLinks={setLinks}
-          setPaginate={setPaginate}
-          searchValue={searchValue}
-        />
+          {
+            isRendered ? (
+              <Pagination 
+                links={links}
+                paginate={paginate}
+                getListBypage={getOrders} 
+                setList={setOrders}
+                setLinks={setLinks}
+                setPaginate={setPaginate}
+                searchValue={searchValue}
+              />
+            ) : (
+              <PaginationContentLoader />
+            )
+          }
     </Card>
   );
 };

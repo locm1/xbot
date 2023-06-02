@@ -13,6 +13,8 @@ import Pagination from "@/components/Pagination";
 import { GetEvents, GetEventUsers } from "@/pages/event/EventApiMethods"
 import ParticipantsModal from "@/components/ParticipantsModal";
 import moment from "moment-timezone";
+import EventsContentLoader from "@/pages/event/EventsContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 export default () => {
   const [events, setEvents] = useState([
@@ -26,6 +28,7 @@ export default () => {
   })
   const [links, setLinks] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
   const searchParams = {
     params: {}
   }
@@ -38,7 +41,7 @@ export default () => {
     const searchParams = {
       params: { page: 1 }
     };
-    GetEvents(searchParams, setEvents, setLinks, setPaginate)
+    GetEvents(searchParams, setEvents, setLinks, setPaginate, setIsRendered)
   }, []);
 
   const onCardClick = (id) => {
@@ -103,18 +106,30 @@ export default () => {
             </tr>
           </thead>
           <tbody className="border-0">
-            {events.map(event => <TableRow key={`user-${event.id}`} {...event} />)}
+            {
+              isRendered ? (
+                events.map(event => <TableRow key={`user-${event.id}`} {...event} />)
+              ) : (
+                <EventsContentLoader />
+              )
+            }
           </tbody>
         </Table>
-        <Pagination
-          links={links}
-          paginate={paginate}
-          getListBypage={GetEvents}
-          setList={setEvents}
-          setLinks={setLinks}
-          setPaginate={setPaginate}
-          searchValue={searchValue}
-        />
+          {
+            isRendered ? (
+              <Pagination
+                links={links}
+                paginate={paginate}
+                getListBypage={GetEvents}
+                setList={setEvents}
+                setLinks={setLinks}
+                setPaginate={setPaginate}
+                searchValue={searchValue}
+              />
+            ) : (
+              <PaginationContentLoader />
+            )
+          }
       </Card>
     </>
   );

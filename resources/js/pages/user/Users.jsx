@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 import { SearchIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown, Card, Table, Pagination } from 'react-bootstrap';
 
 import { UsersTable } from "@/pages/user/UsersTable";
 import { getUsers, getDemographic, deleteUser, getTags } from "@/pages/user/api/UserApiMethods";
-import ContentLoader, { BulletList, Facebook } from "react-content-loader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
+import TableButtonContentLoader from "@/components/loader/TableButtonContentLoader";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -178,7 +180,6 @@ export default () => {
               <div className="list-head__item"> <span className="">|</span></div>
               <div className="list-head__item"> <span className="u-men"> 男性 </span>：{demographic.man}名 </div>
               <div className="list-head__item"> <span className="u-women "> 女性 </span>：{demographic.women}名 </div>
-              {/* <div className="list-head__item"> <span> その他 </span>：{demographic.others}名 </div> */}
             </div>
           </div>
         </div>
@@ -290,29 +291,12 @@ export default () => {
                     <rect x="0" y="10" rx="3" ry="3" width="130" height="18" />
                   </ContentLoader>
                 </td>
-                <td>
-                  <ContentLoader
-                    height={39.375}
-                    width={150}
-                    speed={1}
-                  >
-                    <rect x="15" y="2" rx="3" ry="3" width="50" height="35" />
-                    <rect x="80" y="2" rx="3" ry="3" width="50" height="35" />
-                  </ContentLoader>
-                </td>
+                <TableButtonContentLoader />
               </tr>
             )}
           </tbody>
         </Table>
-        <ContentLoader
-          height={95.59}
-          width={1251}
-          speed={1}
-        >
-          <rect x="15" y="33" rx="3" ry="3" width="25" height="35" />
-          <rect x="50" y="50" rx="3" ry="3" width="125" height="17.5" />
-          <rect x="1100" y="33" rx="3" ry="3" width="400" height="35" />
-        </ContentLoader>
+        <PaginationContentLoader />
       </Card>
     </>
   );

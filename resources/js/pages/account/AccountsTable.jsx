@@ -2,14 +2,16 @@ import React, { useState, useRef } from "react";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, DotsHorizontalIcon, ExternalLinkIcon, EyeIcon, InformationCircleIcon, PencilAltIcon, ShieldExclamationIcon, TrashIcon, UserRemoveIcon, XCircleIcon } from "@heroicons/react/solid";
 import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, Tooltip, FormCheck, ButtonGroup, OverlayTrigger } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import { Paths } from "@/paths"
-import Pagination from "@/components/Pagination";import { getAccounts } from "./api/AdminApiMethods";
-;
+import { Paths } from "@/paths";
+import Pagination from "@/components/Pagination";
+import { getAccounts } from "./api/AdminApiMethods";
+import AccountsContentLoader from "@/pages/account/AccountsContentLoader";
+import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 
 export const AccountsTable = (props) => {
   const { 
-    accounts, setAccounts, showConfirmDeleteModal, links, getUsers, setLinks, paginate, setPaginate
+    accounts, setAccounts, showConfirmDeleteModal, links, isRendered, setLinks, paginate, setPaginate
   } = props;
 
   const getRoleClass = (role) => {
@@ -78,17 +80,29 @@ export const AccountsTable = (props) => {
           </tr>
         </thead>
         <tbody className="border-0">
-          {accounts.map(u => <TableRow key={`account-${u.id}`} {...u} />)}
+          {
+            isRendered ? (
+              accounts.map(u => <TableRow key={`account-${u.id}`} {...u} />)
+            ) : (
+              <AccountsContentLoader />
+            )
+          }
         </tbody>
       </Table>
-      <Pagination 
-        links={links}
-        paginate={paginate}
-        getListBypage={getAccounts} 
-        setList={setAccounts}
-        setLinks={setLinks}
-        setPaginate={setPaginate}
-      />
+      {
+        isRendered ? (
+          <Pagination 
+            links={links}
+            paginate={paginate}
+            getListBypage={getAccounts} 
+            setList={setAccounts}
+            setLinks={setLinks}
+            setPaginate={setPaginate}
+          />
+        ) : (
+          <PaginationContentLoader />
+        )
+      }
     </Card>
   );
 };

@@ -3,11 +3,12 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 
-export const getCategories = async (setCategories) => {
+export const getCategories = async (setCategories, setIsRendered) => {
   axios.get('/api/v1/management/categories')
   .then((response) => {
     const categories = response.data.categories;
     setCategories(categories.map(category => ({ ...category, show: true, deleted: false })));
+    setIsRendered(true)
   })
   .catch(error => {
       console.error(error);

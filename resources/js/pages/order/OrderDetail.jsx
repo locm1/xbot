@@ -7,6 +7,7 @@ import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
 import { showOrder } from "@/pages/order/api/OrderApiMethods";
 import { getOrderProducts, getOrderUser, getOrderDelivery } from "@/pages/order/api/OrderDetailApiMethods";
+import OrderDetailContentLoader from "@/pages/order/OrderDetailContentLoader";
 
 export default () => {
   const history = useHistory();
@@ -23,6 +24,7 @@ export default () => {
     building_name: '', tel: '', discount_price: ''
   });
   const [orderTotal, setOrderTotal] = useState(0);
+  const [isRendered, setIsRendered] = useState(false);
 
   const getTotal = (amount) => {
     if (order.coupon) {
@@ -62,7 +64,9 @@ export default () => {
 
   useEffect(() => {
     showOrder(id, setOrder)
-    getOrderProducts(id, setOrderProducts, setOrderTotal);
+    getOrderProducts(id, setOrderProducts, setOrderTotal).then(
+      setIsRendered(true)
+    );
   }, []);
 
   return (
@@ -72,92 +76,86 @@ export default () => {
           <h1 className="page-title">注文情報</h1>
         </div>
       </div>
-      {/* <Row className="mt-5">
-        <Col xs={12} xl={8}>
-          <DetailWidget details={orders} title='注文情報' />
-          <Col className="mt-5">
-            <ProductWidget details={orderProducts} title='商品情報' />
-          </Col>
-          <Col className="mt-5">
-            <DetailWidget details={deliveries} title='配送情報' />
-          </Col>
-        </Col>
-        <Col xs={12} xl={4}>
-          <OrdererInformation {...ordererInformations} details={details} img_path={orderUser.img_path} />
-        </Col>
-      </Row> */}
 
-      <Row className="">
-        <Col xs={12} xl={12}>
-          <Card border="0" className="shadow p-5">
-            <div className="d-sm-flex justify-content-between border-bottom border-light pb-4">
-              <div>
-                <h4>
-                  <span className="fw-bold">ご購入日</span>
-                  <span className="ps-4">{moment(order.created_at).format("YYYY年MM月DD日 H:m:s")}</span>
-                </h4>
-                <div className="d-flex align-items-center">
-                  <div className="">注文番号：{id}</div>
-                  <div className="me-1 ms-1">｜</div>
-                  <div className="">ステータス：{getStatus(order.status)}</div>
-                </div>
-              </div>
-            </div>
-
-            <Row>
-              <ProductWidget orderProducts={orderProducts} />
-            </Row>
-
-            <Row>
-              <Col xs={12}>
-                <div className="d-flex justify-content-end text-end mb-4 py-4">
-                  <div className="mt-2">
-                    <Table className="table-clear">
-                      <tbody>
-                        <tr>
-                          <td className="left pe-6">
-                            <div>小計</div>
-                          </td>
-                          <td className="right">￥{orderTotal.toLocaleString()}</td>
-                        </tr>
-                        {
-                          (order.coupon) && (
-                            <tr>
-                              <td className="left pe-6">
-                                <div>クーポン利用</div>
-                              </td>
-                              <td className="right">-￥{isNaN(getDiscountAmount()) ? 0 : Math.floor(getDiscountAmount()).toLocaleString()}</td>
-                            </tr>
-                          )
-                        }
-                        <tr>
-                          <td className="left pe-6">
-                            <div>送料</div>
-                          </td>
-                          <td className="right">￥{order.shipping_fee.toLocaleString()}</td>
-                        </tr>
-                        <tr>
-                          <td className="left pe-6">
-                            <div className="fw-bold fs-5">合計</div>
-                          </td>
-                          <td className="right fw-bold fs-5">￥{Math.floor(total).toLocaleString()}</td>
-                        </tr>
-                      </tbody>
-                    </Table>
+      {
+        isRendered ? (
+          <>
+            <Row className="">
+              <Col xs={12} xl={12}>
+                <Card border="0" className="shadow p-5">
+                  <div className="d-sm-flex justify-content-between border-bottom border-light pb-4">
+                    <div>
+                      <h4>
+                        <span className="fw-bold">ご購入日</span>
+                        <span className="ps-4">{moment(order.created_at).format("YYYY年MM月DD日 H:m:s")}</span>
+                      </h4>
+                      <div className="d-flex align-items-center">
+                        <div className="">注文番号：{id}</div>
+                        <div className="me-1 ms-1">｜</div>
+                        <div className="">ステータス：{getStatus(order.status)}</div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+
+                  <Row>
+                    <ProductWidget orderProducts={orderProducts} />
+                  </Row>
+
+                  <Row>
+                    <Col xs={12}>
+                      <div className="d-flex justify-content-end text-end mb-4 py-4">
+                        <div className="mt-2">
+                          <Table className="table-clear">
+                            <tbody>
+                              <tr>
+                                <td className="left pe-6">
+                                  <div>小計</div>
+                                </td>
+                                <td className="right">￥{orderTotal.toLocaleString()}</td>
+                              </tr>
+                              {
+                                (order.coupon) && (
+                                  <tr>
+                                    <td className="left pe-6">
+                                      <div>クーポン利用</div>
+                                    </td>
+                                    <td className="right">-￥{isNaN(getDiscountAmount()) ? 0 : Math.floor(getDiscountAmount()).toLocaleString()}</td>
+                                  </tr>
+                                )
+                              }
+                              <tr>
+                                <td className="left pe-6">
+                                  <div>送料</div>
+                                </td>
+                                <td className="right">￥{order.shipping_fee.toLocaleString()}</td>
+                              </tr>
+                              <tr>
+                                <td className="left pe-6">
+                                  <div className="fw-bold fs-5">合計</div>
+                                </td>
+                                <td className="right fw-bold fs-5">￥{Math.floor(total).toLocaleString()}</td>
+                              </tr>
+                            </tbody>
+                          </Table>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                            
+                  <DeliveryWidget {...order} />
+                </Card>
               </Col>
             </Row>
-
-            <DeliveryWidget {...order} />
-          </Card>
-        </Col>
-      </Row>
-      <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-        <Button onClick={() => {history.push(Paths.Orders.path)}} size="lg" className="mt-2" variant="gray-500">
-          一覧へ戻る
-        </Button>
-      </div>
+            <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+              <Button onClick={() => {history.push(Paths.Orders.path)}} size="lg" className="mt-2" variant="gray-500">
+                一覧へ戻る
+              </Button>
+            </div>
+          </>
+        ) : (
+          <OrderDetailContentLoader />
+        )
+      }
     </>
   );
 };

@@ -31,7 +31,9 @@ export default () => {
 
 
   useEffect(() => {
-    getCategories(setCategories, setIsRendered)
+    getCategories(setCategories, setIsRendered).then(
+      setIsRendered(true)
+    )
   }, []);
 
   return (

@@ -8,7 +8,8 @@ import LinePreview from "@/components/line/LinePreview";
 import { TargetUsersWidget } from "@/pages/message/detail/TargetUsersWidget";
 import { SendHistoryInfoWidget } from "@/pages/message/detail/SendHistoryInfoWidget";
 import { showSendMessage } from "@/pages/message/api/SendMessageApiMethods";
-import { getSegmentTemplates } from "@/pages/message/api/SegmentTemplateApiMethods";
+import SendHistoryDetailContentLoader from "@/pages/message/loader/SendHistoryDetailContentLoader";
+import SendHistoryInfoContentLoader from "@/pages/message/loader/SendHistoryInfoContentLoader";
 
 import { Paths } from "@/paths";
 
@@ -19,6 +20,7 @@ export default (props) => {
     message: {title: ''}, send_message_users: [], search_json: {}
   });
   const [segmentTemplate, setSegmentTemplate] = useState([]);
+  const [isRendered, setIsRendered] = useState(false);
 
   const searchSegment = () => {
     history.push({
@@ -31,6 +33,7 @@ export default (props) => {
     showSendMessage(id, setSendMessage).then(response => {
       console.log(JSON.parse(response.search_json));
       setSegmentTemplate(JSON.parse(response.search_json))
+      setIsRendered(true)
     })
   }, []);
 
@@ -52,10 +55,22 @@ export default (props) => {
 
       <Row>
         <Col xs={12} md={8} className="mb-4">
-          <SendHistoryInfoWidget title="配信情報" {...sendMessage} />
+          {
+            isRendered ? (
+              <SendHistoryInfoWidget title="配信情報" {...sendMessage} />
+            ) : (
+              <SendHistoryInfoContentLoader />
+            )
+          }
         </Col>
         <Col xs={12} md={4} className="mb-4">
-          <TargetUsersWidget title="対象ユーザー" users={sendMessage.send_message_users} />
+          {
+            isRendered ? (
+              <TargetUsersWidget title="対象ユーザー" users={sendMessage.send_message_users} />
+            ) : (
+              <SendHistoryDetailContentLoader />
+            )
+          }
         </Col>
       </Row>
       {/* <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >

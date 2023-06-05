@@ -4,7 +4,7 @@ import { Col, Row, Form, Button, InputGroup, Card, Badge, Nav, Pagination, Image
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Paths } from "@/paths";
-
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 import { showCoupon, updateCoupon, getCouponUsers, storeCoupon } from "@/pages/coupon/api/CouponApiMethods";
 
 export default () => {
@@ -16,10 +16,13 @@ export default () => {
   const [error, setError] = useState({
     name: '', upper_limit: '', discount_price: '', code: '',
   });
+  const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      showCoupon(id, setCoupon);
+      showCoupon(id, setCoupon).then(
+        setIsRendered(true)
+      );
     }
   }, []);
 
@@ -68,35 +71,68 @@ export default () => {
             <Col md={6} className="mb-4">
               <Form.Group id="firstName">
                 <Form.Label><Badge bg="danger" className="me-2">必須</Badge>管理名称</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  value={coupon.name}
-                  onChange={(e) => handleChange(e, 'name')}
-                  placeholder="例：友達紹介クーポン"
-                  isInvalid={!!error.name}
-                />
                 {
-                  error.name && 
-                  <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                  isRendered ? (
+                    <>
+                    <Form.Control
+                      required
+                      type="text"
+                      value={coupon.name}
+                      onChange={(e) => handleChange(e, 'name')}
+                      placeholder="例：友達紹介クーポン"
+                      isInvalid={!!error.name}
+                    />
+                    {
+                      error.name && 
+                      <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+                    }
+                    </>
+                  ) : (
+                    <div>
+                      <ContentLoader
+                        height={39.375}
+                        width={549}
+                        speed={1}
+                      >
+                        <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+                      </ContentLoader>
+                    </div>
+                  )
                 }
               </Form.Group>
             </Col>
             <Col md={6} className="mb-4">
               <Form.Group id="lastName">
                 <Form.Label><Badge bg="danger" className="me-2">必須</Badge>使用上限数</Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  value={coupon.upper_limit}
-                  onChange={(e) => handleChange(e, 'upper_limit')}
-                  placeholder="例：20"
-                  isInvalid={!!error.upper_limit}
-                />
                 {
-                  error.upper_limit && 
-                  <Form.Control.Feedback type="invalid">{error.upper_limit[0]}</Form.Control.Feedback>
+                  isRendered ? (
+                    <>
+                    <Form.Control
+                      required
+                      type="number"
+                      value={coupon.upper_limit}
+                      onChange={(e) => handleChange(e, 'upper_limit')}
+                      placeholder="例：20"
+                      isInvalid={!!error.upper_limit}
+                    />
+                    {
+                      error.upper_limit && 
+                      <Form.Control.Feedback type="invalid">{error.upper_limit[0]}</Form.Control.Feedback>
+                    }
+                    </>
+                  ) : (
+                    <div>
+                      <ContentLoader
+                        height={39.375}
+                        width={549}
+                        speed={1}
+                      >
+                        <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+                      </ContentLoader>
+                    </div>
+                  )
                 }
+                
               </Form.Group>
             </Col>
           </Row>
@@ -104,37 +140,67 @@ export default () => {
             <Col md={6} className="mb-4">
               <Form.Group id="name">
                 <Form.Label><Badge bg="danger" className="me-2">必須</Badge>割引率(%)</Form.Label>
-                <InputGroup>
-                  <Form.Control
-                    required
-                    type="number"
-                    value={coupon.discount_price}
-                    onChange={(e) => handleChange(e, 'discount_price')}
-                    placeholder="例：20"
-                    isInvalid={!!error.discount_price}
-                  />
-                  <InputGroup.Text>％</InputGroup.Text>
-                  {
-                    error.discount_price && 
-                    <Form.Control.Feedback type="invalid">{error.discount_price}</Form.Control.Feedback>
-                  }
-                </InputGroup>
+                {
+                  isRendered ? (
+                    <InputGroup>
+                      <Form.Control
+                        required
+                        type="number"
+                        value={coupon.discount_price}
+                        onChange={(e) => handleChange(e, 'discount_price')}
+                        placeholder="例：20"
+                        isInvalid={!!error.discount_price}
+                      />
+                      <InputGroup.Text>％</InputGroup.Text>
+                      {
+                        error.discount_price && 
+                        <Form.Control.Feedback type="invalid">{error.discount_price}</Form.Control.Feedback>
+                      }
+                    </InputGroup>
+                  ) : (
+                    <div>
+                      <ContentLoader
+                        height={39.375}
+                        width={549}
+                        speed={1}
+                      >
+                        <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+                      </ContentLoader>
+                    </div>
+                  )
+                }
               </Form.Group>
             </Col>
             <Col md={6} className="mb-4">
               <Form.Group id="lastName">
                 <Form.Label><Badge bg="danger" className="me-2">必須</Badge>利用コード</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  value={coupon.code}
-                  onChange={(e) => handleChange(e, 'code')}
-                  placeholder="例：#1234abc"
-                  isInvalid={!!error.code}
-                />
                 {
-                  error.code && 
-                  <Form.Control.Feedback type="invalid">{error.code[0]}</Form.Control.Feedback>
+                  isRendered ? (
+                    <>
+                    <Form.Control
+                      required
+                      type="text"
+                      value={coupon.code}
+                      onChange={(e) => handleChange(e, 'code')}
+                      placeholder="例：#1234abc"
+                      isInvalid={!!error.code}
+                    />
+                    {
+                      error.code && 
+                      <Form.Control.Feedback type="invalid">{error.code[0]}</Form.Control.Feedback>
+                    }
+                    </>
+                  ) : (
+                    <div>
+                      <ContentLoader
+                        height={39.375}
+                        width={549}
+                        speed={1}
+                      >
+                        <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+                      </ContentLoader>
+                    </div>
+                  )
                 }
               </Form.Group>
             </Col>

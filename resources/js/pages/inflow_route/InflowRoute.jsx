@@ -59,16 +59,17 @@ export default () => {
     };
 
     useLayoutEffect(() => {
-      axios.get('/api/v1/get-liff-id').then((response) => {
+      axios.get('/api/v1/get-liff-id')
+      .then(async (response) => {
         setLiffId(response.data);
         const searchParams = {
           params: {page: 1}
         };
-        getInflowRoutes(searchParams, setInflows, setLinks, setPaginate, response.data)
-        }).catch((error) => {
-          console.error(error);
-        }).finally(() => {
-          setIsRendered(true);
+        await getInflowRoutes(searchParams, setInflows, setLinks, setPaginate, response.data)
+        setIsRendered(true);
+        
+      }).catch((error) => {
+        console.error(error);
       })
     }, [])
 

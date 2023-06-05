@@ -7,6 +7,8 @@ import Swal from "sweetalert2";
 import LinePreview from "@/components/line/LinePreview";
 import { getGreetingMessages, updateGreetingMessages, storeGreetingMessages, deleteGreetingMessages } from "@/pages/greeting/api/GreetingApiMethods";
 import { getGreetingMessageWithQuestionnaires, storeGreetingMessageWithQuestionnaires, updateGreetingMessageWithQuestionnaires } from "@/pages/greeting/api/GreetingWithQuestionnaireApiMethods";
+import GreetingContentLoader from "@/pages/greeting/GreetingContentLoader";
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 
 export default () => {
   const [messages, setMessages] = useState([
@@ -26,6 +28,7 @@ export default () => {
     'messages.0.image_path': null,
     'messages.0.video_path': null,
   })
+  const [isRendered, setIsRendered] = useState(false);
 
   const handlePreviewChange = (e, input, id, index = null) => {
     const currentMessage = messages.filter(message => (message.id === id))[0]
@@ -138,8 +141,10 @@ export default () => {
   }
 
   useEffect(() => {
-    getGreetingMessages(setMessages)
     getGreetingMessageWithQuestionnaires(setQreetingMessageWithQuestionnaire, setIsQuestionnaireAnswerButton)
+    getGreetingMessages(setMessages).then(
+      setIsRendered(true)
+    )
   }, []);
 
   useEffect(() => {
@@ -171,52 +176,74 @@ export default () => {
         </Button>
       </div>
       <div className="d-flex flex-row-reverse mt-3">
-        <Form.Group id="questionnaire">
-          <Form.Check
-            type="switch"
-            label="アンケート回答ボタンをつける"
-            id="questionnaire"
-            htmlFor="questionnaire"
-            checked={isQuestionnaireAnswerButton}
-            onChange={onChangeAnswerButton}
-          />
-        </Form.Group>
+        {
+          isRendered ? (
+            <Form.Group id="questionnaire">
+              <Form.Check
+                type="switch"
+                label="アンケート回答ボタンをつける"
+                id="questionnaire"
+                htmlFor="questionnaire"
+                checked={isQuestionnaireAnswerButton}
+                onChange={onChangeAnswerButton}
+              />
+            </Form.Group>
+          ) : (
+            <ContentLoader
+              height={34}
+              width={267.53}
+              speed={1}
+              backgroundColor={'#6e6e6e'}
+              foregroundColor={'#999'}
+              >
+                <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+            </ContentLoader>
+          )
+        }
       </div>
       {
-        messages && messages.map((message, index) =>
-          <div key={message.id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-            <MessageEditor
-              messageItem={message}
-              handlePreviewChange={handlePreviewChange}
-              handlePictureImageDelete={handlePictureVideoDelete}
-              handleDelete={handleDelete}
-              messageItems={messages}
-              setMessageItems={setMessages}
-              error={error}
-              index={index}
-              setError={setError}
-            />
-          </div>
-        )
-      }
-      {
-        messages.length < messageCount && (
-          <div className="privilege-button my-4">
-            <Button
-              variant="outline-gray-500"
-              className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
-              onClick={addEditCard}
-            >
-              <PlusIcon className="icon icon-xs me-2" /> 追加
+        isRendered ? (
+          <>
+          {
+            messages && messages.map((message, index) =>
+            <div key={message.id} className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+              <MessageEditor
+                messageItem={message}
+                handlePreviewChange={handlePreviewChange}
+                handlePictureImageDelete={handlePictureVideoDelete}
+                handleDelete={handleDelete}
+                messageItems={messages}
+                setMessageItems={setMessages}
+                error={error}
+                index={index}
+                setError={setError}
+              />
+            </div>
+          )
+          }
+          {
+            messages.length < messageCount && (
+              <div className="privilege-button my-4">
+                <Button
+                  variant="outline-gray-500"
+                  className="d-inline-flex align-items-center justify-content-center dashed-outline new-card w-100"
+                  onClick={addEditCard}
+                >
+                  <PlusIcon className="icon icon-xs me-2" /> 追加
+                </Button>
+              </div>
+            )
+          }
+          <div className="d-flex justify-content-end mb-3">
+            <Button onClick={onSaveMessage} variant="success" className="btn-default-success">
+              保存する
             </Button>
           </div>
+          </>
+        ) : (
+          <GreetingContentLoader />
         )
       }
-      <div className="d-flex justify-content-end mb-3">
-        <Button onClick={onSaveMessage} variant="success" className="btn-default-success">
-          保存する
-        </Button>
-      </div>
       <div className={`line-preview-sticky-nav ${messageDetailModal ? 'open-content' : 'close-content'}`} >
         <div className='mt-2 line-preview-button' onClick={() => setMessageDetailModal(!messageDetailModal)}>
           {

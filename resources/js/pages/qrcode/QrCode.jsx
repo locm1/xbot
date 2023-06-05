@@ -5,17 +5,19 @@ import { ChoosePhotoWidget } from "@/components/Widgets";
 import { PaperClipIcon, CheckIcon, HomeIcon, PlusIcon, DownloadIcon, CloudDownloadIcon } from "@heroicons/react/solid";
 import { getApiKeys, storeApiKey } from "@/pages/api_key/api/ApiKeyApiMethods";
 import { getBasicId } from "@/pages/qrcode/api/BasicIdApiMethods";
-
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 import QRCode from "qrcode.react";
 
 
 export default () => {
   const [basicId, setBasicId] = useState();
   const [uri, setUri] = useState('');
+  const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
     getBasicId(setBasicId).then(response => {
       setUri('https://line.me/R/ti/p/' + response);
+      setIsRendered(true)
     })
   }, [])
   
@@ -47,23 +49,36 @@ export default () => {
             </Card.Header>
             <Card.Body>
               <div className="d-flex align-items-center">
-                <div className="me-3">
-                  {uri &&
-                    <>
-                      <QRCode
-                        id={`add-friend-qr`}
-                        value={uri}
-                        size={200}
-                        level={"L"}
-                        includeMargin={false}
-                      />
-                      <Button onClick={() => downloadQR(`add-friend-qr`)} variant="gray-800" className="liff-product-detail-button mt-2">
-                        <CloudDownloadIcon className="icon icon-xs me-2" />
-                        Download QR
-                      </Button>
-                    </>
-                  }
-                </div>
+                {
+                  isRendered ? (
+                    <div className="me-3">
+                      {uri &&
+                        <>
+                          <QRCode
+                            id={`add-friend-qr`}
+                            value={uri}
+                            size={200}
+                            level={"L"}
+                            includeMargin={false}
+                          />
+                          <Button onClick={() => downloadQR(`add-friend-qr`)} variant="gray-800" className="liff-product-detail-button mt-2">
+                            <CloudDownloadIcon className="icon icon-xs me-2" />
+                            Download QR
+                          </Button>
+                        </>
+                      }
+                    </div>
+                  ) : (
+                    <ContentLoader
+                      height={300}
+                      width={352.3}
+                      speed={1}
+                    >
+                      <rect x="0" y="0" rx="3" ry="3" width="60%" height="60%" />
+                      <rect x="0" y="200" rx="3" ry="3" width="50%" height="15%" />
+                    </ContentLoader>
+                  )
+                }
               </div>
             </Card.Body>
           </Card>

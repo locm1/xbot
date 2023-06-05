@@ -1,15 +1,11 @@
 export const getGreetingMessages = async (setMessages) => {
-  axios.get('/api/v1/management/greeting-messages')
+  return await axios.get('/api/v1/management/greeting-messages')
   .then((response) => {
     console.log(response.data.greeting_messages);
 
-    if (response.data.greeting_messages.length > 0) {
-      setMessages(response.data.greeting_messages);
-    } else {
-      setMessages([
-        {id: 1, type: 1, text: '', image_path: null, video_path: null}
-      ]);
-    }
+    const greeting_messages = response.data.greeting_messages;
+    const resultMessages = (greeting_messages.length > 0) ? greeting_messages : [{id: 1, type: 1, text: '', image_path: null, video_path: null}];
+    setMessages(resultMessages);
   })
   .catch(error => {
       console.error(error);

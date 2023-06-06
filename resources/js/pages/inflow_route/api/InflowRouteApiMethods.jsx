@@ -1,5 +1,5 @@
 export const getInflowRoutes = async (params, setInflows, setLinks, setPaginate, liffId) => {
-  axios.get('/api/v1/management/inflow-routes', params)
+  return await axios.get('/api/v1/management/inflow-routes', params)
   .then((response) => {
     const inflow_routes = response.data.inflow_routes;
     const newData = inflow_routes.data.map(v => ({
@@ -17,6 +17,7 @@ export const getInflowRoutes = async (params, setInflows, setLinks, setPaginate,
       to: inflow_routes.to,
       total: inflow_routes.total,
     })
+    return inflow_routes;
   })
   .catch(error => {
       console.error(error);

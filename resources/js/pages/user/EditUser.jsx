@@ -8,14 +8,13 @@ import { HistoryTable } from "@/pages/user/HistoryTable";
 import { UserInfoForm } from "@/pages/user/UserInfoForm";
 import { QuestionnaireForm } from "@/pages/user/QuestionnaireForm";
 import { Link, useHistory, useParams } from 'react-router-dom';
-
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 import { showUser, getOccupations, getUserTag, getUserPurchase, getQuestionnaireAnswer } from "@/pages/user/api/UserApiMethods";
 import { getUserVisitorHistories, getUserVisitorHistoryCount, getUserOrders, getUserInviteHistories, getUserReserveHistories } from "@/pages/user/api/UserHistoryApiMethods";
-
+import EditUserContentLoader from "@/pages/user/loader/EditUserContentLoader";
+import UserProfileContentLoader from "@/pages/user/loader/UserProfileContentLoader";
 import { Paths } from "@/paths";
 import Swal from "sweetalert2";
-import UserTagForm from "./UserTagForm";
-
 
 export default () => {
   const history = useHistory();
@@ -63,7 +62,6 @@ export default () => {
   ]);
 
   useLayoutEffect(() => {
-    showUser(id, setUser, setIsRendered)
     getUserVisitorHistories(id, setVisitorHistory)
     getUserVisitorHistoryCount(id, setVisitCount)
     getOccupations(setOccupations)
@@ -73,6 +71,7 @@ export default () => {
     getUserPurchase(id, setPurchaseTime)
     getUserReserveHistories(id, setReserves)
     getQuestionnaireAnswer(id, setQuestionnaireAnswers)
+    showUser(id, setUser, setIsRendered)
   }, []);
 
   const confirmSave = () => {
@@ -84,7 +83,7 @@ export default () => {
   }
 
 
-  return isRendered ? (
+  return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
         <div className="d-block mb-4 mb-md-0">
@@ -112,24 +111,36 @@ export default () => {
           <Tab.Pane eventKey="user_info" className="pt-4">
             <Row>
               <Col xs={12} xl={8}>
-                <UserInfoForm
-                  handleChange={handleChange}
-                  saveUser={saveUser}
-                  {...user}
-                  setBirthDate={setBirthDate}
-                  birthDate={birthDate}
-                  occupations={occupations}
-                  selectedTags={selectedTags}
-                  tags={tags}
-                  setSelectedTags={setSelectedTags}
-                  getUserTag={getUserTag}
-                  setTags={setTags}
-                />
+                {
+                  isRendered ? (
+                    <UserInfoForm
+                      handleChange={handleChange}
+                      saveUser={saveUser}
+                      {...user}
+                      setBirthDate={setBirthDate}
+                      birthDate={birthDate}
+                      occupations={occupations}
+                      selectedTags={selectedTags}
+                      tags={tags}
+                      setSelectedTags={setSelectedTags}
+                      getUserTag={getUserTag}
+                      setTags={setTags}
+                    />
+                  ) : (
+                    <EditUserContentLoader />
+                  )
+                }
               </Col>
               <Col xs={12} xl={4}>
                 <Row>
                   <Col xs={12} className="mb-4">
-                    <ProfileCardWidget {...user} visitCount={visitCount} purchaseTime={purchaseTime} questionnaireAnswers={questionnaireAnswers} />
+                    {
+                      isRendered ? (
+                        <ProfileCardWidget {...user} visitCount={visitCount} purchaseTime={purchaseTime} questionnaireAnswers={questionnaireAnswers} />
+                      ) : (
+                        <UserProfileContentLoader />
+                      )
+                    }
                   </Col>
                 </Row>
               </Col>
@@ -168,7 +179,5 @@ export default () => {
         </Button>
       </div>
     </>
-  ) : (
-    <></>
-  );
+  )
 };

@@ -63,45 +63,64 @@ export default (props) => {
   };
 
   return (
-      <div className="d-flex border py-1 ps-3 align-items-center">
-        <Col className="px-0 mt-2 py-2">
-          {
-            isEdit.id == id ? (
-              <div className="mb-2 d-flex flex-wrap flex-md-nowrap">
-                <Form onSubmit={(e) => handleSubmit(e)}>
-                  <Form.Control 
-                    style={{width: '700px'}}
-                    className="tag-edit-form" 
-                    required type="text" 
-                    name="name" 
-                    value={updateName} 
-                    onChange={(e) => editName(e)} 
-                    placeholder="特典を入力してください" 
-                  />
-                </Form>
-                <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center">
-                  <div onClick={handleClick} className="tag-edit-button ms-2"><CheckIcon className="icon icon-xs" /></div>
-                  <div onClick={() => setIsEdit(!isEdit.isEdit)} className="tag-edit-button ms-2"><Button variant="close" /></div>
+    <Card border="bottom" className="hover-state rounded-0 rounded-top py-3" style={{height:'88px'}}>
+      <Card.Body className="d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-0">
+        <Col xs={12} lg={9} className="px-0 mb-md-0">
+          <div className="d-flex flex-wrap flex-md-nowrap align-items-center">
+            {
+              isEdit.id == id ? (
+                <>
+                  <Form>
+                    <Form.Control
+                      className="tag-edit-form"
+                      required
+                      type="text"
+                      name="name"
+                      value={updateName}
+                      onChange={(e) => editName(e)}
+                      onKeyDown={(e) => handleKeyDown(e)}
+                      placeholder="特典を入力してください"
+                      autoFocus
+                    />
+                  </Form>
+                  <Button
+                    variant="success"
+                    size="sm"
+                    className="ms-4"
+                    onClick={handleClick}
+                  >
+                    保存する
+                  </Button>
+                  <Button
+                    variant="gray-800"
+                    size="sm"
+                    className="ms-2"
+                    onClick={() => setIsEdit(!isEdit.isEdit)}
+                  >
+                    キャンセル
+                  </Button>
+                </>
+              ) : (
+                <div className="pt-2">
+                  <h6>{name}</h6>
                 </div>
-              </div>
-            ) : (
-                <h6 className="">
-                  {name}
-                  <PencilIcon className="icon icon-xs ps-2 pb-1 management-tag-name" onClick={() => handleIsEdit(id)} />
-                </h6>
-            )
-          }
+              )
+            }
+          </div>
         </Col>
-        <Col className="">
+        <Col xs={10} sm={2} lg={2} xl={2} className="d-none d-lg-block d-xl-inline-flex align-items-center ms-lg-auto text-right justify-content-center px-md-0">
           <div className="d-block d-sm-flex">
             <div className="ms-sm-3">
+              <Button onClick={() => handleIsEdit(id)} variant="info" size="sm" className="d-inline-flex align-items-center me-3">
+                編集
+              </Button>
               <Button onClick={() => showConfirmDeleteModal(id)} variant="danger" size="sm" className="d-inline-flex align-items-center">
                 削除
               </Button>
-              {/* <TrashIcon onClick={() => showConfirmDeleteModal(id)} role="button" className="icon icon-xs text-danger me-2 "></TrashIcon> */}
             </div>
           </div>
         </Col>
-      </div>
+      </Card.Body>
+    </Card>
   );
 };

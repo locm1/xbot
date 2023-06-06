@@ -7,7 +7,7 @@ import { first } from "lodash";
 import { deleteRichMenu } from "./RichMenuApiMethods";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import RichMenusContentLoader from "@/pages/richmenu/RichMenusContentLoader.jsx"
+import RichMenusContentLoader from "@/pages/richmenu/loader/RichMenusContentLoader.jsx"
 
 export const RichMenusTable = (props) => {
   const { menus, setMenus, isRendered } = props;

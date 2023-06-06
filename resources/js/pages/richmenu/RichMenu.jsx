@@ -23,6 +23,7 @@ import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
 import { pages } from "./PageURLConsts"
 import { Paths } from "@/paths";
 import { LoadingContext } from "@/components/LoadingContext";
+import RichMenuContentLoader from "@/pages/richmenu//loader/RichMenuContentLoader.jsx"
 
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
@@ -47,11 +48,16 @@ export default () => {
     { id: 12, img: squares_half_1, size: 1, type: 12 },
   ];
   const [ailias, setAilias] = useState([]);
+  const [isRendered, setIsRendered] = useState(false);
+
   useLayoutEffect(() => {
     axios.get('/api/v1/management/rich-menu-ailias')
       .then((response) => {
         const responseAlias = response.data.filter(v => v.richMenuId !== richMenuId);
         setAilias(responseAlias);
+        if (pathname.includes('/create')) {
+          setIsRendered(true)
+        }
       })
       .catch(error => {
         console.error(error);
@@ -64,15 +70,15 @@ export default () => {
         console.error(error);
       },);
   }, [])
+
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      setIsLoading(true);
       showRichMenu(richMenuId, setFormValue).then((response) => {
         setRichMenu(richmenu_1.filter(v => v.type == response.menuType)[0] ?? { id: 1, img: '', size: 6, type: 1 })
         getImage(richMenuId, setImage, setImagePath).finally(() => {
-          setIsLoading(false);
+          setIsRendered(true)
         }).catch(error => {
-          setIsLoading(false);
+          setIsRendered(true)
         })
       })
     }
@@ -82,7 +88,6 @@ export default () => {
       title: '', menuBarText: '', registAilias: false, menuType: 1,
     }
   );
-  const [action, setAction] = useState();
   const [previews, setPreviews] = useState([
     { id: 1, key: '', content: '', files: '' }
   ]);
@@ -97,34 +102,12 @@ export default () => {
     const value = +e.target.value
     setFormValue({ ...formValue, [e.target.name]: value })
   }
-
-  const handleClick = (e) => {
-    setFormValue({ ...formValue, [e.target.name]: !formValue[e.target.name] });
-  };
-
-  const handlePreviewChange = (e, input, previewIndex, files) => {
-    setFormId(e.target.id);
-    if (input == 'content') {
-      setPreviews(
-        previews.map((preview, index) => (index == previewIndex ? { ...preview, content: e.target.value } : preview))
-      )
-    }
-  };
   const [formId, setFormId] = useState();
-  const handleDelete = (previewIndex) => {
-    setPreviews(
-      previews.filter((preview, index) => (index !== previewIndex))
-    )
-  };
   const [templateModal, setTemplateModal] = useState(false);
   const [richMenu, setRichMenu] = useState({ id: 1, img: '', size: 6, type: 1 });
   const [active, setActive] = useState();
   const [templateActive, setTemplateActive] = useState([]);
   const [templateFrame, setTemplateFrame] = useState(true);
-
-  const handleClickTemplate = () => {
-    setTemplateFrame(!templateFrame);
-  };
   // const richMenu = richmenu_1.filter(v => v.type === formValue.menuType) ?? {id: 1, img: '', size: 6, type: 1};
 
   const SettingsItem = (props) => {
@@ -403,93 +386,100 @@ export default () => {
         <h1 className="page-title">リッチメニュー設定</h1>
         <Button onClick={() => { history.push(Paths.RichMenus.path) }} className="mt-2 animate-up-2">一覧へ戻る</Button>
       </div>
-      <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
-        <Card.Header className="bg-primary text-white px-3 py-2">
-          <h5 className="mb-0 fw-bolder">コンテンツ設定</h5>
-        </Card.Header>
-        <Card.Body>
-          <Row>
-            <Col md={12} className="mb-5">
-              <Form.Group id="title">
-                <Form.Label>タイトル</Form.Label>
-                <Form.Control required type="text" name="title" value={formValue.title} onChange={handleChange} placeholder="" />
-              </Form.Group>
-            </Col>
-          </Row>
-          <div className="d-flex justify-content-between">
-            <div className='line-rich-menu-preview me-2'>
-              <LinePreview
-                formValue={formValue}
-                files={imagePath}
-                formId={formId}
-                previews={previews}
-                page='richmenu'
-                richMenu={richMenu}
-                templateFrame={templateFrame}
-                templateActive={templateActive}
-                setTemplateActive={setTemplateActive}
-              />
-            </div>
-            <div className="rich-menu-content">
-              <ListGroup className="list-group-flush">
-                <SettingsItem
-                  id={1}
-                  title="テンプレート"
-                >
-                  <Button size="sm" className="" onClick={() => setTemplateModal(!templateModal)}>選択する</Button>
-                </SettingsItem>
-                <RichMenuImage
-                  files={imagePath}
-                  setImagePath={setImagePath}
-                />
-                <ListGroup.Item className="d-flex justify-content-between px-0 py-3 border-bottom">
-                  <Col md={3} className="h6 mb-1">アクション</Col>
-                  <AccordionAction formValue={formValue} handleChange={handleChange}></AccordionAction>
-                </ListGroup.Item>
-                {/* <SettingsItem
-                  id={3}
-                  title="テンプレートの枠線を表示"
-                  className='py-4'
-                >
-                  <MenuBarSetting 
-                    title=''
-                    handleClick={handleClickTemplate}
-                    id="template-check" 
-                    name="template-check" 
-                    value={templateFrame}
+      {
+        isRendered ? (
+          <Card border="0" className="shadow mb-4 rich-menu-content-wrap">
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">コンテンツ設定</h5>
+            </Card.Header>
+            <Card.Body>
+              <Row>
+                <Col md={12} className="mb-5">
+                  <Form.Group id="title">
+                    <Form.Label>タイトル</Form.Label>
+                    <Form.Control required type="text" name="title" value={formValue.title} onChange={handleChange} placeholder="" />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <div className="d-flex justify-content-between">
+                <div className='line-rich-menu-preview me-2'>
+                  <LinePreview
+                    formValue={formValue}
+                    files={imagePath}
+                    formId={formId}
+                    previews={previews}
+                    page='richmenu'
+                    richMenu={richMenu}
+                    templateFrame={templateFrame}
+                    templateActive={templateActive}
+                    setTemplateActive={setTemplateActive}
                   />
-                </SettingsItem> */}
-                <ListGroup.Item className={`px-0 py-4`}>
-                  <Row className="align-items-center">
-                    <Col md={4} className="h6 align-middle">メニューバーテキスト設定</Col>
-                    <Col md={8} className="">
-                      <Form.Group id="menu_bar_text">
-                        <Form.Control
-                          type="text"
-                          name="menuBarText"
-                          value={formValue.menuBarText}
-                          onChange={handleChange}
-                          placeholder="テキストを入力"
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              </ListGroup>
-            </div>
-          </div>
-        </Card.Body>
-        <Card.Footer>
-          <div className="d-flex justify-content-end gap-2 mt-2">
-            <Button variant="success" className="btn-default-success" onClick={() => saveMenu(true)}>
-              保存&デフォルト設定
-            </Button>
-            <Button variant="success" className="btn-default-success" onClick={() => saveMenu(false)}>
-              保存する
-            </Button>
-          </div>
-        </Card.Footer>
-      </Card>
+                </div>
+                <div className="rich-menu-content">
+                  <ListGroup className="list-group-flush">
+                    <SettingsItem
+                      id={1}
+                      title="テンプレート"
+                    >
+                      <Button size="sm" className="" onClick={() => setTemplateModal(!templateModal)}>選択する</Button>
+                    </SettingsItem>
+                    <RichMenuImage
+                      files={imagePath}
+                      setImagePath={setImagePath}
+                    />
+                    <ListGroup.Item className="d-flex justify-content-between px-0 py-3 border-bottom">
+                      <Col md={3} className="h6 mb-1">アクション</Col>
+                      <AccordionAction formValue={formValue} handleChange={handleChange}></AccordionAction>
+                    </ListGroup.Item>
+                    {/* <SettingsItem
+                      id={3}
+                      title="テンプレートの枠線を表示"
+                      className='py-4'
+                    >
+                      <MenuBarSetting 
+                        title=''
+                        handleClick={handleClickTemplate}
+                        id="template-check" 
+                        name="template-check" 
+                        value={templateFrame}
+                      />
+                    </SettingsItem> */}
+                    <ListGroup.Item className={`px-0 py-4`}>
+                      <Row className="align-items-center">
+                        <Col md={4} className="h6 align-middle">メニューバーテキスト設定</Col>
+                        <Col md={8} className="">
+                          <Form.Group id="menu_bar_text">
+                            <Form.Control
+                              type="text"
+                              name="menuBarText"
+                              value={formValue.menuBarText}
+                              onChange={handleChange}
+                              placeholder="テキストを入力"
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  </ListGroup>
+                </div>
+              </div>
+            </Card.Body>
+            <Card.Footer>
+              <div className="d-flex justify-content-end gap-2 mt-2">
+                <Button variant="success" className="btn-default-success" onClick={() => saveMenu(true)}>
+                  保存&デフォルト設定
+                </Button>
+                <Button variant="success" className="btn-default-success" onClick={() => saveMenu(false)}>
+                  保存する
+                </Button>
+              </div>
+            </Card.Footer>
+          </Card>
+        ) : (
+          <RichMenuContentLoader />
+        )
+      }
+      
     </>
   )
 }

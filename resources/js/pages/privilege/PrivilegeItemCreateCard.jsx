@@ -12,21 +12,47 @@ export default (props) => {
   };
 
   return (
-    <Form onSubmit={handleKeyDown}>
-      <InputGroup className="my-3">
-        <Form.Control
-          required
-          type="text"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="特典名を入力してください"
-          autoFocus={true}
-        />
-        <Button type="submit" variant="success" id="button-addon2">
-          保存する
-        </Button>
-      </InputGroup>
-    </Form>
+    <Card border="bottom" className="hover-state rounded-0 py-3" style={{height:'88px'}}>
+      <Card.Body className="d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-0">
+        <Col xs={12} lg={12} className="px-0 mb-4 mb-md-0">
+          <div className="mb-2 d-flex flex-wrap flex-md-nowrap align-items-center">
+            <div className="w-50">
+              <Form>
+                <Form.Control 
+                  required 
+                  type="text" 
+                  name="name" 
+                  value={name} 
+                  onChange={(e) => setName(e.target.value)} 
+                  onKeyDown={(e) => handleKeyDown(e)} 
+                  placeholder="特典名を入力してください" 
+                  autoFocus
+                />
+              </Form>
+            </div>
+            <div className="ms-3">
+              <Button
+                variant="success"
+                size="sm"
+                className="d-inline-flex align-items-center"
+                onClick={(e) => handleKeyDown(e)}
+              >
+                保存する
+              </Button>
+            </div>
+            <div className="ms-2">
+              <Button
+                variant="gray-800"
+                size="sm"
+                className="d-inline-flex align-items-center"
+                onClick={() => setIsCreate(!isCreate)}
+              >
+                キャンセル
+              </Button>
+            </div>
+          </div>
+        </Col>
+      </Card.Body>
+    </Card>
   );
 };

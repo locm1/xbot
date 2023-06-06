@@ -8,9 +8,10 @@ import { Paths } from "@/paths";
 import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 
 export const EditVisitorHistoryForm = (props) => {
-  const { memo, setMemo, createdAt, setCreatedAt, update } = props;
+  const { memo, setMemo, createdAt, setCreatedAt, update, isRendered } = props;
 
   const options = {
     locale: 'ja',
@@ -27,32 +28,60 @@ export const EditVisitorHistoryForm = (props) => {
           <Col md={12} className="mb-3">
             <Form.Group id="created_at">
               <Form.Label>来店日時</Form.Label>
-              <Flatpickr
-                options={ options }
-                value={createdAt}
-                render={(props, ref) => {
-                  return (
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <CalendarIcon className="icon icon-xs" />
-                      </InputGroup.Text>
-                      <Form.Control
-                        data-time_24hr
-                        required
-                        type="text"
-                        placeholder="YYYY-MM-DD"
-                        ref={ref}
-                      />
-                    </InputGroup>
-                  );
-                }}
-              />
+              {
+                isRendered ? (
+                  <Flatpickr
+                    options={ options }
+                    value={createdAt}
+                    render={(props, ref) => {
+                      return (
+                        <InputGroup>
+                          <InputGroup.Text>
+                            <CalendarIcon className="icon icon-xs" />
+                          </InputGroup.Text>
+                          <Form.Control
+                            data-time_24hr
+                            required
+                            type="text"
+                            placeholder="YYYY-MM-DD"
+                            ref={ref}
+                          />
+                        </InputGroup>
+                      );
+                    }}
+                  />
+                ) : (
+                  <div>
+                    <ContentLoader
+                      height={40}
+                      width="100%"
+                      speed={1}
+                    >
+                      <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
+                    </ContentLoader>
+                  </div>
+                )
+              }
             </Form.Group>
           </Col>
           <Col md={12} className="mb-3">
             <Form.Group id="firstName">
               <Form.Label>メモ</Form.Label>
-              <Form.Control as="textarea" value={memo} onChange={(e) => setMemo(e.target.value)} rows="3" />
+              {
+                isRendered ? (
+                  <Form.Control as="textarea" value={memo} onChange={(e) => setMemo(e.target.value)} rows="3" />
+                ) : (
+                  <div>
+                    <ContentLoader
+                      height={120}
+                      width="100%"
+                      speed={1}
+                    >
+                      <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
+                    </ContentLoader>
+                  </div>
+                )
+              }
             </Form.Group>
           </Col>
         </Row>

@@ -5,6 +5,8 @@ import { PostageForm } from "./PostageForm"
 
 import { updatePostage, getPostages, storePostage } from "@/pages/master/api/PostageApiMethods";
 import { storeEcommerceConfiguration, getEcommerceConfiguration, updateEcommerceConfiguration } from "@/pages/product/api/EcommerceConfigurationApiMethods";
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
+import PostageContentLoader from "@/pages/master/PostageContentLoader";
 
 export default () => {
   const [allApply, setAllApply] = useState();
@@ -19,6 +21,7 @@ export default () => {
     target_amount: '', postage: '', tel: '', email: '', cash_on_delivery_fee: '',
     'postages.0.postage' : ''
   });
+  const [isRendered, setIsRendered] = useState(false);
 
 
   const setPostageAll = () => {
@@ -63,8 +66,8 @@ export default () => {
   }
 
   useEffect(() => {
-    getPostages(setPostages, setIsUpdate)
     getEcommerceConfiguration(setFormValue, setIsDisbled)
+    getPostages(setPostages, setIsUpdate).then(setIsRendered(true))
   }, []);
 
 
@@ -85,41 +88,65 @@ export default () => {
           <Col md={6} className="mb-4">
             <Form.Group id="target-amount">
               <Form.Label><Badge bg="danger" className="me-2">必須</Badge>対象金額</Form.Label>
-              <InputGroup className="">
-                <Form.Control 
-                  type="number"
-                  placeholder="金額" 
-                  name="target_amount"
-                  value={formValue.target_amount}
-                  onChange={(e) => handleEnvChange(e, 'target_amount')}
-                  isInvalid={!!error.target_amount}
-                />
-                <InputGroup.Text>以上</InputGroup.Text>
-                {
-                  error.target_amount && 
-                  <Form.Control.Feedback type="invalid">{error.target_amount[0]}</Form.Control.Feedback>
-                }
-              </InputGroup>
+              {
+                isRendered ? (
+                  <InputGroup className="">
+                    <Form.Control 
+                      type="number"
+                      placeholder="金額" 
+                      name="target_amount"
+                      value={formValue.target_amount}
+                      onChange={(e) => handleEnvChange(e, 'target_amount')}
+                      isInvalid={!!error.target_amount}
+                    />
+                    <InputGroup.Text>以上</InputGroup.Text>
+                    {
+                      error.target_amount && 
+                      <Form.Control.Feedback type="invalid">{error.target_amount[0]}</Form.Control.Feedback>
+                    }
+                  </InputGroup>
+                ) : (
+                  <ContentLoader
+                    height={39}
+                    width="100%"
+                    speed={1}
+                  >
+                    <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+                  </ContentLoader>
+                )
+              }
             </Form.Group>
           </Col>
           <Col md={6} className="mb-4">
             <Form.Group id="postage">
               <Form.Label><Badge bg="danger" className="me-2">必須</Badge>送料</Form.Label>
-              <InputGroup className="">
-                <Form.Control
-                  type="number"
-                  placeholder="金額"
-                  name="postage"
-                  value={formValue.postage}
-                  onChange={(e) => handleEnvChange(e, 'postage')}
-                  isInvalid={!!error.postage}
-                />
-                <InputGroup.Text>円</InputGroup.Text>
-                {
-                  error.postage && 
-                  <Form.Control.Feedback type="invalid">{error.postage[0]}</Form.Control.Feedback>
-                }
-              </InputGroup>
+              {
+                isRendered ? (
+                  <InputGroup className="">
+                    <Form.Control
+                      type="number"
+                      placeholder="金額"
+                      name="postage"
+                      value={formValue.postage}
+                      onChange={(e) => handleEnvChange(e, 'postage')}
+                      isInvalid={!!error.postage}
+                    />
+                    <InputGroup.Text>円</InputGroup.Text>
+                    {
+                      error.postage && 
+                      <Form.Control.Feedback type="invalid">{error.postage[0]}</Form.Control.Feedback>
+                    }
+                  </InputGroup>
+                ) : (
+                  <ContentLoader
+                    height={39}
+                    width="100%"
+                    speed={1}
+                  >
+                    <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+                  </ContentLoader>
+                )
+              }
             </Form.Group>
           </Col>
         </Row>
@@ -135,16 +162,34 @@ export default () => {
       <Card.Body>
         <div className="pb-4 border-bottom">
           <Form.Label>全国一律に設定</Form.Label>
-          <InputGroup>
-            <InputGroup.Text><CurrencyYenIcon className="icon icon-xs" /></InputGroup.Text>
-            <Form.Control type="text" placeholder="金額" onChange={(e) => setAllApply(e.target.value)} />
-            <Button variant="secondary" onClick={() => setPostageAll()}>各都道府県に適用</Button>
-          </InputGroup>
+          {
+            isRendered ? (
+              <InputGroup>
+                <InputGroup.Text><CurrencyYenIcon className="icon icon-xs" /></InputGroup.Text>
+                <Form.Control type="text" placeholder="金額" onChange={(e) => setAllApply(e.target.value)} />
+                <Button variant="secondary" onClick={() => setPostageAll()}>各都道府県に適用</Button>
+              </InputGroup>
+            ) : (
+              <ContentLoader
+                height={39}
+                width="100%"
+                speed={1}
+              >
+                <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+              </ContentLoader>
+            )
+          }
         </div>
         <Row xs={1} md={2} className="justify-between">
-          {postages.map((postage, index) => (
-            <PostageForm {...postage} key={index} handleChange={handleChange} error={error} index={index} />
-          ))}
+          {
+            isRendered ? (
+              postages.map((postage, index) => (
+                <PostageForm {...postage} key={index} handleChange={handleChange} error={error} index={index} />
+              ))
+            ) : (
+              <PostageContentLoader />
+            )
+          }
         </Row>
       </Card.Body>
     </Card>

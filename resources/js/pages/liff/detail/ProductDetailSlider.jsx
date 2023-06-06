@@ -8,14 +8,14 @@ import noImage from "@img/img/noimage.jpg"
 export default (props) => {
   const { productImages } = props;
   const mainOptions = {
-    type: 'fade',
+    type: 'loop',
     perPage: 1,
     perMove: 1,
-    pagination: false,
-    height: '18rem',
+    pagination: true,
     drag: true,
-    lazyLoad: true,
-    arrows: productImages.length > 1 ? true : false,
+    lazyLoad: false,
+    // arrows: productImages.length > 1 ? true : false,
+    arrows: false,
   }
 
   const thumbsOptions = {
@@ -56,7 +56,7 @@ export default (props) => {
           </SplideSlide>
         )}
       </Splide>
-      {
+      {/* {
         productImages.length > 1 && (
           <Splide
             options={ thumbsOptions }
@@ -70,7 +70,7 @@ export default (props) => {
             )}
           </Splide>
         )
-      }
+      } */}
     </>
   );
 };

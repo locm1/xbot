@@ -26,7 +26,7 @@ export default (props) => {
   }
 
   return (
-    <div className="p-3 mt-4">
+    <div className="mt-4">
       <div className="d-flex align-items-center">
         <h2 className="fs-6 fw-bold mb-0">合わせてお得にご購入いただけます</h2>
       </div>

@@ -24,7 +24,7 @@ export default (props) => {
   }
 
   return (
-    <Card border="0" className="p-0">
+    <Card className="p-0">
       <Link to={link}>
         {
           page == 'cart' ? (
@@ -33,11 +33,11 @@ export default (props) => {
               <Card.Body className="p-3">
                 <Card.Title className="liff-product-card-title overflow-x-scroll">{relatedProduct.related_product.name}</Card.Title>
                 <Card.Subtitle className="fw-bold liff-product-card-price">￥{relatedProduct.related_product.price.toLocaleString()}</Card.Subtitle>
-                <Card.Subtitle className="fw-bold liff-product-card-price pt-3">
-                  <span className="liff-product-card-title">合計金額より</span><br />
-                  <span className="text-danger">{relatedProduct.discount_price.toLocaleString()}円OFF</span>
+                <Card.Subtitle className="fw-bold liff-product-card-price pt-2">
+                  <span className="liff-product-card-title">合計金額より</span>
+                  <div className="text-danger mt-2">{relatedProduct.discount_price.toLocaleString()}円OFF</div>
                 </Card.Subtitle>
-                <Button onClick={(e) => addCart(e, relatedProduct.related_product_id)} variant="tertiary" className="mt-3">
+                <Button onClick={(e) => addCart(e, relatedProduct.related_product_id)} variant="tertiary" className="mt-3 w-100">
                   追加
                 </Button>
               </Card.Body>

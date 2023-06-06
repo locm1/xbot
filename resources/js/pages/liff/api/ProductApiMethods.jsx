@@ -25,7 +25,7 @@ export const showProduct = async (id, setProduct) => {
 };
 
 export const getProductImages = async (id, setProductImages) => {
-  axios.get(`/api/v1/products/${id}/images`)
+  return await axios.get(`/api/v1/products/${id}/images`)
     .then((response) => {
       if (response.data.product_images.length > 0) {
         setProductImages(response.data.product_images);
@@ -42,7 +42,7 @@ export const getProductImages = async (id, setProductImages) => {
 };
 
 export const getProductCategory = async (id, setCategory) => {
-  axios.get(`/api/v1/products/${id}/category`)
+  return await axios.get(`/api/v1/products/${id}/category`)
     .then((response) => {
       setCategory(response.data.category)
       console.log(response.data.category);

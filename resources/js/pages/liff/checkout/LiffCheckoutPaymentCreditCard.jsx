@@ -15,6 +15,7 @@ import { getPublicKey } from "@/pages/liff/api/PayJpKeyApiMethods";
 
 export default () => {
   const inputRef = useRef();
+  const [isRendered, setIsRendered] = useState(false);
   const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState();
@@ -23,11 +24,10 @@ export default () => {
   });
 
   useEffect(() => {
-    setIsLoading(true)
     getPublicKey().then(response => showCreditCardForm(response))
     const idToken = liff.getIDToken();
     getUser(idToken, setUser).then(
-      response => showPaymentMethod(response.id, setIsLoading).then(response => setPaymentMethod(response))
+      response => showPaymentMethod(response.id, setIsRendered).then(response => setPaymentMethod(response))
     )
     //showPaymentMethod(101, setPaymentMethod)
   }, []);

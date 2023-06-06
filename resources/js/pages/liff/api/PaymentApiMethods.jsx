@@ -1,4 +1,4 @@
-export const showPaymentMethod = async (userId, setIsLoading) => {
+export const showPaymentMethod = async (userId, setIsRendered) => {
   return await axios.get(`/api/v1/users/${userId}/payments`)
   .then((response) => {
     const order_payment_method = response.data.order_payment_methods
@@ -7,7 +7,8 @@ export const showPaymentMethod = async (userId, setIsLoading) => {
     }
     console.log(order_payment_method);
 
-    setIsLoading(false)
+    setIsRendered(true)
+    console.log('runnnnn')
     return order_payment_method == null ? new_order_payment_method : order_payment_method;
   })
   .catch(error => {

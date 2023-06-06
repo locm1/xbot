@@ -19,6 +19,7 @@ import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurati
 
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
+  const [isRendered, setIsRendered] = useState(false);
   const { id } = useParams();
   const [order, setOrder] = useState({
     last_name: '', first_name: '', zipcode: '', prefecture: '', city: '', 
@@ -75,11 +76,10 @@ export default () => {
   }
 
   useEffect(() => {
-    setIsLoading(true);
     const idToken = liff.getIDToken();
     getEcommerceConfiguration(setEcommerceConfiguration)
     getUser(idToken, setUser).then(response => {
-      showPaymentMethod(response.id, setIsLoading).then(payment_response => {
+      showPaymentMethod(response.id, setIsRendered).then(payment_response => {
         setPaymentMethod(payment_response)
         payment_response.payjp_default_card_id && showCard(response.id, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard)
         showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount)

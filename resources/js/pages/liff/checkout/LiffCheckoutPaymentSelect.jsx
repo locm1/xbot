@@ -15,7 +15,7 @@ import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pa
 import { getEcommerceConfigurationAndPayment } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
-  const { setIsLoading } = useContext(LoadingContext);
+  const [isRendered, setIsRendered] = useState(false);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState({
     payment_method: null
@@ -35,7 +35,6 @@ export default () => {
 
   const onClick = () => {
     console.log(paymentMethod.payment_method);
-    setIsLoading(true);
     if ('id' in paymentMethod) {
       if (paymentMethod.payment_method == 1) {
         paymentMethod.payjp_default_card_id = selectCardId
@@ -53,15 +52,13 @@ export default () => {
   };
 
   const onSaveComplete = () => {
-    setIsLoading(false);
     history.push(Paths.LiffCheckout.path);
   };
 
   useEffect(() => {
-    setIsLoading(true);
     const idToken = liff.getIDToken();
     getUser(idToken, setUser).then(response => {
-      showPaymentMethod(response.id, setIsLoading).then(
+      showPaymentMethod(response.id, setIsRendered).then(
         response => {
           console.log(response);
           setPaymentMethod(response == null ? {payment_method: 1} : response)

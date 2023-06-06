@@ -36,7 +36,7 @@ export default () => {
     <>
       <ContentLoader
       height={750}
-      width={"auto"}
+      width={"100%"}
       backgroundColor={'#6e6e6e'}
       foregroundColor={'#999'}
       >

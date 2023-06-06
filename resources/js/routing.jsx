@@ -570,13 +570,13 @@ const Routing = () => {
       <LiffECRoute exact path={Paths.LiffPickupProducs.path} component={LiffProductCategories} />
       <LiffRoute exact path={Paths.LiffCarts.path} component={LiffCarts} />
       <RegisteredLiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
-      <RegisteredLiffRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
-      <RegisteredLiffRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
-      <RegisteredLiffRoute exact path={Paths.LiffCheckoutEditAddress.path} component={LiffCheckoutAddAddress} />
-      <RegisteredLiffRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
-      <RegisteredLiffRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
+      <LiffECRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
+      <LiffECRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
+      <LiffECRoute exact path={Paths.LiffCheckoutEditAddress.path} component={LiffCheckoutAddAddress} />
+      <LiffECRoute exact path={Paths.LiffCheckoutDelivery.path} component={LiffCheckoutDelivery} />
+      <LiffECRoute exact path={Paths.LiffCheckoutPayment.path} component={LiffCheckoutPaymentSelect} />
       <LiffCreditCardRoute exact path={Paths.LiffCheckoutPaymentCreditCard.path} component={LiffCheckoutPaymentCreditCard} />
-      <RegisteredLiffRoute exact path={Paths.LIffCheckoutAddCoupon.path} component={LIffCheckoutAddCoupon} />
+      <LiffECRoute exact path={Paths.LIffCheckoutAddCoupon.path} component={LIffCheckoutAddCoupon} />
       <LiffECRoute exact path={Paths.LiffOrderComplete.path} component={OrderComplete} />
       <LiffECRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffECRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />

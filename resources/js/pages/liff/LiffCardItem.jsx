@@ -5,6 +5,7 @@ import { Paths } from "@/paths";
 import noImage from "@img/img/noimage.jpg"
 import moment from "moment-timezone";
 import { isSalePeriod } from "@/components/common/IsSalePeriod";
+import ContentLoader from "react-content-loader";
 
 export const CartItem = (props) => {
   const { id, product_id, quantity, product, history, deadline } = props;
@@ -74,7 +75,7 @@ export const OrderDetailItem = (props) => {
   return (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
-        <Col xs="6" className="px-0">
+        <Col xs="7" className="px-0">
           <div className="m-1">
             <h5 className="fs-6 text-dark mb-0">商品合計</h5>
             {postage > 0 && (
@@ -94,7 +95,7 @@ export const OrderDetailItem = (props) => {
             <h3 className="text-dark mb-0 mt-2 liff-pay-total-title">お支払い金額（税込）</h3>
           </div>
         </Col>
-        <Col xs="6" className="">
+        <Col xs="5" className="">
           <div className="m-1 text-end">
             {orderTotal && <h5 className="fs-6 text-dark mb-0">￥ {orderTotal.toLocaleString()}</h5>}
             {postage > 0 && <h5 className="fs-6 text-dark mb-0 mt-1">￥ {postage.toLocaleString()}</h5>}
@@ -219,7 +220,7 @@ export const PaymentDetailItem = (props) => {
               )
             } else {
               return (
-                <div className="m-1 mt-3">
+                <div className="m-1">
                   <h4 className="fs-6 text-dark">支払い方法を選択してください</h4>
                 </div>
               )
@@ -232,7 +233,7 @@ export const PaymentDetailItem = (props) => {
 }
 
 export const DeliveryAddressItem = (props) => {
-  const { id, last_name, first_name, zipcode, prefecture, city, address, building_name, tel } = props;
+  const { id, last_name, first_name, zipcode, prefecture, city, address, building_name, tel, isRendered } = props;
   const location = useLocation().pathname;
   const target_split = zipcode && zipcode.substr(0, 3);
 
@@ -251,7 +252,7 @@ export const DeliveryAddressItem = (props) => {
     }
   }
 
-  return (
+  return isRendered ? (
     <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
       <Row className="">
         <Col className="px-0">
@@ -274,5 +275,18 @@ export const DeliveryAddressItem = (props) => {
         </Col>
       </Row>
     </ListGroup.Item>
-  );
+  ) : (
+    <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+      <ContentLoader
+        height={120}
+        width={"100%"}
+        speed={1}
+      >
+        <rect x="0" y="5" rx="3" ry="3" width="130" height="18" />
+        <rect x="0" y="33" rx="3" ry="3" width="130" height="18" />
+        <rect x="0" y="61" rx="3" ry="3" width={"100%"} height="18" />
+        <rect x="0" y="89" rx="3" ry="3" width="140" height="18" />
+      </ContentLoader>
+    </ListGroup.Item>
+  )
 }

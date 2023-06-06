@@ -10,6 +10,7 @@ import UserInformation from "@/components/UserInformation.jsx";
 
 import { showVisitorHistory, showUserByVisitorHistory, updateVisitorHistory } from "@/pages/visitor/api/VisitorHistoryApiMethods";
 import { getUserVisitorHistoryCount } from "@/pages/user/api/UserHistoryApiMethods";
+import EditVisitorHistoryContentLoader from "@/pages/visitor/EditVisitorHistoryContentLoader";
 
 export default () => {
   const history = useHistory();
@@ -22,6 +23,7 @@ export default () => {
     zipcode: '', prefecture: '', city: '', address: '', building_name: '', tel: '', img_path: '' 
   });
   const [visitCount, setVisitCount] = useState(0);
+  const [isRendered, setIsRendered] = useState(false);
 
   const userInformations = {
     name: `${user.last_name} ${user.first_name}`,
@@ -53,7 +55,7 @@ export default () => {
   useEffect(() => {
     showVisitorHistory(id, setMemo, setCreatedAt);
     showUserByVisitorHistory(id, setUser);
-    getUserVisitorHistoryCount(state, setVisitCount)
+    getUserVisitorHistoryCount(state, setVisitCount).then(setIsRendered(true))
   }, []);
 
   return (
@@ -72,10 +74,17 @@ export default () => {
             createdAt={createdAt}
             setCreatedAt={setCreatedAt}
             update={update}
+            isRendered={isRendered}
           />
         </Col>
         <Col xs={12} xl={4}>
-          <UserInformation {...userInformations} details={details} img_path={user.img_path} />
+          {
+            isRendered ? (
+              <UserInformation {...userInformations} details={details} img_path={user.img_path} />
+            ) : (
+              <EditVisitorHistoryContentLoader />
+            )
+          }
         </Col>
       </Row>
         <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">

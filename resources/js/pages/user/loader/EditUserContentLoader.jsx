@@ -22,7 +22,7 @@ export default () => {
                 <div>
                   <ContentLoader
                     height={39.375}
-                    width={401}
+                    width="100%"
                     speed={1}
                   >
                     <rect x="0" y="0" rx="3" ry="3" width="100%" height="70%" />
@@ -36,7 +36,7 @@ export default () => {
                 <div>
                   <ContentLoader
                     height={39.375}
-                    width={401}
+                    width="100%"
                     speed={1}
                   >
                     <rect x="0" y="0" rx="3" ry="3" width="100%" height="70%" />
@@ -49,7 +49,7 @@ export default () => {
                 <Form.Label>郵便番号</Form.Label>
                 <ContentLoader
                   height={39.375}
-                  width={259}
+                  width="100%"
                   speed={1}
                 >
                   <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
@@ -61,7 +61,7 @@ export default () => {
                 <Form.Label>都道府県</Form.Label>
                 <ContentLoader
                   height={39.375}
-                  width={259}
+                  width="100%"
                   speed={1}
                 >
                   <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
@@ -73,7 +73,7 @@ export default () => {
                 <Form.Label>市区町村</Form.Label>
                 <ContentLoader
                   height={39.375}
-                  width={259}
+                  width="100%"
                   speed={1}
                 >
                   <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
@@ -85,7 +85,7 @@ export default () => {
                 <Form.Label>丁目・番地・号</Form.Label>
                 <ContentLoader
                   height={39.375}
-                  width={259}
+                  width="100%"
                   speed={1}
                 >
                   <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
@@ -97,7 +97,7 @@ export default () => {
                 <Form.Label>建物名/会社名</Form.Label>
                 <ContentLoader
                   height={39.375}
-                  width={259}
+                  width="100%"
                   speed={1}
                 >
                   <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
@@ -109,7 +109,7 @@ export default () => {
                 <Form.Label>電話番号</Form.Label>
                 <ContentLoader
                   height={39.375}
-                  width={259}
+                  width="100%"
                   speed={1}
                 >
                   <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
@@ -122,7 +122,7 @@ export default () => {
                 <div>
                   <ContentLoader
                     height={39.375}
-                    width={259}
+                    width="100%"
                     speed={1}
                   >
                     <rect x="0" y="0" rx="3" ry="3" width="100%" height="70%" />
@@ -137,7 +137,7 @@ export default () => {
                   <div>
                     <ContentLoader
                       height={39.375}
-                      width={542.6}
+                      width="100%"
                       speed={1}
                     >
                       <rect x="0" y="0" rx="3" ry="3" width="100%" height="70%" />
@@ -148,7 +148,7 @@ export default () => {
               <Col xs={4}>
                 <ContentLoader
                   height={39.375}
-                  width={259.3}
+                  width="100%"
                   speed={1}
                 >
                   <rect x="0" y="0" rx="3" ry="3" width="100%" height="70%" />

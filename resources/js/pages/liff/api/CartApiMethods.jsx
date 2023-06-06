@@ -108,8 +108,8 @@ export const getCartsAndRelatedProducts = async (userId, setCarts, setItemsExist
   });
 };
 
-export const searchCarts = async (userId, params, setCarts, setItemsExistInCart, setIsLoading) => {
-  axios.get(`/api/v1/users/${userId}/carts`, params)
+export const searchCarts = async (userId, params, setCarts, setItemsExistInCart) => {
+  return await axios.get(`/api/v1/users/${userId}/carts`, params)
   .then((response) => {
     const carts = response.data.carts;
     setCarts(carts.cart_items)
@@ -119,11 +119,10 @@ export const searchCarts = async (userId, params, setCarts, setItemsExistInCart,
     } else {
       setItemsExistInCart(false);
     }
-    setIsLoading(false)
+    return carts;
   })
   .catch(error => {
       console.error(error);
-      setIsLoading(false)
   });
 };
 

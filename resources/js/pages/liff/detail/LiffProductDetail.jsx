@@ -74,19 +74,21 @@ export default () => {
   };
 
   useEffect(() => {
-    // setIsLoading(true);
-    // const idToken = liff.getIDToken();
-    showProduct(id, setProduct)
-    getProductImages(id, setProductImages);
-    getProductCategory(id, setCategory);
-    const searchParams = {
-      params: {product_id: id}
+    const idToken = liff.getIDToken();
+
+    const fetchData = async () => {
+      showProduct(id, setProduct)
+      getProductImages(id, setProductImages);
+      getProductCategory(id, setCategory);
+      const searchParams = {
+        params: {product_id: id}
+      };
+      const user = await getUser(idToken, setUser)
+      await searchCarts(user.id, searchParams, setCarts, setItemsExistInCart)
     };
-    // getUser(idToken, setUser).then(response => {
-    //   searchCarts(response.id, searchParams, setCarts, setItemsExistInCart, setIsLoading)
-    // }).catch(error => {
-    //   setIsLoading(false);
-    // })
+
+    fetchData()
+
   }, []);
 
   return (

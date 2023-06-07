@@ -99,6 +99,7 @@ import LiffProductReservationComplete from '@/pages/liff/product_reservation/Pro
 import LiffFriendAdd from '@/pages/liff/friend/LiffFriendAdd';
 import LiffInflowRoute from '@/pages/liff/inflow_route/InflowRoute';
 import LiffServerError from '@/pages/error/InternalServerError';
+import LiffEventHistories from '@/pages/liff/event_histories/LiffEventHistories';
 
 // components
 import Footer from '@/components/Footer';
@@ -597,6 +598,7 @@ const Routing = () => {
       <NoFooterRoute exact path={Paths.LiffVisitorHistoryResult.path} component={LiffVisitorHistoryResult} />
       <NoFooterRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
       <NoFooterRoute exact path={Paths.LiffServerError.path} component={LiffServerError} />
+      <LiffRoute exact path={Paths.LiffEventHistories.path} component={LiffEventHistories} />
 
       <Route component={NotFound} />
     </Switch>

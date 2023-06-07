@@ -33,8 +33,8 @@ export const storeRelatedProdcutInCart = async (userId, formValue ,setCarts, car
   });
 };
 
-export const getCarts = async (userId, setCarts, setItemsExistInCart, setRelatedProducts, setIsRendered) => {
-  return await axios.get(`/api/v1/users/${userId}/carts`)
+export const getCarts = async (userId, setCarts, setItemsExistInCart, setRelatedProducts, setIsRendered, liffToken) => {
+  return await axios.get(`/api/v1/users/${userId}/carts`, {params: {liffToken: liffToken}})
   .then((response) => {
     const carts = response.data.carts;
     if (carts.cart_items.length > 0) {

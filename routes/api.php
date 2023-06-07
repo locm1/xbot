@@ -229,32 +229,36 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // LIFF側で叩くAPI
 Route::group(['prefix' => 'v1'], function() {
+    Route::middleware('auth.liff')->group(function() {
+        Route::group(['prefix' => 'users/{user}'], function() {
+            Route::apiResource('coupons', LiffCouponController::class);
+            Route::apiResource('carts', CartController::class);
+            Route::post('user-deliveryaddress-questionnaireanswers', LiffQuestionnaireAnswerController::class);
+            Route::apiResource('destinations', LiffOrderDestinationController::class);
+            Route::put('destinations', UpdateOrderDestinationController::class);
+            Route::get('selected-destination', SelectedOrderDestinationController::class);
+            Route::apiResource('payments', PaymentMethodController::class)->only([
+                'index', 'store', 'update'
+            ]);
+            Route::get('customers/{customer_id}', [CustomerController::class, 'show']);
+            Route::post('customers', [CustomerController::class, 'store']);
+            Route::put('customers', [CustomerController::class, 'update']);
+            Route::apiResource('cards', CardController::class);
+            Route::apiResource('orders', LiffOrderController::class);
+            Route::apiResource('product/reservations', ProductReservationController::class);
+            Route::get('event/reservations', [EventReservationController::class, 'index']);
+            Route::apiResource('inviter-incentives', LiffInviterIncentiveUserController::class);
+            Route::apiResource('invitee-incentives', LiffInviteeIncentiveUserController::class);
+            Route::apiResource('visitor-histories', LiffVisitorHistoryController::class);
+            Route::get('invites', InviteController::class);
+        });
+    });
     Route::apiResource('products', LiffProductController::class)->only([
         'index', 'show'
     ]);
     Route::get('products/{product}/images', [LiffProductImageController::class, 'index']);
     Route::get('products/{product}/category', LiffProductCategoryController::class);
     Route::apiResource('users', LiffUserController::class);
-    Route::apiResource('users/{user}/coupons', LiffCouponController::class);
-    Route::apiResource('users/{user}/carts', CartController::class);
-    Route::post('users/{user}/user-deliveryaddress-questionnaireanswers', LiffQuestionnaireAnswerController::class);
-    Route::apiResource('users/{user}/destinations', LiffOrderDestinationController::class);
-    Route::put('users/{user}/destinations', UpdateOrderDestinationController::class);
-    Route::get('users/{user}/selected-destination', SelectedOrderDestinationController::class);
-    Route::apiResource('users/{user}/payments', PaymentMethodController::class)->only([
-        'index', 'store', 'update'
-    ]);
-    Route::get('users/{user}/customers/{customer_id}', [CustomerController::class, 'show']);
-    Route::post('users/{user}/customers', [CustomerController::class, 'store']);
-    Route::put('users/{user}/customers', [CustomerController::class, 'update']);
-    Route::apiResource('users/{user}/cards', CardController::class);
-    Route::apiResource('users/{user}/orders', LiffOrderController::class);
-    Route::apiResource('users/{user}/product/reservations', ProductReservationController::class);
-    Route::get('users/{user}/event/reservations', [EventReservationController::class, 'index']);
-    Route::apiResource('users/{user}/inviter-incentives', LiffInviterIncentiveUserController::class);
-    Route::apiResource('users/{user}/invitee-incentives', LiffInviteeIncentiveUserController::class);
-    Route::apiResource('users/{user}/visitor-histories', LiffVisitorHistoryController::class);
-    Route::get('users/{user}/invites', InviteController::class);
     Route::get('user-info-statuses', [UserInfoStatusController::class, 'index']);
     Route::get('postages', LiffPostageController::class);
     Route::get('address', SearchZipcodeController::class);

@@ -96,6 +96,7 @@ export const Paths = {
     LiffInflowRoute: { path: "/inflow-route/:key" },
     LiffInit: { path: "/liff" },
     LiffServerError: { path: "/internal-server-error" },
+    LiffEventHistories: { path: "/event-histories" },
 
 
     DashboardTraffic: { path: "/dashboard/traffic-and-engagement" },

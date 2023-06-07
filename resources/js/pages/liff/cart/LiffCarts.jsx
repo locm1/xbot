@@ -42,7 +42,11 @@ export default () => {
 
   useEffect(() => {
     const idToken = liff.getIDToken();
-    getUser(idToken, setUser).then(response => getCarts(response.id, setCarts, setItemsExistInCart, setRelatedProducts, setIsRendered))
+    const getUserCarts = async () => {
+      const response = await getUser(idToken, setUser)
+      getCarts(response.id, setCarts, setItemsExistInCart, setRelatedProducts, setIsRendered, idToken)
+    }
+    getUserCarts();
   }, []);
 
   useEffect(() => {

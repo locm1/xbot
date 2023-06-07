@@ -13,10 +13,10 @@ class EventService
 
     public function index($request): Collection
     {
-        $events = Event::whereYear('created_at', $request->year)
-            ->whereMonth('created_at', $request->month)
+        $events = Event::whereYear('start_date', $request->year)
+            ->whereMonth('start_date', $request->month)
             ->get()->groupBy(function ($event) {
-            return Carbon::parse($event->created_at)->format('Y-m-d');
+            return Carbon::parse($event->start_date)->format('Y-m-d');
         });
         return $events;
     }

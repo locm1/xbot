@@ -41,7 +41,7 @@ export const OrdersTable = (props) => {
   }
 
   const TableRow = (props) => {
-    const { id, created_at, user, prefecture, city, address, building_name, purchase_amount, status, shipping_fee, user_id } = props;
+    const { id, created_at, user, payjp_url, purchase_amount, status, shipping_fee, user_id } = props;
     const userLink = Paths.EditUser.path.replace(':id', user_id);
     const link = Paths.OrderDetail.path.replace(':id', id);
     const date = new Date(created_at)
@@ -88,11 +88,13 @@ export const OrdersTable = (props) => {
           </Card.Link>
         </td>
         <td>
-          <div className="order-delivery_address">
-            <span className="fw-normal">
-              {prefecture}{city}{address} {building_name}
-            </span>
-          </div>
+          {
+            payjp_url && (
+              <Button href={payjp_url} target="_blank" rel="noreferrer" variant="payjp" size="sm" className="d-inline-flex align-items-center me-3">
+                決済詳細【PAY.JP】
+              </Button>
+            )
+          }
         </td>
         <td>
         <Card.Link className="d-flex align-items-center" onClick={() => changeStatusModal(id)}>
@@ -120,7 +122,7 @@ export const OrdersTable = (props) => {
               <th className="border-gray-200">購入金額</th>
               <th className="border-gray-200">送料</th>
               <th className="border-gray-200">氏名</th>
-              <th className="border-gray-200">配送先住所</th>
+              <th className="border-gray-200">Pay.jp決済詳細</th>
               <th className="border-gray-200">ステータス</th>
               <th className="border-gray-200">詳細</th>
             </tr>

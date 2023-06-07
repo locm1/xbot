@@ -251,7 +251,7 @@ export default () => {
         <div className="liff-product-list">
           {
             Object.keys(events).length > 0 ? (
-              Object.keys(events).map((event, index) => <LiffVisitorPrivilegeCard key={`event-month-${index}`} event={event} />)
+              Object.keys(events).sort().map((event, index) => <LiffVisitorPrivilegeCard key={`event-month-${index}`} event={event} />)
             ) : (
               <EventNotFoundCard />
             )

@@ -16,7 +16,8 @@ export const getProducts = async (setProducts, setIsLoading) => {
 export const showProduct = async (id, setProduct) => {
   return await axios.get(`/api/v1/products/${id}`)
     .then((response) => {
-      setProduct(response.data.product);
+      const product = response.data.product;
+      setProduct(product);
     })
     .catch(error => {
       console.error(error);

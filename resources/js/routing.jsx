@@ -570,7 +570,8 @@ const Routing = () => {
       <LiffECRoute exact path={Paths.LiffProducts.path} component={LiffProducts} />
       <LiffECRoute exact path={Paths.LiffPickupProducs.path} component={LiffProductCategories} />
       <LiffRoute exact path={Paths.LiffCarts.path} component={LiffCarts} />
-      <RegisteredLiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
+      {/* <RegisteredLiffRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} /> */}
+      <LiffECRoute exact path={Paths.LiffCheckout.path} component={LiffCheckout} />
       <LiffECRoute exact path={Paths.LiffCheckoutDestinations.path} component={LiffCheckoutAddress} />
       <LiffECRoute exact path={Paths.LiffCheckoutAddress.path} component={LiffCheckoutAddAddress} />
       <LiffECRoute exact path={Paths.LiffCheckoutEditAddress.path} component={LiffCheckoutAddAddress} />

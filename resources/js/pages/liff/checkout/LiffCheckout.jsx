@@ -46,7 +46,7 @@ export default () => {
   const [ecommerceConfiguration, setEcommerceConfiguration] = useState({
     cash_on_delivery_fee: '', is_enabled: 1,
   });
-  const orderTotal = carts.reduce((cart, i) => cart + i.totalAmount, 0);
+  const orderTotal = carts && carts.reduce((cart, i) => cart + i.totalAmount, 0);
   const [postage, setPostage] = useState(0);
   const discountedTotalAmount = relatedProducts.reduce((relatedProduct, i) => relatedProduct + i.discount_price, 0)
   const discount_rate_decimal = coupon.discount_price / 100.0
@@ -155,8 +155,8 @@ export default () => {
             params: { name: destination_response.prefecture }
           };
           const postage = await searchPostage(searchParams);
-          await getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts);
-          await getEcommerceConfigurationAndPostage(response, postage[0], setPostage, setEcommerceConfiguration);
+          const carts = await getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts);
+          await getEcommerceConfigurationAndPostage(carts, postage[0], setPostage, setEcommerceConfiguration);
         }
         const payment_response = await showPaymentMethod(response.id);
         setPaymentMethod(payment_response);

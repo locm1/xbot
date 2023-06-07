@@ -1,7 +1,9 @@
 export const getPrefectures = async (setPrefectures) => {
-  axios.get('/api/v1/prefectures')
+  return await axios.get('/api/v1/prefectures')
   .then((response) => {
-    setPrefectures(response.data.prefectures);
+    const prefectures = response.data.prefectures;
+    setPrefectures(prefectures);
+    return prefectures;
   })
   .catch(error => {
       console.error(error);

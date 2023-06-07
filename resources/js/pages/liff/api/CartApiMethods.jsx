@@ -70,11 +70,9 @@ export const getCartsAndRelatedProducts = async (userId, setCarts, setItemsExist
   return await axios.get(`/api/v1/users/${userId}/carts`)
   .then((response) => {
     const carts = response.data.carts;
-    if (carts.cart_items.length > 0) {
-      setItemsExistInCart(true);
-    } else {
-      setItemsExistInCart(false);
-    }
+    const itemsExistInCart = (carts.cart_items.length > 0) ? true : false;
+    setItemsExistInCart(itemsExistInCart);
+
     setCarts(
       carts.cart_items.map(cart => {
         if (isSalePeriod(cart.product.product_sale.start_date, cart.product.product_sale.end_date)) {

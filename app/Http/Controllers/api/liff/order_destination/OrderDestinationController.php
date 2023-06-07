@@ -52,7 +52,7 @@ class OrderDestinationController extends Controller
      */
     public function update(UpdateOrderDestinationRequest $request, User $user, OrderDestination $destination)
     {
-        $order_destination = $this->order_destination_service->update($request, $destination);
+        $order_destination = $this->order_destination_service->update($request, $user, $destination);
         return response()->json(['order_destination' => $order_destination], 200);
     }
 

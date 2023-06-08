@@ -277,8 +277,6 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('inflow-route-users', InflowRouteUserController::class);
     Route::get('get-liff-id', GetLiffIdController::class);
     Route::get('payjp-public-key', PayJpKeyController::class);
-    // Route::post('visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
-    // Route::post('visitor-confirm/create', [VisitorConfirmController::class, 'create']);
     Route::apiResource('invite-incentive-job', InviteIncentiveJobController::class);
     Route::apiResource('events', LiffEventController::class);
     Route::get('privileges', LiffPrivilegeController::class);

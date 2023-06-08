@@ -2,12 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react"
 import { Button, Card, Form } from "react-bootstrap"
 import { useParams } from "react-router-dom";
+import liff from '@line/liff';
 import Swal from "sweetalert2";
 import LiffVisitorUserInfo from "./LiffVisitorUserInfo";
 
 export default () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState();
+  const [liffToken, setLiffToken] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
   const params = useParams();  
@@ -17,33 +19,46 @@ export default () => {
   }
 
   const handleClick = () => {
-    axios.post('/api/v1/visitor-confirm/auth', {user_id: params.userId, password: password})
+    const formValue = {
+      password: password, liffToken: liffToken
+    }
+    axios.post(`/api/v1/users/${params.userId}/visitor-confirm/auth`, formValue)
     .then(response => {
       setUser(response.data.user);
       setIsConfirmed(true);
     })
     .catch(error => {
+      const message = error.response.status === 400 ? 'パスワードが違います' : '不正なトークンが送られました'
       Swal.fire(
         '認証失敗',
-        'パスワードが違います',
+        message,
         'error'
       )
     })
   }
 
   const handleCreate = () => {
-    axios.post('/api/v1/visitor-confirm/create', {user_id: params.userId, password: password})
+    const formValue = {
+      password: password, liffToken: liffToken
+    }
+    axios.post(`/api/v1/users/${params.userId}/visitor-confirm/create`, formValue)
     .then(response => {
       setIsCreated(true);
     })
     .catch(error => {
+      const message = error.response.status === 400 ? 'パスワードが違います' : '不正なトークンが送られました'
       Swal.fire(
         '認証失敗',
-        'パスワードが違います',
+        message,
         'error'
       )
     })
   }
+
+  useEffect(() => {
+    const idToken = liff.getIDToken();
+    setLiffToken(idToken);
+  }, []);
 
   return (
     isConfirmed ?
@@ -62,8 +77,8 @@ export default () => {
         </div>
       </div>
     :
-      <Card className='m-3 p-3'>
-        <div className='text-center mb-3'>パスワードを入力してください</div>
+      <Card className="m-3 p-3">
+        <div className="text-center mb-3">パスワードを入力してください</div>
         <Form.Control type="password" value={password} onChange={handleChange} className="mb-3"></Form.Control>
         <Button onClick={handleClick}>送信</Button>
       </Card>

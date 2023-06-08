@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import QRCode from "qrcode.react";
 import liff from '@line/liff';
+import Swal from "sweetalert2";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getVisitorHistoryCount } from "@/pages/liff/api/VisitorHistoryApiMethods";
 import Logo from "@img/img/logo_admin.png";
@@ -48,32 +49,48 @@ export default () => {
     "block_date": "",
     "is_blocked": 0
   })
-  const [liffId, setLiffId] = useState('');
+
+  const getPrivileges = async () => {
+    return await axios.get('/api/v1/privileges')
+      .then(response => {
+        const privileges = response.data.sort((a, b) => a.visits_times - b.visits_times)
+        console.log(privileges);
+        setPrivileges(privileges);
+        return privileges;
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }
 
   useEffect(() => {
     setIsLoading(true)
-    const idToken = liff.getIDToken();
 
-    axios.get('/api/v1/privileges')
-      .then(response => {
-        console.log(response.data.sort((a, b) => a.visits_times - b.visits_times));
-        setPrivileges(response.data.sort((a, b) => a.visits_times - b.visits_times));
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+    const dataFetch = async () => {
+      try {
+        const idToken = liff.getIDToken();
+        const user = await getUser(idToken, setUser)
+        const location = window.location.href
+        setUri(`${location}/confirm/${user.id}`)
+        await getVisitorHistoryCount(user.id, idToken, setVisitorCount)
+        await getPrivileges()
+        setIsLoading(false)
 
-    axios.get('/api/v1/get-liff-id')
-      .then((liff) => {
-        getUser(idToken, setUser).then((response) => {
-          const location = window.location.href
-          setUri(`${location}/confirm/${response.id}`)
-          getVisitorHistoryCount(response.id, setVisitorCount, setIsLoading)
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+      } catch (error) {
+        setIsLoading(false)
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした）',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+
+    dataFetch()
   }, []);
 
   const LiffVisitorCard = (props) => {

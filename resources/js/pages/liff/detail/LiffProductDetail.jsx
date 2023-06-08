@@ -81,7 +81,7 @@ export default () => {
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);
     const searchParams = {
-      params: { product_id: id }
+      params: { product_id: id, liffToken: idToken }
     };
     const getUserThenSearchCarts = async() => {
       return await getUser(idToken, setUser).then(response => {

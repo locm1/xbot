@@ -100,6 +100,7 @@ import LiffFriendAdd from '@/pages/liff/friend/LiffFriendAdd';
 import LiffInflowRoute from '@/pages/liff/inflow_route/InflowRoute';
 import LiffServerError from '@/pages/error/InternalServerError';
 import LiffEventHistories from '@/pages/liff/event_histories/LiffEventHistories';
+import PayPay from '@/pages/paypay/test';
 
 // components
 import Footer from '@/components/Footer';
@@ -600,6 +601,7 @@ const Routing = () => {
       <NoFooterRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
       <NoFooterRoute exact path={Paths.LiffServerError.path} component={LiffServerError} />
       <LiffRoute exact path={Paths.LiffEventHistories.path} component={LiffEventHistories} />
+      <LiffECRoute exact path={Paths.PayPay.path} component={PayPay} />
 
       <Route component={NotFound} />
     </Switch>

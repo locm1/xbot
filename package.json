@@ -64,6 +64,7 @@
     },
     "dependencies": {
         "@fullcalendar/core": "^6.0.1",
+        "@paypayopa/paypayopa-sdk-node": "^2.1.0",
         "@yaireo/tagify": "^4.17.7",
         "qrcode.react": "^3.1.0",
         "react-color": "^2.19.3",

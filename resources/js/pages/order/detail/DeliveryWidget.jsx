@@ -36,6 +36,8 @@ export default (props) => {
         return 'クレジットカード'
       case 2:
         return '代金引き換え'
+      case 3:
+        return 'PayPay決済'
       default:
         return 'クレジットカード'
     }

@@ -113,6 +113,7 @@ use App\Http\Controllers\api\management\visitor\VisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryUserController;
 use App\Http\Controllers\api\payjp\CardController;
 use App\Http\Controllers\api\payjp\CustomerController;
+use App\Http\Controllers\api\paypay\PayPayClient;
 use App\Http\Controllers\api\SearchZipcodeController;
 use App\Http\Controllers\LineWebhookController;
 use App\Http\Controllers\UserWithQuestionneireController;
@@ -135,7 +136,7 @@ Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::group(['prefix' => 'v1/management'], function() {
+    Route::group(['prefix' => 'v1/management'], function () {
         Route::get('me', MeController::class);
         Route::get('basic-id', BasicIdController::class);
         Route::apiResource('admins', AdminController::class);
@@ -184,7 +185,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('segments', SegmentController::class);
         Route::get('user-with-questionnaires', UserWithQuestionneireController::class);
 
-        Route::group(['prefix' => 'report'], function() {
+        Route::group(['prefix' => 'report'], function () {
             Route::get('/users', [ReportController::class, 'getUserByDate']);
             Route::get('/user/analysis', [ReportController::class, 'getUserByMonth']);
             Route::get('/order/analysis', [ReportController::class, 'getTopSellingProductsFromLastMonth']);
@@ -284,6 +285,8 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('events', LiffEventController::class);
     Route::get('privileges', LiffPrivilegeController::class);
     Route::get('product-categories', GetCategoriesController::class);
+    Route::post('paypay-test', [PayPayClient::class, 'qr']);
 });
+
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

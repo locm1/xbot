@@ -28,7 +28,7 @@ export const getEcommerceConfiguration = async (setEcommerceConfiguration) => {
 };
 
 export const getEcommerceConfigurationAndPayment = async (setEcommerceConfiguration, setPayments) => {
-  axios.get(`/api/v1/ecommerce-configurations`)
+  return await axios.get(`/api/v1/ecommerce-configurations`)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;
     setEcommerceConfiguration(ecommerce_configuration)

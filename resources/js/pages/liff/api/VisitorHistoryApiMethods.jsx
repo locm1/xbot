@@ -1,15 +1,16 @@
 import Swal from "sweetalert2";
 
-export const getVisitorHistoryCount = async (userId, setVisitorCount, setIsLoading) => {
-  return await axios.get(`/api/v1/users/${userId}/visitor-histories`)
+export const getVisitorHistoryCount = async (userId, liffToken, setVisitorCount) => {
+  const params = {params: {liffToken: liffToken}}
+  return await axios.get(`/api/v1/users/${userId}/visitor-histories`, params)
   .then((response) => {
-    console.log(response.data.visitor_histories_count);
-    setVisitorCount(response.data.visitor_histories_count)
-    setIsLoading(false)
+    const visitor_histories_count = response.data.visitor_histories_count
+    console.log(visitor_histories_count);
+    setVisitorCount(visitor_histories_count)
+    return visitor_histories_count;
   })
   .catch(error => {
       console.error(error);
-      setIsLoading(false)
   });
 };
 

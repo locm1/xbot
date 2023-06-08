@@ -28,7 +28,7 @@ export default () => {
     ]
   });
   const [user, setUser] = useState({
-    is_registered: 0, id: 102
+    is_registered: 0
   });
   const [userEvents, setUserEvents] = useState([]);
   const date = new Date();
@@ -36,18 +36,38 @@ export default () => {
   const [month, setMonth] = useState(date.getMonth() + 1);
   const currentDate = new Date();
   const targetDate = new Date(year + "-" + month);
+  const [liffToken, setLiffToken] = useState('');
 
   useEffect(() => {
     setIsLoading(true)
-    const idToken = liff.getIDToken();
-    const searchParams = {
-      params: {year: year, month: month}
-    };
-    getEvents(searchParams, setEvents);
-    getUser(idToken, setUser).then(response => {
-      getEventsByUserId(response.id, setUserEvents, setIsLoading)
-    })
-    //getEventsByUserId(102, setUserEvents)
+
+    const dataFetch = async () => {
+      try {
+        const idToken = liff.getIDToken();
+        const user = await getUser(idToken, setUser)
+        setLiffToken(idToken);
+        await getEventsByUserId(user.id, idToken, setUserEvents)
+        
+        const searchParams = {
+          params: {year: year, month: month}
+        };
+        await getEvents(searchParams, setEvents);
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした）',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+
+    dataFetch()
   }, []);
 
   const completeReservations = async (id, startDate, endDate) => {
@@ -63,12 +83,19 @@ export default () => {
     });
 
     if (result.isConfirmed) {
-      const formValue = {user_id: user.id}
-      eventReservation(id, formValue, completeDelete, updateEvents, setEvents, setUserEvents, userEvents, failedReservation)
+      try {
+        const event = await eventReservation(id, user.id, liffToken)
+        setEvents(updateEvents(event, id))
+        setUserEvents([...userEvents, event])
+        completeReservation();
+
+      } catch (error) {
+        failedReservation(error.response.data.message)
+      }
     }
   };
 
-  const completeDelete = async () => {
+  const completeReservation = async () => {
     const message = `<p>予約が完了しました。</p>
       <p>担当よりご連絡させていただきますので、今しばらくお待ちください。</p>
       `;

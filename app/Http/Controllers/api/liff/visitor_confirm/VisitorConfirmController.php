@@ -17,19 +17,19 @@ class VisitorConfirmController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function auth(Request $request)
+    public function auth(Request $request, User $user)
     {
         if ($request->password === config('api_key')['COMMON_PASSWORD']) {
-            return ['user' => User::find($request->user_id)];
+            return ['user' => $user];
         }
         return abort(400, '認証失敗');
     }
 
-    public function create(Request $request)
+    public function create(Request $request, User $user)
     {
         if ($request->password === config('api_key')['COMMON_PASSWORD']) {
             $visitor_history_service = new VisitorHistoryService;
-            return $visitor_history_service->store((int) $request->user_id);
+            return $visitor_history_service->store((int) $user->id);
         }
         return abort(400, '認証失敗');
     }

@@ -37,9 +37,9 @@ class EventReservationController extends Controller
      * @param  Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreEventRequest $request, Event $event)
+    public function store(StoreEventRequest $request, User $user, Event $event)
     {
-        $Event = $this->service->store($request, $event);
+        $Event = $this->service->store($user, $event);
         return response()->json(['event' => $Event], 200);
     }
 }

@@ -37,11 +37,8 @@ export const getCarts = async (userId, setCarts, setItemsExistInCart, setRelated
   return await axios.get(`/api/v1/users/${userId}/carts`, {params: {liffToken: liffToken}})
   .then((response) => {
     const carts = response.data.carts;
-    if (carts.cart_items.length > 0) {
-      setItemsExistInCart(true);
-    } else {
-      setItemsExistInCart(false);
-    }
+    const itemsExistInCart = (carts.cart_items.length > 0) ? true : false;
+    setItemsExistInCart(itemsExistInCart);
 
     setCarts(
       carts.cart_items.map(cart => {

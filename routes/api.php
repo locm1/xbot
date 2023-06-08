@@ -230,6 +230,7 @@ Route::middleware('auth:sanctum')->group(function () {
 // LIFF側で叩くAPI
 Route::group(['prefix' => 'v1'], function() {
     Route::middleware('auth.liff')->group(function() {
+
         Route::group(['prefix' => 'users/{user}'], function() {
             Route::apiResource('coupons', LiffCouponController::class);
             Route::apiResource('carts', CartController::class);
@@ -247,18 +248,21 @@ Route::group(['prefix' => 'v1'], function() {
             Route::apiResource('orders', LiffOrderController::class);
             Route::apiResource('product/reservations', ProductReservationController::class);
             Route::get('event/reservations', [EventReservationController::class, 'index']);
+            Route::post('events/{event}/reservations', [EventReservationController::class, 'store']);
+            Route::post('visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
+            Route::post('visitor-confirm/create', [VisitorConfirmController::class, 'create']);
             Route::apiResource('inviter-incentives', LiffInviterIncentiveUserController::class);
             Route::apiResource('invitee-incentives', LiffInviteeIncentiveUserController::class);
             Route::apiResource('visitor-histories', LiffVisitorHistoryController::class);
             Route::get('invites', InviteController::class);
         });
     });
+    Route::apiResource('users', LiffUserController::class);
     Route::apiResource('products', LiffProductController::class)->only([
         'index', 'show'
     ]);
     Route::get('products/{product}/images', [LiffProductImageController::class, 'index']);
     Route::get('products/{product}/category', LiffProductCategoryController::class);
-    Route::apiResource('users', LiffUserController::class);
     Route::get('user-info-statuses', [UserInfoStatusController::class, 'index']);
     Route::get('postages', LiffPostageController::class);
     Route::get('address', SearchZipcodeController::class);
@@ -273,11 +277,10 @@ Route::group(['prefix' => 'v1'], function() {
     Route::apiResource('inflow-route-users', InflowRouteUserController::class);
     Route::get('get-liff-id', GetLiffIdController::class);
     Route::get('payjp-public-key', PayJpKeyController::class);
-    Route::post('visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
-    Route::post('visitor-confirm/create', [VisitorConfirmController::class, 'create']);
+    // Route::post('visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
+    // Route::post('visitor-confirm/create', [VisitorConfirmController::class, 'create']);
     Route::apiResource('invite-incentive-job', InviteIncentiveJobController::class);
     Route::apiResource('events', LiffEventController::class);
-    Route::post('events/{event}/reservations', [EventReservationController::class, 'store']);
     Route::get('privileges', LiffPrivilegeController::class);
     Route::get('product-categories', GetCategoriesController::class);
 });

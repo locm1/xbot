@@ -26,6 +26,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $User = $this->service->getUser($request);
+        if (!$User) return abort(500);
         return response()->json(['user' => $User], 200);
     }
 

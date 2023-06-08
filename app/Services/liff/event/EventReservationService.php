@@ -17,11 +17,11 @@ class EventReservationService
         return $user->events;
     }
 
-    public function store($request, Event $event)
+    public function store(User $user, Event $event)
     {
-        return DB::transaction(function () use ($event, $request) {
+        return DB::transaction(function () use ($event, $user) {
             # 中間テーブルに保存
-            $event->users()->attach($request->user_id);
+            $event->users()->attach($user->id);
 
             # イベントの残数を再計算（-1）
             if ($event->is_unlimited === 0) {

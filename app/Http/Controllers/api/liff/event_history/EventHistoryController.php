@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\liff\event_history;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Service\liff\event_history\EventHistoryService;
 use Illuminate\Http\Request;
 
@@ -19,9 +20,9 @@ class EventHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $User)
     {
-        return $this->service->index();
+        return $this->service->index($User);
     }
 
     /**

@@ -112,6 +112,7 @@ use App\Http\Controllers\api\management\visitor\VisitorHistoryController;
 use App\Http\Controllers\api\management\visitor\VisitorHistoryUserController;
 use App\Http\Controllers\api\payjp\CardController;
 use App\Http\Controllers\api\payjp\CustomerController;
+use App\Http\Controllers\api\paypay\PayPayClient;
 use App\Http\Controllers\api\SearchZipcodeController;
 use App\Http\Controllers\LineWebhookController;
 use App\Http\Controllers\UserWithQuestionneireController;
@@ -134,7 +135,7 @@ Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::group(['prefix' => 'v1/management'], function() {
+    Route::group(['prefix' => 'v1/management'], function () {
         Route::get('me', MeController::class);
         Route::get('basic-id', BasicIdController::class);
         Route::apiResource('admins', AdminController::class);
@@ -183,7 +184,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('segments', SegmentController::class);
         Route::get('user-with-questionnaires', UserWithQuestionneireController::class);
 
-        Route::group(['prefix' => 'report'], function() {
+        Route::group(['prefix' => 'report'], function () {
             Route::get('/users', [ReportController::class, 'getUserByDate']);
             Route::get('/user/analysis', [ReportController::class, 'getUserByMonth']);
             Route::get('/order/analysis', [ReportController::class, 'getTopSellingProductsFromLastMonth']);
@@ -228,31 +229,31 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 // LIFF側で叩くAPI
-Route::group(['prefix' => 'v1'], function() {
-    Route::middleware('auth.liff')->group(function() {
-        Route::group(['prefix' => 'users/{user}'], function() {
-            Route::apiResource('coupons', LiffCouponController::class);
-            Route::apiResource('carts', CartController::class);
-            Route::post('user-deliveryaddress-questionnaireanswers', LiffQuestionnaireAnswerController::class);
-            Route::apiResource('destinations', LiffOrderDestinationController::class);
-            Route::put('destinations', UpdateOrderDestinationController::class);
-            Route::get('selected-destination', SelectedOrderDestinationController::class);
-            Route::apiResource('payments', PaymentMethodController::class)->only([
-                'index', 'store', 'update'
-            ]);
-            Route::get('customers/{customer_id}', [CustomerController::class, 'show']);
-            Route::post('customers', [CustomerController::class, 'store']);
-            Route::put('customers', [CustomerController::class, 'update']);
-            Route::apiResource('cards', CardController::class);
-            Route::apiResource('orders', LiffOrderController::class);
-            Route::apiResource('product/reservations', ProductReservationController::class);
-            Route::get('event/reservations', [EventReservationController::class, 'index']);
-            Route::apiResource('inviter-incentives', LiffInviterIncentiveUserController::class);
-            Route::apiResource('invitee-incentives', LiffInviteeIncentiveUserController::class);
-            Route::apiResource('visitor-histories', LiffVisitorHistoryController::class);
-            Route::get('invites', InviteController::class);
-        });
+Route::group(['prefix' => 'v1'], function () {
+    // Route::middleware('auth.liff')->group(function() {
+    Route::group(['prefix' => 'users/{user}'], function () {
+        Route::apiResource('coupons', LiffCouponController::class);
+        Route::apiResource('carts', CartController::class);
+        Route::post('user-deliveryaddress-questionnaireanswers', LiffQuestionnaireAnswerController::class);
+        Route::apiResource('destinations', LiffOrderDestinationController::class);
+        Route::put('destinations', UpdateOrderDestinationController::class);
+        Route::get('selected-destination', SelectedOrderDestinationController::class);
+        Route::apiResource('payments', PaymentMethodController::class)->only([
+            'index', 'store', 'update'
+        ]);
+        Route::get('customers/{customer_id}', [CustomerController::class, 'show']);
+        Route::post('customers', [CustomerController::class, 'store']);
+        Route::put('customers', [CustomerController::class, 'update']);
+        Route::apiResource('cards', CardController::class);
+        Route::apiResource('orders', LiffOrderController::class);
+        Route::apiResource('product/reservations', ProductReservationController::class);
+        Route::get('event/reservations', [EventReservationController::class, 'index']);
+        Route::apiResource('inviter-incentives', LiffInviterIncentiveUserController::class);
+        Route::apiResource('invitee-incentives', LiffInviteeIncentiveUserController::class);
+        Route::apiResource('visitor-histories', LiffVisitorHistoryController::class);
+        Route::get('invites', InviteController::class);
     });
+    // });
     Route::apiResource('products', LiffProductController::class)->only([
         'index', 'show'
     ]);
@@ -280,6 +281,8 @@ Route::group(['prefix' => 'v1'], function() {
     Route::post('events/{event}/reservations', [EventReservationController::class, 'store']);
     Route::get('privileges', LiffPrivilegeController::class);
     Route::get('product-categories', GetCategoriesController::class);
+    Route::post('paypay-test', [PayPayClient::class, 'qr']);
 });
+
 
 Route::post('/line/webhook/urwhdwwrlx', LineWebhookController::class)->name('line.webhook');

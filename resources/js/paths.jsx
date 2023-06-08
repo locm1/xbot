@@ -156,5 +156,7 @@ export const Paths = {
     Tabs: { path: "/components/tabs" },
     Tooltips: { path: "/components/tooltips" },
     Toasts: { path: "/components/toasts" },
-    WidgetsComponent: { path: "/components/widgets" }
+    WidgetsComponent: { path: "/components/widgets" },
+
+    PayPay: { path: "/paypay" }
 };

@@ -13,6 +13,7 @@ import { getCards } from "@/pages/liff/api/CardApiMethods";
 import { updateCustomer, getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getEcommerceConfigurationAndPayment } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
+import ContentLoader from "react-content-loader";
 
 export default () => {
   const [isRendered, setIsRendered] = useState(false);
@@ -21,10 +22,10 @@ export default () => {
     payment_method: null
   });
   const [customer, setCustomer] = useState({
-    id: '', default_card: {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
+    id: '', default_card: { brand: '', card_number: '', exp_month: '', exp_year: '', name: '' }
   });
   const [creditCards, setCreditCards] = useState([
-    {brand: '', card_number: '', exp_month: '', exp_year: '', name: ''}
+    { brand: '', card_number: '', exp_month: '', exp_year: '', name: '' }
   ]);
   const [user, setUser] = useState({
     is_registered: 0
@@ -48,7 +49,7 @@ export default () => {
   }
 
   const handleChange = (value, input) => {
-    setPaymentMethod({...paymentMethod, [input]: value})
+    setPaymentMethod({ ...paymentMethod, [input]: value })
   };
 
   const onSaveComplete = () => {
@@ -56,29 +57,23 @@ export default () => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
     const idToken = liff.getIDToken();
-    getUser(idToken, setUser).then(response => {
-      showPaymentMethod(response.id, setIsRendered).then(
-        response => {
-          console.log(response);
-          setPaymentMethod(response == null ? {payment_method: 1} : response)
-          setSelectCardId(response.payjp_default_card_id)
-          response.payjp_customer_id && getCards(response.id, response.payjp_customer_id, setCreditCards)
-          // getCustomer(response.id, response.payjp_customer_id, setCustomer, setIsLoading).then(
-          //   response => setSelectCardId(response.default_card.id)
-          // )
-        }
-      )
-    })
-    getEcommerceConfigurationAndPayment(setEcommerceConfiguration, setPayments)
-    // showPaymentMethod(response.id, setPaymentMethod).then(
-    //   response => {
-    //     getCards(101, response.payjp_customer_id, setCreditCards)
-    //     getCustomer(101, response.payjp_customer_id, setCustomer, setIsLoading).then(
-    //       response => setSelectCardId(response.default_card.id)
-    //     )
-    //   }
-    // )
+    const userResponse = await getUser(idToken, setUser);
+    
+    const paymentResponse = await showPaymentMethod(userResponse.id);
+    setPaymentMethod(paymentResponse == null ? { payment_method: 1 } : paymentResponse);
+    setSelectCardId(paymentResponse.payjp_default_card_id);
+    
+    if (paymentResponse.payjp_customer_id) {
+      await getCards(userResponse.id, paymentResponse.payjp_customer_id, setCreditCards);
+    }
+    
+    await getEcommerceConfigurationAndPayment(setEcommerceConfiguration, setPayments);
+    setIsRendered(true);
+  }
+  
+  fetchData();
   }, []);
 
   const CashondeliveryCard = () => {
@@ -128,48 +123,45 @@ export default () => {
 
     return (
       <>
-      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0 checkout-card-check-wrap">
-        <Row className="">
-          <Col xs="12" className="">
-            <Form.Check
-              type="radio"
-              checked={value === paymentMethod.payment_method}
-              value={value}
-              label={title}
-              name="payment_method"
-              id={`payment_method-${value}`}
-              htmlFor={`payment_method-${value}`}
-              onChange={() => handleChange(value, 'payment_method')}
-            />
-          </Col>
+        <ListGroup.Item className="bg-transparent border-bottom py-3 px-0 checkout-card-check-wrap">
+          <Form.Check
+            type="radio"
+            checked={value === paymentMethod.payment_method}
+            value={value}
+            label={title}
+            name="payment_method"
+            id={`payment_method-${value}`}
+            htmlFor={`payment_method-${value}`}
+            onChange={() => handleChange(value, 'payment_method')}
+            className="align-items-center"
+          />
           {value == 2 && paymentMethod.payment_method == 2 && <CashondeliveryCard />}
-        </Row>
-      </ListGroup.Item>
-      {
-        value == 1 && paymentMethod.payment_method == 1 && 
-        <>
-        {
-          paymentMethod.payjp_customer_id && creditCards.map((creditCard, index) => 
-            <PaymentCreditCard key={index} index={index} {...creditCard} />
-          )
-        }
-        <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-          <a href={Paths.LiffCheckoutPaymentCreditCard.path} className="d-flex align-items-center p-2">
-            <h2 className="fs-6 fw-bold mb-0">カードを追加</h2>
-            <div className="ms-auto">
-              <span className="link-arrow">
-                <ChevronRightIcon className="icon icon-sm" />
-              </span>
-            </div>
-          </a>
         </ListGroup.Item>
-        </>
-      }
+        {
+          value == 1 && paymentMethod.payment_method == 1 &&
+          <>
+            {
+              paymentMethod.payjp_customer_id && creditCards.map((creditCard, index) =>
+                <PaymentCreditCard key={index} index={index} {...creditCard} />
+              )
+            }
+            <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+              <a href={Paths.LiffCheckoutPaymentCreditCard.path} className="d-flex align-items-center p-2">
+                <h2 className="fs-6 fw-bold mb-0">カードを追加</h2>
+                <div className="ms-auto">
+                  <span className="link-arrow">
+                    <ChevronRightIcon className="icon icon-sm" />
+                  </span>
+                </div>
+              </a>
+            </ListGroup.Item>
+          </>
+        }
       </>
     );
   }
 
-  return (
+  return isRendered ? (
     <>
       <main className="liff-product-detail p-3">
         <div className="">
@@ -184,16 +176,16 @@ export default () => {
         </div>
         <Card border="0" className="shadow mt-2">
           <Card.Header className="bg-primary text-white px-3 py-2">
-              <h5 className="mb-0 fw-bolder">支払い方法変更</h5>
-            </Card.Header>  
+            <h5 className="mb-0 fw-bolder">支払い方法変更</h5>
+          </Card.Header>
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
               {
-                payments.map((payment, index) => 
+                payments.map((payment, index) =>
                   <PaymentCard key={`payment-${index + 1}`} title={payment} value={index + 1} />
                 )
               }
-            </ListGroup> 
+            </ListGroup>
             <div className="align-items-center my-4">
               <Button variant="tertiary" onClick={onClick} className="w-100 p-3">
                 変更する
@@ -203,5 +195,52 @@ export default () => {
         </Card>
       </main>
     </>
-  );
+  ) : (
+    <>
+      <main className="liff-product-detail p-3">
+        <div className="">
+          <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
+            <div className="">
+              <span className="link-arrow">
+                <ChevronLeftIcon className="icon icon-sm" />
+              </span>
+            </div>
+            <h2 className="fs-6 fw-bold mb-0 ms-2">戻る</h2>
+          </Link>
+        </div>
+        <Card border="0" className="shadow mt-2">
+          <Card.Header className="bg-primary text-white px-3 py-2">
+            <h5 className="mb-0 fw-bolder">支払い方法変更</h5>
+          </Card.Header>
+          <Card.Body className="py-0">
+            <ListGroup className="list-group-flush border-bottom">
+              <ContentLoader
+                height={50}
+                width={'100%'}
+                speed={1}
+                className="mb-4"
+              >
+                <rect x="0" y="25" rx="3" ry="3" width="680" height="30" />
+              </ContentLoader>
+            </ListGroup>
+            <ListGroup className="list-group-flush border-bottom">
+              <ContentLoader
+                height={50}
+                width={'100%'}
+                speed={1}
+                className="mb-4"
+              >
+                <rect x="0" y="25" rx="3" ry="3" width="680" height="30" />
+              </ContentLoader>
+            </ListGroup>
+            <div className="align-items-center my-4">
+              <Button variant="tertiary" onClick={onClick} className="w-100 p-3">
+                変更する
+              </Button>
+            </div>
+          </Card.Body>
+        </Card>
+      </main>
+    </>
+  )
 };

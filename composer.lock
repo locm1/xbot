@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d42765c84bb32d713380667ccea232c6",
+    "content-hash": "cb15884cb4d2f902bd068b59dd1a7fc3",
     "packages": [
         {
             "name": "brick/math",
@@ -770,6 +770,69 @@
                 }
             ],
             "time": "2023-01-14T14:17:03+00:00"
+        },
+        {
+            "name": "firebase/php-jwt",
+            "version": "v6.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "e94e7353302b0c11ec3cfff7180cd0b1743975d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/e94e7353302b0c11ec3cfff7180cd0b1743975d2",
+                "reference": "e94e7353302b0c11ec3cfff7180cd0b1743975d2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4||^8.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.5||^7.4",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "psr/cache": "^1.0||^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
+            },
+            "suggest": {
+                "ext-sodium": "Support EdDSA (Ed25519) signatures",
+                "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "keywords": [
+                "jwt",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/firebase/php-jwt/issues",
+                "source": "https://github.com/firebase/php-jwt/tree/v6.5.0"
+            },
+            "time": "2023-05-12T15:47:07+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -2679,6 +2742,70 @@
                 "source": "https://github.com/payjp/payjp-php/tree/1.3.0"
             },
             "time": "2022-10-04T04:12:09+00:00"
+        },
+        {
+            "name": "paypayopa/php-sdk",
+            "version": "2.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paypay/paypayopa-sdk-php.git",
+                "reference": "86dd2d08cf65dcecdc17c5c826065ac3e913baad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paypay/paypayopa-sdk-php/zipball/86dd2d08cf65dcecdc17c5c826065ac3e913baad",
+                "reference": "86dd2d08cf65dcecdc17c5c826065ac3e913baad",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "firebase/php-jwt": "^5.5 || ^6.0",
+                "guzzlehttp/guzzle": "^6.0 || ^7.0",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16 || ^3.0",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpstan/phpstan": "^0.12.33 || ^1.0.0",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers/utility_hmac.php"
+                ],
+                "psr-4": {
+                    "PayPay\\OpenPaymentAPI\\": "src/",
+                    "PayPay\\OpenPaymentAPI\\Controller\\": "src/Controllers/"
+                },
+                "classmap": [
+                    "src/core/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "PayPay Open Source Development Team",
+                    "email": "opensource@paypay-corp.co.jp"
+                }
+            ],
+            "description": "PHP SDK for PayPay Open Payment API",
+            "keywords": [
+                "japan",
+                "opa",
+                "payment",
+                "paypay",
+                "qr",
+                "qrcode"
+            ],
+            "support": {
+                "issues": "https://github.com/paypay/paypayopa-sdk-php/issues",
+                "source": "https://github.com/paypay/paypayopa-sdk-php/tree/2.0.7"
+            },
+            "time": "2022-06-22T05:32:33+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -8470,5 +8597,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

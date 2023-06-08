@@ -5,6 +5,7 @@ use App\Http\Controllers\api\liff\coupon\CouponController as LiffCouponControlle
 use App\Http\Controllers\api\liff\ec_configuration\EcommerceConfigurationController as LiffEcommerceConfigurationController;
 use App\Http\Controllers\api\liff\event\EventController as LiffEventController;
 use App\Http\Controllers\api\liff\event\EventReservationController;
+use App\Http\Controllers\api\liff\event_history\EventHistoryController;
 use App\Http\Controllers\api\liff\invite\InviteController;
 use App\Http\Controllers\api\liff\GetLiffIdController;
 use App\Http\Controllers\api\liff\invite\InviteeIncentiveController as LiffInviteeIncentiveUserController;
@@ -248,7 +249,9 @@ Route::group(['prefix' => 'v1'], function() {
             Route::apiResource('orders', LiffOrderController::class);
             Route::apiResource('product/reservations', ProductReservationController::class);
             Route::get('event/reservations', [EventReservationController::class, 'index']);
+            Route::get('event/reservations/history', [EventHistoryController::class, 'index']);
             Route::post('events/{event}/reservations', [EventReservationController::class, 'store']);
+            Route::delete('events/{event}/reservations', [EventReservationController::class, 'destroy']);
             Route::post('visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
             Route::post('visitor-confirm/create', [VisitorConfirmController::class, 'create']);
             Route::apiResource('inviter-incentives', LiffInviterIncentiveUserController::class);

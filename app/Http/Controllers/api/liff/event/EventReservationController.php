@@ -42,4 +42,17 @@ class EventReservationController extends Controller
         $Event = $this->service->store($user, $event);
         return response()->json(['event' => $Event], 200);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  User $user
+     * @param  Event $event
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, User $user, Event $event)
+    {
+        $this->service->destroy($user, $event);
+        return response()->json([], 204);
+    }
 }

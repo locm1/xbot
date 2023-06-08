@@ -3,7 +3,7 @@ import { MapPinIcon } from "@/components/icons/Icons";
 import EventList from "../molecules/EventList";
 
 export default (props) => {
-  const { histories, date } = props
+  const { histories, date, deleteReservation } = props
   const dateObj = new Date(date)
   const weeks = ['日', '月', '火', '水', '木', '金', '土']
 
@@ -24,6 +24,7 @@ export default (props) => {
         <EventList
           key={`list-${k}`}
           dateObj={dateObj}
+          deleteReservation={deleteReservation}
           {...v}
         />
       )}

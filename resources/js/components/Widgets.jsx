@@ -14,7 +14,6 @@ import { Paths } from "@/paths";
 import teamMembers from "@/data/teamMembers";
 import countries from "@/data/countries";
 import authorEarnings from "@/data/authorEarnings";
-import { productNotifications } from "@/data/notifications";
 import { GoogleIcon, TwitterIcon, YoutubeIcon } from "@/components/BrandIcons";
 
 import { PurchaseTimeForm } from "@/pages/user/PurchaseTimeForm";
@@ -1333,7 +1332,7 @@ export const TimelineWidget = (props) => {
       </Card.Header>
       <Card.Body>
         <ListGroup className="list-group-flush list-group-timeline">
-          {productNotifications.map(notif => <TimelineItem key={`notif-${notif.id}`} {...notif} />)}
+          {/* {productNotifications.map(notif => <TimelineItem key={`notif-${notif.id}`} {...notif} />)} */}
         </ListGroup>
       </Card.Body>
     </Card>

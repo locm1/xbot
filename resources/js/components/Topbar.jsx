@@ -5,7 +5,6 @@ import { BellIcon, CogIcon, InboxIcon, MenuAlt1Icon, SearchIcon, SupportIcon, Us
 import { LogoutIcon } from "@heroicons/react/outline";
 import { Row, Col, Nav, Form, Image, Button, Navbar, Dropdown, Container, ListGroup, InputGroup } from 'react-bootstrap';
 
-import { userNotifications } from "@/data/notifications";
 import Profile3 from "@img/img/team/profile-picture-3.jpg";
 import Cookies from 'js-cookie';
 import { Paths } from "@/paths";
@@ -14,49 +13,10 @@ import axios from "axios";
 
 
 export default (props) => {
-  const [notifications, setNotifications] = useState(userNotifications);
-  const allNotificationsRead = notifications.reduce((acc, notif) => acc && notif.read, true);
-  const bellIconClasses = !allNotificationsRead ? "unread" : "";
   const history = useHistory();
   const { admin } = props;
 
-  const markNotificationsAsRead = () => {
-    setTimeout(() => {
-      setNotifications(notifications.map(n => ({ ...n, read: true })));
-    }, 400);
-  };
-
   const toggleContracted = () => props.toggleContracted && props.toggleContracted();
-
-  const Notification = (props) => {
-    const { link, sender, image, time, message, read = false } = props;
-    const readClassName = read ? "" : "text-danger";
-    const receiveTime = moment(time).fromNow();
-
-    return (
-      <ListGroup.Item action href={link} className="list-group-item-action border-bottom">
-        <Row className="align-items-center">
-          <Col xs="auto">
-            <Image src={image} className="avatar-md rounded" />
-          </Col>
-          <Col className="ps-0 ms-2">
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <h4 className="h6 mb-0 text-small">{sender}</h4>
-              </div>
-              <div className="text-end">
-                <small className={readClassName}>
-                  {receiveTime}
-                </small>
-              </div>
-            </div>
-            <p className="font-small mt-1 mb-0">{message}</p>
-          </Col>
-        </Row>
-      </ListGroup.Item>
-    );
-  };
-
 
   const logout = (e) => {
     e.preventDefault();

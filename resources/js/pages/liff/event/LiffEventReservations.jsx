@@ -7,10 +7,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import liff from '@line/liff';
+import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getEvents, eventReservation, getEventsByUserId } from "@/pages/liff/api/EventApiMethods";
 import { MapPinIcon } from "@/components/icons/Icons";
-import { LoadingContext } from "@/components/LoadingContext";
+import EventReservationsContentLoader from "@/pages/liff/event/EventReservationsContentLoader";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -21,7 +22,6 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
-  const { setIsLoading } = useContext(LoadingContext);
   const [events, setEvents] = useState({
     '2023-01-01': [
       {id: 1, start_date: '2023-01-01 12:00:00', end_date: '2023-01-01 13:00:00'}
@@ -37,10 +37,9 @@ export default () => {
   const currentDate = new Date();
   const targetDate = new Date(year + "-" + month);
   const [liffToken, setLiffToken] = useState('');
+  const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true)
-
     const dataFetch = async () => {
       try {
         const idToken = liff.getIDToken();
@@ -52,9 +51,8 @@ export default () => {
           params: {year: year, month: month}
         };
         await getEvents(searchParams, setEvents);
-        setIsLoading(false)
+        setIsRendered(true)
       } catch (error) {
-        setIsLoading(false)
         console.error(error)
         Swal.fire(
           `データ取得エラー`,
@@ -261,29 +259,71 @@ export default () => {
       <main className="content liff-product-detail">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
         <div className="liff-product-list">
-          <div className="d-flex align-items-center justify-content-between mb-3">
-            <Button variant="primary" size="sm" onClick={showPreviousMonth} className={targetDate < currentDate && 'invisible disabled'}>
-              <ChevronLeftIcon className="icon icon-xs" />
-              <span className="me-2 ms-1">{month === 1 ? '12' : month - 1}月</span>
-            </Button>
-            <h2 className="fs-5 fw-bold mb-0">
-              {year}年{month}月
-            </h2>
-            <Button variant="primary" size="sm" onClick={showNextMonth}>
-              <span className="me-2 ms-1">{month === 12 ? '1' : month + 1}月</span>
-              <ChevronRightIcon className="icon icon-xs" /> 
-            </Button>
-          </div>
-        </div>
-        <div className="liff-product-list">
           {
-            Object.keys(events).length > 0 ? (
-              Object.keys(events).sort().map((event, index) => <LiffVisitorPrivilegeCard key={`event-month-${index}`} event={event} />)
+            isRendered ? (
+              <div className="d-flex align-items-center justify-content-between mb-3">
+                <Button variant="primary" size="sm" onClick={showPreviousMonth} className={targetDate < currentDate && 'invisible disabled'}>
+                  <ChevronLeftIcon className="icon icon-xs" />
+                  <span className="me-2 ms-1">{month === 1 ? '12' : month - 1}月</span>
+                </Button>
+                <h2 className="fs-5 fw-bold mb-0">
+                  {year}年{month}月
+                </h2>
+                <Button variant="primary" size="sm" onClick={showNextMonth}>
+                  <span className="me-2 ms-1">{month === 12 ? '1' : month + 1}月</span>
+                  <ChevronRightIcon className="icon icon-xs" /> 
+                </Button>
+              </div>
             ) : (
-              <EventNotFoundCard />
+              <div className="d-flex align-items-center justify-content-between mb-3">
+                <ContentLoader
+                  height={36}
+                  width={"100%"}
+                  speed={1}
+                  backgroundColor={'#6e6e6e'}
+                  foregroundColor={'#999'}
+                >
+                  <rect x="0" y="10%" rx="3" ry="3" width="50%" height="100%" />
+                </ContentLoader>
+                <ContentLoader
+                  height={17}
+                  width={"100%"}
+                  speed={1}
+                  backgroundColor={'#6e6e6e'}
+                  foregroundColor={'#999'}
+                >
+                  <rect x="0" y="10%" rx="3" ry="3" width="100%" height="100%" />
+                </ContentLoader>
+                <ContentLoader
+                  height={36}
+                  width={"100%"}
+                  speed={1}
+                  backgroundColor={'#6e6e6e'}
+                  foregroundColor={'#999'}
+                >
+                  <rect x="60" y="10%" rx="3" ry="3" width="50%" height="100%" />
+                </ContentLoader>
+              </div>
             )
           }
         </div>
+        {
+          isRendered ? (
+            <div className="liff-product-list">
+              {
+                Object.keys(events).length > 0 ? (
+                  Object.keys(events).sort().map((event, index) => <LiffVisitorPrivilegeCard key={`event-month-${index}`} event={event} />)
+                ) : (
+                  <EventNotFoundCard />
+                )
+              }
+            </div>
+          ) : (
+            <div className="liff-product-list">
+              <EventReservationsContentLoader />
+            </div>
+          )
+        }
       </main>
     </>
   );

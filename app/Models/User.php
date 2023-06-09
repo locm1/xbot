@@ -47,7 +47,7 @@ class User extends Authenticatable
 
     public function events()
     {
-        return $this->belongsToMany(Event::class);
+        return $this->belongsToMany(Event::class)->whereNull('event_user.deleted_at')->withTimestamps();
     }
 
     public function questionnaireAnswers()

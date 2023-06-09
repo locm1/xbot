@@ -16,6 +16,7 @@ export const getEventsByUserId = async (userId, liffToken, setUserEvents) => {
   return await axios.get(`/api/v1/users/${userId}/event/reservations`, params)
   .then((response) => {
     const events = response.data.events
+    console.log(events);
     setUserEvents(events);
     return events;
   })
@@ -32,6 +33,19 @@ export const eventReservation = async (id, userId, liffToken) => {
     const event = response.data.event
     console.log(event);
     return event;
+  })
+  .catch(error => {
+      console.error(error);
+      return error;
+  });
+};
+
+export const deleteEventReservation = async (id, userId, liffToken) => {
+  const params = {liffToken: liffToken}
+  return await axios.delete(`/api/v1/users/${+userId}/events/${id}/reservations`, {data: params})
+  .then((response) => {
+    console.log(response);
+    return response.data
   })
   .catch(error => {
       console.error(error);

@@ -55,7 +55,7 @@ export default () => {
   };
 
   const saveCart = () => {
-    console.log(itemsExistInCart);
+
     if (itemsExistInCart) {
       console.log(formValue);
       updateCart(user.id, carts[0].id, formValue, location, showCart)

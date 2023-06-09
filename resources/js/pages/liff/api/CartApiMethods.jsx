@@ -13,7 +13,7 @@ export const storeCart = async (userId, formValue, id, showCart) => {
     const message = '商品をカートに追加できませんでした。もう一度お試しください。';
     console.error(error);
     Swal.fire(`エラー`, message, 'error').then((result) => {
-      location.href = link
+      // location.href = link
     })
   });
 };
@@ -63,8 +63,9 @@ export const getCarts = async (userId, setCarts, setItemsExistInCart, setRelated
   });
 };
 
-export const getCartsAndRelatedProducts = async (userId, setCarts, setItemsExistInCart, setRelatedProducts) => {
-  return await axios.get(`/api/v1/users/${userId}/carts`)
+export const getCartsAndRelatedProducts = async (userId, liffToken, setCarts, setItemsExistInCart, setRelatedProducts) => {
+  const params = {params: {liffToken: liffToken}}
+  return await axios.get(`/api/v1/users/${userId}/carts`, params)
   .then((response) => {
     const carts = response.data.carts;
     const itemsExistInCart = (carts.cart_items.length > 0) ? true : false;
@@ -131,8 +132,9 @@ export const updateCart = async (userId, id, cart, location, showCart) => {
   });
 };
 
-export const deleteCart = async (userId, id) => {
-  axios.delete(`/api/v1/users/${userId}/carts/${id}`)
+export const deleteCart = async (userId, id, liffToken) => {
+  const params = {liffToken: liffToken}
+  axios.delete(`/api/v1/users/${userId}/carts/${id}`, {data: params})
   .then((response) => {
   })
   .catch(error => {

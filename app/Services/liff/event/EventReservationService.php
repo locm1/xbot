@@ -2,6 +2,7 @@
 namespace App\Services\liff\event;
 
 use App\Models\Event;
+use App\Models\EventUser;
 use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request;
@@ -26,6 +27,22 @@ class EventReservationService
             # イベントの残数を再計算（-1）
             if ($event->is_unlimited === 0) {
                 $event->update(['remaining' => $event->remaining - 1]);
+            }
+            
+            return $event;
+        });
+    }
+
+
+    public function destroy(User $user, Event $event)
+    {
+        return DB::transaction(function () use ($event, $user) {
+            # 中間テーブルから削除
+            EventUser::where('event_id', $event->id)->where('user_id', $user->id)->delete();
+
+            # イベントの残数を再計算（+1）
+            if ($event->is_unlimited === 0) {
+                $event->update(['remaining' => $event->remaining + 1]);
             }
             
             return $event;

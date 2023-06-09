@@ -19,7 +19,7 @@ export default () => {
             <Col md={12} className="mb-5">
               <ContentLoader
                 height={71}
-                width={1430}
+                width={"100%"}
                 speed={1}
               >
                 <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
@@ -40,18 +40,18 @@ export default () => {
               <ListGroup className="list-group-flush">
                 <ContentLoader
                   height={53}
-                  width={890}
+                  width={"100%"}
                   speed={1}
                 >
-                  <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />
+                  <rect x="0" y="10" rx="3" ry="3" width="60%" height="100%" />
                 </ContentLoader>
                 <div className="mt-3">
                   <ContentLoader
                     height={183.4}
-                    width={890}
+                    width={"100%"}
                     speed={1}
                   >
-                    <rect x="0" y="10" rx="3" ry="3" width="100%" height="25%" />
+                    <rect x="0" y="10" rx="3" ry="3" width="90%" height="25%" />
                     <rect x="0" y="80" rx="3" ry="3" width="20%" height="60%" />
                   </ContentLoader>
                 </div>
@@ -82,7 +82,7 @@ export default () => {
                 <ListGroup.Item className={`px-0 py-4`}>
                   <ContentLoader
                     height={39}
-                    width={890}
+                    width={"100%"}
                     speed={1}
                   >
                     <rect x="0" y="10" rx="3" ry="3" width="100%" height="100%" />

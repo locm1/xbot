@@ -48,8 +48,11 @@ export const getUserInviteHistories = async (id, setInviteHistories, setFromInvi
       if(res.status !== 200) {
         throw new Error("APIが正しく取得されませんでした");
       } else {
+        const from_invited_user = res.data.from_invited_user;
+        const newFromInvitedUser = (from_invited_user.length) ? from_invited_user : undefined;
         setInviteHistories(res.data.invite_histories);
-        setFromInvitedUser(res.data.from_invited_user);
+        setFromInvitedUser(newFromInvitedUser);
+        console.log(from_invited_user);
       }
     });
 };

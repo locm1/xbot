@@ -1,4 +1,4 @@
-export const getUsers = async (params, setUsers, setLinks, setPaginate, setIsRendered) => {
+export const getUsers = async (params, setUsers, setLinks, setPaginate) => {
   return axios.get('/api/v1/management/users', params)
   .then((response) => {
     const users = response.data.users;
@@ -11,7 +11,7 @@ export const getUsers = async (params, setUsers, setLinks, setPaginate, setIsRen
       to: users.to,
       total: users.total,
     })
-    setIsRendered(true);
+    return users;
   })
   .catch(error => {
       console.error(error);

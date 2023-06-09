@@ -9,14 +9,15 @@ export const HistoryTable = (props) => {
   const { title, headers, histories, fromInvitedUser } = props;
 
   const invitedUser = () => {
-    const location = () => {
-      window.location.href = `/manage/user/edit/${fromInvitedUser.inviter_users.id}`;
-    }
     if (typeof fromInvitedUser != 'undefined') {
+      const location = () => {
+        window.location.href = `/manage/user/edit/${fromInvitedUser[0].inviter_users.id}`;
+      }
+      
       return (
         <h6>このユーザーを招待した人：
-          <Link to={`/manage/user/edit/${fromInvitedUser.inviter_users.id}`} onClick={() => location()} className="text-decoration-underline pb-3">
-            {fromInvitedUser.inviter_users.last_name} {fromInvitedUser.inviter_users.first_name}
+          <Link to={`/manage/user/edit/${fromInvitedUser[0].inviter_users.id}`} onClick={() => location()} className="text-decoration-underline pb-3">
+            {fromInvitedUser[0].inviter_users.last_name} {fromInvitedUser[0].inviter_users.first_name}
           </Link>
         </h6>
       )

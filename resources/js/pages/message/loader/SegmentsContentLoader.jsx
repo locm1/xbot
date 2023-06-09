@@ -9,8 +9,8 @@ export default () => {
   return (
     <>
       {
-        loadingTables.map(v =>
-          <Card className="my-4">
+        loadingTables.map((v, index) =>
+          <Card className="my-4" key={`segments-loader-${index}`}>
             <Card.Body>
               <ContentLoader
                 height={137}

@@ -6,69 +6,88 @@ import TableButtonContentLoader from "@/components/loader/TableButtonContentLoad
 
 export default () => {
   const loadingCards = [...Array(3)].map((_, i) => i + 1);
-  const loadingContents = [...Array(3)].map((_, i) => i + 1);
+  const loadingContents = [...Array(1)].map((_, i) => i + 1);
 
   const EventItem = () => {
     return (
       <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-        <Row className="align-items-center">
-          <Col xs="12" className="px-0">
-            <ContentLoader
-              height={20.8}
-              width={"100%"}
-              speed={1}
-              className="mb-1"
-            >
-              <rect x="0" y="10%" rx="3" ry="3" width="30%" height="100%" />
-            </ContentLoader>
-          </Col>
-          <Col xs="6" className="px-0">
-            <ContentLoader
-              height={17}
-              width={"100%"}
-              speed={1}
-            >
-              <rect x="0" y="10%" rx="3" ry="3" width="100%" height="100%" />
-            </ContentLoader>
-          </Col>
-          <Col xs="6" className="text-end">
-            <ContentLoader
-              height={17}
-              width={167}
-              speed={1}
-            >
-              <rect x="40" y="10%" rx="3" ry="3" width="60%" height="100%" />
-            </ContentLoader>
-          </Col>
-          <Col xs="12" className="px-0">
-            <div className="d-frex mt-1">
-              <ContentLoader
-                height={17}
-                width={"100%"}
-                speed={1}
-              >
-                <rect x="0" y="10%" rx="3" ry="3" width="50%" height="100%" />
-              </ContentLoader>
-            </div>
-          </Col>
-          <Col xs="12" className="text-end">
-            <div className="align-items-center mt-3">
-              <ContentLoader
-                height={39}
-                width={"100%"}
-                speed={1}
-              >
-                <rect x="0" y="10%" rx="3" ry="3" width="100%" height="100%" />
-              </ContentLoader>
-            </div>
-          </Col>
-        </Row>
+        <ContentLoader
+          height={20.8}
+          width={"100%"}
+          speed={1}
+          className="mb-1"
+        >
+          <rect x="0" y="0" rx="3" ry="3" width="30%" height="100%" />
+        </ContentLoader>
+        <div className="d-flex justify-content-between mt-1">
+          <ContentLoader
+            height={17}
+            width={"100%"}
+            speed={1}
+          >
+            <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+          </ContentLoader>
+          <ContentLoader
+            height={17}
+            width={167}
+            speed={1}
+          >
+            <rect x="40" y="0" rx="3" ry="3" width="60%" height="100%" />
+          </ContentLoader>
+        </div>
+        <div className="mt-1">
+          <ContentLoader
+            height={17}
+            width={"100%"}
+            speed={1}
+          >
+            <rect x="0" y="0" rx="3" ry="3" width="50%" height="100%" />
+          </ContentLoader>
+        </div>
+        <div className="align-items-center mt-3">
+          <ContentLoader
+            height={39}
+            width={"100%"}
+            speed={1}
+          >
+            <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+          </ContentLoader>
+        </div>
       </ListGroup.Item>
     );
   }
 
   return (
-    <>
+    <main className="p-3">
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <ContentLoader
+          height={40}
+          width={70}
+          speed={1}      
+          backgroundColor={'#6e6e6e'}
+          foregroundColor={'#999'}
+        >
+          <rect x="0" y="0" rx="4" ry="4" width="100%" height="100%" />
+        </ContentLoader>
+        <ContentLoader
+          height={30}
+          width={100}
+          speed={1}
+          backgroundColor={'#6e6e6e'}
+          foregroundColor={'#999'}
+        >
+          <rect x="0" y="0" rx="4" ry="4" width="100%" height="100%" />
+        </ContentLoader>
+        <ContentLoader
+          height={40}
+          width={70}
+          speed={1}
+          backgroundColor={'#6e6e6e'}
+          foregroundColor={'#999'}
+        >
+          <rect x="0" y="0" rx="4" ry="4" width="100%" height="100%" />
+        </ContentLoader>
+      </div>
       {
         loadingCards.map(v =>
           <Card border="0" className="my-4" key={`event-reservations-loader-${v}`}>
@@ -80,7 +99,7 @@ export default () => {
                     width={50}
                     speed={1}
                   >
-                    <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+                    <rect x="0" y="0" rx="4" ry="4" width="100%" height="100%" />
                   </ContentLoader>
                 </div>
                 <ContentLoader
@@ -88,7 +107,7 @@ export default () => {
                   width={151}
                   speed={1}
                 >
-                  <rect x="15" y="15" rx="3" ry="3" width="100%" height="100%" />
+                  <rect x="15" y="15" rx="4" ry="4" width="100%" height="100%" />
                 </ContentLoader>
               </div>
             </Card.Header>
@@ -100,6 +119,6 @@ export default () => {
           </Card>
         )
       }
-    </>
+    </main>
   );
 };

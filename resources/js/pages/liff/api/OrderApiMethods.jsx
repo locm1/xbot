@@ -2,8 +2,8 @@ import Swal from "sweetalert2";
 import { Paths } from "@/paths";
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 
-export const getOrders = async (userId, setOrders, setIsLoading = null) => {
-  axios.get(`/api/v1/users/${userId}/orders`)
+export const getOrders = async (userId, setOrders, setIsLoading = null, liffToken) => {
+  axios.get(`/api/v1/users/${userId}/orders`, {params: liffToken})
   .then((response) => {
     setOrders(response.data.orders)
     console.log(response.data.orders);
@@ -50,8 +50,8 @@ export const storeOrder = async (userId, formValue, storeComplete, setIsLoading)
   });
 };
 
-export const showOrder = async (userId, id, setOrder, setCoupon, setDiscountedTotalAmount) => {
-  return await axios.get(`/api/v1/users/${userId}/orders/${id}`)
+export const showOrder = async (userId, id, setOrder, setCoupon, setDiscountedTotalAmount, idToken) => {
+  return await axios.get(`/api/v1/users/${userId}/orders/${id}`, {params: {liffToken: idToken}})
   .then((response) => {
     const order = response.data.order
     const order_products = order.order_products.map(order_product => ({ ...order_product, totalAmount: order_product.product.price * order_product.quantity }));

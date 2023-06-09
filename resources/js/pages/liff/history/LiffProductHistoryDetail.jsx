@@ -86,6 +86,28 @@ export default () => {
       })
     })
 
+    const dataFetch = async () => {
+      try {
+        getEcommerceConfiguration(setEcommerceConfiguration)
+        const response = await getUser(idToken, setUser);
+        const paymentMethod = await showPaymentMethod(response.id, idToken)
+        setPaymentMethod(paymentMethod)
+        paymentMethod.payjp_default_card_id && showCard(response.id, idToken, paymentMethod.payjp_customer_id, paymentMethod.payjp_default_card_id, setCard)
+        showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount)
+      } catch (error) {
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+    dataFetch();
+
     //getOrders(101, setOrders)
   }, []);
 

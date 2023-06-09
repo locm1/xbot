@@ -4,7 +4,7 @@ import { SearchIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import liff from '@line/liff';
-import Cookies from 'js-cookie';
+import Swal from "sweetalert2";
 import moment from "moment-timezone";
 import { CartItem } from "@/pages/liff/LiffCardItem";
 import { LoadingContext } from "@/components/LoadingContext";
@@ -21,6 +21,7 @@ export default () => {
   });
   const [orders, setOrders] = useState([]);
   const [time, setTime] = useState('');
+  const idToken = liff.getIDToken();
 
   const getPurchaseTimes = () => {
     const purchaseTimes = [];
@@ -44,13 +45,28 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const idToken = liff.getIDToken();
     //getOrders(101, setOrders)
-
     getUser(idToken, setUser).then(response => {
       getOrders(response.id, setOrders, setIsLoading).finally(() => setIsLoading(false));
     })
-    //setIsLoading(false);
+
+    const dataFetch = async () => {
+      try {
+        const response = await getUser(idToken, setUser);
+        getOrders(response.id, setOrders, setIsLoading).finally(() => setIsLoading(false));
+      } catch (error) {
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+    dataFetch();
   }, []);
 
   const OrderCard = (props) => {

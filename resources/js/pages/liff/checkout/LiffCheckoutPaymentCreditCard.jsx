@@ -12,36 +12,16 @@ import { showPaymentMethod, updatePaymentMethod, storePaymentMethod } from "@/pa
 import { storeCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { storeCard } from "@/pages/liff/api/CardApiMethods";
 import { getPublicKey } from "@/pages/liff/api/PayJpKeyApiMethods";
+import PaymentCreditCardContentLoader from "@/pages/liff/checkout/loader/PaymentCreditCardContentLoader";
 
 export default () => {
   const idToken = liff.getIDToken();
   const [isRendered, setIsRendered] = useState(false);
-  const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState();
   const [user, setUser] = useState({
     is_registered: 0
   });
-
-  useEffect(() => {
-    const dataFetch = async () => {
-      try {
-        getPublicKey().then(response => showCreditCardForm(response))
-        const response = await getUser(idToken, setUser);
-        const paymentMethod = await showPaymentMethod(response.id, idToken)
-        setPaymentMethod(paymentMethod)
-      } catch (error) {
-        console.error(error)
-        Swal.fire(
-          `データ取得エラー`,
-          'データが正常に取得できませんでした',
-          'error'
-        )
-      }
-    }
-    dataFetch();
-    //showPaymentMethod(101, setPaymentMethod)
-  }, []);
 
   const showCreditCardForm = (key) => {
     const payJp = document.getElementById('pay-jp');
@@ -114,8 +94,30 @@ export default () => {
     history.push(Paths.LiffCheckoutPayment.path);
   };
 
+  useEffect(() => {
+    const dataFetch = async () => {
+      try {
+        const response = await getUser(idToken, setUser);
+        const paymentMethod = await showPaymentMethod(response.id, idToken)
+        setPaymentMethod(paymentMethod)
+        setIsRendered(true)
+        await getPublicKey().then(response => showCreditCardForm(response))
+      } catch (error) {
+        setIsRendered(false)
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        )
+      }
+    }
+    dataFetch();
+    //showPaymentMethod(101, setPaymentMethod)
+  }, []);
+
   return (
-    <>
+    isRendered ? (
       <main className="liff-product-detail p-3">
         <div className="">
           <Link to={Paths.LiffCheckoutPayment.path} className="d-flex align-items-center p-2">
@@ -144,6 +146,8 @@ export default () => {
           </Card.Body>
         </Card>
       </main>
-    </>
+    ) : (
+      <PaymentCreditCardContentLoader />
+    )
   );
 };

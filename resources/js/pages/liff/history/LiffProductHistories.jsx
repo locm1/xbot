@@ -9,7 +9,6 @@ import Cookies from 'js-cookie';
 
 import LiffPurchaseHistories from "@/pages/liff/history/LiffPurchaseHistories";
 import LiffReserveHistories from "@/pages/liff/history/LiffReserveHistories";
-
 import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
@@ -19,12 +18,10 @@ export default () => {
 
   useEffect(() => {
     //setIsLoading(true);
-    //getOrders(101, setOrders)
     getEcommerceConfiguration(setEcommerceConfiguration)
   }, []);
 
   return (
-    <>
     <main className="content liff-product-detail">
       {/* <Tab.Container defaultActiveKey="purchase_history" className="mb-6">
         <Nav fill variant="pills" className="flex-column">
@@ -56,9 +53,9 @@ export default () => {
       </Tab.Container> */}
       <LiffPurchaseHistories />
       <Card border="0" className="shadow p-0 my-3">
-      <Card.Header className="bg-primary text-white px-3 py-2">
-        <h5 className="mb-0 fw-bolder">キャンセルについて</h5>
-      </Card.Header>  
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">キャンセルについて</h5>
+        </Card.Header>  
         <Card.Body className="pb-3 rounded-bottompt-3">
           <p>キャンセルする場合は、お手数ですが下記ボタンからご連絡ください。</p>
           <p>注文番号をお伝えいただくとスムーズです。</p>
@@ -70,6 +67,5 @@ export default () => {
         </Card.Body>
       </Card>
     </main>
-    </>
   );
 };

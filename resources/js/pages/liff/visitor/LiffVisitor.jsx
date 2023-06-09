@@ -9,8 +9,10 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getVisitorHistoryCount } from "@/pages/liff/api/VisitorHistoryApiMethods";
 import Logo from "@img/img/logo_admin.png";
 import { LoadingContext } from "@/components/LoadingContext";
+import VisitorContentLoader from "@/pages/liff/visitor/VisitorContentLoader";
 
 export default () => {
+  const [isRendered, setIsRendered] = useState(false);
   const { setIsLoading } = useContext(LoadingContext);
   const [privileges, setPrivileges] = useState([
     {
@@ -64,8 +66,6 @@ export default () => {
   }
 
   useEffect(() => {
-    setIsLoading(true)
-
     const dataFetch = async () => {
       try {
         const idToken = liff.getIDToken();
@@ -74,10 +74,9 @@ export default () => {
         setUri(`${location}/confirm/${user.id}`)
         await getVisitorHistoryCount(user.id, idToken, setVisitorCount)
         await getPrivileges()
-        setIsLoading(false)
+        setIsRendered(true)
 
       } catch (error) {
-        setIsLoading(false)
         console.error(error)
         Swal.fire(
           `データ取得エラー`,
@@ -164,14 +163,14 @@ export default () => {
   
       return (
         <ListGroup.Item className="bg-transparent px-1">
-          <Row className="align-items-center">
+          <div className="d-flex align-items-center">
             <Col xs="2">
               <h4 className="fs-6 text-dark mb-0">{number}.</h4>
             </Col>
             <Col xs="10" className="px-0">
               <h4 className="fs-6 text-dark mb-0">{name}</h4>
             </Col>
-          </Row>
+          </div>
         </ListGroup.Item>
       );
     }
@@ -191,13 +190,15 @@ export default () => {
   }
 
   return (
-    <>
+    isRendered ? (
       <main className="liff-product-detail">
         <div className="p-3">
           <LiffVisitorCard />
           <LiffVisitorQrCard />
         </div>
       </main>
-    </>
+    ) : (
+      <VisitorContentLoader />
+    )
   );
 };

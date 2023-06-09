@@ -20,7 +20,9 @@ export const getEcommerceConfiguration = async (setEcommerceConfiguration) => {
   axios.get(`/api/v1/ecommerce-configurations`)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;
-    setEcommerceConfiguration(ecommerce_configuration)
+    const newEcommerceConfiguration = ecommerce_configuration ? ecommerce_configuration : {cash_on_delivery_fee: '', is_enabled: 1, tel: ''}
+    setEcommerceConfiguration(newEcommerceConfiguration)
+    console.log(newEcommerceConfiguration);
   })
   .catch(error => {
       console.error(error);

@@ -5,7 +5,7 @@ import '@splidejs/splide/css';
 import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
-import Cookies from 'js-cookie';
+import Swal from "sweetalert2";
 import moment from "moment-timezone";
 import liff from '@line/liff';
 import { LoadingContext } from "@/components/LoadingContext";
@@ -14,11 +14,11 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showCard } from "@/pages/liff/api/CardApiMethods";
 import { showOrder } from "@/pages/liff/api/OrderApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
-import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
+import ProductHistoryDetailContentLoder from "@/pages/liff/history/loader/ProductHistoryDetailContentLoder";
 
 export default () => {
-  const { setIsLoading } = useContext(LoadingContext);
+  const idToken = liff.getIDToken();
   const [isRendered, setIsRendered] = useState(false);
   const { id } = useParams();
   const [order, setOrder] = useState({
@@ -76,25 +76,36 @@ export default () => {
   }
 
   useEffect(() => {
-    const idToken = liff.getIDToken();
-    getEcommerceConfiguration(setEcommerceConfiguration)
-    getUser(idToken, setUser).then(response => {
-      showPaymentMethod(response.id, setIsRendered).then(payment_response => {
-        setPaymentMethod(payment_response)
-        payment_response.payjp_default_card_id && showCard(response.id, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard)
-        showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount, idToken)
-      })
-    })
-
-    //getOrders(101, setOrders)
+    const dataFetch = async () => {
+      try {
+        getEcommerceConfiguration(setEcommerceConfiguration)
+        const response = await getUser(idToken, setUser);
+        const paymentMethod = await showPaymentMethod(response.id, idToken)
+        setPaymentMethod(paymentMethod)
+        paymentMethod.payjp_default_card_id && await showCard(response.id, idToken, paymentMethod.payjp_customer_id, paymentMethod.payjp_default_card_id, setCard)
+        await showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount, idToken)
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+    dataFetch();
   }, []);
 
   const PurchaseDetailCard = (props) => {
     return (
       <Card border="0" className="shadow">
-      <Card.Header className="bg-primary text-white px-3 py-2">
-        <h5 className="mb-0 fw-bolder">注文詳細</h5>
-      </Card.Header>  
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">注文詳細</h5>
+        </Card.Header>  
         <Card.Body className="py-0">
           <Row className="mt-3 mb-3 pb-3 border-bottom">
             <Col xs={5}>
@@ -142,26 +153,34 @@ export default () => {
         </Card.Header>  
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
-              <DeliveryAddressItem {...deliveryAddress} />
+              <DeliveryAddressItem {...deliveryAddress} isRendered={isRendered} />
             </ListGroup>
           </Card.Body>
         </Card>
-        <Card border="0" className="shadow mb-4">
-      <Card.Header className="bg-primary text-white px-3 py-2">
-        <h5 className="mb-0 fw-bolder">お支払い情報</h5>
-      </Card.Header>  
-          <Card.Body className="py-0">
-            <ListGroup className="list-group-flush">
-              <PaymentDetailItem
-                paymentMethod={paymentMethod}
-                ecommerceConfiguration={ecommerceConfiguration}
-                page="purchase-history"
-                card={card}
-              />
-            </ListGroup>
-          </Card.Body>
-        </Card>
-        <PurchaseDetailCard />
+        {
+          isRendered ? (
+            <>
+              <Card border="0" className="shadow mb-4">
+                <Card.Header className="bg-primary text-white px-3 py-2">
+                  <h5 className="mb-0 fw-bolder">お支払い情報</h5>
+                </Card.Header>  
+                <Card.Body className="py-0">
+                  <ListGroup className="list-group-flush">
+                    <PaymentDetailItem
+                      paymentMethod={paymentMethod}
+                      ecommerceConfiguration={ecommerceConfiguration}
+                      page="purchase-history"
+                      card={card}
+                    />
+                  </ListGroup>
+                </Card.Body>
+              </Card>
+              <PurchaseDetailCard />
+            </>
+          ) : (
+            <ProductHistoryDetailContentLoder />
+          )
+        }
       </div>
     </main>
     </>

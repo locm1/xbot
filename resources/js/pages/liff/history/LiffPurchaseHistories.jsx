@@ -4,16 +4,17 @@ import { SearchIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
 import liff from '@line/liff';
-import Cookies from 'js-cookie';
+import Swal from "sweetalert2";
 import moment from "moment-timezone";
 import { CartItem } from "@/pages/liff/LiffCardItem";
 import { LoadingContext } from "@/components/LoadingContext";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getOrders, searchOrders } from "@/pages/liff/api/OrderApiMethods";
+import PurchaseHistoriesContentLoader from "@/pages/liff/history/loader/PurchaseHistoriesContentLoader";
 
 export default () => {
+  const [isRendered, setIsRendered] = useState(false);
   const idToken = liff.getIDToken();
-  const { setIsLoading } = useContext(LoadingContext);
   const date = new Date();
   const endYear = date.getFullYear();
   const startYear = endYear - 5;
@@ -44,13 +45,24 @@ export default () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    //getOrders(101, setOrders)
-
-    getUser(idToken, setUser).then(response => {
-      getOrders(response.id, setOrders, setIsLoading, {liffToken: idToken}).finally(() => setIsLoading(false));
-    })
-    //setIsLoading(false);
+    const dataFetch = async () => {
+      try {
+        const response = await getUser(idToken, setUser);
+        await getOrders(response.id, setOrders, {liffToken: idToken})
+        setIsRendered(true);
+      } catch (error) {
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+    dataFetch();
   }, []);
 
   const OrderCard = (props) => {
@@ -99,34 +111,39 @@ export default () => {
   }
 
   return (
-    <>
-    <Card border="0" className="shadow p-0 mt-3">
-      <Card.Header className="bg-primary text-white px-3 py-2">
-        <h5 className="mb-0 fw-bolder">注文日でフィルタリング</h5>
-      </Card.Header>  
-      <Card.Body className="pb-3 rounded-bottompt-3">
-        <Row>
-          <Col xs={12} className="my-1">
-            <Form.Group id="order-date">
-              <Form.Select defaultValue="1" className="mb-0 w-100" value={time} onChange={(e) => handleChange(e)}>
-                <option value="">注文時期を選択してください</option>
-                <option value={1}>過去1ヶ月</option>
-                <option value={2}>過去半年</option>
-                {getPurchaseTimes()}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
-    <div className="d-flex align-items-center">
-      {
-        orders.length > 0 
-        ? <p className="mt-4">件数：{orders.length}件</p> 
-        : <p className="mt-4">購入履歴はありません。</p>
-      }
-    </div>
-    {orders.map(order => <OrderCard key={`order-${order.id}`} {...order} />)}
+    isRendered ? (
+      <>
+      <Card border="0" className="shadow p-0 mt-3">
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">注文日でフィルタリング</h5>
+        </Card.Header>  
+        <Card.Body className="pb-3 rounded-bottompt-3">
+          <Row>
+            <Col xs={12} className="my-1">
+              <Form.Group id="order-date">
+                <Form.Select defaultValue="1" className="mb-0 w-100" value={time} onChange={(e) => handleChange(e)}>
+                  <option value="">注文時期を選択してください</option>
+                  <option value={1}>過去1ヶ月</option>
+                  <option value={2}>過去半年</option>
+                  {getPurchaseTimes()}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+      <div className="d-flex align-items-center">
+        {
+          orders.length > 0 
+          ? <p className="mt-4">件数：{orders.length}件</p> 
+          : <p className="mt-4">購入履歴はありません。</p>
+        }
+      </div>
+      {orders.map(order => <OrderCard key={`order-${order.id}`} {...order} />)}
     </>
+    ) : (
+      <PurchaseHistoriesContentLoader />
+    )
+    
   );
 };

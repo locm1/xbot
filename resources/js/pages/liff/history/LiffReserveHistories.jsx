@@ -21,6 +21,7 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
+  const idToken = liff.getIDToken();
 
   const getPurchaseTimes = () => {
     const purchaseTimes = [];
@@ -35,7 +36,7 @@ export default () => {
     setTime(e.target.value)
 
     const searchParams = {
-      params: {time: e.target.value}
+      params: {time: e.target.value, liffToken: idToken}
     };
     console.log(searchParams);
     searchProductReservations(101, searchParams, setProductReservations);
@@ -43,11 +44,10 @@ export default () => {
 
   useEffect(() => {
     //setIsLoading(true);
-    const idToken = liff.getIDToken();
     //getProductReservations(101, setProductReservations)
 
     getUser(idToken, setUser).then(response => {
-      getProductReservations(response.id, setProductReservations)
+      getProductReservations(response.id, setProductReservations, {liffToken: idToken})
     })
   }, []);
 

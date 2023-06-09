@@ -20,6 +20,7 @@ import { isSalePeriod } from "@/components/common/IsSalePeriod";
 import ContentLoader from "react-content-loader";
 
 export default () => {
+  const idToken = liff.getIDToken();
   const history = useHistory();
   const location = useLocation().pathname;
   const { id } = useParams();
@@ -41,7 +42,7 @@ export default () => {
     { name: '', color: '' }
   );
   const [formValue, setFormValue] = useState({
-    product_id: id, quantity: 1
+    product_id: id, quantity: 1, liffToken: idToken
   });
   const [carts, setCarts] = useState([]);
   const [itemsExistInCart, setItemsExistInCart] = useState(false);
@@ -76,7 +77,6 @@ export default () => {
   };
 
   useEffect(() => {
-    const idToken = liff.getIDToken();
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);

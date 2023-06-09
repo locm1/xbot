@@ -1,5 +1,5 @@
-export const getInviteMessage = async (userId, setMessage, setLink) => {
-  axios.get(`/api/v1/users/${userId}/invites`)
+export const getInviteMessage = async (userId, setMessage, setLink, idToken) => {
+  axios.get(`/api/v1/users/${userId}/invites`, {params: {liffToken: idToken}})
   .then((response) => {
     const data = response.data;
     setMessage(data.message);
@@ -11,8 +11,8 @@ export const getInviteMessage = async (userId, setMessage, setLink) => {
   });
 };
 
-export const getInviterIncentives = async (userId, setInviterIncentives, setIsLoading) => {
-  axios.get(`/api/v1/users/${userId}/inviter-incentives`)
+export const getInviterIncentives = async (userId, setInviterIncentives, setIsLoading, idToken) => {
+  axios.get(`/api/v1/users/${userId}/inviter-incentives`, {params: {liffToken: idToken}})
   .then((response) => {
     setInviterIncentives(response.data.inviter_incentives)
     console.log(response.data.inviter_incentives);
@@ -24,8 +24,8 @@ export const getInviterIncentives = async (userId, setInviterIncentives, setIsLo
   });
 };
 
-export const getInviteeIncentives = async (userId, setInviteeIncentives) => {
-  axios.get(`/api/v1/users/${userId}/invitee-incentives`)
+export const getInviteeIncentives = async (userId, setInviteeIncentives, data) => {
+  axios.get(`/api/v1/users/${userId}/invitee-incentives`, {params: data})
   .then((response) => {
     setInviteeIncentives(response.data.invitee_incentives)
     console.log(response.data.invitee_incentives);

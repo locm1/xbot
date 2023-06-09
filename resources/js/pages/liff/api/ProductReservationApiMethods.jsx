@@ -1,7 +1,7 @@
 import { Paths } from "@/paths";
 
-export const getProductReservations = async (userId, setProductReservations) => {
-  axios.get(`/api/v1/users/${userId}/product/reservations`)
+export const getProductReservations = async (userId, setProductReservations, liffToken) => {
+  axios.get(`/api/v1/users/${userId}/product/reservations`, {params: liffToken})
   .then((response) => {
     setProductReservations(response.data.product_reservations)
     console.log(response.data.product_reservations);

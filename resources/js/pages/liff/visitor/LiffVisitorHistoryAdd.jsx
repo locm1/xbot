@@ -18,7 +18,7 @@ export default () => {
   useEffect(() => {
     const idToken = liff.getIDToken();
     getUser(idToken, setUser).then(response => 
-      storeVisitorHistory(response.id, storeComplete)
+      storeVisitorHistory(response.id, storeComplete, {liffToken: idToken})
     )
   }, []);
 

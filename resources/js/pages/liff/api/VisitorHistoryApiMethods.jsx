@@ -15,8 +15,8 @@ export const getVisitorHistoryCount = async (userId, liffToken, setVisitorCount)
 };
 
 
-export const storeVisitorHistory = async (userId, storeComplete) => {
-  return await axios.post(`/api/v1/users/${userId}/visitor-histories`)
+export const storeVisitorHistory = async (userId, storeComplete, liffToken) => {
+  return await axios.post(`/api/v1/users/${userId}/visitor-histories`, liffToken)
   .then((response) => {
     // Swal.fire({
     //   icon: 'success',

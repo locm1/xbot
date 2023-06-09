@@ -34,15 +34,14 @@ export default () => {
   ]);
   const [link, setLink] = useState();
   const [showMessage, setShowMessage] = useState();
+  const idToken = liff.getIDToken();
 
   useEffect(() => {
     setIsLoading(true)
-    const idToken = liff.getIDToken();
-    console.log(idToken);
     getUser(idToken, setUser).then(response => {
-      getInviteMessage(response.id, setMessage, setLink)
-      getInviteeIncentives(response.id, setInviteeIncentives)
-      getInviterIncentives(response.id, setInviterIncentives, setIsLoading)
+      getInviteMessage(response.id, setMessage, setLink, idToken)
+      getInviteeIncentives(response.id, setInviteeIncentives, {liffToken: idToken})
+      getInviterIncentives(response.id, setInviterIncentives, setIsLoading, {liffToken: idToken})
     })
   }, []);
 
@@ -71,7 +70,7 @@ export default () => {
   };
 
   const updateIncentive = (id, invite) => {
-    const formValue = { usage_status: 2 }
+    const formValue = { usage_status: 2, liffToken: idToken }
     if (invite == 'inviter') {
       updateInviterIncentives(user.id, id, formValue, inviterIncentives, setInviterIncentives)
       //updateInviterIncentives(2, id, formValue, inviterIncentives, setInviterIncentives)

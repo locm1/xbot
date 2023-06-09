@@ -13,6 +13,11 @@ import { getEvents, eventReservation, getEventsByUserId } from "@/pages/liff/api
 import { MapPinIcon } from "@/components/icons/Icons";
 import EventReservationsContentLoader from "@/pages/liff/event/EventReservationsContentLoader";
 
+/* test data
+import { events } from "./test_data/events";
+import { userEvents } from "./test_data/userEvents";
+*/
+
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
     confirmButton: 'btn btn-primary me-3',
@@ -27,10 +32,10 @@ export default () => {
       {id: 1, start_date: '2023-01-01 12:00:00', end_date: '2023-01-01 13:00:00'}
     ]
   });
+  const [userEvents, setUserEvents] = useState([]);
   const [user, setUser] = useState({
     is_registered: 0
   });
-  const [userEvents, setUserEvents] = useState([]);
   const date = new Date();
   const [year, setYear] = useState(date.getFullYear());
   const [month, setMonth] = useState(date.getMonth() + 1);
@@ -46,7 +51,7 @@ export default () => {
         const user = await getUser(idToken, setUser)
         setLiffToken(idToken);
         await getEventsByUserId(user.id, idToken, setUserEvents)
-        
+
         const searchParams = {
           params: {year: year, month: month}
         };
@@ -102,7 +107,7 @@ export default () => {
 
   const failedReservation = (message) => {
     const searchParams = {
-      params: {year: year, month: month}
+      params: { year: year, month: month }
     };
     Swal.fire(
       `エラー`,
@@ -138,7 +143,7 @@ export default () => {
     setYear(prevMonth.getFullYear());
     setMonth(prevMonth.getMonth() + 1);
     const searchParams = {
-      params: {year: prevMonth.getFullYear(), month: prevMonth.getMonth() + 1}
+      params: { year: prevMonth.getFullYear(), month: prevMonth.getMonth() + 1 }
     };
     getEvents(searchParams, setEvents);
   };
@@ -148,7 +153,7 @@ export default () => {
     setYear(nextMonth.getFullYear());
     setMonth(nextMonth.getMonth() + 1);
     const searchParams = {
-      params: {year: nextMonth.getFullYear(), month: nextMonth.getMonth() + 1}
+      params: { year: nextMonth.getFullYear(), month: nextMonth.getMonth() + 1 }
     };
     getEvents(searchParams, setEvents);
   };
@@ -169,55 +174,46 @@ export default () => {
 
       // 既にユーザーが予約しているかどうか
       const targetEvent = userEvents.find(userEvent => userEvent.id == id)
-  
+
       return (
-        remaining == 0 && !targetEvent ? null : 
+        remaining == 0 && !targetEvent ? null :
           <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-            <Row className="align-items-center">
-              <Col xs="12" className="px-0">
-                <h4 className="fs-6 mb-1 liff-event-venue-title">{title}</h4>
-              </Col>
-              <Col xs="6" className="px-0">
-                <small>時間：{startDate}〜{endDate}</small>
-              </Col>
-              <Col xs="6" className="text-end">
-                <small>残枠数：</small>
-                <span className="fs-5 fw-bolder text-dark">{is_unlimited == 1 ? '無制限' : remaining}</span>
-              </Col>
-              <Col xs="12" className="px-0">
-                <div className="d-frex mt-1">
-                  <MapPinIcon className="icon icon-xs liff-event-icon" />
-                  <small className="liff-event-place">{location}</small>
-                </div>
-              </Col>
-              <Col xs="12" className="text-end">
-                <div className="align-items-center mt-3">
-                  {
-                    (() => {
-                      if (targetEvent) {
-                        return(
-                          <Button disabled variant="gray-800" className="w-100">
-                            予約済み
-                          </Button>
-                        )
-                      } else if (remaining == 0) {
-                        return (
-                          <Button disabled variant="gray-800" className="w-100">
-                            予約不可
-                          </Button>
-                        )
-                      } else {
-                        return (
-                          <Button onClick={() => completeReservations(id, startDate, endDate)} variant="tertiary" className="w-100">
-                            予約する
-                          </Button>
-                        )
-                      }
-                    })()
+            <h4 className="fs-6 mb-1 liff-event-venue-title">{title}</h4>
+            <div className="d-flex justify-content-between align-items-baseline">
+              <small>時間：{startDate}〜{endDate}</small>
+              <small>
+                残枠数：<span className="fs-5 fw-bolder text-dark">{is_unlimited == 1 ? '無制限' : remaining}</span>
+              </small>
+            </div>
+            <div className="mt-1">
+              <MapPinIcon className="icon icon-xs liff-event-icon" />
+              <small className="liff-event-place">{location}</small>
+            </div>
+            <div className="align-items-center mt-3">
+              {
+                (() => {
+                  if (targetEvent) {
+                    return (
+                      <Button disabled variant="gray-800" className="w-100">
+                        予約済み
+                      </Button>
+                    )
+                  } else if (remaining == 0) {
+                    return (
+                      <Button disabled variant="gray-800" className="w-100">
+                        予約不可
+                      </Button>
+                    )
+                  } else {
+                    return (
+                      <Button onClick={() => completeReservations(id, startDate, endDate)} variant="tertiary" className="w-100">
+                        予約する
+                      </Button>
+                    )
                   }
-                </div>
-              </Col>
-            </Row>
+                })()
+              }
+            </div>
           </ListGroup.Item>
       );
     }
@@ -234,7 +230,7 @@ export default () => {
               {eventDate.format("MM月DD日")}（{weeks[eventDate.day()]}）
             </h2>
           </div>
-      </Card.Header>
+        </Card.Header>
         <Card.Body className="py-0">
           <ListGroup className="list-group-flush">
             {eventItems.map(eventItem => (<EventItem key={`event-item-${eventItem.id}`} {...eventItem} />))}
@@ -254,77 +250,30 @@ export default () => {
     );
   };
 
-  return (
-    <>
-      <main className="content liff-product-detail">
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap"></div>
-        <div className="liff-product-list">
-          {
-            isRendered ? (
-              <div className="d-flex align-items-center justify-content-between mb-3">
-                <Button variant="primary" size="sm" onClick={showPreviousMonth} className={targetDate < currentDate && 'invisible disabled'}>
-                  <ChevronLeftIcon className="icon icon-xs" />
-                  <span className="me-2 ms-1">{month === 1 ? '12' : month - 1}月</span>
-                </Button>
-                <h2 className="fs-5 fw-bold mb-0">
-                  {year}年{month}月
-                </h2>
-                <Button variant="primary" size="sm" onClick={showNextMonth}>
-                  <span className="me-2 ms-1">{month === 12 ? '1' : month + 1}月</span>
-                  <ChevronRightIcon className="icon icon-xs" /> 
-                </Button>
-              </div>
-            ) : (
-              <div className="d-flex align-items-center justify-content-between mb-3">
-                <ContentLoader
-                  height={36}
-                  width={"100%"}
-                  speed={1}
-                  backgroundColor={'#6e6e6e'}
-                  foregroundColor={'#999'}
-                >
-                  <rect x="0" y="10%" rx="3" ry="3" width="50%" height="100%" />
-                </ContentLoader>
-                <ContentLoader
-                  height={17}
-                  width={"100%"}
-                  speed={1}
-                  backgroundColor={'#6e6e6e'}
-                  foregroundColor={'#999'}
-                >
-                  <rect x="0" y="10%" rx="3" ry="3" width="100%" height="100%" />
-                </ContentLoader>
-                <ContentLoader
-                  height={36}
-                  width={"100%"}
-                  speed={1}
-                  backgroundColor={'#6e6e6e'}
-                  foregroundColor={'#999'}
-                >
-                  <rect x="60" y="10%" rx="3" ry="3" width="50%" height="100%" />
-                </ContentLoader>
-              </div>
-            )
-          }
-        </div>
+  return isRendered ? (
+    <main className="p-3">
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <Button variant="primary" size="sm" onClick={showPreviousMonth} className={targetDate < currentDate && 'invisible disabled'}>
+          <ChevronLeftIcon className="icon icon-xs" />
+          <span className="me-2 ms-1">{month === 1 ? '12' : month - 1}月</span>
+        </Button>
+        <h2 className="fs-5 fw-bold mb-0">
+          {year}年{month}月
+        </h2>
+        <Button variant="primary" size="sm" onClick={showNextMonth}>
+          <span className="me-2 ms-1">{month === 12 ? '1' : month + 1}月</span>
+          <ChevronRightIcon className="icon icon-xs" />
+        </Button>
+      </div>
+      <div className="liff-product-list">
         {
-          isRendered ? (
-            <div className="liff-product-list">
-              {
-                Object.keys(events).length > 0 ? (
-                  Object.keys(events).sort().map((event, index) => <LiffVisitorPrivilegeCard key={`event-month-${index}`} event={event} />)
-                ) : (
-                  <EventNotFoundCard />
-                )
-              }
-            </div>
+          Object.keys(events).length > 0 ? (
+            Object.keys(events).sort().map((event, index) => <LiffVisitorPrivilegeCard key={`event-month-${index}`} event={event} />)
           ) : (
-            <div className="liff-product-list">
-              <EventReservationsContentLoader />
-            </div>
+            <EventNotFoundCard />
           )
         }
-      </main>
-    </>
-  );
+      </div>
+    </main>
+  ) : <EventReservationsContentLoader />
 };

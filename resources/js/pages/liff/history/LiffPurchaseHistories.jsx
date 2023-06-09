@@ -12,6 +12,7 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getOrders, searchOrders } from "@/pages/liff/api/OrderApiMethods";
 
 export default () => {
+  const idToken = liff.getIDToken();
   const { setIsLoading } = useContext(LoadingContext);
   const date = new Date();
   const endYear = date.getFullYear();
@@ -35,7 +36,7 @@ export default () => {
     setTime(e.target.value)
 
     const searchParams = {
-      params: {time: e.target.value}
+      params: {time: e.target.value, liffToken: idToken}
     };
     console.log(searchParams);
     searchOrders(user.id, searchParams, setOrders);
@@ -44,11 +45,10 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const idToken = liff.getIDToken();
     //getOrders(101, setOrders)
 
     getUser(idToken, setUser).then(response => {
-      getOrders(response.id, setOrders, setIsLoading).finally(() => setIsLoading(false));
+      getOrders(response.id, setOrders, setIsLoading, {liffToken: idToken}).finally(() => setIsLoading(false));
     })
     //setIsLoading(false);
   }, []);

@@ -82,7 +82,7 @@ export default () => {
       showPaymentMethod(response.id, setIsRendered).then(payment_response => {
         setPaymentMethod(payment_response)
         payment_response.payjp_default_card_id && showCard(response.id, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard)
-        showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount)
+        showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount, idToken)
       })
     })
 

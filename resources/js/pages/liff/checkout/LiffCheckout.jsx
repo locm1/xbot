@@ -23,7 +23,7 @@ import { getEcommerceConfigurationAndPostage } from "@/pages/liff/api/EcommerceC
 import { storeOrder } from "@/pages/liff/api/OrderApiMethods";
 
 export default () => {
-  const [liffToken, setLiffToken] = useState('');
+  const idToken = liff.getIDToken();
   const [isRendered, setIsRendered] = useState(false)
   const location = useLocation();
   const [coupon, setCoupon] = useState({
@@ -115,7 +115,7 @@ export default () => {
       payjp_customer_id: paymentMethod.payjp_customer_id, purchase_amount: order.purchase_amount
     }
     const formValue = {
-      order: order, order_products: products, charge: charge
+      order: order, order_products: products, charge: charge, liffToken: idToken
     }
     console.log(formValue);
     storeOrder(user.id, formValue, storeComplete, setIsLoading)
@@ -146,8 +146,6 @@ export default () => {
         setCoupon(location.state?.coupon ?? {
           discount_price: 0
         });
-        const idToken = liff.getIDToken();
-        setLiffToken(idToken)
         const response = await getUser(idToken, setUser);
         const destination_response = await getSelectOrderDestination(response.id, idToken, setDeliveryAddress);
         if (destination_response == null) {

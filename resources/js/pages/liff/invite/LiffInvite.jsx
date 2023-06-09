@@ -21,7 +21,6 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 }));
 
 export default () => {
-  const { setIsLoading } = useContext(LoadingContext);
   const [user, setUser] = useState({
     is_registered: 0
   });
@@ -37,12 +36,25 @@ export default () => {
   const idToken = liff.getIDToken();
 
   useEffect(() => {
-    setIsLoading(true)
-    getUser(idToken, setUser).then(response => {
-      getInviteMessage(response.id, setMessage, setLink, idToken)
-      getInviteeIncentives(response.id, setInviteeIncentives, {liffToken: idToken})
-      getInviterIncentives(response.id, setInviterIncentives, setIsLoading, {liffToken: idToken})
-    })
+    const dataFetch = async () => {
+      try {
+        const response = await getUser(idToken, setUser);
+        await getInviteMessage(response.id, setMessage, setLink, idToken)
+        await getInviteeIncentives(response.id, setInviteeIncentives, {liffToken: idToken})
+        await getInviterIncentives(response.id, setInviterIncentives, {liffToken: idToken})
+      } catch (error) {
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+    dataFetch();
   }, []);
 
   const sendMessage = () => {
@@ -119,7 +131,6 @@ export default () => {
   }
 
   return (
-    <>
     <main className="liff-product-detail p-3">
       <div className="liff-content">
         <div className="content__inner">
@@ -175,6 +186,5 @@ export default () => {
         </div>
       </div>
     </main>
-    </>
   );
 };

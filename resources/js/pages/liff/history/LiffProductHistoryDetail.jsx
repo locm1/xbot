@@ -15,6 +15,7 @@ import { showCard } from "@/pages/liff/api/CardApiMethods";
 import { showOrder } from "@/pages/liff/api/OrderApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
+import ProductHistoryDetailContentLoder from "@/pages/liff/history/loader/ProductHistoryDetailContentLoder";
 
 export default () => {
   const idToken = liff.getIDToken();
@@ -97,16 +98,14 @@ export default () => {
       }
     }
     dataFetch();
-
-    //getOrders(101, setOrders)
   }, []);
 
   const PurchaseDetailCard = (props) => {
     return (
       <Card border="0" className="shadow">
-      <Card.Header className="bg-primary text-white px-3 py-2">
-        <h5 className="mb-0 fw-bolder">注文詳細</h5>
-      </Card.Header>  
+        <Card.Header className="bg-primary text-white px-3 py-2">
+          <h5 className="mb-0 fw-bolder">注文詳細</h5>
+        </Card.Header>  
         <Card.Body className="py-0">
           <Row className="mt-3 mb-3 pb-3 border-bottom">
             <Col xs={5}>
@@ -158,22 +157,30 @@ export default () => {
             </ListGroup>
           </Card.Body>
         </Card>
-        <Card border="0" className="shadow mb-4">
-      <Card.Header className="bg-primary text-white px-3 py-2">
-        <h5 className="mb-0 fw-bolder">お支払い情報</h5>
-      </Card.Header>  
-          <Card.Body className="py-0">
-            <ListGroup className="list-group-flush">
-              <PaymentDetailItem
-                paymentMethod={paymentMethod}
-                ecommerceConfiguration={ecommerceConfiguration}
-                page="purchase-history"
-                card={card}
-              />
-            </ListGroup>
-          </Card.Body>
-        </Card>
-        <PurchaseDetailCard />
+        {
+          isRendered ? (
+            <>
+              <Card border="0" className="shadow mb-4">
+                <Card.Header className="bg-primary text-white px-3 py-2">
+                  <h5 className="mb-0 fw-bolder">お支払い情報</h5>
+                </Card.Header>  
+                <Card.Body className="py-0">
+                  <ListGroup className="list-group-flush">
+                    <PaymentDetailItem
+                      paymentMethod={paymentMethod}
+                      ecommerceConfiguration={ecommerceConfiguration}
+                      page="purchase-history"
+                      card={card}
+                    />
+                  </ListGroup>
+                </Card.Body>
+              </Card>
+              <PurchaseDetailCard />
+            </>
+          ) : (
+            <ProductHistoryDetailContentLoder />
+          )
+        }
       </div>
     </main>
     </>

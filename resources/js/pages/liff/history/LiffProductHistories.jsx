@@ -9,7 +9,6 @@ import Cookies from 'js-cookie';
 
 import LiffPurchaseHistories from "@/pages/liff/history/LiffPurchaseHistories";
 import LiffReserveHistories from "@/pages/liff/history/LiffReserveHistories";
-
 import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
@@ -19,12 +18,10 @@ export default () => {
 
   useEffect(() => {
     //setIsLoading(true);
-    //getOrders(101, setOrders)
     getEcommerceConfiguration(setEcommerceConfiguration)
   }, []);
 
   return (
-    <>
     <main className="content liff-product-detail">
       {/* <Tab.Container defaultActiveKey="purchase_history" className="mb-6">
         <Nav fill variant="pills" className="flex-column">
@@ -70,6 +67,5 @@ export default () => {
         </Card.Body>
       </Card>
     </main>
-    </>
   );
 };

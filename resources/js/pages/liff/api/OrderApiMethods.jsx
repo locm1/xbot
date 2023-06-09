@@ -2,17 +2,16 @@ import Swal from "sweetalert2";
 import { Paths } from "@/paths";
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 
-export const getOrders = async (userId, setOrders, setIsLoading = null, liffToken) => {
-  axios.get(`/api/v1/users/${userId}/orders`, {params: liffToken})
+export const getOrders = async (userId, setOrders, liffToken) => {
+  return await axios.get(`/api/v1/users/${userId}/orders`, {params: liffToken})
   .then((response) => {
-    setOrders(response.data.orders)
-    console.log(response.data.orders);
-    setIsLoading(false);
-    //成功したらメール通知する処理
+    const orders = response.data.orders;
+    setOrders(orders)
+    console.log(orders);
+    return orders;
   })
   .catch(error => {
       console.error(error);
-      setIsLoading(false);
   });
 };
 

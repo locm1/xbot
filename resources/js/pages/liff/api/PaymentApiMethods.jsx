@@ -1,5 +1,6 @@
-export const showPaymentMethod = async (userId) => {
-  return await axios.get(`/api/v1/users/${userId}/payments`)
+export const showPaymentMethod = async (userId, liffToken) => {
+  const params = {params: {liffToken: liffToken}}
+  return await axios.get(`/api/v1/users/${userId}/payments`, params)
   .then((response) => {
     const order_payment_method = response.data.order_payment_methods
     const new_order_payment_method = {

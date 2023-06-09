@@ -7,7 +7,7 @@ import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
 import liff from '@line/liff';
 import { LoadingContext } from "@/components/LoadingContext";
-
+import Swal from "sweetalert2";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getCards } from "@/pages/liff/api/CardApiMethods";
 import { updateCustomer, getCustomer } from "@/pages/liff/api/CustomerApiMethods";
@@ -33,9 +33,12 @@ export default () => {
   const [payments, setPayments] = useState([]);
   const [selectCardId, setSelectCardId] = useState();
   const [ecommerceConfiguration, setEcommerceConfiguration] = useState();
+  const [liffToken, setLiffToken] = useState('');
 
   const onClick = () => {
     console.log(paymentMethod.payment_method);
+    paymentMethod.liffToken = liffToken
+
     if ('id' in paymentMethod) {
       if (paymentMethod.payment_method == 1) {
         paymentMethod.payjp_default_card_id = selectCardId
@@ -59,18 +62,28 @@ export default () => {
   useEffect(() => {
     const fetchData = async () => {
     const idToken = liff.getIDToken();
-    const userResponse = await getUser(idToken, setUser);
+    setLiffToken(idToken)
     
-    const paymentResponse = await showPaymentMethod(userResponse.id);
-    setPaymentMethod(paymentResponse == null ? { payment_method: 1 } : paymentResponse);
-    setSelectCardId(paymentResponse.payjp_default_card_id);
-    
-    if (paymentResponse.payjp_customer_id) {
-      await getCards(userResponse.id, paymentResponse.payjp_customer_id, setCreditCards);
+    try {
+      const userResponse = await getUser(idToken, setUser);
+      const paymentResponse = await showPaymentMethod(userResponse.id, idToken);
+      setPaymentMethod(paymentResponse == null ? { payment_method: 1 } : paymentResponse);
+      setSelectCardId(paymentResponse.payjp_default_card_id);
+      
+      if (paymentResponse.payjp_customer_id) {
+        await getCards(userResponse.id, idToken, paymentResponse.payjp_customer_id, setCreditCards);
+      }
+
+      await getEcommerceConfigurationAndPayment(setEcommerceConfiguration, setPayments);
+      setIsRendered(true);
+    } catch (error) {
+      setIsRendered(true);
+      Swal.fire(
+        `データ取得エラー`,
+        'データが正常に取得できませんでした',
+        'error'
+      )
     }
-    
-    await getEcommerceConfigurationAndPayment(setEcommerceConfiguration, setPayments);
-    setIsRendered(true);
   }
   
   fetchData();

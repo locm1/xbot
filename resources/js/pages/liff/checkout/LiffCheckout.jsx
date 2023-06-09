@@ -23,6 +23,7 @@ import { getEcommerceConfigurationAndPostage } from "@/pages/liff/api/EcommerceC
 import { storeOrder } from "@/pages/liff/api/OrderApiMethods";
 
 export default () => {
+  const [liffToken, setLiffToken] = useState('');
   const [isRendered, setIsRendered] = useState(false)
   const location = useLocation();
   const [coupon, setCoupon] = useState({
@@ -146,27 +147,33 @@ export default () => {
           discount_price: 0
         });
         const idToken = liff.getIDToken();
+        setLiffToken(idToken)
         const response = await getUser(idToken, setUser);
-        const destination_response = await getSelectOrderDestination(response.id, setDeliveryAddress);
+        const destination_response = await getSelectOrderDestination(response.id, idToken, setDeliveryAddress);
         if (destination_response == null) {
-          await getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts);
+          await getCartsAndRelatedProducts(response.id, idToken, setCarts, setItemsExistInCart, setRelatedProducts);
         } else {
           const searchParams = {
             params: { name: destination_response.prefecture }
           };
           const postage = await searchPostage(searchParams);
-          const carts = await getCartsAndRelatedProducts(response.id, setCarts, setItemsExistInCart, setRelatedProducts);
+          const carts = await getCartsAndRelatedProducts(response.id, idToken, setCarts, setItemsExistInCart, setRelatedProducts);
           await getEcommerceConfigurationAndPostage(carts, postage[0], setPostage, setEcommerceConfiguration);
         }
-        const payment_response = await showPaymentMethod(response.id);
+        const payment_response = await showPaymentMethod(response.id, idToken);
         setPaymentMethod(payment_response);
         setIsRendered(true);
 
         if (payment_response.payjp_default_card_id) {
-          await showCard(response.id, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard);
+          await showCard(response.id, idToken, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard);
         }
       } catch (error) {
         console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        )
       }
     }
     dataFetch();

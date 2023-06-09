@@ -5,7 +5,7 @@ import '@splidejs/splide/css';
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import liff from '@line/liff';
-import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 import { LoadingContext } from "@/components/LoadingContext";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getOrderDestinations, updateOrderDestination, updateOrderDestinations } from "@/pages/liff/api/OrderDestinationApiMethods";
@@ -20,13 +20,26 @@ export default () => {
   const [user, setUser] = useState({
     is_registered: 0
   });
+  const [liffToken, setLiffToken] = useState('');
 
-  const handleClick = () => {
-    console.log(selectId);
+
+  const handleClick = async () => {
     const updateAddress = deliveryAddresses.find((deliveryAddress) => deliveryAddress.id === selectId);
     updateAddress.is_selected = 1
+    updateAddress.liffToken = liffToken
     console.log(updateAddress);
-    updateOrderDestinations(user.id).then(response => updateOrderDestination(user.id, updateAddress.id, updateAddress, updateComplete))
+    try {
+      await updateOrderDestinations(user.id, liffToken)
+      await updateOrderDestination(user.id, updateAddress.id, updateAddress)
+      updateComplete()
+    } catch (error) {
+      console.error(error);
+      Swal.fire(
+        `データ保存エラー`,
+        'データが正常に保存できませんでした',
+        'error'
+      )
+    }
     //updateOrderDestination(user.id, updateAddress.id, updateAddress, updateComplete)
   }
 
@@ -37,11 +50,20 @@ export default () => {
   useEffect(() => {
     const fetch = async () => {
       const idToken = liff.getIDToken();
+      setLiffToken(idToken)
       try {
         const response = await getUser(idToken, setUser);
-        await getOrderDestinations(response.id, setDeliveryAddresses, setSelectId);
+        await getOrderDestinations(response.id, idToken, setDeliveryAddresses, setSelectId);
       } catch (error) {
         console.error(error);
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
       } finally {
         setIsRendered(true);
       }

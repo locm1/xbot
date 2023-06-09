@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
+import Swal from 'sweetalert2';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import Cookies from 'js-cookie';
@@ -23,6 +24,7 @@ export default (props) => {
   const [coupons, setCoupons] = useState([]);
   const [selectId, setSelectId] = useState();
   const [error, setError] = useState('');
+  const [liffToken, setLiffToken] = useState('');
 
   const handleClick = () => {
     const searchParams = {
@@ -30,7 +32,10 @@ export default (props) => {
         code: couponCode
       }
     };
-    storeCouponOwnership(user.id, {code: couponCode}, coupons, setCoupons, setError)
+    const formValue = {
+      code: couponCode, liffToken: liffToken
+    }
+    storeCouponOwnership(user.id, formValue, coupons, setCoupons, setError)
     //storeCouponOwnership(102, {code: couponCode}, coupons, setCoupons, setError)
     //searchCoupons(88, searchParams, setCoupons);
   };
@@ -49,11 +54,30 @@ export default (props) => {
 
   useEffect(() => {
     setIsLoading(true)
-    const idToken = liff.getIDToken();
-    // getUser(idToken, setUser)
-    getUser(idToken, setUser).then(response => getCouponOwnerships(response.id, setCoupons))
-    setIsLoading(false)
-    //getCouponOwnerships(102, setCoupons)
+
+    const dataFetch = async () => {
+      try {
+        const idToken = liff.getIDToken();
+        const user = await getUser(idToken, setUser)
+        setLiffToken(idToken);
+        await getCouponOwnerships(user.id, idToken, setCoupons)
+        setIsLoading(false)
+
+      } catch (error) {
+        console.error(error)
+        setIsLoading(false)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした）',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+
+    dataFetch()
   }, []);
 
   const CouponCard = (props) => {

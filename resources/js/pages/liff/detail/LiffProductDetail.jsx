@@ -45,6 +45,7 @@ export default () => {
   });
   const [carts, setCarts] = useState([]);
   const [itemsExistInCart, setItemsExistInCart] = useState(false);
+  const [liffToken, setLiffToken] = useState('');
   const quantities = [...Array(5).keys()].map(i => ++i)
   const discount_rate_decimal = product.product_sale.discount_rate / 100.0
   const sale_price = product.price - (product.price * discount_rate_decimal)
@@ -54,7 +55,8 @@ export default () => {
   };
 
   const saveCart = () => {
-    console.log(itemsExistInCart);
+    Object.assign(formValue, {liffToken: liffToken})
+
     if (itemsExistInCart) {
       console.log(formValue);
       updateCart(user.id, carts[0].id, formValue, location, showCart)
@@ -77,6 +79,7 @@ export default () => {
 
   useEffect(() => {
     const idToken = liff.getIDToken();
+    setLiffToken(idToken)
     showProduct(id, setProduct)
     getProductImages(id, setProductImages);
     getProductCategory(id, setCategory);

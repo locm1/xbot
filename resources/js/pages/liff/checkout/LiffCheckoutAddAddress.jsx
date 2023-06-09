@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
-import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 import liff from '@line/liff';
 import { Link, useLocation, useParams, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
@@ -15,7 +15,6 @@ import AddAddressContentLoader from "@/pages/liff/checkout/loader/AddAddressCont
 
 export default () => {
   const [isRendered, setIsRendered] = useState(false);
-  const { setIsLoading } = useContext(LoadingContext)
   const history = useHistory();
   const { id } = useParams();
   const location = useLocation().pathname;
@@ -34,6 +33,8 @@ export default () => {
     year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
     prefecture: '', city: '', address: '', building_name: '', room_number: ''
   });
+  const [liffToken, setLiffToken] = useState('');
+
 
   const handleChange = (e, input) => {
     setFormValue({...formValue, [input]: e.target.value})
@@ -47,18 +48,36 @@ export default () => {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (formValue.building_name && formValue.room_number) {
       formValue.building_name += ' ' + formValue.room_number
     }
     
     console.log(formValue);
     formValue.is_selected = 0
+    formValue.liffToken = liffToken
     if (pathname.includes('/edit')) {
-      updateOrderDestination(user.id, id, formValue, updateComplete, setErrors)
+      try {
+        await updateOrderDestination(user.id, id, formValue, setErrors)
+        updateComplete()
+      } catch (error) {
+        Swal.fire(
+          `データ保存エラー`,
+          'データが正常に保存できませんでした',
+          'error'
+        )
+      }
       //updateOrderDestination(101, id, formValue, updateComplete)
     } else {
-      storeOrderDestination(user.id, formValue, location, updateComplete, setErrors)
+      try {
+        await storeOrderDestination(user.id, formValue, location, updateComplete, setErrors)
+      } catch (error) {
+        Swal.fire(
+          `データ保存エラー`,
+          'データが正常に保存できませんでした',
+          'error'
+        )
+      }
       //storeOrderDestination(101, formValue, location)
     }
   };
@@ -70,11 +89,20 @@ export default () => {
   useEffect(() => {
     const dataFetch = async () => {
       const idToken = liff.getIDToken();
+      setLiffToken(idToken)
       getPrefectures(setPrefectures)
       
       if (pathname.includes('/edit')) {
         const user = await getUser(idToken, setUser)
-        await showOrderDestination(user.id, id, setFormValue)
+        try {
+          await showOrderDestination(user.id, id, idToken, setFormValue)
+        } catch (error) {
+          Swal.fire(
+            `データ取得エラー`,
+            'データが正常に取得できませんでした',
+            'error'
+          )
+        }
         setIsRendered(true)
         //showOrderDestination(101, id, setFormValue)
       } else {

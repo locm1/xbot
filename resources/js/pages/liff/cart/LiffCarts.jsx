@@ -38,10 +38,12 @@ export default () => {
   ]);
   const [itemsExistInCart, setItemsExistInCart] = useState(true);
   const [discountedTotalAmount, setDiscountedTotalAmount] = useState(0);
+  const [liffToken, setLiffToken] = useState('');
   const total = orderTotal - discountedTotalAmount;
 
   useEffect(() => {
     const idToken = liff.getIDToken();
+    setLiffToken(idToken)
     const getUserCarts = async () => {
       const response = await getUser(idToken, setUser)
       getCarts(response.id, setCarts, setItemsExistInCart, setRelatedProducts, setIsRendered, idToken)
@@ -69,7 +71,8 @@ export default () => {
     const currentRelatedProduct = relatedProducts.find((relatedProduct) => (relatedProduct.related_product_id === id))
     e.preventDefault();
     const formValue = {
-      product_id: id, quantity: 1, user_id: 101, product: currentRelatedProduct.related_product
+      product_id: id, quantity: 1, user_id: 101, 
+      product: currentRelatedProduct.related_product, liffToken: liffToken
     }
     storeRelatedProdcutInCart(user.id, formValue, setCarts, carts)
     //storeRelatedProdcutInCart(101, formValue, setCarts, carts)
@@ -80,7 +83,7 @@ export default () => {
     setCarts(newCarts);
     setRelatedProducts(relatedProducts.filter((relatedProduct) => (relatedProduct.related_product_id !== id)));
     //deleteCart(101, id)
-    deleteCart(user.id, id)
+    deleteCart(user.id, id, liffToken)
 
     if (newCarts.length == 0) {
       setItemsExistInCart(false);
@@ -107,6 +110,7 @@ export default () => {
       targetCart.totalAmount = isSalePeriodResult ? Math.floor(sale_price) * targetCart.quantity : targetCart.product.price * targetCart.quantity;
       setCarts(carts.map((cart) => (cart.id === id ? targetCart : cart)));
       //updateCart(102, id, targetCart, location)
+      targetCart.liffToken = liffToken
       updateCart(user.id, id, targetCart, location)
     }
 

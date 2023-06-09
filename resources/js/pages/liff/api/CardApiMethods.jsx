@@ -1,8 +1,8 @@
 import Swal from "sweetalert2";
 
-export const getCards = async (userId, payjp_customer_id, setCreditCards) => {
+export const getCards = async (userId, liffToken, payjp_customer_id, setCreditCards) => {
   const searchParams = {
-    params: {payjp_customer_id: payjp_customer_id}
+    params: {payjp_customer_id: payjp_customer_id, liffToken: liffToken}
   };
   return await axios.get(`/api/v1/users/${userId}/cards`, searchParams)
   .then((response) => {
@@ -14,9 +14,9 @@ export const getCards = async (userId, payjp_customer_id, setCreditCards) => {
   });
 };
 
-export const showCard = async (userId, payjp_customer_id, cardId, setCard) => {
+export const showCard = async (userId, liffToken, payjp_customer_id, cardId, setCard) => {
   const searchParams = {
-    params: {payjp_customer_id: payjp_customer_id}
+    params: {payjp_customer_id: payjp_customer_id, liffToken: liffToken}
   };
   return await axios.get(`/api/v1/users/${userId}/cards/${cardId}`, searchParams)
   .then((response) => {

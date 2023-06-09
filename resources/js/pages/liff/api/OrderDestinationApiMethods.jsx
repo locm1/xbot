@@ -1,8 +1,9 @@
 import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-dom";
 import { Paths } from "@/paths";
 
-export const getSelectOrderDestination = async (userId, setDeliveryAddress) => {
-  return await axios.get(`/api/v1/users/${userId}/selected-destination`)
+export const getSelectOrderDestination = async (userId, liffToken, setDeliveryAddress) => {
+  const params = {params: {liffToken: liffToken}}
+  return await axios.get(`/api/v1/users/${userId}/selected-destination`, params)
   .then((response) => {
     const order_destination = response.data.order_destination;
     setDeliveryAddress(response.data.order_destination);
@@ -25,8 +26,9 @@ export const getSelectOrderDestination = async (userId, setDeliveryAddress) => {
   });
 };
 
-export const getOrderDestinations = async (userId, setDeliveryAddresses, setSelectId) => {
-  return await axios.get(`/api/v1/users/${userId}/destinations`)
+export const getOrderDestinations = async (userId, liffToken, setDeliveryAddresses, setSelectId) => {
+  const params = {params: {liffToken: liffToken}}
+  return await axios.get(`/api/v1/users/${userId}/destinations`, params)
   .then((response) => {
     const order_destinations = response.data.order_destinations;
     setDeliveryAddresses(order_destinations);
@@ -39,8 +41,9 @@ export const getOrderDestinations = async (userId, setDeliveryAddresses, setSele
   });
 };
 
-export const showOrderDestination = async (userId, id, setDeliveryAddress) => {
-  return await axios.get(`/api/v1/users/${userId}/destinations/${id}`)
+export const showOrderDestination = async (userId, id, liffToken, setDeliveryAddress) => {
+  const params = {params: {liffToken: liffToken}}
+  return await axios.get(`/api/v1/users/${userId}/destinations/${id}`, params)
   .then((response) => {
     const order_destination = response.data.order_destination;
     if (order_destination.building_name) {
@@ -63,7 +66,6 @@ export const storeOrderDestination = async (userId, formValue, location, updateC
     if (location == '/checkout/address') {
       updateComplete();
     }
-    console.log(response.data.order_destination);
   })
   .catch(error => {
       console.error(error);
@@ -71,11 +73,11 @@ export const storeOrderDestination = async (userId, formValue, location, updateC
   });
 };
 
-export const updateOrderDestination = async (userId, id, formValue, updateComplete, setErrors) => {
+export const updateOrderDestination = async (userId, id, formValue, setErrors) => {
   return await axios.put(`/api/v1/users/${userId}/destinations/${id}`, formValue)
   .then((response) => {
     console.log(response.data.order_destination);
-    updateComplete();
+    return response.data.order_destination;
   })
   .catch(error => {
       console.error(error);
@@ -83,10 +85,11 @@ export const updateOrderDestination = async (userId, id, formValue, updateComple
   });
 };
 
-export const updateOrderDestinations = async (userId) => {
-  return await axios.put(`/api/v1/users/${userId}/destinations`)
+export const updateOrderDestinations = async (userId, liffToken) => {
+  return await axios.put(`/api/v1/users/${userId}/destinations`, {liffToken: liffToken})
   .then((response) => {
     console.log(response.data.order_destination);
+    return response.data.order_destination;
   })
   .catch(error => {
       console.error(error);

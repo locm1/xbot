@@ -58,6 +58,7 @@ export default () => {
     "questionnaires.0.answer": ''
   });
   const [answers, setAnswers] = useState([]);
+  const [liffToken, setLiffToken] = useState('');
 
   const genders = ['男性', '女性'];
 
@@ -87,7 +88,7 @@ export default () => {
     // const newQuestionnaires = questionnaires.filter((questionnaire, index) => {
     //   return questionnaire.answer
     // });
-    Object.assign(formValue, {questionnaires: questionnaires});
+    Object.assign(formValue, {questionnaires: questionnaires, liffToken: liffToken});
     console.log(formValue);
     storeQuestionnaireAnswers(user.id, formValue, setErrors, setIsLoading, onSave)
     //storeQuestionnaireAnswers(1, formValue, setErrors, setIsLoading, onSave)
@@ -144,6 +145,7 @@ export default () => {
 
   useEffect(() => {
     const idToken = liff.getIDToken();
+    setLiffToken(idToken)
     getUser(idToken, setUser)
     getUserInfoStatuses(setUserInfoStatuses)
     showQuestionnaireEnabling(1, setQuestionnaireEnabling)

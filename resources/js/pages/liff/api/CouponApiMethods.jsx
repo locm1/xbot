@@ -1,10 +1,13 @@
 import Swal from "sweetalert2";
 
-export const getCouponOwnerships = async (userId, setCoupons) => {
-  axios.get(`/api/v1/users/${userId}/coupons`)
+export const getCouponOwnerships = async (userId, liffToken, setCoupons) => {
+  const params = {params: {liffToken: liffToken}}
+  return await axios.get(`/api/v1/users/${userId}/coupons`, params)
   .then((response) => {
-    setCoupons(response.data.coupons)
-    console.log(response.data.coupons);
+    const coupons = response.data.coupons;
+    setCoupons(coupons)
+    console.log(coupons);
+    return coupons
   })
   .catch(error => {
       console.error(error);

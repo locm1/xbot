@@ -14,7 +14,7 @@ import { storeCard } from "@/pages/liff/api/CardApiMethods";
 import { getPublicKey } from "@/pages/liff/api/PayJpKeyApiMethods";
 
 export default () => {
-  const inputRef = useRef();
+  const idToken = liff.getIDToken();
   const [isRendered, setIsRendered] = useState(false);
   const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
@@ -24,11 +24,22 @@ export default () => {
   });
 
   useEffect(() => {
-    getPublicKey().then(response => showCreditCardForm(response))
-    const idToken = liff.getIDToken();
-    getUser(idToken, setUser).then(
-      response => showPaymentMethod(response.id, setIsRendered).then(response => setPaymentMethod(response))
-    )
+    const dataFetch = async () => {
+      try {
+        getPublicKey().then(response => showCreditCardForm(response))
+        const response = await getUser(idToken, setUser);
+        const paymentMethod = await showPaymentMethod(response.id, idToken)
+        setPaymentMethod(paymentMethod)
+      } catch (error) {
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        )
+      }
+    }
+    dataFetch();
     //showPaymentMethod(101, setPaymentMethod)
   }, []);
 
@@ -65,7 +76,7 @@ export default () => {
 
   const createCustomer = () => {
     const payjpToken = document.getElementsByName('payjp-token');
-    const formValue = {payjp_token: payjpToken[0].value};
+    const formValue = {payjp_token: payjpToken[0].value, liffToken: idToken};
     //storeCustomer(user.id, formValue, paymentMethod)
     storeCustomer(user.id, formValue, paymentMethod).then(
       response => {
@@ -73,6 +84,7 @@ export default () => {
         paymentMethod.payment_method = 1
         paymentMethod.payjp_customer_id = response.customer_id
         paymentMethod.payjp_default_card_id = response.card.id
+        paymentMethod.liffToken = idToken
         createPaymentMethod(paymentMethod)
       }
     )
@@ -82,7 +94,8 @@ export default () => {
   const createCreditCard = () => {
     const payjpToken = document.getElementsByName('payjp-token');
     const formValue = {
-      payjp_token: payjpToken[0].value, payjp_customer_id: paymentMethod.payjp_customer_id
+      payjp_token: payjpToken[0].value, payjp_customer_id: paymentMethod.payjp_customer_id,
+      liffToken: idToken
     };
     console.log();
     storeCard(user.id, formValue).then(
@@ -90,6 +103,7 @@ export default () => {
         console.log(response);
         paymentMethod.payjp_default_card_id = response.id
         paymentMethod.payment_method = 1
+        paymentMethod.liffToken = idToken
         createPaymentMethod(paymentMethod)
       }
     )

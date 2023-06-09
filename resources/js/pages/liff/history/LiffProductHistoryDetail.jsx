@@ -5,7 +5,7 @@ import '@splidejs/splide/css';
 import { ShoppingCartIcon, InboxIcon } from '@heroicons/react/solid';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Paths } from "@/paths";
-import Cookies from 'js-cookie';
+import Swal from "sweetalert2";
 import moment from "moment-timezone";
 import liff from '@line/liff';
 import { LoadingContext } from "@/components/LoadingContext";
@@ -17,6 +17,7 @@ import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
 import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
+  const idToken = liff.getIDToken();
   const [isRendered, setIsRendered] = useState(false);
   const { id } = useParams();
   const [order, setOrder] = useState({
@@ -82,6 +83,7 @@ export default () => {
         setPaymentMethod(paymentMethod)
         paymentMethod.payjp_default_card_id && await showCard(response.id, idToken, paymentMethod.payjp_customer_id, paymentMethod.payjp_default_card_id, setCard)
         await showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount, idToken)
+        setIsRendered(true)
       } catch (error) {
         console.error(error)
         Swal.fire(
@@ -152,7 +154,7 @@ export default () => {
         </Card.Header>  
           <Card.Body className="py-0">
             <ListGroup className="list-group-flush">
-              <DeliveryAddressItem {...deliveryAddress} />
+              <DeliveryAddressItem {...deliveryAddress} isRendered={isRendered} />
             </ListGroup>
           </Card.Body>
         </Card>

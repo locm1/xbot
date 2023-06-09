@@ -22,7 +22,6 @@ export default () => {
   });
   const [orders, setOrders] = useState([]);
   const [time, setTime] = useState('');
-  const idToken = liff.getIDToken();
 
   const getPurchaseTimes = () => {
     const purchaseTimes = [];
@@ -46,15 +45,11 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true);
-    //getOrders(101, setOrders)
-    getUser(idToken, setUser).then(response => {
-      getOrders(response.id, setOrders, setIsLoading, {liffToken: idToken}).finally(() => setIsLoading(false));
-    })
 
     const dataFetch = async () => {
       try {
         const response = await getUser(idToken, setUser);
-        getOrders(response.id, setOrders, setIsLoading).finally(() => setIsLoading(false));
+        getOrders(response.id, setOrders, setIsLoading, {liffToken: idToken}).finally(() => setIsLoading(false));
       } catch (error) {
         console.error(error)
         Swal.fire(

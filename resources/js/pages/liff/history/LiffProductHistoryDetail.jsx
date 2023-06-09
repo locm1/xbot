@@ -14,11 +14,9 @@ import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { showCard } from "@/pages/liff/api/CardApiMethods";
 import { showOrder } from "@/pages/liff/api/OrderApiMethods";
 import { showPaymentMethod } from "@/pages/liff/api/PaymentApiMethods";
-import { getCustomer } from "@/pages/liff/api/CustomerApiMethods";
 import { getEcommerceConfiguration } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 
 export default () => {
-  const { setIsLoading } = useContext(LoadingContext);
   const [isRendered, setIsRendered] = useState(false);
   const { id } = useParams();
   const [order, setOrder] = useState({
@@ -76,24 +74,14 @@ export default () => {
   }
 
   useEffect(() => {
-    const idToken = liff.getIDToken();
-    getEcommerceConfiguration(setEcommerceConfiguration)
-    getUser(idToken, setUser).then(response => {
-      showPaymentMethod(response.id, setIsRendered).then(payment_response => {
-        setPaymentMethod(payment_response)
-        payment_response.payjp_default_card_id && showCard(response.id, payment_response.payjp_customer_id, payment_response.payjp_default_card_id, setCard)
-        showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount, idToken)
-      })
-    })
-
     const dataFetch = async () => {
       try {
         getEcommerceConfiguration(setEcommerceConfiguration)
         const response = await getUser(idToken, setUser);
         const paymentMethod = await showPaymentMethod(response.id, idToken)
         setPaymentMethod(paymentMethod)
-        paymentMethod.payjp_default_card_id && showCard(response.id, idToken, paymentMethod.payjp_customer_id, paymentMethod.payjp_default_card_id, setCard)
-        showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount)
+        paymentMethod.payjp_default_card_id && await showCard(response.id, idToken, paymentMethod.payjp_customer_id, paymentMethod.payjp_default_card_id, setCard)
+        await showOrder(response.id, id, setOrder, setCoupon, setDiscountedTotalAmount, idToken)
       } catch (error) {
         console.error(error)
         Swal.fire(

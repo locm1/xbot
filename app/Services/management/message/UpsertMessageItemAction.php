@@ -130,7 +130,7 @@ class UpsertMessageItemAction
                     }
                 }
                 $message_item_carousel_image_data[] = [
-                    'id' => $v['id'],
+                    'id' => $v['id'] ?? null,
                     'image_path' => $image_path ?? $v['image_path'],
                     'message_item_id' => $message_item_id,
                     'label' => $v['label'],
@@ -140,7 +140,7 @@ class UpsertMessageItemAction
                 $delete_item_carousel_image_ids[] = $v['id'];
             }
         }
-        MessageItemCarouselImage::upsert($message_item_carousel_image_data, 'id');
+        MessageItemCarouselImage::upsert($message_item_carousel_image_data, ['id']);
         if ($delete_item_carousel_image_ids ?? false) {
             MessageItemCarouselImage::whereIn('id', $delete_item_carousel_image_ids)->delete();
         }
@@ -158,7 +158,7 @@ class UpsertMessageItemAction
                     }
                 }
                 $message_item_carousel_product_data[] = [
-                    'id' => $v['id'],
+                    'id' => $v['id'] ?? null,
                     'title' => $v['title'],
                     'text' => $v['text'],
                     'image_path' => $image_path ?? $v['image_path'],

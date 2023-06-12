@@ -9,7 +9,7 @@ export const HistoryTable = (props) => {
   const { title, headers, histories, fromInvitedUser } = props;
 
   const invitedUser = () => {
-    if (typeof fromInvitedUser != 'undefined') {
+    if ((typeof fromInvitedUser !== 'undefined') && (fromInvitedUser[0].inviter_users !== null)) {
       const location = () => {
         window.location.href = `/manage/user/edit/${fromInvitedUser[0].inviter_users.id}`;
       }

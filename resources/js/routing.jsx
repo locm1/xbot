@@ -136,7 +136,9 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   axios.interceptors.response.use(null, (error) => {
     if (error.response.status === 401) {
       history.push('/manage/login'); // ログイン画面にリダイレクト
-    } 
+    } else if (error.response.status === 404) {
+      history.push(Paths.NotFound.path); 
+    }
     // else if (error.response.status === 422) {
     //   Swal.fire(
     //     `エラー`,
@@ -603,6 +605,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffEventHistories.path} component={LiffEventHistories} />
       <LiffECRoute exact path={Paths.PayPay.path} component={PayPay} />
 
+      <Route exact path={Paths.NotFound.path} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
   );

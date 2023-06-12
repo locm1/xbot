@@ -97,5 +97,8 @@ export const Paths = {
     LiffInit: { path: "/liff" },
     LiffServerError: { path: "/internal-server-error" },
     LiffEventHistories: { path: "/event/histories" },
-    PayPay: { path: "/paypay" }
+    PayPay: { path: "/paypay" },
+
+    // 404
+    NotFound: { path: "/not-found" }
 };

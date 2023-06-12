@@ -330,6 +330,8 @@ export default () => {
     if (pathname.includes('/edit')) {
       showMessage(id, setMessage, setIsUndisclosed)
       getMessageItems(id, setMessageItems).then(setIsRendered(true))
+    } else {
+      setIsRendered(true)
     }
   }, []);
 

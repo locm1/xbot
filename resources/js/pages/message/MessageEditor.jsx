@@ -70,7 +70,8 @@ export default (props) => {
   };
 
   const handleDeleteCarouselImageClick = (display_id) => {
-    const newCarouselImages = messageItem.carousel_images.map(v => v.display_id == display_id ? {...v, is_deleted: true} : {...v});
+    const carouselImages = messageItem.carousel_images.map(v => v.display_id == display_id ? {...v, is_deleted: true} : {...v});
+    const newCarouselImages = carouselImages.filter(image => (image.display_id !== display_id));
     const newMessageItems = messageItems.map(v => v.display_id == messageItem.display_id ? {...v, carousel_images: newCarouselImages} : {...v});
     console.log(newMessageItems);
     setMessageItems(newMessageItems);
@@ -265,7 +266,7 @@ export default (props) => {
                         <Card.Body>
                           <Row>
                             <Col xs={6}>
-                              <Form.Label onClick={() => test(messageItem.display_id, v.display_id)}>画像</Form.Label>
+                              <Form.Label>画像</Form.Label>
                               <Form.Control
                                 required={v.image_path ? false : true}
                                 type="file"

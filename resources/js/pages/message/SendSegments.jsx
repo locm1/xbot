@@ -430,8 +430,11 @@ export default () => {
         })
       });
     } else {
+      // console.log(e.detail.tagify.value[e.detail.tagify.value.length - 1]);
       name = e.detail.tagify.DOM.originalInput.name;
-      value = e.detail.tagify.value[e.detail.tagify.value.length - 1].value ?? e.detail.tagify.value[0].value;
+      console.log(e.detail.tagify.value);
+      value = e.detail.tagify.value[e.detail.tagify.value.length - 1].value ?? e.detail.tagify.value;
+      //value = e.detail.tagify.value[e.detail.tagify.value.length - 1].value ?? e.detail.tagify.value[0].value;
       checked = e.target.checked ?? true;
       setSearchTerms(prev => {
         if (prev[name] ? prev[name].some(v => v === value) : false) {
@@ -536,7 +539,7 @@ export default () => {
 
   return (
     <>
-    <Button onClick={() => console.log(questionnaires)} />
+    {/* <Button onClick={() => console.log(questionnaires)} /> */}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">メッセージ配信</h1>

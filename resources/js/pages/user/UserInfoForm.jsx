@@ -123,7 +123,7 @@ export const UserInfoForm = (props) => {
                 <Form.Label>都道府県</Form.Label>
                 <Form.Select value={prefecture ?? ''} className="mb-0" onChange={(e) => props.handleChange(e.target.value, 'prefecture')}>
                   {
-                    prefectures.map((prefecture, index) => <option key={index} value={index + 1}>{prefecture.name}</option>)
+                    prefectures.map((prefecture, index) => <option key={index} value={prefecture.name}>{prefecture.name}</option>)
                   }
                 </Form.Select>
               </Form.Group>

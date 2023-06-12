@@ -16,7 +16,7 @@ class SendMessageService
             $data[] = [
                 'id' => $v->id,
                 'status' => $v->status,
-                'templateName' => $v->message->title,
+                'templateName' => $v->message->title ?? null,
                 'sendDate' => $v->updated_at,
                 'targetCount' => $v->sendMessageUsers->count(),
             ];

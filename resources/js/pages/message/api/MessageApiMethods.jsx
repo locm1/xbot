@@ -27,10 +27,11 @@ export const getAllMessages = async (params, setMessages) => {
   });
 };
 
-export const getMessages = async (params, setMessages, setLinks, setPaginate, setIsRendered) => {
-  axios.get('/api/v1/management/messages', params)
+export const getMessages = async (params, setMessages, setLinks, setPaginate) => {
+  return await axios.get('/api/v1/management/messages', params)
   .then((response) => {
     const messages = response.data.messages;
+    console.log(messages);
     setMessages(messages.data);
     setLinks([...Array(messages.last_page)].map((_, i) => i + 1))
     setPaginate({
@@ -40,7 +41,7 @@ export const getMessages = async (params, setMessages, setLinks, setPaginate, se
       to: messages.to,
       total: messages.total,
     })
-    setIsRendered(true);
+    return messages;
   })
   .catch(error => {
       console.error(error);

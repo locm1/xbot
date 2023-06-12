@@ -64,6 +64,7 @@ export const getOccupations= async (setOccupations) => {
         throw new Error("APIが正しく取得されませんでした");
       } else {
         setOccupations(res.data.occupations);
+        console.log(res.data.occupations);
       }
     });
 };

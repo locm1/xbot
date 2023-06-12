@@ -52,7 +52,6 @@ export const getUserInviteHistories = async (id, setInviteHistories, setFromInvi
         const newFromInvitedUser = (from_invited_user.length) ? from_invited_user : undefined;
         setInviteHistories(res.data.invite_histories);
         setFromInvitedUser(newFromInvitedUser);
-        console.log(newFromInvitedUser);
       }
     });
 };

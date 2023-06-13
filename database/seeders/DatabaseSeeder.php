@@ -151,10 +151,30 @@ class DatabaseSeeder extends Seeder
                 TermsOfServicesTableSeeder::class,
                 PagesTableSeeder::class,
                 OccupationSeeder::class,
-                GreetingMessagesWithQuestionnaireSeeder::class,
+                InflowRouteSeeder::class,
+                InviteIncentiveSeeder::class,
+                DefaultInviteIncentiveSeeder::class,
+                InviteIncentiveJobSeeder::class,
                 UserInfoStatusTableSeeder::class,
-                QuestionnaireEnablingTableSeeder::class
+                QuestionnaireEnablingTableSeeder::class,
+                UserTagSeeder::class,
+                QuestionnaireSeeder::class,
+                QuestionnaireItemSeeder::class,
+                CouponSeeder::class,
+                SpecificTradeSeeder::class,
+                MessageSeeder::class,
+                MessageItemSeeder::class,
+                GreetingMessageSeeder::class,
+                GreetingMessagesWithQuestionnaireSeeder::class,
             ]);
+            ProductCategory::factory(10)->create();
+            Product::factory(50)->create()->each(function($product) {
+                ProductSale::factory()->create(['product_id' => $product->id]);
+            });
+            ProductImage::factory(200)->create();
+            ProductContent::factory(70)->create();
+            Privilege::factory(5)->create();
+            PrivilegeItem::factory(20)->create();
         }
     }
 }

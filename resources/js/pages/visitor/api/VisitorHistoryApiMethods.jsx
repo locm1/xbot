@@ -1,5 +1,5 @@
-export const getVisitorHistories = async (params, setVisitorHistories, setLinks, setPaginate, setIsRendered) => {
-  axios.get('/api/v1/management/visitor-histories', params)
+export const getVisitorHistories = async (params, setVisitorHistories, setLinks, setPaginate) => {
+  return await axios.get('/api/v1/management/visitor-histories', params)
   .then((response) => {
     const visitorHistories = response.data.visitor_histories;
     setVisitorHistories(visitorHistories.data);
@@ -11,7 +11,7 @@ export const getVisitorHistories = async (params, setVisitorHistories, setLinks,
       to: visitorHistories.to,
       total: visitorHistories.total,
     })
-    setIsRendered(true)
+    return visitorHistories
   })
   .catch(error => {
       console.error(error);

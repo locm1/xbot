@@ -74,6 +74,8 @@ export default () => {
       showQuestionnaire(id, setQuestionnaire, setQuestionnaireItems).then(
         setIsRendered(true)
       );
+    } else {
+      setIsRendered(true)
     }
   }, []);
 

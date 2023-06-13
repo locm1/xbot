@@ -10,9 +10,10 @@ import { Paths } from "@/paths";
 
 export const SendHistoryInfoWidget = (props) => {
   const { title, id, message, message_id, send_message_users, status, updated_at } = props;
+  const templateName = message && message.title ? message.title : 'テンプレートは削除されています'
   const histories = [
     {"id": 1, "name": "ステータス", "value": status},
-    {"id": 2, "name": "テンプレート名", "value": message.title, "templateId": message_id},
+    {"id": 2, "name": "テンプレート名", "value": templateName, "templateId": message_id},
     {"id": 3, "name": "配信日時", "value": moment(updated_at).format("YYYY-MM-DD HH:mm:ss")},
     {"id": 4, "name": "該当人数", "value": send_message_users.length},
     {"id": 5, "name": "配信数", "value": send_message_users.length},

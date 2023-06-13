@@ -55,7 +55,7 @@ export default () => {
     }
 		const formValue = {'key': key, 'value': value}
     console.log(formValue);
-    // storeApiKey(formValue, storeComplete)
+    storeApiKey(formValue, storeComplete)
   }
 
 	return (
@@ -70,7 +70,6 @@ export default () => {
 					messaging APIのWebhook URLには末尾 /api/line/webhook/urwhdwwrlx を付与してください。<br />
 					(例: https://example.com/api/line/webhook/urwhdwwrlx)<br />
 					liff設定画面のScope全てにチェックを入れてください。<br />
-					liff設定画面のシェアターゲットピッカーをONにしてください。<br />
 				</Card.Body>
 			</Card>
       {data.map((v, k) => 

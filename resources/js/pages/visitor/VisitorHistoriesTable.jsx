@@ -17,8 +17,9 @@ export const VisitorHistoriesTable = (props) => {
 
   const TableRow = (props) => {
     const { created_at, memo, user, id, user_id } = props;
+    console.log(user);
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
-    const sexVariant = user.gender === 1 ? "u-men" : user.gender === 2 ? "u-women" : "";
+    const sexVariant = user ? user.gender === 1 ? "u-men" : user.gender === 2 ? "u-women" : "" : '';
     const link = Paths.EditVisitorHistory.path.replace(':id', id);
     const userlink = Paths.EditUser.path.replace(':id', user_id);
     const date = new Date(created_at)
@@ -30,26 +31,43 @@ export const VisitorHistoriesTable = (props) => {
     return (
       <tr className="border-bottom">
         <td>
-          <Card.Link className="d-flex align-items-center" as={Link} to={userlink}>
-            <div className="d-flex align-items-center">
-              {user.img_path ? (<Image src={user.img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
-              <div className="d-block">
-                {user.first_name && user.first_name_kana && user.last_name && user.last_name_kana ? 
-                  <>
-                    <div className="text-gray small">{user.last_name_kana} {user.first_name_kana}</div>
-                    <span className="fw-bold text-decoration-underline">{user.last_name} {user.first_name}</span> 
-                  </>
-                :
-                  <span className="fw-bold text-decoration-underline">{user.nickname}</span> 
-                }
-              </div>
-            </div>
-          </Card.Link>
+          {
+            user ? (
+              <Card.Link className="d-flex align-items-center" as={Link} to={userlink}>
+                <div className="d-flex align-items-center">
+                  {user.img_path ? (<Image src={user.img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
+                  <div className="d-block">
+                    {user.first_name && user.first_name_kana && user.last_name && user.last_name_kana ? 
+                      <>
+                        <div className="text-gray small">{user.last_name_kana} {user.first_name_kana}</div>
+                        <span className="fw-bold text-decoration-underline">{user.last_name} {user.first_name}</span> 
+                      </>
+                    :
+                      <span className="fw-bold text-decoration-underline">{user.nickname}</span> 
+                    }
+                  </div>
+                </div>
+              </Card.Link>
+            ) : (
+              <Card.Link className="d-flex align-items-center" as={Link} to={userlink}>
+                <div className="d-flex align-items-center">
+                  <Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>
+                  <div className="d-block">
+                    <span className="fw-normal text-danger">削除済みユーザー</span>
+                  </div>
+                </div>
+              </Card.Link>
+            )
+          }
         </td>
         <td>
-          <span className={`fw-normal ${sexVariant}`}>
-            {sex_array[user.gender]}
-          </span>
+          {
+            user && (
+              <span className={`fw-normal ${sexVariant}`}>
+                {sex_array[user.gender]}
+              </span>
+            )
+          }
         </td>
         <td>
           <span className="fw-normal">

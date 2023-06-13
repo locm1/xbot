@@ -9,8 +9,8 @@ export default () => {
   return (
     <>
       {
-        loadingTables.map(v =>
-          <Card border="bottom" className="hover-state rounded-0 rounded-top py-3" style={{height:'88px'}}>
+        loadingTables.map((v, index) =>
+          <Card border="bottom" className="hover-state rounded-0 rounded-top py-3" style={{height:'88px'}} key={`tag-loader-${index}`}>
             <Card.Body className="d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-0">
               <ContentLoader
                 height={39.375}

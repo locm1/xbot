@@ -32,7 +32,13 @@ export const SendHistoriesTable = (props) => {
       <tr className="border-bottom">
         <td>{getStatus(status)}</td>
         <td>
-          <span className="fw-normal">{templateName}</span>
+          {
+            templateName ? (
+              <span className="fw-normal">{templateName}</span>
+            ) : (
+              <span className="fw-normal text-danger">テンプレートは削除されています</span>
+            )
+          }
         </td>
         <td>
           <span className="fw-normal">{moment(sendDate).format("YYYY-MM-DD HH:mm:ss")}</span>

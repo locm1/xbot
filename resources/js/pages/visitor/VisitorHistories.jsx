@@ -31,11 +31,21 @@ export default () => {
     const searchParams = {
       params: {...searchValue, [input]: value, page: 1}
     };
+
+    const search = async () => {
+      try {
+        await getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate);
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     clearTimeout(timer);
 
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {
-      getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate);
+      search();
     }, 1000)
 
     setTimer(newTimer)
@@ -53,8 +63,8 @@ export default () => {
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
-      confirmButton: 'btn btn-primary me-3',
-      cancelButton: 'btn btn-gray-100'
+      confirmButton: 'btn btn-danger',
+      cancelButton: 'btn btn-gray-400 me-3'
     },
     buttonsStyling: false
   }));
@@ -66,6 +76,7 @@ export default () => {
       icon: "error",
       title: "削除確認",
       text: textMessage,
+      reverseButtons: true,
       showCancelButton: true,
       confirmButtonText: "削除",
       cancelButtonText: "キャンセル"
@@ -85,7 +96,8 @@ export default () => {
     const searchParams = {
       params: {...searchValue, page: currentPage}
     };
-    getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate, setIsRendered)
+    await getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate);
+    setIsRendered(true)
   };
 
   const onHide = () => {
@@ -93,10 +105,19 @@ export default () => {
   }
 
   useEffect(() => {
-    const searchParams = {
-      params: {name: null, start_created_at: null, end_created_at: null, page: 1}
-    };
-    getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate, setIsRendered);
+    const dataFetch = async () => {
+      try {
+        const searchParams = {
+          params: {name: null, start_created_at: null, end_created_at: null, page: 1}
+        };
+        await getVisitorHistories(searchParams, setVisitorHistories, setLinks, setPaginate);
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    dataFetch();
   }, []);
 
   return (

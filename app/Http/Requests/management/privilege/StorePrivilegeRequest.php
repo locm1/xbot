@@ -26,6 +26,7 @@ class StorePrivilegeRequest extends FormRequest
         return [
             'time' => 'required|numeric',
             'privileges' => 'array',
+            "privileges.0" => 'required',
         ];
     }
 
@@ -33,6 +34,14 @@ class StorePrivilegeRequest extends FormRequest
     {
         return [
             'time' => '来店回数',
+            'privileges.0' => '特典',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'privileges.0.required' => '特典は最低1つ入力してください',
         ];
     }
 }

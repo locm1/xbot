@@ -19,6 +19,9 @@ export default () => {
   })
   const [refresh, setRefresh] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
+  const [error, setError] = useState({
+    time: '', 'privileges.0': ''
+  });
 
   const handleKeyDown = (e) => {
     e.preventDefault();
@@ -27,17 +30,10 @@ export default () => {
   };
 
   const createPrivilege = () => {
-    storePrivileges(values);
+    storePrivileges(values, setError, setIsCreate);
     setRefresh(!refresh);
     setValues({time: '', privileges: ['', '', '']});
-    setIsCreate(false);
   }
-
-  useEffect(() => {
-    getPrivileges(setPrivileges).then(
-      setIsRendered(true)
-    )
-  }, [refresh]);
 
   const addForm = () => {
     setValues(prev => ({
@@ -46,14 +42,26 @@ export default () => {
     }))
   }
   
-  const handleChange = (e) => {
+  const handleChange = (e, k) => {
     const index = parseInt(e.target.name); // 配列番号を数値に変換
     const newValue = e.target.value;
     setValues(prev => ({
       ...prev,
       privileges: [...prev.privileges.slice(0, index), newValue, ...prev.privileges.slice(index + 1)]
     }))
+    setError({...error, [`privileges.${k}`]: ''})
   }
+
+  const handleTimeChange = (e) => {
+    setValues(prev => ({...prev, time: +e.target.value}))
+    setError({...error, time: ''})
+  }
+
+  useEffect(() => {
+    getPrivileges(setPrivileges).then(
+      setIsRendered(true)
+    )
+  }, [refresh]);
 
   return (
     <>
@@ -89,29 +97,42 @@ export default () => {
                     {/* <Form onSubmit={(e) => handleKeyDown(e)} className=""> */}
                       <div className="m-0">
                         <p className="fw-bold m-0">1. 来店回数を数字で入力してください</p>
-                          <div className="d-flex align-items-center mt-2">
+                        <div className="d-flex align-items-center mt-2">
+                          <Form.Group>
                             <Form.Control
                               autoFocus
                               placeholder=""
-                              style={{ width: 100 }}
                               type="number"
                               min="0"
                               step="1"
                               pattern="\d+"
                               value={values.time}
-                              onChange={(e) => setValues(prev => ({...prev, time: +e.target.value}))}
+                              onChange={(e) => handleTimeChange(e)}
+                              isInvalid={!!error.time}
                             />
-                            <div className="ms-2">回</div>
-                          </div>
+                            {
+                              error.time && 
+                              <Form.Control.Feedback type="invalid">{error.time[0]}</Form.Control.Feedback>
+                            }
+                          </Form.Group>
+                          <div className="ms-2">回</div>
+                        </div>
                           <p className="fw-bold m-0 mt-4">2. 特典を設定してください</p>
                           {values.privileges.map((v, k) => 
+                            <>
                             <Form.Control 
-                            key={`privilege-form-${k}`} 
-                            name={k}
-                            className="mt-2" 
-                            placeholder="例：お菓子盛り合わせプレゼント"
-                            onChange={handleChange}
+                              key={`privilege-form-${k}`} 
+                              name={k}
+                              className="mt-2" 
+                              placeholder="例：お菓子盛り合わせプレゼント"
+                              onChange={(e) => handleChange(e, k)}
+                              isInvalid={!!error[`privileges.${k}`]}
                             />
+                            {
+                              (k === 0 && error[`privileges.${k}`]) && 
+                              <Form.Control.Feedback type="invalid">{error[`privileges.${k}`][0]}</Form.Control.Feedback>
+                            }
+                            </>
                           )}
                           <div className="privilege-button mb-4">
                             <Button

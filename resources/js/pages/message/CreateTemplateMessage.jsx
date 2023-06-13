@@ -271,6 +271,12 @@ export default () => {
       delete message.created_at
       delete message.updated_at
       delete message.deleted_at
+
+      for (var i = 0; i < messageItems.length; i++) {
+        messageItems[i].carousel_images.forEach(function(image) {
+          delete image.id;
+        });
+      }
       saveMessage()
     }
   }
@@ -330,6 +336,8 @@ export default () => {
     if (pathname.includes('/edit')) {
       showMessage(id, setMessage, setIsUndisclosed)
       getMessageItems(id, setMessageItems).then(setIsRendered(true))
+    } else {
+      setIsRendered(true)
     }
   }, []);
 

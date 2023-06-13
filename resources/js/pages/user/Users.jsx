@@ -44,8 +44,9 @@ export default () => {
     clearTimeout(timer);
 
     // 一定期間操作がなかったらAPI叩く
-    const newTimer = setTimeout(() => {
-      getUsers(searchParams, setUsers, setLinks, setPaginate)
+    const newTimer = setTimeout(async () => {
+      await getUsers(searchParams, setUsers, setLinks, setPaginate)
+      setIsRendered(true)
     }, 1000)
 
     setTimer(newTimer)
@@ -78,16 +79,25 @@ export default () => {
     const searchParams = {
       params: { ...searchValue, page: currentPage }
     };
-    getUsers(searchParams, setUsers, setLinks, setPaginate)
+    await getUsers(searchParams, setUsers, setLinks, setPaginate)
+    setIsRendered(true)
   };
 
   useEffect(() => {
-    const searchParams = {
-      params: { name: null, tel: null, page: 1 }
-    };
-    getUsers(searchParams, setUsers, setLinks, setPaginate, setIsRendered)
-    getDemographic(setDemographic)
-    getTags(setTags)
+    const dataFetch = async () => {
+      try {
+        const searchParams = {
+          params: { name: null, tel: null, page: 1 }
+        };
+        getDemographic(setDemographic)
+        getTags(setTags)
+        await getUsers(searchParams, setUsers, setLinks, setPaginate)
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    dataFetch();
   }, []);
 
   return (

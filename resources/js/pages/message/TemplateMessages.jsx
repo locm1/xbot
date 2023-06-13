@@ -23,14 +23,23 @@ export default () => {
     setTitle(e.target.value)
 
     const searchParams = {
-      params: { title: title, page: 1 }
+      params: { title: e.target.value, page: 1 }
     };
+
+    const search = async () => {
+      try {
+        await getMessages(searchParams, setMessages, setLinks, setPaginate)
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
     clearTimeout(timer);
 
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {
-      getMessages(searchParams, setMessages, setLinks, setPaginate)
+      search()
     }, 1000)
 
     setTimer(newTimer)
@@ -42,10 +51,19 @@ export default () => {
   };
 
   useEffect(() => {
-    const searchParams = {
-      params: {title: null, page: 1}
-    };
-    getMessages(searchParams, setMessages, setLinks, setPaginate, setIsRendered)
+    const dataFetch = async () => {
+      try {
+        const searchParams = {
+          params: {title: null, page: 1}
+        };
+        await getMessages(searchParams, setMessages, setLinks, setPaginate)
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    dataFetch();
   }, []);
 
   return (

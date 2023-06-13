@@ -283,7 +283,6 @@ export default () => {
 
 
   const saveMessage = () => {
-    console.log(messageItems);
     message.is_undisclosed = isUndisclosed ? 1 : 0
 
     const formData = new FormData();

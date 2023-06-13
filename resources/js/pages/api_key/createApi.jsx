@@ -55,7 +55,7 @@ export default () => {
     }
 		const formValue = {'key': key, 'value': value}
     console.log(formValue);
-    // storeApiKey(formValue, storeComplete)
+    storeApiKey(formValue, storeComplete)
   }
 
 	return (

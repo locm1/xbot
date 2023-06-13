@@ -4,17 +4,17 @@ export const getMessageItems = async (id, setMessageItems) => {
     const message_items = response.data.message_items;
     console.log(message_items);
     if (message_items.length > 0) {
-      var messageItems = message_items.map((v, k) => ({...v, display_id: k + 1}));
+      var messageItems = message_items.map((v, k) => ({...v, display_id: v.id}));
       messageItems.forEach(item => {
         if (!item.carousel_images.length) {
           item.carousel_images = [{id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false}];
         } else {
-          item.carousel_images = item.carousel_images.map((v, k) => ({...v, display_id: k + 1, is_deleted: false}))
+          item.carousel_images = item.carousel_images.map((v, k) => ({...v, display_id: v.id, is_deleted: false}))
         }
         if (!item.carousel_products.length) {
           item.carousel_products = [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}];
         } else {
-          item.carousel_products = item.carousel_products.map((v, k) => ({...v, display_id: k + 1, is_deleted: false}))
+          item.carousel_products = item.carousel_products.map((v, k) => ({...v, display_id: v.id, is_deleted: false}))
         }
       });
       console.log(messageItems);

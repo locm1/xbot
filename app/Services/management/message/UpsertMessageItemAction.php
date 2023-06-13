@@ -15,12 +15,18 @@ class UpsertMessageItemAction
     {
         $message_items = $request->message_items;
         # 更新する画像ファイルがある場合
-        $files = isset($request->image_ids) ? $this->storeFiles($request, 'images', $request->image_ids, 'message') : null;
-        $videos = isset($request->video_ids) ? $this->storeFiles($request, 'videos', $request->video_ids, 'video') : null;
-        $carousel_image_image_files = isset($request->carousel_image_image_ids) ? 
-            $this->storeCarouselImages($this->getFiles($request, 'carousel_image_images'), $request->carousel_image_image_ids, 'carousel_images') : null;
-        $carousel_product_image_files = isset($request->carousel_product_image_ids) ? 
-            $this->storeCarouselImages($this->getFiles($request, 'carousel_product_images'), $request->carousel_product_image_ids, 'carousel_products') : null;
+        $files = isset($request->image_ids) 
+            ? $this->storeFiles($request, 'images', $request->image_ids, 'message')
+            : $this->copyFiles($method, 'images', 'message', $message_items);
+        $videos = isset($request->video_ids) 
+            ? $this->storeFiles($request, 'videos', $request->video_ids, 'video') 
+            : $this->copyFiles($method, 'videos', 'video', $message_items);
+        $carousel_image_image_files = isset($request->carousel_image_image_ids) 
+            ? $this->storeCarouselImages($this->getFiles($request, 'carousel_image_images'), $request->carousel_image_image_ids, 'carousel_images') 
+            : $this->copyCarouselImages($method, 'carousel_images', $message_items);
+        $carousel_product_image_files = isset($request->carousel_product_image_ids) 
+            ? $this->storeCarouselImages($this->getFiles($request, 'carousel_product_images'), $request->carousel_product_image_ids, 'carousel_products') 
+            : $this->copyCarouselImages($method, 'carousel_products', $message_items);
 
         foreach ($message_items as $message_item) {
             if ($carousel_image_image_files) {
@@ -80,7 +86,7 @@ class UpsertMessageItemAction
         return $data;
     }
 
-    private  function storeFiles($request, $file_path, $ids, $path)
+    private function storeFiles($request, $file_path, $ids, $path)
     {
         # 画像を削除しストレージに保存
         $files = array();
@@ -96,11 +102,39 @@ class UpsertMessageItemAction
         return $files;
     }
 
+    private function copyFiles(String $method, String $file_path, String $path, array $message_items): ?array
+    {
+        $files = array();
+        
+        // メソッドがUpdateならNullを返す
+        if ($method === 'update') {
+            return null;
+        }
+
+        foreach ($message_items as $message_item) {
+            $current_message_item = MessageItem::find($message_item['id']);
+
+            //DBに保存されているPathと比較し、同じならコピー
+            $current_file_path = $file_path == 'images' ? $current_message_item->image_path : $current_message_item->video_path;
+            $file_name = basename($current_file_path);
+            $replace_current_file_path = str_replace("/storage/$path", $path, $current_file_path);
+            $copy_file_path = $path .'/' .$current_message_item->id .'_' .$file_name;
+            Storage::disk('public')->copy($replace_current_file_path, $copy_file_path);
+
+            $files[] = [
+                'id' => $current_message_item->id,
+                'file_name' => !empty($file_name) ? "/storage/$path/$current_message_item->id" . '_' .$file_name : null
+            ];
+        }
+
+        return $files;
+    }
+
     private function storeCarouselImages($files, $ids, $path)
     {
         $combine_data = array_combine($ids, $files);
         foreach ($combine_data as $k => $v) {
-            $file_name = $v->getClientOriginalName();
+            $file_name = $v->getClientOriginalName() .'_' .$k;
             $v->storeAs("public/$path", $file_name);
             $display_ids = explode('-', $k);
             $format_files[] = [
@@ -110,6 +144,39 @@ class UpsertMessageItemAction
             ];
         }
         return $format_files;
+    }
+
+    private function copyCarouselImages(String $method, String $path, array $message_items): ?array
+    {
+        $files = array();
+        
+        // メソッドがUpdateならNullを返す
+        if ($method === 'update') {
+            return null;
+        }
+
+        foreach ($message_items as $message_item) {
+            foreach ($message_item[$path] as $carousel_image) {
+                $current_file_path = $carousel_image['image_path'];
+                $file_name = basename($current_file_path);
+                $replace_current_file_path = str_replace("/storage/$path", $path, $current_file_path);
+
+                if (!isset($carousel_image['message_item_id'])) {
+                    return null;
+                }
+
+                $copy_file_path = $path .'/' .$carousel_image['display_id'] .'_' .$file_name;
+                Storage::disk('public')->copy($replace_current_file_path, $copy_file_path);
+
+                $files[] = [
+                    'message_item_display_id' => $carousel_image['message_item_id'],
+                    'carousel_display_id' => $carousel_image['display_id'],
+                    'image_path' => "/storage/$path/" .$carousel_image['display_id'] . '_' .$file_name
+                ];
+            }
+        }
+
+        return $files;
     }
 
     public function deleteFile($path, $current_path)
@@ -125,6 +192,7 @@ class UpsertMessageItemAction
             if ($v['is_deleted'] === false) {
                 if ($search_carousel_image_image_files) {
                     foreach ($search_carousel_image_image_files as $k => $b) {
+                        Log::debug($b);
                         $image_path = $b['carousel_display_id'] == $v['display_id'] ? $b['image_path'] : null;
                         if ($image_path) break;
                     }

@@ -22,14 +22,17 @@ export const getPrivileges = async (setPrivileges) => {
   });
 };
 
-export const storePrivileges = async (values) => {
+export const storePrivileges = async (values, setError, setIsCreate) => {
+  console.log(values);
   await axios.post('/api/v1/management/privileges', values)
   .then((response) => {
-      completeSwal();
-      console.log(response);
+    setIsCreate(false)
+    completeSwal();
+    console.log(response);
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 

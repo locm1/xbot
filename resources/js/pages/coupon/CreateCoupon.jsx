@@ -18,14 +18,6 @@ export default () => {
   });
   const [isRendered, setIsRendered] = useState(false);
 
-  useEffect(() => {
-    if (pathname.includes('/edit')) {
-      showCoupon(id, setCoupon).then(
-        setIsRendered(true)
-      );
-    }
-  }, []);
-
   const handleChange = (e, input) => {
     setCoupon({...coupon, [input]: e.target.value})
     setError({...error, [input]: ''})
@@ -54,6 +46,16 @@ export default () => {
       storeCoupon(coupon, storeComplete, setError)
     }
   };
+
+  useEffect(() => {
+    if (pathname.includes('/edit')) {
+      showCoupon(id, setCoupon).then(
+        setIsRendered(true)
+      );
+    } else {
+      setIsRendered(true)
+    }
+  }, []);
 
   return (
     <>

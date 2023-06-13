@@ -25,16 +25,13 @@ class StoreGreetingMessageRequest extends FormRequest
     {
         return [
             'messages' => 'required|array',
-            'messages.*.id' => 'required|exists:messages,id',
             'messages.*.type' => 'required|between:1,3',
             'images' => 'nullable|array|max:5',
             'images.*' => 'file|max:10240|mimes:jpeg,png,jpg',
             'image_ids' => 'nullable|array|max:5',
-            'image_ids.*' => 'exists:messages,id',
             'videos' => 'nullable|array|max:5',
             'videos.*' => 'file|max:204800|mimes:mp4',
             'video_ids' => 'nullable|array|max:5',
-            'video_ids.*' => 'exists:messages,id',
         ];
     }
 

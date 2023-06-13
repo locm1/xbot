@@ -23,4 +23,8 @@ export const pages = [
         name: '日程予約', 
         path: 'event/reservation'
     },
+    {
+        name: '予約履歴', 
+        path: 'event/histories'
+    },
 ]

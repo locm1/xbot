@@ -90,3 +90,12 @@
         font-size: 1rem;
     }
 }
+
+//Fullカレンダーのレイアウト調整
+.fc-h-event .fc-event-main-frame {
+    display: block;
+}
+
+.fc .fc-daygrid-day-frame {
+    height: auto;
+}

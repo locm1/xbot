@@ -39,9 +39,20 @@ export default () => {
     };
     clearTimeout(timer);
 
+    const search = async () => {
+      try {
+        getCategories(setCategories)
+        await getProducts(searchParams, setProducts, setLinks, setPaginate)
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    dataFetch();
+
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {
-      getProducts(searchParams, setProducts, setLinks, setPaginate, setIsRendered)
+      search()
     }, 1000)
 
     setTimer(newTimer)
@@ -78,11 +89,19 @@ export default () => {
   };
 
   useEffect(() => {
-    const searchParams = {
-      params: { name: null, category: null, page: 1 }
-    };
-    getProducts(searchParams, setProducts, setLinks, setPaginate, setIsRendered)
-    getCategories(setCategories)
+    const dataFetch = async () => {
+      try {
+        const searchParams = {
+          params: { name: null, category: null, page: 1 }
+        };
+        getCategories(setCategories)
+        await getProducts(searchParams, setProducts, setLinks, setPaginate)
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    dataFetch();
   }, []);
 
   return (

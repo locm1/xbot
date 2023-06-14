@@ -172,6 +172,7 @@ export default () => {
             themeSystem="bootstrap"
             plugins={[dayGridPlugin, timeGridPlugin, bootstrapPlugin, interactionPlugin]}
             initialView="dayGridMonth"
+            height={'auto'}
             buttonText={{
               prev: "<",
               next: ">",

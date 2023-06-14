@@ -17,7 +17,6 @@ export const VisitorHistoriesTable = (props) => {
 
   const TableRow = (props) => {
     const { created_at, memo, user, id, user_id } = props;
-    console.log(user);
     const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
     const sexVariant = user ? user.gender === 1 ? "u-men" : user.gender === 2 ? "u-women" : "" : '';
     const link = Paths.EditVisitorHistory.path.replace(':id', id);

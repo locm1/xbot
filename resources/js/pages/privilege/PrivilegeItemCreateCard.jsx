@@ -17,18 +17,15 @@ export default (props) => {
         <Col xs={12} lg={12} className="px-0 mb-4 mb-md-0">
           <div className="mb-2 d-flex flex-wrap flex-md-nowrap align-items-center">
             <div className="w-50">
-              <Form>
-                <Form.Control 
-                  required 
-                  type="text" 
-                  name="name" 
-                  value={name} 
-                  onChange={(e) => setName(e.target.value)} 
-                  onKeyDown={(e) => handleKeyDown(e)} 
-                  placeholder="特典名を入力してください" 
-                  autoFocus
-                />
-              </Form>
+              <Form.Control 
+                required 
+                type="text" 
+                name="name" 
+                value={name} 
+                onChange={(e) => setName(e.target.value)} 
+                placeholder="特典名を入力してください" 
+                autoFocus
+              />
             </div>
             <div className="ms-3">
               <Button

@@ -13,10 +13,15 @@ export default () => {
   const [searchValue, setSearchValue] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
+  const [timer, setTimer] = useState(null);
 
-  const editingHandler = (e) => {
-    setIsEditing(!isEditing);
-    e
+  const dataFetch = async () => {
+    try {
+      await getCategories(setCategories)
+      setIsRendered(true)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handleChange = (e) => {
@@ -26,14 +31,29 @@ export default () => {
         name: e.target.value
       }
     };
-    searchCategories(params, setCategories);
+    setSearchValue(e.target.value);
+    clearTimeout(timer);
+
+    const search = async () => {
+      try {
+        await searchCategories(params, setCategories);
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    // 一定期間操作がなかったらAPI叩く
+    const newTimer = setTimeout(() => {
+      search()
+    }, 1000)
+
+    setTimer(newTimer)
   };
 
 
   useEffect(() => {
-    getCategories(setCategories, setIsRendered).then(
-      setIsRendered(true)
-    )
+    dataFetch();
   }, []);
 
   return (
@@ -72,6 +92,7 @@ export default () => {
         deleteCategory={deleteCategory}
         sortCategory={sortCategory}
         isRendered={isRendered}
+        dataFetch={dataFetch}
       />
     </>
   );

@@ -4,10 +4,11 @@ import { Paths } from "@/paths";
 import Swal from "sweetalert2";
 
 export const getCategories = async (setCategories) => {
-  axios.get('/api/v1/management/categories')
+  return await axios.get('/api/v1/management/categories')
   .then((response) => {
     const categories = response.data.categories;
     setCategories(categories.map(category => ({ ...category, show: true, deleted: false })));
+    return categories;
   })
   .catch(error => {
       console.error(error);
@@ -15,10 +16,11 @@ export const getCategories = async (setCategories) => {
 };
 
 export const searchCategories = async (params, setCategories) => {
-  axios.get('/api/v1/management/categories', params)
+  return await axios.get('/api/v1/management/categories', params)
   .then((response) => {
     const categories = response.data.categories;
     setCategories(categories.map(category => ({ ...category, show: true, deleted: false })));
+    return categories;
   })
   .catch(error => {
       console.error(error);

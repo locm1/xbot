@@ -11,6 +11,9 @@ import { Paths } from "@/paths";
 const SpecificTradesService = (props) => {
   const [SpecificTrades, setSpecificTrades] = useState([]);
   const [deleteSpecificTradeIds, setDeleteSpecificTradeIds] = useState([]);
+  const [error, setError] = useState({
+    'specific_trades.0.title': '', 'specific_trades.0.content': ''
+  });
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -30,7 +33,7 @@ const SpecificTradesService = (props) => {
     setSpecificTrades([...SpecificTrades, newSpeficTrade])
   };
 
-  const handleChange = (e, input, display_id) => {
+  const handleChange = (e, input, display_id, index) => {
     setSpecificTrades(
       SpecificTrades.map(
         specificTrade => specificTrade.display_id == display_id
@@ -39,31 +42,7 @@ const SpecificTradesService = (props) => {
         : specificTrade
       )
     )
-  };
-
-  const showConfirmDeleteModal = async (e, id) => {
-    const textMessage = "本当にこの項目を削除しますか？";
-
-    const result = await SwalWithBootstrapButtons.fire({
-      icon: "error",
-      title: "削除確認",
-      text: textMessage,
-      showCancelButton: true,
-      reverseButtons: true,
-      confirmButtonText: "削除",
-      cancelButtonText: "キャンセル"
-    });
-
-    if (result.isConfirmed) {
-      await axios.delete(`/api/v1/management/specific-trades/${id}`)
-      .then((response) => {
-        deleteSpecificTrades(id)
-        console.log(response);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    }
+    setError({...error, [`specific_trades.${index}.${input}`]: ''})
   };
 
   const deleteSpecificTrades = (display_id) => {
@@ -80,7 +59,8 @@ const SpecificTradesService = (props) => {
   };
 
   const onSaveSpecificTrades = () => {
-    storeSpecificTrades(SpecificTrades, deleteSpecificTradeIds)
+    console.log(SpecificTrades);
+    storeSpecificTrades(SpecificTrades, deleteSpecificTradeIds, setError)
   };
 
   useEffect(() => {
@@ -119,6 +99,8 @@ const SpecificTradesService = (props) => {
                 key={`SpecificTrade-${SpecificTrade.id}`}
                 handleChange={handleChange}
                 deleteSpecificTrades={deleteSpecificTrades}
+                error={error}
+                index={index}
               />
             )}
           </div>

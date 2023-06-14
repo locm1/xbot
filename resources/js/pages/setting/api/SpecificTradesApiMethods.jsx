@@ -12,7 +12,7 @@ export const getSpecificTrades = async (setSpecificTrades) => {
 };
 
 
-export const storeSpecificTrades = async(SpecificTrades, deleteSpecificTradeIds) => {
+export const storeSpecificTrades = async(SpecificTrades, deleteSpecificTradeIds, setError) => {
   const request = {
     specific_trades: SpecificTrades,
     delete_specific_trade_ids: deleteSpecificTradeIds
@@ -28,6 +28,7 @@ export const storeSpecificTrades = async(SpecificTrades, deleteSpecificTradeIds)
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 }
 

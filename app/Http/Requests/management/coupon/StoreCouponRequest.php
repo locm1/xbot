@@ -26,7 +26,7 @@ class StoreCouponRequest extends FormRequest
         return [
             'name' => 'required',
             'upper_limit' => 'required|numeric',
-            'discount_price' => 'required|numeric',
+            'discount_price' => 'required|numeric|between:1,100',
             'code' => 'required',
         ];
     }

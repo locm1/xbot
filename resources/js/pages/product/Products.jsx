@@ -48,7 +48,6 @@ export default () => {
         console.error(error)
       }
     }
-    dataFetch();
 
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {

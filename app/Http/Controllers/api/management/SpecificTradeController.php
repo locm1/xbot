@@ -26,26 +26,13 @@ class SpecificTradeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateSpecificTradeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateSpecificTradeRequest $request)
     {
-        //
         $specific = $this->specific_trade_service->store($request);
         return response()->json(['specific' => $specific], 201);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SpecificTrade $specific_trade)
-    {
-        $this->specific_trade_service->destroy($specific_trade);
-        return response()->json([], 204);
     }
 }
 

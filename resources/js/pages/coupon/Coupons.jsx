@@ -27,17 +27,26 @@ export default () => {
     setName(e.target.value)
 
     const searchParams = {
-      params: { name: name, page: 1 }
+      params: { name: e.target.value, page: 1 }
     };
     clearTimeout(timer);
 
     // 一定期間操作がなかったらAPI叩く
     const newTimer = setTimeout(() => {
-      getCoupons(searchParams, setCoupons, setLinks, setPaginate, setIsRendered);
+      dataFetch(searchParams);
     }, 1000)
 
     setTimer(newTimer)
   };
+
+  const dataFetch = async (searchParams) => {
+    try {
+      await getCoupons(searchParams, setCoupons, setLinks, setPaginate);
+      setIsRendered(true)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const onHide = () => {
     setOpenModal(!openModal);
@@ -47,7 +56,7 @@ export default () => {
     const searchParams = {
       params: { name: null, page: 1 }
     };
-    getCoupons(searchParams, setCoupons, setLinks, setPaginate, setIsRendered);
+    dataFetch(searchParams);
   }, []);
 
   return (
@@ -106,6 +115,7 @@ export default () => {
         setPaginate={setPaginate}
         name={name}
         isRendered={isRendered}
+        dataFetch={dataFetch}
       />
     </>
   );

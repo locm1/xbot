@@ -13,7 +13,7 @@ import PaginationContentLoader from "@/components/loader/PaginationContentLoader
 export const CouponsTable = (props) => {
   const { 
     coupons, setCoupons, deleteCoupon, openModal, setOpenModal, setId,
-    links, getCoupons, setLinks, paginate, setPaginate, name, isRendered
+    links, getCoupons, setLinks, paginate, setPaginate, name, isRendered, dataFetch
   } = props;
   const searchValue = {name: name}
 
@@ -56,7 +56,7 @@ export const CouponsTable = (props) => {
       const searchParams = {
         params: {...searchValue, page: currentPage}
       };
-      getCoupons(searchParams, setCoupons, setLinks, setPaginate)
+      dataFetch(searchParams)
     };
 
     const showUsers = (id) => {

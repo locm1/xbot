@@ -14,7 +14,7 @@ import CategoriesContentLoader from "@/pages/product/loader/CategoriesContentLoa
 import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
 export default (props) => {
-  const { categories, sortCategory, deleteCategory, isRendered } = props;
+  const { categories, sortCategory, deleteCategory, isRendered, dataFetch } = props;
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -39,6 +39,12 @@ export default (props) => {
       deleteCategory(id, completeDelete);
     }
   }
+
+  const completeDelete = async () => {
+    const confirmMessage = "選択したカテゴリーは削除されました。";
+    await SwalWithBootstrapButtons.fire('削除成功', confirmMessage, 'success');
+    dataFetch()
+  };
 
   const getIsUndisclosed = (isUndisclosed) => {
     if (isUndisclosed == 1) {

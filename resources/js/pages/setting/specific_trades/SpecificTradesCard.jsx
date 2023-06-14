@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Paths } from "@/paths";
 
 export default (props) => {
-  const { display_id, title, content, handleChange, deleteSpecificTrades, height} = props;
+  const { display_id, title, content, handleChange, deleteSpecificTrades, height, error, index } = props;
 
   return (
     <>
@@ -18,8 +18,13 @@ export default (props) => {
             autoFocus
             type="text"
             value={title}
-            onChange={(e) => handleChange(e, 'title', display_id)}
+            onChange={(e) => handleChange(e, 'title', display_id, index)}
+            isInvalid={!!error[`specific_trades.${index}.title`]}
           />
+          {
+            error[`specific_trades.${index}.title`] && 
+            <Form.Control.Feedback type="invalid">{error[`specific_trades.${index}.title`][0]}</Form.Control.Feedback>
+          }
         </div>
         <div className="ms-4 cell-center">
           <Form.Control
@@ -29,8 +34,13 @@ export default (props) => {
             as="textarea"
             style={{ height: height }}
             value={content}
-            onChange={(e) => handleChange(e, 'content', display_id)}
+            onChange={(e) => handleChange(e, 'content', display_id, index)}
+            isInvalid={!!error[`specific_trades.${index}.content`]}
           />
+          {
+            error[`specific_trades.${index}.content`] && 
+            <Form.Control.Feedback type="invalid">{error[`specific_trades.${index}.content`][0]}</Form.Control.Feedback>
+          }
         </div>
         <div className="ms-4 cell-right">
           <Button onClick={() => deleteSpecificTrades(display_id)} variant="danger" size="sm" className="d-inline-flex align-items-center">

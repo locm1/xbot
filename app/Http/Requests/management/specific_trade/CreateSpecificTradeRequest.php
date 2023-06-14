@@ -24,16 +24,17 @@ class CreateSpecificTradeRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'content' => 'required',
+            'specific_trades' => 'required|array',
+            'specific_trades.*.title' => 'required',
+            'specific_trades.*.content' => 'required',
         ];
     }
 
     public function attributes()
     {
         return [
-            'title' => 'タイトル',
-            'content' => '内容',
+            'specific_trades.*.title' => 'タイトル',
+            'specific_trades.*.content' => '内容',
         ];
     }
 }

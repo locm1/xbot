@@ -56,8 +56,7 @@ export default () => {
   }
 
   useEffect(() => {
-    const idToken = liff.getIDToken();
-    setLiffToken(idToken);
+    
   }, []);
 
   return (

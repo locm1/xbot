@@ -76,7 +76,7 @@ class OrderService
             $this->product_service->update($merged_order_products);
 
             # 注文メール送信
-            $this->order_mail_service->sendOrderMail($order, $merged_order_products);
+            // $this->order_mail_service->sendOrderMail($order, $merged_order_products);
 
             DB::commit();
 

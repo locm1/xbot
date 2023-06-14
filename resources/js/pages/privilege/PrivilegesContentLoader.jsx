@@ -12,8 +12,8 @@ export default () => {
   return (
     <>
       {
-        loadingTables.map(v =>
-          <Card border={1} className="mb-3">
+        loadingTables.map((v, index) =>
+          <Card border={1} className="mb-3" key={`privilege-card-loader-${index}`}>
             <Card.Header className="border-0">
               <ContentLoader
                 height={40}
@@ -25,8 +25,8 @@ export default () => {
             </Card.Header>
             <Card.Body>
               {
-                loadingContents.map(v => 
-                  <div className="pb-3">
+                loadingContents.map((v, index) => 
+                  <div className="pb-3" key={`privilege-content-loader-${index}`}>
                     <ContentLoader
                       height={50}
                       width={1400}

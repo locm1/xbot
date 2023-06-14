@@ -78,7 +78,6 @@ export default (props) => {
                       name="name"
                       value={updateName}
                       onChange={(e) => editName(e)}
-                      onKeyDown={(e) => handleKeyDown(e)}
                       placeholder="特典を入力してください"
                       autoFocus
                     />

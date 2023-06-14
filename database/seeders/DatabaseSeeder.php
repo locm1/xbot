@@ -142,7 +142,6 @@ class DatabaseSeeder extends Seeder
             SendMessage::factory(50)->create();
             SendMessageUser::factory(500)->create();
         } else if ($environment  === 'stg') {
-            User::factory(100)->create();
             $this->call([
                 AdminTableSeeder::class,
                 PrefecturesTableSeeder::class,
@@ -168,6 +167,7 @@ class DatabaseSeeder extends Seeder
                 GreetingMessageSeeder::class,
                 GreetingMessagesWithQuestionnaireSeeder::class,
             ]);
+            User::factory(100)->create();
             ProductCategory::factory(10)->create();
             Product::factory(50)->create()->each(function ($product) {
                 ProductSale::factory()->create(['product_id' => $product->id]);

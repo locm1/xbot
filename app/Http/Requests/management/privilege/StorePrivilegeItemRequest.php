@@ -31,7 +31,7 @@ class StorePrivilegeItemRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => '特典',
+            'name' => '特典名',
         ];
     }
 }

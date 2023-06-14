@@ -10,7 +10,7 @@ export const getPrivilegeItems = async (id, setPrivilegeItems) => {
   });
 };
 
-export const storePrivilegeItem = async (id, name, privilegeItems, setPrivilegeItems, setIsCreate) => {
+export const storePrivilegeItem = async (id, name, privilegeItems, setPrivilegeItems, setIsCreate, setError) => {
   await axios.post(`/api/v1/management/privileges/${id}/items`, {
     name: name
   })
@@ -28,11 +28,12 @@ export const storePrivilegeItem = async (id, name, privilegeItems, setPrivilegeI
   })
   .catch(error => {
       console.error(error);
+      setError(error.response.data.errors)
   });
 };
 
-export const updatePrivilegeItem = async (privilegeId, id, name, privilegeItems, setPrivilegeItems, setIsEdit) => {
-  await axios.put(`/api/v1/management/privileges/${privilegeId}/items/${id}`, {
+export const updatePrivilegeItem = async (privilegeId, id, name, privilegeItems, setPrivilegeItems, setIsEdit, isEdit) => {
+  return await axios.put(`/api/v1/management/privileges/${privilegeId}/items/${id}`, {
     name: name
   })
   .then((response) => {
@@ -44,7 +45,7 @@ export const updatePrivilegeItem = async (privilegeId, id, name, privilegeItems,
     setPrivilegeItems(
       privilegeItems.map((privilegeItem) => (privilegeItem.id === id ? newPrivilegeItem : privilegeItem))
     );
-    setIsEdit(false)
+    setIsEdit(!isEdit.isEdit)
   })
   .catch(error => {
       console.error(error);

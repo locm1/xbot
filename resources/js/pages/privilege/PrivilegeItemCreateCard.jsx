@@ -5,10 +5,18 @@ import { Card, Button, Image, Col, Row, Form, Badge, InputGroup } from "react-bo
 export default (props) => {
   const { id, isCreate, setIsCreate, storePrivilegeItem, privilegeItems, setPrivilegeItems } = props;
   const [name, setName] = useState("");
+  const [error, setError] = useState({
+    name: ''
+  });
 
   const handleKeyDown = (e) => {
     e.preventDefault();
-    storePrivilegeItem(id, name, privilegeItems, setPrivilegeItems, setIsCreate,);
+    storePrivilegeItem(id, name, privilegeItems, setPrivilegeItems, setIsCreate, setError);
+  };
+
+  const handleChange = (e) => {
+    setName(e.target.value);
+    setError({ ...error, name: '' })
   };
 
   return (
@@ -22,31 +30,65 @@ export default (props) => {
                 type="text" 
                 name="name" 
                 value={name} 
-                onChange={(e) => setName(e.target.value)} 
+                onChange={(e) => handleChange(e)} 
                 placeholder="特典名を入力してください" 
                 autoFocus
+                isInvalid={!!error.name}
               />
+              {
+                error.name && 
+                  <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
+              }
             </div>
-            <div className="ms-3">
-              <Button
-                variant="success"
-                size="sm"
-                className="d-inline-flex align-items-center"
-                onClick={(e) => handleKeyDown(e)}
-              >
-                保存する
-              </Button>
-            </div>
-            <div className="ms-2">
-              <Button
-                variant="gray-800"
-                size="sm"
-                className="d-inline-flex align-items-center"
-                onClick={() => setIsCreate(!isCreate)}
-              >
-                キャンセル
-              </Button>
-            </div>
+            {
+              error.name ? (
+                <div className="pb-4 d-inline-flex align-items-center">
+                <div className="ms-3">
+                  <Button
+                    variant="success"
+                    size="sm"
+                    className="d-inline-flex align-items-center"
+                    onClick={(e) => handleKeyDown(e)}
+                  >
+                    保存する
+                  </Button>
+                </div>
+                <div className="ms-2">
+                  <Button
+                    variant="gray-800"
+                    size="sm"
+                    className="d-inline-flex align-items-center"
+                    onClick={() => setIsCreate(!isCreate)}
+                  >
+                    キャンセル
+                  </Button>
+                </div>
+                </div>
+              ) : (
+                <>
+                <div className="ms-3">
+                  <Button
+                    variant="success"
+                    size="sm"
+                    className="d-inline-flex align-items-center"
+                    onClick={(e) => handleKeyDown(e)}
+                  >
+                    保存する
+                  </Button>
+                </div>
+                <div className="ms-2">
+                  <Button
+                    variant="gray-800"
+                    size="sm"
+                    className="d-inline-flex align-items-center"
+                    onClick={() => setIsCreate(!isCreate)}
+                  >
+                    キャンセル
+                  </Button>
+                </div>
+                </>
+              )
+            }
           </div>
         </Col>
       </Card.Body>

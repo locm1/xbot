@@ -66,21 +66,24 @@ export const EventModal = (props) => {
     }
     console.log(updateData);
     if (edit) {
-      UpdateEvent(id, updateData);
-      onHide();
+      UpdateEvent(id, updateData).then(response => {
+        onHide();
+        setChange(prev => !prev);
+      });
       // return props.onUpdate && props.onUpdate(payload);
     } else {
       CreateEvent(updateData, setErrors).then(response => {
         if (response.result === 'failed') {
           setErrors(response.errors);
         } else {
+          console.log('success');
           payload.id = response.res.data.event.id;
           onHide();
+          setChange(prev => !prev);
           // return props.onAdd && props.onAdd(payload);
         }
       });
     }
-    setChange(prev => !prev);
   }
   const onDelete = () => {
     edit && props.onDelete && props.onDelete(id);

@@ -18,8 +18,7 @@ export default (props) => {
   }));
 
   const handleClick = () => {
-    updatePrivilegeItem(privilege_id, id, updateName, privilegeItems, setPrivilegeItems, setIsEdit);
-    setIsEdit(!isEdit.isEdit)
+    updatePrivilegeItem(privilege_id, id, name, privilegeItems, setPrivilegeItems, setIsEdit, isEdit);
   };
 
   const handleSubmit = (e) => {

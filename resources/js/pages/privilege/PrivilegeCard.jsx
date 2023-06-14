@@ -24,6 +24,7 @@ export default (props) => {
     id: '', isEdit: false
   });
   const [isUpdate, setIsUpdate] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
     customClass: {
@@ -55,6 +56,7 @@ export default (props) => {
     const confirmMessage = "選択した項目は削除されました。";
     await Swal.fire('削除成功', confirmMessage, 'success');
     setRefresh(!refresh);
+    setIsDeleted(true);
   };
 
   const handleKeyDown = (e) => {
@@ -71,7 +73,9 @@ export default (props) => {
   };
 
   useEffect(() => {
-    getPrivilegeItems(id, setPrivilegeItems)
+    if (!isDeleted) {
+      getPrivilegeItems(id, setPrivilegeItems)
+    }
   }, [refresh]);
 
   return (

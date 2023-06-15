@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { Row, Col, Form, ListGroup, Card, InputGroup, Image, Button } from 'react-bootstrap';
+import { Row, Col, Form, ListGroup, Card, Badge, Image, Button } from 'react-bootstrap';
 import { SearchIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import { Paths } from "@/paths";
@@ -72,25 +72,43 @@ export default () => {
     const getStatus = (status) => {
       switch (status) {
         case 1:
-          return '注文内容確認中'
+          return {
+            class: 'warning',
+            name: '注文内容確認中'
+          }
         case 2:
-          return '配送準備中'
+          return {
+            class: 'info',
+            name: '配送準備中'
+          }
         case 3:
-          return '当店より発送済み'
+          return {
+            class: 'success',
+            name: '当店より発送済み'
+          }
         case 4:
-          return 'キャンセル'
+          return {
+            class: 'danger',
+            name: 'キャンセル'
+          }
       }
     }
 
     return (
       <Card border="0" className="shadow p-0 mb-4">
         <Card.Header className="bg-primary text-white px-3 py-2">
-          <h5 className="mb-0 fw-bolder justify-content-between">{getStatus(status)}</h5>
+          <h5 className="mb-0 fw-bolder justify-content-between">注文情報</h5>
         </Card.Header>  
         <Card.Body>
-          <div className="d-flex align-items-center pb-3 justify-content-between">
+          <div className="d-flex align-items-center pb-1 justify-content-between">
             <small className="">購入日：{moment(created_at).format("YYYY-MM-DD")}</small>
             <small className="">注文番号：{id}</small>
+          </div>
+          <div className="d-flex align-items-center pb-3">
+            <small>ステータス：</small>
+            <Badge bg={getStatus(status).class} className="me-1 fw-normal">
+              {getStatus(status).name}
+            </Badge>
           </div>
           <ListGroup className="list-group-flush">
             {order_products.map(order_product => <CartItem key={`order-product-${order_product.id}`} {...order_product} history="purchase" />)}

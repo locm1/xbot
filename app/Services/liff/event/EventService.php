@@ -11,13 +11,21 @@ use Illuminate\Support\Facades\Log;
 class EventService 
 {
 
-    public function index($request): Collection
+    public function index($request): array
     {
+        $result_events = array();
+
         $events = Event::whereYear('start_date', $request->year)
             ->whereMonth('start_date', $request->month)
             ->get()->groupBy(function ($event) {
             return Carbon::parse($event->start_date)->format('Y-m-d');
         });
-        return $events;
+
+        foreach ($events as $key => $value) {
+            if ($key >= date('Y-m-d')) {
+                $result_events[$key] = $value;
+            }
+        }
+        return $result_events;
     }
 }

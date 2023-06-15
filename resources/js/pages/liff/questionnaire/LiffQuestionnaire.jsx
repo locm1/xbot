@@ -188,6 +188,7 @@ export default () => {
                                   placeholder="例）山田"
                                   isInvalid={!!errors.last_name}
                                   autoComplete="family-name"
+                                  className="text-dark"
                                 />
                                 {
                                   errors.last_name &&

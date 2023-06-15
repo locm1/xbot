@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\management\invitation\StoreInviteIncentiveRequest;
 use App\Services\management\invitation\InviteIncentiveService;
 use App\Http\Requests\management\invitation\UpdateInviteIncentiveRequest;
+use App\Models\DefaultInviteIncentive;
 use App\Models\InviteIncentive;
 
 class InviteIncentiveController extends Controller
@@ -49,7 +50,8 @@ class InviteIncentiveController extends Controller
     public function show(InviteIncentive $invite_incentive)
     {
         $invitation = $this->invite_incentive_service->show($invite_incentive);
-        return response()->json(['invite_incentive' => $invitation], 200);
+        $default_invite_incentive = DefaultInviteIncentive::first();
+        return response()->json(['invite_incentive' => $invitation, 'default_invite_incentive' => $default_invite_incentive], 200);
     }
 
     /**

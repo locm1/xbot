@@ -22,10 +22,11 @@ export const getInviteIncentives = async (params, setInviteIncentives, setLinks,
   });
 };
 
-export const showInviteIncentive = async (id, setInviteIncentive) => {
+export const showInviteIncentive = async (id, setInviteIncentive, setIsDefault) => {
   axios.get(`/api/v1/management/invite-incentives/${id}`)
   .then((response) => {
     setInviteIncentive(response.data.invite_incentive);
+    setIsDefault(response.data.default_invite_incentive.invite_incentive_id === response.data.invite_incentive.id);
   })
   .catch(error => {
       console.error(error);

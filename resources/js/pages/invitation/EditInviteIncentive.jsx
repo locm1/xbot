@@ -55,7 +55,7 @@ export default () => {
 
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      showInviteIncentive(id, setInviteIncentive)
+      showInviteIncentive(id, setInviteIncentive, setIsDefault)
     }
   }, []);
 

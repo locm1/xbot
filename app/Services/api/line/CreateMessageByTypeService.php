@@ -46,6 +46,7 @@ class CreateMessageByTypeService
                     break;
                 case 3:
                     $video_url = $this->getFullUrl($message->video_path);
+                    Log::debug($video_url);
                     $message_builder = new VideoMessageBuilder($video_url, $video_url);
                     break;
                 case 4:

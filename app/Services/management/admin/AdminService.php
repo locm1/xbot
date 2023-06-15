@@ -18,7 +18,7 @@ class AdminService extends AbstractManagementService
      */
     public function index(): LengthAwarePaginator
     {
-        return Admin::paginate(10);
+        return Admin::orderBy('id', 'desc')->paginate(10);
     }
 
     /**

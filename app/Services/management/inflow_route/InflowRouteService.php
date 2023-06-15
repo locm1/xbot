@@ -9,7 +9,7 @@ class InflowRouteService
 {
     public function index()
     {
-        $InflowRoute = InflowRoute::with('inflowRouteUsers')->paginate(10);
+        $InflowRoute = InflowRoute::with('inflowRouteUsers')->orderBy('id', 'desc')->paginate(10);
         $data = [];
         foreach ($InflowRoute->items() as $v) {
             $data[] = [

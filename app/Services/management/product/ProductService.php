@@ -24,7 +24,7 @@ class ProductService
             return $this->search_product_action->search($request);
         }
         if ($request->no_paginate) return Product::all();
-        return Product::with(['productImages', 'productCategory'])->paginate(10);
+        return Product::with(['productImages', 'productCategory'])->orderBy('id', 'desc')->paginate(10);
     }
 
 

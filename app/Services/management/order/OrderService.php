@@ -20,7 +20,7 @@ class OrderService
             return $this->search_order_action->search($request);
         }
 
-        return Order::with('user')->paginate(10);
+        return Order::with('user')->orderBy('id', 'desc')->paginate(10);
     }
 
 

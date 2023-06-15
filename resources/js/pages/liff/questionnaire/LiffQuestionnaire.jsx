@@ -301,7 +301,7 @@ export default () => {
                               required
                               type="tel"
                               name="tel"
-                              placeholder="例）08000000000"
+                              placeholder="ハイフンなしで入力してください"
                               value={formValue.tel} 
                               onChange={(e) => handleChange(e, 'tel')} 
                               isInvalid={!!errors.tel}
@@ -341,7 +341,7 @@ export default () => {
                               required
                               type="number"
                               name="zipcode"
-                              placeholder="例）0001111"
+                              placeholder="ハイフンなしで入力してください"
                               value={formValue.zipcode} 
                               onChange={(e) => searchZipCode(e, 'zipcode')} 
                               isInvalid={!!errors.zipcode}

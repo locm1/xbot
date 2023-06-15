@@ -218,7 +218,7 @@ export default () => {
                         required
                         type="number"
                         name="zipcode"
-                        placeholder="0001111"
+                        placeholder="ハイフンなしで入力してください"
                         value={formValue.zipcode} 
                         onChange={(e) => searchZipCode(e, 'zipcode')} 
                         autoComplete="postal-code"
@@ -315,7 +315,7 @@ export default () => {
                           required
                           type="tel"
                           name="tel"
-                          placeholder="08000000000"
+                          placeholder="ハイフンなしで入力してください"
                           value={formValue.tel} 
                           onChange={(e) => handleChange(e, 'tel')} 
                           autoComplete="tel"

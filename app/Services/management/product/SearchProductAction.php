@@ -18,7 +18,7 @@ class SearchProductAction
             $this->searchByCategory($query, $request->category);
         }
 
-        return $query->with(['productImages', 'productCategory'])->paginate(10);
+        return $query->with(['productImages', 'productCategory'])->orderBy('id', 'desc')->paginate(10);
     }
 
     private function searchByName($query, $name)

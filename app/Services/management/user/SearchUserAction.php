@@ -27,7 +27,7 @@ class SearchUserAction
         if (isset($request->tag_id) && $request->tag_id > 0) {
             $this->searchByTagId($query, $request->tag_id);
         }
-        return $query->paginate(10);
+        return $query->orderBy('id', 'desc')->paginate(10);
     }
     
 

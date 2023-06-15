@@ -12,8 +12,7 @@ class UserTagService extends AbstractManagementService
 
     public function index() 
     {
-        //
-        return UserTag::all();
+        return UserTag::orderBy('id', 'desc')->get();
     }
 
     /**

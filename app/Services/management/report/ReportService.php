@@ -29,7 +29,7 @@ class ReportService
      */
     public function index()
     {
-        return Report::paginate(10);
+        return Report::orderBy('id', 'desc')->paginate(10);
     }
 
     /**

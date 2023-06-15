@@ -80,13 +80,13 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">固定アンケート管理</h1>
+          <h1 className="page-title">お客様情報管理</h1>
         </div>
         <div className="d-flex flex-row-reverse mt-3">
           <Form.Group id="default-questionnaire">
             <Form.Check
               type="switch"
-              label="固定アンケートをONにする"
+              label="お客様情報をONにする"
               id="is-default-questionnaire-valid"
               htmlFor="is-default-questionnaire-valid"
               checked={isValid}

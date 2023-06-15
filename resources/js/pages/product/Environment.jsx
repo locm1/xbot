@@ -65,7 +65,7 @@ export default () => {
               <Row>
                 <Col md={12} className="mb-4">
                   <Form.Group id="tel">
-                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>電話番号</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>電話番号(キャンセル対応用)</Form.Label>
                     <Form.Control
                       type="tel"
                       name="tel"
@@ -82,7 +82,7 @@ export default () => {
                 </Col>
                 <Col md={12} className="mb-4">
                   <Form.Group id="email">
-                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>メールアドレス</Form.Label>
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>メールアドレス(購入通知用)</Form.Label>
                     <Form.Control
                       required
                       type="email"

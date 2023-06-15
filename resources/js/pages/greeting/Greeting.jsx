@@ -30,7 +30,6 @@ export default () => {
     'messages.0.video_path': null,
   })
   const [isRendered, setIsRendered] = useState(false);
-  const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [videoFile, setVideoFile] = useState(null);
 
   const handlePreviewChange = (e, input, id, index = null) => {
@@ -127,7 +126,7 @@ export default () => {
 
   const addEditCard = () => {
     const lastMessage = messages.slice(-1)[0]
-    setMessages([...messages, { id: lastMessage.id + 1, type: 1, text: null, image_path: null, video_path: null }])
+    setMessages([...messages, { id: lastMessage.id + 1, type: 1, text: null, image_path: null, video_path: null, thumbnail_path: null }])
   };
 
   const onSaveMessage = () => {

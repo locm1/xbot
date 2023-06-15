@@ -33,6 +33,7 @@ export default () => {
   const [updateImageIds, setUpdateImageIds] = useState([]);
   const [updateVideos, setUpdateVideos] = useState([]);
   const [updateVideoIds, setUpdateVideoIds] = useState([]);
+  const [updateVideoThumbnails, setUpdateVideoThumbnails] = useState([]);
   const [updateCarouselImageImages, setUpdateCarouselImageImages] = useState([]);
   const [updateCarouselImageImageIds, setUpdateCarouselImageImageIds] = useState([]);
   const [updateCarouselProductImages, setUpdateCarouselProductImages] = useState([]);
@@ -109,6 +110,28 @@ export default () => {
       currentMessageItem.video_file = e.target.files[0]
       setUpdateVideos([...updateVideos, e.target.files[0]])
       setUpdateVideoIds([...updateVideoIds, currentMessageItem.display_id])
+
+      // ビデオファイルを読み込む
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = () => {
+        // 1秒後のフレームをキャプチャする
+        video.currentTime = 1;
+        video.onseeked = () => {
+          // キャプチャしたフレームを<canvas>に描画する
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const context = canvas.getContext('2d');
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  
+          // <canvas>を画像としてエクスポートする
+          const thumbnailDataUrl = canvas.toDataURL('image/png');
+          currentMessageItem.thumbnail_path = thumbnailDataUrl
+          setUpdateVideoThumbnails([...updateVideoThumbnails, thumbnailDataUrl])
+        };
+      };
+      video.src = URL.createObjectURL(e.target.files[0]);
 
       deleteCarouselImages(currentMessageItem)
       deleteCarouselProducts(currentMessageItem)
@@ -197,7 +220,7 @@ export default () => {
   const addEditCard = () => {
     const lastMessageItem = messageItems.slice(-1)[0]
     setMessageItems([...messageItems, {
-      display_id: lastMessageItem.display_id + 1, id: null, type: 1, text: '', image_path: null, video_path: null,
+      display_id: lastMessageItem.display_id + 1, id: null, type: 1, text: '', image_path: null, video_path: null, thumbnail_path: null,
       carousel_images: [{ id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false }],
       carousel_products: [{ id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false }]
     }])
@@ -285,12 +308,15 @@ export default () => {
   const saveMessage = () => {
     message.is_undisclosed = isUndisclosed ? 1 : 0
 
+    console.log(updateVideoThumbnails);
+
     const formData = new FormData();
     formData.append("message_items", JSON.stringify(messageItems));
     formData.append("title", message.title)
     formData.append("is_undisclosed", message.is_undisclosed)
     updateImages.forEach((updateImage) => formData.append("images[]", updateImage));
     updateImageIds.forEach((updateImageId) => formData.append("image_ids[]", updateImageId));
+    updateVideoThumbnails.forEach((updateVideoThumbnail) => formData.append("video_thumbnails[]", updateVideoThumbnail));
     updateCarouselImageImages.forEach((updateImage) => formData.append("carousel_image_images[]", updateImage));
     updateCarouselImageImageIds.forEach((updateImageId) => formData.append("carousel_image_image_ids[]", updateImageId));
     updateCarouselProductImages.forEach((updateImage) => formData.append("carousel_product_images[]", updateImage));
@@ -343,6 +369,7 @@ export default () => {
 
   return (
     <div className="">
+      <Button onClick={() =>console.log(updateVideoThumbnails)} />
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">{pathname.includes('/edit') ? 'メッセージ編集' : 'メッセージ作成'}</h1>

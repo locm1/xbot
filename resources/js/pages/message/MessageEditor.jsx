@@ -45,11 +45,13 @@ export default (props) => {
     const { messageItem } = props;
 
     return (
+      <>
       <Col xs={6} className="text-center text-lg-start mt-3">
         <div className="line-preview-comment-image">
           <ReactPlayer url={messageItem.video_path} controls width="100%" />
         </div>
       </Col>
+    </>
     );
   };
 
@@ -251,6 +253,7 @@ export default (props) => {
                       {error[`message_items.${index}.video_path`]}
                     </Form.Control.Feedback>
                   {messageItem.video_path && <VideoFile messageItem={messageItem} />}
+                  {messageItem.thumbnail_path && <Image src={messageItem.thumbnail_path} width="330" height="330" />}
                 </Tab.Pane>
                 <Tab.Pane eventKey="carousel-image" className="py-4">
                   {messageItem.carousel_images.map((v, k) => {

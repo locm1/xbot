@@ -5,6 +5,7 @@ namespace App\Services\management\message;
 use App\Models\MessageItem;
 use App\Models\MessageItemCarouselImage;
 use App\Models\MessageItemCarouselProduct;
+use App\Services\common\CreateThumbnailFileUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -27,6 +28,9 @@ class UpsertMessageItemAction
         $carousel_product_image_files = isset($request->carousel_product_image_ids) 
             ? $this->storeCarouselImages($this->getFiles($request, 'carousel_product_images'), $request->carousel_product_image_ids, 'carousel_products') 
             : $this->copyCarouselImages($method, 'carousel_products', $message_items);
+        
+        # 動画が送られてきたら、サムネイルの保存
+        $video_thumbnails = isset($request->video_thumbnails) ? CreateThumbnailFileUtility::getThumbnailFiles($request->video_thumbnails, $request->video_ids, 'message_video_thumbnail') : null;
 
         foreach ($message_items as $message_item) {
             if ($carousel_image_image_files) {
@@ -59,6 +63,10 @@ class UpsertMessageItemAction
             $video_file_name = isset($videos)
                 ? array_reduce(array_filter($videos, function($video) use($message_item) { return $video['id'] == $message_item['display_id'];}), 'array_merge', array())
                 : $message_item['video_path'];
+
+            $video_thumbnail_file_name = isset($video_thumbnails)
+                ? array_reduce(array_filter($video_thumbnails, function($video_thumbnail) use($message_item) { return $video_thumbnail['id'] == $message_item['display_id'];}), 'array_merge', array())
+                : $message_item['thumbnail_path'];
             
             $message_item_id = ($method == 'update') ? $message_item['id'] : null;
             
@@ -68,6 +76,7 @@ class UpsertMessageItemAction
                 'text' => $message_item['text'],
                 'image_path' => isset($image_file_name['file_name']) ? $image_file_name['file_name'] : $message_item['image_path'],
                 'video_path' => isset($video_file_name['file_name']) ? $video_file_name['file_name'] : $message_item['video_path'],
+                'thumbnail_path' => isset($video_thumbnail_file_name['file_name']) ? $video_thumbnail_file_name['file_name'] : $message_item['thumbnail_path'],
             ];
 
             # message_item_idがあった場合、update_dataの配列に格納、なければその場でcreateしidを取得

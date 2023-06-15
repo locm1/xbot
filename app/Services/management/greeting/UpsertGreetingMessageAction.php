@@ -2,6 +2,7 @@
 
 namespace App\Services\management\greeting;
 
+use App\Services\common\CreateThumbnailFileUtility;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,7 +18,7 @@ class UpsertGreetingMessageAction
         $videos = isset($request->video_ids) ? $this->getFiles($request, 'videos', $request->video_ids, 'video') : null;
 
         # 動画が送られてきたら、サムネイルの保存
-        $video_thumbnails = isset($request->video_thumbnails) ? $this->getThumbnailFiles($request->video_thumbnails, $request->video_ids) : null;
+        $video_thumbnails = isset($request->video_thumbnails) ? CreateThumbnailFileUtility::getThumbnailFiles($request->video_thumbnails, $request->video_ids, 'greeting_video_thumbnail') : null;
 
         foreach ($messages as $message) {
             if (isset($message['current_image_path'])) {
@@ -65,24 +66,6 @@ class UpsertGreetingMessageAction
             $files[] = [
                 'id' => $id,
                 'file_name' => "/storage/$path/$file_name"
-            ];
-        }
-        return $files;
-    }
-
-    private function getThumbnailFiles($video_thumbnails, $ids)
-    {
-        # 画像を削除しストレージに保存
-        $files = array();
-        foreach (array_map(null, $video_thumbnails, $ids) as [$video_thumbnail, $id]) {
-            $base64_data = substr($video_thumbnail, strpos($video_thumbnail, ',') + 1);
-            $decode_video_thumbnails = base64_decode($base64_data);
-            $storage_path = "video_thumbnail/greeting_video_thumbnail_$id.png";
-            Storage::disk('public')->put($storage_path, $decode_video_thumbnails);
-
-            $files[] = [
-                'id' => $id,
-                'file_name' => "/storage/video_thumbnail/greeting_video_thumbnail_$id.png"
             ];
         }
         return $files;

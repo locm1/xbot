@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('text')->nullable(true);
             $table->string('image_path')->nullable(true);
             $table->string('video_path')->nullable(true);
+            $table->string('thumbnail_path')->nullable(true);
             $table->float('display_order')->nullable(true);
             $table->timestamps();
             $table->softDeletes();

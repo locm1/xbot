@@ -21,7 +21,7 @@ export const getMessageItems = async (id, setMessageItems) => {
     } else {
       var messageItems = [
         {
-          display_id: 1, id: null, type: 1, text: '', image_path: null, video_path: null, 
+          display_id: 1, id: null, type: 1, text: '', image_path: null, video_path: null, thumbnail_path: null,
           carousel_images: [{id: null, display_id: 1, image_path: null, label: '', uri: '', is_deleted: false}],
           carousel_products: [{id: null, display_id: 1, image_path: null, title: '', text: '', label: '', uri: '', is_deleted: false}]
         }

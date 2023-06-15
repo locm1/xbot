@@ -4,7 +4,7 @@ export const getGreetingMessages = async (setMessages) => {
     console.log(response.data.greeting_messages);
 
     const greeting_messages = response.data.greeting_messages;
-    const resultMessages = (greeting_messages.length > 0) ? greeting_messages : [{id: 1, type: 1, text: '', image_path: null, video_path: null}];
+    const resultMessages = (greeting_messages.length > 0) ? greeting_messages : [{id: 1, type: 1, text: '', image_path: null, video_path: null, thumbnail_path: null}];
     setMessages(resultMessages);
   })
   .catch(error => {

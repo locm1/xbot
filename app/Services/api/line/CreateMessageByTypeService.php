@@ -46,8 +46,8 @@ class CreateMessageByTypeService
                     break;
                 case 3:
                     $video_url = $this->getFullUrl($message->video_path);
-                    Log::debug($video_url);
-                    $message_builder = new VideoMessageBuilder($video_url, 'https://x-bot.stg-box.jp/storage/message/de5594ea-f724-3f86-8689-37882ba7d9a4.jpeg');
+                    $thumbnail_url = $this->getFullUrl($message->thumbnail_path);
+                    $message_builder = new VideoMessageBuilder($video_url, $thumbnail_url);
                     break;
                 case 4:
                     $carousel_images = $message->carouselImages;

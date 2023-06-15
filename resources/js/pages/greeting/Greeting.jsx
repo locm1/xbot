@@ -87,7 +87,8 @@ export default () => {
   
           // <canvas>を画像としてエクスポートする
           const thumbnailDataUrl = canvas.toDataURL('image/png');
-          setThumbnailUrl(thumbnailDataUrl);
+          currentMessage.thumbnail_path = thumbnailDataUrl
+          setUpdateVideoThumbnails([...updateVideoThumbnails, thumbnailDataUrl])
         };
       };
       video.src = URL.createObjectURL(file);
@@ -99,14 +100,6 @@ export default () => {
       setError({ ...error, [`messages.${index}.video_path`]: '' });
     }
 
-  }
-
-  const handleThumbnailChange = (thumbnail, id) => {
-    // const currentMessage = messages.filter(message => (message.id === id))[0]
-    // currentMessage.thumbnail_path = thumbnail
-    // setMessages(messages.map((message) => (message.id === id ? currentMessage : message)));
-    setUpdateVideoThumbnails(thumbnail)
-    console.log('aa')
   }
 
   const handlePictureVideoDelete = (id, type) => {
@@ -138,34 +131,35 @@ export default () => {
   };
 
   const onSaveMessage = () => {
-    console.log(messages);
-    // const formData = new FormData();
-    // formData.append("messages", JSON.stringify(messages));
-    // updateImages.forEach((updateImage) => formData.append("images[]", updateImage));
-    // updateImageIds.forEach((updateImageId) => formData.append("image_ids[]", updateImageId));
-    // updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
-    // updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
-    // const formValue = { is_questionnaire: isQuestionnaireAnswerButton ? 1 : 0 }
+    console.log(updateVideoThumbnails);
+    const formData = new FormData();
+    formData.append("messages", JSON.stringify(messages));
+    updateImages.forEach((updateImage) => formData.append("images[]", updateImage));
+    updateImageIds.forEach((updateImageId) => formData.append("image_ids[]", updateImageId));
+    updateVideoThumbnails.forEach((updateVideoThumbnail) => formData.append("video_thumbnails[]", updateVideoThumbnail));
+    updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
+    updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
+    const formValue = { is_questionnaire: isQuestionnaireAnswerButton ? 1 : 0 }
 
-    // // 画像削除stateに値があればAPI発火
-    // if (deleteMessages.length > 0) {
-    //   const params = {
-    //     ids: deleteMessages.map(deleteMessage => deleteMessage.id),
-    //   }
-    //   deleteGreetingMessages(params, completeMessage)
-    // }
+    // 画像削除stateに値があればAPI発火
+    if (deleteMessages.length > 0) {
+      const params = {
+        ids: deleteMessages.map(deleteMessage => deleteMessage.id),
+      }
+      deleteGreetingMessages(params, completeMessage)
+    }
 
-    // if (messages[0].id) {
-    //   updateGreetingMessages(formData, completeMessage, setError)
-    // } else {
-    //   storeGreetingMessages(formData, completeMessage, setError)
-    // }
+    if (messages[0].id) {
+      updateGreetingMessages(formData, completeMessage, setError)
+    } else {
+      storeGreetingMessages(formData, completeMessage, setError)
+    }
 
-    // if (greetingMessageWithQuestionnaire) {
-    //   updateGreetingMessageWithQuestionnaires(greetingMessageWithQuestionnaire.id, formValue)
-    // } else {
-    //   storeGreetingMessageWithQuestionnaires(formValue)
-    // }
+    if (greetingMessageWithQuestionnaire) {
+      updateGreetingMessageWithQuestionnaires(greetingMessageWithQuestionnaire.id, formValue)
+    } else {
+      storeGreetingMessageWithQuestionnaires(formValue)
+    }
   };
 
   const completeMessage = (message) => {
@@ -205,8 +199,6 @@ export default () => {
   return (
     <>
     <Button onClick={() =>console.log(updateVideoThumbnails)} />
-    <Button onClick={() =>console.log(messages)} />
-    {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" />}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">あいさつメッセージ設定</h1>
@@ -254,7 +246,6 @@ export default () => {
                 handleDelete={handleDelete}
                 messageItems={messages}
                 setMessageItems={setMessages}
-                handleThumbnailChange={handleThumbnailChange}
                 error={error}
                 index={index}
                 setError={setError}

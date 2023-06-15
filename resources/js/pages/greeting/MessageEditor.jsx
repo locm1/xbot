@@ -7,7 +7,7 @@ import ReactPlayer from 'react-player'
 export default (props) => {
   const { 
     handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, 
-    setMessageItems, messageItems, error, index, setError, handleThumbnailChange
+    setMessageItems, messageItems, error, index, setError
   } = props;
 
   const [url, setUrl] = useState('');
@@ -60,6 +60,7 @@ export default (props) => {
           </Button>
         </div>
       </Col>
+      {messageItem.thumbnail_path && <Image src={messageItem.thumbnail_path} width="330" height="330" />}
       </>
     );
   };

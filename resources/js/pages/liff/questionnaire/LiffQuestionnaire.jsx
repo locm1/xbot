@@ -228,7 +228,6 @@ export default () => {
                                   onChange={(e) => handleChange(e, 'last_name_kana')}
                                   placeholder="例）ヤマダ"
                                   isInvalid={!!errors.last_name_kana}
-                                  autoComplete="family-name"
                                 />
                                 {
                                   errors.last_name_kana &&
@@ -244,7 +243,6 @@ export default () => {
                                   onChange={(e) => handleChange(e, 'first_name_kana')}
                                   placeholder="例）タロウ"
                                   isInvalid={!!errors.first_name_kana}
-                                  autoComplete="given-name"
                                 />
                                 {
                                   errors.first_name_kana &&

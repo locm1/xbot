@@ -89,9 +89,7 @@ class OrderService
                 # pay.jp APIで決済の取り消し
                 $this->charge_service->refund($payment_id);
             }
-            Log::debug($e);
             DB::rollback();
-            throw $e;
         }
         
         return $order;

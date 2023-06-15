@@ -76,6 +76,7 @@ export default () => {
       video.onloadedmetadata = () => {
         // 1秒後のフレームをキャプチャする
         video.currentTime = 1;
+        const maxFileSize = 1 * 1024 * 1024; // 1MB
         video.onseeked = () => {
           // キャプチャしたフレームを<canvas>に描画する
           const canvas = document.createElement('canvas');
@@ -83,10 +84,21 @@ export default () => {
           canvas.height = video.videoHeight;
           const context = canvas.getContext('2d');
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          console.log(canvas.width)
   
           // <canvas>を画像としてエクスポートする
-          const thumbnailDataUrl = canvas.toDataURL('image/png');
+          let thumbnailDataUrl = canvas.toDataURL('image/png');
           currentMessage.thumbnail_path = thumbnailDataUrl
+          if (thumbnailDataUrl.length > maxFileSize) {
+            const scaleFactor = Math.sqrt(maxFileSize / thumbnailDataUrl.length);
+            canvas.width = Math.floor(canvas.width * scaleFactor);
+            canvas.height = Math.floor(canvas.height * scaleFactor);
+            console.log(canvas.width)
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            console.log(canvas);
+            thumbnailDataUrl = canvas.toDataURL('image/jpeg', 0.1);
+          }
           setUpdateVideoThumbnails([...updateVideoThumbnails, thumbnailDataUrl])
         };
       };

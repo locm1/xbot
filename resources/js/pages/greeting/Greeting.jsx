@@ -9,7 +9,6 @@ import { getGreetingMessages, updateGreetingMessages, storeGreetingMessages, del
 import { getGreetingMessageWithQuestionnaires, storeGreetingMessageWithQuestionnaires, updateGreetingMessageWithQuestionnaires } from "@/pages/greeting/api/GreetingWithQuestionnaireApiMethods";
 import GreetingContentLoader from "@/pages/greeting/GreetingContentLoader";
 import ContentLoader, { BulletList, Facebook } from "react-content-loader";
-import VideoThumbnail from 'react-video-thumbnail';
 
 export default () => {
   const [messages, setMessages] = useState([
@@ -31,6 +30,8 @@ export default () => {
     'messages.0.video_path': null,
   })
   const [isRendered, setIsRendered] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [videoFile, setVideoFile] = useState(null);
 
   const handlePreviewChange = (e, input, id, index = null) => {
     const currentMessage = messages.filter(message => (message.id === id))[0]
@@ -67,6 +68,31 @@ export default () => {
       setUpdateVideos([...updateVideos, e.target.files[0]])
       setUpdateVideoIds([...updateVideoIds, currentMessage.id])
 
+      const file = e.target.files[0];
+      setVideoFile(file);
+  
+      // ビデオファイルを読み込む
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = () => {
+        // 1秒後のフレームをキャプチャする
+        video.currentTime = 1;
+        video.onseeked = () => {
+          // キャプチャしたフレームを<canvas>に描画する
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const context = canvas.getContext('2d');
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  
+          // <canvas>を画像としてエクスポートする
+          const thumbnailDataUrl = canvas.toDataURL('image/png');
+          setThumbnailUrl(thumbnailDataUrl);
+        };
+      };
+      video.src = URL.createObjectURL(file);
+  
+
       currentMessage.video_path = URL.createObjectURL(e.target.files[0])
       setMessages(messages.map((message) => (message.id === id ? currentMessage : message)));
       
@@ -79,7 +105,7 @@ export default () => {
     // const currentMessage = messages.filter(message => (message.id === id))[0]
     // currentMessage.thumbnail_path = thumbnail
     // setMessages(messages.map((message) => (message.id === id ? currentMessage : message)));
-    setUpdateVideoThumbnails(prev => prev, [thumbnail])
+    setUpdateVideoThumbnails(thumbnail)
     console.log('aa')
   }
 
@@ -179,6 +205,8 @@ export default () => {
   return (
     <>
     <Button onClick={() =>console.log(updateVideoThumbnails)} />
+    <Button onClick={() =>console.log(messages)} />
+    {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" />}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">あいさつメッセージ設定</h1>

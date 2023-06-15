@@ -3,7 +3,6 @@ import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger, Form, Button, Image, Card 
 import { ChatIcon, XIcon, ChevronDownIcon, ChevronUpIcon, PhotographIcon, TicketIcon, FilmIcon, PencilIcon } from "@heroicons/react/outline";
 import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player'
-import VideoThumbnail from 'react-video-thumbnail';
 
 export default (props) => {
   const { 
@@ -61,13 +60,6 @@ export default (props) => {
           </Button>
         </div>
       </Col>
-      <VideoThumbnail
-        videoUrl={messageItem.video_path}
-        thumbnailHandler={thumbnail => handleThumbnailChange(thumbnail, messageItem.id)}
-        width={400}
-        snapshotAtTime={1}
-        height={300}
-      />
       </>
     );
   };

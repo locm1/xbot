@@ -25,7 +25,7 @@ class SearchVisitorHistoryAction
             $query->where('created_at', '<', "$request->end_created_at 23:59:59");
         }
 
-        return $query->with('user')->paginate(10);
+        return $query->with('user')->orderBy('id', 'desc')->paginate(10);
     }
 
     private function searchByName($query, $name)

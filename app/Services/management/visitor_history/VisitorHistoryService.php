@@ -21,7 +21,7 @@ class VisitorHistoryService
             return $this->search_visitor_history_action->search($request);
         }
 
-        return VisitorHistory::with('user')->paginate(10);
+        return VisitorHistory::with('user')->orderBy('id', 'desc')->paginate(10);
     }
 
 

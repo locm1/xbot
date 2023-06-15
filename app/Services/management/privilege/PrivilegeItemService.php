@@ -12,7 +12,7 @@ class PrivilegeItemService
 {
     public function index(Privilege $privilege): Collection
     {
-        return PrivilegeItem::where('privilege_id', $privilege->id)->get();
+        return PrivilegeItem::where('privilege_id', $privilege->id)->orderBy('id', 'desc')->get();
     }
 
     public function store($request, Privilege $privilege)

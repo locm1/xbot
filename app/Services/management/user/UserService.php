@@ -24,7 +24,7 @@ class UserService
             return $this->search_user_action->search($request);
         }
 
-        return User::paginate(10);
+        return User::orderBy('id', 'desc')->paginate(10);
     }
 
     /**

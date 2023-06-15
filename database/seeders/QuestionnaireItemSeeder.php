@@ -19,51 +19,43 @@ class QuestionnaireItemSeeder extends Seeder
         $data = [
             [
             'questionnaire_id' => 1,
-            'name' => "とても良かった",
+            'name' => "友達に教えてもらった",
             ],
             [
             'questionnaire_id' => 1,
-            'name' => "良かった",
+            'name' => "Twitterを見た",
             ],
             [
             'questionnaire_id' => 1,
-            'name' => "悪かった",
+            'name' => "Instagramを見た",
             ],
             [
             'questionnaire_id' => 1,
-            'name' => "とても悪かった",
-            ],
-            [
-            'questionnaire_id' => 2,
-            'name' => "とても良かった",
-            ],
-            [
-            'questionnaire_id' => 2,
-            'name' => "良かった",
-            ],
-            [
-            'questionnaire_id' => 2,
-            'name' => "悪かった",
-            ],
-            [
-            'questionnaire_id' => 2,
-            'name' => "とても悪かった",
+            'name' => "その他",
             ],
             [
             'questionnaire_id' => 3,
-            'name' => "とても良かった",
+            'name' => "くせ（広がり・うねり）",
             ],
             [
             'questionnaire_id' => 3,
-            'name' => "良かった",
+            'name' => "白髪",
             ],
             [
             'questionnaire_id' => 3,
-            'name' => "悪かった",
+            'name' => "ダメージ",
             ],
             [
             'questionnaire_id' => 3,
-            'name' => "とても悪かった",
+            'name' => "乾燥",
+            ],
+            [
+            'questionnaire_id' => 3,
+            'name' => "抜け毛",
+            ],
+            [
+            'questionnaire_id' => 3,
+            'name' => "臭い",
             ],
             [
             'questionnaire_id' => 4,
@@ -83,19 +75,19 @@ class QuestionnaireItemSeeder extends Seeder
             ],
             [
             'questionnaire_id' => 5,
-            'name' => "とても良かった",
+            'name' => "鈴木",
             ],
             [
             'questionnaire_id' => 5,
-            'name' => "良かった",
+            'name' => "田中",
             ],
             [
             'questionnaire_id' => 5,
-            'name' => "悪かった",
+            'name' => "齋藤",
             ],
             [
             'questionnaire_id' => 5,
-            'name' => "とても悪かった",
+            'name' => "木村",
             ],
         ];
 

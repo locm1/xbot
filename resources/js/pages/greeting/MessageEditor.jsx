@@ -3,12 +3,15 @@ import { Nav, Tab, Row, Col, Tooltip, OverlayTrigger, Form, Button, Image, Card 
 import { ChatIcon, XIcon, ChevronDownIcon, ChevronUpIcon, PhotographIcon, TicketIcon, FilmIcon, PencilIcon } from "@heroicons/react/outline";
 import { Link } from 'react-router-dom';
 import ReactPlayer from 'react-player'
+import VideoThumbnail from 'react-video-thumbnail';
 
 export default (props) => {
   const { 
     handlePreviewChange, messageItem, handleDelete, handlePictureImageDelete, 
-    setMessageItems, messageItems, error, index, setError
+    setMessageItems, messageItems, error, index, setError, handleThumbnailChange
   } = props;
+
+  const [url, setUrl] = useState('');
 
   const getDefaultActiveKey = (type) => {
     switch (parseInt(type, 10)) {
@@ -42,6 +45,7 @@ export default (props) => {
     const { messageItem } = props;
 
     return (
+      <>
       <Col xs={6} className="dropzone-preview line-preview-image-wrap">
         <div className="product-preview-video d-flex">
           <Form className="rounded d-flex align-items-center justify-content-center mb-4">
@@ -57,6 +61,14 @@ export default (props) => {
           </Button>
         </div>
       </Col>
+      <VideoThumbnail
+        videoUrl={messageItem.video_path}
+        thumbnailHandler={thumbnail => handleThumbnailChange(thumbnail, messageItem.id)}
+        width={400}
+        snapshotAtTime={1}
+        height={300}
+      />
+      </>
     );
   };
 

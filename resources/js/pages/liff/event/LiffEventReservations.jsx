@@ -1,22 +1,17 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Swal from 'sweetalert2';
 import moment from "moment-timezone";
 import withReactContent from 'sweetalert2-react-content';
 import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'react-bootstrap';
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Paths } from "@/paths";
 import liff from '@line/liff';
 import ContentLoader, { BulletList, Facebook } from "react-content-loader";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
 import { getEvents, eventReservation, getEventsByUserId } from "@/pages/liff/api/EventApiMethods";
 import { MapPinIcon } from "@/components/icons/Icons";
-import EventReservationsContentLoader from "@/pages/liff/event/EventReservationsContentLoader";
-
-/* test data
-import { events } from "./test_data/events";
-import { userEvents } from "./test_data/userEvents";
-*/
+import EventReservationsContentLoader from "@/pages/liff/event/loader/EventReservationsContentLoader";
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
@@ -43,6 +38,7 @@ export default () => {
   const targetDate = new Date(year + "-" + month);
   const [liffToken, setLiffToken] = useState('');
   const [isRendered, setIsRendered] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -73,36 +69,35 @@ export default () => {
     dataFetch()
   }, []);
 
-  const completeReservations = async (id, startDate, endDate) => {
-    const textMessage = `${startDate}〜${endDate}に予約しますか？`;
 
-    const result = await SwalWithBootstrapButtons.fire({
-      icon: "question",
-      title: "予約確認",
-      text: textMessage,
-      showCancelButton: true,
-      confirmButtonText: "予約",
-      cancelButtonText: "キャンセル"
-    });
+  // const completeReservations = async (id, startDate, endDate) => {
+  //   const textMessage = `${startDate}〜${endDate}に予約しますか？`;
 
-    if (result.isConfirmed) {
-      try {
-        const event = await eventReservation(id, user.id, liffToken)
-        setEvents(updateEvents(event, id))
-        setUserEvents([...userEvents, event])
-        completeReservation();
+  //   const result = await SwalWithBootstrapButtons.fire({
+  //     icon: "question",
+  //     title: "予約確認",
+  //     text: textMessage,
+  //     showCancelButton: true,
+  //     confirmButtonText: "予約",
+  //     cancelButtonText: "キャンセル"
+  //   });
 
-      } catch (error) {
-        failedReservation(error.response.data.message)
-      }
-    }
-  };
+  //   if (result.isConfirmed) {
+  //     try {
+  //       const event = await eventReservation(id, user.id, liffToken)
+  //       setEvents(updateEvents(event, id))
+  //       setUserEvents([...userEvents, event])
+  //       completeReservation();
 
-  const completeReservation = async () => {
-    const message = `<p>予約が完了しました。</p>
-      <p>担当よりご連絡させていただきますので、今しばらくお待ちください。</p>
-      `;
-    await SwalWithBootstrapButtons.fire('予約完了！', message, 'success');
+  //     } catch (error) {
+  //       failedReservation(error.response.data.message)
+  //     }
+  //   }
+  // };
+
+  const reservationConfirm = async (id) => {
+    const link = Paths.LiffEventReservationConfirm.path.replace(':id', id);
+    history.push(link);
   };
 
   const failedReservation = (message) => {
@@ -206,8 +201,8 @@ export default () => {
                     )
                   } else {
                     return (
-                      <Button onClick={() => completeReservations(id, startDate, endDate)} variant="tertiary" className="w-100">
-                        予約する
+                      <Button onClick={() => reservationConfirm(id)} variant="tertiary" className="w-100">
+                        予約確認へ
                       </Button>
                     )
                   }

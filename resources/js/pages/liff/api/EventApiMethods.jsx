@@ -11,6 +11,19 @@ export const getEvents = async (searchParams, setEvents) => {
   });
 };
 
+export const showEvent = async (id, setEvent) => {
+  return await axios.get(`/api/v1/events/${id}`)
+  .then((response) => {
+    const event = response.data.event
+    console.log(event);
+    setEvent(event);
+    return event;
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};
+
 export const getEventsByUserId = async (userId, liffToken, setUserEvents) => {
   const params = {params: {liffToken: liffToken}}
   return await axios.get(`/api/v1/users/${userId}/event/reservations`, params)

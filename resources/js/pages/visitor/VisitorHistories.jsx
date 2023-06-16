@@ -133,9 +133,9 @@ export default () => {
           <h1 className="page-title">来店履歴</h1>
         </div>
         <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center">
-        {/* <Button onClick={() => setOpenModal(!openModal)} variant="gray-800" className="mt-2">
+        <Button onClick={() => setOpenModal(!openModal)} variant="gray-800" className="mt-2">
           設置用QRコード
-        </Button> */}
+        </Button>
       </div>
       </div>
 

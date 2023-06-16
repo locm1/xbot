@@ -6,6 +6,7 @@ export const GetAllEvents = (events, setEvents) => {
       if(res.status !== 200) {
         throw new Error("APIが正しく取得されませんでした");
       } else {
+        console.log(res.data.events);
         setEvents(res.data.events);
         console.log(res.data.events);
       }

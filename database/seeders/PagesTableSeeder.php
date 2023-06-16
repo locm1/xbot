@@ -24,7 +24,9 @@ class PagesTableSeeder extends Seeder
             ['name' => '予約管理', 'path' => 'event', 'role' => 3],
             ['name' => '友達紹介管理', 'path' => 'invitation', 'role' => 3],
             ['name' => 'アンケート管理', 'path' => 'questionnaire', 'role' => 3],
+            ['name' => 'レポート管理', 'path' => 'report', 'role' => 3],
             ['name' => 'アカウント管理', 'path' => 'account', 'role' => 3],
+            ['name' => 'サイト管理', 'path' => 'site', 'role' => 3],
         ];
         DB::table('pages')->insert($pages);
     }

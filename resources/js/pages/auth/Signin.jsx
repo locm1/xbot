@@ -4,8 +4,7 @@ import { LockClosedIcon, MailIcon, UserIcon } from "@heroicons/react/solid";
 import { Col, Row, Form, Card, Button, FormCheck, Container, InputGroup, Image, Alert } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import Cookies from 'js-cookie';
-
+import { getSiteSettings } from "@/pages/site/api/SiteApiMethods";
 import { Paths } from "@/paths";
 import Logo from "@img/img/logo_login.png";
 
@@ -14,6 +13,9 @@ export default () => {
   const [formValue, setFormValue] = useState(
     {loginId: '', password: ''}
   );
+  const [setting, setSetting] = useState({
+    logo_login_path: ''
+  });
   const history = useHistory();
 
   const handleChange = (e, input) => {
@@ -43,14 +45,19 @@ export default () => {
     })
   }
 
-  //ログインしている場合はダッシュボードに飛ばす
-  // useEffect(() => {
-  //   axios.get('/api/v1/management/me').then(response => {
-  //     history.push(Paths.DashboardOverview.path);
-  //   }).catch(error => {
-  //     console.log(error);
-  //   })
-  // }, [])
+  useEffect(() => {
+    const dataFetch = async () => {
+      try {
+        await getSiteSettings(setSetting)
+        //setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    dataFetch()
+  }, [])
+  
   return (
     <main>
       <section className="d-flex align-items-center vh-lg-100 mt-5 mt-lg-0 bg-soft">
@@ -60,7 +67,13 @@ export default () => {
               <div className="bg-white shadow border-0 rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                 <Form onSubmit={(e) => login(e)}>
                   <div className="text-center text-md-center mb-4 mt-md-0">
-                    <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
+                    {
+                      setting.logo_login_path ? (
+                        <Image src={setting.logo_login_path} className="navbar-brand-dark navbar-logo-wrap" />
+                      ) : (
+                        <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap" />
+                      )
+                    }
                   </div>
                   {loginFailed ? 
                     <Alert variant="danger">

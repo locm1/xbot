@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\liff\event;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\liff\event\StoreEventRequest;
+use App\Models\Event;
 use App\Services\liff\event\EventService;
 use Illuminate\Http\Request;
 
@@ -30,12 +31,13 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Event $event)
     {
-        //
+        $event = $this->service->show($event);
+        return response()->json(['event' => $event], 200);
     }
 
     /**

@@ -60,6 +60,7 @@ import Permissions from '@/pages/sidebar/Permissions';
 import InflowRoute from '@/pages/inflow_route/InflowRoute';
 import Reports from '@/pages/report/Reports';
 import EditReport from '@/pages/report/EditReport';
+import Site from '@/pages/site/Site';
 
 
 // Account
@@ -88,6 +89,7 @@ import LiffVisitorHistoryAdd from '@/pages/liff/visitor/LiffVisitorHistoryAdd';
 import LiffVisitorHistoryResult from '@/pages/liff/visitor/LiffVisitorHistoryResult';
 import LiffAboutVisitorPrivileges from '@/pages/liff/visitor/LiffAboutVisitorPrivileges';
 import LiffEventReservations from '@/pages/liff/event/LiffEventReservations';
+import LiffEventReservationConfirm from '@/pages/liff/event/LiffEventReservationConfirm';
 import LiffAlreadyQuestionnaire from '@/pages/liff/questionnaire/LiffAlreadyQuestionnaire';
 import LiffQuestionnaire from '@/pages/liff/questionnaire/LiffQuestionnaire';
 import LiffQuestionnaireComplete from '@/pages/liff/questionnaire/LiffQuestionnaireComplete';
@@ -563,9 +565,10 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="account" path={Paths.RegisterAccount.path} component={EditAccount} />
       <RouteWithSidebar exact role_path="account" path={Paths.Permissions.path} component={Permissions} />
       <RouteWithSidebar exact role_path="account" path={Paths.InflowRoute.path} component={InflowRoute} />
-      <RouteWithSidebar exact role_path="account" path={Paths.Reports.path} component={Reports} />
-      <RouteWithSidebar exact role_path="account" path={Paths.EditReport.path} component={EditReport} />
-      <RouteWithSidebar exact role_path="account" path={Paths.CreateReport.path} component={EditReport} />
+      <RouteWithSidebar exact role_path="report" path={Paths.Reports.path} component={Reports} />
+      <RouteWithSidebar exact role_path="report" path={Paths.EditReport.path} component={EditReport} />
+      <RouteWithSidebar exact role_path="report" path={Paths.CreateReport.path} component={EditReport} />
+      <RouteWithSidebar exact role_path="site" path={Paths.Site.path} component={Site} />
 
       <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffECRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />
@@ -590,6 +593,7 @@ const Routing = () => {
       <LiffRoute exact path={Paths.LiffVisitorConfirm.path} component={LiffVisitorConfirm} />
       <LiffRoute exact path={Paths.LiffAboutVisitorPrivileges.path} component={LiffAboutVisitorPrivileges} />
       <LiffRoute exact path={Paths.LiffEventReservations.path} component={LiffEventReservations} />
+      <LiffRoute exact path={Paths.LiffEventReservationConfirm.path} component={LiffEventReservationConfirm} />
       <RegisteredLiffRoute exact path={Paths.LiffAlreadyQuestionnaire.path} component={LiffAlreadyQuestionnaire} />
       <QuestionnaireLiffRoute exact path={Paths.LiffQuestionnaire.path} component={LiffQuestionnaire} />
       <QuestionnaireLiffRoute exact path={Paths.LiffQuestionnaireComplete.path} component={LiffQuestionnaireComplete} />

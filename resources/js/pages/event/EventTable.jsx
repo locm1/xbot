@@ -18,7 +18,7 @@ import PaginationContentLoader from "@/components/loader/PaginationContentLoader
 
 export default () => {
   const [events, setEvents] = useState([
-    { id: 1, title: '', location: '', start_date: '', end_date: '', users: [] }
+    { id: 1, user: {}, user_id: 1, event: {} }
   ]);
   const [searchValue, setSearchValue] = useState({
     name: '', tel: ''

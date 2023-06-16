@@ -60,6 +60,7 @@ export const Paths = {
     Reports: {path: `${prefix}/report/list`},
     EditReport: {path: `${prefix}/report/edit/:id`},
     CreateReport: {path: `${prefix}/report/create`},
+    Site: {path: `${prefix}/site/setting`},
 
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },
@@ -86,6 +87,7 @@ export const Paths = {
     LiffVisitorHistoryResult: { path: "/visitor-histories/result" },
     LiffAboutVisitorPrivileges: { path: "/visitor/privilege" },
     LiffEventReservations: { path: "/event/reservation" },
+    LiffEventReservationConfirm: { path: "/event/reservation/confirm/:id" },
     LiffAlreadyQuestionnaire: { path: "/questionnaire/already/answered" },
     LiffQuestionnaire: { path: "/questionnaire" },
     LiffQuestionnaireComplete: { path: "/questionnaire/complete" },

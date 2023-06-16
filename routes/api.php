@@ -100,6 +100,7 @@ use App\Http\Controllers\api\management\SegmentController;
 use App\Http\Controllers\api\management\SegmentTemplateController;
 use App\Http\Controllers\api\management\SendMessageController;
 use App\Http\Controllers\api\management\SendMulticastMessage;
+use App\Http\Controllers\api\management\site\SiteSettingController;
 use App\Http\Controllers\api\management\TagUserController;
 use App\Http\Controllers\api\management\user\UserInfoStatusController;
 use App\Http\Controllers\api\management\UserTagController;
@@ -232,6 +233,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // LIFF側で叩くAPI
 Route::group(['prefix' => 'v1'], function() {
+    Route::get('site-settings', [SiteSettingController::class, 'index']);
+    Route::post('site-settings', [SiteSettingController::class, 'store']);
+    Route::put('site-settings', [SiteSettingController::class, 'update']);
     Route::post('users/{user}/visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
     Route::post('users/{user}/visitor-confirm/create', [VisitorConfirmController::class, 'create']);
 

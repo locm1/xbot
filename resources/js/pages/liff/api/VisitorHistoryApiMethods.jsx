@@ -26,7 +26,7 @@ export const storeVisitorHistory = async (userId, storeComplete, liffToken) => {
     //   timer: 1500
     // })
     const messages = {
-      text: '来店履歴にデータが作成されました',
+      text: '来店が完了しました',
       status: 200
     }
     storeComplete(messages)

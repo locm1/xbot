@@ -125,10 +125,6 @@ export default () => {
     setShowEditModal(false);
   };
 
-  const goToCalendarDocs = () => {
-    history.push(Paths.PluginCalendar.path);
-  };
-
   return (
     <>
       {showEditModal ? (

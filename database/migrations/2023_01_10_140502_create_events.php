@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 50)->nullable(false);
+            $table->string('title', 50)->nullable(true);
             $table->dateTime('start_date')->nullable(true);
             $table->dateTime('end_date')->nullable(true);
-            $table->string('location', 255)->nullable(false);
+            $table->string('location', 255)->nullable(true);
             $table->integer('remaining')->nullable(false);
             $table->tinyInteger('is_unlimited')->default(0)->nullable(false);
             // $table->string('color', 50)->nullable(false);

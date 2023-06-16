@@ -39,7 +39,9 @@ export const EventModal = (props) => {
   const [backgroundColor, setBackgroundColor] = useState(props.backgroundColor);
   const [rangeStart, setRangeStart] = useState(moment(start).format("YYYY-MM-DD"));
   const [rangeEnd, setRangeEnd] = useState();
-  const [errors, setErrors] = useState(null);
+  const [errors, setErrors] = useState({
+    remaining: '', title: '', start_time: '', end_time: ''
+  });
   const [startTime, setStartTime] = useState(props.start ? moment(props.start).format("HH:mm") : '07:00');
   const [endTime, setEndTime] = useState(props.end ? moment(props.end).format("HH:mm") : '08:00');
 
@@ -51,9 +53,15 @@ export const EventModal = (props) => {
   const start_date = start;
   const end_date = end;
 
-  const onTitleChange = (e) => setTitle(e.target.value);
+  const onTitleChange = (e) => {
+    setTitle(e.target.value)
+    setErrors({ ...errors, title: '' })
+  }
   const onStartChange = (e) => setStart(e.target.value);
-  const onRemainingChange = (e) => setRemaining(e.target.value);
+  const onRemainingChange = (e) => {
+    setRemaining(e.target.value)
+    setErrors({ ...errors, remaining: '' })
+  }
   const onLocationChange = (e) => setLocation(e.target.value);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -90,31 +98,17 @@ export const EventModal = (props) => {
   }
   const onHide = () => props.onHide && props.onHide();
   var focused = document.activeElement;
-  const Errors = () => {
-    if (errors) {
-      return (
-        <Alert variant="danger">
-          <ul>
-            {Object.values(errors).map(v => <li key={v}>{v}</li>)}
-          </ul>
-        </Alert>
-      )
-    }
-  }
   const handleUnlimited = (e) => {
     e.target.checked ? setUnlimited(1) : setUnlimited(0);
     setIsChecked(e.target.checked);
     setRemaining(99999);
-  }
-  const handleBackgroundColorChange = (props) => {
-    setBackgroundColor(props.hex);
   }
 
   return (
     <Modal as={Modal.Dialog} centered show={show} onHide={onHide} enforceFocus={false}>
       <Form className="modal-content">
         <Modal.Body>
-          <Errors />
+          {/* <Errors /> */}
           <Form.Group id="title" className="mb-4">
             <Form.Label>題名</Form.Label>
             <Form.Control
@@ -122,7 +116,13 @@ export const EventModal = (props) => {
               autoFocus
               type="text"
               value={title}
-              onChange={onTitleChange} />
+              onChange={onTitleChange}
+              isInvalid={!!errors.title} 
+            />
+            {
+              errors.title && 
+              <Form.Control.Feedback type="invalid">{errors.title[0]}</Form.Control.Feedback>
+            }
           </Form.Group>
           <Row>
             <Col xs={12} lg={6}>
@@ -146,7 +146,12 @@ export const EventModal = (props) => {
                           placeholder="MM:DD"
                           onChange={() => { }}
                           ref={ref}
+                          isInvalid={!!errors.start_time} 
                         />
+                        {
+                          errors.start_time && 
+                          <Form.Control.Feedback type="invalid">{errors.start_time[0]}</Form.Control.Feedback>
+                        }
                       </InputGroup>
                     );
                   }}
@@ -173,7 +178,12 @@ export const EventModal = (props) => {
                           type="text"
                           placeholder="YYYY-MM-DD"
                           ref={ref}
+                          isInvalid={!!errors.end_time} 
                         />
+                        {
+                          errors.end_time && 
+                          <Form.Control.Feedback type="invalid">{errors.end_time[0]}</Form.Control.Feedback>
+                        }
                       </InputGroup>
                     );
                   }}
@@ -203,7 +213,12 @@ export const EventModal = (props) => {
                     value={remaining}
                     onChange={onRemainingChange}
                     disabled={is_unlimited == 1 ? true : false}
+                    isInvalid={!!errors.remaining}
                   />
+                  {
+                    errors.remaining && 
+                    <Form.Control.Feedback type="invalid">{errors.remaining[0]}</Form.Control.Feedback>
+                  }
                 </InputGroup>
               </Form.Group>
             </Col>

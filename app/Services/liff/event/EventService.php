@@ -28,4 +28,9 @@ class EventService
         }
         return $result_events;
     }
+
+    public function show(Event $event) : Event
+    {
+        return $event;
+    }
 }

@@ -70,6 +70,7 @@ class DatabaseSeeder extends Seeder
         Storage::disk('public')->makeDirectory('products');
         Storage::disk('public')->makeDirectory('video');
         Storage::disk('public')->makeDirectory('video_thumbnail');
+        Storage::disk('public')->makeDirectory('logo');
 
         if ($environment  === 'local') {
             $this->call([

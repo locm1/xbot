@@ -3,7 +3,7 @@ import SimpleBar from 'simplebar-react';
 import { useHistory, useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { CSSTransition } from 'react-transition-group';
-import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, InboxIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon, FilterIcon } from "@heroicons/react/solid";
+import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, GlobeAltIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon, FilterIcon } from "@heroicons/react/solid";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { Nav, Badge, Image, Button, Dropdown, Navbar, Collapse, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { Paths } from "@/paths";
 import Logo from "@img/img/logo_admin.png";
 import ReactHero from "@img/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "@img/img/team/profile-picture-3.jpg";
+import { getSiteSettings } from "@/pages/site/api/SiteApiMethods";
 
 import { StoreIcon, GiftIcon } from "@/components/icons/Icons";
 
@@ -23,6 +24,9 @@ export default (props) => {
   const [collapsedItems, setCollapsedItems] = useState([pathname]);
   const contracted = props.contracted ? "contracted" : "";
   const showClass = show ? "show" : "";
+  const [setting, setSetting] = useState({
+    logo_login_path: '', logo_sidebar_path: ''
+  });
   const history = useHistory();
 
   const onCollapse = () => setShow(!show);
@@ -134,6 +138,19 @@ export default (props) => {
     );
   };
 
+  useEffect(() => {
+    const dataFetch = async () => {
+      try {
+        await getSiteSettings(setSetting)
+        //setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    dataFetch()
+	}, [])
+
   return (
     <>
       <Navbar as={Col} xs={12} expand={false} collapseOnSelect variant="dark" className="navbar-theme-primary px-4 d-lg-none">
@@ -163,7 +180,13 @@ export default (props) => {
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
               <Link to={Paths.DashboardOverview.path}>
-                <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap mb-4" />
+                {
+                  setting.logo_sidebar_path ? (
+                    <Image src={setting.logo_sidebar_path} className="navbar-brand-dark navbar-logo-wrap mb-4" />
+                  ) : (
+                    <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap mb-4" />
+                  )
+                }
               </Link>
               {
                 pages[0] && admin.role <= pages[0].role && (
@@ -247,7 +270,7 @@ export default (props) => {
               }
 
               {
-                pages[8] && admin.role <= pages[8].role && (
+                pages[9] && admin.role <= pages[9].role && (
                   <CollapsableNavItem eventKey="account/" title="アカウント管理" icon={CogIcon}>
                     <NavItem title="リッチメニュー管理" link={Paths.RichMenus.path} />
                     <NavItem title="あいさつメッセージ設定" link={Paths.Greeting.path} />
@@ -257,6 +280,12 @@ export default (props) => {
                     <NavItem title="流入経路管理" link={Paths.InflowRoute.path} />
                     <NavItem title="API設定" link={Paths.Api.path} />
                   </CollapsableNavItem>
+                )
+              }
+              
+              {
+                pages[10] && admin.role <= pages[10].role && (
+                  <NavItem title="サイト管理" link={Paths.Site.path} icon={GlobeAltIcon} />
                 )
               }
             </Nav>

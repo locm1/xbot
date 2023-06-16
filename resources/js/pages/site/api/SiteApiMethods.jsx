@@ -11,7 +11,7 @@ export const getSiteSettings = async (setSetting) => {
   });
 };
 
-export const storeSiteSetting = async (formValue) => {
+export const storeSiteSetting = async (formValue, complete, setError) => {
   return await axios.post('/api/v1/site-settings', formValue, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -20,14 +20,16 @@ export const storeSiteSetting = async (formValue) => {
   .then((response) => {
     const siteSetting = response.data.site_setting;
     console.log(siteSetting);
+    complete();
     return siteSetting
   })
   .catch(error => {
-      console.error(error);
+    setError(error.response.data.errors)
+    console.error(error);
   });
 };
 
-export const updateSiteSetting = async (formValue) => {
+export const updateSiteSetting = async (formValue, complete) => {
   return await axios.post('/api/v1/site-settings', formValue, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -37,6 +39,7 @@ export const updateSiteSetting = async (formValue) => {
   .then((response) => {
     const siteSetting = response.data.site_setting;
     console.log(siteSetting);
+    complete();
     return siteSetting
   })
   .catch(error => {

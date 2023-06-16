@@ -12,6 +12,9 @@ export default () => {
   const [setting, setSetting] = useState({
     logo_login_path: '', logo_sidebar_path: ''
   });
+  const [error, setError] = useState({
+    logo_login_image: '', logo_sidebar_image: ''
+  });
 
   const dataFetch = async () => {
     try {
@@ -26,8 +29,10 @@ export default () => {
     const { name } = e.target;
     if (name === 'logo_login_path') {
       setLoginLogoImage(e.target.files[0])
+      setError({ ...error, logo_login_image: '' });
     } else {
       setSidebarLogoImage(e.target.files[0])
+      setError({ ...error, logo_sidebar_image: '' });
     }
 
     const reader = new FileReader()
@@ -44,17 +49,20 @@ export default () => {
 
     try {
       if (setting.id) {
-        await updateSiteSetting(formData)
+        await updateSiteSetting(formData, complete)
       } else {
-        await storeSiteSetting(formData)
+        await storeSiteSetting(formData, complete, setError)
       }
-      Swal.fire('保存成功', `サイト設定の保存に成功しました`, 'success').then((result) => {
-        dataFetch()
-      });
 
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const complete = async () => {
+    Swal.fire('保存成功', `サイト設定の保存に成功しました`, 'success').then((result) => {
+      dataFetch()
+    });
   }
 
 	useEffect(() => {
@@ -83,7 +91,12 @@ export default () => {
                   accept="image/png"
                   className="w-100"
                   onChange={(e) => handleChange(e)}
+                  isInvalid={!!error.logo_login_image}
                 />
+                {
+                  error.logo_login_image && 
+                  <Form.Control.Feedback type="invalid">{error.logo_login_image[0]}</Form.Control.Feedback>
+                }
               </Form.Group>
             </Col>
             <Col md={6} className="mb-4">
@@ -112,7 +125,12 @@ export default () => {
                   accept="image/png"
                   className="w-100"
                   onChange={(e) => handleChange(e)}
+                  isInvalid={!!error.logo_sidebar_image}
                 />
+                {
+                  error.logo_sidebar_image && 
+                  <Form.Control.Feedback type="invalid">{error.logo_sidebar_image[0]}</Form.Control.Feedback>
+                }
               </Form.Group>
             </Col>
             <Col md={6} className="mb-4">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\management\site;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\management\site\StoreSiteSettingRequest;
 use App\Models\SiteSetting;
 use App\Services\management\site\SiteSettingService;
 use Illuminate\Http\Request;
@@ -30,10 +31,10 @@ class SiteSettingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreMessageRequest  $request
+     * @param  StoreSiteSettingRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSiteSettingRequest $request)
     {
         $site_setting = $this->service->store($request);
         return response()->json(['site_setting' => $site_setting], 200);

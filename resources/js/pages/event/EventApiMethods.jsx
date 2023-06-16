@@ -68,6 +68,27 @@ export const GetEvents = (params, setEvents, setLinks, setPaginate, setIsRendere
   });
 }
 
+export const GetEventAllUsers = async (params, setEvents, setLinks, setPaginate) => {
+  return await axios.get(`/api/v1/management/event/users`, params)
+    .then((res) => {
+      if(res.status !== 200) {
+        throw new Error("APIが正しく取得されませんでした");
+      } else {
+        const event_users = res.data.event_users;
+        setEvents(event_users.data);
+        setLinks([...Array(event_users.last_page)].map((_, i) => i + 1))
+        setPaginate({
+          current_page: event_users.current_page, 
+          per_page: event_users.per_page,
+          from: event_users.from,
+          to: event_users.to,
+          total: event_users.total,
+        })
+        return event_users;
+      }
+    });
+}
+
 export const GetEventUsers = (id, setUsers) => {
   axios.get(`/api/v1/management/events/${id}/users`)
     .then((res) => {

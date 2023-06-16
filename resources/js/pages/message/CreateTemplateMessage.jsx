@@ -240,6 +240,7 @@ export default () => {
     formData.append("is_undisclosed", message.is_undisclosed)
     updateImages.forEach((updateImage) => formData.append("images[]", updateImage));
     updateImageIds.forEach((updateImageId) => formData.append("image_ids[]", updateImageId));
+    updateVideoThumbnails.forEach((updateVideoThumbnail) => formData.append("video_thumbnails[]", updateVideoThumbnail));
     updateCarouselImageImages.forEach((updateImage) => formData.append("carousel_image_images[]", updateImage));
     updateCarouselImageImageIds.forEach((updateImageId) => formData.append("carousel_image_image_ids[]", updateImageId));
     updateCarouselProductImages.forEach((updateImage) => formData.append("carousel_product_images[]", updateImage));

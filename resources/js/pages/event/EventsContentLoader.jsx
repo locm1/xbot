@@ -8,8 +8,8 @@ export default () => {
   return (
     <>
       {
-        loadingTables.map(v =>
-          <tr className="border-bottom">
+        loadingTables.map((v, index) =>
+          <tr className="border-bottom" key={`event-users-loader-${index}`}>
             <td>
               <ContentLoader
                 height={39.375}

@@ -586,8 +586,7 @@ const Routing = () => {
       <LiffECRoute exact path={Paths.LiffPrivacyPolicy.path} component={LiffPrivacyPolicy} />
       <LiffECRoute exact path={Paths.LiffTermsOfService.path} component={LiffTermsOfService} />
       <LiffECRoute exact path={Paths.LiffSpecificTrades.path} component={LiffSpecificTrades} />
-      <LiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} />
-      {/* <LiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} /> */}
+      <RegisteredLiffRoute exact path={Paths.LiffVisitor.path} component={LiffVisitor} />
       <LiffRoute exact path={Paths.LiffVisitorConfirm.path} component={LiffVisitorConfirm} />
       <LiffRoute exact path={Paths.LiffAboutVisitorPrivileges.path} component={LiffAboutVisitorPrivileges} />
       <LiffRoute exact path={Paths.LiffEventReservations.path} component={LiffEventReservations} />

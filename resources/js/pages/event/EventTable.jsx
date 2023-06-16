@@ -10,7 +10,7 @@ import commands from "@/data/commands";
 import EventWidget from "@/pages/event/EventWidget";
 import eventGuidances from "@/data/eventGuidances";
 import Pagination from "@/components/Pagination";
-import { GetEvents, GetEventUsers } from "@/pages/event/EventApiMethods"
+import { GetEvents, GetEventUsers, GetEventAllUsers } from "@/pages/event/EventApiMethods"
 import ParticipantsModal from "@/components/ParticipantsModal";
 import moment from "moment-timezone";
 import EventsContentLoader from "@/pages/event/EventsContentLoader";
@@ -27,52 +27,72 @@ export default () => {
     current_page: 0, per_page: 0, from: 0, to: 0, total: 0
   })
   const [links, setLinks] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
-  const searchParams = {
-    params: {}
-  }
   const [ids, setIds] = useState('');
-  const onHide = () => {
-    setOpenModal(false);
-  }
 
   useEffect(() => {
     const searchParams = {
       params: { page: 1 }
     };
-    GetEvents(searchParams, setEvents, setLinks, setPaginate, setIsRendered)
+    const dataFetch = async () => {
+      try {
+        await GetEventAllUsers(searchParams, setEvents, setLinks, setPaginate)
+        setIsRendered(true)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    dataFetch()
   }, []);
 
-  const onCardClick = (id) => {
-    setIds(id)
-    console.log(id);
-    setOpenModal(true);
-  }
-
   const TableRow = (props) => {
-    const { id, title, start_date, end_date, location, remaining, is_unlimited, deadline } = props;
+    const { id, user, user_id, event } = props;
+    const userlink = Paths.EditUser.path.replace(':id', user_id);
 
     return (
       <>
       <tr className="border-bottom">
-        <td className="fw-bolder text-gray-500">
-          {title}
+      <td>
+          {
+            user ? (
+              <Card.Link className="d-flex align-items-center" as={Link} to={userlink}>
+                <div className="d-flex align-items-center">
+                  {user.img_path ? (<Image src={user.img_path} className="avatar rounded-circle me-3"/>) : (<Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>)}
+                  <div className="d-block">
+                    {user.first_name && user.first_name_kana && user.last_name && user.last_name_kana ? 
+                      <>
+                        <div className="text-gray small">{user.last_name_kana} {user.first_name_kana}</div>
+                        <span className="fw-bold text-decoration-underline">{user.last_name} {user.first_name}</span> 
+                      </>
+                    :
+                      <span className="fw-bold text-decoration-underline">{user.nickname}</span> 
+                    }
+                  </div>
+                </div>
+              </Card.Link>
+            ) : (
+              <Card.Link className="d-flex align-items-center" as={Link} to={userlink}>
+                <div className="d-flex align-items-center">
+                  <Image src="/images/default_user_icon.png" className="avatar rounded-circle me-3"/>
+                  <div className="d-block">
+                    <span className="fw-normal text-danger">削除済みユーザー</span>
+                  </div>
+                </div>
+              </Card.Link>
+            )
+          }
         </td>
         <td className="fw-bolder text-gray-500">
-          {moment(start_date).format("YYYY-MM-DD")}
+          {moment(event.start_date).format("YYYY-MM-DD")}
         </td>
         <td className="fw-bolder text-gray-500">
-          {moment(start_date).format("HH:mm")} 〜 {moment(end_date).format("HH:mm")}
+          {moment(event.start_date).format("HH:mm")} 〜 {moment(event.end_date).format("HH:mm")}
         </td>
         <td className="fw-bolder text-gray-500">
-          {location}
+          {event.location}
         </td>
         <td className="fw-bolder text-gray-500">
-          {is_unlimited == 0 ? remaining : '無制限'}
-        </td>
-        <td className="fw-bolder text-gray-500">
-          <Button variant="tertiary" onClick={() => onCardClick(id)}>参加者一覧</Button>
+          {event.is_unlimited == 0 ? event.remaining : '無制限'}
         </td>
       </tr>
       </>
@@ -81,15 +101,6 @@ export default () => {
 
   return (
     <>
-      {openModal && (
-        <ParticipantsModal
-          show={true}
-          onHide={onHide}
-          title="参加者一覧"
-          getUsers={GetEventUsers}
-          id={ids}
-        />
-      )}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-2 list-wrap">
         <h1 className="page-title">予約リスト</h1>
       </div>
@@ -97,7 +108,7 @@ export default () => {
         <Table hover className="user-table align-items-center">
           <thead className="bg-primary text-white">
             <tr>
-              <th className="border-bottom">イベント名</th>
+              <th className="border-bottom">お名前</th>
               <th className="border-bottom">日程</th>
               <th className="border-bottom">時間</th>
               <th className="border-bottom">開催場所</th>
@@ -120,7 +131,7 @@ export default () => {
               <Pagination
                 links={links}
                 paginate={paginate}
-                getListBypage={GetEvents}
+                getListBypage={GetEventAllUsers}
                 setList={setEvents}
                 setLinks={setLinks}
                 setPaginate={setPaginate}

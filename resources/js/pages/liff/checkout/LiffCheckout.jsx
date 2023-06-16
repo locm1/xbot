@@ -207,6 +207,7 @@ export default () => {
             discountedTotalAmount={discountedTotalAmount}
             coupon={coupon}
             isRendered={isRendered}
+            deliveryAddress={deliveryAddress}
           />
         </div>
       </main>

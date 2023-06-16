@@ -86,7 +86,6 @@ class CreateMessageByTypeService
         // $encoded_filename = urlencode($filename);
         $encoded_filename = rawurlencode($filename);
         $encoded_image_path = str_replace($filename, $encoded_filename, $path);
-        Log::debug($url . $encoded_image_path);
         return $url . $encoded_image_path;
     }
 }

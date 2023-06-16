@@ -16,7 +16,7 @@ import ContentLoader from "react-content-loader";
 export default (props) => {
   const {
     carts, createOrder, orderTotal, total, postage, ecommerceConfiguration,
-    paymentMethod, discountedTotalAmount, coupon, isRendered
+    paymentMethod, discountedTotalAmount, coupon, isRendered, deliveryAddress
   } = props;
   const [user, setUser] = useState({
     is_registered: 0
@@ -104,9 +104,17 @@ export default (props) => {
           </ListGroup>
         </Card.Body>
         <div className="align-items-center m-4">
-          <Button onClick={createOrder} variant="tertiary" className="w-100 p-3">
-            注文を確定する
-          </Button>
+          {
+            (deliveryAddress.id && paymentMethod.payment_method) ? (
+              <Button onClick={createOrder} variant="success" className="w-100 p-3">
+                注文を確定する
+              </Button>
+            ) : (
+              <Button disabled variant="tertiary" className="w-100 p-3">
+                注文を確定する
+              </Button>
+            )
+          }
         </div>
       </Card>
     </>
@@ -167,7 +175,7 @@ export default (props) => {
           </ContentLoader>
         </Card.Body>
         <div className="align-items-center m-2 mt-4 mb-4 border-top pt-3">
-          <Button onClick={createOrder} variant="tertiary" className="w-100 p-3">
+          <Button variant="tertiary" className="w-100 p-3">
             注文を確定する
           </Button>
         </div>

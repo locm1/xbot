@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-export const getEcommerceConfiguration = async (setFormValue, setIsDisbled) => {
+export const getEcommerceConfiguration = async (setFormValue, setIsDisbled = null) => {
   axios.get(`/api/v1/management/ecommerce-configurations`)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;

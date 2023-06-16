@@ -164,7 +164,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('privileges', PrivilegeController::class);
         Route::apiResource('privileges/{privilege}/items', PrivilegeItemController::class);
         Route::apiResource('events', EventController::class);
-        Route::get('events/{event}/users', EventUserController::class);
+        Route::get('event/users', [EventUserController::class, 'index']);
+        Route::get('events/{event}/users', [EventUserController::class, 'show']);
         Route::apiResource('event-calendars', EventCalendarController::class);
         Route::apiResource('categories', ProductCategoryController::class);
         Route::put('categories/{category}/sort', ProductCategorySortController::class);
@@ -231,8 +232,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // LIFF側で叩くAPI
 Route::group(['prefix' => 'v1'], function() {
-    Route::middleware('auth.liff')->group(function() {
+    Route::post('users/{user}/visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
+    Route::post('users/{user}/visitor-confirm/create', [VisitorConfirmController::class, 'create']);
 
+    Route::middleware('auth.liff')->group(function() {
         Route::group(['prefix' => 'users/{user}'], function() {
             Route::apiResource('coupons', LiffCouponController::class);
             Route::apiResource('carts', CartController::class);
@@ -253,8 +256,6 @@ Route::group(['prefix' => 'v1'], function() {
             Route::get('event/reservations/history', [EventHistoryController::class, 'index']);
             Route::post('events/{event}/reservations', [EventReservationController::class, 'store']);
             Route::delete('events/{event}/reservations', [EventReservationController::class, 'destroy']);
-            Route::post('visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
-            Route::post('visitor-confirm/create', [VisitorConfirmController::class, 'create']);
             Route::apiResource('inviter-incentives', LiffInviterIncentiveUserController::class);
             Route::apiResource('invitee-incentives', LiffInviteeIncentiveUserController::class);
             Route::apiResource('visitor-histories', LiffVisitorHistoryController::class);

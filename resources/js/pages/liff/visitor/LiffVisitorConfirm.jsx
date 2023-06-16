@@ -9,7 +9,6 @@ import LiffVisitorUserInfo from "./LiffVisitorUserInfo";
 export default () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState();
-  const [liffToken, setLiffToken] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
   const params = useParams();  
@@ -20,7 +19,7 @@ export default () => {
 
   const handleClick = () => {
     const formValue = {
-      password: password, liffToken: liffToken
+      password: password
     }
     axios.post(`/api/v1/users/${params.userId}/visitor-confirm/auth`, formValue)
     .then(response => {
@@ -39,7 +38,7 @@ export default () => {
 
   const handleCreate = () => {
     const formValue = {
-      password: password, liffToken: liffToken
+      password: password
     }
     axios.post(`/api/v1/users/${params.userId}/visitor-confirm/create`, formValue)
     .then(response => {
@@ -54,10 +53,6 @@ export default () => {
       )
     })
   }
-
-  useEffect(() => {
-    
-  }, []);
 
   return (
     isConfirmed ?

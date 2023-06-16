@@ -8,6 +8,7 @@ import { Paths } from "@/paths";
 import { showOrder } from "@/pages/order/api/OrderApiMethods";
 import { getOrderProducts, getOrderUser, getOrderDelivery } from "@/pages/order/api/OrderDetailApiMethods";
 import OrderDetailContentLoader from "@/pages/order/OrderDetailContentLoader";
+import { getEcommerceConfiguration } from "@/pages/product/api/EcommerceConfigurationApiMethods";
 
 export default () => {
   const history = useHistory();
@@ -22,6 +23,9 @@ export default () => {
     created_at: '', status: 1, payment_method: 1, delivery_time: 1, first_name: '', last_name: '', 
     first_name_kana: '', last_name_kana: '', zipcode: '', prefecture: '', city: '', address: '', 
     building_name: '', tel: '', discount_price: ''
+  });
+  const [ecommerceConfiguration, setEcommerceConfiguration] = useState({
+    cash_on_delivery_fee: '', is_enabled: 1, 
   });
   const [orderTotal, setOrderTotal] = useState(0);
   const [isRendered, setIsRendered] = useState(false);
@@ -59,10 +63,11 @@ export default () => {
     }
   }
 
-  const amount = (order.payment_method == 1) ? orderTotal + order.shipping_fee - order.discount_price : orderTotal + order.shipping_fee - order.discount_price
+  const amount = (order.payment_method == 1) ? orderTotal + order.shipping_fee - order.discount_price : orderTotal + order.shipping_fee + ecommerceConfiguration.cash_on_delivery_fee - order.discount_price
   const total = getTotal(amount)
 
   useEffect(() => {
+    getEcommerceConfiguration(setEcommerceConfiguration)
     showOrder(id, setOrder)
     getOrderProducts(id, setOrderProducts, setOrderTotal).then(
       setIsRendered(true)
@@ -113,6 +118,22 @@ export default () => {
                                 </td>
                                 <td className="right">￥{orderTotal.toLocaleString()}</td>
                               </tr>
+                              <tr>
+                                <td className="left pe-6">
+                                  <div>送料</div>
+                                </td>
+                                <td className="right">￥{order.shipping_fee.toLocaleString()}</td>
+                              </tr>
+                              {
+                                (order.payment_method == 2 && ecommerceConfiguration.is_enabled == 1) && (
+                                  <tr>
+                                    <td className="left pe-6">
+                                      <div>代金引換手数料</div>
+                                    </td>
+                                    <td className="right">￥{ecommerceConfiguration.cash_on_delivery_fee.toLocaleString()}</td>
+                                  </tr>
+                                )
+                              }
                               {
                                 (order.coupon) && (
                                   <tr>
@@ -123,12 +144,16 @@ export default () => {
                                   </tr>
                                 )
                               }
-                              <tr>
-                                <td className="left pe-6">
-                                  <div>送料</div>
-                                </td>
-                                <td className="right">￥{order.shipping_fee.toLocaleString()}</td>
-                              </tr>
+                              {
+                                (order.discount_price !== 0) && (
+                                  <tr>
+                                    <td className="left pe-6">
+                                      <div>セット商品割引</div>
+                                    </td>
+                                    <td className="right">-￥{order.discount_price.toLocaleString()}</td>
+                                  </tr>
+                                )
+                              }
                               <tr>
                                 <td className="left pe-6">
                                   <div className="fw-bold fs-5">合計</div>

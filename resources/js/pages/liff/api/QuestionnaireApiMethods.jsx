@@ -10,6 +10,7 @@ export const getQuestionnaires = async (setQuestionnaires) => {
         return { ...questionnaire, answer: '' }
       })
     )
+    return questionnaires;
   })
   .catch(error => {
       console.error(error);
@@ -21,7 +22,7 @@ export const showQuestionnaireEnabling = async (id, setQuestionnaireEnabling) =>
   .then((response) => {
     const questionnaire_enabling = response.data.questionnaire_enabling;
     setQuestionnaireEnabling(questionnaire_enabling);
-    console.log(questionnaire_enabling);
+    return questionnaire_enabling;
   })
   .catch(error => {
       console.error(error);

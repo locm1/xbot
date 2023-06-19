@@ -90,7 +90,7 @@ export default () => {
                 <Form.Control
                   type="file"
                   name="logo_login_path"
-                  accept="image/png"
+                  accept="image/png,image/jpg,image/jpeg"
                   className="w-100"
                   onChange={(e) => handleChange(e)}
                   isInvalid={!!error.logo_login_image}
@@ -124,7 +124,7 @@ export default () => {
                 <Form.Control
                   type="file"
                   name="logo_sidebar_path"
-                  accept="image/png"
+                  accept="image/png,image/jpg,image/jpeg"
                   className="w-100"
                   onChange={(e) => handleChange(e)}
                   isInvalid={!!error.logo_sidebar_image}

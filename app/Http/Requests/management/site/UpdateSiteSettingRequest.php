@@ -24,10 +24,15 @@ class UpdateSiteSettingRequest extends FormRequest
      */
     public function rules()
     {
-        Log::debug($this->logo_login_image);
+        $logo_login_image_rule = $this->hasFile('logo_login_image') 
+            ? 'mimes:jpeg,png,jpg|max:10240'
+            : 'nullable|max:10240'; 
+        $logo_sidebar_image_rule = $this->hasFile('logo_sidebar_image') 
+            ? 'mimes:jpeg,png,jpg|max:10240'
+            : 'nullable|max:10240'; 
         return [
-            'logo_login_image' => 'nullable|max:10240',
-            'logo_sidebar_image' => 'nullable|max:10240',
+            'logo_login_image' => $logo_login_image_rule,
+            'logo_sidebar_image' => $logo_sidebar_image_rule,
         ];
     }
 

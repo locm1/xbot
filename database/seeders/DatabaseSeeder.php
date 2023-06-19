@@ -100,6 +100,7 @@ class DatabaseSeeder extends Seeder
                 MessageItemSeeder::class,
                 GreetingMessageSeeder::class,
                 GreetingMessagesWithQuestionnaireSeeder::class,
+                SiteSettingSeeder::class,
             ]);
             Admin::factory(10)->create();
             // Occupation::factory(10)->create();
@@ -168,6 +169,7 @@ class DatabaseSeeder extends Seeder
                 MessageItemSeeder::class,
                 GreetingMessageSeeder::class,
                 GreetingMessagesWithQuestionnaireSeeder::class,
+                SiteSettingSeeder::class,
             ]);
             User::factory(100)->create();
             ProductCategory::factory(10)->create();

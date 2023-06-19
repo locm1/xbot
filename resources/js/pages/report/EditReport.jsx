@@ -142,8 +142,6 @@ export default () => {
 
 	return (
 		<>
-		<Button onClick={() => console.log(mergedQuestions)} />
-		<Button onClick={() => console.log(searchTerms)} />
 			<Row>
 				<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
 					<div className="d-block mb-4 mb-md-0">

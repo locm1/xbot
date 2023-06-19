@@ -20,7 +20,7 @@ export default () => {
       "id": 1,
       "visits_times": 0,
       "items": [
-        {id: 1, name: ''},
+        { id: 1, name: '' },
       ]
     },
   ]);
@@ -136,25 +136,25 @@ export default () => {
             <Col xs="12" className="mt-3 mb-3">
               <p className="text-center">来店されましたら<br />QRコードをスタッフにお見せください。</p>
               <div className="text-center text-md-center mt-md-0">
-              <QRCode
-                id={`qr`}
-                value={uri}
-                size={150}
-                level={"L"}
-                includeMargin={false}
-              />
+                <QRCode
+                  id={`qr`}
+                  value={uri}
+                  size={150}
+                  level={"L"}
+                  includeMargin={false}
+                />
               </div>
             </Col>
           </Row>
-          <div className="px-3">
-          {
-            privileges.length > 0 && (
-              <>
-              <h5 className="text-center fw-bolder fs-1 text-primary text-decoration-underline mt-3">特典一覧</h5>
-              {privileges && privileges.map(v => <LiffVisitorPrivilegeCard key={`privilege-${v.id}`}  {...v} />)}
-              </>
-            )
-          }
+          <div className="">
+            {
+              privileges.length > 0 && (
+                <>
+                  <h5 className="text-center fw-bolder fs-1 text-primary mt-3">特典一覧</h5>
+                  {privileges && privileges.map(v => <LiffVisitorPrivilegeCard key={`privilege-${v.id}`}  {...v} />)}
+                </>
+              )
+            }
           </div>
         </Card.Body>
       </Card>
@@ -165,16 +165,11 @@ export default () => {
     const { items, id, visits_times } = props;
     const LiffVisitorPrivilegeItem = (props) => {
       const { name, id, number } = props;
-  
+
       return (
-        <ListGroup.Item className="bg-transparent px-1">
+        <ListGroup.Item className="bg-transparent border-bottom">
           <div className="d-flex align-items-center">
-            <Col xs="2">
-              <h4 className="fs-6 text-dark mb-0">{number}.</h4>
-            </Col>
-            <Col xs="10" className="px-0">
-              <h4 className="fs-6 text-dark mb-0">{name}</h4>
-            </Col>
+            <h4 className="fs-6 text-dark mb-0">{name}</h4>
           </div>
         </ListGroup.Item>
       );
@@ -185,7 +180,7 @@ export default () => {
         <Card.Header className="rounded-0 bg-primary p-1 text-center border-0 card-header text-white">
           <h5 className="liff-product-detail-name mb-0">来店{visits_times}回目</h5>
         </Card.Header>
-        <Card.Body className="py-0 px-1 bg-secondary-alt">
+        <Card.Body className="py-0 px-0 bg-secondary-alt">
           <ListGroup className="list-group-flush">
             {items.map((item, k) => <LiffVisitorPrivilegeItem key={`item-${item.id}`} number={k + 1} {...item} />)}
           </ListGroup>

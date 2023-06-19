@@ -27,4 +27,8 @@ export const pages = [
         name: '予約履歴', 
         path: 'event/histories'
     },
+    {
+        name: 'LINE内ブラウザ', 
+        path: 'こちらにhttps://以降のURLを入れてください&external=1'
+    },
 ]

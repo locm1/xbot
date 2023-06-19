@@ -139,7 +139,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     if (error.response.status === 401) {
       history.push('/manage/login'); // ログイン画面にリダイレクト
     } else if (error.response.status === 404) {
-      history.push(Paths.NotFound.path); 
+      history.push(Paths.NotFound.path);
     }
     // else if (error.response.status === 422) {
     //   Swal.fire(
@@ -393,16 +393,16 @@ const ToQuestionnairePage = () => {
       setIsLoading(false);
     });
 
-    const moveQuestionnairePage = () => {
-      if (typeof location.state !== "undefined") {
-        history.push({
-          pathname: Paths.LiffQuestionnaire.path,
-          state: {page: 'checkout'}
-        })
-      } else {
-        history.push(Paths.LiffQuestionnaire.path)
-      }
-    };
+  const moveQuestionnairePage = () => {
+    if (typeof location.state !== "undefined") {
+      history.push({
+        pathname: Paths.LiffQuestionnaire.path,
+        state: { page: 'checkout' }
+      })
+    } else {
+      history.push(Paths.LiffQuestionnaire.path)
+    }
+  };
 
   return (
     <>
@@ -465,30 +465,31 @@ const LiffCreditCardRoute = ({ component: Component, ...rest }) => {
 const LiffInitRoute = () => {
   const search = useLocation().search;
   const query = new URLSearchParams(search);
-  const path = query.get('path')
+  const path = query.get('path');
+  const isExternal = query.get('external');
   const [redirect, setRedirect] = useState();
   // const { setIsLoading } = useContext(LoadingContext);
   // setIsLoading(true);
-  axios.get('/api/v1/get-liff-id')
-    .then((response) => {
-      console.log(response);
-      liff.init({ liffId: response.data })
-        .then(() => {
-          if (liff.isLoggedIn() === false) liff.login();
-          setRedirect(path);
-        })
-        .catch((err) => {
-          console.log(err.code, err.message);
-        });
-    })
-    .catch((error) => {
+
+  const liffRedirect = async() => {
+    try {
+      const response = await axios.get('/api/v1/get-liff-id');
+      await liff.init({ liffId: response.data });
+  
+      if (liff.isLoggedIn() === false) {
+        liff.login();
+      }
+      setRedirect(path);
+    } catch (error) {
       console.error(error);
-    }).finally(() => {
-      // setIsLoading(false);
-    })
-
-
-  return redirect && <Redirect to={`/${redirect}`} />
+    } finally {
+    }
+  }
+  liffRedirect();
+  if (isExternal) {
+    location.href = `https://${path}`;
+  }
+  return redirect && <Redirect to={redirect} />
 }
 
 

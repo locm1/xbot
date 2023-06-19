@@ -17,8 +17,8 @@ class SiteSettingSeeder extends Seeder
     {
         $site_setting = [
             [
-                "logo_login_path" => "皓司",
-                "logo_sidebar_path" => "皓司",
+                "logo_login_path" => "",
+                "logo_sidebar_path" => "",
             ],
         ];
         DB::table('site-settings')->insert($site_setting);

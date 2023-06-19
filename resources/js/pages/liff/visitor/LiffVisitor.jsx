@@ -105,13 +105,7 @@ export default () => {
             <Row className="">
               <Col xs="12" className="mt-3 mb-3 liff-visitor-card-item">
                 <div className="text-center text-md-center mb-4 mt-md-0 border-bottom">
-                  {
-                    setting.logo_sidebar_path ? (
-                      <Image src={setting.logo_sidebar_path} width={144} className="mb-3" />
-                    ) : (
-                      <Image src={Logo} width={144} className="mb-3" />
-                    )
-                  }
+                  <Image src={setting.logo_sidebar_path} width={144} className="mb-3" />
                 </div>
                 <div className="text-center text-md-center mb-4 mt-md-0 border-bottom">
                   <h2 className="mb-3 ms-3 liff-visitor-name">{user.last_name + user.first_name}<span>様</span></h2>

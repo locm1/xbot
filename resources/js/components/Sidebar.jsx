@@ -180,13 +180,7 @@ export default (props) => {
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
               <Link to={Paths.DashboardOverview.path}>
-                {
-                  setting.logo_sidebar_path ? (
-                    <Image src={setting.logo_sidebar_path} className="navbar-brand-dark navbar-logo-wrap mb-4" />
-                  ) : (
-                    <Image src={Logo} className="navbar-brand-dark navbar-logo-wrap mb-4" />
-                  )
-                }
+                <Image src={setting.logo_sidebar_path} className="navbar-brand-dark navbar-logo-wrap mb-4" />
               </Link>
               {
                 pages[0] && admin.role <= pages[0].role && (

@@ -17,10 +17,10 @@ class SiteSettingSeeder extends Seeder
     {
         $site_setting = [
             [
-                "logo_login_path" => "",
-                "logo_sidebar_path" => "",
+                "logo_login_path" => "/images/logo_login.png",
+                "logo_sidebar_path" => "/images/logo_admin.png",
             ],
         ];
-        DB::table('site-settings')->insert($site_setting);
+        DB::table('site_settings')->insert($site_setting);
     }
 }

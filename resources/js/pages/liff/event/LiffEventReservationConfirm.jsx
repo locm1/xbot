@@ -95,15 +95,15 @@ export default () => {
             <tbody className="border-0">
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">題名</th>
-                <td className="text-wrap px-0">{event.title}</td>
+                <td className="text-wrap ps-0">{event.title}</td>
               </tr>
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">予約時間</th>
-                <td className="text-wrap px-0">{moment(event.start_date).format("YYYY年MM月DD日 hh:mm")} 〜 {moment(event.end_date).format("hh:mm")}</td>
+                <td className="text-wrap ps-0">{moment(event.start_date).format("YYYY年MM月DD日 hh:mm")} 〜 {moment(event.end_date).format("hh:mm")}</td>
               </tr>
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">場所</th>
-                <td className="text-wrap px-0">{event.location}</td>
+                <td className="text-wrap ps-0">{event.location}</td>
               </tr>
             </tbody>
           </Table>
@@ -118,19 +118,19 @@ export default () => {
             <tbody className="border-0">
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">お名前</th>
-                <td>{user.last_name} {user.first_name}</td>
+                <td className="ps-0">{user.last_name} {user.first_name}</td>
               </tr>
               <tr className="border-bottom">
-                <th className="h6 text-left fw-bolder">お名前(カタカナ)</th>
-                <td>{user.last_name_kana} {user.first_name_kana}</td>
+                <th className="h6 text-left fw-bolder">お名前(カナ)</th>
+                <td className="ps-0">{user.last_name_kana} {user.first_name_kana}</td>
               </tr>
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">性別</th>
-                <td>{sex_array[user.gender]}</td>
+                <td className="ps-0">{sex_array[user.gender]}</td>
               </tr>
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">住所</th>
-                <td className="text-wrap">
+                <td className="text-wrap ps-0">
                   <div>〒{user.zipcode}</div>
                   <div>{user.prefecture} {user.city} {user.address}</div>
                   <div>{user.building_name}</div>
@@ -138,7 +138,7 @@ export default () => {
               </tr>
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">電話番号</th>
-                <td>{user.tel}</td>
+                <td className="ps-0">{user.tel}</td>
               </tr>
             </tbody>
           </Table>

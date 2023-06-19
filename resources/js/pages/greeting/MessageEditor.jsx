@@ -45,12 +45,19 @@ export default (props) => {
 
     return (
       <div>
-        <Form.Control
-          type="file"
-          name="video"
-          accept="video/*"
-          id="preview-video"
-        />
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="file"
+            name="video"
+            accept="video/*"
+            id="preview-video"
+            onChange={(e) => handlePreviewChange(e, 'video', messageItem.id, index)}
+            isInvalid={!!error[`messages.${index}.video_path`]}
+          />
+          <Form.Control.Feedback type="invalid">
+            {error[`messages.${index}.video_path`]}
+          </Form.Control.Feedback>
+        </Form.Group>
         {messageItem.thumbnail_path &&
           (
             <>

@@ -39,10 +39,12 @@ export default (props) => {
     <Card.Body className="border-bottom">
       <h6 className="mb-1 text-primary fw-bolder">{title}</h6>
       <small className="mb-1">時間：{from}〜{to}</small>
-      <div className="">
-        <MapPinIcon className="icon icon-xs liff-event-icon" />
-        <small className="liff-event-place">{location}</small>
-      </div>
+      {location &&
+        <div className="">
+          <MapPinIcon className="icon icon-xs liff-event-icon" />
+          <small className="liff-event-place">{location}</small>
+        </div>
+      }
       <div className="mt-3">
         <Button variant="danger" onClick={() => handleClick(id)} disabled={cancelable} className="w-100">
           予約キャンセル

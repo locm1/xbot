@@ -104,8 +104,8 @@ export default () => {
             <Col md={6} className="mb-4">
               <Form.Group>
                 <Form.Label>プレビュー</Form.Label>
-                <div className="site-logo-preview">
-                  <Image src={setting.logo_login_path} className="" />
+                <div className="border border-gray-400 bg-gray-300 d-flex justify-content-center align-items-center rounded" style={{height: 200}}>
+                  <Image src={setting.logo_login_path} className="mh-100" />
                 </div>
               </Form.Group>
             </Col>
@@ -138,8 +138,8 @@ export default () => {
             <Col md={6} className="mb-4">
               <Form.Group>
                 <Form.Label>プレビュー</Form.Label>
-                <div className="site-logo-preview bg-gray-800">
-                  <Image src={setting.logo_sidebar_path} className="" />
+                <div className="border border-gray-400 bg-gray-300 d-flex justify-content-center align-items-center rounded" style={{height: 200}}>
+                  <Image src={setting.logo_sidebar_path} className="mh-100" />
                 </div>
               </Form.Group>
             </Col>

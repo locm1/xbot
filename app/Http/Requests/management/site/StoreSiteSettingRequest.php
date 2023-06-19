@@ -24,8 +24,8 @@ class StoreSiteSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'logo_login_image' => 'required|file|max:10240',
-            'logo_sidebar_image' => 'required|file|max:10240',
+            'logo_login_image' => 'required|image|max:10240',
+            'logo_sidebar_image' => 'required|image|max:10240',
         ];
     }
 

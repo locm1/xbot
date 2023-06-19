@@ -138,7 +138,7 @@ export default () => {
             <Col md={6} className="mb-4">
               <Form.Group>
                 <Form.Label>プレビュー</Form.Label>
-                <div className="site-logo-preview">
+                <div className="site-logo-preview bg-gray-800">
                   <Image src={setting.logo_sidebar_path} className="" />
                 </div>
               </Form.Group>

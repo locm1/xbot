@@ -15,7 +15,7 @@ import EventReservationConfirmContentLoader from "@/pages/liff/event/loader/Even
 
 const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
   customClass: {
-    confirmButton: 'btn btn-primary me-3',
+    confirmButton: 'btn btn-tertiary me-3',
     cancelButton: 'btn btn-gray'
   },
   buttonsStyling: false
@@ -47,7 +47,6 @@ export default () => {
 
   const completeReservation = async () => {
     const message = `<p>予約が完了しました。</p>
-      <p>担当よりご連絡させていただきますので、今しばらくお待ちください。</p>
       `;
     await SwalWithBootstrapButtons.fire('予約完了！', message, 'success');
   };
@@ -96,15 +95,15 @@ export default () => {
             <tbody className="border-0">
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">題名</th>
-                <td>{event.title}</td>
+                <td className="text-wrap px-0">{event.title}</td>
               </tr>
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">予約時間</th>
-                <td>{moment(event.start_date).format("YYYY年MM月DD日 hh:mm")} 〜 {moment(event.end_date).format("hh:mm")}</td>
+                <td className="text-wrap px-0">{moment(event.start_date).format("YYYY年MM月DD日 hh:mm")} 〜 {moment(event.end_date).format("hh:mm")}</td>
               </tr>
               <tr className="border-bottom">
                 <th className="h6 text-left fw-bolder">場所</th>
-                <td>{event.location}</td>
+                <td className="text-wrap px-0">{event.location}</td>
               </tr>
             </tbody>
           </Table>

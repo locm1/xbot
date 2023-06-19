@@ -24,7 +24,7 @@ const SwalWithBootstrapButtons = withReactContent(Swal.mixin({
 export default () => {
   const [events, setEvents] = useState({
     '2023-01-01': [
-      {id: 1, start_date: '2023-01-01 12:00:00', end_date: '2023-01-01 13:00:00'}
+      { id: 1, start_date: '2023-01-01 12:00:00', end_date: '2023-01-01 13:00:00' }
     ]
   });
   const [userEvents, setUserEvents] = useState([]);
@@ -49,7 +49,7 @@ export default () => {
         await getEventsByUserId(user.id, idToken, setUserEvents)
 
         const searchParams = {
-          params: {year: year, month: month}
+          params: { year: year, month: month }
         };
         await getEvents(searchParams, setEvents);
         setIsRendered(true)
@@ -180,10 +180,12 @@ export default () => {
                 残枠数：<span className="fs-5 fw-bolder text-dark">{is_unlimited == 1 ? '無制限' : remaining}</span>
               </small>
             </div>
-            <div className="mt-1">
-              <MapPinIcon className="icon icon-xs liff-event-icon" />
-              <small className="liff-event-place">{location}</small>
-            </div>
+            {location &&
+              <div className="mt-1">
+                <MapPinIcon className="icon icon-xs liff-event-icon" />
+                <small className="liff-event-place">{location}</small>
+              </div>
+            }
             <div className="align-items-center mt-3">
               {
                 (() => {

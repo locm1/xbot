@@ -142,7 +142,6 @@ export default () => {
   };
 
   const onSaveMessage = () => {
-    console.log(updateVideoThumbnails);
     const formData = new FormData();
     formData.append("messages", JSON.stringify(messages));
     updateImages.forEach((updateImage) => formData.append("images[]", updateImage));

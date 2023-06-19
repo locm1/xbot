@@ -8,6 +8,7 @@ use App\Models\MessageItemCarouselProduct;
 use App\Services\common\CreateThumbnailFileUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class UpsertMessageItemAction
@@ -100,7 +101,8 @@ class UpsertMessageItemAction
         # 画像を削除しストレージに保存
         $files = array();
         foreach (array_map(null, $request->file($file_path), $ids) as [$file, $id]) {
-            $file_name = $file->getClientOriginalName();
+            $uuid = (string)Str::uuid();
+            $file_name = $uuid .'_' .$file->getClientOriginalName();
             $file->storeAs("public/$path", $file_name);
 
             $files[] = [

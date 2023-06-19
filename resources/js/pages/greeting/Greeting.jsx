@@ -208,7 +208,7 @@ export default () => {
 
   return (
     <>
-    <Button onClick={() =>console.log(updateVideoThumbnails)} />
+    {/* <Button onClick={() =>console.log(updateVideoThumbnails)} /> */}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">あいさつメッセージ設定</h1>

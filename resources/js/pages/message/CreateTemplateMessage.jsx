@@ -117,6 +117,7 @@ export default () => {
       video.onloadedmetadata = () => {
         // 1秒後のフレームをキャプチャする
         video.currentTime = 1;
+        const maxFileSize = 1 * 1024 * 1024;
         video.onseeked = () => {
           // キャプチャしたフレームを<canvas>に描画する
           const canvas = document.createElement('canvas');
@@ -126,7 +127,17 @@ export default () => {
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
   
           // <canvas>を画像としてエクスポートする
-          const thumbnailDataUrl = canvas.toDataURL('image/png');
+          let thumbnailDataUrl = canvas.toDataURL('image/png');
+          if (thumbnailDataUrl.length > maxFileSize) {
+            const scaleFactor = Math.sqrt(maxFileSize / thumbnailDataUrl.length);
+            canvas.width = Math.floor(canvas.width * scaleFactor);
+            canvas.height = Math.floor(canvas.height * scaleFactor);
+            console.log(canvas.width)
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            console.log(canvas);
+            thumbnailDataUrl = canvas.toDataURL('image/jpeg', 0.1);
+          }
           currentMessageItem.thumbnail_path = thumbnailDataUrl
           setUpdateVideoThumbnails([...updateVideoThumbnails, thumbnailDataUrl])
         };
@@ -370,7 +381,7 @@ export default () => {
 
   return (
     <div className="">
-      <Button onClick={() =>console.log(updateVideoThumbnails)} />
+      {/* <Button onClick={() =>console.log(updateVideoThumbnails)} /> */}
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <h1 className="page-title">{pathname.includes('/edit') ? 'メッセージ編集' : 'メッセージ作成'}</h1>

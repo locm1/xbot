@@ -44,12 +44,14 @@ export default () => {
 
   const handleClick = async () => {
     const formData = new FormData();
-    formData.append("logo_login_image", loginLogoImage);
-    formData.append("logo_sidebar_image", sidebarLogoImage);
+    const convertedLoginLogoImage = loginLogoImage ?? null;
+    const convertedSidebarLogoImage= sidebarLogoImage ?? null;
+    formData.append("logo_login_image", convertedLoginLogoImage);
+    formData.append("logo_sidebar_image", convertedSidebarLogoImage);
 
     try {
       if (setting.id) {
-        await updateSiteSetting(formData, complete)
+        await updateSiteSetting(formData, complete, setError)
       } else {
         await storeSiteSetting(formData, complete, setError)
       }
@@ -61,7 +63,7 @@ export default () => {
 
   const complete = async () => {
     Swal.fire('保存成功', `サイト設定の保存に成功しました`, 'success').then((result) => {
-      dataFetch()
+      location.reload()
     });
   }
 

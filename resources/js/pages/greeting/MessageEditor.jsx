@@ -45,19 +45,6 @@ export default (props) => {
 
     return (
       <div>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="file"
-            name="video"
-            accept="video/*"
-            id="preview-video"
-            onChange={(e) => handlePreviewChange(e, 'video', messageItem.id, index)}
-            isInvalid={!!error[`messages.${index}.video_path`]}
-          />
-          <Form.Control.Feedback type="invalid">
-            {error[`messages.${index}.video_path`]}
-          </Form.Control.Feedback>
-        </Form.Group>
         {messageItem.thumbnail_path &&
           (
             <>
@@ -173,42 +160,36 @@ export default (props) => {
                     </div>
                   </Tab.Pane>
                   <Tab.Pane eventKey="picture" className="py-4">
-                    {messageItem.image_path == null ? (
-                      <Form.Group className="mb-3">
-                        <Form.Control
-                          type="file"
-                          name="file"
-                          id="preview-picture"
-                          accept="image/png,image/jpg,image/jpeg"
-                          onChange={(e) => handlePreviewChange(e, 'file', messageItem.id, index)}
-                          isInvalid={!!error[`messages.${index}.image_path`]}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {error[`messages.${index}.image_path`]}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    ) : (
-                      <DropzoneFile messageItem={messageItem} />
-                    )}
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="file"
+                        name="file"
+                        id="preview-picture"
+                        accept="image/png,image/jpg,image/jpeg"
+                        onChange={(e) => handlePreviewChange(e, 'file', messageItem.id, index)}
+                        isInvalid={!!error[`messages.${index}.image_path`]}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {error[`messages.${index}.image_path`]}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    {messageItem.image_path && <DropzoneFile messageItem={messageItem} />}
                   </Tab.Pane>
                   <Tab.Pane eventKey="movie" className="py-4">
-                    {messageItem.video_path == null ? (
-                      <Form.Group className="mb-3">
-                        <Form.Control
-                          type="file"
-                          name="video"
-                          accept="video/*"
-                          id="preview-video"
-                          onChange={(e) => handlePreviewChange(e, 'video', messageItem.id, index)}
-                          isInvalid={!!error[`messages.${index}.video_path`]}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {error[`messages.${index}.video_path`]}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    ) : (
-                      <VideoFile messageItem={messageItem} />
-                    )}
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="file"
+                        name="video"
+                        accept="video/*"
+                        id="preview-video"
+                        onChange={(e) => handlePreviewChange(e, 'video', messageItem.id, index)}
+                        isInvalid={!!error[`messages.${index}.video_path`]}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {error[`messages.${index}.video_path`]}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    {messageItem.video_path && <VideoFile messageItem={messageItem} />}
                   </Tab.Pane>
                   <Tab.Pane eventKey="card" className="py-4">
                     <Card>

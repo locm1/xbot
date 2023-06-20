@@ -72,6 +72,8 @@ class UpdateGreetingMessageRequest extends FormRequest
             $messages["messages.$key.image_path"] = '画像';
             $messages["messages.$key.video_path"] = '動画';
         }
+        $messages['images.*'] = '画像';
+
         return $messages;
     }
 

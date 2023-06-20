@@ -34,7 +34,7 @@ class StoreProductRequest extends FormRequest
             'discount_rate' => 'nullable|numeric|between:0,100',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
-            'files' => 'nullable|array',
+            'files' => 'required|array',
             'files.*' => 'file|mimes:jpeg,png,jpg'
         ];
     }
@@ -53,7 +53,7 @@ class StoreProductRequest extends FormRequest
             'discount_rate' => 'セール割引率',
             'start_date' => '開始日時',
             'end_date' => '終了日時',
-            'files' => '画像ファイルリスト',
+            'files' => '画像',
         ];
     }
 

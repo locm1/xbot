@@ -24,7 +24,7 @@ class FlexMessageBuilderAction
     private function createAction()
     {
         $label = 'アンケートに回答';
-        $url = 'https://liff.line.me/' . config('api_key.MIX_LIFF_ID') . '/liff?path=questionnaire';
+        $url = 'https://liff.line.me/' . config('api_key.MIX_LIFF_ID') . '?path=questionnaire';
         $uri_template_action_builder = new UriTemplateActionBuilder($label, $url);
         return $uri_template_action_builder;
     }

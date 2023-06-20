@@ -113,7 +113,6 @@ export default () => {
               <th className="border-bottom">時間</th>
               <th className="border-bottom">開催場所</th>
               <th className="border-bottom">残数</th>
-              <th className="border-bottom text-center"></th>
             </tr>
           </thead>
           <tbody className="border-0">

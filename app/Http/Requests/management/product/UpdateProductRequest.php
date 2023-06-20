@@ -31,7 +31,7 @@ class UpdateProductRequest extends FormRequest
             'is_picked_up' => 'required|boolean',
             'is_undisclosed' => 'required|boolean',
             'is_unlimited' => 'required|boolean',
-            'discount_rate' => 'nullable|numeric|between:0,100',
+            'discount_rate' => 'nullable|numeric|between:1,100',
             'files' => 'nullable|array',
             'files.*' => 'file|mimes:jpeg,png,jpg,pdf',
             'product_image_ids' => 'nullable|array',
@@ -53,7 +53,7 @@ class UpdateProductRequest extends FormRequest
             'discount_rate' => 'セール割引率',
             'start_date' => '開始日時',
             'end_date' => '終了日時',
-            'files' => '画像ファイルリスト',
+            'files' => '画像',
             'product_image_ids' => '画像IDリスト',
         ];
     }

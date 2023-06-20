@@ -83,6 +83,7 @@ export default () => {
     setStoreProductImages([...storeProductImages, ...acceptedFiles,])
 
     setProductImages([...productImages, newImage]);
+    setError({...error, files: ''})
   };
 
   const deleteImage = (e, id, display_id) => {
@@ -201,7 +202,6 @@ export default () => {
 
   const onSaveProduct = () => {
     Object.assign(product, productSale);
-    console.log(product);
     const formValues = [
       'product_category_id', 'name', 'stock_quantity', 'price', 'overview',
       'is_undisclosed', 'is_unlimited', 'is_picked_up', 'discount_rate', 'start_date', 'end_date'
@@ -538,12 +538,16 @@ export default () => {
                             ))}
                           </Row>
                           <Col md={12} className="pt-4">
-                            <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="150px" >
-                              <Form.Control {...getInputProps()} />
-                              <div className="dz-default dz-message text-center">
-                                <p className="dz-button mb-0">画像を追加</p>
-                              </div>
-                            </Form>
+                          <Form {...getRootProps({ className: "dropzone rounded d-flex align-items-center justify-content-center" })} width="200px" height="150px" >
+                            <Form.Control {...getInputProps()} isInvalid={!!error.files} />
+                            <div className="dz-default dz-message text-center">
+                              <p className="dz-button mb-0">画像を追加</p>
+                            </div>
+                            {
+                              error.files && 
+                              <Form.Control.Feedback type="invalid" className="position-absolute bottom-0 p-3">{error.files[0]}</Form.Control.Feedback>
+                            }
+                          </Form>
                           </Col>
                         </div>
                       </Card.Body>

@@ -41,20 +41,6 @@ export default (props) => {
     );
   };
 
-  // const VideoFile = (props) => {
-  //   const { messageItem } = props;
-
-  //   return (
-  //     <>
-  //     <Col xs={6} className="text-center text-lg-start mt-3">
-  //       <div className="line-preview-comment-image">
-  //         <ReactPlayer url={messageItem.video_path} controls width="100%" />
-  //       </div>
-  //     </Col>
-  //   </>
-  //   );
-  // };
-
   const VideoFile = (props) => {
     const { messageItem } = props;
 

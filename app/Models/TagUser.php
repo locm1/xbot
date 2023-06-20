@@ -10,4 +10,5 @@ class TagUser extends Model
     use HasFactory;
 
     protected $table = 'tag_user';
+    protected $guarded = ['id'];
 }

@@ -3,7 +3,7 @@ import SimpleBar from 'simplebar-react';
 import { useHistory, useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { CSSTransition } from 'react-transition-group';
-import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, GlobeAltIcon, ChevronRightIcon, ShoppingBagIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon, FilterIcon } from "@heroicons/react/solid";
+import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, GlobeAltIcon, ChevronRightIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon, FilterIcon } from "@heroicons/react/solid";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { Nav, Badge, Image, Button, Dropdown, Navbar, Collapse, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -262,24 +262,24 @@ export default (props) => {
                   <NavItem title="レポート管理" link={Paths.Reports.path} icon={FilterIcon} />
                 )
               }
-
+              
               {
                 pages[9] && admin.role <= pages[9].role && (
+                  <NavItem title="流入経路管理" link={Paths.InflowRoute.path} icon={UserAddIcon} />
+                )
+              }
+
+              {
+                pages[10] && admin.role <= pages[10].role && (
                   <CollapsableNavItem eventKey="account/" title="アカウント管理" icon={CogIcon}>
                     <NavItem title="リッチメニュー管理" link={Paths.RichMenus.path} />
                     <NavItem title="あいさつメッセージ設定" link={Paths.Greeting.path} />
                     <NavItem title="お友達追加用QR" link={Paths.QrCode.path} />
                     <NavItem title="アカウント管理" link={Paths.Accounts.path} />
                     <NavItem title="権限設定" link={Paths.Permissions.path} />
-                    <NavItem title="流入経路管理" link={Paths.InflowRoute.path} />
                     <NavItem title="API設定" link={Paths.Api.path} />
+                    <NavItem title="サイト管理" link={Paths.Site.path} />
                   </CollapsableNavItem>
-                )
-              }
-              
-              {
-                pages[10] && admin.role <= pages[10].role && (
-                  <NavItem title="サイト管理" link={Paths.Site.path} icon={GlobeAltIcon} />
                 )
               }
             </Nav>

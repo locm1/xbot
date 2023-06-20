@@ -24,7 +24,7 @@ class MessageService
         }
 
         if (!empty($request->count)) {
-            return Message::where('is_undisclosed', 0)->get();
+            return Message::where('is_undisclosed', 0)->orderBy('id', 'desc')->get();
         }
 
         return Message::orderBy('id', 'desc')->paginate(10);

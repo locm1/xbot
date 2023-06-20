@@ -28,6 +28,9 @@ class SearchOrderAction
             $query->whereYear('created_at', $time);
         }
 
-        return $query->where('user_id', $user->id)->with(['orderProducts.product.productImages', 'orderProducts.product.productSale', 'coupon'])->get();
+        return $query->where('user_id', $user->id)
+            ->with(['orderProducts.product.productImages', 'orderProducts.product.productSale', 'coupon'])
+            ->orderBy('orders.id', 'desc')
+            ->get();
     }
 }

@@ -7,7 +7,7 @@ import { CalendarIcon, CreditCardIcon } from "@heroicons/react/solid";
 import { Col, Row, Card, ListGroup } from 'react-bootstrap';
 
 export const QuestionnaireAnswerForm = (props) => {
-  const { title, questionnaireAnswers } = props;
+  const { title, questionnaireAnswers, createdAt } = props;
 
   return (
     <>
@@ -16,19 +16,33 @@ export const QuestionnaireAnswerForm = (props) => {
         </h2>
         <ListGroup className="list-group-flush">
           <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-          <Row className="align-items-center">
-            <Col xs="auto">
-              <h4 className="fs-6 text-dark mb-0">回答日</h4>
-            </Col>
-            <Col className="text-end">
-              <span className="fs-6 fw-bolder text-dark">
-                {
-                  questionnaireAnswers[0] && moment(questionnaireAnswers[0].created_at).format("YYYY-MM-DD")
-                }
-              </span>
-            </Col>
-          </Row>
-        </ListGroup.Item>
+            <Row className="align-items-center">
+              <Col xs="auto">
+                <h4 className="fs-6 text-dark mb-0">ユーザー登録日</h4>
+              </Col>
+              <Col className="text-end">
+                <span className="fs-6 fw-bolder text-dark">
+                  {
+                    moment(createdAt).format("YYYY-MM-DD")
+                  }
+                </span>
+              </Col>
+            </Row>
+          </ListGroup.Item>
+          <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+            <Row className="align-items-center">
+              <Col xs="auto">
+                <h4 className="fs-6 text-dark mb-0">利用者登録日</h4>
+              </Col>
+              <Col className="text-end">
+                <span className="fs-6 fw-bolder text-dark">
+                  {
+                    questionnaireAnswers[0] && moment(questionnaireAnswers[0].created_at).format("YYYY-MM-DD")
+                  }
+                </span>
+              </Col>
+            </Row>
+          </ListGroup.Item>
         </ListGroup>
     </>
   );

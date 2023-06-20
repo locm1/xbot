@@ -60,12 +60,16 @@ const validatePhoneNumber = (value, name) => {
 
 
 const validateZipCodeNumber = (value, name) => {
+  if (value.includes('-') && (value.length >= 1 && value.length !== 7)) {
+    return ['ハイフンが含まれています。']
+  }
+
+  if (value.length >= 1 && value.length !== 7) {
+    return [`${name}は7桁で入力してください。`]
+  }
+
   if (value.trim() === '') {
     return [`${name}を入力してください。`]
-  } else if (value.includes('-')) {
-    return ['ハイフンが含まれています。']
-  } else if (value.length !== 7) {
-    return [`${name}は7桁で入力してください。`]
   }
 
   return '';

@@ -8,9 +8,10 @@ import Select from 'react-select'
 import "flatpickr/dist/flatpickr.css";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/l10n/ja.js';
+import { Paths } from "@/paths";
 
-import { 
-  showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts, 
+import {
+  showProduct, storeProduct, updateProduct, getProductImages, getRelatedProducts,
   getAllProducts, updateRelatedProduct, storeImages, updateImages
 } from "@/pages/product/api/ProductApiMethods";
 import { getCategories, } from "@/pages/product/api/ProductCategoryApiMethods";
@@ -29,7 +30,7 @@ export default () => {
   const history = useHistory();
   const pathname = useLocation().pathname;
   const [productImages, setProductImages] = useState([
-    {image_path: ''}
+    { image_path: '' }
   ]);
   const [deleteProductImages, setDeleteProductImages] = useState([]);
   const [storeProductImages, setStoreProductImages] = useState([]);
@@ -38,7 +39,7 @@ export default () => {
 
   const [product, setProduct] = useState({
     product_category_id: 1, name: '', stock_quantity: '',
-    price: 0, overview: '', is_undisclosed: 0, 
+    price: 0, overview: '', is_undisclosed: 0,
     is_unlimited: 0, is_picked_up: 0
   });
   const [error, setError] = useState({
@@ -54,21 +55,21 @@ export default () => {
 
   const [relatedProducts, setRelatedProducts] = useState([]);
   if (!relatedProducts.some(v => v.id === 0)) {
-    relatedProducts.push({id: 0, table_id: '', name: '', discountPrice: 0})
+    relatedProducts.push({ id: 0, table_id: '', name: '', discountPrice: 0 })
   }
   const [isRendered, setIsRendered] = useState(false);
-  const[products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
 
   const handleChange = (e, input) => {
-    setProduct({...product, [input]: e.target.value})
-    setError({...error, [input]: ''})
+    setProduct({ ...product, [input]: e.target.value })
+    setError({ ...error, [input]: '' })
   };
 
   const handleSaleChange = (e, input) => {
     const value = (input == 'start_date' || input == 'end_date') ? e : e.target.value;
-    setProductSale({...productSale, [input]: value})
-    setError({...error, [input]: ''})
+    setProductSale({ ...productSale, [input]: value })
+    setError({ ...error, [input]: '' })
   };
 
   const onDrop = (acceptedFiles) => {
@@ -79,7 +80,7 @@ export default () => {
       image_path: acceptedFiles.map(acceptedFile => URL.createObjectURL(acceptedFile)),
     }
     acceptedFiles[0].display_id = newImage.display_id;
-    setStoreProductImages([...storeProductImages, ...acceptedFiles, ])
+    setStoreProductImages([...storeProductImages, ...acceptedFiles,])
 
     setProductImages([...productImages, newImage]);
     setError({...error, files: ''})
@@ -94,7 +95,7 @@ export default () => {
       console.log('aa');
     }
   };
-  
+
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
       'image/jpg': ['.jpeg', '.jpg'],
@@ -107,7 +108,7 @@ export default () => {
     const inputFileRef = useRef();
 
     const { image_path, display_id, index, id, setUpdateProductImages, updateProductImages } = props;
-    
+
     const changeImage = (id) => {
       const inputFile = inputFileRef.current;
       if (!inputFile) return;
@@ -117,7 +118,7 @@ export default () => {
     const handleChange = (id, e) => {
       setUpdateProductImages([...updateProductImages, e.target.files[0]])
       setUpdateProductImageIds([...updateProductImageIds, id])
-      
+
       const reader = new FileReader()
       reader.onload = (e) => {
         const currentproductImage = productImages.filter(image => (image.id === id))[0]
@@ -128,7 +129,7 @@ export default () => {
       }
       reader.readAsDataURL(e.target.files[0])
     };
-    
+
 
     return (
       <div className="dropzone-preview py-2">
@@ -157,7 +158,7 @@ export default () => {
   const [isPickedUp, setIsPickedUp] = useState(false);
 
   // セット割商品の選択オプションを登録商品から出すが、すでに選択されているものは除外する
-  const options = products.filter(v => !(relatedProducts.some(b => b.name === v.name))).map(v => ({value: v.id, label: v.name }))
+  const options = products.filter(v => !(relatedProducts.some(b => b.name === v.name))).map(v => ({ value: v.id, label: v.name }))
 
   const handleRelatedProducts = (e, id) => {
     if (id === 0) {
@@ -165,18 +166,18 @@ export default () => {
       const ids = relatedProducts.map(v => (v.id));
       const newRelatedProducts = relatedProducts.map(v => {
         if (v.id === 0) {
-          return {id: e.value, table_id: null, name: e.label, discountPrice: 0}
+          return { id: e.value, table_id: null, name: e.label, discountPrice: 0 }
         } else {
-          return {...v}
+          return { ...v }
         }
       })
       setRelatedProducts(newRelatedProducts);
     } else {
       const newRelatedProducts = relatedProducts.map(v => {
         if (v.id === id) {
-          return {id: e.value, table_id: v.table_id, name: e.label, discountPrice: v.discountPrice}
+          return { id: e.value, table_id: v.table_id, name: e.label, discountPrice: v.discountPrice }
         } else {
-          return {...v}
+          return { ...v }
         }
       });
       setRelatedProducts(newRelatedProducts);
@@ -191,9 +192,9 @@ export default () => {
   const handleRelatedPrice = (e, id) => {
     const newRelatedProducts = relatedProducts.map(v => {
       if (v.id === id) {
-        return {id: v.id, name: v.name, discountPrice: +e.target.value}
+        return { id: v.id, name: v.name, discountPrice: +e.target.value }
       } else {
-        return {...v}
+        return { ...v }
       }
     });
     setRelatedProducts(newRelatedProducts);
@@ -202,18 +203,17 @@ export default () => {
   const onSaveProduct = () => {
     Object.assign(product, productSale);
     const formValues = [
-      'product_category_id', 'name', 'stock_quantity', 'price', 'overview', 
+      'product_category_id', 'name', 'stock_quantity', 'price', 'overview',
       'is_undisclosed', 'is_unlimited', 'is_picked_up', 'discount_rate', 'start_date', 'end_date'
     ];
     const formData = new FormData();
     formValues.forEach((formValue) => formData.append(formValue, product[formValue]));
 
     // 画像保存stateに値があればAPI発火
-    // if (storeProductImages.length > 0) {
-    //   storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
-    // }
-    storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
-    
+    if (storeProductImages.length > 0) {
+      storeProductImages.forEach((image) => formData.append("files[]", image, image.name));
+    }
+
     if (pathname.includes('/edit')) {
       // 画像削除stateに値があればAPI発火
       if (deleteProductImages.length > 0) {
@@ -241,12 +241,12 @@ export default () => {
   }
 
   const updateIsPickedUp = (isPickedUp) => {
-    setProduct({...product, ['is_picked_up']: isPickedUp ? 1 : 0})
+    setProduct({ ...product, ['is_picked_up']: isPickedUp ? 1 : 0 })
     setIsPickedUp(isPickedUp)
   }
 
   const updateIsUnlimited = (e) => {
-    setProduct({...product, ['is_unlimited']: e.target.checked ? 1 : 0, stock_quantity: 99999})
+    setProduct({ ...product, ['is_unlimited']: e.target.checked ? 1 : 0, stock_quantity: 99999 })
     setDisable(e.target.checked)
   }
 
@@ -294,23 +294,23 @@ export default () => {
                     <Card border="0" className="shadow mb-4">
                       <Card.Header className="bg-primary text-white px-3 py-2">
                         <h5 className="mb-0 fw-bolder">商品情報</h5>
-                      </Card.Header> 
+                      </Card.Header>
                       <Card.Body>
                         <Row>
                           <Col md={12} className="mb-4">
                             <Form.Group id="name">
                               <Form.Label><Badge bg="danger" className="me-2">必須</Badge>商品名</Form.Label>
-                              <Form.Control 
-                                required 
-                                type="text" 
-                                name="name" 
-                                value={product.name} 
-                                onChange={(e) => handleChange(e, 'name')} 
-                                placeholder="シャンプー" 
+                              <Form.Control
+                                required
+                                type="text"
+                                name="name"
+                                value={product.name}
+                                onChange={(e) => handleChange(e, 'name')}
+                                placeholder="シャンプー"
                                 isInvalid={!!error.name}
                               />
                               {
-                                error.name && 
+                                error.name &&
                                 <Form.Control.Feedback type="invalid">{error.name[0]}</Form.Control.Feedback>
                               }
                             </Form.Group>
@@ -318,7 +318,7 @@ export default () => {
                           <Col md={6} className="mb-4">
                             <Form.Group id="category">
                               <Form.Label><Badge bg="danger" className="me-2">必須</Badge>カテゴリー</Form.Label>
-                              <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => {handleChange(e, 'product_category_id')}}>
+                              <Form.Select value={product.product_category_id} className="mb-0" onChange={(e) => { handleChange(e, 'product_category_id') }}>
                                 {
                                   categories.map((category, index) => <option key={`category-${index}`} value={category.id}>{category.name}</option>)
                                 }
@@ -344,7 +344,7 @@ export default () => {
                                   isInvalid={!!error.stock_quantity}
                                 />
                                 {
-                                  error.stock_quantity && 
+                                  error.stock_quantity &&
                                   <Form.Control.Feedback type="invalid">{error.stock_quantity[0]}</Form.Control.Feedback>
                                 }
                               </InputGroup>
@@ -355,18 +355,18 @@ export default () => {
                               <Form.Label><Badge bg="danger" className="me-2">必須</Badge>販売価格（税込）</Form.Label>
                               <InputGroup>
                                 <Form.Control
-                                  required 
-                                  type="number" 
-                                  name="price" 
-                                  value={product.price} 
-                                  onChange={(e) => handleChange(e, 'price')} 
-                                  placeholder="3000" 
+                                  required
+                                  type="number"
+                                  name="price"
+                                  value={product.price}
+                                  onChange={(e) => handleChange(e, 'price')}
+                                  placeholder="3000"
                                   isInvalid={!!error.price}
                                 />
                                 <InputGroup.Text>円</InputGroup.Text>
                               </InputGroup>
                               {
-                                error.price && 
+                                error.price &&
                                 <Form.Control.Feedback type="invalid">{error.price[0]}</Form.Control.Feedback>
                               }
                             </Form.Group>
@@ -374,16 +374,16 @@ export default () => {
                           <Col md={12} className="mb-4">
                             <Form.Group id="overview">
                               <Form.Label><Badge bg="danger" className="me-2">必須</Badge>商品概要</Form.Label>
-                              <Form.Control 
-                                as="textarea" 
-                                rows="3" 
-                                value={product.overview} 
-                                onChange={(e) => handleChange(e, 'overview')} 
-                                placeholder="商品の概要を入力してください" 
+                              <Form.Control
+                                as="textarea"
+                                rows="3"
+                                value={product.overview}
+                                onChange={(e) => handleChange(e, 'overview')}
+                                placeholder="商品の概要を入力してください"
                                 isInvalid={!!error.overview}
                               />
                               {
-                                error.overview && 
+                                error.overview &&
                                 <Form.Control.Feedback type="invalid">{error.overview[0]}</Form.Control.Feedback>
                               }
                             </Form.Group>
@@ -394,7 +394,7 @@ export default () => {
                     <Card border="0" className="shadow mb-4">
                       <Card.Header className="bg-primary text-white px-3 py-2">
                         <h5 className="mb-0 fw-bolder">セール設定</h5>
-                      </Card.Header> 
+                      </Card.Header>
                       <Card.Body>
                         <Row>
                           <Col md={6} className="mb-4">
@@ -402,17 +402,17 @@ export default () => {
                               <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>セール割引率（%）</Form.Label>
                               <InputGroup>
                                 <Form.Control
-                                  required 
-                                  type="number" 
-                                  name="discount_rate" 
-                                  value={productSale.discount_rate} 
-                                  onChange={(e) => handleSaleChange(e, 'discount_rate')} 
+                                  required
+                                  type="number"
+                                  name="discount_rate"
+                                  value={productSale.discount_rate}
+                                  onChange={(e) => handleSaleChange(e, 'discount_rate')}
                                   placeholder="10"
-                                  isInvalid={!!error.discount_rate} 
+                                  isInvalid={!!error.discount_rate}
                                 />
                                 <InputGroup.Text>%</InputGroup.Text>
                                 {
-                                error.discount_rate && 
+                                  error.discount_rate &&
                                   <Form.Control.Feedback type="invalid">{error.discount_rate[0]}</Form.Control.Feedback>
                                 }
                               </InputGroup>
@@ -431,28 +431,28 @@ export default () => {
                             <Form.Group id="startDate">
                               <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>開始日時</Form.Label>
                               <Flatpickr
-                                options={ startOptions }
+                                options={startOptions}
                                 value={productSale.start_date}
                                 render={(props, ref) => {
                                   return (
                                     <InputGroup>
-                                    <InputGroup.Text>
-                                      <CalendarIcon className="icon icon-xs" />
-                                    </InputGroup.Text>
-                                    <Form.Control
-                                      data-enable-time
-                                      data-time_24hr
-                                      required
-                                      type="text"
-                                      placeholder="YYYY-MM-DD"
-                                      ref={ref}
-                                      isInvalid={!!error.start_date} 
-                                    />
-                                    {
-                                      error.start_date && 
-                                      <Form.Control.Feedback type="invalid">{error.start_date[0]}</Form.Control.Feedback>
-                                    }
-                                  </InputGroup>
+                                      <InputGroup.Text>
+                                        <CalendarIcon className="icon icon-xs" />
+                                      </InputGroup.Text>
+                                      <Form.Control
+                                        data-enable-time
+                                        data-time_24hr
+                                        required
+                                        type="text"
+                                        placeholder="YYYY-MM-DD"
+                                        ref={ref}
+                                        isInvalid={!!error.start_date}
+                                      />
+                                      {
+                                        error.start_date &&
+                                        <Form.Control.Feedback type="invalid">{error.start_date[0]}</Form.Control.Feedback>
+                                      }
+                                    </InputGroup>
                                   );
                                 }}
                               />
@@ -462,25 +462,25 @@ export default () => {
                             <Form.Group id="endDate">
                               <Form.Label><Badge bg="gray-600" className="me-2">任意</Badge>終了日時</Form.Label>
                               <Flatpickr
-                                options={ endOptions }
+                                options={endOptions}
                                 value={productSale.end_date}
                                 render={(props, ref) => {
                                   return (
                                     <InputGroup>
-                                    <InputGroup.Text>
-                                      <CalendarIcon className="icon icon-xs" />
-                                    </InputGroup.Text>
-                                    <Form.Control
-                                      data-enable-time
-                                      data-time_24hr
-                                      required
-                                      type="text"
-                                      placeholder="YYYY-MM-DD"
-                                      ref={ref}
-                                      isInvalid={!!error.end_date} 
+                                      <InputGroup.Text>
+                                        <CalendarIcon className="icon icon-xs" />
+                                      </InputGroup.Text>
+                                      <Form.Control
+                                        data-enable-time
+                                        data-time_24hr
+                                        required
+                                        type="text"
+                                        placeholder="YYYY-MM-DD"
+                                        ref={ref}
+                                        isInvalid={!!error.end_date}
                                       />
                                       {
-                                        error.end_date && 
+                                        error.end_date &&
                                         <Form.Control.Feedback type="invalid">{error.end_date[0]}</Form.Control.Feedback>
                                       }
                                     </InputGroup>
@@ -497,12 +497,12 @@ export default () => {
                     <Card border="0" className="shadow mb-4">
                       <Card.Header className="bg-primary text-white px-3 py-2">
                         <h5 className="mb-0 fw-bolder">商品設定</h5>
-                      </Card.Header> 
+                      </Card.Header>
                       <Card.Body>
                         <div className="mb-4">
                           <Form.Group id="status">
                             <Form.Label><Badge bg="danger" className="me-2">必須</Badge>ステータス</Form.Label>
-                            <Form.Select value={product.is_undisclosed} className="mb-0" onChange={(e) => {handleChange(e, 'is_undisclosed')}}>
+                            <Form.Select value={product.is_undisclosed} className="mb-0" onChange={(e) => { handleChange(e, 'is_undisclosed') }}>
                               <option value="0">公開</option>
                               <option value="1">非公開</option>
                             </Form.Select>
@@ -516,7 +516,7 @@ export default () => {
                               label="ピックアップ商品に追加する"
                               id="switch2"
                               htmlFor="switch2"
-                              defaultChecked={isPickedUp}
+                              checked={isPickedUp}
                               onClick={() => updateIsPickedUp(!isPickedUp)}
                               variant="gray-800"
                             />
@@ -527,7 +527,7 @@ export default () => {
                     <Card border="0" className="shadow mb-4">
                       <Card.Header className="bg-primary text-white px-3 py-2">
                         <h5 className="mb-0 fw-bolder">商品画像</h5>
-                      </Card.Header> 
+                      </Card.Header>
                       <Card.Body>
                         <div className="mb-4">
                           <Row>
@@ -552,21 +552,24 @@ export default () => {
                         </div>
                       </Card.Body>
                     </Card>
-                    <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4">
-                      <Button
-                        variant="success"
-                        className="btn-default-success"
-                        onClick={() => onSaveProduct()}
-                      >
-                        保存する
-                      </Button>
-                    </div>
                   </Col>
                 </Row>
               ) : (
                 <ProductContentLoader />
               )
             }
+            <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center">
+              <Button onClick={() => { history.push(Paths.Products.path) }} variant="gray-500" className="me-2 me-auto">
+                商品一覧に戻る
+              </Button>
+              <Button
+                variant="success"
+                className="btn-default-success"
+                onClick={() => onSaveProduct()}
+              >
+                保存する
+              </Button>
+            </div>
           </Tab.Pane>
         </Tab.Content>
         <Tab.Content>
@@ -575,21 +578,21 @@ export default () => {
               <Card border="0" className="shadow mb-4">
                 <Card.Header className="bg-primary text-white px-3 py-2">
                   <h5 className="mb-0 fw-bolder">セット割商品</h5>
-                </Card.Header> 
+                </Card.Header>
                 <Card.Body>
                   <Row>
-                    {relatedProducts.map((v,k) => (
+                    {relatedProducts.map((v, k) => (
                       <React.Fragment key={`relatedProducts-${k}`}>
                         <Col xl={8} className={"my-2"}>
-                          <Select options={options} value={{label: v.name, value: v.id}} onChange={(e) => handleRelatedProducts(e, v.id)} />
+                          <Select options={options} value={{ label: v.name, value: v.id }} onChange={(e) => handleRelatedProducts(e, v.id)} />
                         </Col>
                         <Col xl={3} className={"my-2"}>
-                        <Form.Group>
-                          <InputGroup>
-                            <Form.Control required type="number" name="tax" placeholder="" disabled={v.name ? false : true} value={v.discountPrice} onChange={(e) => handleRelatedPrice(e, v.id)} />
-                            <InputGroup.Text>円OFF</InputGroup.Text>
-                          </InputGroup>
-                        </Form.Group>
+                          <Form.Group>
+                            <InputGroup>
+                              <Form.Control required type="number" name="tax" placeholder="" disabled={v.name ? false : true} value={v.discountPrice} onChange={(e) => handleRelatedPrice(e, v.id)} />
+                              <InputGroup.Text>円OFF</InputGroup.Text>
+                            </InputGroup>
+                          </Form.Group>
                         </Col>
                         <Col xl={1}>
                           <div className="d-flex h-100 align-items-center">
@@ -616,7 +619,7 @@ export default () => {
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>
-        {/* <Col xs={12} xl={12}>
+      {/* <Col xs={12} xl={12}>
           <Card border="0" className="shadow mb-4">
             <Card.Body>
               <h5 className="mb-4 border-bottom pb-3">商品概要</h5>

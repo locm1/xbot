@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\api\line;
 
+use App\Models\InflowRoute;
 use App\Models\InflowRouteUser;
 use App\Models\InviteeIncentiveUser;
 use App\Models\InviteeUser;
@@ -8,7 +9,9 @@ use App\Models\InviteHistory;
 use App\Models\InviteIncentive;
 use App\Models\InviteIncentiveJob;
 use App\Models\InviterIncentiveUser;
+use App\Models\TagUser;
 use App\Models\User;
+use App\Models\UserTag;
 use App\Services\management\invitation\InviteeIncentiveUserService;
 use App\Services\management\invitation\InviterIncentiveUserService;
 use App\Services\management\invite_history\InviteHistoryService;
@@ -67,7 +70,13 @@ class FollowService
         $term = [$five_minute_before, $now];
         $InflowRouteUser = InflowRouteUser::where('line_id', $this->line_id)->whereBetween('created_at', $term)->first();
         $update_count = 0;
-        if ($InflowRouteUser) $update_count = $InflowRouteUser->update(['user_id' => $User->id]);
+        if ($InflowRouteUser) {
+            $update_count = $InflowRouteUser->update(['user_id' => $User->id]);
+            //流入経路の名前のタグを付与
+            $InflowRoute = InflowRoute::find($InflowRouteUser->inflow_route_id);
+            $UserTag = UserTag::firstOrCreate(['name' => $InflowRoute->name], ['name' => $InflowRoute->name]);
+            TagUser::create(['user_id' => $User->id, 'user_tag_id' => $UserTag->id]);
+        }
 
         return $update_count;
     }

@@ -170,14 +170,18 @@ class DatabaseSeeder extends Seeder
                 GreetingMessageSeeder::class,
                 GreetingMessagesWithQuestionnaireSeeder::class,
                 SiteSettingSeeder::class,
+                ProductCategorySeeder::class,
+                ProductSeeder::class,
+                ProductImageSeeder::class,
+                ProductSaleSeeder::class,
             ]);
             User::factory(100)->create();
-            ProductCategory::factory(10)->create();
-            Product::factory(50)->create()->each(function ($product) {
-                ProductSale::factory()->create(['product_id' => $product->id]);
-            });
-            ProductImage::factory(200)->create();
-            ProductContent::factory(70)->create();
+            // ProductCategory::factory(10)->create();
+            // Product::factory(50)->create()->each(function ($product) {
+            //     ProductSale::factory()->create(['product_id' => $product->id]);
+            // });
+            // ProductImage::factory(200)->create();
+            // ProductContent::factory(70)->create();
             Privilege::factory(5)->create();
             PrivilegeItem::factory(20)->create();
             Event::factory(20)->create();

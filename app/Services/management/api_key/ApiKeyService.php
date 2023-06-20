@@ -32,9 +32,7 @@ class ApiKeyService
             'value' => $request->value
         ];
 
-        if (file_exists($this->env_path)) {
-            $this->save_api_key_action->saveApiKey($this->env_path, $api_key['key'], $api_key['value']);
-        }
+        $this->save_api_key_action->saveApiKey($this->env_path, $api_key['key'], $api_key['value']);
         Artisan::call('config:cache');
         return $api_key;
     }

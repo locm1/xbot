@@ -17,6 +17,7 @@ import { storeOrderDestination } from "@/pages/liff/api/OrderDestinationApiMetho
 import { getOccupations } from "@/pages/liff/api/OccupationApiMethods";
 import { LoadingContext } from "@/components/LoadingContext";
 import LiffQuestionnaireContentLoader from "@/pages/liff/questionnaire/loader/LiffQuestionnaireContentLoader";
+import { validationCheck } from "@/pages/liff/questionnaire/ValidationCheck";
 
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
@@ -56,9 +57,9 @@ export default () => {
     prefecture: '', city: '', address: '', building_name: '', room_number: ''
   });
   const [errors, setErrors] = useState({
-    last_name: '', first_name: '', last_name_kana: '', first_name_kana: '',
-    year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
-    prefecture: '', city: '', address: '', building_name: '', room_number: '',
+    last_name: null, first_name: null, last_name_kana: null, first_name_kana: null,
+    year: 1990, month: null, day: null, gender: 1, tel: null, occupation_id: 1, zipcode: null,
+    prefecture: null, city: null, address: null, building_name: null, room_number: null,
     "questionnaires.0.answer": ''
   });
   const [answers, setAnswers] = useState([]);
@@ -66,20 +67,29 @@ export default () => {
 
   const genders = ['男性', '女性'];
 
-  const handleChange = (e, input) => {
+  const handleChange = async (e, input, name) => {
     setFormValue({ ...formValue, [input]: e.target.value })
-    setErrors({ ...errors, [input]: '' })
+
+    const userInfoStatus = userInfoStatuses.find(status => status.name == name);
+    const message = userInfoStatus.is_required == 1 ? await validationCheck(input, e.target.value, name) : ''
+    console.log(message);
+    setErrors({ ...errors, [input]: message })
   };
 
   const changeGender = (gender) => {
     setFormValue({ ...formValue, gender: gender })
   };
 
-  const searchZipCode = (e, input) => {
-    handleChange(e, input)
+  const searchZipCode = async (e, input, name) => {
+    handleChange(e, input, name)
 
     if (e.target.value.length == 7) {
-      getAddress(e.target.value, setFormValue, formValue)
+      const address = await getAddress(e.target.value)
+      setFormValue({
+        ...formValue,
+        prefecture: address.address1, city: address.address2, address: address.address3, zipcode: e.target.value
+      });
+      setErrors({ ...errors, zipcode: '', prefecture: '', city: '', address: '' })
     }
   };
 
@@ -202,9 +212,10 @@ export default () => {
                                     type="text"
                                     name="last_name"
                                     value={formValue.last_name}
-                                    onChange={(e) => handleChange(e, 'last_name')}
+                                    onChange={(e) => handleChange(e, 'last_name', '氏名')}
                                     placeholder="例）山田"
                                     isInvalid={!!errors.last_name}
+                                    isValid={errors.last_name === ''}
                                     autoComplete="family-name"
                                     className="text-dark"
                                   />
@@ -219,9 +230,10 @@ export default () => {
                                     type="text"
                                     name="first_name"
                                     value={formValue.first_name}
-                                    onChange={(e) => handleChange(e, 'first_name')}
+                                    onChange={(e) => handleChange(e, 'first_name', '氏名')}
                                     placeholder="例）太郎"
                                     isInvalid={!!errors.first_name}
+                                    isValid={errors.first_name === ''}
                                     autoComplete="given-name"
                                   />
                                   {
@@ -244,9 +256,10 @@ export default () => {
                                     type="text"
                                     name="last_name_kana"
                                     value={formValue.last_name_kana}
-                                    onChange={(e) => handleChange(e, 'last_name_kana')}
+                                    onChange={(e) => handleChange(e, 'last_name_kana', 'フリガナ')}
                                     placeholder="例）ヤマダ"
                                     isInvalid={!!errors.last_name_kana}
+                                    isValid={errors.last_name_kana === ''}
                                   />
                                   {
                                     errors.last_name_kana &&
@@ -259,9 +272,10 @@ export default () => {
                                     type="text"
                                     name="first_name_kana"
                                     value={formValue.first_name_kana}
-                                    onChange={(e) => handleChange(e, 'first_name_kana')}
+                                    onChange={(e) => handleChange(e, 'first_name_kana', 'フリガナ')}
                                     placeholder="例）タロウ"
                                     isInvalid={!!errors.first_name_kana}
+                                    isValid={errors.first_name_kana === ''}
                                   />
                                   {
                                     errors.first_name_kana &&
@@ -323,8 +337,9 @@ export default () => {
                                   name="tel"
                                   placeholder="ハイフンなしで入力してください"
                                   value={formValue.tel}
-                                  onChange={(e) => handleChange(e, 'tel')}
+                                  onChange={(e) => handleChange(e, 'tel', '電話番号')}
                                   isInvalid={!!errors.tel}
+                                  isValid={errors.tel === ''}
                                   autoComplete="tel"
                                 />
                                 {
@@ -340,7 +355,7 @@ export default () => {
                             <Col xs={12} className="mb-4">
                               <Form.Group id="occupation">
                                 <Form.Label>{UserInfoIsRequired('ご職業')}ご職業</Form.Label>
-                                <Form.Select value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id')} className="mb-0 w-100">
+                                <Form.Select value={formValue.occupation_id} onChange={(e) => handleChange(e, 'occupation_id', 'ご職業')} className="mb-0 w-100">
                                   {
                                     occupations.map((occupation, index) => <option key={index} value={occupation.id}>{occupation.name}</option>)
                                   }
@@ -363,8 +378,9 @@ export default () => {
                                   name="zipcode"
                                   placeholder="ハイフンなしで入力してください"
                                   value={formValue.zipcode}
-                                  onChange={(e) => searchZipCode(e, 'zipcode')}
+                                  onChange={(e) => searchZipCode(e, 'zipcode', '郵便番号')}
                                   isInvalid={!!errors.zipcode}
+                                  isValid={errors.zipcode === ''}
                                   autoComplete="postal-code"
                                 />
                                 {
@@ -382,7 +398,7 @@ export default () => {
                             <Col xs={12} className="mb-4">
                               <Form.Group id="prefecture">
                                 <Form.Label>{UserInfoIsRequired('都道府県')}都道府県</Form.Label>
-                                <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture')} className="mb-0 w-100">
+                                <Form.Select defaultValue="0" value={formValue.prefecture} onChange={(e) => handleChange(e, 'prefecture', '都道府県')} className="mb-0 w-100">
                                   {
                                     prefectures && prefectures.map((prefecture, index) => <option key={index} value={prefecture.name}>{prefecture.name}</option>)
                                   }
@@ -402,8 +418,9 @@ export default () => {
                                   name="city"
                                   placeholder="例）札幌市中央区南一条西"
                                   value={formValue.city}
-                                  onChange={(e) => handleChange(e, 'city')}
+                                  onChange={(e) => handleChange(e, 'city', '市区町村')}
                                   isInvalid={!!errors.city}
+                                  isValid={errors.city === ''}
                                   autoComplete="address-level2"
                                 />
                                 {
@@ -425,8 +442,9 @@ export default () => {
                                   name="address"
                                   placeholder="例）5-16"
                                   value={formValue.address}
-                                  onChange={(e) => handleChange(e, 'address')}
+                                  onChange={(e) => handleChange(e, 'address', '丁目・番地・号')}
                                   isInvalid={!!errors.address}
+                                  isValid={errors.address === ''}
                                   autoComplete="address-level3"
                                 />
                                 {
@@ -448,8 +466,9 @@ export default () => {
                                   name="building_name"
                                   placeholder="例）プレジデント松井ビル100"
                                   value={formValue.building_name}
-                                  onChange={(e) => handleChange(e, 'building_name')}
+                                  onChange={(e) => handleChange(e, 'building_name', '建物名/会社名')}
                                   isInvalid={!!errors.building_name}
+                                  isValid={errors.building_name === ''}
                                   autoComplete="address-level4"
                                 />
                                 {
@@ -471,9 +490,10 @@ export default () => {
                                   name="room_number"
                                   placeholder="例）3"
                                   value={formValue.room_number}
-                                  onChange={(e) => handleChange(e, 'room_number')}
+                                  onChange={(e) => handleChange(e, 'room_number', '部屋番号')}
                                   autoComplete="address-level4"
                                   isInvalid={!!errors.room_number}
+                                  isValid={errors.room_number === ''}
                                 />
                                 {
                                   errors.room_number &&
@@ -519,7 +539,7 @@ export default () => {
               </Card.Body>
             </Card>
             <div className="align-items-center m-2 mt-4">
-              <Button onClick={handleClick} variant="tertiary" className="w-100 p-3">
+              <Button onClick={handleClick} variant="success" className="w-100 p-3">
                 上記内容に同意して送信する
               </Button>
             </div>

@@ -236,6 +236,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('site-settings', [SiteSettingController::class, 'index']);
     Route::post('site-settings', [SiteSettingController::class, 'store']);
     Route::put('site-settings', [SiteSettingController::class, 'update']);
+    Route::get('users/{user}/visitor/check-today', [VisitorConfirmController::class, 'check']);
     Route::post('users/{user}/visitor-confirm/auth', [VisitorConfirmController::class, 'auth']);
     Route::post('users/{user}/visitor-confirm/create', [VisitorConfirmController::class, 'create']);
 

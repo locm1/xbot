@@ -18,16 +18,17 @@ class VisitorHistoryService
         }
 
         //すでに1日の来店回数（1回）を超えていたらエラー
-        if ($this->checkIfVisitedToday()) {
+        if ($this->checkIfVisitedToday($user_id)) {
             return abort(512, '来店失敗');
         }
 
         return VisitorHistory::create(['user_id' => $user_id]);
     }
 
-    private function checkIfVisitedToday(): bool {
+    public function checkIfVisitedToday(int $user_id): bool 
+    {
         $today = date('y-m-d');
-        $visitor_histories = VisitorHistory::whereDate('created_at', $today);
+        $visitor_histories = VisitorHistory::where('user_id', $user_id)->whereDate('created_at', $today);
         return $visitor_histories->exists();
     }
 }

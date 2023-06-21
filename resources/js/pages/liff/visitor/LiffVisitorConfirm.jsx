@@ -6,6 +6,7 @@ import liff from '@line/liff';
 import Swal from "sweetalert2";
 import LiffVisitorUserInfo from "./LiffVisitorUserInfo";
 import { showOccupation } from "@/pages/liff/api/OccupationApiMethods";
+import { checkIfVisitedToday } from "@/pages/liff/api/VisitorHistoryApiMethods";
 
 export default () => {
   const [password, setPassword] = useState('');
@@ -19,6 +20,20 @@ export default () => {
     setPassword(e.target.value);
   }
 
+  const dataFetch = async (user) => {
+    try {
+      await showOccupation(user.occupation_id, setOccupation)
+      await checkIfVisitedToday(user.id, setIsCreated)
+      setIsConfirmed(true);
+    } catch (error) {
+      Swal.fire(
+        `データ取得エラー`,
+        'データが正常に取得できませんでした',
+        'error'
+      )
+    }
+  }
+
   const handleClick = () => {
     const formValue = {
       password: password
@@ -27,8 +42,7 @@ export default () => {
     .then(response => {
       const user = response.data.user;
       setUser(user);
-      showOccupation(user.occupation_id, setOccupation)
-      setIsConfirmed(true);
+      dataFetch(user)
     })
     .catch(error => {
       const message = error.response.status === 400 ? 'パスワードが違います' : '不正なトークンが送られました'

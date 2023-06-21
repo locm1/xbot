@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 
 class VisitorConfirmController extends Controller
 {
+    private $service;
+
+    public function __construct(VisitorHistoryService $service)
+    {
+        $this->service = $service;
+    }
     /**
      * Handle the incoming request.
      *
@@ -28,9 +34,14 @@ class VisitorConfirmController extends Controller
     public function create(Request $request, User $user)
     {
         if ($request->password === config('api_key')['COMMON_PASSWORD']) {
-            $visitor_history_service = new VisitorHistoryService;
-            return $visitor_history_service->store((int) $user->id);
+            return $this->service->store((int) $user->id);
         }
         return abort(400, '認証失敗');
+    }
+
+    public function check(User $user)
+    {
+        $check_result = $this->service->checkIfVisitedToday((int) $user->id);
+        return response()->json(['result' => $check_result], 200);
     }
 }

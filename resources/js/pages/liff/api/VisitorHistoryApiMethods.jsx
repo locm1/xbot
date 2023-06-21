@@ -15,28 +15,43 @@ export const getVisitorHistoryCount = async (userId, liffToken, setVisitorCount)
 };
 
 
-export const storeVisitorHistory = async (userId, storeComplete, liffToken) => {
+export const storeVisitorHistory = async (userId, liffToken) => {
   return await axios.post(`/api/v1/users/${userId}/visitor-histories`, liffToken)
   .then((response) => {
-    const messages = {
+    const message = {
       text: '来店が完了しました',
       status: 200
     }
-    storeComplete(messages)
+    return message;
   })
   .catch(error => {
     console.error(error);
     if (error.response.status === 512) {
-      var messages = {
+      var message = {
         text: 'すでに来店済みです。',
         status: 512
       }
     } else {
-      var messages = {
+      var message = {
         text: '来店処理に失敗しました',
         status: 500
       }
     }
-    storeComplete(messages)
+    return message
+  });
+};
+
+
+export const checkIfVisitedToday = async (userId, setIsCreated) => {
+  // const params = {params: {liffToken: liffToken}}
+  return await axios.get(`/api/v1/users/${userId}/visitor/check-today`)
+  .then((response) => {
+    const result = response.data.result
+    console.log(result);
+    setIsCreated(result)
+    return result
+  })
+  .catch(error => {
+      console.error(error);
   });
 };

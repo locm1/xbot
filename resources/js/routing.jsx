@@ -86,7 +86,6 @@ import LiffVisitor from '@/pages/liff/visitor/LiffVisitor';
 import LiffVisitorConfirm from '@/pages/liff/visitor/LiffVisitorConfirm';
 import LiffVisitorUserInfo from '@/pages/liff/visitor/LiffVisitorUserInfo';
 import LiffVisitorHistoryAdd from '@/pages/liff/visitor/LiffVisitorHistoryAdd';
-import LiffVisitorHistoryResult from '@/pages/liff/visitor/LiffVisitorHistoryResult';
 import LiffAboutVisitorPrivileges from '@/pages/liff/visitor/LiffAboutVisitorPrivileges';
 import LiffEventReservations from '@/pages/liff/event/LiffEventReservations';
 import LiffEventReservationConfirm from '@/pages/liff/event/LiffEventReservationConfirm';
@@ -602,8 +601,8 @@ const Routing = () => {
       <RegisteredLiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
       <NoFooterRoute exact path={Paths.LiffFriendAdd.path} component={LiffFriendAdd} />
-      <NoFooterRoute exact path={Paths.LiffVisitorHistoryAdd.path} component={LiffVisitorHistoryAdd} />
-      <NoFooterRoute exact path={Paths.LiffVisitorHistoryResult.path} component={LiffVisitorHistoryResult} />
+      {/* <RegisteredLiffRoute exact path={Paths.LiffVisitorHistoryAdd.path} component={LiffVisitorHistoryAdd} /> */}
+      <LiffRoute exact path={Paths.LiffVisitorHistoryAdd.path} component={LiffVisitorHistoryAdd} />
       <NoFooterRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
       <NoFooterRoute exact path={Paths.LiffServerError.path} component={LiffServerError} />
       <LiffRoute exact path={Paths.LiffEventHistories.path} component={LiffEventHistories} />

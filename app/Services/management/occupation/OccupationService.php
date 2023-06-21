@@ -6,7 +6,7 @@ use App\Models\Occupation;
 use App\Services\management\AbstractManagementService;
 use Illuminate\Database\Eloquent\Model;
 
-class OccupationService extends AbstractManagementService 
+class OccupationService
 {
 
     public function index() 
@@ -21,9 +21,9 @@ class OccupationService extends AbstractManagementService
     }
 
 
-    public function show(Model $model) 
+    public function show(Occupation $occupation) 
     {
-        //
+        return $occupation;
     }
 
 

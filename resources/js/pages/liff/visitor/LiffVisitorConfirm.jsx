@@ -5,10 +5,12 @@ import { useParams } from "react-router-dom";
 import liff from '@line/liff';
 import Swal from "sweetalert2";
 import LiffVisitorUserInfo from "./LiffVisitorUserInfo";
+import { showOccupation } from "@/pages/liff/api/OccupationApiMethods";
 
 export default () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState();
+  const [occupation, setOccupation] = useState({});
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
   const params = useParams();  
@@ -23,7 +25,9 @@ export default () => {
     }
     axios.post(`/api/v1/users/${params.userId}/visitor-confirm/auth`, formValue)
     .then(response => {
-      setUser(response.data.user);
+      const user = response.data.user;
+      setUser(user);
+      showOccupation(user.occupation_id, setOccupation)
       setIsConfirmed(true);
     })
     .catch(error => {
@@ -57,7 +61,7 @@ export default () => {
   return (
     isConfirmed ?
       <div className="p-3">
-        <LiffVisitorUserInfo user={user} />
+        <LiffVisitorUserInfo user={user} occupation={occupation} />
         <div className="align-items-center my-3">
           {isCreated ? 
             <Button disabled variant="success" className='mt-2 w-100'>

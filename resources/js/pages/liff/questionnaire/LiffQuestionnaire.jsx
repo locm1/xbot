@@ -374,7 +374,7 @@ export default () => {
                                 <Form.Label>{UserInfoIsRequired('郵便番号')}郵便番号</Form.Label>
                                 <Form.Control
                                   required
-                                  type="number"
+                                  type="tel"
                                   name="zipcode"
                                   placeholder="ハイフンなしで入力してください"
                                   value={formValue.zipcode}

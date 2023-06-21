@@ -10,7 +10,7 @@ import { getVisitorHistoryCount } from "@/pages/liff/api/VisitorHistoryApiMethod
 import { getSiteSettings } from "@/pages/site/api/SiteApiMethods";
 import Logo from "@img/img/logo_admin.png";
 import { LoadingContext } from "@/components/LoadingContext";
-import VisitorContentLoader from "@/pages/liff/visitor/VisitorContentLoader";
+import VisitorContentLoader from "@/pages/liff/visitor/loader/VisitorContentLoader";
 
 export default () => {
   const [isRendered, setIsRendered] = useState(false);

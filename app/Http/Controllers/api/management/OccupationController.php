@@ -38,12 +38,13 @@ class OccupationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Occupation  $occupation
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Occupation $occupation)
     {
-        //
+        $Occupation = $this->occupation_service->show($occupation);
+        return response()->json(['occupation' => $Occupation], 200);
     }
 
     /**

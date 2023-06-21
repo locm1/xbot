@@ -3,11 +3,9 @@ import { useEffect, useState } from "react"
 import { Row, Col, Nav, Button, Card, ListGroup, Image, Table } from 'react-bootstrap';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import Swal from "sweetalert2";
-import liff from '@line/liff';
-import { getUser } from "@/pages/liff/api/UserApiMethods";
 
 export default (props) => {
-  const { user } = props;
+  const { user, occupation } = props;
   const sex_array = {1: '男性', 2: '女性', 3: 'その他'};
 
   return (
@@ -44,7 +42,7 @@ export default (props) => {
             </tr>
             <tr className="border-bottom">
               <th className="h6 text-left fw-bolder">ご職業</th>
-              <td>{user.tel}</td>
+              <td>{occupation.name}</td>
             </tr>
             <tr className="border-bottom">
               <th className="h6 text-left fw-bolder">来店回数</th>

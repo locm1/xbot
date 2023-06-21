@@ -66,8 +66,17 @@ export default () => {
   }
 
   useEffect(() => {
-    getEcommerceConfiguration(setFormValue, setIsDisbled)
-    getPostages(setPostages, setIsUpdate).then(setIsRendered(true))
+    const dataFetch = async () => {
+      try {
+        const isDisabled = await getEcommerceConfiguration(setFormValue)
+        setIsDisbled(isDisabled)
+        getPostages(setPostages, setIsUpdate).then(setIsRendered(true))
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    dataFetch()
   }, []);
 
 

@@ -40,10 +40,11 @@ export const EditVisitorHistoryForm = (props) => {
                             <CalendarIcon className="icon icon-xs" />
                           </InputGroup.Text>
                           <Form.Control
+                            data-enable-time
                             data-time_24hr
                             required
                             type="text"
-                            placeholder="YYYY-MM-DD"
+                            placeholder="YYYY-MM-DD HH:MM:DD"
                             ref={ref}
                           />
                         </InputGroup>

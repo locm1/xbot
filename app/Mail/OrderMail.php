@@ -22,12 +22,14 @@ class OrderMail extends Mailable
     public $email;
     public $order;
     public $order_products;
+    public $url;
 
-    public function __construct($email, $order, $order_products)
+    public function __construct($email, $order, $order_products, $url)
     {
         $this->email = $email;
         $this->order = $order;
         $this->order_products = $order_products;
+        $this->url = $url;
     }
 
     /**
@@ -39,7 +41,6 @@ class OrderMail extends Mailable
     {
         return new Envelope(
             subject: '新しい注文がありました',
-            from: 'fukushi1998@gmail.com',
             to: $this->email,
         );
     }

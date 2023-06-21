@@ -17,7 +17,7 @@ class QuestionnaireEnablingTableSeeder extends Seeder
     {
         $questionnaire_enables = [
             'is_default_questionnaire_enabled' => 1,
-            'is_questionnaire_enabled' => 0,
+            'is_questionnaire_enabled' => 1,
         ];
         DB::table('questionnaire_enabling')->insert($questionnaire_enables);
     }

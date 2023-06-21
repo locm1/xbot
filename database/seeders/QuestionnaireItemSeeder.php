@@ -34,28 +34,28 @@ class QuestionnaireItemSeeder extends Seeder
             'name' => "その他",
             ],
             [
-            'questionnaire_id' => 3,
+            'questionnaire_id' => 2,
             'name' => "くせ（広がり・うねり）",
             ],
             [
-            'questionnaire_id' => 3,
+            'questionnaire_id' => 2,
             'name' => "白髪",
             ],
             [
-            'questionnaire_id' => 3,
+            'questionnaire_id' => 2,
             'name' => "ダメージ",
             ],
             [
-            'questionnaire_id' => 3,
+            'questionnaire_id' => 2,
             'name' => "乾燥",
             ],
             [
-            'questionnaire_id' => 3,
+            'questionnaire_id' => 2,
             'name' => "抜け毛",
             ],
             [
-            'questionnaire_id' => 3,
-            'name' => "臭い",
+            'questionnaire_id' => 2,
+            'name' => "におい",
             ],
             [
             'questionnaire_id' => 4,

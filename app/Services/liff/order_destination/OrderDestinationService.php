@@ -67,4 +67,9 @@ class OrderDestinationService
             return $destination->update($data);
         });
     }
+
+    public function destroy(OrderDestination $destination)
+    {
+        return $destination->delete();
+    }
 }

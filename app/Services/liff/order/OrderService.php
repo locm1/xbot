@@ -48,7 +48,10 @@ class OrderService
         if ($request->time) {
             return $this->search_order_action->search($request->time, $user);
         }
-        return Order::where('user_id', $user->id)->with(['orderProducts.product.productImages', 'orderProducts.product.productSale', 'coupon'])->get();
+        return Order::where('user_id', $user->id)
+            ->with(['orderProducts.product.productImages', 'orderProducts.product.productSale', 'coupon'])
+            ->orderBy('orders.id', 'desc')
+            ->get();
     }
 
     public function store($request, User $user)

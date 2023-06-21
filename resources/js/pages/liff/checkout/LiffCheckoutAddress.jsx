@@ -8,7 +8,7 @@ import liff from '@line/liff';
 import Swal from 'sweetalert2';
 import { LoadingContext } from "@/components/LoadingContext";
 import { getUser } from "@/pages/liff/api/UserApiMethods";
-import { getOrderDestinations, updateOrderDestination, updateOrderDestinations } from "@/pages/liff/api/OrderDestinationApiMethods";
+import { getOrderDestinations, updateOrderDestination, updateOrderDestinations, deleteOrderDestination } from "@/pages/liff/api/OrderDestinationApiMethods";
 import ContentLoader from "react-content-loader";
 import OrderDestinationsContentLoader from "@/pages/liff/checkout/loader/OrderDestinationsContentLoader";
 
@@ -22,6 +22,26 @@ export default () => {
   });
   const [liffToken, setLiffToken] = useState('');
 
+  const fetch = async () => {
+    const idToken = liff.getIDToken();
+    setLiffToken(idToken)
+    try {
+      const response = await getUser(idToken, setUser);
+      await getOrderDestinations(response.id, idToken, setDeliveryAddresses, setSelectId);
+    } catch (error) {
+      console.error(error);
+      Swal.fire(
+        `データ取得エラー`,
+        'データが正常に取得できませんでした',
+        'error'
+      ).then((result) => {
+        //LIFF閉じる
+        liff.closeWindow()
+      })
+    } finally {
+      setIsRendered(true);
+    }
+  }
 
   const handleClick = async () => {
     const updateAddress = deliveryAddresses.find((deliveryAddress) => deliveryAddress.id === selectId);
@@ -43,31 +63,32 @@ export default () => {
     //updateOrderDestination(user.id, updateAddress.id, updateAddress, updateComplete)
   }
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteOrderDestination(user.id, id, liffToken)
+      Swal.fire(
+        `削除完了`,
+        '削除に成功しました。',
+        'success'
+      ).then((result) => {
+        setIsRendered(false)
+        fetch()
+      })
+    } catch (error) {
+      console.error(error);
+      Swal.fire(
+        `データ削除エラー`,
+        'データが正常に削除できませんでした',
+        'error'
+      )
+    }
+  }
+
   const updateComplete = () => {
     history.push(Paths.LiffCheckout.path);
   };
 
   useEffect(() => {
-    const fetch = async () => {
-      const idToken = liff.getIDToken();
-      setLiffToken(idToken)
-      try {
-        const response = await getUser(idToken, setUser);
-        await getOrderDestinations(response.id, idToken, setDeliveryAddresses, setSelectId);
-      } catch (error) {
-        console.error(error);
-        Swal.fire(
-          `データ取得エラー`,
-          'データが正常に取得できませんでした',
-          'error'
-        ).then((result) => {
-          //LIFF閉じる
-          liff.closeWindow()
-        })
-      } finally {
-        setIsRendered(true);
-      }
-    }
     fetch();
   }, []);
 
@@ -91,7 +112,10 @@ export default () => {
             />
           </Col>
           <Col xs="8" className="px-0">
-            <Link className="fs-6 text-dark delivery-address-item-edit" to={link}>編集</Link>
+            <div>
+              <Link className="fs-6 text-dark delivery-address-item-edit" to={link}>編集</Link>
+              <div className="delivery-address-item-delete text-primary" onClick={() => handleDelete(id)}>削除</div>
+            </div>
             <div className="m-1">
               <h4 className="fs-6 text-dark mb-0">{last_name} {first_name} 様</h4>
               <h4 className="fs-6 text-dark mt-1">〒{target_split}-{zipcode && zipcode.split(target_split)[1]}</h4>
@@ -109,7 +133,7 @@ export default () => {
   return (
     <>
     <main className="liff-product-detail p-3">
-      <div className="">
+      {/* <div className="">
         <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
           <div className="">
             <span className="link-arrow">
@@ -118,7 +142,7 @@ export default () => {
           </div>
           <h2 className="fs-6 fw-bold mb-0 ms-2">戻る</h2>
         </Link>
-      </div>
+      </div> */}
       <div className="liff-product-list">
         <Card border="0" className="shadow">
           <Card.Header className="bg-primary text-white px-3 py-2">
@@ -140,7 +164,7 @@ export default () => {
                     </div>
                   </Link>
                   <div className="align-items-center my-4">
-                    <Button onClick={handleClick} variant="tertiary" className="w-100 p-3">
+                    <Button onClick={handleClick} variant="success" className="w-100 p-3">
                       変更する
                     </Button>
                   </div>

@@ -68,4 +68,17 @@ class OrderDestinationController extends Controller
         $order_destination = $this->order_destination_service->show($destination);
         return response()->json(['order_destination' => $order_destination], 200);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  User $user
+     * @param  OrderDestination $destination
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user, OrderDestination $destination)
+    {
+        $this->order_destination_service->destroy($destination);
+        return response()->json([], 204);
+    }
 }

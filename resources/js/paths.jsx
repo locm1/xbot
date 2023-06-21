@@ -54,13 +54,13 @@ export const Paths = {
     CreateRichMenu: { path: `${prefix}/account/richmenu/create` },
     EditRichMenu: { path: `${prefix}/account/richmenu/edit/:id` },
     RichMenus: { path: `${prefix}/account/richmenu/list` },
+    Site: {path: `${prefix}/account/site/setting`},
     Postage: {path: `${prefix}/ec/postage`},
     Permissions: {path: `${prefix}/account/permissions`},
-    InflowRoute: {path: `${prefix}/account/inflow-route`},
+    InflowRoute: {path: `${prefix}/inflow-route/list`},
     Reports: {path: `${prefix}/report/list`},
     EditReport: {path: `${prefix}/report/edit/:id`},
     CreateReport: {path: `${prefix}/report/create`},
-    Site: {path: `${prefix}/site/setting`},
 
     // LIFF
     LiffProductDetail: { path: "/product/detail/:id" },

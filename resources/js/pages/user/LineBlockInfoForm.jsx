@@ -11,7 +11,7 @@ export const LineBlockInfoForm = (props) => {
 
   const blockVariant = is_blocked === 1 ? "ブロック中" : "友達追加済";
   const purchases = [
-    {"id": 1, "name": "ブロック状態", "value": blockVariant},
+    {"id": 1, "name": "状態", "value": blockVariant},
     {"id": 2, "name": "ブロック日", "value": block_date},
   ]
 

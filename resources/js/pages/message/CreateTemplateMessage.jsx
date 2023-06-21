@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { HomeIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { Col, Row, Modal, Button, Dropdown, Breadcrumb, Form, Card } from 'react-bootstrap';
 import Swal from "sweetalert2";
@@ -13,9 +13,11 @@ import { Paths } from "@/paths";
 import { showMessage, updateMessage, storeMessage } from "@/pages/message/api/MessageApiMethods";
 import { getMessageItems, updateMessageItems, deleteMessageItem, storeMessageItems } from "@/pages/message/api/MessageItemApiMethods";
 import MessageTemplateContentLoader from "@/pages/message/loader/MessageTemplateContentLoader";
+import { LoadingContext } from "@/components/LoadingContext";
 
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const { id } = useParams();
   const pathname = useLocation().pathname;
@@ -242,6 +244,7 @@ export default () => {
     // const form = event.currentTarget;
     // event.preventDefault();
     // event.stopPropagation();
+    setIsLoading(true);
 
     message.is_undisclosed = isUndisclosed ? 1 : 0
 
@@ -340,6 +343,7 @@ export default () => {
   }
 
   const completeMessage = (message) => {
+    setIsLoading(false);
     Swal.fire(
       `${message}完了`,
       `メッセージテンプレート情報の${message}に成功しました`,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Col, Row, Form, Button, Breadcrumb, Card, Table, Nav, Pagination, Image } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import MessageEditor from "./MessageEditor";
@@ -9,8 +9,10 @@ import { getGreetingMessages, updateGreetingMessages, storeGreetingMessages, del
 import { getGreetingMessageWithQuestionnaires, storeGreetingMessageWithQuestionnaires, updateGreetingMessageWithQuestionnaires } from "@/pages/greeting/api/GreetingWithQuestionnaireApiMethods";
 import GreetingContentLoader from "@/pages/greeting/GreetingContentLoader";
 import ContentLoader, { BulletList, Facebook } from "react-content-loader";
+import { LoadingContext } from "@/components/LoadingContext";
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const [messages, setMessages] = useState([
     { id: 1, type: 1, text: '', image_path: null, video_path: null }
   ]);
@@ -142,6 +144,8 @@ export default () => {
   };
 
   const onSaveMessage = () => {
+    setIsLoading(true);
+
     const formData = new FormData();
     formData.append("messages", JSON.stringify(messages));
     updateImages.forEach((updateImage) => formData.append("images[]", updateImage));
@@ -150,6 +154,12 @@ export default () => {
     updateVideos.forEach((updateVideo) => formData.append("videos[]", updateVideo));
     updateVideoIds.forEach((updateVideoId) => formData.append("video_ids[]", updateVideoId));
     const formValue = { is_questionnaire: isQuestionnaireAnswerButton ? 1 : 0 }
+
+    if (greetingMessageWithQuestionnaire) {
+      updateGreetingMessageWithQuestionnaires(greetingMessageWithQuestionnaire.id, formValue)
+    } else {
+      storeGreetingMessageWithQuestionnaires(formValue)
+    }
 
     // 画像削除stateに値があればAPI発火
     if (deleteMessages.length > 0) {
@@ -164,15 +174,10 @@ export default () => {
     } else {
       storeGreetingMessages(formData, completeMessage, setError)
     }
-
-    if (greetingMessageWithQuestionnaire) {
-      updateGreetingMessageWithQuestionnaires(greetingMessageWithQuestionnaire.id, formValue)
-    } else {
-      storeGreetingMessageWithQuestionnaires(formValue)
-    }
   };
 
   const completeMessage = (message) => {
+    setIsLoading(false);
     Swal.fire(
       `${message}完了`,
       `あいさつメッセージの${message}に成功しました`,

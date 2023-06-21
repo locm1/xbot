@@ -34,21 +34,28 @@ export default () => {
     prefecture: '', city: '', address: '', building_name: '', room_number: ''
   });
   const [liffToken, setLiffToken] = useState('');
+  const { setIsLoading } = useContext(LoadingContext);
 
 
   const handleChange = (e, input) => {
     setFormValue({...formValue, [input]: e.target.value})
   };
 
-  const searchZipCode = (e, input) => {
-    handleChange(e, input)
+  const searchZipCode = async (e, input, name) => {
+    handleChange(e, input, name)
 
     if (e.target.value.length == 7) {
-      getAddress(e.target.value, setFormValue, formValue)
+      const address = await getAddress(e.target.value)
+      setFormValue({
+        ...formValue,
+        prefecture: address.address1, city: address.address2, address: address.address3, zipcode: e.target.value
+      });
+      setErrors({ ...errors, zipcode: '', prefecture: '', city: '', address: '' })
     }
   };
 
   const handleClick = async () => {
+    setIsLoading(true)
     if (formValue.building_name && formValue.room_number) {
       formValue.building_name += ' ' + formValue.room_number
     }
@@ -61,6 +68,7 @@ export default () => {
         await updateOrderDestination(user.id, id, formValue, setErrors)
         updateComplete()
       } catch (error) {
+        setIsLoading(false);
         Swal.fire(
           `データ保存エラー`,
           'データが正常に保存できませんでした',
@@ -72,6 +80,7 @@ export default () => {
       try {
         await storeOrderDestination(user.id, formValue, location, updateComplete, setErrors)
       } catch (error) {
+        setIsLoading(false);
         Swal.fire(
           `データ保存エラー`,
           'データが正常に保存できませんでした',
@@ -83,6 +92,7 @@ export default () => {
   };
 
   const updateComplete = () => {
+    setIsLoading(false);
     history.push(Paths.LiffCheckoutDestinations.path);
   };
 
@@ -117,7 +127,7 @@ export default () => {
   return (
     <>
       <main className="liff-product-detail p-3">
-        <div className="">
+        {/* <div className="">
           <Link to={Paths.LiffCheckoutDestinations.path} className="d-flex align-items-center p-2">
             <div className="">
               <span className="link-arrow">
@@ -126,7 +136,7 @@ export default () => {
             </div>
             <h2 className="fs-6 fw-bold mb-0 ms-2">戻る</h2>
           </Link>
-        </div>
+        </div> */}
         <Card border="0" className="shadow mt-2">
           <Card.Header className="bg-primary text-white px-3 py-2">
             <h5 className="mb-0 fw-bolder">{pathname.includes('/edit') ? 'お届け先の編集' : 'お届け先の追加'}</h5>
@@ -329,7 +339,7 @@ export default () => {
                     </Col>
                   </Row>
                 <div className="align-items-center mb-5">
-                  <Button variant="tertiary" onClick={handleClick} className="w-100 p-3">
+                  <Button variant="success" onClick={handleClick} className="w-100 p-3">
                     {pathname.includes('/edit') ? '更新する' : '追加する'}
                   </Button>
                 </div>

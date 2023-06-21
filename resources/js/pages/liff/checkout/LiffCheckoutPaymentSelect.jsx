@@ -177,7 +177,7 @@ export default () => {
   return isRendered ? (
     <>
       <main className="liff-product-detail p-3">
-        <div className="">
+        {/* <div className="">
           <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
             <div className="">
               <span className="link-arrow">
@@ -186,7 +186,7 @@ export default () => {
             </div>
             <h2 className="fs-6 fw-bold mb-0 ms-2">戻る</h2>
           </Link>
-        </div>
+        </div> */}
         <Card border="0" className="shadow mt-2">
           <Card.Header className="bg-primary text-white px-3 py-2">
             <h5 className="mb-0 fw-bolder">支払い方法変更</h5>

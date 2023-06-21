@@ -95,3 +95,14 @@ export const updateOrderDestinations = async (userId, liffToken) => {
       console.error(error);
   });
 };
+
+export const deleteOrderDestination = async (userId, id, liffToken) => {
+  const params = {liffToken: liffToken}
+  return await axios.delete(`/api/v1/users/${userId}/destinations/${id}`, {data: params})
+  .then((response) => {
+    return response.data
+  })
+  .catch(error => {
+      console.error(error);
+  });
+};

@@ -74,7 +74,7 @@ export const CardWidget = (props) => {
 };
 
 export const ProfileCardWidget = (props) => {
-  const { first_name, last_name, first_name_kana, last_name_kana, img_path, questionnaireAnswers, area, is_blocked, block_date, id, visitCount, purchaseTime } = props;
+  const { first_name, last_name, first_name_kana, last_name_kana, img_path, questionnaireAnswers, area, is_blocked, block_date, id, visitCount, purchaseTime, created_at } = props;
   return (
     <Card border="0" className="shadow text-center p-0">
       <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />
@@ -92,7 +92,7 @@ export const ProfileCardWidget = (props) => {
           <LineBlockInfoForm title="ブロック情報" is_blocked={is_blocked} block_date={block_date} />
         </div>
         <div className="py-3">
-          <QuestionnaireAnswerForm title="アンケート情報" questionnaireAnswers={questionnaireAnswers} />
+          <QuestionnaireAnswerForm title="ユーザー情報" createdAt={created_at} questionnaireAnswers={questionnaireAnswers} />
         </div>
       </Card.Body>
     </Card>

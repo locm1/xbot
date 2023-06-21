@@ -565,11 +565,11 @@ const Routing = () => {
       <RouteWithSidebar exact role_path="account" path={Paths.EditAccount.path} component={EditAccount} />
       <RouteWithSidebar exact role_path="account" path={Paths.RegisterAccount.path} component={EditAccount} />
       <RouteWithSidebar exact role_path="account" path={Paths.Permissions.path} component={Permissions} />
-      <RouteWithSidebar exact role_path="account" path={Paths.InflowRoute.path} component={InflowRoute} />
+      <RouteWithSidebar exact role_path="account" path={Paths.Site.path} component={Site} />
       <RouteWithSidebar exact role_path="report" path={Paths.Reports.path} component={Reports} />
       <RouteWithSidebar exact role_path="report" path={Paths.EditReport.path} component={EditReport} />
       <RouteWithSidebar exact role_path="report" path={Paths.CreateReport.path} component={EditReport} />
-      <RouteWithSidebar exact role_path="site" path={Paths.Site.path} component={Site} />
+      <RouteWithSidebar exact role_path="inflow-route" path={Paths.InflowRoute.path} component={InflowRoute} />
 
       <LiffInitRoute path={Paths.LiffInit.path} />
       <LiffECRoute exact path={Paths.LiffProductDetail.path} component={LiffProductDetail} />

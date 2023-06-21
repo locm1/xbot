@@ -30,6 +30,6 @@
 ──────────────
 
 管理画面URL：
-http://localhost:8000/manage/ec/order/detail/{{ $order->id }}
+{{ $url }}/manage/ec/order/detail/{{ $order->id }}
 
 上記の情報を確認のうえ、お届けまでの手配をお願いいたします。

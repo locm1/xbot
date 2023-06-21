@@ -10,6 +10,6 @@ class EventUserService
 
     public function index()
     {
-        return EventUser::with(['user', 'event'])->orderBy('created_at', 'desc')->paginate(10);
+        return EventUser::with(['user', 'event'])->orderBy('event_user.id', 'desc')->paginate(10);
     }
 }

@@ -20,7 +20,7 @@ export const QuestionnaireForm = (props) => {
         <Form>
           <Row>
             {questionnaireAnswers && questionnaireAnswers.map((v, k) => (
-              <QuestionnaireFormItem key={`questionnaireFormItem-${k}`} {...v} />
+              <QuestionnaireFormItem key={`questionnaireFormItem-${k}`} number={k + 1} {...v} />
             ))}
           </Row>
         </Form>

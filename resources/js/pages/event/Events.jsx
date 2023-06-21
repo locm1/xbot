@@ -32,15 +32,17 @@ export default () => {
 	const handleChange = (e) => {
 		const orderType = e.target.value
     setSearchValue({sort: orderType})
+
+		let sortedEvents = [...events];
 		
 		if (orderType === '1') {
-			var sortedEvents = [...events].sort((a, b) => {
+			sortedEvents.sort((a, b) => {
 				const currentEventDate = new Date(a.event.start_date);
 				const nextEventDate = new Date(b.event.start_date);
 				return nextEventDate - currentEventDate;
 			})
 		} else {
-			var sortedEvents = [...events].sort((a, b) => {
+			sortedEvents.sort((a, b) => {
 				return new Date(b.id) - new Date(a.id);
 			});
 		}

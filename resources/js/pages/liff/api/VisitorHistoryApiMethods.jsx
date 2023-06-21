@@ -18,13 +18,6 @@ export const getVisitorHistoryCount = async (userId, liffToken, setVisitorCount)
 export const storeVisitorHistory = async (userId, storeComplete, liffToken) => {
   return await axios.post(`/api/v1/users/${userId}/visitor-histories`, liffToken)
   .then((response) => {
-    // Swal.fire({
-    //   icon: 'success',
-    //   title: '来店処理完了',
-    //   text: '来店履歴にデータが作成されました',
-    //   showConfirmButton: false,
-    //   timer: 1500
-    // })
     const messages = {
       text: '来店が完了しました',
       status: 200
@@ -33,16 +26,16 @@ export const storeVisitorHistory = async (userId, storeComplete, liffToken) => {
   })
   .catch(error => {
     console.error(error);
-    // Swal.fire({
-    //   icon: 'error',
-    //   title: '来店処理失敗',
-    //   text: '来店処理に失敗しました',
-    //   showConfirmButton: false,
-    //   timer: 1500
-    // })
-    const messages = {
-      text: '来店処理に失敗しました',
-      status: 500
+    if (error.response.status === 512) {
+      var messages = {
+        text: 'すでに来店済みです。',
+        status: 512
+      }
+    } else {
+      var messages = {
+        text: '来店処理に失敗しました',
+        status: 500
+      }
     }
     storeComplete(messages)
   });

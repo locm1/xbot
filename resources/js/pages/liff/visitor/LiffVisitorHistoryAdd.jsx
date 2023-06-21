@@ -16,10 +16,26 @@ export default () => {
   });
 
   useEffect(() => {
-    const idToken = liff.getIDToken();
-    getUser(idToken, setUser).then(response => 
-      storeVisitorHistory(response.id, storeComplete, {liffToken: idToken})
-    )
+    const dataFetch = async () => {
+      const idToken = liff.getIDToken();
+      try {
+        const user = await getUser(idToken, setUser)
+        storeVisitorHistory(user.id, storeComplete, {liffToken: idToken})
+      } catch (error) {
+        console.error(error)
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        ).then((result) => {
+          //LIFF閉じる
+          liff.closeWindow()
+        })
+      }
+    }
+
+    dataFetch()
+    //すでに来店していたらエラーページs
   }, []);
 
   const storeComplete = (messages) => {

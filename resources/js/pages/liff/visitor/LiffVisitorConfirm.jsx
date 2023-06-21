@@ -50,11 +50,20 @@ export default () => {
     })
     .catch(error => {
       const message = error.response.status === 400 ? 'パスワードが違います' : '不正なトークンが送られました'
-      Swal.fire(
-        '認証失敗',
-        message,
-        'error'
-      )
+      if (error.response.status === 512) {
+        setIsCreated(true);
+        Swal.fire(
+          '来店失敗',
+          'すでに来店済みです。',
+          'error'
+        )
+      } else {
+        Swal.fire(
+          '認証失敗',
+          message,
+          'error'
+        )
+      }
     })
   }
 

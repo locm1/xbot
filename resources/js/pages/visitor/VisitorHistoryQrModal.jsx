@@ -46,7 +46,7 @@ export default (props) => {
             <div className="text-center">
               <QRCode
                 id="visitor-history-qr-code"
-                value={`https://liff.line.me/${liffId}/liff/?path=visitor-histories/add`}
+                value={`https://liff.line.me/${liffId}?path=visitor-histories/add`}
                 size={300}
                 level={"L"}
                 includeMargin={false}

@@ -15,14 +15,15 @@ import { storePaymentMethod, showPaymentMethod, updatePaymentMethod } from "@/pa
 import { getEcommerceConfigurationAndPayment } from "@/pages/liff/api/EcommerceConfigurationApiMethods";
 import ContentLoader from "react-content-loader";
 
+/** testデータ */
+// import { paymentMethod, creditCards, user, payments, selectCardId } from "./test/LiffCheckoutPaymentSelectData"
+
 export default () => {
-  const [isRendered, setIsRendered] = useState(false);
+  console.log(payments)
+  const [isRendered, setIsRendered] = useState(true);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState({
     payment_method: null
-  });
-  const [customer, setCustomer] = useState({
-    id: '', default_card: { brand: '', card_number: '', exp_month: '', exp_year: '', name: '' }
   });
   const [creditCards, setCreditCards] = useState([
     { brand: '', card_number: '', exp_month: '', exp_year: '', name: '' }
@@ -60,33 +61,33 @@ export default () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-    const idToken = liff.getIDToken();
-    setLiffToken(idToken)
-    
-    try {
-      const userResponse = await getUser(idToken, setUser);
-      const paymentResponse = await showPaymentMethod(userResponse.id, idToken);
-      setPaymentMethod(paymentResponse == null ? { payment_method: 1 } : paymentResponse);
-      setSelectCardId(paymentResponse.payjp_default_card_id);
-      
-      if (paymentResponse.payjp_customer_id) {
-        await getCards(userResponse.id, idToken, paymentResponse.payjp_customer_id, setCreditCards);
-      }
+      const fetchData = async () => {
+      const idToken = liff.getIDToken();
+      setLiffToken(idToken)
 
-      await getEcommerceConfigurationAndPayment(setEcommerceConfiguration, setPayments);
-      setIsRendered(true);
-    } catch (error) {
-      setIsRendered(true);
-      Swal.fire(
-        `データ取得エラー`,
-        'データが正常に取得できませんでした',
-        'error'
-      )
+      try {
+        const userResponse = await getUser(idToken, setUser);
+        const paymentResponse = await showPaymentMethod(userResponse.id, idToken);
+        setPaymentMethod(paymentResponse == null ? { payment_method: 1 } : paymentResponse);
+        setSelectCardId(paymentResponse.payjp_default_card_id);
+
+        if (paymentResponse.payjp_customer_id) {
+          await getCards(userResponse.id, idToken, paymentResponse.payjp_customer_id, setCreditCards);
+        }
+
+        await getEcommerceConfigurationAndPayment(setEcommerceConfiguration, setPayments);
+        setIsRendered(true);
+      } catch (error) {
+        setIsRendered(true);
+        Swal.fire(
+          `データ取得エラー`,
+          'データが正常に取得できませんでした',
+          'error'
+        )
+      }
     }
-  }
-  
-  fetchData();
+
+    fetchData();
   }, []);
 
   const CashondeliveryCard = () => {
@@ -107,9 +108,9 @@ export default () => {
     const defaultChecked = (index == 0) ? true : false
 
     return (
-      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-        <Row className="">
-          <Col xs="2" className="mt-5">
+      <ListGroup.Item className="">
+        <Row className=" align-items-center justify-content-center">
+          <Col xs="2" className="">
             <Form.Check
               type="radio"
               value={id}
@@ -119,9 +120,9 @@ export default () => {
               onChange={() => setSelectCardId(id)}
             />
           </Col>
-          <Col xs="8" className="px-0">
+          <Col xs="10" className="px-0">
             <div className="m-1">
-              <h4 className="fs-6 text-dark mb-1">{brand} {card_number}</h4>
+              <div><small>{brand} {card_number}</small></div>
               <div><small>{name}</small></div>
               <div><small>有効期限：{String(exp_month).padStart(2, '0')}/{exp_year}</small></div>
             </div>
@@ -135,21 +136,18 @@ export default () => {
     const { title, value } = props;
 
     return (
-      <>
-        <ListGroup.Item className="bg-transparent border-bottom py-3 px-0 checkout-card-check-wrap">
-          <Form.Check
-            type="radio"
-            checked={value === paymentMethod.payment_method}
-            value={value}
-            label={title}
-            name="payment_method"
-            id={`payment_method-${value}`}
-            htmlFor={`payment_method-${value}`}
-            onChange={() => handleChange(value, 'payment_method')}
-            className="align-items-center"
-          />
-          {value == 2 && paymentMethod.payment_method == 2 && <CashondeliveryCard />}
-        </ListGroup.Item>
+      <Card className="pt-3 px-3 pb-2 mt-3">
+        <Form.Check
+          type="radio"
+          checked={value === paymentMethod.payment_method}
+          value={value}
+          label={title}
+          name="payment_method"
+          id={`payment_method-${value}`}
+          htmlFor={`payment_method-${value}`}
+          onChange={() => handleChange(value, 'payment_method')}
+          className=""
+        />
         {
           value == 1 && paymentMethod.payment_method == 1 &&
           <>
@@ -158,19 +156,18 @@ export default () => {
                 <PaymentCreditCard key={index} index={index} {...creditCard} />
               )
             }
-            <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-              <a href={Paths.LiffCheckoutPaymentCreditCard.path} className="d-flex align-items-center p-2">
-                <h2 className="fs-6 fw-bold mb-0">カードを追加</h2>
-                <div className="ms-auto">
-                  <span className="link-arrow">
-                    <ChevronRightIcon className="icon icon-sm" />
-                  </span>
-                </div>
-              </a>
-            </ListGroup.Item>
+            <div className="bg-transparent px-0 mb-1">
+              <div className="d-flex justify-content-end">
+                <a href={Paths.LiffCheckoutPaymentCreditCard.path} className="">
+                  <div className="fs-6 fw-bold mb-0 d-inline">カードを追加</div>
+                  <ChevronRightIcon className="icon icon-sm" />
+                </a>
+              </div>
+            </div>
           </>
         }
-      </>
+        {value == 2 && paymentMethod.payment_method == 2 && <CashondeliveryCard />}
+      </Card>
     );
   }
 

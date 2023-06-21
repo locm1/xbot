@@ -77,14 +77,15 @@ export const getCartsAndRelatedProducts = async (userId, liffToken, setCarts, se
           const discount_rate_decimal = cart.product.product_sale.discount_rate / 100.0
           const sale_price = cart.product.price - (cart.product.price * discount_rate_decimal)
           var totalAmount = Math.floor(sale_price) * cart.quantity
+          var resultPrice = sale_price;
         } else {
           var totalAmount = cart.product.price * cart.quantity
+          var resultPrice = cart.product.price;
         }
-        return { ...cart, totalAmount: totalAmount }
+        return { ...cart, totalAmount: totalAmount, price: resultPrice }
       })
     )
     //console.log(carts.related_products);
-    //console.log(carts.cart_items.map(cart => ({ ...cart, totalAmount: cart.product.price * cart.quantity })));
 
     // セット割商品リストからカートにある商品IDで検索をかけ、ヒットした金額の合計値を出す
     let relatedProducts = [];

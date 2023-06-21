@@ -1,19 +1,19 @@
 import Swal from "sweetalert2";
 
-export const getEcommerceConfiguration = async (setFormValue, setIsDisbled = null) => {
-  axios.get(`/api/v1/management/ecommerce-configurations`)
+export const getEcommerceConfiguration = async (setFormValue) => {
+  return await axios.get(`/api/v1/management/ecommerce-configurations`)
   .then((response) => {
     const ecommerce_configuration = response.data.ecommerce_configuration;
 
     if (ecommerce_configuration) {
       console.log(ecommerce_configuration);
       setFormValue(ecommerce_configuration);
-      setIsDisbled(ecommerce_configuration.is_enabled == 1 ? false : true)
+      return ecommerce_configuration.is_enabled == 1 ? false : true;
     } else {
       setFormValue({
         target_amount: '', postage: '', cash_on_delivery_fee: '', tel: '', is_enabled: false
       });
-      setIsDisbled(true)
+      return true;
     }
   })
   .catch(error => {

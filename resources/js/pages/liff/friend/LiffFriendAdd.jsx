@@ -2,9 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import '@splidejs/splide/css';
 import { Link, useHistory, Redirect, useLocation, useParams } from 'react-router-dom';
 import liff from '@line/liff';
+import { getBasicId } from "@/pages/qrcode/api/BasicIdApiMethods";
 
 export default () => {
   const { userId, inviteIncentiveId } = useParams();
+  const [basicId, setBasicId] = useState();
 
   const searchInviteeUsers = async (searchParams) => {
     return await axios.get(`/api/v1/invitee-users`, searchParams)
@@ -29,17 +31,21 @@ export default () => {
   };
 
   useEffect(() => {
-    const idToken = liff.getIDToken();
-    const formValue = {
-      token: idToken, inviter_user_id: userId,
-      invite_incentive_id: inviteIncentiveId
+    const dataFetch = async () => {
+      const idToken = liff.getIDToken();
+      const formValue = {
+        token: idToken, inviter_user_id: userId,
+        invite_incentive_id: inviteIncentiveId
+      }
+      try {
+        const basicId = await getBasicId(setBasicId)
+        storeInviteeUser(formValue).then(response => location.href = 'https://line.me/R/ti/p/' + basicId)
+      } catch (error) {
+        console.error(error)
+      }
     }
-    const searchParams = {
-      params: {token: idToken}
-    };
 
-    // 招待者テーブルから検索をかけ、存在しなかったら追加
-    storeInviteeUser(formValue).then(response => location.href = "https://lin.ee/nGVYloK")
+    dataFetch()
   }, []);
 
   return (

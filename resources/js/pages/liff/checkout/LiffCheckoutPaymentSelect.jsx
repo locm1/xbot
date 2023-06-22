@@ -19,7 +19,6 @@ import ContentLoader from "react-content-loader";
 // import { paymentMethod, creditCards, user, payments, selectCardId } from "./test/LiffCheckoutPaymentSelectData"
 
 export default () => {
-  console.log(payments)
   const [isRendered, setIsRendered] = useState(false);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState({
@@ -68,6 +67,7 @@ export default () => {
       try {
         const userResponse = await getUser(idToken, setUser);
         const paymentResponse = await showPaymentMethod(userResponse.id, idToken);
+        console.log(paymentResponse);
         setPaymentMethod(paymentResponse == null ? { payment_method: 1 } : paymentResponse);
         setSelectCardId(paymentResponse.payjp_default_card_id);
 
@@ -191,9 +191,33 @@ export default () => {
               }
             </ListGroup>
             <div className="align-items-center my-4">
-              <Button variant="tertiary" onClick={onClick} className="w-100 p-3">
-                変更する
-              </Button>
+              {(() => {
+                if (!paymentMethod.payment_method) {
+                  return (
+                    <Button variant="tertiary" className="w-100 p-3">
+                      変更する
+                    </Button>
+                  );
+                } else if (paymentMethod.payment_method == 1 && paymentMethod.payjp_customer_id) {
+                  return (
+                    <Button variant="success" onClick={onClick} className="w-100 p-3">
+                      変更する
+                    </Button>
+                  );
+                } else if (paymentMethod.payment_method == 1 && (typeof paymentMethod.payjp_customer_id === 'undefined')) {
+                  return (
+                    <Button variant="tertiary" className="w-100 p-3">
+                      変更する
+                    </Button>
+                  );
+                } else {
+                  return (
+                    <Button variant="success" onClick={onClick} className="w-100 p-3">
+                      変更する
+                    </Button>
+                  );
+                }
+              })()}
             </div>
           </Card.Body>
         </Card>
@@ -232,7 +256,7 @@ export default () => {
               </ContentLoader>
             </ListGroup>
             <div className="align-items-center my-4">
-              <Button variant="tertiary" onClick={onClick} className="w-100 p-3">
+              <Button variant="tertiary" className="w-100 p-3">
                 変更する
               </Button>
             </div>

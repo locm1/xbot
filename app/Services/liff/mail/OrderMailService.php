@@ -24,7 +24,7 @@ class OrderMailService
         $app_url = config('app.url');
 
         if (isset($configuration->email)) {
-            Mail::send(new OrderMail($configuration->email, $order, $products, $app_url));
+            Mail::send(new OrderMail($configuration->email, $configuration->email_sender_name, $order, $products, $app_url));
         }
     }
 }

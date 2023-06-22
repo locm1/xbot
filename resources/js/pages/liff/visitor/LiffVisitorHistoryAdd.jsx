@@ -27,13 +27,15 @@ export default () => {
       const idToken = liff.getIDToken();
       try {
         const user = await getUser(idToken, setUser)
-        const result = await checkIfVisitedToday(user.id, setIsCreated)
+        const result = await checkIfVisitedToday(user.id)
         
         if (result) {
           setMessage({text: 'すでに来店済みです。', status: 512})
+          setIsCreated(result)
         } else {
           const message = await storeVisitorHistory(user.id, {liffToken: idToken})
           setMessage(message)
+          setIsCreated(true)
         }
         
       } catch (error) {

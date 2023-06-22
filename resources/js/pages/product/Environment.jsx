@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
 import { Col, Row, Form, Card, Image, Badge, Button, Dropdown, InputGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import { storeEcommerceConfiguration, getEcommerceConfiguration, updateEcommerceConfiguration, getApiKeys } from "@/pages/product/api/EcommerceConfigurationApiMethods";
+import { getEcommerceConfiguration, updateEcommerceConfiguration, getApiKeys } from "@/pages/product/api/EcommerceConfigurationApiMethods";
 
 export default () => {
   const [isDisabled, setIsDisbled] = useState(true);
   const [formValue, setFormValue] = useState({
     target_amount: '', postage: '', cash_on_delivery_fee: '', 
-    tel: '', email: '', is_enabled: false
+    tel: '', email: '', is_enabled: false, email_sender_name: ''
   })
   const [apiKey, setApiKey] = useState({
     payjp_secret_key: '', mix_payjp_public_key: ''
   })
   const [error, setError] = useState({
     target_amount: '', postage: '', tel: '', email: '', cash_on_delivery_fee: '', 
-    payjp_secret_key: '', mix_payjp_public_key: ''
+    payjp_secret_key: '', mix_payjp_public_key: '', email_sender_name: ''
   });
 
   const handleChange = (e, input) => {
@@ -32,12 +32,7 @@ export default () => {
     formValue.is_enabled = is_enabled
     formValue.type = 'environment'
     Object.assign(formValue, apiKey);
-
-    if (Object.keys(formValue).indexOf('id') !== -1) {
-      updateEcommerceConfiguration(formValue.id, formValue, setError)
-    } else {
-      storeEcommerceConfiguration(formValue, setError);
-    }
+    updateEcommerceConfiguration(formValue.id, formValue, setError)
   };
 
   useEffect(() => {
@@ -95,6 +90,24 @@ export default () => {
                     {
                       error.email && 
                       <Form.Control.Feedback type="invalid">{error.email[0]}</Form.Control.Feedback>
+                    }
+                  </Form.Group>
+                </Col>
+                <Col md={12} className="mb-4">
+                  <Form.Group id="email">
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>メール差出人名</Form.Label>
+                    <Form.Control
+                      required
+                      type="text"
+                      name="text"
+                      value={formValue.email_sender_name}
+                      onChange={(e) => handleChange(e, 'email_sender_name')}
+                      placeholder="例）Xbot【クロスボット】"
+                      isInvalid={!!error.email_sender_name}
+                    />
+                    {
+                      error.email_sender_name && 
+                      <Form.Control.Feedback type="invalid">{error.email_sender_name[0]}</Form.Control.Feedback>
                     }
                   </Form.Group>
                 </Col>

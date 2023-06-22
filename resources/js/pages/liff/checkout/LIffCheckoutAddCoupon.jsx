@@ -49,7 +49,7 @@ export default (props) => {
   const saveCoupon = () => {
     const selectCoupon = coupons.find(coupon => coupon.id === selectId)
     console.log(selectCoupon);
-    history.push(Paths.LiffCheckout.path, {coupon: selectCoupon})
+    history.push(Paths.LiffCheckout.path, { coupon: selectCoupon })
   };
 
   useEffect(() => {
@@ -85,27 +85,27 @@ export default (props) => {
 
     return (
       <>
-      <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
-      <Row className="">
-          <Col xs="2" className="mt-4">
-            <Form.Check
-              type="radio"
-              name="coupon_owner"
-              value={id}
-              checked={id === selectId}
-              id={id}
-              htmlFor={id}
-              onChange={() => setSelectId(id)}
-            />
-          </Col>
-          <Col xs="8" className="px-0">
-            <div className="m-1">
-              <h4 className="fs-5 text-dark mb-0">{name}</h4>
-              <h4 className="fs-6 text-dark mt-1">{discount_price}%割引</h4>
-            </div>
-          </Col>
-        </Row>
-      </ListGroup.Item>
+        <ListGroup.Item className="bg-transparent border-bottom py-3 px-0">
+          <Row className="">
+            <Col xs="2" className="mt-4">
+              <Form.Check
+                type="radio"
+                name="coupon_owner"
+                value={id}
+                checked={id === selectId}
+                id={id}
+                htmlFor={id}
+                onChange={() => setSelectId(id)}
+              />
+            </Col>
+            <Col xs="8" className="px-0">
+              <div className="m-1">
+                <h4 className="fs-5 text-dark mb-0">{name}</h4>
+                <h4 className="fs-6 text-dark mt-1">{discount_price}%割引</h4>
+              </div>
+            </Col>
+          </Row>
+        </ListGroup.Item>
       </>
     );
   }
@@ -113,17 +113,10 @@ export default (props) => {
   return (
     <>
       <main className="liff-product-detail p-3">
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center list-wrap"></div>
-        {/* <div className="">
-          <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
-            <div className="">
-              <span className="link-arrow">
-                <ChevronLeftIcon className="icon icon-sm" />
-              </span>
-            </div>
-            <h2 className="fs-6 fw-bold mb-0 ms-2">戻る</h2>
-          </Link>
-        </div> */}
+        <Link to={Paths.LiffCheckout.path} className="">
+          <ChevronLeftIcon className="icon icon-sm" />
+          <div className="d-inline">商品確認画面へ戻る</div>
+        </Link>
         <Card border="0" className="shadow mt-2">
           <Card.Header className="bg-primary text-white px-3 py-2">
             <h5 className="mb-0 fw-bolder">クーポン変更</h5>
@@ -150,13 +143,13 @@ export default (props) => {
                     }
                   </InputGroup>
                 </Col>
-                  <Col xs={12} lg={12} className="d-md-flex">
-                    <div className="align-items-center my-4">
-                      <Button onClick={handleClick} variant="success" disabled={!couponCode} className="w-100">
-                        適用
-                      </Button>
-                    </div>
-                  </Col>
+                <Col xs={12} lg={12} className="d-md-flex">
+                  <div className="align-items-center my-4">
+                    <Button onClick={handleClick} variant="success" disabled={!couponCode} className="w-100">
+                      適用
+                    </Button>
+                  </div>
+                </Col>
               </Row>
             </div>
             <div>
@@ -165,11 +158,11 @@ export default (props) => {
             </div>
             <ListGroup className="list-group-flush">
               {
-                coupons && coupons.map((coupon, index) => 
+                coupons && coupons.map((coupon, index) =>
                   <CouponCard key={`coupon-${index + 1}`} {...coupon} />
                 )
               }
-            </ListGroup> 
+            </ListGroup>
             <div className="align-items-center my-4">
               <Button onClick={saveCoupon} variant="tertiary" className="w-100">
                 変更する

@@ -142,8 +142,8 @@ export default () => {
             </div>
           </Col>
           <Col>
-              <Link className="d-block my-2 text-decoration-underline" to={link}>編集</Link>
-              <Link className="d-block my-2 text-decoration-underline" onClick={() => handleDelete(id)}>削除</Link>
+            <Link className="d-block my-2 text-decoration-underline" to={link}>編集</Link>
+            <Link className="d-block my-2 text-decoration-underline" onClick={() => handleDelete(id)}>削除</Link>
           </Col>
         </div>
       </Card>
@@ -152,50 +152,44 @@ export default () => {
 
   return (
     <>
-    <main className="liff-product-detail p-3">
-      {/* <div className="">
-        <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
-          <div className="">
-            <span className="link-arrow">
-              <ChevronLeftIcon className="icon icon-sm" />
-            </span>
-          </div>
-          <h2 className="fs-6 fw-bold mb-0 ms-2">戻る</h2>
+      <main className="p-3">
+        <Link to={Paths.LiffCheckout.path} className="">
+          <ChevronLeftIcon className="icon icon-sm" />
+          <div className="d-inline">商品確認画面へ戻る</div>
         </Link>
-      </div> */}
-      <div className="liff-product-list">
-        <Card border="0" className="shadow">
-          <Card.Header className="bg-primary text-white px-3 py-2">
-            <h5 className="mb-0 fw-bolder">お届け先住所の選択</h5>
-          </Card.Header>
-          <Card.Body className="py-0 px-3">
-            {
-              isRendered ? (
-                <>
-                  <ListGroup className="list-group-flush">
-                    {deliveryAddresses.map((deliveryAddress, index) => <DeliveryAddressItem key={`address-${deliveryAddress.id}`} {...deliveryAddress} index={index} />)}
-                  </ListGroup>
-                  {/* <Button variant="outline-primary" onClick={() => history.push(Paths.LiffCheckoutAddress.path)}>お届け先住所を追加</Button> */}
-                  <Link to={Paths.LiffCheckoutAddress.path} className="d-flex align-items-center border-bottom py-3 justify-content-around">
-                    <div className="">お届け先住所を追加</div>
-                    <div className="">
+        <div className="liff-product-list">
+          <Card border="0" className="shadow">
+            <Card.Header className="bg-primary text-white px-3 py-2">
+              <h5 className="mb-0 fw-bolder">お届け先住所の選択</h5>
+            </Card.Header>
+            <Card.Body className="py-0 px-3">
+              {
+                isRendered ? (
+                  <>
+                    <ListGroup className="list-group-flush">
+                      {deliveryAddresses.map((deliveryAddress, index) => <DeliveryAddressItem key={`address-${deliveryAddress.id}`} {...deliveryAddress} index={index} />)}
+                    </ListGroup>
+                    {/* <Button variant="outline-primary" onClick={() => history.push(Paths.LiffCheckoutAddress.path)}>お届け先住所を追加</Button> */}
+                    <Link to={Paths.LiffCheckoutAddress.path} className="d-flex align-items-center border-bottom py-3 justify-content-around">
+                      <div className="">お届け先住所を追加</div>
+                      <div className="">
                         <ChevronRightIcon className="icon icon-sm" />
+                      </div>
+                    </Link>
+                    <div className="align-items-center my-4">
+                      <Button onClick={handleClick} variant="success" className="w-100 p-3">
+                        変更する
+                      </Button>
                     </div>
-                  </Link>
-                  <div className="align-items-center my-4">
-                    <Button onClick={handleClick} variant="success" className="w-100 p-3">
-                      変更する
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <OrderDestinationsContentLoader />
-              )
-            }
-          </Card.Body>
-        </Card>
-      </div>
-    </main>
+                  </>
+                ) : (
+                  <OrderDestinationsContentLoader />
+                )
+              }
+            </Card.Body>
+          </Card>
+        </div>
+      </main>
     </>
   );
 };

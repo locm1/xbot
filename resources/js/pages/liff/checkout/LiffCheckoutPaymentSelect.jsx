@@ -19,7 +19,7 @@ import ContentLoader from "react-content-loader";
 // import { paymentMethod, creditCards, user, payments, selectCardId } from "./test/LiffCheckoutPaymentSelectData"
 
 export default () => {
-  const [isRendered, setIsRendered] = useState(true);
+  const [isRendered, setIsRendered] = useState(false);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState({
     payment_method: null
@@ -174,6 +174,10 @@ export default () => {
   return isRendered ? (
     <>
       <main className="liff-product-detail p-3">
+        <Link to={Paths.LiffCheckout.path} className="">
+          <ChevronLeftIcon className="icon icon-sm" />
+          <div className="d-inline">商品確認画面へ戻る</div>
+        </Link>
         <Card border="0" className="shadow mt-2">
           <Card.Header className="bg-primary text-white px-3 py-2">
             <h5 className="mb-0 fw-bolder">支払い方法変更</h5>
@@ -222,6 +226,10 @@ export default () => {
   ) : (
     <>
       <main className="liff-product-detail p-3">
+        <Link to={Paths.LiffCheckout.path} className="">
+          <ChevronLeftIcon className="icon icon-sm" />
+          <div className="d-inline">商品確認画面へ戻る</div>
+        </Link>
         <Card border="0" className="shadow mt-2">
           <Card.Header className="bg-primary text-white px-3 py-2">
             <h5 className="mb-0 fw-bolder">支払い方法変更</h5>

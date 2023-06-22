@@ -23,7 +23,8 @@ export default () => {
   const dataFetch = async (user) => {
     try {
       await showOccupation(user.occupation_id, setOccupation)
-      await checkIfVisitedToday(user.id, setIsCreated)
+      const result = await checkIfVisitedToday(user.id)
+      setIsCreated(result)
       setIsConfirmed(true);
     } catch (error) {
       Swal.fire(

@@ -4,6 +4,7 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, To
 import { Link, useHistory } from 'react-router-dom';
 import Pagination from "@/components/Pagination";
 import { Paths } from "@/paths";
+import moment from "moment-timezone";
 import OrdersContentLoader from "@/pages/order/OrdersContentLoader";
 import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 

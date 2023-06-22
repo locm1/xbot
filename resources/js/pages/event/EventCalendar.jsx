@@ -52,8 +52,13 @@ export default () => {
   };
 
   const onEventClick = (props) => {
-    console.log(props)
-    const { event: { id, title, start, end, backgroundColor, extendedProps: {location, remaining, is_unlimited} } } = props;
+    const { event: { id, title, start, end, backgroundColor, extendedProps: {location, remaining, is_unlimited} }, el} = props;
+
+    //過去のイベントを選択できないように
+    if (el.classList.contains("fc-event-past")) {
+      return;
+    }
+
     setModalProps({ id, title, start, end, location, remaining, backgroundColor, is_unlimited });
     setShowEditModal(true);
   };

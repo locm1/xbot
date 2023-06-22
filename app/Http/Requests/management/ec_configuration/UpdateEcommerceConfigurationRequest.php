@@ -37,6 +37,7 @@ class UpdateEcommerceConfigurationRequest extends FormRequest
                     'email' => 'required|email:filter,dns',
                     'mix_payjp_public_key' => 'required',
                     'payjp_secret_key' => 'required',
+                    'email_sender_name' => 'required'
                 ];
                 break;
             case 'postage':
@@ -49,6 +50,7 @@ class UpdateEcommerceConfigurationRequest extends FormRequest
                     'email' => 'nullable',
                     'mix_payjp_public_key' => 'nullable',
                     'payjp_secret_key' => 'nullable',
+                    'email_sender_name' => 'nullable'
                 ];
                 break;
             default:
@@ -61,6 +63,7 @@ class UpdateEcommerceConfigurationRequest extends FormRequest
                     'email' => 'required|email:filter,dns',
                     'mix_payjp_public_key' => 'required',
                     'payjp_secret_key' => 'required',
+                    'email_sender_name' => 'required'
                 ];
                 break;
         }
@@ -78,6 +81,7 @@ class UpdateEcommerceConfigurationRequest extends FormRequest
             'email' => 'メールアドレス',
             'mix_payjp_public_key' => 'Pay.jp 公開鍵',
             'payjp_secret_key' => 'Pay.jp 秘密鍵',
+            'email_sender_name' => 'メール差出人名'
         ];
     }
 }

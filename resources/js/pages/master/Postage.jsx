@@ -15,10 +15,10 @@ export default () => {
   const [isDisabled, setIsDisbled] = useState(true);
   const [formValue, setFormValue] = useState({
     target_amount: '', postage: '', cash_on_delivery_fee: '', 
-    tel: '', email: '', is_enabled: false
+    tel: '', email: '', is_enabled: false, email_sender_name: ''
   })
   const [error, setError] = useState({
-    target_amount: '', postage: '', tel: '', email: '', cash_on_delivery_fee: '',
+    target_amount: '', postage: '', tel: '', email: '', cash_on_delivery_fee: '', email_sender_name: '',
     'postages.0.postage' : ''
   });
   const [isRendered, setIsRendered] = useState(false);

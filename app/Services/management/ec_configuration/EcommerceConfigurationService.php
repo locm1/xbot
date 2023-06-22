@@ -52,8 +52,8 @@ class EcommerceConfigurationService
     {
         $ecommerce_configuration = EcommerceConfiguration::find($id);
         $data = ($request->is_enabled == 1)
-            ? $request->only(['cash_on_delivery_fee', 'is_enabled', 'postage', 'target_amount', 'tel', 'email'])
-            : $request->only(['is_enabled', 'postage', 'target_amount', 'tel', 'email']);
+            ? $request->only(['cash_on_delivery_fee', 'is_enabled', 'postage', 'target_amount', 'tel', 'email', 'email_sender_name'])
+            : $request->only(['is_enabled', 'postage', 'target_amount', 'tel', 'email', 'email_sender_name']);
 
         return DB::transaction(function () use ($ecommerce_configuration, $data, $request) {
             $ecommerce_configuration->update($data);

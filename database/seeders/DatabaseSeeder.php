@@ -101,6 +101,7 @@ class DatabaseSeeder extends Seeder
                 GreetingMessageSeeder::class,
                 GreetingMessagesWithQuestionnaireSeeder::class,
                 SiteSettingSeeder::class,
+                EcommerceConfigurationSeeder::class
             ]);
             Admin::factory(10)->create();
             // Occupation::factory(10)->create();
@@ -174,6 +175,7 @@ class DatabaseSeeder extends Seeder
                 ProductSeeder::class,
                 ProductImageSeeder::class,
                 ProductSaleSeeder::class,
+                EcommerceConfigurationSeeder::class
             ]);
             User::factory(100)->create();
             // ProductCategory::factory(10)->create();

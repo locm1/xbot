@@ -20,6 +20,7 @@ return new class extends Migration
             $table->tinyInteger('is_enabled')->nullable();
             $table->integer('cash_on_delivery_fee')->nullable();
             $table->string('tel')->nullable();
+            $table->string('email_sender_name')->nullable();
             $table->timestamps();
         });
     }

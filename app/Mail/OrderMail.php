@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
 class OrderMail extends Mailable
@@ -20,13 +21,15 @@ class OrderMail extends Mailable
      */
 
     public $email;
+    public $email_sender_name;
     public $order;
     public $order_products;
     public $url;
 
-    public function __construct($email, $order, $order_products, $url)
+    public function __construct($email, $email_sender_name, $order, $order_products, $url)
     {
         $this->email = $email;
+        $this->email_sender_name = $email_sender_name;
         $this->order = $order;
         $this->order_products = $order_products;
         $this->url = $url;
@@ -39,7 +42,9 @@ class OrderMail extends Mailable
      */
     public function envelope()
     {
+        $from_address = config('mail.from')['address'];
         return new Envelope(
+            from: new Address($from_address, $this->email_sender_name),
             subject: '新しい注文がありました',
             to: $this->email,
         );

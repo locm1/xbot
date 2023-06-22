@@ -601,8 +601,7 @@ const Routing = () => {
       <RegisteredLiffRoute exact path={Paths.LiffProductHistoryDetail.path} component={LiffProductHistoryDetail} />
       <LiffRoute exact path={Paths.LiffInvite.path} component={LiffInvite} />
       <NoFooterRoute exact path={Paths.LiffFriendAdd.path} component={LiffFriendAdd} />
-      {/* <RegisteredLiffRoute exact path={Paths.LiffVisitorHistoryAdd.path} component={LiffVisitorHistoryAdd} /> */}
-      <LiffRoute exact path={Paths.LiffVisitorHistoryAdd.path} component={LiffVisitorHistoryAdd} />
+      <RegisteredLiffRoute exact path={Paths.LiffVisitorHistoryAdd.path} component={LiffVisitorHistoryAdd} />
       <NoFooterRoute exact path={Paths.LiffInflowRoute.path} component={LiffInflowRoute} />
       <NoFooterRoute exact path={Paths.LiffServerError.path} component={LiffServerError} />
       <LiffRoute exact path={Paths.LiffEventHistories.path} component={LiffEventHistories} />

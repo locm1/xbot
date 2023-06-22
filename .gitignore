@@ -2,7 +2,7 @@
 /public/build
 /public/hot
 /public/storage
-# /public/js/*.js
+/public/js/*.js
 /public/images/test_img
 /storage/*.key
 /vendor

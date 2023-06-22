@@ -183,6 +183,9 @@ export default () => {
             dateClick={onDateClick}
             locales={allLocales}
             locale="ja"
+            // businessHours={{
+              
+            // }}
           />
         </Card.Body>
       </Card>

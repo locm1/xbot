@@ -139,7 +139,6 @@ Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'v1/management'], function () {
         Route::get('me', MeController::class);
-        Route::get('basic-id', BasicIdController::class);
         Route::apiResource('admins', AdminController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('users/{user}/questionnaire', QuestionnaireAnswerController::class);
@@ -233,6 +232,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // LIFF側で叩くAPI
 Route::group(['prefix' => 'v1'], function() {
+    Route::get('basic-id', BasicIdController::class);
     Route::get('site-settings', [SiteSettingController::class, 'index']);
     Route::post('site-settings', [SiteSettingController::class, 'store']);
     Route::put('site-settings', [SiteSettingController::class, 'update']);

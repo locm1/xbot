@@ -3,7 +3,7 @@ import { Row, Col, ListGroup, Button, Card, Image, InputGroup, Form } from 'reac
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import '@splidejs/splide/css';
 
-export const validationCheck = async (input, value, name) => {
+export const validationCheck = (input, value, name) => {
   switch (input) {
     case 'last_name_kana':
       const last_name_kana = validateKana(value, '姓');
@@ -60,11 +60,11 @@ const validatePhoneNumber = (value, name) => {
 
 
 const validateZipCodeNumber = (value, name) => {
-  if (value.includes('-') && (value.length >= 1 && value.length !== 7)) {
+  if (value.includes('-')) {
     return ['ハイフンが含まれています。']
   }
 
-  if (value.length >= 1 && value.length !== 7) {
+  if (value.length !== 7) {
     return [`${name}は7桁で入力してください。`]
   }
 

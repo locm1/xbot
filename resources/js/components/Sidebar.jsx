@@ -3,7 +3,7 @@ import SimpleBar from 'simplebar-react';
 import { useHistory, useLocation } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { CSSTransition } from 'react-transition-group';
-import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, GlobeAltIcon, ChevronRightIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon, FilterIcon } from "@heroicons/react/solid";
+import { UserIcon, UserGroupIcon, ShoppingCartIcon, CalendarIcon, ChevronRightIcon, CogIcon, CurrencyYenIcon, QrcodeIcon, UserAddIcon, XIcon, PencilAltIcon, ClipboardIcon, FilterIcon } from "@heroicons/react/solid";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { Nav, Badge, Image, Button, Dropdown, Navbar, Collapse, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -265,7 +265,7 @@ export default (props) => {
               
               {
                 pages[9] && admin.role <= pages[9].role && (
-                  <NavItem title="流入経路管理" link={Paths.InflowRoute.path} icon={UserAddIcon} />
+                  <NavItem title="流入経路管理" link={Paths.InflowRoute.path} icon={QrcodeIcon} />
                 )
               }
 

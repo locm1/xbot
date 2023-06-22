@@ -18,6 +18,7 @@ import { getOccupations } from "@/pages/liff/api/OccupationApiMethods";
 import { LoadingContext } from "@/components/LoadingContext";
 import LiffQuestionnaireContentLoader from "@/pages/liff/questionnaire/loader/LiffQuestionnaireContentLoader";
 import { validationCheck } from "@/pages/liff/questionnaire/ValidationCheck";
+import { optionalValidationCheck } from "@/pages/liff/questionnaire/OptionalValidationCheck";
 
 export default () => {
   const { setIsLoading } = useContext(LoadingContext);
@@ -67,11 +68,11 @@ export default () => {
 
   const genders = ['男性', '女性'];
 
-  const handleChange = async (e, input, name) => {
+  const handleChange = (e, input, name) => {
     setFormValue({ ...formValue, [input]: e.target.value })
 
     const userInfoStatus = userInfoStatuses.find(status => status.name == name);
-    const message = userInfoStatus.is_required == 1 ? await validationCheck(input, e.target.value, name) : ''
+    const message = userInfoStatus.is_required == 1 ? validationCheck(input, e.target.value, name) : optionalValidationCheck(input, e.target.value, name)
     console.log(message);
     setErrors({ ...errors, [input]: message })
   };

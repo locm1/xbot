@@ -42,13 +42,12 @@ export const storeVisitorHistory = async (userId, liffToken) => {
 };
 
 
-export const checkIfVisitedToday = async (userId, setIsCreated) => {
+export const checkIfVisitedToday = async (userId) => {
   // const params = {params: {liffToken: liffToken}}
   return await axios.get(`/api/v1/users/${userId}/visitor/check-today`)
   .then((response) => {
     const result = response.data.result
     console.log(result);
-    setIsCreated(result)
     return result
   })
   .catch(error => {

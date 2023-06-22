@@ -113,6 +113,9 @@ export default () => {
         <td className="fw-bolder text-gray-500">
           {event.is_unlimited == 0 ? event.remaining : '無制限'}
         </td>
+        <td className="fw-bolder text-gray-500">
+          {moment(event.created_at).format("YYYY-MM-DD HH:mm")}
+        </td>
       </tr>
       </>
     );
@@ -149,6 +152,7 @@ export default () => {
 							<th className="border-bottom">時間</th>
 							<th className="border-bottom">開催場所</th>
 							<th className="border-bottom">残数</th>
+              <th className="border-bottom">予約受付時間</th>
 						</tr>
 					</thead>
 					<tbody className="border-0">

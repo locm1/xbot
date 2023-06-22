@@ -15,6 +15,7 @@ import OrderDestinationsContentLoader from "@/pages/liff/checkout/loader/OrderDe
 import testData from "./test/LiffCheckoutAddressData"
 
 export default () => {
+  const { setIsLoading } = useContext(LoadingContext);
   const [isRendered, setIsRendered] = useState(false);
   const history = useHistory();
   const [deliveryAddresses, setDeliveryAddresses] = useState([]);
@@ -23,6 +24,11 @@ export default () => {
     is_registered: 0
   });
   const [liffToken, setLiffToken] = useState('');
+  const [errors, setErrors] = useState({
+    last_name: '', first_name: '', last_name_kana: '', first_name_kana: '',
+    year: 1990, month: '', day: '', gender: 1, tel: '', occupation_id: 1, zipcode: '',
+    prefecture: '', city: '', address: '', building_name: '', room_number: ''
+  });
 
   const fetch = async () => {
     const idToken = liff.getIDToken();
@@ -46,14 +52,15 @@ export default () => {
   }
 
   const handleClick = async () => {
+    setIsLoading(true);
     const updateAddress = deliveryAddresses.find((deliveryAddress) => deliveryAddress.id === selectId);
     updateAddress.is_selected = 1
     updateAddress.liffToken = liffToken
     console.log(updateAddress);
     try {
       await updateOrderDestinations(user.id, liffToken)
-      await updateOrderDestination(user.id, updateAddress.id, updateAddress)
-      updateComplete()
+      const result = await updateOrderDestination(user.id, updateAddress.id, updateAddress, setErrors)
+      result ? updateComplete() : setIsLoading(false)
     } catch (error) {
       console.error(error);
       Swal.fire(
@@ -106,6 +113,7 @@ export default () => {
   }
 
   const updateComplete = () => {
+    setIsLoading(false)
     history.push(Paths.LiffCheckout.path);
   };
 

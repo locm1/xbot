@@ -19,7 +19,6 @@ import ContentLoader from "react-content-loader";
 // import { paymentMethod, creditCards, user, payments, selectCardId } from "./test/LiffCheckoutPaymentSelectData"
 
 export default () => {
-  console.log(payments)
   const [isRendered, setIsRendered] = useState(true);
   const history = useHistory();
   const [paymentMethod, setPaymentMethod] = useState({
@@ -68,6 +67,7 @@ export default () => {
       try {
         const userResponse = await getUser(idToken, setUser);
         const paymentResponse = await showPaymentMethod(userResponse.id, idToken);
+        console.log(paymentResponse);
         setPaymentMethod(paymentResponse == null ? { payment_method: 1 } : paymentResponse);
         setSelectCardId(paymentResponse.payjp_default_card_id);
 
@@ -197,9 +197,33 @@ export default () => {
               }
             </ListGroup>
             <div className="align-items-center my-4">
-              <Button variant="tertiary" onClick={onClick} className="w-100 p-3">
-                変更する
-              </Button>
+              {(() => {
+                if (!paymentMethod.payment_method) {
+                  return (
+                    <Button variant="tertiary" className="w-100 p-3">
+                      変更する
+                    </Button>
+                  );
+                } else if (paymentMethod.payment_method == 1 && paymentMethod.payjp_customer_id) {
+                  return (
+                    <Button variant="success" onClick={onClick} className="w-100 p-3">
+                      変更する
+                    </Button>
+                  );
+                } else if (paymentMethod.payment_method == 1 && (typeof paymentMethod.payjp_customer_id === 'undefined')) {
+                  return (
+                    <Button variant="tertiary" className="w-100 p-3">
+                      変更する
+                    </Button>
+                  );
+                } else {
+                  return (
+                    <Button variant="success" onClick={onClick} className="w-100 p-3">
+                      変更する
+                    </Button>
+                  );
+                }
+              })()}
             </div>
           </Card.Body>
         </Card>
@@ -208,16 +232,6 @@ export default () => {
   ) : (
     <>
       <main className="liff-product-detail p-3">
-        <div className="">
-          <Link to={Paths.LiffCheckout.path} className="d-flex align-items-center p-2">
-            <div className="">
-              <span className="link-arrow">
-                <ChevronLeftIcon className="icon icon-sm" />
-              </span>
-            </div>
-            <h2 className="fs-6 fw-bold mb-0 ms-2">戻る</h2>
-          </Link>
-        </div>
         <Card border="0" className="shadow mt-2">
           <Card.Header className="bg-primary text-white px-3 py-2">
             <h5 className="mb-0 fw-bolder">支払い方法変更</h5>
@@ -244,7 +258,7 @@ export default () => {
               </ContentLoader>
             </ListGroup>
             <div className="align-items-center my-4">
-              <Button variant="tertiary" onClick={onClick} className="w-100 p-3">
+              <Button variant="tertiary" className="w-100 p-3">
                 変更する
               </Button>
             </div>

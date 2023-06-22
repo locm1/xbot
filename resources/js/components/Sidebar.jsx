@@ -265,7 +265,7 @@ export default (props) => {
               
               {
                 pages[9] && admin.role <= pages[9].role && (
-                  <NavItem title="流入経路管理" link={Paths.InflowRoute.path} icon={UserAddIcon} />
+                  <NavItem title="流入経路管理" link={Paths.InflowRoute.path} icon={QrcodeIcon} />
                 )
               }
 

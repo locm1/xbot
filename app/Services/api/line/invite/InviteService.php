@@ -57,7 +57,8 @@ class InviteService
         $invite_incentive_id = DefaultInviteIncentive::find(1)->invite_incentive_id;
         $encrypt_invite_incentive_id = $this->encryptData($invite_incentive_id);
         $encrypt_user_id = $this->encryptData($User->id);
-        return "https://liff.line.me/1660723896-RmovvEYY?path=friends/add/$encrypt_user_id/$encrypt_invite_incentive_id";
+        $liff_id = config('api_key')['MIX_LIFF_ID'];
+        return "https://liff.line.me/$liff_id?path=friends/add/$encrypt_user_id/$encrypt_invite_incentive_id";
     }
 
     public function getMessage(string $line_id, string $uri): string

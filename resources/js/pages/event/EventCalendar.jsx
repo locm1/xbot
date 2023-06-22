@@ -42,6 +42,11 @@ export default () => {
     const date = new Date(props.date);
     const endDate = moment(date).add(1, 'h').format("YYYY-MM-DD HH:mm");
 
+    //過去の日付を選択できないように
+    if (props.dayEl.classList.contains("fc-day-past")) {
+      return;
+    }
+
     setModalProps({ ...defaultModalProps, start: date, end: endDate  });
     setShowAddModal(true);
   };
@@ -183,9 +188,6 @@ export default () => {
             dateClick={onDateClick}
             locales={allLocales}
             locale="ja"
-            // businessHours={{
-              
-            // }}
           />
         </Card.Body>
       </Card>

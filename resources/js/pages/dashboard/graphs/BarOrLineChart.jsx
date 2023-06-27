@@ -18,6 +18,18 @@ export default (props) => {
 			id: id
 		},
 		labels: data.map(item => item[0]),
+		colors: [
+			'#DA93A6',
+			'#CDC3D1',
+			'#D6E1E9',
+			'#D3B5BA',
+			'#CA9886',
+			'#D2C2BD',
+			'#C2C2D9',
+			'#E8DAD9',
+			'#E0D49A',
+			'#F2D896',
+		],
 		xaxis: {
 			min: xlabel == 1 ? new Date(period[0]).getTime() : '',
 			max: xlabel == 1 ? new Date(period[1]).getTime() : '',
@@ -35,10 +47,11 @@ export default (props) => {
 	const [series, setSeries] = useState(type != "pie" ? [
 		{
 			name: name,
-			data: data.map(item => item[1])
+			data: data.map(item => item[1]),
 		}
 	] : data.map(item => item[1]));
 
+	console.log(options);
 	const searchSegment = () => {
 		history.push({
 			pathname: Paths.SendSegments.path,

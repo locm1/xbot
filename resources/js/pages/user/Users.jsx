@@ -104,7 +104,7 @@ export default () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 list-wrap">
         <div className="d-block mb-4 mb-md-0">
-          <h1 className="page-title">ユーザーリスト</h1>
+          <h1 className="page-title">ユーザー管理</h1>
           {
             isRendered ? (
               <div className="list-head d-flex flex-wrap mb-4 align-items-center">

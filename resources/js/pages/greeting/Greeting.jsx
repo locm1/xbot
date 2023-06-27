@@ -225,16 +225,21 @@ export default () => {
       <div className="d-flex flex-row-reverse mt-3">
         {
           isRendered ? (
-            <Form.Group id="questionnaire">
-              <Form.Check
-                type="switch"
-                label="アンケート回答ボタンをつける"
-                id="questionnaire"
-                htmlFor="questionnaire"
-                checked={isQuestionnaireAnswerButton}
-                onChange={onChangeAnswerButton}
-              />
-            </Form.Group>
+            <>
+            <div>
+              <Form.Group id="questionnaire">
+                <Form.Check
+                  type="switch"
+                  label="アンケート回答ボタンをつける"
+                  id="questionnaire"
+                  htmlFor="questionnaire"
+                  checked={isQuestionnaireAnswerButton}
+                  onChange={onChangeAnswerButton}
+                />
+              </Form.Group>
+              <p>sas</p>
+            </div>
+            </>
           ) : (
             <ContentLoader
               height={34}

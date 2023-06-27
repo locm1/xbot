@@ -191,7 +191,7 @@ export default (props) => {
               {
                 pages[1] && admin.role <= pages[1].role && (
                   <CollapsableNavItem eventKey="user/" title="顧客管理" icon={UserIcon}>
-                    <NavItem title="ユーザーリスト" link={Paths.Users.path} />
+                    <NavItem title="ユーザー管理" link={Paths.Users.path} />
                     <NavItem title="タグ設定" link={Paths.Tags.path} />
                   </CollapsableNavItem>
                 )
@@ -201,7 +201,7 @@ export default (props) => {
                 pages[2] && admin.role <= pages[2].role && (
                   <CollapsableNavItem eventKey="message/" title="セグメント配信" icon={UserGroupIcon}>
                     <NavItem title="メッセージ配信" link={Paths.SendSegments.path} />
-                    <NavItem title="テンプレート" link={Paths.TemplateMessages.path} />
+                    <NavItem title="テンプレート管理" link={Paths.TemplateMessages.path} />
                     <NavItem title="配信履歴" link={Paths.SendHistories.path} />
                   </CollapsableNavItem>  
                 )
@@ -223,7 +223,7 @@ export default (props) => {
                     <NavItem title="商品管理" link={Paths.Products.path} />
                     <NavItem title="カテゴリー設定" link={Paths.ProductCategory.path} />
                     <NavItem title="クーポン管理" link={Paths.Coupons.path} />
-                    <NavItem title="注文リスト" link={Paths.Orders.path} />
+                    <NavItem title="注文管理" link={Paths.Orders.path} />
                     {/* <NavItem title="取置リスト" link={Paths.Reserves.path} /> */}
                     <NavItem title="送料設定" link={Paths.Postage.path} />
                     <NavItem title="プライバシーポリシー" link={Paths.PrivacyPolicy.path} />
@@ -237,7 +237,7 @@ export default (props) => {
                 pages[5] && admin.role <= pages[5].role && (
                   <CollapsableNavItem eventKey="event/" title="予約管理" icon={CalendarIcon}>
                     <NavItem title="予約枠作成" link={Paths.EventCalendar.path} />
-                    <NavItem title="予約リスト" link={Paths.Events.path} />
+                    <NavItem title="予約管理" link={Paths.Events.path} />
                   </CollapsableNavItem>
                 )
               }

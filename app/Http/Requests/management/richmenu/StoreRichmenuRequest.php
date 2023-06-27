@@ -27,7 +27,6 @@ class StoreRichmenuRequest extends FormRequest
             'menuBarText' => 'required',
             'title' => 'required',
             'menuType' => 'required|numeric|between:1,7',
-            'A-value' => 'required|url'
         ];
     }
 
@@ -50,6 +49,25 @@ class StoreRichmenuRequest extends FormRequest
                         if (!preg_match('/^(https?:\/\/)/', $path)) {
                             $validator->errors()->add($value_key, 'LINE内ブラウザはURLの形式で入力してください。');
                         }
+                    }
+
+                    if (empty($value)) {
+                        $validator->errors()->add($value_key, 'LINE内ブラウザを入力してください。');
+                    }
+
+                } else if (strpos($key, '-type') !== false && $value == 2) {
+                    $value_key = str_replace('-type', '-value', $key);
+                    $value = $this->request->get($value_key);
+
+                    if (empty($value)) {
+                        $validator->errors()->add($value_key, '送信テキストを入力してください。');
+                    }
+                } else if (strpos($key, '-type') !== false && $value == 3) {
+                    $value_key = str_replace('-type', '-value', $key);
+                    $value = $this->request->get($value_key);
+
+                    if (empty($value)) {
+                        $validator->errors()->add($value_key, 'リッチメニューを選択してください');
                     }
                 }
             }

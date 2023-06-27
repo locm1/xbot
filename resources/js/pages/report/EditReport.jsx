@@ -225,12 +225,13 @@ export default () => {
 									<Form.Check
 										name={'size'}
 										id={`size-${k}`}
-										value={k + 1}
-										checked={data.size == k + 1}
-										onChange={handleDataChange}
 										className='d-flex'
 									>
-										<Form.Check.Input className="my-auto" type='radio' name={'size'} />
+										<Form.Check.Input className="my-auto" type='radio' name={'size'}  
+										checked={data.size == k + 1}
+										onChange={handleDataChange}
+										value={k + 1}
+										/>
 										<Form.Check.Label className="mb-0 ms-3">
 											{/* {v.name} */}
 											<Image className=" d-block" src={v.img} />

@@ -34,23 +34,27 @@ class StoreRichmenuRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-
+            Log::debug($this->request->all());
             foreach ($this->request->all() as $key => $value) {
                 if (strpos($key, '-type') !== false && $value == 1) {
                     $value_key = str_replace('-type', '-value', $key);
                     $value = $this->request->get($value_key);
 
+                    $parsed_url = parse_url($value);
+                    $query = isset($parsed_url['query']) ? $parsed_url['query'] : '';
+                    parse_str($query, $query_parameters);
+                    $path = isset($query_parameters['path']) ? $query_parameters['path'] : '';
+
                     if (strpos($value, 'external=1') !== false) {
-                        $parsed_url = parse_url($value);
-                        $query = isset($parsed_url['query']) ? $parsed_url['query'] : '';
-                        parse_str($query, $query_parameters);
-    
-                        $path = isset($query_parameters['path']) ? $query_parameters['path'] : '';
-    
                         if (!preg_match('/^(https?:\/\/)/', $path)) {
                             $validator->errors()->add($value_key, 'LINE内ブラウザはURLの形式で入力してください。');
                         }
                     }
+
+                    if (empty($path)) {
+                        $validator->errors()->add($key, 'リンクを選択してください。');
+                    }
+
 
                     if (empty($value)) {
                         $validator->errors()->add($value_key, 'LINE内ブラウザを入力してください。');
@@ -68,8 +72,12 @@ class StoreRichmenuRequest extends FormRequest
                     $value = $this->request->get($value_key);
 
                     if (empty($value)) {
-                        $validator->errors()->add($key, 'リッチメニューを選択してください');
+                        $validator->errors()->add($value_key, 'リッチメニューを選択してください');
                     }
+                } else if (strpos($key, '-type') !== false && $value == 0) {
+                    $value_key = str_replace('-type', '-value', $key);
+                    Log::debug($key);
+                    $validator->errors()->add($key, 'アクションを選択してください');
                 }
             }
         });

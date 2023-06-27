@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\management\report\ReportRequest;
+use App\Models\Questionnaire;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use App\Services\management\report\ReportService;
@@ -23,7 +24,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return $this->service->index();
+        $questionnaires = Questionnaire::get(['id', 'title']);
+        return ['reports' => $this->service->index(), 'questionnaires' => $questionnaires];
     }
 
     /**

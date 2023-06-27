@@ -178,6 +178,8 @@ class DatabaseSeeder extends Seeder
                 EcommerceConfigurationSeeder::class
             ]);
             User::factory(100)->create();
+            QuestionnaireAnswer::factory(200)->create();
+            QuestionnaireAnswerItem::factory(400)->create();
             // ProductCategory::factory(10)->create();
             // Product::factory(50)->create()->each(function ($product) {
             //     ProductSale::factory()->create(['product_id' => $product->id]);

@@ -481,9 +481,6 @@ export default () => {
         <h1 className="page-title">リッチメニュー設定</h1>
         <Button onClick={() => { history.push(Paths.RichMenus.path) }} className="mt-2 animate-up-2">一覧へ戻る</Button>
       </div>
-      <Button onClick={() => { console.log(actionLinks) }}>actionLinks</Button>
-      <Button onClick={() => { console.log(checklLinks) }}>checklLinks</Button>
-      <Button onClick={() => { console.log(externalLinks) }}>externalLinks</Button>
       {
         isRendered ? (
           <Card border="0" className="shadow mb-4 rich-menu-content-wrap">

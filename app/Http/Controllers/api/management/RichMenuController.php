@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\api\management;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\management\richmenu\StoreRichmenuRequest;
+use App\Http\Requests\management\richmenu\UpdateRichmenuRequest;
 use Illuminate\Http\Request;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use App\Services\api\LineBotService as LINEBot;
@@ -39,10 +41,10 @@ class RichMenuController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreRichmenuRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRichmenuRequest $request)
     {
         return $this->service->store($request, true);
     }
@@ -61,11 +63,11 @@ class RichMenuController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateRichmenuRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRichmenuRequest $request, $id)
     {
         $new_richmenu_id = $this->service->store($request, false);
 

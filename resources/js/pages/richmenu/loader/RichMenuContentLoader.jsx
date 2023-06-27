@@ -65,8 +65,8 @@ export default () => {
                   </ContentLoader>
                   <Row className="w-100">
                     {
-                      loadingTables.map(v =>
-                        <div className="mb-3">
+                      loadingTables.map((v, index) =>
+                        <div className="mb-3" key={`richmenu-action-content-loader-${index}`}>
                           <ContentLoader
                             height={140.8}
                             width={586.1}

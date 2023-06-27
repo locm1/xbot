@@ -486,7 +486,7 @@ const LiffInitRoute = () => {
   }
   liffRedirect();
   if (isExternal) {
-    location.href = `https://${path}`;
+    location.href = path;
   }
   return redirect && <Redirect to={redirect} />
 }

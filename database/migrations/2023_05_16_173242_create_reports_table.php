@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->tinyInteger('period')->nullable();
-            $table->tinyInteger('xlabel');
+            $table->string('xlabel');
             $table->tinyInteger('type');
             $table->tinyInteger('size');
             $table->json('search_json')->nullable();

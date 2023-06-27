@@ -13,7 +13,7 @@ import PaginationContentLoader from "@/components/loader/PaginationContentLoader
 import { deleteReport } from "./api/ReportApiMethods";
 
 export const ReportTable = (props) => {
-	const { reports, setReports, getAllReports, links, setLinks, paginate, setPaginate, isRendered } = props;
+	const { reports, setReports, getAllReports, links, setLinks, paginate, setPaginate, isRendered, questionnaires } = props;
 	const history = useHistory();
 
 	const convertType = (type) => {
@@ -30,16 +30,28 @@ export const ReportTable = (props) => {
 	}
 
 	const convertXlabel = (xlabel) => {
-		switch (xlabel) {
-			case 1:
-				return '期間'
-			case 2:
-				return '性別'
-			case 3:
-				return '誕生月'
-			default:
-				return 'error'
-		}
+	if (xlabel === '1') {
+		return '期間';
+	} else if (xlabel === '2') {
+		return '性別';
+	} else if (xlabel === '3') {
+		return '誕生月';
+	} else if (xlabel === '4') {
+		return '都道府県';
+	} else if (xlabel.startsWith('questionnaireId-')) {
+		const questionnaireId = +xlabel.split('-')[1];
+		let title = '';
+		questionnaires.forEach(obj => {
+			if (obj.id === questionnaireId) {
+				console.log(obj.title)
+				title = obj.title;
+			}
+		});
+		return title;
+	} else {
+		return 'error';
+	}
+	
 	}
 
 	const TableRow = (props) => {

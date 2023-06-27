@@ -4,7 +4,9 @@ namespace App\Http\Controllers\api\management\dashboard;
 
 use App\Consts\GenderConsts;
 use App\Consts\GraphTypeConsts;
+use App\Consts\PrefectureConsts;
 use App\Http\Controllers\Controller;
+use App\Models\Questionnaire;
 use App\Models\Report;
 use App\Models\User;
 use Carbon\Carbon;
@@ -22,13 +24,19 @@ class DashboardController extends Controller
         foreach ($Reports as $k => $v) {
             $Users = $this->getUsersByTerms(json_decode($v['search_json'], true));
             $period = null;
-            if ($v->xlabel === 1) {
+            if ($v->xlabel === '1') {
                 $data = $this->formatByPeriod($Users);
                 $period = $this->getPeriod($v->period);
-            } elseif ($v->xlabel === 2) {
+            } elseif ($v->xlabel === '2') {
                 $data = $this->formatByGender($Users);
-            } elseif ($v->xlabel === 3) {
+            } elseif ($v->xlabel === '3') {
                 $data = $this->formatByBirthmonth($Users);
+            } elseif ($v->xlabel === '4') {
+                $data = $this->formatByPrefecture($Users);
+            } elseif (preg_match('/^questionnaireId-/', $v->xlabel)) {
+                $parts = explode("-", $v->xlabel);
+                $questionnaire_id = end($parts);
+                $data = $this->formatByQuestionnaire($Users, $questionnaire_id);
             }
             $send_data[] = [
                 'id' => $v->id,
@@ -138,7 +146,7 @@ class DashboardController extends Controller
         if (count($data) < 3) {
             $data[] = array ('未回答', 0);
         }
-
+        Log::debug($data);
         return $data;
     }
 
@@ -158,6 +166,35 @@ class DashboardController extends Controller
             }
         }
 
+        return $data;
+    }
+
+    private function formatByQuestionnaire(Builder $Users, int $questionnaire_id)
+    {
+        $questionnaire_answer_names = Questionnaire::find($questionnaire_id)->questionnaireItems->pluck('name');
+        $data = [];
+        foreach ($questionnaire_answer_names as $k => $v) {
+            $clone_users = clone $Users;
+            $count = $clone_users->wherehas('questionnaireAnswers', function ($questionnaire_answers) use ($v, $questionnaire_id) {
+                $questionnaire_answers->where('questionnaire_id', $questionnaire_id)->whereHas('questionnaireAnswerItems', function ($questionnaire_answer_items) use ($v) {
+                    $questionnaire_answer_items->where('answer', $v);
+                });
+            })->count();
+            $data[] = [$v, $count];
+        }
+        Log::debug($data);
+        return $data;
+    }
+
+    private function formatByPrefecture(Builder $Users)
+    {
+        $data = [];
+        $prefectures = PrefectureConsts::ALL_PREFECTURES;
+        foreach ($prefectures as $k => $v) {
+            $clone_users = clone $Users;
+            $count = $clone_users->where('prefecture', $v)->count();
+            $data[] = [$v, $count];
+        }
         return $data;
     }
 

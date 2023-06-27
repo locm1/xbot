@@ -15,14 +15,17 @@ export default () => {
 	const [links, setLinks] = useState([]);
 	const history = useHistory();
 	const [isRendered, setIsRendered] = useState(false);
+	const [questionnaires, setQuestionnaires] = useState([]);
 
 	useEffect(() => {
 		getAllReports()
-			.then(response => {
-				setReports(response.data.data);
-				delete response.data.data;
-				setPaginate(response.data);
-				setLinks([...Array(response.data.last_page)].map((_, i) => i + 1))
+			.then(({ data }) => {
+				console.log(data.questionnaires);
+				setQuestionnaires(data.questionnaires);
+				setReports(data.reports.data);
+				delete data.reports.data;
+				setPaginate(data.reports);
+				setLinks([...Array(data.reports.last_page)].map((_, i) => i + 1))
 				setIsRendered(true)
 			})
 			.catch(error => {
@@ -50,6 +53,7 @@ export default () => {
 				paginate={paginate}
 				setPaginate={setPaginate}
 				isRendered={isRendered}
+				questionnaires={questionnaires}
 			/>
     </>
 	)

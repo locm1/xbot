@@ -83,6 +83,7 @@ export const getQuestionnaires = async (setQuestionnaires) => {
 			}
 		});
     setQuestionnaires(newQuestionnaires)
+		return newQuestionnaires;
   })
   .catch(error => {
       console.error(error);

@@ -52,10 +52,10 @@ class UpdateRichmenuRequest extends FormRequest
                         }
                     }
 
-                    if (empty($path)) {
+                    if (empty($value)) {
                         $validator->errors()->add($value_key, 'LINE内ブラウザを入力してください。');
                     }
-                    
+
                 } else if (strpos($key, '-type') !== false && $value == 2) {
                     $value_key = str_replace('-type', '-value', $key);
                     $value = $this->request->get($value_key);

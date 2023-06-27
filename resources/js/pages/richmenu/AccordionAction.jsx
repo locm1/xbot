@@ -24,12 +24,24 @@ export default (props) => {
             {v.title}
           </Col>
           <Col md={10} className="pb-3">
-            <Form.Select className="mb-0" value={formValue[v.title + '-type']} name={`${v.title}-type`} onChange={(e) => handleChangeAsNumber(e, v.title)}>
+            <>
+            <Form.Select 
+              className="mb-0" 
+              value={formValue[v.title + '-type']} 
+              name={`${v.title}-type`} 
+              onChange={(e) => handleChangeAsNumber(e, v.title)}
+              isInvalid={!!error[`${v.title}-type`]}
+            >
               <option value={0}>選択する</option>
               {
                 options.map((option, index) => (<option key={`option-${index}`} value={index + 1}>{option}</option>))
               }
             </Form.Select>
+            {
+              error[`${v.title}-type`] &&
+              <Form.Control.Feedback type="invalid">{error[`${v.title}-type`][0]}</Form.Control.Feedback>
+            }
+            </>
             {(() => {
               const typeValue = formValue[v.title + '-type']
               const title = v.title

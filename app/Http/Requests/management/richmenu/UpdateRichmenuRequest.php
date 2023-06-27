@@ -34,7 +34,6 @@ class UpdateRichmenuRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-
             foreach ($this->request->all() as $key => $value) {
                 if (strpos($key, '-type') !== false && $value == 1) {
                     $value_key = str_replace('-type', '-value', $key);
@@ -49,6 +48,8 @@ class UpdateRichmenuRequest extends FormRequest
     
                         if (!preg_match('/^(https?:\/\/)/', $path)) {
                             $validator->errors()->add($value_key, 'LINE内ブラウザはURLの形式で入力してください。');
+                        } else if (empty($path)) {
+                            $validator->errors()->add($value_key, 'LINE内ブラウザを入力してください。');
                         }
                     }
 
@@ -70,6 +71,10 @@ class UpdateRichmenuRequest extends FormRequest
                     if (empty($value)) {
                         $validator->errors()->add($value_key, 'リッチメニューを選択してください');
                     }
+                } else if (strpos($key, '-type') !== false && $value == 0) {
+                    $value_key = str_replace('-type', '-value', $key);
+                    Log::debug($key);
+                    $validator->errors()->add($key, 'アクションを選択してください');
                 }
             }
         });

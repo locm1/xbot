@@ -3,6 +3,7 @@
 namespace App\Http\Requests\management\richmenu;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class StoreRichmenuRequest extends FormRequest
 {
@@ -67,7 +68,7 @@ class StoreRichmenuRequest extends FormRequest
                     $value = $this->request->get($value_key);
 
                     if (empty($value)) {
-                        $validator->errors()->add($value_key, 'リッチメニューを選択してください');
+                        $validator->errors()->add($key, 'リッチメニューを選択してください');
                     }
                 }
             }

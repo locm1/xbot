@@ -193,9 +193,6 @@ export default () => {
       setExternalLinks({ ...externalLinks, [`${title}-value`]: value })
     }
 
-    const message = validationCheck(value, type, actionLinks[`${title}-value`].isExternal)
-    setError({ ...message, [`${title}-value`]: message })
-
     setActionLinks((prevActionLinks) => ({
       ...prevActionLinks,
       [`${title}-value`]: {
@@ -206,6 +203,18 @@ export default () => {
         isSelect: true
       },
     }));
+
+    const message = validationCheck(value, type, actionLinks[`${title}-value`].isExternal)
+    switch (type) {
+      case 1:
+        return setError({ ...message, [`${title}-value`]: message })
+      case 2:
+        return setError({ ...message, [`${title}-text-value`]: message })
+      case 3:
+        return setError({ ...message, [`${title}-richmenu-value`]: message })
+      default:
+        return setError({ ...message, [`${title}-value`]: message })
+    }
   };
 
   const handleChangeAsNumber = (e, title) => {

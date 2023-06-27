@@ -94,11 +94,11 @@ export default (props) => {
                       name={`${title}-value`}
                       value={actionLinks[`${title}-value`].textValue}
                       onChange={(e) => handleLinkChange(e, title, typeValue)}
-                      isInvalid={!!error[`${title}-value`]}
+                      isInvalid={!!error[`${title}-text-value`]}
                     />
                     {
-                      error[`${title}-value`] &&
-                      <Form.Control.Feedback type="invalid">{error[`${title}-value`][0]}</Form.Control.Feedback>
+                      error[`${title}-text-value`] &&
+                      <Form.Control.Feedback type="invalid">{error[`${title}-text-value`][0]}</Form.Control.Feedback>
                     }
                     </>
                   )
@@ -110,7 +110,7 @@ export default (props) => {
                       name={`${title}-value`}
                       value={actionLinks[`${title}-value`].richmenuValue}
                       onChange={(e) => handleLinkChange(e, title, typeValue)}
-                      isInvalid={!!error[`${title}-value`]}
+                      isInvalid={!!error[`${title}-richmenu-value`]}
                     >
                       <option>リッチメニューを選択する</option>
                       {
@@ -118,8 +118,8 @@ export default (props) => {
                       }
                     </Form.Select>
                     {
-                      error[`${title}-value`] &&
-                      <Form.Control.Feedback type="invalid">{error[`${title}-value`][0]}</Form.Control.Feedback>
+                      error[`${title}-richmenu-value`] &&
+                      <Form.Control.Feedback type="invalid">{error[`${title}-richmenu-value`][0]}</Form.Control.Feedback>
                     }
                     </>
                   )

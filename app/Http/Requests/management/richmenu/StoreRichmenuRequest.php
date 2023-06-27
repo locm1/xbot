@@ -34,7 +34,6 @@ class StoreRichmenuRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            Log::debug($this->request->all());
             foreach ($this->request->all() as $key => $value) {
                 if (strpos($key, '-type') !== false && $value == 1) {
                     $value_key = str_replace('-type', '-value', $key);
@@ -62,21 +61,22 @@ class StoreRichmenuRequest extends FormRequest
 
                 } else if (strpos($key, '-type') !== false && $value == 2) {
                     $value_key = str_replace('-type', '-value', $key);
+                    $validate_key = str_replace('-type', '-text-value', $key);
                     $value = $this->request->get($value_key);
 
                     if (empty($value)) {
-                        $validator->errors()->add($value_key, '送信テキストを入力してください。');
+                        $validator->errors()->add($validate_key, '送信テキストを入力してください。');
                     }
                 } else if (strpos($key, '-type') !== false && $value == 3) {
                     $value_key = str_replace('-type', '-value', $key);
+                    $validate_key = str_replace('-type', '-richmenu-value', $key);
                     $value = $this->request->get($value_key);
 
                     if (empty($value)) {
-                        $validator->errors()->add($value_key, 'リッチメニューを選択してください');
+                        $validator->errors()->add($validate_key, 'リッチメニューを選択してください');
                     }
                 } else if (strpos($key, '-type') !== false && $value == 0) {
                     $value_key = str_replace('-type', '-value', $key);
-                    Log::debug($key);
                     $validator->errors()->add($key, 'アクションを選択してください');
                 }
             }

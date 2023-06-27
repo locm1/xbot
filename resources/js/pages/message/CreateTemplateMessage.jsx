@@ -393,7 +393,7 @@ export default () => {
       </div>
       <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pb-4">
         <Button onClick={() => { history.push(Paths.TemplateMessages.path) }} variant="gray-500" className="me-2 me-auto">
-          テンプレートリストに戻る
+          テンプレート管理に戻る
         </Button>
         <Button variant="success" className="btn-default-success" onClick={onSaveMessage}>
           {pathname.includes('/edit') ? '更新する' : '保存する'}

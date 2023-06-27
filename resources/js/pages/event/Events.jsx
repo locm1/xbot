@@ -125,7 +125,7 @@ export default () => {
 	return (
 		<>
 			<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center my-2 list-wrap">
-				<h1 className="page-title">予約リスト</h1>
+				<h1 className="page-title">予約管理</h1>
 			</div>
 			<div className="table-settings mb-4">
         <Row className="align-items-center">

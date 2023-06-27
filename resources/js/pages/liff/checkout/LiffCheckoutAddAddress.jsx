@@ -64,28 +64,15 @@ export default () => {
     formValue.is_selected = 0
     formValue.liffToken = liffToken
     if (pathname.includes('/edit')) {
-      try {
-        await updateOrderDestination(user.id, id, formValue, setErrors)
-        updateComplete()
-      } catch (error) {
-        setIsLoading(false);
-        Swal.fire(
-          `データ保存エラー`,
-          'データが正常に保存できませんでした',
-          'error'
-        )
-      }
+      const result = await updateOrderDestination(user.id, id, formValue, setErrors)
+      result ? updateComplete() : setIsLoading(false)
       //updateOrderDestination(101, id, formValue, updateComplete)
     } else {
-      try {
-        await storeOrderDestination(user.id, formValue, location, updateComplete, setErrors)
-      } catch (error) {
-        setIsLoading(false);
-        Swal.fire(
-          `データ保存エラー`,
-          'データが正常に保存できませんでした',
-          'error'
-        )
+      const result = await storeOrderDestination(user.id, formValue, setErrors)
+      if (result) {
+        location == '/checkout/address' && updateComplete();
+      } else {
+        setIsLoading(false)
       }
       //storeOrderDestination(101, formValue, location)
     }

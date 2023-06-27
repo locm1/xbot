@@ -10,7 +10,7 @@ export const getRichMenus = async (setRichMenus) => {
     });
   };
   
-  export const storeRichMenu = async (formData) => {
+  export const storeRichMenu = async (formData, setError) => {
     return await axios.post(`/api/v1/management/rich-menus`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -21,6 +21,7 @@ export const getRichMenus = async (setRichMenus) => {
       return response.data;
     })
     .catch(error => {
+      setError(error.response.data.errors);
       console.error(error);
       return 'failed';
     });
@@ -29,8 +30,16 @@ export const getRichMenus = async (setRichMenus) => {
   export const showRichMenu = async (id, setRichMenu) => {
     return await axios.get(`/api/v1/management/rich-menus/${id}`)
     .then((response) => {
-      setRichMenu(response.data);
-      return response.data;
+      const result = response.data
+      const newData = {...result};
+      console.log(result);
+      Object.keys(newData).forEach(key => {
+        if (key.endsWith('-value')) {
+          delete newData[key];
+        }
+      })
+      setRichMenu(newData);
+      return result;
     })
     .catch(error => {
         console.error(error);
@@ -49,7 +58,7 @@ export const getRichMenus = async (setRichMenus) => {
     });
   };
   
-  export const updateRichMenu = async (id, formData) => {
+  export const updateRichMenu = async (id, formData, setError) => {
     return await axios.post(`/api/v1/management/rich-menus/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -61,6 +70,7 @@ export const getRichMenus = async (setRichMenus) => {
       return response.data;
     })
     .catch(error => {
+      setError(error.response.data.errors);
       console.error(error);
       return 'failed';
     });

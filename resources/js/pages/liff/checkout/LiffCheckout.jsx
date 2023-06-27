@@ -95,6 +95,8 @@ export default () => {
       return;
     }
     const keys = ['updated_at', 'user_id', 'created_at', 'deleted_at'];
+    keys.forEach((key) => delete deliveryAddress[key]);
+    
     const delivery_time = Cookies.get('delivery_time') ?? 1;
 
     const order = {

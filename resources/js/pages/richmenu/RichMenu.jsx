@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext, useRef } from "react";
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { useDropzone } from "react-dropzone";
-import { Col, Row, Form, Button, ListGroup, Card, Modal, Image } from 'react-bootstrap';
+import { Col, Row, Form, Button, ListGroup, Card, Badge, Image } from 'react-bootstrap';
 import { XIcon } from "@heroicons/react/solid";
 import LinePreview from "@/components/line/LinePreview";
 import ChangeTemplateModal from "@/pages/richmenu/ChangeTemplateModal";
@@ -23,9 +23,12 @@ import squares_half_3 from "@img/img/richmenu/squares_half_3.jpg"
 import { pages } from "./PageURLConsts"
 import { Paths } from "@/paths";
 import { LoadingContext } from "@/components/LoadingContext";
-import RichMenuContentLoader from "@/pages/richmenu//loader/RichMenuContentLoader.jsx"
+import RichMenuContentLoader from "@/pages/richmenu/loader/RichMenuContentLoader.jsx"
+import { validationCheck } from "@/pages/richmenu/Validation";
+import AccordionAction from "@/pages/richmenu/AccordionAction";
 
 export default () => {
+  const inputRef = useRef(null);
   const { setIsLoading } = useContext(LoadingContext);
   const [liffId, setLiffId] = useState();
   const { id } = useParams();
@@ -48,7 +51,21 @@ export default () => {
     { id: 12, img: squares_half_1, size: 1, type: 12 },
   ];
   const [ailias, setAilias] = useState([]);
+  const [actionLinks, setActionLinks] = useState({
+    'A-value': { isExternal: false, linkValue: '', textValue: '', richmenuValue: '', type: 1 },
+    'B-value': { isExternal: false, linkValue: '', textValue: '', richmenuValue: '', type: 1 },
+    'C-value': { isExternal: false, linkValue: '', textValue: '', richmenuValue: '', type: 1 },
+    'D-value': { isExternal: false, linkValue: '', textValue: '', richmenuValue: '', type: 1 },
+    'E-value': { isExternal: false, linkValue: '', textValue: '', richmenuValue: '', type: 1 },
+    'F-value': { isExternal: false, linkValue: '', textValue: '', richmenuValue: '', type: 1 },
+  });
+  const [externalLinks, setExternalLinks] = useState({})
+  const [checklLinks, setCheckLinks] = useState({})
+  const [sendTexts, setSendTexts] = useState({})
   const [isRendered, setIsRendered] = useState(false);
+  const [error, setError] = useState({
+    menuBarText: '', title: ''
+  })
 
   useLayoutEffect(() => {
     axios.get('/api/v1/management/rich-menu-ailias')
@@ -71,9 +88,60 @@ export default () => {
       },);
   }, [])
 
+  const checkUrl = (response, value, type) => {
+    const checkValue = response[value];
+    if (checkValue.startsWith("https://liff.line.me/")) {
+      const params = new URLSearchParams(checkValue.substring(checkValue.indexOf('?')));
+      const pathValue = params.get('path');
+      const isExternal = pathValue.startsWith("https") || pathValue.startsWith("http")
+
+      if (isExternal) {
+        setExternalLinks(prevExternalLinks => ({ ...prevExternalLinks, [value]: pathValue }))
+      }
+
+      if (response[type] == 1) {
+        const checkIndex = isExternal ? 8 : pages.findIndex(page => page.path == pathValue) + 1
+        setCheckLinks(prev => ({ ...prev, [value]: checkIndex }))
+      }
+
+      return {
+        isExternal: isExternal,
+        linkValue: pathValue,
+        textValue: '',
+        richmenuValue: '',
+        type: response[type],
+        isSelect: true
+      }
+    }
+
+    const result = {
+      isExternal: false,
+      linkValue: response[type] === 1 ? checkValue : '',
+      textValue: response[type] === 2 ? checkValue : '',
+      richmenuValue: response[type] === 3 ? checkValue : '',
+      type: response[type],
+    };
+
+    const isSelect = result.linkValue || result.textValue || result.richmenuValue;
+
+    return {
+      ...result,
+      isSelect: isSelect,
+    }
+  };
+
   useEffect(() => {
     if (pathname.includes('/edit')) {
-      showRichMenu(richMenuId, setFormValue).then((response) => {
+      showRichMenu(richMenuId, setFormValue, setActionLinks).then((response) => {
+        const defaultValue = { isExternal: false, linkValue: '', textValue: '', richmenuValue: '', type: 1, isSelect: false }
+        setActionLinks({
+          'A-value': response['A-value'] ? checkUrl(response, 'A-value', 'A-type') : defaultValue,
+          'B-value': response['B-value'] ? checkUrl(response, 'B-value', 'B-type') : defaultValue,
+          'C-value': response['C-value'] ? checkUrl(response, 'C-value', 'C-type') : defaultValue,
+          'D-value': response['D-value'] ? checkUrl(response, 'D-value', 'D-type') : defaultValue,
+          'E-value': response['E-value'] ? checkUrl(response, 'E-value', 'E-type') : defaultValue,
+          'F-value': response['F-value'] ? checkUrl(response, 'F-value', 'F-type') : defaultValue,
+        })
         setRichMenu(richmenu_1.filter(v => v.type == response.menuType)[0] ?? { id: 1, img: '', size: 6, type: 1 })
         getImage(richMenuId, setImage, setImagePath).finally(() => {
           setIsRendered(true)
@@ -83,6 +151,7 @@ export default () => {
       })
     }
   }, []);
+
   const [formValue, setFormValue] = useState(
     {
       title: '', menuBarText: '', registAilias: false, menuType: 1,
@@ -96,12 +165,74 @@ export default () => {
 
   const handleChange = (e) => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value })
+    setError({ ...error, [e.target.name]: '' })
   };
 
-  const handleChangeAsNumber = (e) => {
+  const handleCheckChange = (e, isExternal, title, type, checkNumber = 0) => {
+    const { value } = e.target;
+
+    if (type === 1) {
+      setCheckLinks({ ...checklLinks, [`${title}-value`]: checkNumber })
+    }
+
+    setActionLinks((prevActionLinks) => ({
+      ...prevActionLinks,
+      [`${title}-value`]: {
+        ...prevActionLinks[`${title}-value`],
+        isExternal: isExternal,
+        linkValue: isExternal ? externalLinks[`${title}-value`] : value,
+        isSelect: true
+      },
+    }));
+  };
+
+  const handleLinkChange = (e, title, type) => {
+    const { value } = e.target;
+
+    if (type === 1 && actionLinks[`${title}-value`].isExternal) {
+      setExternalLinks({ ...externalLinks, [`${title}-value`]: value })
+    }
+
+    setActionLinks((prevActionLinks) => ({
+      ...prevActionLinks,
+      [`${title}-value`]: {
+        ...prevActionLinks[`${title}-value`],
+        linkValue: type === 1 ? value : prevActionLinks[`${title}-value`].linkValue,
+        textValue: type === 2 ? value : prevActionLinks[`${title}-value`].textValue,
+        richmenuValue: type === 3 ? value : prevActionLinks[`${title}-value`].richmenuValue,
+        isSelect: true
+      },
+    }));
+
+    const message = validationCheck(value, type, actionLinks[`${title}-value`].isExternal)
+    switch (type) {
+      case 1:
+        return setError({ ...message, [`${title}-value`]: message })
+      case 2:
+        return setError({ ...message, [`${title}-text-value`]: message })
+      case 3:
+        return setError({ ...message, [`${title}-richmenu-value`]: message })
+      default:
+        return setError({ ...message, [`${title}-value`]: message })
+    }
+  };
+
+  const handleChangeAsNumber = (e, title) => {
     const value = +e.target.value
     setFormValue({ ...formValue, [e.target.name]: value })
+
+    setActionLinks((prevActionLinks) => ({
+      ...prevActionLinks,
+      [`${title}-value`]: {
+        ...prevActionLinks[`${title}-value`],
+        type: value,
+        isSelect: true
+      },
+    }));
+
+    setError({ ...error, [`${title}-type`]: '' })
   }
+
   const [formId, setFormId] = useState();
   const [templateModal, setTemplateModal] = useState(false);
   const [richMenu, setRichMenu] = useState({ id: 1, img: '', size: 6, type: 1 });
@@ -117,75 +248,11 @@ export default () => {
     return (
       <Row className={`${className} ${borderBottomClass} align-items-center pb-3`}>
         <Col md={4}>
-          <Card.Text className="h6 mb-1">{title}</Card.Text>
+          <Card.Text className="h6 mb-1"><Badge bg="danger" className="me-2">必須</Badge>{title}</Card.Text>
         </Col>
         <Col md={8}>
           {children}
         </Col>
-      </Row>
-    );
-  };
-
-  const TypeForm = (props) => {
-    const { typeValue, title } = props;
-    switch (typeValue) {
-      case 1:
-        return (<>
-          <div className="d-flex flex-wrap gap-2 mt-2">
-            {pages.map((v, k) =>
-              <Button key={`page-${k}`} variant={`https://liff.line.me/${liffId}?path=${v.path}` === formValue[`${title}-value`] ? "primary" : "outline-primary"} size="sm" className="description" name={`${title}-value`} value={`https://liff.line.me/${liffId}?path=${v.path}`} onClick={handleChange}>{v.name}</Button>
-            )}
-          </div>
-          <Form.Control className="mb-3 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
-        </>)
-      case 2:
-        return <Form.Control as="textarea" className="mb-3 mt-2" name={`${title}-value`} defaultValue={formValue[`${title}-value`]} onBlur={handleChange} />
-        break;
-      case 3:
-        return (
-          <Form.Select className="mb-3 mt-2" name={`${title}-value`} value={formValue[`${title}-value`]} onChange={handleChange}>
-            <option>リッチメニューを選択する</option>
-            {
-              ailias.map((v, k) => <option key={`option-${k}`} value={v.richMenuAliasId}>{v.name}</option>)
-            }
-          </Form.Select>
-        )
-      default:
-        return <div className="" />
-    }
-  }
-
-  const AccordionAction = (props) => {
-    const { formValue } = props;
-    const actions = [...Array(richMenu.size)].map((v, i) => {
-      return {
-        id: i + 1,
-        eventKey: `action-${i + 1}`,
-        title: String.fromCodePoint(i + 65),
-      }
-    });
-
-    const options = ['リンク', '送信テキスト', 'リッチメニュー切替']
-
-    return (
-      <Row className="w-100">
-        {/* <Form.Control className="mb-3" name={`A-value`} value={formValue[`A-value`]} onBlur={props.handleChange} /> */}
-        {actions.map((v, i) => (
-          <div className="d-flex mb-3 justify-content-between" key={`actions-${i}`}>
-            <Col md={1}>
-              {v.title}
-            </Col>
-            <Col md={10}>
-              <Form.Select className="mb-0" value={formValue[v.title + '-type']} name={`${v.title}-type`} onChange={handleChangeAsNumber}>
-                <option value={0}>選択する</option>
-                {
-                  options.map((option, index) => (<option key={`option-${index}`} value={index + 1}>{option}</option>))
-                }
-              </Form.Select>
-              <TypeForm typeValue={formValue[v.title + '-type']} title={v.title} />
-            </Col>
-          </div>
-        ))}
       </Row>
     );
   };
@@ -269,16 +336,53 @@ export default () => {
     );
   };
 
+  const addFormData = (formData) => {
+    const newData = {};
+
+    Object.keys(actionLinks).forEach((key) => {
+      if (actionLinks[key].isSelect) {
+        newData[key] = actionLinks[key];
+      }
+    });
+
+    console.log(newData);
+
+    Object.keys(newData).forEach(key => {
+      switch (newData[key].type) {
+        case 1:
+          const value = newData[key].linkValue
+          const liffUrl = `https://liff.line.me/${liffId}?path=`
+          const externalLink = '&external=1'
+          const link = newData[key].isExternal ? liffUrl + value + externalLink : liffUrl + value
+          formData.append(key, link);
+          break;
+        case 2:
+          formData.append(key, newData[key].textValue);
+          break;
+        case 3:
+          formData.append(key, newData[key].richmenuValue);
+          break;
+        default:
+          formData.append(key, newData[key].linkValue);
+          break;
+      }
+    })
+  };
+
   const saveMenu = (shouldSetDefault) => {
-    const formData = new FormData();
     setIsLoading(true);
+    const formData = new FormData();
     for (const key in formValue) {
       formData.append(key, formValue[key]);
     }
+
+    addFormData(formData);
+
     formData.append('image', image);
     formData.append('shouldSetDefault', shouldSetDefault);
     if (pathname.includes('/edit')) {
-      updateRichMenu(richMenuId, formData).then(response => {
+      updateRichMenu(richMenuId, formData, setError).then(response => {
+        setIsLoading(false)
         if (response === 'failed') {
           Swal.fire({
             icon: 'error',
@@ -324,7 +428,7 @@ export default () => {
         }
       })
     } else {
-      storeRichMenu(formData).then(response => {
+      storeRichMenu(formData, setError).then(response => {
         if (response === 'failed') {
           setIsLoading(false)
           Swal.fire({
@@ -396,8 +500,20 @@ export default () => {
               <Row>
                 <Col md={12} className="mb-5">
                   <Form.Group id="title">
-                    <Form.Label>タイトル</Form.Label>
-                    <Form.Control required type="text" name="title" value={formValue.title} onChange={handleChange} placeholder="" />
+                    <Form.Label><Badge bg="danger" className="me-2">必須</Badge>タイトル</Form.Label>
+                    <Form.Control
+                      required
+                      type="text"
+                      name="title"
+                      value={formValue.title}
+                      onChange={handleChange}
+                      placeholder=""
+                      isInvalid={!!error.title}
+                    />
+                    {
+                      error.title &&
+                      <Form.Control.Feedback type="invalid">{error.title[0]}</Form.Control.Feedback>
+                    }
                   </Form.Group>
                 </Col>
               </Row>
@@ -429,7 +545,19 @@ export default () => {
                     />
                     <ListGroup.Item className="d-flex justify-content-between px-0 py-3 border-bottom">
                       <Col md={3} className="h6 mb-1">アクション</Col>
-                      <AccordionAction formValue={formValue} handleChange={handleChange}></AccordionAction>
+                      <AccordionAction
+                        richMenu={richMenu}
+                        formValue={formValue}
+                        handleChangeAsNumber={handleChangeAsNumber}
+                        pages={pages}
+                        checklLinks={checklLinks}
+                        externalLinks={externalLinks}
+                        actionLinks={actionLinks}
+                        handleLinkChange={handleLinkChange}
+                        error={error}
+                        handleCheckChange={handleCheckChange}
+                        ailias={ailias}
+                      />
                     </ListGroup.Item>
                     {/* <SettingsItem
                       id={3}
@@ -446,7 +574,7 @@ export default () => {
                     </SettingsItem> */}
                     <ListGroup.Item className={`px-0 py-4`}>
                       <Row className="align-items-center">
-                        <Col md={4} className="h6 align-middle">メニューバーテキスト設定</Col>
+                        <Col md={4} className="h6 align-middle"><Badge bg="danger" className="me-2">必須</Badge>メニューバーテキスト</Col>
                         <Col md={8} className="">
                           <Form.Group id="menu_bar_text">
                             <Form.Control
@@ -455,7 +583,12 @@ export default () => {
                               value={formValue.menuBarText}
                               onChange={handleChange}
                               placeholder="テキストを入力"
+                              isInvalid={!!error.menuBarText}
                             />
+                            {
+                              error.menuBarText &&
+                              <Form.Control.Feedback type="invalid">{error.menuBarText[0]}</Form.Control.Feedback>
+                            }
                           </Form.Group>
                         </Col>
                       </Row>
@@ -479,7 +612,7 @@ export default () => {
           <RichMenuContentLoader />
         )
       }
-      
+
     </>
   )
 }

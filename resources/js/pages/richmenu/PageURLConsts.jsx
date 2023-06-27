@@ -1,34 +1,42 @@
 export const pages = [
     {
         name: '商品一覧', 
-        path: 'product/list'
+        path: 'product/list',
+        is_external: false
     },
     {
         name: 'カート', 
-        path: 'cart'
+        path: 'cart',
+        is_external: false
     },
     {
         name: '購入履歴', 
-        path: 'history/product'
+        path: 'history/product',
+        is_external: false
     },
     {
         name: '友達招待', 
-        path: 'invite'
+        path: 'invite',
+        is_external: false
     },
     {
         name: '来店QR', 
-        path: 'visitor'
+        path: 'visitor',
+        is_external: false
     },
     {
         name: '日程予約', 
-        path: 'event/reservation'
+        path: 'event/reservation',
+        is_external: false
     },
     {
         name: '予約履歴', 
-        path: 'event/histories'
+        path: 'event/histories',
+        is_external: false
     },
     {
         name: 'LINE内ブラウザ', 
-        path: 'こちらにhttps://以降のURLを入れてください&external=1'
+        path: '',
+        is_external: true
     },
 ]

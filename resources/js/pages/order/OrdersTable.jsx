@@ -4,6 +4,7 @@ import { Col, Row, Nav, Card, Form, Image, Button, Table, Badge, ProgressBar, To
 import { Link, useHistory } from 'react-router-dom';
 import Pagination from "@/components/Pagination";
 import { Paths } from "@/paths";
+import moment from "moment-timezone";
 import OrdersContentLoader from "@/pages/order/OrdersContentLoader";
 import PaginationContentLoader from "@/components/loader/PaginationContentLoader";
 
@@ -44,7 +45,6 @@ export const OrdersTable = (props) => {
     const { id, created_at, user, payjp_url, purchase_amount, status, shipping_fee, user_id } = props;
     const userLink = Paths.EditUser.path.replace(':id', user_id);
     const link = Paths.OrderDetail.path.replace(':id', id);
-    const date = new Date(created_at)
 
     const handleClick = () => {
       history.push(link, user_id)
@@ -59,7 +59,7 @@ export const OrdersTable = (props) => {
         </td>
         <td>
           <span className="fw-normal">
-            {date.toLocaleString()}
+            {moment(created_at).format("YYYY-MM-DD HH:mm:ss")}
           </span>
         </td>
         <td>

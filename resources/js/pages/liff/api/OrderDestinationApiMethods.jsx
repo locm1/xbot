@@ -60,16 +60,15 @@ export const showOrderDestination = async (userId, id, liffToken, setDeliveryAdd
   });
 };
 
-export const storeOrderDestination = async (userId, formValue, location, updateComplete, setErrors) => {
-  await axios.post(`/api/v1/users/${userId}/destinations`, formValue)
+export const storeOrderDestination = async (userId, formValue, setErrors) => {
+  return await axios.post(`/api/v1/users/${userId}/destinations`, formValue)
   .then((response) => {
-    if (location == '/checkout/address') {
-      updateComplete();
-    }
+    return true;
   })
   .catch(error => {
-      console.error(error);
-      setErrors(error.response.data.errors)
+    console.error(error);
+    setErrors(error.response.data.errors)
+    return false;
   });
 };
 
@@ -77,11 +76,12 @@ export const updateOrderDestination = async (userId, id, formValue, setErrors) =
   return await axios.put(`/api/v1/users/${userId}/destinations/${id}`, formValue)
   .then((response) => {
     console.log(response.data.order_destination);
-    return response.data.order_destination;
+    return true;
   })
   .catch(error => {
-      console.error(error);
-      setErrors(error.response.data.errors)
+    console.error(error);
+    setErrors(error.response.data.errors)
+    return false;
   });
 };
 
